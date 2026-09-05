@@ -88,7 +88,7 @@
   /* --- main entry -------------------------------------------------------- */
   function tfMax(aliases, tf) {
     var m = 0;
-    aliases.forEach(function (a) { if ((tf[a] || 0) > m) m = tf[a]; });
+    aliases.forEach((a) => { if ((tf[a] || 0) > m) m = tf[a]; });
     return m;
   }
 
