@@ -1,0 +1,75 @@
+{
+ "id": 278090515,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 222,
+ "title": "Feature Request: Show full Glucose Reading in Notification bar",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/222",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2017-11-30T11:41:10Z",
+ "closed_at": "2021-02-22T17:04:54Z",
+ "comment_count": 55,
+ "body": "Hi,\r\n\r\nfirst I want to thank all contributors for this great app! Makes my life with Type 1 a lot easier.\r\n\r\nHope its OK to request a feature this way.\r\n\r\nI have an application named AccuBattery which always shows the battey percentage as an Notification bar Icon. I would love to see this implemented with the current BG Reading.\r\n\r\nThanks Max\r\n\r\n![screenshot_20171130-122221_li 2](https://user-images.githubusercontent.com/8474446/33429049-83f13818-d5cb-11e7-8c92-a47518c9887d.jpg)\r\n\r\n",
+ "comments": [
+  {
+   "id": 348420281,
+   "user": "gitanO0",
+   "created_at": "2017-12-01T07:17:13Z",
+   "body": "+1"
+  },
+  {
+   "id": 348423469,
+   "user": "AdrianLxM",
+   "created_at": "2017-12-01T07:36:13Z",
+   "body": "When I last looked at it, google removed the possibility to add text there (at least for non-system apps) - and also the possibility to add dynamically rendered icons. Too many apps where pushing advertisement there, without the possibility for the user to know what app it was :/\r\nNewer versions of Android might get (have gotten) the possibility to do that again?\r\n\r\nWhat apps then usually did was exchanging the icon. Having a range from 40 to 400, this would mean more than 360 icons for mg/dl alone. Additionally those for mmol/l."
+  },
+  {
+   "id": 348440903,
+   "user": "jamorham",
+   "created_at": "2017-12-01T09:05:20Z",
+   "body": "Even if it is possible to dynamically render the icon I believe its going to be limited to a tiny space and getting 3 digits in there is going to pretty difficult and for it to be readable."
+  },
+  {
+   "id": 348577010,
+   "user": "gitanO0",
+   "created_at": "2017-12-01T18:50:37Z",
+   "body": "What about some sort of middle ground... perhaps three or four icons:  red:  low, green:  in range, yellow: high... or some such thing."
+  },
+  {
+   "id": 348686343,
+   "user": "micro17",
+   "created_at": "2017-12-02T11:38:17Z",
+   "body": "Great to see that my suggetion receives attention.Thanks for this!\r\n\r\nIm running the Pixel 2 XL with Android Oreo. Im not sure how AccuBattery implements this feature as im not really an expert in that regard...\r\n\r\n\r\nPerhaps ill photoshop a mockup to see if 3 digits would be feasible. But Im hopeful that it would fit the space as accubattery uses 2 digits + the circle.\r\n\r\nThe color solution depends on the android version youre running. From my experience Android Oreo converts every notification with colored icons to b/w. "
+  },
+  {
+   "id": 349037161,
+   "user": "gitanO0",
+   "created_at": "2017-12-04T17:27:10Z",
+   "body": "Well... I guess the takeaway here is that \"more information is better\".  Currently the status bar icon of a static xdrip symbol brings very little to no \"information\" value.  There are certainly tons of apps, such as this weather app I use that successfully show dynamic info in that space... such as the current temp (which in \"f\" can range from -xx to +xxx temps).  So, it certainly is possible.  The heartache seems to be on the implementation side... all the work to make icons with each BG value.  So, the bottom line is... is the value gained by having a dynamic status bar icon greater than the work involved?  I'd certainly volunteer my time in the grunt work of creating those BG png files.  We'd be looking at what... Maybe an \"L\" symbol for 40 and lower... then 41 -> 300 or so?  Then an \"H\" for high?"
+  },
+  {
+   "id": 349609950,
+   "user": "Klaus3d3",
+   "created_at": "2017-12-06T11:19:20Z",
+   "body": "Hi there,\r\n\r\nmy guess is that a dynamic xdrip symbol will also bring that information on an always on display wich ist a feature i'd really like.\r\nTo bring the BG-Level on the AOD it would maybe also possible use to the static note, wich you can put on the AOD. If this is a string, wich is somewhere found in the systems settings, it should be possible to dynamize it. Or maybe, similar to gitanO0s request, changing the color of the AOD Clock should be easely done and should work for all AOD generations, i guess. "
+  },
+  {
+   "id": 355689260,
+   "user": "TheDonDan",
+   "created_at": "2018-01-05T23:03:37Z",
+   "body": "+1"
+  },
+  {
+   "id": 361244728,
+   "user": "Klaus3d3",
+   "created_at": "2018-01-29T13:27:25Z",
+   "body": "Hi there, i think this should'nt be any problem at all with since Marshmallow seems to accept Text as Icon. I made myself an app with Tasker and autonotification to show the value in the notification bar and on AOD. So it should'nt be any problem to do this directly from XDrip+.\r\nSee: https://www.google.de/amp/s/amp.reddit.com/r/tasker/comments/4sarl0/dev_autonotification_updates_full_status_bar_icon/"
+  },
+  {
+   "id": 364155283,
+   "user": "Klaus3d3",
+   "created_at": "2018-02-08T15:53:39Z",
+   "body": "@jamorham \r\n@AdrianLxM \r\n\r\nfrom api 23 + i had luck with this code for a 2 -3 character long String as notification icon.\r\nThe Textsize will be dynamicly changed to fit into the icon.\r\n\r\nString text =\"99\";\r\n\r\n        public void ClickButton (View view) {\r\n        Paint paint = new Paint();\r\n        Integer width = (int) getResources().getDimension(android.R.dimen.notification_large_icon_width);\r\n        Integer height = (int) getResources().getDimension(android.R.dimen.notification_large_icon_height);\r\n        paint.setStyle(Paint.Style.FILL);\r\n        paint.setColor(Color.WHITE);\r\n        paint.setAntiAlias(true);\r\n        paint.setTypeface(Typeface.MONOSPACE);\r\n        paint.setTextAlign(Paint.Align.LEFT);\r\n        paint.setTextSize(16);\r\n        Rect bounds = new Rect();\r\n        paint.getTextBounds(text, 0, text.length(), bounds);\r\n        float textsize = 16 * width / bounds.width();\r\n        paint.setTextSize(textsize);\r\n        Bitmap bitmap = Bitmap.createBitmap(width, height, "
+  }
+ ]
+}

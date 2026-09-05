@@ -1,0 +1,75 @@
+{
+ "id": 1284496060,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1853,
+ "title": "Omnipod EROS: There is no way to forcefully wipe/reset the pod state in case of \"emergency\"",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1853",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-06-25T07:56:25Z",
+ "closed_at": "2022-07-09T16:17:54Z",
+ "comment_count": 25,
+ "body": "**AAPS version 3.0.0.1 release and higher**\r\n**Driver: Omnipod EROS**\r\n\r\n**Problem description:**\r\nThe Omnipod EROS driver has a bug that can lead to a situation where users get stuck with a pod registration that can not be continued or discarded. Several users reported running into this problem as a result of Pod activation failure.\r\n\r\nWork around used for not losing Objectives is importing 3.0 settings in AAPS version 2.8.1, discard the Pod and then export preferences that can be imported by AAPS 3.0\r\n\r\n**Proposed work around**:\r\nUntil the actual bug is solved, but also in general, I think the EROS driver should have a way to \"wipe\" the Pod state in case of \"emergencies\". Up to AAPS version 2.8 this could be done by editing the unencrypted preference file.\r\nAs of version 3.0 this is no longer an option.\r\n\r\nHow about an option to clear Pod state when running in developer mode? This way users have an \"escape\" option to get out of situations where there is Pod state without option to Discard. For AAPS 2.8 editing the preference file was used as a last resort\r\n\r\n",
+ "comments": [
+  {
+   "id": 1166220335,
+   "user": "vanelsberg",
+   "created_at": "2022-06-25T07:59:26Z",
+   "body": "Alternative \"_solution_\" to the problem would be resetting AAPS preferences or a reinstall.\r\nAn option to import \"objectives only\" would then ensure objectives are not lost\r\n\r\nSee https://github.com/nightscout/AndroidAPS/issues/1852\r\n"
+  },
+  {
+   "id": 1166220662,
+   "user": "vanelsberg",
+   "created_at": "2022-06-25T08:00:46Z",
+   "body": "Remark:\r\nOmnipod DASH implementation ensures that after 3 unsuccesfull retries user is offered the option to \"forcefully\" discarding the Pod.\r\n\r\nSomething like this maybe could also be implemented for EROS but expect this would need non-trivial driver changes?\r\nExpecting forcefully wiping pod state from developer mode can be done with less impact on drive code?\r\n"
+  },
+  {
+   "id": 1166259514,
+   "user": "MilosKozak",
+   "created_at": "2022-06-25T11:13:19Z",
+   "body": "what keys do you have to remove?"
+  },
+  {
+   "id": 1166273624,
+   "user": "vanelsberg",
+   "created_at": "2022-06-25T12:29:41Z",
+   "body": "> what keys do you have to remove?\r\n\r\n@MilosKozak \r\nClearing string value at `content: \"AAPS.Omnipod.pod_state\"` should effectively remove the Pod on settings import.\r\n\r\nCurrently not using EROS so unable to validate. Do have 3 EROS pods reserved for dev, so can test when needed.\r\n"
+  },
+  {
+   "id": 1166276233,
+   "user": "vanelsberg",
+   "created_at": "2022-06-25T12:43:44Z",
+   "body": "FYI: Apart from settings, some hints to implementation:\r\n\r\nThink PodState is accessible at `java/info/nightscout/androidaps/plugins/pump/omnipod/eros/manager/AapsErosPodStateManager.java`\r\nSee public methods `store/loadPodState()`\r\n\r\nAlso see also `OmnipodManager, deactivatePod()` at `java/info/nightscout/androidaps/plugins/pump/omnipod/eros/driver/manager/OmnipodManager.java`\r\nIt calls `podStateManager.discardState();` at line 504\r\n\r\nNote that when discarding state, any active Pod is lost.\r\nAs is now, user can restore state through importing settings exported for the active Pod. Importing state from settings is useful when uninstalling/reinstalling AAPS or (unsupported) moving AAPS to other hardware.\r\n\r\n\r\n\r\n"
+  },
+  {
+   "id": 1166276720,
+   "user": "vanelsberg",
+   "created_at": "2022-06-25T12:46:18Z",
+   "body": "![image](https://user-images.githubusercontent.com/45144129/175774087-fb073756-327e-4c3c-a0f1-c7a3f23de5d6.png)\r\n"
+  },
+  {
+   "id": 1166289084,
+   "user": "MilosKozak",
+   "created_at": "2022-06-25T13:39:32Z",
+   "body": "Discard pod is not enough in this state?\r\n![image](https://user-images.githubusercontent.com/11146458/175776063-bcef7f62-a862-417b-8a58-1a5aadc2d850.png)\r\nThis create empty pod state, only address is preserved"
+  },
+  {
+   "id": 1166289841,
+   "user": "vanelsberg",
+   "created_at": "2022-06-25T13:42:49Z",
+   "body": "Yes, the deactivation button normally should be used to solve a problematic pod.....\r\n\r\nThe bug/problem however is that AAPS/EROS somehow gets in a state where activation unexpectedly failed and activation process can not be continued. In that state however both the \"Deactivate Pod\" and \"Discard Pod\" buttons are disabled/invisible.\r\n\r\nNot sure but I think the \"Discard\" button is only visible after failing to deactivate.\r\n"
+  },
+  {
+   "id": 1166290493,
+   "user": "vanelsberg",
+   "created_at": "2022-06-25T13:46:01Z",
+   "body": "Most obvious solution would be to target this specific bug (proper error handling?). But that would mean touching driver code which you may not want at this stage?\r\n\r\nAlso in any other situation, there is still no ways to repair by wiping state ....\r\n"
+  },
+  {
+   "id": 1166292171,
+   "user": "MilosKozak",
+   "created_at": "2022-06-25T13:54:08Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/00f0446c21e059f1287333fc72578daeb6f8c8c2"
+  }
+ ]
+}

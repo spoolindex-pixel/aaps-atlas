@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dexcom G7 and ONE+ · AAPS Atlas</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body class="docpage">
+<main>
+  <p class="crumb"><a href="../index.html">← AAPS Atlas search</a></p>
+  <article class="mirror">
+    <h1>Dexcom G7 and ONE+</h1>
+    <p class="source">Mirrored from <a href="https://wiki.aaps.app/en/latest/Hardware/DexcomG7.html">https://wiki.aaps.app/en/latest/Hardware/DexcomG7.html</a> — community documentation, not medical advice.</p>
+    <hr>
+<h2>Source: &lt;https://wiki.aaps.app/en/latest/Hardware/DexcomG7.html&gt;</h2>
+<h2>Dexcom G7 and ONE+</h2>
+<h3>Fundamental in advance</h3>
+<p>Noteworthy is the fact that the G7 and ONE+ systems, compared to the G6, do not smooth the values, neither in the app, nor in the reader. More details about this  here .</p>
+<p>Smoothing method</p>
+<p>Read  Smoothing method suggestions to use for Dexcom G7/ONE+/Stelo</p>
+<h3>1. xDrip+ (direct connection to G7 or ONE+)</h3>
+<ul><li>Follow the instructions here:  xDrip+ G7</li><li>Select xDrip+ in  ConfigBuilder, BG Source .</li><li>Adjust the xDrip+ settings according to the explanations on the xDrip+ settings page  xDrip+ settings</li></ul>
+<h3>2. Build Your Own Dexcom App (G7)</h3>
+<p>Old app version</p>
+<p>Dexcom BYODA is now a very old version of the app and cannot be updated.</p>
+<ul><li>Build Your Own Dexcom App (BYODA) supports local broadcast to AAPS and/or xDrip+</li><li>This app lets you use your Dexcom G7 with any Android smartphone.</li><li>Uninstall the original Dexcom app</li><li>Install the downloaded apk</li><li>Enter sensor code in patched app</li><li>After short time BYODA should pick-up transmitter signal</li></ul>
+<h3>3. Patched Dexcom G7 App (DiaKEM)</h3>
+<p>No new users</p>
+<p>Latest Dexcom servers update broke DiaKEM for new installs: the G7 app no longer can get through the login and onboarding process that happens on a fresh install of the app. Existing users do not experience issues for now: do not logout, wipe data, or reinstall the G7 app as that will prevent you from getting the app up and running again. If it is already running, you should be unaffected.</p>
+<p>Note: AAPS 3.2.0.0 or higher is required! Not available for ONE+.</p>
+<h4>Install a new patched (!) G7 app and start the sensor</h4>
+<p>A patched Dexcom G7 app (DiaKEM) gives access to the Dexcom G7 data. This is not the BYODA app as this app can not receive G7 data at the moment.</p>
+<ul><li>Uninstall the original Dexcom app if you used it before (A running sensor session can be continued - note the sensor code before removal of the app!)</li><li>Download and install the patched.apk  here .</li><li>Enter sensor code in the patched app.</li><li>Follow the general recommendations for CGM hygiene and sensor placement found  here .</li><li>After the warm-up phase, the values are displayed as usual in the G7 app.</li></ul>
+<h4>Configuration in AAPS</h4>
+<ul><li>Select ‘BYODA’ in in  ConfigBuilder, BG Source - even if it is not the BYODA app!</li><li>If AAPS does not receive any values, switch to another BG source and then back to ‘BYODA’ to invoke the query for approving data exchange between AAPS and BYODA.</li></ul>
+<h3>4. xDrip+ (companion mode)</h3>
+<ul><li>Download and install xDrip+:  xDrip</li><li>As data source in xDrip+ “Companion App” must be selected and under Advanced Settings &gt; Bluetooth Settings &gt; “Companion Bluetooth” must be enabled.</li><li>Select xDrip+ in in  ConfigBuilder, BG Source .</li><li>Adjust the xDrip+ settings according to the explanations on the xDrip+ settings page  xDrip+ settings</li></ul>
+<h3>5. Juggluco</h3>
+<p>Version 9.0+ required</p>
+<ul><li>Disable the app previously connected to the sensor: Uninstall the app or use “Force Stop.” Disable “Nearby Devices” permission in app settings. Restrict the app’s battery usage.</li><li>Forget the sensor in Bluetooth settings: In Android settings, find the sensor in bonded devices and select “Forget.” Dexcom G7 sensor names start with DXCM.</li><li>Avoid interference from other sensors: Keep old Dexcom sensors out of Bluetooth range.</li><li>Connect the G7 sensor to Juggluco: Open Juggluco → Left menu → Photo. Scan the data matrix on the G7 sensor’s applicator. Wait up to 5 minutes for Juggluco to find the sensor.</li><li>Pairing requirements: Agree to pair the sensor with Juggluco. Ensure the screen isn’t locked during pairing. If pairing fails, wait 5 minutes before trying again.</li><li>Exception: Wear OS watches can bond without pressing an agree button.</li></ul>
+  </article>
+</main>
+</body>
+</html>

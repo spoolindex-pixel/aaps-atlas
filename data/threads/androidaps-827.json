@@ -1,0 +1,78 @@
+{
+ "id": 1040934646,
+ "repo": "nightscout/AndroidAPS",
+ "number": 827,
+ "title": "2.8.2.9_dev EROS and DASH / Basal settings sent twice to pump ",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/827",
+ "state": "closed",
+ "labels": [
+  "omnipod dash",
+  "omnipod eros"
+ ],
+ "created_at": "2021-11-01T09:02:25Z",
+ "closed_at": "2021-11-16T16:56:56Z",
+ "comment_count": 24,
+ "body": "This happened several times but can't duplicate yet. It is NOT systematic.\r\n\r\nIt happened around 9h53\r\n\r\n[AndroidAPS_LOG_1635756882165.log.zip](https://github.com/nightscout/AndroidAPS/files/7451968/AndroidAPS_LOG_1635756882165.log.zip)\r\n\r\n\r\nI have an automation that switches the profile to 120% when I have high BGs or high positive deltas. Sometimes the basal rates are sent twice to the EROS pod. \r\n\r\nMaybe (not tested yet) it has to do with me \"Okaying\" the basal change message in AAPS as soon as it appears.\r\n\r\n![Screenshot_20211101-095342_AndroidAPS](https://user-images.githubusercontent.com/76626474/139647528-7d51c871-5598-4e9a-9043-fa41fe8ac256.jpg)\r\n\r\n![Screenshot_20211101-095426_AndroidAPS](https://user-images.githubusercontent.com/76626474/139647579-39b7872f-a9ab-4247-a284-90c8f895cef8.jpg)\r\n\r\nI'll attach logs. Strangely I need to edit the message in order to be able to attach a file...\r\n",
+ "comments": [
+  {
+   "id": 956069879,
+   "user": "robertrub",
+   "created_at": "2021-11-01T09:24:10Z",
+   "body": "One more exemple. In one (1) a normal switch to 120% and back (theoretically *10* minutes later...) and then going back to 120% once more as the high BGs were still there. The 2nd change was sent twice.\r\n\r\nI'm sure that at 0 AM, I was sleeping and didn't validate the message in AAPS. Thus, my first supposition above is wrong.\r\n\r\n![Screenshot_20211101-101340_AndroidAPS](https://user-images.githubusercontent.com/76626474/139650311-b82c4468-8c9c-4a5f-8623-ae45476fc941.jpg)\r\n\r\n![Screenshot_20211101-101324_AndroidAPS](https://user-images.githubusercontent.com/76626474/139650348-97b0e3d9-51ae-4e6f-9f2b-42591b333964.jpg)\r\n\r\n"
+  },
+  {
+   "id": 956267613,
+   "user": "robertrub",
+   "created_at": "2021-11-01T14:11:01Z",
+   "body": "I've just did a **_manual_** profile change to 130% for 20 min and it got sent twice to the pump. Maybe it is not the automations that it the origin of the bug. Still testing..."
+  },
+  {
+   "id": 957662983,
+   "user": "kristinsmotz",
+   "created_at": "2021-11-02T14:11:46Z",
+   "body": "I believe I have also seen this with both manual and automation profile changes, using Omnipod Dash with 3.0beta2. Don't have screenshots right now, will check when AAPS phone gets home from school. "
+  },
+  {
+   "id": 958012976,
+   "user": "robertrub",
+   "created_at": "2021-11-02T18:21:49Z",
+   "body": "@MilosKozak I cornered the bug :) I can duplicate 3 times in a row. I'm the best ;) ;) ;)\r\n\r\nLong press the profile rectangle, set 120% for 20 min, validate. EROS will beep once and several seconds later, ANDROID will show a message \"Basal profile set in the pump\"\r\n\r\n![img1](https://user-images.githubusercontent.com/76626474/139922262-92d5cf6e-ead2-4240-b9a3-399da6fccfeb.jpg)\r\n\r\nRight swipe the Android message and the basals will be sent again to the pump and the same message will appear again. \r\n\r\nIf you swipe the message \"Basal profile set in pump\" the 2nd time also, it will not send the profile a third time to the pump.\r\n\r\nI hope you have enough to corner the bug in the code too. You of course is better than best as I find the bug but you can fix it :) "
+  },
+  {
+   "id": 959915657,
+   "user": "robertrub",
+   "created_at": "2021-11-03T19:58:59Z",
+   "body": "Ok, it seems that I was too optimistic. It is NOT related to swiping  the Android message. It sends basal profile twice even when I don't swipe. "
+  },
+  {
+   "id": 961840142,
+   "user": "robertrub",
+   "created_at": "2021-11-05T12:05:05Z",
+   "body": "I just changed for on-body DASH and I see that DASH too sends basal settings twice.\r\n\r\n![20211105_130127](https://user-images.githubusercontent.com/76626474/140507704-def1bdde-80f2-406a-bcc4-f4fdd5418fc4.jpg)\r\n"
+  },
+  {
+   "id": 962194629,
+   "user": "kristinsmotz",
+   "created_at": "2021-11-05T20:18:29Z",
+   "body": "I managed to catch this as well with Dash.\r\nOn 3.0beta3.\r\n\r\n![received_4415873905175826](https://user-images.githubusercontent.com/71758682/140573222-b8c527f1-cc86-4b75-968f-e403c5bd0b05.jpeg)\r\n"
+  },
+  {
+   "id": 962252319,
+   "user": "vanelsberg",
+   "created_at": "2021-11-05T22:14:02Z",
+   "body": "**Confirming for DASH:**\r\nResetting a Temp profile to 100% is executed 2 times, both generation a notification.\r\n\r\n**Repro:**\r\n**1)** Set a Temp Profile for 120% (this will do one single Suspend/Set Basal).\r\n**2)** Wait for the \"Profile set OK\" notification.\r\n**3)** Execute a testbeep to mark the current time in history.\r\n**4)** Cancel the Temp Profile by setting it back 100%.\r\n**5)** Wait for the \"Profile set OK\" notification.\r\n**6)** Execute a testbeep to mark the current time in history.\r\n**7)** Wait for the _second_ \"Profile set OK\" notification.\r\n\r\nI get the notification \"Profile set OK\" and then some time after a second \"Profile set OK\" notification.\r\nCheck history view and find two identical Suspend/SetBasel entries.\r\n"
+  },
+  {
+   "id": 963548216,
+   "user": "avereha",
+   "created_at": "2021-11-08T20:31:23Z",
+   "body": "I was not able to reproduce this with latest dev. Can you still reproduce it?"
+  },
+  {
+   "id": 963559894,
+   "user": "kristinsmotz",
+   "created_at": "2021-11-08T20:48:12Z",
+   "body": "Reproduced just now, on beta5 installed today.\r\n![received_262128052599430](https://user-images.githubusercontent.com/71758682/140815807-38dd5986-9c0b-483e-9d63-df7376d0de3b.jpeg)\r\n![received_961535048106098](https://user-images.githubusercontent.com/71758682/140815824-b27c79ee-32b0-427c-9ff3-810c00765e31.jpeg)\r\n\r\nDid a normal profile switch from overview tab - long pressing profile name, then selecting a profile. "
+  }
+ ]
+}

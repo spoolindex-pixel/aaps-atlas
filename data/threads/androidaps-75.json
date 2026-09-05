@@ -1,0 +1,75 @@
+{
+ "id": 747393400,
+ "repo": "nightscout/AndroidAPS",
+ "number": 75,
+ "title": "AAPS+Nightscout for selfhosting (SSL)",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/75",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2020-11-20T10:57:08Z",
+ "closed_at": "2020-11-22T11:27:37Z",
+ "comment_count": 38,
+ "body": "I am new to the whole Nightscout+AndroidAPS ecosystem. However, I would love to try it out properly. The thing is that I have a private server, into which all my devices all connected via VPN. \r\n\r\nOn this server I would love to use Nightscout. I cloned it and I was successful in setting it up via docker. I am able to access the local and not publicly available website of Nightscout. I am really reluctant to make my Nightscout page publicly available, as I may willingly disclose my personal medical data (unwillingly I might violate also GDPR as a data-handler of my own private medical data), while also providing another vector of attack into my systems.\r\n\r\nOn the other end, AndroidAPS requires SSL connection to Nightscout, many options are simply not working without SSL. Currently AndroidAPS does not have the option to work neither with self-signed certificates, nor with disabling this requirement, as my VPN connection handles the security. I tried `engineering_mode` but I still get the error `NS URL not encrypted` (as discussed [here](https://gitter.im/MilosKozak/AndroidAPS?at=5e98840ed65bcf75b5c62918)). \r\n\r\nWould it be please possible to allow unencrypted connection from AndroidAPS to NS with all the options for those of us who are self-hosting? Unfortunately Nightscout does not provide full authentication to the main screen, which I am feeling uneasy about to share publicly. \r\n\r\n**TLDR**: Provide either full authentication to Nightscout or allow unencrypted connection from AndroidAPS to Nightscout without SSL for self-hosters. ",
+ "comments": [
+  {
+   "id": 731569613,
+   "user": "TwistaTim",
+   "created_at": "2020-11-21T12:01:32Z",
+   "body": "Have you tried Lets encrypt. Open a basic webserver for auth then copy the key over to your private NS front end proxy or NS server directly."
+  },
+  {
+   "id": 731570124,
+   "user": "alfureu",
+   "created_at": "2020-11-21T12:06:21Z",
+   "body": "Hi @Tornado-Tim, thanks for the follow-up. I am using NS from docker, and I allow access to my docker containers through Caddy with my domain. Caddy provides https by default with Let's Encrypt. My issue is that even if I have https+domain+NS, whoever knows the address (whichever robot scans the web), the NS page is accessible to the world. \r\n\r\nNow, Caddy provides a basic auth solution: https://caddyserver.com/docs/caddyfile/directives/basicauth. Do you refer to this option? Do you think that the API secret can go through this authentication regardless?"
+  },
+  {
+   "id": 731570760,
+   "user": "TwistaTim",
+   "created_at": "2020-11-21T12:12:28Z",
+   "body": "In that case, you can use a certbot for wildcard cert and DNS auth which will allow you to get your certs for NS. Since its wildcard, your NS will not need to be exposed."
+  },
+  {
+   "id": 731588783,
+   "user": "alfureu",
+   "created_at": "2020-11-21T14:43:50Z",
+   "body": "Yeah, this might work. Unfortunately I have a domain with GoDaddy, and the DNS auth module is not ready yet (no experience with the Go language, so I cannot write one myself). I was wondering, will AndroidAPS accept self-signed certificates? Or it must be from signed by entities like LE?"
+  },
+  {
+   "id": 731627707,
+   "user": "MilosKozak",
+   "created_at": "2020-11-21T19:48:07Z",
+   "body": "i'm not familiar with caddy but nginx has `allow` and `deny` directives for access filtering"
+  },
+  {
+   "id": 731641179,
+   "user": "rICTx-T1D",
+   "created_at": "2020-11-21T21:43:27Z",
+   "body": "When you like use a selfhosted webservice NS with private selfsigned certificate, you must import the public key in android trust store. See android setting in security selection."
+  },
+  {
+   "id": 731641862,
+   "user": "alfureu",
+   "created_at": "2020-11-21T21:48:55Z",
+   "body": "Yeah, these are all way too complex solutions compared to the single and simple one: there should be a login page for NS, after entering the credentials it should allow the user to the next page. Contacting the API with the API_SECRET is fine, I am not sure how it works in the background, and whether it should happen on another port once opened to the Internet. \r\n\r\nBy this simple solution one can then expose the NS server with a reverse proxy solution - with https."
+  },
+  {
+   "id": 731727842,
+   "user": "swissalpine",
+   "created_at": "2020-11-22T10:38:18Z",
+   "body": "I have a similar problem. AAPS can receive and send encrypted data to my selfhosted nightscout-docker, but AAPS cannot retain the connection. Instead of the \"ping\" I get an XHR poll error ... I have a Let's encrypt certificate for this subdomain and use a reverse proxy."
+  },
+  {
+   "id": 731730752,
+   "user": "MilosKozak",
+   "created_at": "2020-11-22T11:06:24Z",
+   "body": "![image](https://user-images.githubusercontent.com/11146458/99902026-1bb0a500-2cbb-11eb-95a2-95aba4e909fb.png)\r\nthis is my nginx setting"
+  },
+  {
+   "id": 731733218,
+   "user": "alfureu",
+   "created_at": "2020-11-22T11:27:37Z",
+   "body": "OK, I made it working with the latest NS version (I used niepi/cgm-remote-monitor:14.0.7), there one needs to authenticate even for viewing the web frontend. With this I was able to open the site to the Internet.\r\n\r\nFYI, I use Caddy for securing the web with https by default (I have a domain), if this helps, I am pasting the `Caddyfile` config, which is super simple:\r\n\r\n```\r\nns.{$MY_DOMAIN} {\r\n   reverse_proxy 192.168.0.40:1337\r\n}\r\n```\r\n"
+  }
+ ]
+}

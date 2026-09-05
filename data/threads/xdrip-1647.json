@@ -1,0 +1,80 @@
+{
+ "id": 810175687,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1647,
+ "title": "xDrip confuses G5 with a G6 and performs a preemptive restart on day 9 as well as on day 6",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1647",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "device-dexcom",
+  "calibration",
+  "device-dexcom-transmitter"
+ ],
+ "created_at": "2021-02-17T13:16:55Z",
+ "closed_at": "2021-03-28T14:43:00Z",
+ "comment_count": 52,
+ "body": "### Expected behavior\r\nDexcom G5 can be used in Native mode.  But, since G5 sends raw data, you can still access the calibration graph.  And xDrip removes \"Initial calibration\" from the menu after initial calibrations have been submitted and replaces it with \"Add calibration\".\r\n\r\n### Your environment\r\nThe problem was observed with the February 11, 2021 release, and February 3, 2021.\r\n\r\n\r\n### Actual behavior\r\nCalibrations are sent to the transmitter and are accepted by the G5 transmitter.  However, xDrip logs show they are rejected by xDrip.\r\n![tempFileForShare_20210216-234941](https://user-images.githubusercontent.com/51497406/108206590-96d7fa80-70f4-11eb-93a3-64454447f949.jpg)\r\n\r\nLogs show calibrations have been rejected.\r\nNo access to adding calibration in the top left menu as only initial calibration is shown there.\r\nNo access to calibration graph.\r\nEmpty calibration data table.\r\n\r\nThe symptoms match the behavior of xDrip with a device that does not send raw data like a Firefly G6,\r\n\r\nAfter installing the January 29, 2021 version, the problem was resolved. \r\n\r\n\r\n### Steps to reproduce the behavior:\r\nInstall xDrip release February 11, 2021\r\nStart a G5 sensor in native mode\r\nApply initial calibrations\r\nCheck calibration data table, or check the logs.\r\n\r\n@viq:hackerspace.pl reported this in the Gitter room.\r\nAnother individual reported it on facebook where the calibration graph being missing and the calibration data table being empty were reported.\r\nThe calibration rejection logs were reported by both users.",
+ "comments": [
+  {
+   "id": 780778770,
+   "user": "jamorham",
+   "created_at": "2021-02-17T19:01:46Z",
+   "body": "The screenshot implies that a bloodtest was delivered from a bluetooth connected glucose meter which it believes was ~9000 seconds old. If the finger stick test was just done recently then we need to determine if the clock on the meter is correct or if there is an issue with the user's local timezone vs the clock on the meter and if that is the source of the >1 hour rejection message. It may also be (more likely?) that there were multiple tests synced from the meter and that only one of those was used and the other rejected which is why there is a report of success and also rejection in the screenshot.\r\n\r\nWe also want to know the transmitter firmware version to determine the issue regarding raw."
+  },
+  {
+   "id": 780780350,
+   "user": "Navid200",
+   "created_at": "2021-02-17T19:04:12Z",
+   "body": "You are talking to him in the Gitter room.\r\nThe firmware version is 1.0.4.15."
+  },
+  {
+   "id": 780803102,
+   "user": "jamorham",
+   "created_at": "2021-02-17T19:40:29Z",
+   "body": "Please try the 17th Feb nightly to see if it resolves the issue."
+  },
+  {
+   "id": 780955391,
+   "user": "viq",
+   "created_at": "2021-02-18T00:56:03Z",
+   "body": "Sorry for screenshot, attaching what happened when I calibrated using the `2021.02.17` version. I don't know where this \"calibration beyond 4 days\" is coming from. The dot from syncing with glucometer appears right there, and clicking on it is how initiate calibration \r\n\r\n![xdrip_logs](https://user-images.githubusercontent.com/639461/108288118-575ced00-718c-11eb-9767-834b8a594d56.png)\r\n"
+  },
+  {
+   "id": 780956780,
+   "user": "Navid200",
+   "created_at": "2021-02-18T00:59:43Z",
+   "body": "If you tap on the top left menu button, and on calibration graph, what does it show?  Is it empty, or does it show your initial calibrations?"
+  },
+  {
+   "id": 780958260,
+   "user": "viq",
+   "created_at": "2021-02-18T01:03:10Z",
+   "body": "It does show some calibrations. Currently it shows three from today, and one from 5 days ago."
+  },
+  {
+   "id": 780961198,
+   "user": "Navid200",
+   "created_at": "2021-02-18T01:06:23Z",
+   "body": "Did you just update to the new version and calibrated?\r\nOr, did you start the sensor after updating and then, calibrated?"
+  },
+  {
+   "id": 781033369,
+   "user": "viq",
+   "created_at": "2021-02-18T04:03:55Z",
+   "body": "Update and (single) calibrate.\n"
+  },
+  {
+   "id": 781034916,
+   "user": "Navid200",
+   "created_at": "2021-02-18T04:08:45Z",
+   "body": "OK\r\nPlease let us know the next time you start the sensor.  Only then, will you have to provide initial calibrations again.  Only then, will you know if the issue has ben resolved or not."
+  },
+  {
+   "id": 781076047,
+   "user": "viq",
+   "created_at": "2021-02-18T05:53:57Z",
+   "body": "Sensor session should be restarted in a few hours, so we should know soon."
+  }
+ ]
+}

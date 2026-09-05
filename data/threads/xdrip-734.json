@@ -1,0 +1,77 @@
+{
+ "id": 396232067,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 734,
+ "title": "Unihertz Atom Bluetooth Connection Lost Dexcom G6",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/734",
+ "state": "closed",
+ "labels": [
+  "help"
+ ],
+ "created_at": "2019-01-06T06:20:47Z",
+ "closed_at": "2020-09-29T12:04:12Z",
+ "comment_count": 122,
+ "body": "Xdrip will not stay connected to the sensor, as after about 15-20 mins of being disconnected, xdrip phone gets stuck in the \"Scanning\" state  and the only way I can get it to connect again, after losing the connection, is to restart the phone.  I have tested seemingly every setting in xdrip, android, fitbit, and specific to atom, and can't say that any configuration has helped at all.\r\n\r\n**Settings:** \r\nUnihertz Atom running new November 2018 build of firmware\r\nXdrip 12/27/2018 Nightly Build\r\nFitbit Versa running Glance and new 3.0 software\r\n\r\n**Observations:**\r\n- The connection seems very stable between sensor and xdrip when the phone and sensor are in range - to get readings.  When the phone goes out of range for more than 1 or two readings, the data stops getting captured from the sensor and the phone gets stuck \"Scanning\".  The only way I know how to resolve this is to reboot the phone (Restarting the collector does not seem to reslove this.)\r\n\r\n- One user has suggested that when they try to use SSW3 watch and atom phone, with xdrip, they have the same connectivity problems I do, but when they don't use the watch the phone functions much better.  I have a Fitbit Versa with updated 3.0 Fitbit firmware and need to be able to use the phone and watch combination, so I am reluctant to call it a problem using a watch.  \r\n\r\n- It also seems possible that after watching a video or surfing on the phone, the phone misses a couple of readings and gets stuck scanning as well, but I have not completely verified this.\r\n\r\n+++\r\n\r\nThe phone has a perfect form factor for a collector, and I would very much like to work with you to get it to function properly, for me and for others.  Thank you for your assistance.",
+ "comments": [
+  {
+   "id": 452489774,
+   "user": "jamorham",
+   "created_at": "2019-01-08T23:30:03Z",
+   "body": "It sounds like the phone's bluetooth stack has problems. I don't have one of these phones to test with. If anyone can loan me one I should be able to discover more quite quickly."
+  },
+  {
+   "id": 452498979,
+   "user": "AdrianLxM",
+   "created_at": "2019-01-08T23:45:18Z",
+   "body": "The Atom BT stack is quite messed up it seems.\r\nI also have problems keeping the BT connection up with a combo pump and with a Dana RS. So neither BLE nor older BT standards seem to work reliably.\r\n\r\nIt would be good if you could contact the tech support of unihertz. They will give you a guide how to send them system logs. I hope if they get them with different setups they will find a fix.\r\nI don't have much hope as the December update still had the may security patch level of android :("
+  },
+  {
+   "id": 452546594,
+   "user": "tech-support-unihertz",
+   "created_at": "2019-01-09T02:14:37Z",
+   "body": "Hi, We are the technical support of unihertz.\r\nAs the document <log-check-20190109.pdf> describes, can Xdrip app give some instructions and why is it broken?\r\n[log-check-20190109.pdf](https://github.com/NightscoutFoundation/xDrip/files/2739098/log-check-20190109.pdf)\r\n"
+  },
+  {
+   "id": 452624089,
+   "user": "2flea",
+   "created_at": "2019-01-09T09:11:23Z",
+   "body": "Hey guys, I am currently using ATOM (latest firmware) together with xDrip (latest nightly) reading G6 and AAPS (latest dev) with Dana RS pump. It works so far (> 1-2 weeks) without the need to do regular restarts. \r\nWhen I try to add my Sony SWR50 I get BT communication problems - mostly with AAPS. \r\n\r\nI was in contact with Unihertz since I got the phone back in October and we have tried to identify what's amiss (I guess the log above is from mine from end of Nov) but without any success. \r\n\r\nI really would like to use the ATOM with my setup together with a smartwatch - this would be my idea of a perfect system for looping.\r\n\r\nPlease let me know if I can help with any testing.\r\n\r\nI have made screenshots of my current system and app settings for your reference: https://photos.app.goo.gl/bi8axT9pnRTHBuH9A\r\n\r\n-------------\r\nAdrian, Unihertz says on their ATOM FB group that the patch level was updated with their latest FW but not recognized by Google. \r\n![image](https://user-images.githubu"
+  },
+  {
+   "id": 452636639,
+   "user": "jamorham",
+   "created_at": "2019-01-09T09:51:44Z",
+   "body": "@tech-support-unihertz I am the developer of the OB1G5Service. The dexcom transmitter wakes up periodically (every 5 minutes) for a short period of time and during that wake up window we need to connect to it to retrieve the data.  That is what the service is doing.\r\n\r\nI don't have an atom device to test here in the lab but the reports from users have been that the whole phone needs to be rebooted which in my experience implies that it is quite likely the android bluetooth subsystem itself is crashing."
+  },
+  {
+   "id": 452671043,
+   "user": "tech-support-unihertz",
+   "created_at": "2019-01-09T11:54:56Z",
+   "body": "@jamorham Can you help analyze this log? (Thanks for the log provider @2flea  :)\r\nhttps://www.dropbox.com/s/0f2cmdvxjqmt5ni/mtklog_20181127.zip?dl=0\r\nFrom the log analysis, Bluetooth data interaction is normal from 21:02 to 21:38. At 21:39:38 seconds, because there is no data interaction, Bluetooth switches to IDLE mode, causing the connection to be disconnected. \r\nCan you tell us if the xdrip app received an error code when the problem occurred?"
+  },
+  {
+   "id": 452679889,
+   "user": "2flea",
+   "created_at": "2019-01-09T12:28:58Z",
+   "body": "As far as I remember the log set above was done with the pre-release firmware including the \"Bluetooth has stopped\" message not the current version. Also I had different settings in the Atom battery saving. \r\n@tech-support-unihertz, @jamorham I can provide new log data with the current setup and then with the Sony smartwatch if you want. Let me know if should add anything special in xDrip log settings."
+  },
+  {
+   "id": 452711392,
+   "user": "roco5",
+   "created_at": "2019-01-09T14:17:30Z",
+   "body": "Hey guys, I am also currently using ATOM (latest firmware) together with xDrip (latest nightly) reading G6, and fitbit versa and have struggled to keep a connection to bluetooth when adding a smartwatch (Fitbit Versa) to the configuration.\r\n\r\n**History:  \r\nTest1:**  Tried atom and versa with xdrip and **Atom October firmware**. Tested every battery, fitbit, and collector setting combination imaginable with no joy.\r\n**Result1:** Had tons of connection drops and the only way to resolve them was to reboot phone.  Happened every few hours.\r\n\r\n**Test2:**  Updated **atom firmware to November (latest)** and tuned xdrip, fitbit,  and android settings.  Also \"Forgot\" Sensor in Bluetooth, and let xdrip populate a new Dexcom Bluetooth connection. Still using versa smartwatch.\r\n**Result2:**  Seemed to stay connected a little better, but still had disconnects when the phone was out of range and brought back into range.  Many unrecoverable disconnects a day that required rebooting the phone to solve"
+  },
+  {
+   "id": 462702776,
+   "user": "jamorham",
+   "created_at": "2019-02-12T10:22:38Z",
+   "body": "I have received a unihertz atom phone to test with. It is early days, but my initial findings are that the problems are due to the manufacturers power saving additions to android which shut down xDrip.\r\n\r\n`PowerSaveService: forceStopThirdApp processName: com.eveningoutpost.dexdrip  pid: 6814, packageName:com.eveningoutpost.dexdrip`\r\n\r\nThis happens even though the custom setting for the app \"`Background activity`\" is enabled for xDrip and that xDrip is already supposed to be excluded from battery optimization via its standard android runtime permission for the same. \r\n\r\nThe MTK setting for `Intelligent power saving standby` is also disabled as well as `battery saver` in the general battery settings.\r\n\r\nxDrip is running a foreground service and does not target oreo sdk (targets sdk 23)\r\n\r\nThis is running on an atom with build number `20181130`\r\n\r\nAs far as I can tell the custom setting for whether `Background activity` is allowed for a specific app either is not implemented or doesn't wo"
+  },
+  {
+   "id": 463007623,
+   "user": "roco5",
+   "created_at": "2019-02-13T00:52:22Z",
+   "body": "Could someone from Unihertz please comment on what can be done to get this\nfixed, so that we can use the phones and watches effectively with Bluetooth\nCGM softwares?\n\nOn Tue, Feb 12, 2019, 5:22 AM JamOrHam <notifications@github.com> wrote:\n\n> I have received a unihertz atom phone to test with. It is early days, but\n> my initial findings are that the problems are due to the manufacturers\n> power saving additions to android which shut down xDrip.\n>\n> PowerSaveService: forceStopThirdApp processName:\n> com.eveningoutpost.dexdrip pid: 6814, packageName:com.eveningoutpost.dexdrip\n>\n> This happens even though the custom setting for the app \"Background\n> activity\" is enabled for xDrip and that xDrip is already supposed to be\n> excluded from battery optimization via its standard android runtime\n> permission for the same.\n>\n> The MTK setting for Intelligent power saving standby is also disabled as\n> well as battery saver in the general battery settings.\n>\n> xDrip is running a foreground service "
+  }
+ ]
+}

@@ -1,0 +1,75 @@
+{
+ "id": 3196664209,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4049,
+ "title": "No more connection when ending Nano (and DASH) pods",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4049",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-07-02T17:28:24Z",
+ "closed_at": "2025-10-05T07:54:47Z",
+ "comment_count": 24,
+ "body": "This happened 3 times with the deactivation of the Nano pod. Looks like deactivation terminated ok but seconds later, I get this \"pod basal injection\" error.\n\n![Screenshot_20250702_185650_AAPS.jpg](https://github.com/user-attachments/assets/217e69ca-42b1-41aa-a51b-c017b4047c8a)\n\nThe logs. Look around 18:57\n\n![AndroidAPS_LOG_1751475422509.log.zip](https://github.com/user-attachments/files/21022814/AndroidAPS_LOG_1751475422509.log.zip)\n\n",
+ "comments": [
+  {
+   "id": 3028698707,
+   "user": "robertrub",
+   "created_at": "2025-07-02T17:34:04Z",
+   "body": "![Screenshot_20250702_193249_AAPS.jpg](https://github.com/user-attachments/assets/0ba870cb-a9bf-476a-88b3-f193824696b0)\n\nThe last dev. No code change, juste minor limit modification."
+  },
+  {
+   "id": 3030769959,
+   "user": "TheNeskik",
+   "created_at": "2025-07-03T05:10:46Z",
+   "body": "I have this issue using Omnipod dash too.\n![Screenshot_20250703_071342_AAPS.jpg](https://github.com/user-attachments/assets/3bd03dd4-5502-4663-9ebf-83238182ab21)\n\n"
+  },
+  {
+   "id": 3030892484,
+   "user": "robertrub",
+   "created_at": "2025-07-03T05:46:12Z",
+   "body": "@TheNeskik Can you add logs next time you change a pod and the error happens please ? When did this started ? I think mine started with the last dev.\n"
+  },
+  {
+   "id": 3030925359,
+   "user": "TheNeskik",
+   "created_at": "2025-07-03T05:52:32Z",
+   "body": "\nI'm having this issue this last dev update too.\n\n![AndroidAPS._2025-07-01_19-36-01_.10.zip](https://github.com/user-attachments/files/21031067/AndroidAPS._2025-07-01_19-36-01_.10.zip)\n\nIssue appear when I'm starting a new pod\nIssue around 22h36 on my log file, line 4934\n\n"
+  },
+  {
+   "id": 3037210701,
+   "user": "TheNeskik",
+   "created_at": "2025-07-04T20:38:24Z",
+   "body": "![AndroidAPS_LOG_1751661223601.log.zip](https://github.com/user-attachments/files/21067712/AndroidAPS_LOG_1751661223601.log.zip)\n\nJust changed my pod.\nNo error on deactivate state but got two error during activation.\nFirst just before priming\nSecond just before cannula insert.\n\nCleaned my log just before changing my pod so log is cleaner :)"
+  },
+  {
+   "id": 3039247069,
+   "user": "robertrub",
+   "created_at": "2025-07-05T16:02:48Z",
+   "body": "Just changed my Nano with extreme attention to detail 😉\n\nI deactivated the pod, came to the _Ok / Next_ choice window. Hit OK to \"not start\" the new pod. I got the same _pump unreachable/basal not set_ alert.\n\nSo, AFA Nano is concerned, the no connection alert comes at the end of the pod deactivation (and not when starting the new one).\n\nAfter _OK_ ing the alert window, I started the new pod normally, without any problems or alerts."
+  },
+  {
+   "id": 3048387225,
+   "user": "vanelsberg",
+   "created_at": "2025-07-08T10:49:21Z",
+   "body": "@robertrub Confirming: seeing the same\n\n(latest AAPS-dev commits...)"
+  },
+  {
+   "id": 3051237178,
+   "user": "Philoul",
+   "created_at": "2025-07-09T06:03:03Z",
+   "body": "Have you found which commit is the root cause of this issue?\nOr at least what was the previous version/commit without the issue?"
+  },
+  {
+   "id": 3051413523,
+   "user": "robertrub",
+   "created_at": "2025-07-09T07:01:08Z",
+   "body": "It started with the last dev. I'm on vacation (Dordogne,  superbe 🤩) and without any PC 🥰"
+  },
+  {
+   "id": 3116532654,
+   "user": "HuismanErik",
+   "created_at": "2025-07-25T06:11:24Z",
+   "body": "\n\nI've also encountered this error a few times now when replacing a Dash Pod.\n\nAfter reviewing the log files, I noticed that the RunningMode is set to SUSPENDED_BY_PUMP during the activation of the new Pod. However, even while the Pod is still in its activation phase — during which it shouldn't accept any commands — a CANCEL TEMPBASAL command is being sent.\n\nThis results in the Pod is in an incorrect state error, which makes sense because programming commands aren't allowed until activation is fully completed.\n\nI'm not a very frequent tester of the dev branch, so I can't say exactly when this started. However, I saw that the RunningMode system was introduced in the following commit\n\nhttps://github.com/nightscout/AndroidAPS/commit/2e85d3be06e437d788d53b2c36aa72ffbf1d349e\n\nCould it be that this issue is related to the changes introduced in that commit?"
+  }
+ ]
+}

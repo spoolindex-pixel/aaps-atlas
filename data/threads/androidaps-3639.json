@@ -1,0 +1,75 @@
+{
+ "id": 2752085632,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3639,
+ "title": "AAPS Client/ Websockets / BZ Sync",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3639",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-12-20T07:04:11Z",
+ "closed_at": "2024-12-26T20:19:06Z",
+ "comment_count": 30,
+ "body": "Since the Beta 1 version, including the Devs versions, the BZ values ​​are no longer transmitted to the AAPS client when websockets are active. The rest goes through.\r\nMaster websockets ON, AAPSCLient1 websockets OFF - works perfectly, but slowly. AAPSCLient2 websockets OFF - does not work perfectly, breaks off at some point.\r\nSince around 6:20 a.m. there has been no sync of the BZ values. Fully synchronizing NS fixes the error.\r\n\r\n[AndroidAPS.log](https://github.com/user-attachments/files/18207147/AndroidAPS.log)\r\n![Screenshot_20241220-075303](https://github.com/user-attachments/assets/4d272aa0-0ad0-49cd-8fba-5fc6f222efe7)\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
+ "comments": [
+  {
+   "id": 2557190109,
+   "user": "olorinmaia",
+   "created_at": "2024-12-20T15:10:29Z",
+   "body": "Which ns server / hosting are you using? Version of NS?"
+  },
+  {
+   "id": 2557201144,
+   "user": "elgrupo123",
+   "created_at": "2024-12-20T15:16:03Z",
+   "body": "> Which ns server / hosting are you using? Version of NS?\r\n> \r\n> I don't experience this with 10be.de NS master or dev.\r\n\r\nHi,\r\n10be.de + NS Master 15.0.2.\r\nFor me with activated WS the error occurs every few hours, on my wife's follower it doesn't work at all with activated WS."
+  },
+  {
+   "id": 2557477277,
+   "user": "elgrupo123",
+   "created_at": "2024-12-20T18:01:54Z",
+   "body": "And here are the log files from our second follower, where it is not synchronized at all with the activated websockets.\r\n[AndroidAPS.log](https://github.com/user-attachments/files/18213885/AndroidAPS.log)\r\n"
+  },
+  {
+   "id": 2557483365,
+   "user": "Philoul",
+   "created_at": "2024-12-20T18:06:27Z",
+   "body": "Write in english please."
+  },
+  {
+   "id": 2557685361,
+   "user": "olorinmaia",
+   "created_at": "2024-12-20T20:36:47Z",
+   "body": "Ok, so if I want to try to reproduce this, to confirm, is your setup like this?\r\nAAPS = NSClientV3 + WS = ON\r\nAAPSClient 1 and 2 = NSClientV3 + WS = OFF ? \r\n\r\nAnd just one of them sync? For me it sounds like one of your phones got some issues with either settings or permissions. But I will try this setup myself and see.\r\n\r\nMy regular setup is WS = ON with NSclientv3 on all phones. "
+  },
+  {
+   "id": 2557699334,
+   "user": "elgrupo123",
+   "created_at": "2024-12-20T20:50:23Z",
+   "body": "Not quite right.\r\n\r\nAll with NS V3\r\n\r\nMaster with NS V3 - WS Active - no problems.\r\n\r\nFollower 1 - with AAPS Client (WS Active) problems after a few hours, AND with AAPS Client2 (WS deactivated), no problems.\r\n\r\nFollower 2 - with AAPS Client (WS Active), problems straight away. Only works with WS deactivated."
+  },
+  {
+   "id": 2558052551,
+   "user": "gerison77",
+   "created_at": "2024-12-21T08:45:09Z",
+   "body": "Running 2 Rigs with the follwoing setups\r\n\r\nEach Rig is running: Master Blackview N6000 3.3.0-rc1 NSClient V3 websockets on and Client Blackview BV 9200 3.3.0-rc1 NSClient V3 websockets on. Servers hosted on 10be.de running **Nightscout 15.3 dev**\r\n\r\nCan't confirm that issue in this setup on 2 rigs, nor with Client 1 nor with Client 2\r\n"
+  },
+  {
+   "id": 2558089064,
+   "user": "elgrupo123",
+   "created_at": "2024-12-21T11:27:12Z",
+   "body": "That doesn't help me. I can only report my problems. \r\nJust switched all devices to 3.2.0.4 and the problem no longer exists. \r\nI posted the logs, I can't contribute anything more. I'm not a developer."
+  },
+  {
+   "id": 2558090036,
+   "user": "olorinmaia",
+   "created_at": "2024-12-21T11:31:19Z",
+   "body": "Strange it works when you downgrade to 3.2 🤔\r\n\r\nI have no issues with two phones for my testrig with 3.3 dev. For the sake of it I'll test with three phones later today. If I encounter the same I'll also share logs. "
+  },
+  {
+   "id": 2558094603,
+   "user": "Philoul",
+   "created_at": "2024-12-21T11:54:11Z",
+   "body": "Can you confirm this issue can be reproduced 🤔.\nI mean (was not a temporary issue that can arrive from time to time in NS server, and fixed a bit later...)\nNow it works again (with 3.2.0.4), if you update rig to latest RC1, it reproduce the issue or not?\n@MilosKozak any other idea of potential root cause?"
+  }
+ ]
+}

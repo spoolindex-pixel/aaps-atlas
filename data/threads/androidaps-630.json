@@ -1,0 +1,75 @@
+{
+ "id": 970676685,
+ "repo": "nightscout/AndroidAPS",
+ "number": 630,
+ "title": "Only to be sure that the Dev's be aware of some issues. All are in dev versions with the new database until today.",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/630",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-08-13T20:01:23Z",
+ "closed_at": "2021-09-21T13:35:25Z",
+ "comment_count": 40,
+ "body": "- [**_Fixed by @Philoul _**]\r\nFor Philoul and Milos it works now, in my case it still doesn't work.\r\n**Profile switch is  buged.:**\r\nYou can't change your personal profile say \"Workday\" to \"Free Day.\r\nIf you do that, it was shown in NightScout as done, but AAPS is doing nothing and has still the old profile active.\r\nTo do the wanted profile switch, you have to change to the \"Local Profile\" first, then you can switch to the wanted one.\r\nBecause this Bug, the Automation  will also not work with profile switches.\r\n**- This happened only, if the Basal rate was in both profiles the same and only the Target, ISF, or IC was different.** \r\n\r\n- [**_Fixed by @Philoul_**] \r\n**Disable Loop:**\r\nIf you disable Loop, then you can't activate it again.\r\nYou have only the option to disconnect the pump. If you do that, you can activate the Loop again and reconnect the pump.\r\n\r\n- **_Fixed by Philoul, but TDD needs time_**\r\n**Statistic:**\r\nThe last fixes will not work for TDD.\r\nAll will shown now immediately,  but not TDD. \r\nTDD needs as long as before.\r\n\r\n- [**_MilosKozak says, \"AMA doesn't provide this value\"._**]\r\n**Autosense Target:**\r\nAutosense Target was not shown on main page, if you are using AMA Algorithm. \r\nIt was shown if you use SMB Algorithm. \r\n\r\n- [**_Fixed by Philoul_**]\r\n**Wrong values for Daily Basal in local profiles:**\r\nAll values of the daily Basal, in all local profiles, are showing the same number.\r\nThis is the daily basal number of the last saved, or resettet profile.\r\nIt's only a visual issue.\r\n\r\n@MilosKozak \r\nIf you have read that, you can close this issue. Wanted only that you are aware of this issues.\r\n",
+ "comments": [
+  {
+   "id": 899264347,
+   "user": "Philoul",
+   "created_at": "2021-08-16T06:45:17Z",
+   "body": "Statistic: with latest updates, on my phone Samsung A40), TDD is shown much quicker than previously (3 or 4 seconds later)\r\n\r\nDisable Loop: I'll try to work on it today to propose a PR"
+  },
+  {
+   "id": 899320593,
+   "user": "Alamo04",
+   "created_at": "2021-08-16T08:22:29Z",
+   "body": "The most important is profile switch.\r\nBecause many users are using NightScout for overview at home and will then not recognise that the switch was not done. \r\n\r\nAlso many are using Automation now. If they do a switch over it they didn't see this issue, until they use the phone and checked the overview in AAPS."
+  },
+  {
+   "id": 900412478,
+   "user": "MilosKozak",
+   "created_at": "2021-08-17T15:45:58Z",
+   "body": "I tested profile switch functionality and it works well\r\nIt happened to me that profile was not saved correctly in NS (still old values after page refresh) thus not sent to AAPS. 2nd times it did work.\r\nAAPS is a bit ahead to NS. NS still cannot distinguish between PS and effective PS thus NS may provide false data based on expectation that PS was already executed"
+  },
+  {
+   "id": 900439161,
+   "user": "Alamo04",
+   "created_at": "2021-08-17T16:18:41Z",
+   "body": "@MilosKozak \r\nThen I can't understand that, because I tested it just now.\r\nMy active Profile is \"Freier Tag\" and I copy that into \"Freier Tag copy\", than I have done a profile switch to this new profile.\r\nAs I wrote above, the profile switch was shown in NS and also in Treatments, but AAPS is doing nothing.\r\n\r\nYou can see that also in the pump tab, nothing happened here directly after profile switch and AAPS must change the profile in the pump too. Also the main page shows the old profile name.\r\n\r\nI can handle it, because I aware of that and all profile switches works, if you first activate the standard profile, named \"Local Profile\"\r\nIn the attached pictures you can also see, that the profile switch was shown only as a NS treatment.\r\n\r\nMy System:\r\nPump - Medtronic 754\r\nRileylink - OrangeLink \r\nPhone -  Google Pixel 5\r\nAAPS - latest Dev, but happened also with all new database devs before.\r\n\r\n![Screenshot_20210817-180008](https://user-images.githubusercontent.com/36486505/129762973-bfc"
+  },
+  {
+   "id": 900567910,
+   "user": "Alamo04",
+   "created_at": "2021-08-17T19:21:25Z",
+   "body": "Thanks @Philoul ,\r\n\r\nCan you do me a favour please and test the profile switch, as described above ?\r\n\r\nOnly want to know if it is a problem on my side, or a real Dev problem."
+  },
+  {
+   "id": 900652319,
+   "user": "Philoul",
+   "created_at": "2021-08-17T21:45:13Z",
+   "body": "On my side all my PS worked, but I only use NS to share my BG values with my dev phone, and I don't have PS in my current automation rules.\r\nI can make some tests in my dev phone but I didn't understand exactly what's wrong or which test I have to do 🤔..."
+  },
+  {
+   "id": 900710255,
+   "user": "Alamo04",
+   "created_at": "2021-08-18T00:04:19Z",
+   "body": "@Philoul \r\nTest:\r\n- First at all use local profile in AAPS instead of NS.\r\n\r\n- Make two local profiles (you can simply copy one) and name them ...say \"Workday\" and \"Weekend\".\r\n\r\n- Then activate the \"Workday\" profile. This should work, because you are coming from standard profile.\r\n\r\n- Wait a few minutes, so AAPS have time to send the new settings to the pump.\r\n\r\n- Then try to change this profile to the other one (Weekend).\r\n\r\n- Check if AAPS did this switch. You can see that on the main page and in Treatments.  In my case they are done in NS only, as you see in the pictures above.\r\n\r\nIf AAPS did this switches between this two profiles, this issue comes from my system.\r\nIf not, it comes from AAPS and must be fixed."
+  },
+  {
+   "id": 900860888,
+   "user": "Philoul",
+   "created_at": "2021-08-18T06:41:39Z",
+   "body": "@Alamo04 Ok I'll test today one more time on my dev phone...\r\nSee a screenshot of an extract of previous PS done (loop phone), I always 2 lines with NS and PS (PS made between different profiles, with or without duration, percentage or timeoffset...)\r\n![Screenshot_20210818-083438_AndroidAPS](https://user-images.githubusercontent.com/52934600/129849546-39966cc7-8823-412c-a748-d784ace4c36e.jpg)\r\n\r\nCan you add the correspondant screenshot of User Entries ? (latest green icon on the right of treatments) may be it could help for understanding something..."
+  },
+  {
+   "id": 900981267,
+   "user": "Alamo04",
+   "created_at": "2021-08-18T09:55:25Z",
+   "body": "![Screenshot_20210818-114744](https://user-images.githubusercontent.com/36486505/129877544-865657cb-932e-4999-abfc-f7b97358726e.png)\r\n\r\nOnly the switch between 2 different profiles dosn't work, if not one of them is the standard profile.\r\nA switch to set the profile % higher, or deeper and then switch back to 100%, is working fine."
+  },
+  {
+   "id": 901253017,
+   "user": "Alamo04",
+   "created_at": "2021-08-18T16:24:55Z",
+   "body": "@Philoul \r\nI tryed a complete clean and new Installation of AAPS.\r\n- Deinstallation of AAPS\r\n- Phone restart\r\n- New Installation of AAPS\r\n- Phone restart\r\n\r\nSame issue with Profile, as you see in attached Screenshots.\r\n\r\nEvery try to activate \"Arbeitstag\" or \"Freier Tag\" failed and was only sended to NS as done.\r\n\r\nOnly if I use the \"Lokales Profile\" and then \"Freier Tag\" both are done in \r\nNS and also in AAPS.\r\n\r\n![Screenshot_20210818-181248](https://user-images.githubusercontent.com/36486505/129935019-4ed1aae3-77d0-42f7-b4e8-65d0c95cbd01.png)\r\n\r\n![Screenshot_20210818-181242](https://user-images.githubusercontent.com/36486505/129935283-7b7c548b-041a-4aa8-91ea-2958155bc320.png)\r\n\r\nI hate to write with my Smartphone.😅"
+  }
+ ]
+}

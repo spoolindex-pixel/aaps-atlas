@@ -1,0 +1,77 @@
+{
+ "id": 374802490,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 648,
+ "title": "Improve support for Finowatch / Finow Q1 PRO",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/648",
+ "state": "closed",
+ "labels": [
+  "device-watch"
+ ],
+ "created_at": "2018-10-28T21:51:50Z",
+ "closed_at": "2021-11-04T20:38:28Z",
+ "comment_count": 47,
+ "body": "What is the current situation with xDrip+ support on this device? What are the issues? Please let me know! thanks",
+ "comments": [
+  {
+   "id": 433750243,
+   "user": "tzachi-dar",
+   "created_at": "2018-10-28T22:54:59Z",
+   "body": "As a collector of miaomiao this works well.\r\nThe q1 pro itself is a very low end watch. Battery might last from 7 hours to 18 hours with no good reason.\r\nkeyboard is almost useless. screen is low quality. (I guess that this is what you can get for 75 usd).\r\nThat said,  I'm not aware of issues as a collector."
+  },
+  {
+   "id": 434017274,
+   "user": "svirito4ka",
+   "created_at": "2018-10-29T18:04:42Z",
+   "body": "I used the watch Finow Q1 Pro with G5 as a collector in old mode, trying almost all versions of xDrip+ starting from August this year. The readings were received with intervals of 5 minutes and were transmitted to the Nightscout by the watch through 3G. But there was no stability, packet capture percentage was about 50-70 %. The collector used to terminate work when the charge was below 30 %. Ticked wakelocks and watchdogs could not prevent failure in operation. I think it depends on the in-build algorithm of energy saving. The battery life was 8-10 hours, Wi-Fi was disabled, BT and 3G were enabled, brightness was at the lowest level, and I made just a couple of messages (or calls).\r\nAlso I tried to use this watch as a collector in OB1 mode (including Native Algorithm). The readings were received with intervals of 10 minutes and were transmitted to the Nightscout by the watch through 3G. This interval was inacceptable for me, so I left this mode. "
+  },
+  {
+   "id": 443212067,
+   "user": "gordan1987",
+   "created_at": "2018-11-30T14:01:47Z",
+   "body": "My daughter use Finow Q1 Pro with G5(FW. 1.0.4.10).I set up them as a collector in OB1 mode with out native mode.In G5 Debug Settings mark only Use the OB1 Collector and Allow OB1 initiate bonding. And disable all in less common settings relates to bluetooth. Install root on watch and disabled all unused apps. Packet capture percentage about 85-95%.The readings  received with intervals of 5 minutes and  transmitted to the Nightscout by the watch through 3G. \r\nBut some time watch lose connection totally, helps only restart watch, or start receive data with intervals of 10 minutes. After 5 minutes when it no get data  I check in System Status - G5 Status - Phone Service Status it's show that it stuck on Connection request.\r\nSo I set up alarm on missing reading and just rerstart watch.\r\nAnd if I start mess with in less common settings or G5 Debug Settings I get no change in connections. \r\n"
+  },
+  {
+   "id": 443426779,
+   "user": "svirito4ka",
+   "created_at": "2018-12-01T13:35:12Z",
+   "body": "gordan1987, did you manage to unlock the bootloader on the finow q1 pro watch? This question was also asked @jamorham in gitter on 18th Nov. I think he has some ideas for improving collector service of this watch. And hope he is planning to realize “wearDemiGod” mode for this watch."
+  },
+  {
+   "id": 443502749,
+   "user": "gordan1987",
+   "created_at": "2018-12-02T12:09:25Z",
+   "body": "I upload all for [rooting to Mega](https://mega.nz/#F!fQkiyC7L!3NhHK9DpAO6bqVApPXnncA)\r\n"
+  },
+  {
+   "id": 451010873,
+   "user": "lmiekus",
+   "created_at": "2019-01-02T22:54:35Z",
+   "body": "I have enabled verbose longing for OB1 collector on this watch for Dexcom G6 sensor. The logs with the problematic situation as described by gordan1987 have been uploaded through xdrip with the information \"#648\" and my email address (lmiekus@gmail.com) The problem appeared at 23:10, since that time watch was unable to connect to the sensors. Only after restarting watch the connection have been restored . If you have any other questions please let me know. I am also attaching the exact configuration of the phone with all the important settings.\r\n[Settings.docx](https://github.com/NightscoutFoundation/xDrip/files/2722310/Settings.docx)\r\n"
+  },
+  {
+   "id": 452659455,
+   "user": "gordan1987",
+   "created_at": "2019-01-09T11:08:59Z",
+   "body": "It would be nice if xDrip had a possibility to restart the clock, if no data received. For me this only way to restore receiving data. "
+  },
+  {
+   "id": 452842604,
+   "user": "lmiekus",
+   "created_at": "2019-01-09T20:20:10Z",
+   "body": "Did you thought about trying less common settings > Bluetooth settings > Timer value for BT Watchdog  set to 6 minutes and Bluetooth Watchdog checkbox ticked? I am occasionally getting lost connections as described by you, we usually do smartwatch restart to solve it. But I am planing to try this option too.  That option to set timer value is not possible in last stable version of xdrip+. I found this one in nightly from 28.12.2018. "
+  },
+  {
+   "id": 453001003,
+   "user": "gordan1987",
+   "created_at": "2019-01-10T07:48:10Z",
+   "body": "I try set Timer value to 6 minutes in nightly. Still no luck, only restart helps.\r\n\r\n"
+  },
+  {
+   "id": 453026495,
+   "user": "svirito4ka",
+   "created_at": "2019-01-10T09:23:03Z",
+   "body": "Did someone try to run the old collector (without OB1) on this watch? On Russian diabet forum, people says that it works well with G5 transmitter. Also they say this watch works reliably with blucon and Miao-Miao (transmitters for Libre sensor)."
+  }
+ ]
+}
