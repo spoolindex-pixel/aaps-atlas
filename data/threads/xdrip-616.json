@@ -1,0 +1,78 @@
+{
+ "id": 367909885,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 616,
+ "title": "Eversense Integration",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/616",
+ "state": "closed",
+ "labels": [
+  "enhancement",
+  "device-eversense"
+ ],
+ "created_at": "2018-10-08T18:47:13Z",
+ "closed_at": "2024-01-10T16:51:42Z",
+ "comment_count": 52,
+ "body": "Hello,\r\nI'm not very happy with the current Eversense integration in xDrip via the Esel companion app. Actually, it looks like this app is not further beeing developed, then this app needs su access, and therefore a rooted android phone - something I do not want. And the app needs a running Roche/Senseonics Eversense app. Therefore it is for example not possible to have a smartwatch standalone solution.\r\nWouldn't it be possible to integrate the bluetooth comminication with the Eversense Transmitter in xDrip and use it as an complete standalone alternative to the Eversense App (but with the official app working in parallel on the same device)?\r\nRegards,\r\nBernhard",
+ "comments": [
+  {
+   "id": 428716439,
+   "user": "jamorham",
+   "created_at": "2018-10-10T20:19:48Z",
+   "body": "Yes it may well be possible, but the normal procedure for doing a feasibility study on that approach is for me to request that someone sends me the relevant hardware to test with. As far as I know that isn't going to be possible with Eversense because it is surgically implanted. So unless someone actually wearing one is going to do the development work it is much more difficult to achieve."
+  },
+  {
+   "id": 429081457,
+   "user": "BernhardRo",
+   "created_at": "2018-10-11T19:06:41Z",
+   "body": "Well, it is possible. Only the sensor is surgically implanted. The transmitter, which is the part with Bluetooth and therefore the part to communicate with, is put on the skin and can easily been removed and applied again. I am wearing one and have some development experience, but absolutely no idea about debugging a Bluetooth data stream (and I am also not in developing android java applications)..."
+  },
+  {
+   "id": 431624922,
+   "user": "BernhardRo",
+   "created_at": "2018-10-20T23:07:48Z",
+   "body": "Hello,\r\nI have found a solution now, which works for me: with dissassembling the Eversense App, I have added an ContentProvider, providing the glucose measurements.\r\nThen I have modified ESEL to use this ContentProvider as BG input and passes it to xDrip. This works fine, for me. Advantage: no root required. Disadvantage: modified apk for Eversense required, which is still needed...\r\nI have not uploaded anything. Is anyone interested in this?"
+  },
+  {
+   "id": 446674724,
+   "user": "jm991",
+   "created_at": "2018-12-12T17:34:49Z",
+   "body": "Hi I'm a longtime xdrip user and just got implanted with an EverSense today. I am a developer and have a contact within EverSense who was interested in getting support in xDrip for their device. Is there anything I can do to help? Having full native xDrip support for EverSense would be amazing since the EverSense app only works with a few devices and doesn't have Android Wear support."
+  },
+  {
+   "id": 446759010,
+   "user": "stugeo1",
+   "created_at": "2018-12-12T21:55:46Z",
+   "body": ">           Hello,\r\n> I have found a solution now, which works for me: with dissassembling the Eversense App, I have added an ContentProvider, providing the glucose measurements.\r\n> Then I have modified ESEL to use this ContentProvider as BG input and passes it to xDrip. This works fine, for me. Advantage: no root required. Disadvantage: modified apk for Eversense required, which is still needed...\r\n> I have not uploaded anything. Is anyone interested in this?\r\n\r\nHi BernhardRo - I am very interested!!\r\n\r\nI'm on my second EversenseXL now after being impressed with the first one and wanting to continue, however, I really need to be able to see the data on an android watch as i'm training for a marathon and can't keep stopping to look at my phone :(  \r\n\r\nHave tried to get the data into xDrip / Nightscout and have followed the modification of the Android Eversense App from you. \r\n\r\nThe app is working fine but have fallen at the final hurdle as I can't work out how to read the data from oth"
+  },
+  {
+   "id": 446774958,
+   "user": "BernhardRo",
+   "created_at": "2018-12-12T22:53:16Z",
+   "body": "Hello,\r\nMy solution is running quite well for me.  It needs the modified Eversense App and the Esel App.  With this it is possible to get your CGM data from Eversense to xDrip. \r\nEverything is availabe here:\r\nhttps://github.com/BernhardRo/Esel/tree/master/apk\r\n\r\n"
+  },
+  {
+   "id": 460812824,
+   "user": "cvh2019",
+   "created_at": "2019-02-05T21:34:53Z",
+   "body": "> Hello,\r\n> My solution is running quite well for me. It needs the modified Eversense App and the Esel App. With this it is possible to get your CGM data from Eversense to xDrip.\r\n> Everything is availabe here:\r\n> https://github.com/BernhardRo/Esel/tree/master/apk\r\n\r\nHi Bernhard, \r\n\r\ni think there is as new version of the official Eversense App released in Dec 2018. No idea what they changed. However I guess it´s a good idea to use the latest version. Could you build a modified Eversense App based on the latest official version? Or let us know how you did it exactly? \r\n\r\nThanks! "
+  },
+  {
+   "id": 474214551,
+   "user": "steigermobil",
+   "created_at": "2019-03-19T06:28:09Z",
+   "body": "> Hi I'm a longtime xdrip user and just got implanted with an EverSense today. I am a developer and have a contact within EverSense who was interested in getting support in xDrip for their device. Is there anything I can do to help? Having full native xDrip support for EverSense would be amazing since the EverSense app only works with a few devices and doesn't have Android Wear support.\r\n\r\nhey jm991, that would be perfect if you can integrate eversense completly in the xdrip app. i use the eversense app with xdrip, but now I want to buy a smartwatch and then i need to have xdrip with full access to the evensense cgm, so that i dont need my smartphone all the time.\r\nPlease help all the eversense user :-) "
+  },
+  {
+   "id": 474217649,
+   "user": "stugeo1",
+   "created_at": "2019-03-19T06:42:34Z",
+   "body": "This would be amazing. It's all working for me now and has been a game\nchanger on my training runs for a marathon but as you say needs the phone.\n\n\n\nOn Tue, 19 Mar 2019, 06:28 steigermobil, <notifications@github.com> wrote:\n\n> Hi I'm a longtime xdrip user and just got implanted with an EverSense\n> today. I am a developer and have a contact within EverSense who was\n> interested in getting support in xDrip for their device. Is there anything\n> I can do to help? Having full native xDrip support for EverSense would be\n> amazing since the EverSense app only works with a few devices and doesn't\n> have Android Wear support.\n>\n> hey jm991, that would be perfect if you can integrate eversense completly\n> in the xdrip app. i use the eversense app with xdrip, but now I want to buy\n> a smartwatch and then i need to have xdrip with full access to the\n> evensense cgm, so that i dont need my smartphone all the time.\n> Please help all the eversense user :-)\n>\n> —\n> You are receiving this because you c"
+  },
+  {
+   "id": 504143939,
+   "user": "gridlockedjaw",
+   "created_at": "2019-06-20T19:00:26Z",
+   "body": "Theres a new version in the US. Can anyone patch the new 2.0.103 US version?"
+  }
+ ]
+}

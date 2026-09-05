@@ -1,0 +1,79 @@
+{
+ "id": 491937683,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1008,
+ "title": "Can't calibrate new g6 + new transmitter: \"invalid impossible slope\"",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1008",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "device-dexcom",
+  "calibration"
+ ],
+ "created_at": "2019-09-10T23:01:34Z",
+ "closed_at": "2021-02-26T23:13:03Z",
+ "comment_count": 46,
+ "body": "On the beta update channel.\r\n\r\nI changed my sensor and transmitter today, stopped & started sensor, changed the transmitter code, paired the bluetooth device, and eventually got readings.  However, calibration won't work.  The error is:\r\n\r\n\"Got invalid impossible slope calibration!\"\r\n\r\nHowever, the calibrations I've tried entering were within 0.1 mmol of the sensor value on the first attempt, and 1 mmol on the second attempt.\r\n\r\nThis is the first time I've changed transmitter with a g6.  Seems that the beta channel also updated, but I find this very hard to know for sure -- does xdrip+ even have a visible version number on updates?\r\n\r\nSeems like the slope calculation is wrong, or the validation of slopes is wrong on new transmitters, or old values are being incorrectly included in stopped / started sensors since the new beta.",
+ "comments": [
+  {
+   "id": 530155118,
+   "user": "lee-b",
+   "created_at": "2019-09-10T23:12:25Z",
+   "body": "Just tried the latest nightly.  Same issue."
+  },
+  {
+   "id": 530285901,
+   "user": "jamorham",
+   "created_at": "2019-09-11T08:49:44Z",
+   "body": "What firmware version does your new G6 transmitter report in System Status?"
+  },
+  {
+   "id": 531016603,
+   "user": "corn49",
+   "created_at": "2019-09-12T21:37:49Z",
+   "body": "Hey jamorham, \n\nHaving same issue. If I am correct that this is the firmware version, it is 14a03a7-2019.05.18. In case it helps, the code is 1905181006 and downgradeable to: 1603091400.\n\nSame issue as OP. For note, I purchased this transmitter at Costco and the body appears a bit different than the others I have gotten in past. Is G6, for clarity. The transmitter SN is 8GDNQB. \n\n"
+  },
+  {
+   "id": 531024821,
+   "user": "jamorham",
+   "created_at": "2019-09-12T22:03:30Z",
+   "body": "Guys: for 8Gxxx transmitters you need to use at least the current Alpha version as the newer firmware is somewhat different. I would say use the Nightly version to be sure you have the most up to date support for it.\r\n\r\nYou also need to use ob1 collector in native mode so there should be no calibration involved."
+  },
+  {
+   "id": 531031052,
+   "user": "corn49",
+   "created_at": "2019-09-12T22:28:27Z",
+   "body": "Hey jamorham,\n\nThanks for the fast response. I would talk endlessly about the difference this app makes it my life, save for fear of it seeming trite in this medium. \n\nI am running nightly build from 9.10.19 and am using OB1 in native mode. As for calibration, I am showing a straight line 98 in the app, but multiple finger pricks are 78, 76 and 81, respectively."
+  },
+  {
+   "id": 531031903,
+   "user": "lee-b",
+   "created_at": "2019-09-12T22:32:26Z",
+   "body": "@jamorham my firmware version is 2.18.2.88.  SN 8GFR1G, Calibration code 5937.\r\n\r\nStill seeing this with 0e3b27181-2019.09.10, 3 which is the lately nightly available on github (from 2 days ago).   Using ob1.  Enabling/disabling the fallback doesn't seem to help."
+  },
+  {
+   "id": 531553738,
+   "user": "lee-b",
+   "created_at": "2019-09-15T10:28:36Z",
+   "body": "A few additional observations:\r\n\r\n* Initial calibration still seems to actually work.  The problem is the result intepretation, and xdrip thinking that it hasn't worked.  So it stays in initial calibration state, and keeps prompting.\r\n\r\n* None of the following work, probably just due to the \"initial calibration required\" state:\r\n\r\n* Entering a normal calibration in xdrip\r\n* Choosing calibrate from a pre-existing BG sample point (point remains a square, rather than becoming a circle)\r\n* Entering a calibration from AAPS."
+  },
+  {
+   "id": 533830882,
+   "user": "HeyImPuni",
+   "created_at": "2019-09-21T21:17:29Z",
+   "body": "Same issue here. Like @lee-b said, seems like that the calibrations are working fine but xDrip thinks that they got deleted - at least that's what the `Events Log` tells me."
+  },
+  {
+   "id": 536189412,
+   "user": "lee-b",
+   "created_at": "2019-09-28T13:17:42Z",
+   "body": "I think xdrip is purposefully deleting them as invalid, because it misinterprets the results from the G6 transmitter, and thinks that the calibration was rejected as invalid by the G6 transmitter.\r\n\r\ni.e., the real problem seems to be that XDrip doesn't yet know how to handle the new G6 transmitter protocol's calibration method, or its calibration response code changes."
+  },
+  {
+   "id": 537372787,
+   "user": "joshhiram",
+   "created_at": "2019-10-02T07:31:29Z",
+   "body": "Just changed my son's transmitter. It is serial number 81A***. Same issue. Tried alpha release and nightly release with no effect. Firmware version 1.6.5.25. Xdrip version 7d97b62-2019.09.30."
+  }
+ ]
+}

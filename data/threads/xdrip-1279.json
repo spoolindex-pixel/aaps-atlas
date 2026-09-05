@@ -1,0 +1,79 @@
+{
+ "id": 585590438,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1279,
+ "title": "Dexcom G6 / 8G tx: every 5mins \"Could not read after AuthRequestTX\" & \"Could not read reply to auth challenge\"",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1279",
+ "state": "closed",
+ "labels": [
+  "duplicate",
+  "device-dexcom",
+  "bluetooth"
+ ],
+ "created_at": "2020-03-21T21:39:49Z",
+ "closed_at": "2021-02-27T18:21:07Z",
+ "comment_count": 48,
+ "body": "Since using 8G transmitters my error log shows always the same errors every 5 mins, see below. Error messages: \"Could not read after AuthRequestTX\" & \"Failed to write DisconnectTxMessage\" with \"GATT expection\" etc.\r\n\r\n- G6 Firmware 2.18.2.88 and running xDrip+ nightly 2020-03-11 [same with previous versions]\r\n- Using G5/G6 settings OB1, Native, Allow OB1 unbonding and Allow OB1 initiate bonding; all remaining options are OFF.\r\n\r\nFor the rest everyhing's working fine but these error messages are really annoying. Anyone else having these issues? How to turn it off?\r\n\r\n![Image1](https://user-images.githubusercontent.com/60714349/77237026-a25d3180-6bc4-11ea-9aef-6f1871665bed.jpg)",
+ "comments": [
+  {
+   "id": 605662915,
+   "user": "m-goetz",
+   "created_at": "2020-03-29T16:30:15Z",
+   "body": "Same device (8G), firmware and settings and I get the same error messages. Very annoying noise in the logs, but it doesn't seem to break anything.\r\n"
+  },
+  {
+   "id": 608826537,
+   "user": "doc77",
+   "created_at": "2020-04-03T23:38:36Z",
+   "body": "Same thing here. Trying to figure out what causes it, but so far no luck."
+  },
+  {
+   "id": 609065479,
+   "user": "emp-00",
+   "created_at": "2020-04-04T17:50:58Z",
+   "body": "More strange behaviour: menu item \"Initial Calibration\" stays all the time even after calibrating with this function. Is this normal? Why is it still called \"initial\"? \r\n\r\nIn my case I can only calibrate with this function - the syringe always gives me \"Invalid Impossible Slope Calibration\" errors... I've seen many tipps mentioning for 8G only the syringe calibrabration function should be used. This does not work in my case or is the error message wrong and it still works? Would it be possible to correct these functions with a new xDrip+ release?"
+  },
+  {
+   "id": 610513684,
+   "user": "doc77",
+   "created_at": "2020-04-07T17:16:47Z",
+   "body": "@emp-00  This is the exact behavior of my xDrip+ installation. \r\n\r\nAlso, I had to re-pair my watch (SSW3), and cannot get xDrip+ to load on the watch. I wonder if there is any relationship?"
+  },
+  {
+   "id": 610555760,
+   "user": "emp-00",
+   "created_at": "2020-04-07T18:43:02Z",
+   "body": "@doc77 I don't have a watch, just xDrip+ on smartphone - maybe we have one or two \"wrong/bad\" settings en/disabled others don't have? we need somebody with a working setup to compare settings - I have posted my \"main\" settings above but maybe the issue is hidden in a different feature?"
+  },
+  {
+   "id": 610584591,
+   "user": "doc77",
+   "created_at": "2020-04-07T19:45:51Z",
+   "body": "@emp-00   I have the same settings and Dexcom firmware. I have already tried turning off what was on, and turning on what was off. But, doing it one at a time. Didn't help. Currently, I'm using native, OB1, go on without calibrations, G6 Support, and OB1 initiate bonding and allow OB1 unbundling.\r\n\r\nI've also downgraded xDrip+ by a few versions, since re upgraded to the most current.\r\n\r\nI don't know what else to try."
+  },
+  {
+   "id": 610618062,
+   "user": "emp-00",
+   "created_at": "2020-04-07T21:00:54Z",
+   "body": "Maybe it's our phone? I'm on Samsung A8. \r\nOr maybe everybody with 8G+ has these errors but nobody cares?"
+  },
+  {
+   "id": 610681909,
+   "user": "doc77",
+   "created_at": "2020-04-08T00:14:49Z",
+   "body": "@emp-00  I'm on the Samsung Note 8. It might have something to do with the way Samsung BLE handles GATT.  I think that this is what the Samsung Workaround is supposed to take care of. I disabled it, but it still showed as active in System Status.\r\n\r\nBut this is way beyond my knowledge of Android."
+  },
+  {
+   "id": 611132422,
+   "user": "emp-00",
+   "created_at": "2020-04-08T18:56:42Z",
+   "body": "So we both are on Samsungs! That's a lead. Here come my \"Bluetooth Settings\" (under Less Common Settings):\r\n\r\nAll settings OFF except for these five: Turn BT on, BT Watchdog, G5 BT Watchdog, Use Background Scans, Allow blucon unbonding.\r\n\r\nI remember I had changed one or two of these options when I started with G6 (80/81 tx's) half a year ago. Does anybody know the default settings in this menu? We could try reverting to defaults and see if this helps!\r\n"
+  },
+  {
+   "id": 611200153,
+   "user": "doc77",
+   "created_at": "2020-04-08T21:18:54Z",
+   "body": "@emp-00  I already cycled all the Bluetooth settings on and off. Didn't hurt function, but made no difference in the log."
+  }
+ ]
+}

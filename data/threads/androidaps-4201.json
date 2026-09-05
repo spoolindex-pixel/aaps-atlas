@@ -1,0 +1,75 @@
+{
+ "id": 3491293040,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4201,
+ "title": "Safety issue: can't stop an ongoing bolus after closing AAPS",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4201",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-10-07T12:30:21Z",
+ "closed_at": "2025-11-23T22:30:16Z",
+ "comment_count": 50,
+ "body": "**AndroidAPS 3.3.3-dev**: Lates dev builds\n**Flavor**: fullrelease\n\n**Problem:**\nWhen executing a manual bolus the resulting pop-up screen will show bolus progress and a \"STOP\" button to cancel the onging bolus. _Closing the app (using Android UI \"Close All\" or swiping) does not stop the bolus by design. However, when I reopen the AAPS app it only shows the (still) ongoing bolus at the bottom of the overview screen without a STOP button to cancel._\n\nConsidering safety, one could argue that this is not acceptable\n\n**Additional info:**\nTo STOP the bolus then user has no other option then to forcefully close AAPS through settings, restart the phone, disconnect the pump or \n(when running the AAPS Wear app) using the option to cancel the bolus from the watch.\n\n_Screenprints:_\n\n**Ongoing bolus with STOP button enables canceling the ongoing bolus.**\n\n![Image](https://github.com/user-attachments/assets/f5f6fa0d-1814-4d58-adba-179ba4b04492)\n\n**After closing and reopening AAPS: ther is no way to STOP the ongoing bolus**\n\n![Image](https://github.com/user-attachments/assets/15cc5246-7b30-4d1b-a791-8930e97f3919)\n",
+ "comments": [
+  {
+   "id": 3376756426,
+   "user": "andyrozman",
+   "created_at": "2025-10-07T12:51:32Z",
+   "body": "I would say that is by design... Closing AAPS shouldn't cancel the bolus, unless user presses the button... \n\nNow... Good question... Why did you do the \"Close All\" while bolus was executing... You need to wait until all commands are executed and then you can close your AAPS... \n\nThat small thing there is just showing that command is executed. You can cancel command only while you are in original AAPS instance and when command was issued... AND this is especially true if you are using pump which has no other way of cancelling command (pod pumps without screen and buttons)."
+  },
+  {
+   "id": 3378607023,
+   "user": "vanelsberg",
+   "created_at": "2025-10-07T20:30:56Z",
+   "body": "Yes. By design and this is correct.\n> Why did you do the \"Close All\" while bolus was executing...\n\nI did to show that _when you do_, there is no way to stop the ongoing bolus.\n- Think about a user entering a large bolus, then realizing this was wrong and panicking - swipes/closes AAPS to stop it...\n\nWhen close/open AAPS I still can STOP the bolus from the watch. Can't see any reason why this would not be possible from AAPS?\n"
+  },
+  {
+   "id": 3378655517,
+   "user": "andyrozman",
+   "created_at": "2025-10-07T20:45:19Z",
+   "body": "- Think about a user entering a large bolus, then realizing this was wrong and panicking - swipes/closes AAPS to stop it...\n\nYes simple solution, press that little button with \"Stop\" text on it. I don't see anything wrong with how it works... But that is for Milos to decide..."
+  },
+  {
+   "id": 3382324616,
+   "user": "robertrub",
+   "created_at": "2025-10-08T16:23:44Z",
+   "body": "@vanelsberg I think, if you had used the \"back\" button of Android, you'd see the progression window with the stop button.\n\nEDIT : Discard my message. Just tested, _back_ doesn't bring back the progression bar."
+  },
+  {
+   "id": 3383114416,
+   "user": "vanelsberg",
+   "created_at": "2025-10-08T20:27:57Z",
+   "body": "**Imho**:\nAny situation where _user loses control_ over what the pump is doing is \"not be design\" and \"potentially dangerous\" 🤔"
+  },
+  {
+   "id": 3419859373,
+   "user": "vanelsberg",
+   "created_at": "2025-10-19T18:21:20Z",
+   "body": "\n@MilosKozak Merged PR4229 with current dev commits.\n\n@Angus-repo No issues (used your AAPS pr-CI btw 😄)\nNICE! Works as expected ❤️ "
+  },
+  {
+   "id": 3420468984,
+   "user": "robertrub",
+   "created_at": "2025-10-20T04:07:46Z",
+   "body": "Building dev now. Will test and report."
+  },
+  {
+   "id": 3421183058,
+   "user": "robertrub",
+   "created_at": "2025-10-20T09:16:53Z",
+   "body": "@Angus-repo Works as expected but there is a small bug.\n\nI start a 0.5U bolus, Android 3 vertical bar, Close all. Open AAPS again.\n\nI see the progression bar (that part is working ok) but the total amount on top of the page is wrong. It probably shows the amount already injected when I _closed all_ \n\nThe xU injected / total yU to be injected line is correct.\n\n![Screenshot_20251020_111049_AAPS.jpg](https://github.com/user-attachments/assets/dce69d87-6faa-4e80-a9b4-d187539f2b9f)\n\n"
+  },
+  {
+   "id": 3421351189,
+   "user": "Angus-repo",
+   "created_at": "2025-10-20T10:00:08Z",
+   "body": "> [@Angus-repo](https://github.com/Angus-repo) Works as expected but there is a small bug.\n> \n> I start a 0.5U bolus, Android 3 vertical bar, Close all. Open AAPS again.\n> \n> I see the progression bar (that part is working ok) but the total amount on top of the page is wrong. It probably shows the amount already injected when I _closed all_\n> \n> The xU injected / total yU to be injected line is correct.\n> \n> ![Screenshot_20251020_111049_AAPS.jpg](https://github.com/user-attachments/assets/dce69d87-6faa-4e80-a9b4-d187539f2b9f)\n\n@robertrub Which type of pump are you using?"
+  },
+  {
+   "id": 3421481778,
+   "user": "robertrub",
+   "created_at": "2025-10-20T10:27:54Z",
+   "body": "@Angus-repo The bug happens even if I quit AAPS and come back to it (without closing it).\n\nScreenshot during lunch bolus. I went to another app then back to AAPS.\n\nIt used to show the total amount on top and the _progression /total amount_ over the progression bar.\n\nI'm using the Medtrum Nano pump.\n\n![Screenshot_20251020_120253_AAPS.jpg](https://github.com/user-attachments/assets/6f8fffc1-6bf0-4404-a2da-c34251ec3122)\n\n"
+  }
+ ]
+}

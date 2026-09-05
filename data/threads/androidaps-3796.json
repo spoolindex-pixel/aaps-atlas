@@ -1,0 +1,75 @@
+{
+ "id": 2820855048,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3796,
+ "title": "Unable to Install or Upgrade AAPSClient on Android 14 (Samsung Galaxy S23 Ultra)",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3796",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-01-30T13:33:54Z",
+ "closed_at": "2025-02-23T16:09:39Z",
+ "comment_count": 22,
+ "body": "I  am unable to install or upgrade AAPSClient on my Samsung Galaxy S23 Ultra (Android 14). I have tried both upgrading from an existing installation and performing a fresh install after clearing cache and data, but neither works.\n\nSteps to Reproduce:\n\n1. Attempt to install the latest version of AAPSClient 3.3.1.3\n\n2. If upgrading, I get the error:\n\"App not installed as package conflicts with an existing package.\" (See attachment)\n\n3. If performing a fresh install:\nFirst, I receive a Google Play Protect warning stating that the app was built for an older Android version. (See attachment).After selecting \"Install anyway\", I get the same package conflict error.\n\nWhat I've Tried:\n\nUninstalling AAPSClient before installing the new version.\n\nClearing cache and data before uninstalling.\n\nRestarting the device after uninstalling before attempting reinstallation.\n\n![Image](https://github.com/user-attachments/assets/d0c93c14-a005-4111-9f79-de6dca27fcec)\n![Image](https://github.com/user-attachments/assets/6adfdaa1-fd59-4608-bd28-e4540c44d6aa)",
+ "comments": [
+  {
+   "id": 2625137743,
+   "user": "emilisev",
+   "created_at": "2025-01-30T17:32:36Z",
+   "body": "Do you also have AAPS installed on this phone ? If yes, you need to compile AAPSClient yourself, because you can't have both compiled with different keystore."
+  },
+  {
+   "id": 2625191118,
+   "user": "yoeldk",
+   "created_at": "2025-01-30T17:54:17Z",
+   "body": "@emilisev I do have AAPS on my phone but that was always the case and previous versions of AAPSClient worked. As a matter of fact any  AAPSClient version prior to 3.3 (i.e 3.2.0.4) installs with no problem and that's what I'm using now.  "
+  },
+  {
+   "id": 2625195588,
+   "user": "emilisev",
+   "created_at": "2025-01-30T17:56:22Z",
+   "body": "Yes that's a new restriction starting from this version"
+  },
+  {
+   "id": 2625212336,
+   "user": "yoeldk",
+   "created_at": "2025-01-30T18:03:55Z",
+   "body": "I'm sorry, but I don't understand the logic behind this change. Why should my personal AAPS be linked to AAPSClient, which is solely used to monitor my daughter's sugar levels?\nEspecially given that AAPSClient, unlike AAPS, can be downloaded directly and doesn't require compiling from scratch. "
+  },
+  {
+   "id": 2625220762,
+   "user": "emilisev",
+   "created_at": "2025-01-30T18:07:37Z",
+   "body": "Check the doc if you don't believe me 😉 : https://androidaps.readthedocs.io/en/latest/RemoteFeatures/RemoteControl.html#download-and-installation\n\nI believe it is not a decision from aaps team but some limitation induced but the android libraries used (they were updated in last version). "
+  },
+  {
+   "id": 2625233054,
+   "user": "yoeldk",
+   "created_at": "2025-01-30T18:13:14Z",
+   "body": "I believe you, but I just don't understand the logic behind this change, especially since it works perfectly in version 3.2.0.4. If this change was imposed by Android libraries rather than the AAPSClient developers, then it's a different matter and beyond our control. I just want to make sure that this is indeed the case."
+  },
+  {
+   "id": 2625250841,
+   "user": "emilisev",
+   "created_at": "2025-01-30T18:21:44Z",
+   "body": "I guess it has something to do with 2 aaps from the same author but different keystore, since the keystore is used to authenticate the app, but I'm no specialist "
+  },
+  {
+   "id": 2625257553,
+   "user": "yoeldk",
+   "created_at": "2025-01-30T18:25:15Z",
+   "body": "The question is what has changed between AAPSClient 3.2.0.4 (everything works fine) vs 3.3 and up (won't install due to conflict). "
+  },
+  {
+   "id": 2625261413,
+   "user": "emilisev",
+   "created_at": "2025-01-30T18:27:10Z",
+   "body": "Aaps uses a lot of android librairies, and a lot of them were updated (hence the requirement for Android 11 as well), I guess that's where it comes from."
+  },
+  {
+   "id": 2676964376,
+   "user": "MilosKozak",
+   "created_at": "2025-02-23T16:09:39Z",
+   "body": "it's android limitation. Apps that use the same permission must be signed with the same key. Permission is new in 3.3 to allow sending data to watch from multiple sources"
+  }
+ ]
+}

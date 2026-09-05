@@ -1,0 +1,75 @@
+{
+ "id": 2777706242,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3723,
+ "title": "Persistent problem. V3+ with enabled websockets / no synchronization with client.",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3723",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-01-09T12:31:25Z",
+ "closed_at": "2025-01-13T16:48:51Z",
+ "comment_count": 24,
+ "body": "I have already mentioned the problem several times. 3.3.1.0 does not fix the error either. As soon as you use several AAPS clients and all have activated websockets, only 1 device runs properly for a maximum of 12 hours, after which it behaves exactly like the other follower devices, which cannot synchronize the BG values ​​with active websockets from the start. All other data arrives. Even a new, clean installation did not help. The solution is - master (websockets activated), follower (websockets deactivated).\r\n\r\n[AndroidAPS.log](https://github.com/user-attachments/files/18361575/AndroidAPS.log)\r\n\r\n\r\n",
+ "comments": [
+  {
+   "id": 2581077263,
+   "user": "olorinmaia",
+   "created_at": "2025-01-09T19:19:35Z",
+   "body": "Strange. I remember this in dev. We are using 3 phones with AAPSClient. All websockets, no issues so far. 10be.de master NS branch.\r\n\r\nWhat happens if you pause / unpause in NSClientv3 plugin? "
+  },
+  {
+   "id": 2582072948,
+   "user": "elgrupo123",
+   "created_at": "2025-01-10T08:43:57Z",
+   "body": "> What happens if you pause / unpause in NSClientv3 plugin?\r\n\r\nNothing. I've already tried everything. And as I said, there are no problems with 3.2.0.4.\r\n\r\n"
+  },
+  {
+   "id": 2582797920,
+   "user": "kristinsmotz",
+   "created_at": "2025-01-10T14:11:02Z",
+   "body": "Similar problem here, so adding my information here instead of creating separate issue. I have 2 kids using AAPS, I follow them continuously via AAPSClient and AAPSClient2 on my phone, and both client apps are also set up on their dad's phone and my mother's, so they can both have info when they're taking care of the kids. \r\n\r\nI posted on facebook first on 3.3.0:\r\nI have a weird problem after updating to 3.3. The problem is in AAPSclient, but not AAPSClient2, and only on my phone, not my mother's phone. Apparently BG values only download occasionally, even though they are present in nightscout so i can get them continuously on my watch, on kid's watch and everywhere else that downloads from nightscout. I've tried reinstalling the app, clearing cache, clearing data, multiple restarts on both phones, running a full sync from NS (backfilling previous data, but will not fix the ongoing problem). Before update, and after update for the other kid (AAPSClient2), data is synced continuously. \r"
+  },
+  {
+   "id": 2583380098,
+   "user": "MilosKozak",
+   "created_at": "2025-01-10T17:56:07Z",
+   "body": "if you did test everything pm me your NS and access token"
+  },
+  {
+   "id": 2583785012,
+   "user": "kristinsmotz",
+   "created_at": "2025-01-10T19:36:49Z",
+   "body": "@MilosKozak I sent you a PM with nightscout link and token for one of my sites. Here are also a couple screenshots from the other kid illustrating that AAPSClient gets some info, enough to display SMB's and predictions in graph, but no BG values:\r\n![Screenshot_20250110_203016_EDVIN AAPSClient2](https://github.com/user-attachments/assets/ffcf6934-63be-47f8-b483-d143a7a941ba)\r\n![Screenshot_20250110_202959_EDVIN AAPSClient2](https://github.com/user-attachments/assets/b9dfb7f6-a5ec-410f-bb8f-7f6b6e169d63)\r\n\r\nlogs from AAPSClient: \r\n[AndroidAPS_LOG_1736537594947.log.zip](https://github.com/user-attachments/files/18381511/AndroidAPS_LOG_1736537594947.log.zip)\r\nI'll pm you the site + token for this site as well\r\n\r\n"
+  },
+  {
+   "id": 2583865453,
+   "user": "kristinsmotz",
+   "created_at": "2025-01-10T19:53:50Z",
+   "body": "Since I am very nerdy today, i dug into the log and found some clues. \r\n\r\nThe last glucose value was visible in AAPSClient at 19:58:32, first reference in log is here, where it collects entries, does a bunch of tricks, I highlighted inserting BG value.\r\n\r\n19:58:32.921 [EventThread] D/NSCLIENT: [NSClientV3Service.onDataCreateUpdate$lambda$14():216]: onDataCreateUpdate: {\"colName\":\"entries\",\"doc\":{\"app\":\"AAPS\",\"date\":1736535512757,\"device\":\"Libre3\",\"direction\":\"Flat\",\"filtered\":0,\"isReadOnly\":false,\"isValid\":true,\"sgv\":163,\"type\":\"sgv\",\"unfiltered\":0,\"units\":\"mg\\/dl\",\"utcOffset\":60,\"created_at\":\"2025-01-10T18:58:32.757Z\",\"identifier\":\"a3818769-f5e8-5b2d-a1cc-d48532ae35a1\",\"srvModified\":1736535513257,\"srvCreated\":1736535513257,\"subject\":\"Kristin\"}}\r\n19:58:32.924 [RxCachedThreadScheduler-47] D/NSCLIENT: [NSClientV3Plugin$onStart$10.accept():262]: ◄ WS CREATE/UPDATE entries <i>{\"app\":\"AAPS\",\"date\":1736535512757,\"device\":\"Libre3\",\"direction\":\"Flat\",\"filtered\":0,\"isReadOnly\":false,\"isValid\":t"
+  },
+  {
+   "id": 2584035488,
+   "user": "MilosKozak",
+   "created_at": "2025-01-10T20:30:12Z",
+   "body": "I see Pump status update but not BG. Can you confirm you upload BGs using v3 protocol?"
+  },
+  {
+   "id": 2584054236,
+   "user": "kristinsmotz",
+   "created_at": "2025-01-10T20:34:23Z",
+   "body": "I've enabled upload BG to NS in kid's phones AAPS. All phones using NSClientv3, both in AAPS and AAPSClient/2. Can't verify with screenshots right now, as kids and phones are with my ex until next Thursday. "
+  },
+  {
+   "id": 2584143285,
+   "user": "elgrupo123",
+   "created_at": "2025-01-10T20:55:04Z",
+   "body": "It's very similar for us. Two M5 stacks and several Garmin watches get the BG values ​​from NS, and there are no dropouts. I now switch the websockets OFF on the followers (it is active on the master), otherwise the NS client cannot be used properly. I can also send our NS page + password. PM to Facebook??"
+  },
+  {
+   "id": 2584930532,
+   "user": "MilosKozak",
+   "created_at": "2025-01-10T23:55:07Z",
+   "body": "@kristinsmotz you don't have synchronized time on all phones. Set Android for automatic time synchronization"
+  }
+ ]
+}

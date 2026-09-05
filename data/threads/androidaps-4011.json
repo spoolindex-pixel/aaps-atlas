@@ -1,0 +1,75 @@
+{
+ "id": 3113490024,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4011,
+ "title": "Medtrum Pump unreachable after 2 minutes",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4011",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-06-03T11:01:24Z",
+ "closed_at": "2025-10-21T15:33:20Z",
+ "comment_count": 35,
+ "body": "Medtrum pump + Android 15 + BYODA: I have a problem with Medtrum pump disconnecting from phone and cannot connect back. After phone restart the pump communicates with AAPS about 2 minutes so I can get bolus or set new profile, but after this time AAPS just cannot connect with pump anymore. If I restart the phone, I can control the pump again, but again just for about 2 minutes.\n\nI use:\nSamsung Galaxy S24 Ultra (Android 15)\nBYODA 1.12.1.0 (Dexcom G6)\nAAPS 3.3.3.0-dev\nBuild: 1590206a4a-2025.05.30\nMedtrum pump (type MD8201, FW version 1.80.83)\n\nI tried and did not help:\nAAPS - Medtrum option - Scan on connection error ON/OFF\nAAPS option - BT Watchdog ON/OFF\nUninstalling and clean install of AAPS\nDifferent AAPS builds (3.3.2.0-Tsunami_3.4.1, 3.2.0.4-AutoISF)\nPlay Protect ON/OFF\nNew Metrum pump/reservoir\n\nWhat works?\nSetup above, but Danai pump\nSetup above, but my older phone (S23+ with Android 14)\n\nSome other users have no problems with AAPS 3.3.3.0-dev + Medtrum + Android 15 combo, but they don't use BYODA (but xDrip for example). So maybe there is some conflict between Medtrum and BYODA on Android 15?\n\n[AndroidAPS_LOG_1748868734664.log.zip](https://github.com/user-attachments/files/20572245/AndroidAPS_LOG_1748868734664.log.zip)",
+ "comments": [
+  {
+   "id": 2934757202,
+   "user": "PetrMlejnek",
+   "created_at": "2025-06-03T11:18:05Z",
+   "body": "Demonstration video of the behavior here: https://www.youtube.com/watch?v=pks15PPsM8c"
+  },
+  {
+   "id": 2943841411,
+   "user": "MilosKozak",
+   "created_at": "2025-06-05T11:39:48Z",
+   "body": "@jbr7rr "
+  },
+  {
+   "id": 2952138332,
+   "user": "manfred-h",
+   "created_at": "2025-06-07T08:04:06Z",
+   "body": "I have a very similar behaviour using AAPS version 3.3.2.0 (ba55) on my Google Pixel 8a running Android 15 (BP1A.250505.005.B1).\n\nI'll have to change my pump system later this year, which is why I am running a test with 10 Nano Patches I paid for on my own. The problem has already killed two of the patches. I know of another user running a similar test and he has absolutely no problems on the exact same phone. The only difference is he uses Freestyle Libre2 as the CGM, while I use the BYODA app Petr is using with a Dexcom G6.\n\nIs it possible that BYODA/Dexcom BT might cause this misbehaviour? I'll probably run a new test with a third patch tomorrow, but I'll stop BYODA and its BT connection before that. Will collect logs and post them here then."
+  },
+  {
+   "id": 2954137716,
+   "user": "manfred-h",
+   "created_at": "2025-06-08T15:29:55Z",
+   "body": "> I have a very similar behaviour using AAPS version 3.3.2.0 (ba55) on my Google Pixel 8a running Android 15 (BP1A.250505.005.B1).\n> \n> I'll have to change my pump system later this year, which is why I am running a test with 10 Nano Patches I paid for on my own. The problem has already killed two of the patches. I know of another user running a similar test and he has absolutely no problems on the exact same phone. The only difference is he uses Freestyle Libre2 as the CGM, while I use the BYODA app Petr is using with a Dexcom G6.\n> \n> Is it possible that BYODA/Dexcom BT might cause this misbehaviour? I'll probably run a new test with a third patch tomorrow, but I'll stop BYODA and its BT connection before that. Will collect logs and post them here then.\n\nAs described, I ran the third test today with BYODA/Dexcom G6 BT completely disabled. For this I killed the BYODA app, cleared its cache and removed all \"Dexcom *\" connections in BT.\n\nAfter that I switched the pump driver in AAPS fro"
+  },
+  {
+   "id": 2958231791,
+   "user": "jbr7rr",
+   "created_at": "2025-06-10T08:46:41Z",
+   "body": "I see something weird in the logs, I need more information. \n\n@PetrMlejnek , @manfred-h Would one of you be able to test with a custom build(s) with added logging? You can re-use a patch for testing if needed (out of body ofcourse), contact me on discord and I can explain how etc."
+  },
+  {
+   "id": 2958315729,
+   "user": "manfred-h",
+   "created_at": "2025-06-10T09:12:25Z",
+   "body": "> I see something weird in the logs, I need more information.\n> \n> [@PetrMlejnek](https://github.com/PetrMlejnek) , [@manfred-h](https://github.com/manfred-h) Would one of you be able to test with a custom build(s) with added logging? You can re-use a patch for testing if needed (out of body ofcourse), contact me on discord and I can explain how etc.\n\n@jbr7rr : thanks for looking at the logs! I'll get a new pump base this week, but I'll definitely can add a patch to my pristine sources and build my own .apk, in order retain my local key. Will contact you on discord."
+  },
+  {
+   "id": 2960591450,
+   "user": "PetrMlejnek",
+   "created_at": "2025-06-10T21:11:00Z",
+   "body": "Hello @manfred-h and @jbr7rr. I tried different pump base, did not help. I also tried the \"trick\" with forcing BYODA to stop, did not help. Right now I am back to 3.3.2.0-dev-Tsunami_3.4.1 and Danai, because of #3984 that also starts to happen to me. Until #3984 is fixed, I will not install current dev version. After that I will be more than happy to test this issue #4011 with added logging."
+  },
+  {
+   "id": 2961632444,
+   "user": "manfred-h",
+   "created_at": "2025-06-11T08:00:15Z",
+   "body": "Hi @PetrMlejnek, thanks for testing! Too bad to hear the different pump base did not make a change! FWIW, I switched from BYODA to xDrip+ now, but did not test with the Medtrum pump again yet.\n\nI'll continue to get it to work (hopefully) by following what @jbr7rr suggested with his pumpcontrol app!"
+  },
+  {
+   "id": 2961649778,
+   "user": "PetrMlejnek",
+   "created_at": "2025-06-11T08:06:36Z",
+   "body": "@manfred-h Thank you for your reply. My friend @Korostensky is using AAPS 3.3.3.0-dev, Samsung phone with Android 15 and xDrip+ (instead of BYODA) and have no problems with Medtrum. So the problem really could be some BYODA + Medtrum conflict."
+  },
+  {
+   "id": 2961729697,
+   "user": "manfred-h",
+   "created_at": "2025-06-11T08:34:10Z",
+   "body": "@PetrMlejnek Yes, as I wrote earlier I suspected that, too. But I found successful users of Medtrum, BYODA and Android 15 in the list on Discord...\n\nI hope you didn't throw away your patches yet, as @jbr7rr wrote in some private discussion they can be reactivated for additional tests, which is where the \"aaps-pumpcontrol\" app comes into play. It is a second AAPS app, but only for testing other stuff, and which is installed next to your real AAPS app to continue using your working loop configuration. @jbr7rr will setup a separate branch for us which will emit more/changed logs to identify what might the real reason for the failures we see. So, I would encourage you to try that out, too. Shall I pull you into my communication channel I have with @jbr7rr on Discord?"
+  }
+ ]
+}

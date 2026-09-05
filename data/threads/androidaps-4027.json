@@ -1,0 +1,75 @@
+{
+ "id": 3137232676,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4027,
+ "title": "No Pod activation possible since Android 16 Update",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4027",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-06-11T15:18:31Z",
+ "closed_at": "2025-09-25T20:03:04Z",
+ "comment_count": 56,
+ "body": "Did the Pixel Android 16 Update Yesterday. \nConnection to Dash wored fine so far.\nToday i tried a Pod change. \nDeactivating old Dash worked fine.\nBut there is no Activation for New Pod possibe\n\nBonding Mode didn't work too\n\nWhat are possibilitiea to check?",
+ "comments": [
+  {
+   "id": 2964469638,
+   "user": "nickb24",
+   "created_at": "2025-06-11T22:42:07Z",
+   "body": "Adding my findings. \n\nMy phone is a Pixel 7 Pro. Running Android 15 until today with no issues on the Dash pods. I was never using the Dash bond setting.\n\nToday I updated to Android 16, and the current pod continued to work with no settings change in AAPS.\n\nThen I deactivated the current pod and tried to activate a new pod. The pod fails to activate with the following error:  \"Failed to connect to pod\"\n\n![Image](https://github.com/user-attachments/assets/466797e2-4f4a-4020-9fee-8da4acd12a51)\n\nThe logcat shows the following:\n\n![Image](https://github.com/user-attachments/assets/000be122-a991-45a1-8f80-37a69b8d3c91)\n\nIt fails waiting for the connection here:\n\n![Image](https://github.com/user-attachments/assets/6ec5eba5-c57d-4754-915b-22e2647f1e0d)\n\nThis is so weird, because the same function call is used for active pods, so why was it working earlier in the day for me, but now is failing with a new pod? I also tried bonding the pod manually in the android settings and it still fails to co"
+  },
+  {
+   "id": 2964548076,
+   "user": "andyrozman",
+   "created_at": "2025-06-11T23:36:29Z",
+   "body": "Trying to experiment with your main diabetes phone is foolish thing... And upgrading to unsupported system is very foolish thing... There have been a lot of reports of different drivers/pumps not working with Android 15, and you go and upgrade to system (Android 16), that is even less supported... "
+  },
+  {
+   "id": 2965127046,
+   "user": "m4nnihuber",
+   "created_at": "2025-06-12T05:06:47Z",
+   "body": "Thanks @nickb24 workarount also works for me.\nnice find.\n\nSorry @andyrozman that was not a brilliant idea to switch to android 16 \nshort night so this will not happen again\n\nthanks to the team for finding a solution that quick\nhopefully there will be a dev version or a release soon\n\n"
+  },
+  {
+   "id": 2968294731,
+   "user": "borijess",
+   "created_at": "2025-06-12T22:10:30Z",
+   "body": "I think I got it. I did Fetch and Pull and did pull hotfix-a16-dash, then a rebase and it updated. Is this correct? Then build the signed APK.\n\nThis is for this hotfix. \n\nhttps://github.com/nightscout/AndroidAPS/pull/4028"
+  },
+  {
+   "id": 2968324285,
+   "user": "olorinmaia",
+   "created_at": "2025-06-12T22:27:57Z",
+   "body": "Edit:\n**Please checkout branch dev332 and build apk instead, this branch is based on master with these fixes included. Will soon be updated to master**"
+  },
+  {
+   "id": 2968401317,
+   "user": "borijess",
+   "created_at": "2025-06-12T23:09:29Z",
+   "body": "I did it and did a right click and merge and got this. \n\n![Image](https://github.com/user-attachments/assets/0f6d422c-bef9-4205-a44c-d6e4935f1ab4)\n![Image](https://github.com/user-attachments/assets/1ba1dc58-2bb5-47da-a058-eeae6f8a4c08)\n![Image](https://github.com/user-attachments/assets/e63d784b-5ecc-412a-bcc4-bb8c717f91b9)"
+  },
+  {
+   "id": 2968408850,
+   "user": "olorinmaia",
+   "created_at": "2025-06-12T23:14:43Z",
+   "body": "You shouldn't get any conflicts if you checkout origin/master - then right click on it and create new branch from it - then go to origin/hotfix-a16-dash and select the two mentioned commits and right click and cherry pick"
+  },
+  {
+   "id": 2968433099,
+   "user": "borijess",
+   "created_at": "2025-06-12T23:28:23Z",
+   "body": "> You shouldn't get any conflicts if you checkout origin/master - then right click on it and create new branch from it - then go to origin/hotfix-a16-dash and select the two mentioned commits and right click and cherry pick\n\nI get this. \n\n![Image](https://github.com/user-attachments/assets/bebfe8b6-2084-4491-afb5-6075e49cbf66)"
+  },
+  {
+   "id": 2970387040,
+   "user": "Philoul",
+   "created_at": "2025-06-13T13:24:09Z",
+   "body": "@borijess To answer your question (right place is more here than in PR 😉), when you click in 3 dots menu > about, the build information gives the reference of latest commit, so you can check within github history.\n![Screenshot_20250613-152114_AAPS.jpg](https://github.com/user-attachments/assets/c5b3c056-3080-428b-bae4-41ba45755ce7)\n\n"
+  },
+  {
+   "id": 2970394437,
+   "user": "Philoul",
+   "created_at": "2025-06-13T13:27:00Z",
+   "body": "@borijess your conflicts are due to local modifications done in youŕ computer.\nSo your current code within your computer is not 100% the same than github code."
+  }
+ ]
+}

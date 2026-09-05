@@ -1,0 +1,75 @@
+{
+ "id": 741711312,
+ "repo": "nightscout/AndroidAPS",
+ "number": 67,
+ "title": "UI Feedback",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/67",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2020-11-12T15:48:36Z",
+ "closed_at": "2021-01-03T17:04:47Z",
+ "comment_count": 45,
+ "body": "### Overview Screen\r\nI thought it might be nice to have some more useful buttons on the overview screen:\r\n\r\n- Temp target buttons:\r\n  - I find setting a temp target is quite fiddly and hard. There are too many long-presses, clicks and small UI elements involved. Definitely hard for people with shaky hands, etc. It might be nice to have large buttons for these functions on the overview screen, similar to the grey buttons already present.\r\n  - User can choose which targets appear as buttons.\r\n  - The buttons either immediately apply the temp target, or prompt for a confirmation if you think that's safer.\r\n  - Maybe there could be a text area that immediately updates with the temp target that is going to be applied, once the connection to the pump has been established.\r\n- Profile switch buttons:\r\n  - Would be cool if there were -/+ buttons that jump in 10% (or user-defined) intervals. You can click the buttons multiple times (for example to set a profile of 130%), then after a short delay (2 seconds?) the profile switch is applied.\r\n  - There's also a cancel button to set the profile back to 100%.\r\n  - There could be a text area that immediately updates with the profile percentage that will be applied, once the connection to the pump has been established.\r\n  - If you think there are safety concerns with this behaviour, there could at least just be a button that opens the profile switch interface?\r\n- Loop button:\r\n  - Would be cool if we could have the option of the Loop status button (that allows disconnection of pump, etc) to be a normal button, i.e not long-press\r\n\r\n### General UI feedback\r\n- Long press is hard for people with shaky hands, especially on small buttons. Can we have the option to have all button functions without long press?\r\n- There are too many very small UI elements. These are hard to click.\r\n- Drop down menu in Temp target interface (next to \"reason\") is too small and fiddly and annoying. Can we get large buttons for each temp target instead of a drop-down list?\r\n- Percentage -/+ buttons on Profile Switch interface currently go up/down by 1%. Can we have them jump in intervals of 10%, or at least an option to have that.\r\n\r\n![image](https://user-images.githubusercontent.com/26227058/98962057-253d4e80-24fe-11eb-9475-55a9bd9ab8e2.png)\r\n\r\n",
+ "comments": [
+  {
+   "id": 726203832,
+   "user": "mistermintsgh",
+   "created_at": "2020-11-12T16:56:09Z",
+   "body": "I like these!\r\n\r\nCan I also add to this list... I **HATE** the 3 dot menu in the top right hand corner. I have no mobility issues or anything like that described above, but I cannot tell you how often I go to press those 3 dots and end up somehow pulling down the notification/quick settings menu of my phone.\r\n\r\nThis happens all the time for me, but it is even more annoying in the middle of the night when I'm still half asleep and I get a pump disconnect alarm that can only be fixed by exiting AAPS and opening it up again. Its tough to be able to focus when you're half asleep, in the dark, trying to press the smallest of buttons on the menu to get your pump functioning again."
+  },
+  {
+   "id": 726347473,
+   "user": "Philoul",
+   "created_at": "2020-11-12T21:17:58Z",
+   "body": "@jamespaulley I think it is necessary for security reasons to avoid any single click without confirmation (I do not count the number of unwanted calls and even SMS sent by my pocket!)\r\n=> unwanted several short presses everywhere on the screen are very frequent... The idea of setting a temporary profile with a single press on +10 and tempo is definitively too dangerous ...\r\n=> I never had an unwanted \"Long Press\"\r\n\r\nI understand that it can be difficult for shaky hand to long press on small zone on the top of the screen, but may be a good compromise could be:\r\n- to keep the long press but to double the heigth of the zone to make it easier\r\n- to replace the 2 menus (profile and targets) by temporary buttons with single press action (as you proposed) but only shown after the long press on upper zone... (according to zone you pressed you only show target buttons or profiles buttons)\r\n\r\n@mistermintsgh For the three dot button, if it's only to have an easy way to restart AAPS, there are sev"
+  },
+  {
+   "id": 726350104,
+   "user": "mistermintsgh",
+   "created_at": "2020-11-12T21:23:36Z",
+   "body": "@Philoul it's not just used to restart AAPS though, it's used to access any of these options\r\n![Screenshot_20201112-212110_AndroidAPS](https://user-images.githubusercontent.com/42671801/98997839-191cb580-252d-11eb-8b11-5366c6704887.jpg)\r\n\r\nMy point being that the button is tiny, and it's far too close to the notification bar to be able to bit with any kind of precision.\r\n\r\nAs I said above, I particularly struggle if I'm half asleep, but I also struggle sometimes in the middle of the day when I'm fully awake!\r\n\r\nIt just needs to be bigger, or in a better position"
+  },
+  {
+   "id": 726538119,
+   "user": "swissalpine",
+   "created_at": "2020-11-13T05:53:39Z",
+   "body": "There are larger buttons for temp target and profile switch in the actions tab ... No need to put them on the Home tab. Afaik all preferences can be reached via the config builder.\r\nAnd: If you enter the number directly in the dialogs, and not via the small +/- keys, the number keyboard will open.  This one has quite large numbers ... Of course this is not the one click solution you have in mind - but beside that I don't see the problem.\r\nAnd: On small devices isn't enough place to put additional buttons on the home screen without loosing the main graph."
+  },
+  {
+   "id": 726870783,
+   "user": "jamespaulley",
+   "created_at": "2020-11-13T16:47:08Z",
+   "body": "Okay great feedback guys thank you. A few things are being discussed now. I'll summarise everything below. Please also see the attached PDF for mockups and explanations of everything.\r\n\r\nhttps://drive.google.com/file/d/1LD6uBF8oItpcF1L3NqemBBV_qnc9hl1N/view?usp=sharing\r\n\r\n### Spacing issues at top of Overview Screen\r\n- The spacing is too tight at the top of the Overview screen. It’s hard to use. As mentioned by @mistermintsgh.\r\n- There needs to be more space around the “...” menu.\r\n- The tabs area needs more spacing top and bottom.\r\n\r\n### Concern regarding accidental single-clicks triggering dangerous action\r\nAs mentioned by @Philoul.\r\n\r\n- We can forget the idea of having buttons that immediately trigger a profile change, I agree.\r\n- I think immediate buttons for Temp Targets might still be useful, but I'm happy to drop that for now.\r\n### Long press throughout the UX\r\n- I think long-press is bad UI/UX and we should have the option of not using it. People who want it can keep it, but I "
+  },
+  {
+   "id": 727049228,
+   "user": "Philoul",
+   "created_at": "2020-11-13T21:42:11Z",
+   "body": "Thank's @jamespaulley for this detailled synthesis\r\n- For Loop button, if we replace long press by a short one, I think it's necessary to add a confirmation popup because the area that can launch an action is too important (click a second time somewhere in half the screen is enough to disconnect, suspend or disable loop...)\r\n=> All buttons with single press action are followed by a confirmation popup with a small zone (Ok / Cancel)\r\n=> So if we modify this, we should replace a long press and a short press by 3 short presses (like it is done today for bottom buttons)\r\n- For profile switch I think it's a very good idea and it is easy to modify (it's always possible to select field and manually enter another value)\r\n- For Target popup, today the \"menu\" prefilled the values AND select the reason of the TT (with \"Manual\" reason as default), so if we replace selection menu, we have to add an additional information into the popup to show selected reason of the TT (I think it's a good idea too"
+  },
+  {
+   "id": 727069330,
+   "user": "mistermintsgh",
+   "created_at": "2020-11-13T22:37:10Z",
+   "body": "Suggestion on the profile switch:\r\n\r\n- Make it customisable\r\n\r\nIn the same way I can edit the quick bolus settings (I've edit the small bolus to be 0.25U, the medium bolus to be 1U, and the large bolus to be 2U) it would be could to be able to edit the +/- percentage too. Some might want 5%, some 10% some 20%. Let us choose, through the settings, which quick profile switch we want."
+  },
+  {
+   "id": 728858158,
+   "user": "jamespaulley",
+   "created_at": "2020-11-17T11:10:18Z",
+   "body": "### **Loop Button**\r\nI agree that short-presses with a confirmation dialogue would be preferable over the current long-press behaviour, as described by @Philoul. My personal opinion is that 3 short presses is safer than a long click followed by a single click, but I appreciate that others might feel differently. Some users might like the long-press behaviour, so ideally there would be a settings preference for this.\r\n\r\n### Profile Switch\r\nExactly, @Philoul. I also like @mistermintsgh's suggestion for customisation of the percentage intervals for the \"+/–\" buttons on the profile switch screen.\r\n\r\n### **Temp Target Popup**\r\nExactly as described by @Philoul. Alternatively, we could leave the drop-down in place and provide the buttons as well, as seen below.\r\nhttps://i.imgur.com/Txph56A.png\r\n\r\n### **Resolution and display density**\r\n@Philoul points out that if we add too many settings to configure the interface, it'll get too complicated. That's fair enough. I think having a low-density sk"
+  },
+  {
+   "id": 728879472,
+   "user": "guydavies",
+   "created_at": "2020-11-17T11:56:55Z",
+   "body": "I would prefer all.those changes to be optional. I like the system as it is.\n\nOn Tue, 17 Nov 2020, 12:10 jamespaulley, <notifications@github.com> wrote:\n\n> *Loop Button*\n>\n> I agree that short-presses with a confirmation dialogue would be\n> preferable over the current long-press behaviour, as described by @Philoul\n> <https://github.com/Philoul>. My personal opinion is that 3 short presses\n> is safer than a long click followed by a single click, but I appreciate\n> that others might feel differently. Some users might like the long-press\n> behaviour, so ideally there would be a settings preference for this.\n> Profile Switch\n>\n> Exactly, @Philoul <https://github.com/Philoul>. I also like @mistermintsgh\n> <https://github.com/mistermintsgh>'s suggestion for customisation of the\n> percentage intervals for the \"+/–\" buttons on the profile switch screen.\n> *Temp Target Popup*\n>\n> Exactly as described by @Philoul <https://github.com/Philoul>.\n> Alternatively, we could leave the drop-down in plac"
+  },
+  {
+   "id": 729070534,
+   "user": "4RK4N",
+   "created_at": "2020-11-17T17:09:51Z",
+   "body": "personally i wouldnt need those buttons either. im fine with overview long presses or actions tab for that. actions tab does exactly that alrdy. just add it as tab and swipe right once u have ur buttons for profile change and temp target.\r\nbesides they, sry to say it that way, look like pure eye cancer. (means they are really ugly)\r\nadding those button only makes the problem worse."
+  }
+ ]
+}

@@ -1,0 +1,75 @@
+{
+ "id": 1040026923,
+ "repo": "nightscout/AndroidAPS",
+ "number": 807,
+ "title": "[AAPS3.0_beta2] NSClient - io.socket.engineio.client.EngineIOException:xhr poll error - Seems to also have broken Nightscout",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/807",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-10-30T02:24:42Z",
+ "closed_at": "2021-11-04T16:09:02Z",
+ "comment_count": 29,
+ "body": "Just installed beta 2 of NSClient 3.0. To get the build to work on my Mac M1, [I had to add a new version of \"Room\" to the gradle build file.](https://stackoverflow.com/questions/68922875/room-database-is-not-working-in-mac-book-pro-m1). Not sure if that's relevant.\r\n\r\nNSClient opens on my S20 fine (had to uninstall prev version for it to install). I completed the wizard. Lots of errors in the logs.\r\n\r\nNow my NS site has gone down, so this seems pretty nasty.\r\n\r\n<img width=\"353\" alt=\"image\" src=\"https://user-images.githubusercontent.com/25760491/139517176-b9807360-5a93-4c5a-8a8e-23109a6ac0c4.png\">\r\n\r\n<img width=\"521\" alt=\"image\" src=\"https://user-images.githubusercontent.com/25760491/139517180-8a9a01e3-3f99-4b96-901b-0222916b7d6e.png\">\r\n",
+ "comments": [
+  {
+   "id": 955130342,
+   "user": "old-square-eyes",
+   "created_at": "2021-10-30T02:26:42Z",
+   "body": "Phew. I uninstalled NSClient, and reloaded the Nightscout Heroku Dynos and Nightscout came back.\r\n"
+  },
+  {
+   "id": 955132880,
+   "user": "old-square-eyes",
+   "created_at": "2021-10-30T02:42:21Z",
+   "body": "Reinstalled NSClient and completed Wizard without NS creds. Then manually entered, and this time it started syncing status/BG. But eventually crashed the NS site again. Perhaps it's a internal server error at NS because it can't keep up with the sync?"
+  },
+  {
+   "id": 955138202,
+   "user": "old-square-eyes",
+   "created_at": "2021-10-30T03:30:37Z",
+   "body": "Finally seems to be syncing. I turned off my two OpenAPS rigs and the NS API was able to keep up.\r\n\r\nI see data in the history viewer. But not in the main graph. I'll see if there is more syncing. But I also can't select a Profile per https://github.com/nightscout/AndroidAPS/issues/808"
+  },
+  {
+   "id": 955170073,
+   "user": "old-square-eyes",
+   "created_at": "2021-10-30T08:07:12Z",
+   "body": "I gave up. No plot on main graph. I went back to the old 2.X version and the plot immediately appeared."
+  },
+  {
+   "id": 955196159,
+   "user": "MilosKozak",
+   "created_at": "2021-10-30T11:46:09Z",
+   "body": "this is not enough info to be able help you"
+  },
+  {
+   "id": 955239093,
+   "user": "MilosKozak",
+   "created_at": "2021-10-30T14:02:07Z",
+   "body": "where do you host NS?"
+  },
+  {
+   "id": 955573777,
+   "user": "old-square-eyes",
+   "created_at": "2021-10-30T18:27:19Z",
+   "body": "Heroku / Atlas Mongo - Free. THis is probably the most common configuration so would need to be supported. I get this error with all my other clients disabled, so the load is 100% NSClient on the NS API. Might need some exponential pullback or manual rate limiting."
+  },
+  {
+   "id": 955580752,
+   "user": "old-square-eyes",
+   "created_at": "2021-10-30T19:26:46Z",
+   "body": "@MilosKozak would you consider enabling local BG collection from xDrip? It's something I have wanted anyway to keep the watch face and NSclient plot from NS lag."
+  },
+  {
+   "id": 956105542,
+   "user": "savek-cc",
+   "created_at": "2021-11-01T10:13:47Z",
+   "body": "@old-square-eyes did the event happen when adjusting the phone time for daylight savings time? (I saw the same errors but thought it might be due to altering time and timezone in anticipation for the time rewinding 1h (combo pump)."
+  },
+  {
+   "id": 956523506,
+   "user": "old-square-eyes",
+   "created_at": "2021-11-01T19:27:18Z",
+   "body": "@savek-cc, I wasn't adjusting TZ, no. It's almost certainly a Heroku instance /dyno size thing. The API gets exhausted. I can only complete the sync by turning off all other clients and constantly restarting dynos and NSclient."
+  }
+ ]
+}

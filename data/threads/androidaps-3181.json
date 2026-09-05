@@ -1,0 +1,78 @@
+{
+ "id": 2093999568,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3181,
+ "title": "UAM SMBs with Libre 2",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3181",
+ "state": "closed",
+ "labels": [
+  "enhancement",
+  "for_discussion"
+ ],
+ "created_at": "2024-01-22T14:06:50Z",
+ "closed_at": "2024-12-02T22:39:26Z",
+ "comment_count": 43,
+ "body": "This is a feature/enhancement request regarding the usage of SMBs with the Libre 2 (and potentially 3).\r\n\r\nWe started objective 9 and it seems that many of the SMB options (Enable SMB Always, Enable SMB After Carbs, and, most importantly for us, Enable UAM) are unavailable to users of the Libre 2 CGM. The listed reason in the docs is a need for data smoothing as the sensors themselves do not smooth output, but we enabled a smoothing algorithm through xDrip and still cannot use these options.\r\n\r\nWe asked about the SMB options in AAPS in the WANW Discord and were informed that the L1 had a bug that might report a flat high BG during an error event instead of reporting the error, and this was the actual reason that these SMB options were disabled for the Libre 2 and 3. A discussion ensued with various people agreeing that a flat high BG is not an issue, us included- we have only ever seen a flat low BG, and even that only once in the last year.\r\n\r\nWith both of these problems (BG noise and high BG instead of error events) not being an issue for the Libre 2 and 3, and given that the Libre sensors are approved by various agencies for use in loops, we're requesting that these limitations on SMBs be lifted, potentially with enforcement of smoothing algorithm usage. At the very least, we would like AAPS to have a way for the user to acknowledge the risks and then manually enable the SMB features through the AAPS menus.",
+ "comments": [
+  {
+   "id": 1937059142,
+   "user": "painbrain81",
+   "created_at": "2024-02-10T16:40:54Z",
+   "body": "I agree. I would add that with BOTH xdrip smoothing and aps smoothing the leveling of the blood sugar data is almost perfect (i use FSL2)"
+  },
+  {
+   "id": 1937565606,
+   "user": "MilosKozak",
+   "created_at": "2024-02-11T10:55:40Z",
+   "body": "> I agree. I would add that with BOTH xdrip smoothing and aps smoothing the leveling of the blood sugar data is almost perfect (i use FSL2)\r\n\r\nEvery smoothing makes the data \"nicer\" but add to data inaccuracy and delays. And you doubled it"
+  },
+  {
+   "id": 1937569704,
+   "user": "painbrain81",
+   "created_at": "2024-02-11T10:58:57Z",
+   "body": "It can be, but in my experience smooth data is always real respect \"real\" bg blood (after 15 mins between fsl2 and finger).\r\nIt depends between person and person? It could be"
+  },
+  {
+   "id": 1943357300,
+   "user": "Svagtlys",
+   "created_at": "2024-02-14T09:17:00Z",
+   "body": "> > I agree. I would add that with BOTH xdrip smoothing and aps smoothing the leveling of the blood sugar data is almost perfect (i use FSL2)\r\n> \r\n> Every smoothing makes the data \"nicer\" but add to data inaccuracy and delays. And you doubled it\r\n\r\nSorry, I don't entirely understand how the AAPS and xDrip smoothing work, but doesn't the Dexcom do smoothing all the time? So if accuracy is a concern preventing this feature for our CGM, the Freestyle 2 should have the leg up for always reporting exactly what it's reading?\r\n\r\nAt the moment, we've just been setting a temp target all the time to get this to work somewhat like we're wanting. It's not perfect, we'd really love to use autosens to adjust the target on the fly and to not have to remember to reset the target after activity or hypo, but it's been amazing for helping us out when we inevitably forget to indicate carbs for a meal or snack."
+  },
+  {
+   "id": 1989477646,
+   "user": "Svagtlys",
+   "created_at": "2024-03-11T21:28:42Z",
+   "body": "I just wanted to follow up on this a month later. \r\n\r\nWe've continued setting a temp target to get something close to UAMs, and we have been *much* more lax in putting in carbs (I'd say about 50% of the time we put them in before we start to eat, 30% we put them in within 20 minutes of eating, and the rest we forget for more than 20 minutes or don't remember at all). I ran a CGP report before we started doing this, and ran one just now for the duration we've been doing this, and the numbers are a bit worse now but still surprisingly close to \"We're completely on top of T1D every day because we're focusing\". We're happy to share the reports if it would provide any useful information on the effectiveness of the Libre Freestyle 2 as a UAM compatible CGM."
+  },
+  {
+   "id": 2047189393,
+   "user": "cO5Mo2",
+   "created_at": "2024-04-10T10:43:58Z",
+   "body": "In light of the now well-documented good performance of the freestyle Libre 3 I would love to be able to use features like autosens, UAM etc. \r\nI had absolutely zero issues with wrong or jumpy data. \r\nFL3 seems to now have a similar error correction as the dexcom sensors. Suspicious values are not sent to the phone. In such cases the sensor takes a few minutes time out. \r\n\r\nHere are two studies. One comparing dexcom G7 and Freestyle Libre 3. \r\n\r\nhttps://pubmed.ncbi.nlm.nih.gov/38189290/\r\n\r\nhttps://www.ncbi.nlm.nih.gov/pmc/articles/PMC10064376/"
+  },
+  {
+   "id": 2068137874,
+   "user": "tyrex1975",
+   "created_at": "2024-04-21T17:11:50Z",
+   "body": "Agreed with the comments regarding SMB-always for the Libre above. AAPS is renowned for its openness of operation and fine customisable options by the user.\r\n\r\nUser acceptance of the risks involved is an obligatory feature of building your own app, yet disabling a particular feature flies in the face of this ethos.\r\n\r\nI don't even want to use SMB-always because I quite like the 'relaxed' operation of AAPS overnight when SMBs are off.\r\n\r\nBut to tell me I can't enable a feature stinks a bit, in my opinion."
+  },
+  {
+   "id": 2071813529,
+   "user": "Oscar218704",
+   "created_at": "2024-04-23T09:15:09Z",
+   "body": "Agree with smb always for fsl2. Already using it with a workaround with temp tarheta. Would love to use it normally"
+  },
+  {
+   "id": 2083691526,
+   "user": "koelewij",
+   "created_at": "2024-04-29T21:19:39Z",
+   "body": "The Libre 1 bug that was reported a very long time ago, wasn’t probably even a Libre issue, but caused by the the Bluetooth interface placed on top of it. \r\nThe issue is long gone with Libre 2. "
+  },
+  {
+   "id": 2107287185,
+   "user": "InvaderStef",
+   "created_at": "2024-05-13T11:07:18Z",
+   "body": "I'm in the same boat. AAPS denies \"SMB always\" and \"after carbs\".\r\nUsing Libre 3 with Juggluco and xdrip+ my personal libre data seems to be pretty stable so i would vote for a removal of these constraints for current Libre sensors, too.\r\n\r\nThe constraints even seem to make little sense as you can easily overrule them by setting temp targets... (not tested, only read here and on discord)"
+  }
+ ]
+}

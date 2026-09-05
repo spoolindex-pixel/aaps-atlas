@@ -1,0 +1,75 @@
+{
+ "id": 1133687536,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1311,
+ "title": "Negative IOB : shouldn't be used in insulin calculations ",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1311",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-02-12T07:58:16Z",
+ "closed_at": "2022-07-25T19:11:12Z",
+ "comment_count": 77,
+ "body": "There is a security risk with negative IOB. AAPS  always tries to inject the \"missing\" insulin which results in lows.\n\nThere is no \"negative\" IOB in our bodies. The pancreas releases or not insulin depending on BGs and their variations. It should be the same in AAPS.\n\nNegative IOB is an important information for the user (ie profile too strong) and should be indicated (message and text on the graphic) but should NOT enter in the formulas used to calculate the insulin amount to be injected.\n\n2 examples. This morning, my BGs were lower than usual (insulin working better than other mornings). AAPS does a great job and stops basal to prevent hypos. This generates negative IOB. I'm below target, no carbs. If I use the calculator, the negative IOB will be injected and I'll find myself in hypo. The calculator should not inject the negative IOB. Even without the calculator, AAPS should not try to fill in the \"missing\" insulin.\n\n![Screenshot_20220212-065218_AndroidAPS.jpg](https://user-images.githubusercontent.com/76626474/153702264-f281fad6-4162-458e-bb73-3162ce35b54c.jpg)\n\n![20220212_065316.jpg](https://user-images.githubusercontent.com/76626474/153702262-58051fd8-87b8-4901-b26a-cbce52672db6.jpg)\n\nExercice example. I eat carbs (that I don't tell AAPS) before exercise. I walk for 1 hour. I either didn't eat enough or the road was too steep and I ended in a negative IOB. The exercise results in insulin being more efficient. If AAPS tries to reinject the \"missing\" insulin, I'll end up in a hypo.\n\nI can't find even one reason to use negative IOB in the calculations.\n\nAAPS should alert the user that it is generating negative IOB but should never use IOB <0. \n\nIF IOB <0 THEN IOB=0 and FLAG _neg-IOB-alert_\n",
+ "comments": [
+  {
+   "id": 1037057591,
+   "user": "BRamine",
+   "created_at": "2022-02-12T08:11:16Z",
+   "body": "Another experience for me with -IOB :\n\nStarted TT for exercise, but ended up working more then intended. \nSituation is 0 COB, bg flat 100 with -0.45 IOB. TT ended and AAPS immediately started to compensate for the negative IOB and sent me straight to Hypo. \nI could have avoided that but TT again etc, but also the compensation for -IOB is completely not logic since like @robertrub said, -IOB = 0 IOB, if ∆ is not high, which in my case average ∆ was -1, can't find a reason to have insulin."
+  },
+  {
+   "id": 1037061034,
+   "user": "Philoul",
+   "created_at": "2022-02-12T08:21:04Z",
+   "body": "Negative IOB is required in oref algorithm.\r\nIf you want to disable it in wizard dialog, first disable COB (GA) in your screenshot..."
+  },
+  {
+   "id": 1037067628,
+   "user": "robertrub",
+   "created_at": "2022-02-12T08:39:21Z",
+   "body": "I don't know how negative IOB is used/useful in in OREF but the result is not good. We are obliged to cheat with high TT to prevent hypos which adds more neg IOB...\n\nI don't know what would change deactivating COB as it was 0 on my screen capture and unchecking it doesn't uncheck IOB. Once more, this is a cheat to counteract an incorrect reaction of AAPS."
+  },
+  {
+   "id": 1037076500,
+   "user": "chrisbev",
+   "created_at": "2022-02-12T09:03:51Z",
+   "body": "When autosens lowers to say 80% does anyone know what iob is calculated with respect to?  Is it 100% basal or 80% basal?  I've asked previously but got no replies as if 100% then changing to 80% could help, or could autosens say bleed iob another way (like cob decay) after a while?  For me I swing around plus or minus iob so 'think' settings are not too far off and autosens copes quite well with my variability but I quite often manually disconnect pump to 'help' -ve or 'prime' for +ve to hide from AAPS calculation. Just off the wall thoughts if rubbish as I don't know OREF workings please ignore."
+  },
+  {
+   "id": 1037088778,
+   "user": "BRamine",
+   "created_at": "2022-02-12T09:35:03Z",
+   "body": "> I don't know how negative IOB is used/useful in in OREF but the result is not good. We are obliged to cheat with high TT to prevent hypos which adds more neg IOB...\n> \n> I don't know what would change deactivating COB as it was 0 on my screen capture and unchecking it doesn't uncheck IOB. Once more, this is a cheat to counteract an incorrect reaction of AAPS.\n\nBy cheating we get even more -iob "
+  },
+  {
+   "id": 1037220302,
+   "user": "Philoul",
+   "created_at": "2022-02-12T13:04:32Z",
+   "body": "My answer was not to cheat, but to include or not negative IOB in wizard calculation. (after wizard you have a bolus so no more negative iob, it's just a way to limit risks of over dosing the bolus).\n\nNegative IOB is not bad when all your settings are good. If you look in detail all your IOB curves during a perfect night with a flat BG curve glued to your target. you will see that your IOB vary between positive and negative values.\nWithout negative value, the correction would be under estimated and the result worse than your perfect curve (you will get waves).\n\nYou always have insulin in your body, even with negative iob (just take a look on absolute iob that is always >0).\nNegative IOB signify lack of insulin compare to your basal profile.\n\nThe negative IOB is always the consequence of something else that is not correct (basal rate too high in your profile, sport, ...) and most of the time an hypo TT is the good way to correct the situation without cheating aaps."
+  },
+  {
+   "id": 1037222255,
+   "user": "vanelsberg",
+   "created_at": "2022-02-12T13:12:09Z",
+   "body": "_Another theoretical example (which I happen to experience regularly):_ \r\n\r\nAAPS tries to keep my BG at target using the **perfect profile**.\r\nThen my IC is a bit off (due to todays sensitivity) and maybe I was unable to calculate carbs absorbed exactly:\r\n\r\nAAPS/0Ref will attempt to compensate for this and keeping me at target (as designed)  by some 0-temping, \r\nIt does so perfectly, no problems until .... negative -IOB gets me in a hypo.\r\n\r\n_To clarify (its what i see happing when it occurs):_\r\nNegative -IOB results into an instable system that starts cycling between lows and -IOB about every 2-3 hours:\r\n```\r\n|---> Going below target -> 0-temp -> going to target with -IOB -> addtional insulin for -IOB -->--|\r\n^------------------<-------------------------------------------------------------------------<-----|\r\n```\r\nI can only break this cycle by taking carbs to get 2 points above target (target=5.0)\r\n\r\n* TT does not work here: it only worsens by generating more -IOB\r\n* Temporary loweri"
+  },
+  {
+   "id": 1037224130,
+   "user": "vanelsberg",
+   "created_at": "2022-02-12T13:19:55Z",
+   "body": "> You always have insulin in your body, even with negative iob (just take a look on absolute iob that is always >0).\r\n> Negative IOB signify lack of insulin compare to your basal profile.\r\n\r\nThat is just the point with -IOB. It is just a trick to calculate \"virual\" insulin that was expected but not administered.\r\nIt most certainly can be taken in account for oRef calculation. \r\nBut it should *not* be compensated for by actually injecting this \"virtual\" insulin just to get to absolute insulin at \"0\"\r\n\r\n"
+  },
+  {
+   "id": 1037229112,
+   "user": "vanelsberg",
+   "created_at": "2022-02-12T13:41:19Z",
+   "body": "There should not be any need for \"tricks\", T-Temps or \"Basal rate lowering\" to prevent something like oRef negative -IOB from causing problems. \r\n\r\nEven after 2 years on the subject -IOB I have not seen any (acceptable) explanation on the purpose of compensating for -IOB with real insulin\r\n"
+  },
+  {
+   "id": 1037256956,
+   "user": "swissalpine",
+   "created_at": "2022-02-12T15:25:34Z",
+   "body": "I think you have to separate two things: Showing an insulin level below the actual basal level. This is where negative IOB makes sense and is very helpful information. Negative insulin (understood as a deviation from what the basal rate would have given) must exist and must be possible and must be enabled by the algorithm. This is a binse.\r\n\r\nThe \"enforced\" filling of the negative IOB as soon as an opportunity comes up (positive trend, calculator ...) has no logic in my eyes. Because the available insulin quantity (even if it is IOB negative), is exactly correct at this time and was also exactly so initially controlled by the algorithm! So why correct this \"correct\" amount of insulin on occasion incorrectly? ;-)\r\nThis is exactly why I have to set up automations, set Hypo-TT etc., in order to moderate this, in my eyes, usually not reasonable amount of insulin.\r\n\r\nAnd more fundamentally: I hope that AAPS will soon say goodbye to OREF and become independent.  There is so much developer po"
+  }
+ ]
+}

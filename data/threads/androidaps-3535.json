@@ -1,0 +1,75 @@
+{
+ "id": 2665783268,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3535,
+ "title": "[Dev 3.3.0-dev-d] Semi-tranparent dots mess up the glucose plot",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3535",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-11-17T11:50:09Z",
+ "closed_at": "2024-12-05T16:10:35Z",
+ "comment_count": 25,
+ "body": "Using version 3.3.0-dev-d with xdrip-G7 as data source and average smoothing ON, some datapoints on the BG plot appear semi transparent, but in a kind of alternate way - this just complicates the graph...\r\n![Screenshot_20241117_134312_AAPS](https://github.com/user-attachments/assets/f5c007f3-5409-4646-9686-d94ae21c8a7b)\r\n",
+ "comments": [
+  {
+   "id": 2481401191,
+   "user": "yhonatanb20",
+   "created_at": "2024-11-17T17:53:51Z",
+   "body": "I mean, look, this looks funny, right?\r\n![Screenshot_20241117_195232_AAPS](https://github.com/user-attachments/assets/45784116-2d0c-4956-b0f5-70392baa2b13)\r\n"
+  },
+  {
+   "id": 2481402173,
+   "user": "parapenT1sta",
+   "created_at": "2024-11-17T17:56:26Z",
+   "body": "Try with the latest commit: https://github.com/nightscout/AndroidAPS/commit/4373ecdde4a0fc3aaa3b74ae1b9da6a769007a4e"
+  },
+  {
+   "id": 2481439423,
+   "user": "yhonatanb20",
+   "created_at": "2024-11-17T19:24:35Z",
+   "body": "Thanks @parapenT1sta, installed latest dev, still facing same issue"
+  },
+  {
+   "id": 2482202483,
+   "user": "yhonatanb20",
+   "created_at": "2024-11-18T07:59:36Z",
+   "body": "@MilosKozak was commit 4373ecdde4a0fc3aaa3b74ae1b9da6a769007a4e meant to fix this issue?"
+  },
+  {
+   "id": 2482235518,
+   "user": "MilosKozak",
+   "created_at": "2024-11-18T08:16:31Z",
+   "body": "Transparent means recalculated gap"
+  },
+  {
+   "id": 2482245221,
+   "user": "yhonatanb20",
+   "created_at": "2024-11-18T08:21:27Z",
+   "body": "So I suspected. But when using average smoothing half of the values are recalculated, this makes visualization very messy:\r\n![Screenshot_20241118_101841_AAPS](https://github.com/user-attachments/assets/4e9a025a-d015-4313-9dd2-c81d855badb8)\r\nKnowing which values are recalculated is theoretically valuable, but practically it just makes the graph much less readable..."
+  },
+  {
+   "id": 2482250657,
+   "user": "MilosKozak",
+   "created_at": "2024-11-18T08:23:52Z",
+   "body": "well you should focus on why do you have so many gaps. this should be not common. for most people it's rare"
+  },
+  {
+   "id": 2482254741,
+   "user": "MilosKozak",
+   "created_at": "2024-11-18T08:25:52Z",
+   "body": "because there are original values visible on top of recalculated, expecting they are backfilled later"
+  },
+  {
+   "id": 2482269168,
+   "user": "yhonatanb20",
+   "created_at": "2024-11-18T08:32:45Z",
+   "body": "> well you should focus on why do you have so many gaps. this should be not common. for most people it's rare\r\n\r\nThese are not gaps in the readings, this results from the smoothing algorithms. I use Xdrip + G7, and \"Average Smoothing or Exponential Smoothing MUST be enabled for meaningful use of the G7 / ONE+ values.\" It is my understanding that this way inevitably many values will be \"smoothed\". Most values were recalculated by the native BYODA algorithm back on G6, right? But this did not affect visualization in AAPS because it wasn't an AAPS smoothing plugin, and I don't feel I lost valuable information there because of all points being opaque."
+  },
+  {
+   "id": 2482283462,
+   "user": "MilosKozak",
+   "created_at": "2024-11-18T08:39:38Z",
+   "body": "![image](https://github.com/user-attachments/assets/eccdbd5f-412c-48dd-9372-1f5a84746032)\r\nAt time of receiving this value, previous were missing. Otherwise it would be not transparent"
+  }
+ ]
+}

@@ -1,0 +1,78 @@
+{
+ "id": 340966912,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 504,
+ "title": "Add support for Medtrum A6 CGM",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/504",
+ "state": "closed",
+ "labels": [
+  "enhancement",
+  "device-medtrum"
+ ],
+ "created_at": "2018-07-13T10:29:00Z",
+ "closed_at": "2021-08-07T02:09:40Z",
+ "comment_count": 62,
+ "body": "This work is in progress now.\r\n\r\nThis ticket replaces: https://github.com/NightscoutFoundation/xDrip/issues/408\r\n\r\n@kimbersdiabetic @dimis28 @tim2000s @sulkaharo if you know of any interested parties who would be able to test the support when it is ready, it would be great if they could make themselves known here.",
+ "comments": [
+  {
+   "id": 405105643,
+   "user": "Menor3",
+   "created_at": "2018-07-15T17:28:29Z",
+   "body": "I am down to test it"
+  },
+  {
+   "id": 405256956,
+   "user": "StuArnold",
+   "created_at": "2018-07-16T14:00:13Z",
+   "body": "My daughter should be getting a Medtrum in the next few weeks. If it happens will be interested and happy to test.\r\n\r\n "
+  },
+  {
+   "id": 405956287,
+   "user": "jamorham",
+   "created_at": "2018-07-18T14:43:53Z",
+   "body": "I am making good progress with this. I will let you know when I have anything to test."
+  },
+  {
+   "id": 405960194,
+   "user": "Menor3",
+   "created_at": "2018-07-18T14:54:17Z",
+   "body": "Nice one, can't wait to test it out. The medtrum application is pretty bad and it drains the battery like CRAZY."
+  },
+  {
+   "id": 406278029,
+   "user": "jamorham",
+   "created_at": "2018-07-19T13:34:46Z",
+   "body": "Ok, I think I have a lot of stuff working now. I'm getting data from the sensor. We have the option to use the A6 native algorithm or the xDrip algorithm. \r\n\r\nI'm going to make it an option which to show as the primary number and then plot the alternate algorithm as a trace behind it so we can work out which may be the most useful. There may need some tuning to work properly with xDrip calibration algorithm which as a lot of dex style assumptions in it."
+  },
+  {
+   "id": 406340605,
+   "user": "jamorham",
+   "created_at": "2018-07-19T16:40:48Z",
+   "body": "Okay the July 19th nightly contains support for the Medtrum A6. Its about 2000+ lines of code so far!\r\n\r\nTo get it to work you should select Medtrum A6 in the hardware data source settings section. Then use `Bluetooth Scan` to identify the A6 transmitter. It isn't always discoverable so you often have to keep clicking scan until it shows up. If its not attached to your body then pop it in the charging doc and after a few seconds it should be visible.  When you see it click on it to select it.\r\n\r\nNow select `Start Sensor` in xDrip (assuming it is connected to a sensor) and you should start to get it gathering data. Use the `System Status` menu item and the `Medtrum` tab to see what the collector is doing.\r\n\r\nOnce you have calibrated it then you can also go back to the `Settings` page and below the `Data Source` you can choose to use either the native algorithm of the A6 or the xDrip algorithm on the raw data. I am very interested to know whether xDrip algorithm works successfully with i"
+  },
+  {
+   "id": 406383738,
+   "user": "Menor3",
+   "created_at": "2018-07-19T19:11:20Z",
+   "body": "Where exactly I can download this new version?"
+  },
+  {
+   "id": 406404710,
+   "user": "jamorham",
+   "created_at": "2018-07-19T20:30:50Z",
+   "body": "@Menor3 switch to the Nightly update channel, see instructions here: https://github.com/NightscoutFoundation/xDrip/wiki/How-to-get-the-Nightlies-on-Automatic-Update"
+  },
+  {
+   "id": 406579945,
+   "user": "Menor3",
+   "created_at": "2018-07-20T12:00:59Z",
+   "body": "Do you think that having xdrip and easysense app open at the same time may cause the transmitter to lost the signal, so I have to restart it?"
+  },
+  {
+   "id": 406598563,
+   "user": "jamorham",
+   "created_at": "2018-07-20T13:20:14Z",
+   "body": "I think there is a very strong chance that the official app can interfere. You can try force stopping it from the android system settings for apps and see if that can temporarily stop it running while you test xDrip. "
+  }
+ ]
+}
