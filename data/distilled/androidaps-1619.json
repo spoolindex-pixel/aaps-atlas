@@ -1,0 +1,20 @@
+{
+ "issue_id": 1619,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/1619",
+ "title": "[DEV] Combo: Cancelled TBR alarms",
+ "symptom": "Frequent cancelled TBR alarms on the Combo pump, occurring in the middle of pump communication, requiring manual confirmation on the pump. Alarms can occur multiple times a day or even five in one hour.",
+ "cause": "The refactoring to AAPSLogger changed the log level of 'ruffy says' logging from trace (inactive by default) to debug, enabling verbose logging that causes a timing issue within RuffyScripter, leading to the cancelled TBR alarms.",
+ "fix": "Remove the aapsLogger.debug lines ('Ruffy says ...') in RuffyScripter.java, as done in PR #1688.",
+ "settings_changed": [],
+ "devices": [
+  "Combo"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "Ruffy",
+  "Combo"
+ ],
+ "confidence": "high",
+ "evidence_quote": "The change causing the issue is that previously the \"ruffy says\" logging was using the _trace_ level, which was not active by default. Since AAPSLogger has no _trace_ level, the refactoring changed it to _debug_, thereby enabling rather verbose logging. The amount of added logging then apparently causes the issue. I've opened PR #1688, which simply removes those logging calls, which aren't useful to be enabled all the time."
+}

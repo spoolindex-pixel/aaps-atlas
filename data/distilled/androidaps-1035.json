@@ -1,0 +1,21 @@
+{
+ "issue_id": 1035,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/1035",
+ "title": "[3.0-beta9] Automation Disconnect pump entries 2/m?",
+ "symptom": "In the Automation tab, when the loop has the 'Disconnect pump' case, a large number of 'Disconnected' and 'Loop disabled' lines appear, about 2 per minute. Also in 'Suspend loop' mode, many 'Loop is disabled' lines appear.",
+ "cause": "The 'Loop disabled' lines appear every minute because the automation schedule runs every minute, and when the loop is disabled, automation rules are not processed. Additionally, there are many triggers (data changes) leading to automation loop runs, so it can be more often than 1 minute, hence a 5-minute time limit per rule.",
+ "fix": "No fix needed; it is by design. The automation schedule runs every minute, and each rule has a minimum 5-minute interval between runs.",
+ "settings_changed": [],
+ "devices": [
+  "FSL2 Patched LL",
+  "xDrip"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "patched libre",
+  "xDrip"
+ ],
+ "confidence": "high",
+ "evidence_quote": "if loop is disabled automation rules are not processed and 'Loop disabled' appear in automation log every minute (1 minute is automation schedule). this is by desing"
+}

@@ -1,0 +1,19 @@
+{
+ "issue_id": 2530,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/2530",
+ "title": "Bolus given, but not taken into account",
+ "symptom": "SMBs and possibly whole meal boluses are being injected, but do not appear in the treatments history, nor are they added to IOB, which results in an endless loop of pumping in more and more insulin. In the combo tab the correct data is shown as 'last bolus ...', TBR are shown correctly everywhere. Seems to be like that since starting objective 9. Occurs in 3.0.0.2 and persists after updating to 3.1.0.3.",
+ "cause": "According to the logs, the pump was changed at 04.05.23, ~23:02. The combo pump is identified by the MAC address which changed from eKxys3bvBxs (???) to 00:0E:2F:69:C3:6D. To avoid importing boluses all boluses before the date of a pump switch are ignored. The first SMB (0.9) was incorrectly NOT added to treatments.",
+ "fix": "Updating to 3.2.0.2 and switching to the comboV2 driver resolved the issue. The user re-enabled all SMB options and encountered no problems regarding SMB or bolus history, all SMBs seem to be listed under 'Treatments', and TDD did not increase.",
+ "settings_changed": [],
+ "devices": [
+  "Accu Chek Spirit Combo"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "combov2"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "Updated to 3.2.0.2 and re-enabled all SMB options. Also switched to comboV2 driver. Encountered no problems regarding SMB or bolus history, all SMBs seem to be listed under \"Treatments\". TDD did also not increase."
+}

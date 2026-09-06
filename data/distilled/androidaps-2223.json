@@ -1,0 +1,20 @@
+{
+ "issue_id": 2223,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/2223",
+ "title": "[DEV] Crash loop when xDrip battery status of G6 is available in NS",
+ "symptom": "AAPS comes in a crash loop, seems to be caused by battery status from xDrip in Nightscout. The stacktrace shows a NumberFormatException for input string: \"6 days (voltage: 308/289)\".",
+ "cause": "The bug is in xDrip's NightscoutBatteryDevice.java, caused by a commit that produces invalid battery strings like \"6 days (voltage: 308/289)\" which AAPS tries to parse as a number, leading to a NumberFormatException.",
+ "fix": "A workaround was added in AAPS to ignore devicestatus entries with invalid data. The fix was implemented in a commit and confirmed to work.",
+ "settings_changed": [],
+ "devices": [
+  "G6 Transmitter"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "xDrip",
+  "Nightscout"
+ ],
+ "confidence": "high",
+ "evidence_quote": "The bug is [here in xDrip](https://github.com/NightscoutFoundation/xDrip/blob/master/app/src/main/java/com/eveningoutpost/dexdrip/UtilityModels/NightscoutBatteryDevice.java#L126), caused by [this commit](https://github.com/NightscoutFoundation/xDrip/commit/92956f73f49dc199e2539ba055ec0d647876b91e)."
+}

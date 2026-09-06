@@ -1,0 +1,19 @@
+{
+ "issue_id": 3273,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/3273",
+ "title": "Bluetooth may be disabled by airplane mode",
+ "symptom": "When airplane mode is enabled on Android 14+ while Bluetooth and WiFi remain on, xDrip+ stops collecting data if Bluetooth connection is lost and the BT watchdog tries to reconnect but fails due to airplane mode being enabled. There is an xdrip event log entry stating 'Not setting Bluetooth to state: true due to airplane mode being enabled'.",
+ "cause": "The issue arises from xDrip's BT watchdog process attempting to reconnect Bluetooth while airplane mode is enabled, which prevents the Bluetooth toggle from succeeding, even though Android allows Bluetooth to remain on during airplane mode.",
+ "fix": "The issue was addressed by the xDrip release 2024.01.05, which allows Bluetooth to be automatically turned on even when airplane mode is enabled, as confirmed by a preliminary test.",
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [
+  "Android 14+"
+ ],
+ "driver_tags": [
+  "BT watchdog"
+ ],
+ "confidence": "high",
+ "evidence_quote": "Preliminary test is positive. I enabled airplane mode and then turned off BT. Waited until the next collection cycle and BT was auto turned on and the data came through. Yes! I suspect that this is a good fix."
+}
