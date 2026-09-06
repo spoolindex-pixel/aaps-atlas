@@ -1,0 +1,21 @@
+{
+ "issue_id": 2979,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/2979",
+ "title": "[3.2.0.1] AAPSClient crash because of VirtualPump driver on NS sync",
+ "symptom": "AAPSClient crashes on both user's and wife's phones after about a day of working. Logs show pump driver error forcing app to exit. The crash occurs when receiving a devicestatus record from Nightscout.",
+ "cause": "A broken devicestatus record added to the devicestatus collection forces both AAPS and AAPSClient to crash on receiving it from NS. The record has default values in all fields, causing a JSON parsing error: Expected BEGIN_OBJECT but was STRING at path $[26].openaps.",
+ "fix": "The fix is a commit referenced by MilosKozak: https://github.com/nightscout/AndroidAPS/commit/4dde47bc44562d5082516ca65296b92d318b7773. The thread does not describe the exact change, but it is the resolution.",
+ "settings_changed": [],
+ "devices": [
+  "Accu-Chek Combo"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "VirtualPump",
+  "NSClient v1",
+  "WS On"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "ok, got it - somehow added broken record to `devicestatus` collection - this forces both aaps/aapsclient to crash on receiving it from NS"
+}

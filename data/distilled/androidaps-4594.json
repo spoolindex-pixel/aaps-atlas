@@ -1,0 +1,22 @@
+{
+ "issue_id": 4594,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/4594",
+ "title": "Safety issue! Medtrum Nano pump (on-body) was reported falling back to priming stage after activation failed.",
+ "symptom": "At least 2 users reported a situation where the Medtrum Nano, while already on body with needle pressed, fell back to priming stage, administering full priming insulin (up to 10 Units). One user experienced severe hypoglycemia with glucose dropping from 180 to 20 mg/dL.",
+ "cause": "The root cause is a combination of two issues: (1) a BLE disconnect during ATTACH_PATCH causes the pump state to regress from PRIMED to FILLED, and (2) the retry activation flow in MedtrumRetryActivationConnectFragment.kt line 39 force moves to PRIME when it sees FILLED state, leading to re-priming while the patch is already on body.",
+ "fix": "The fix is a commit referenced by MilosKozak: https://github.com/nightscout/AndroidAPS/commit/66baca4dc1772deb4661d1f8861d5b98fcf4934f. The thread does not specify the exact code changes.",
+ "settings_changed": [],
+ "devices": [
+  "Medtrum Nano",
+  "Poco X3 NFC"
+ ],
+ "android_versions": [
+  "Android 12"
+ ],
+ "driver_tags": [
+  "Medtrum"
+ ],
+ "confidence": "high",
+ "evidence_quote": "When BLE disconnected at 06:20:24 and reconnected at 06:20:28, the `SynchronizePacket` reported the pump state as `FILLED` instead of `EJECTED`/`PRIMED`. This caused the internal `SetupStep` to regress from `PRIMED` back to `FILLED`, making all subsequent activation attempts fail."
+}

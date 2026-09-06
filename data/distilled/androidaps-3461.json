@@ -1,0 +1,24 @@
+{
+ "issue_id": 3461,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/3461",
+ "title": "PR3487 Unattended settings export.",
+ "symptom": "The issue describes a feature request to enable unattended settings exports in AAPS, which currently require manual entry of the master password for encryption. The goal is to allow automatic exports without user interaction, such as scheduled exports via automation or after activating pumps.",
+ "cause": null,
+ "fix": "The thread describes a proposed implementation: adding an option in maintenance settings to enable/disable unattended exports. When enabled, the master password is securely stored encrypted on the phone's Android DataStore, with the encryption key protected by the Android KeyStore. The password expires after 4 weeks with a 1-week grace period. The feature is implemented via a new automation for scheduling exports. The PR was merged with dev.",
+ "settings_changed": [],
+ "devices": [
+  "Omnipod EROS",
+  "Omnipod DASH",
+  "Metrum"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "automation",
+  "maintenance settings",
+  "Android DataStore",
+  "Android KeyStore"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "When the \"unattended exports\" option is enabled in maintenance preferences, the entered password is encrypted and securely stored on the user's phone (not in AAPS). Subsequent exports will no longer require the user to enter the master password until it expires or is reset."
+}

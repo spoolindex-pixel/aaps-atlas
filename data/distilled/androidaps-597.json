@@ -1,0 +1,17 @@
+{
+ "issue_id": 597,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/597",
+ "title": "[2.8.2.2-dev] pump commands not/ delayed executed",
+ "symptom": "Pump commands such as SMBs and temp basals were not given as fast as expected, or not at all. The loop did not refresh with bg change, and there was a delay before connection was established, resulting in an annoying overlay 'waiting for' message.",
+ "cause": "The issue was related to time synchronization. The Dana RS pump with protocol == 5 was capable of setting time with seconds, which was not expected, causing the delay.",
+ "fix": "Fixed by commit ad98bcec2eca55c25f06eb0dd123ce33081f38a9. The fix addressed the time synchronization issue.",
+ "settings_changed": [],
+ "devices": [
+  "Dana RS"
+ ],
+ "android_versions": [],
+ "driver_tags": [],
+ "confidence": "high",
+ "evidence_quote": "Fixed by https://github.com/nightscout/AndroidAPS/commit/ad98bcec2eca55c25f06eb0dd123ce33081f38a9 Interresting issue related to time synchronization. I thought only RS with protocol >= 6 can set time with seconds but it looks like your RS with protocol == 5 is capable of this too"
+}

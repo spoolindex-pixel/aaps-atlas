@@ -1,0 +1,23 @@
+{
+ "issue_id": 2490,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/2490",
+ "title": "AndroidAPS doesn't handle backdated profile switches correctly",
+ "symptom": "The Profile Switch dialog has an Event Time field, but AAPS ignores it; the profile switch event always shows up on the main graph at the time entered, and the different values in the profile aren't used when recalculating IOB, COB, etc.",
+ "cause": "AAPS distinguishes between Profile Switch (user intent) and Profile change (executed by pump), and uses the time of the effective profile change for calculations, not the user-entered event time. This is a deliberate design choice.",
+ "fix": "No fix provided; maintainers suggest that if needed, the user should implement it in a private version and change the version to something like 3.2.0-dev-custom.",
+ "settings_changed": [],
+ "devices": [
+  "Omnipod Dash"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "profile switch",
+  "profile change",
+  "EffectiveProfileSwitch",
+  "IOB",
+  "COB"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "doing such things would make the code very complicated, behavior would not be easy to understand by common people and would add more possible points of wrong use of AAPS. if you need it add it to your private version. do not forget to change version to something like 3.2.0-dev-custom"
+}

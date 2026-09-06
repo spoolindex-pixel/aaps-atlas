@@ -1,0 +1,18 @@
+{
+ "issue_id": 3396,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/3396",
+ "title": "problem connecting to nightscout on AAPS 3.2.0.4",
+ "symptom": "Connecting to Nightscout 15.0.2 (hosted inside Home Assistant as a Docker image) gives an error message '401 - Missing or bad access token or JWT'. The same server and token connect fine with NSClient 3.1.0.3.",
+ "cause": "The issue is that using NSClient v3 requires access tokens generated in Nightscout admin tools, and the tokens must have admin access. The user was using tokens with v3 but still got a 401 error, possibly due to token permissions.",
+ "fix": "Use NSClient v1 instead of v3, which uses the API SECRET as in version 3.1.0.3. Alternatively, ensure tokens generated for v3 have admin access.",
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [
+  "nsclientv1",
+  "nsclientv3"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "If you want to use NSclientV3 you need to create access tokens in Nightscout. This is done in NS admin tools. If you use NSClientv1 you can use API SECRET as used in 3.1.0.3."
+}

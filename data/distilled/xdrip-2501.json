@@ -1,0 +1,18 @@
+{
+ "issue_id": 2501,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/2501",
+ "title": "xDrip produces incorrect battery data in Nightscout devicestatus uploader JSON object",
+ "symptom": "xDrip produces a battery value like \"50 days (voltage: 285/275)\" in the Nightscout devicestatus uploader JSON object, but the Nightscout API expects battery to be an integer. This type mismatch causes AndroidAPS to crash when its NSClient BG source plugin reads the devicestatus objects.",
+ "cause": "The code in NightscoutBatteryDevice.java produces a battery value as a string with days and voltage, which does not match the integer type expected by the Nightscout API.",
+ "fix": "The issue was not fixed in xDrip; instead, a workaround was added to AndroidAPS. The thread does not state a fix in xDrip.",
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [
+  "devicestatus",
+  "uploader"
+ ],
+ "confidence": "low",
+ "evidence_quote": "This is very clearly a bug, and a well-reported one at that."
+}

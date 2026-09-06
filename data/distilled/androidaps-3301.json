@@ -1,0 +1,15 @@
+{
+ "issue_id": 3301,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/3301",
+ "title": "3.3.0-dev Build failure:  items queued for execution but none of them can be started",
+ "symptom": "Android Studio 'Rebuild project' fails to execute with error 'Unable to make progress running work. There are items queued for execution but none of them can be started'. Other build actions like Make Project and Generate signed bundle/APK succeed.",
+ "cause": "The problem is local to the user's Android Studio installation, specifically related to building test classes during rebuild. Upgrading Android Studio resolved it.",
+ "fix": "Upgrade Android Studio to Jellyfish | 2023.3.1 (Build #AI-233.14808.21.2331.11709847, built on April 12, 2024). A workaround is to add 'gradle.startParameter.excludedTaskNames.addAll(listOf(\":buildSrc:testClasses\"))' to build.gradle.kts.",
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [],
+ "confidence": "medium",
+ "evidence_quote": "Upgrading to Android Studio Jellyfish | 2023.3.1 (Build #AI-233.14808.21.2331.11709847, built on April 12, 2024) Solved my problem."
+}

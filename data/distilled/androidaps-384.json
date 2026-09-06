@@ -1,0 +1,20 @@
+{
+ "issue_id": 384,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/384",
+ "title": "Pod fault 049 when AAPS tries set a zero temp basal and a time change event has just occured",
+ "symptom": "AAPS 2.8.2 suddenly reports pod fault 049 (INSULIN_DELIVERY_COMMAND_ERROR) and the pod is lost. The error occurs when AAPS sets a long zero temp basal, and during that period a time change event occurs; when the zero temp basal expires, AAPS tries to set a new temp basal but fails with pod fault 49.",
+ "cause": "The code in OmnipodPumpPlugin.timezoneOrDSTChanged ignores time change events that are not DST or time zone changes, so the pod's time is not updated when the phone time changes (e.g., manual time adjustment). This leads to a pod fault when a zero temp basal expires after such a time change.",
+ "fix": "Remove the code that prevents the pod time from being updated when a time change event is received and the time change is not a DST or time zone change, so the pod time is always updated when the phone time is updated. A patch (always_update_podtime.patch.zip) was applied and worked for 7 months with only one pod fault. Later, a PR (nightscout/AndroidAPS#726) was proposed to update time only if the last event was more than 24 hours ago.",
+ "settings_changed": [],
+ "devices": [
+  "Omnipod"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "omnipod",
+  "time change event"
+ ],
+ "confidence": "high",
+ "evidence_quote": "I removed the code that prevents the time in the pod from beeing updated when a time change event is received and the time change is not a DST change or a time zone change. This means that the time on the pod is now allways updated when the time on the phone is updated."
+}

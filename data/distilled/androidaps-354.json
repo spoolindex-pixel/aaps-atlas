@@ -1,0 +1,18 @@
+{
+ "issue_id": 354,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/354",
+ "title": "NSClient 2.8.2 crashes during start",
+ "symptom": "NSClient 2.8.2 crashes a few seconds after receiving first values from Nightscout. The app disappears after showing the Android APS logo, and the notification shows 'Getting values from Nightscout'. The crash is caused by a Null pointer exception in PumpDescription.java SetPumpDescription Line 108, where pumpCapability is null.",
+ "cause": "The thread suggests that the crash is caused by a null pumpCapability when PumpType is instantiated as MDI, which has null pumpCapability. The user found that the pump type was MDI instead of GenericAAPS, likely because no pump is selected. However, the maintainer could not replicate the issue and the root cause is not definitively established.",
+ "fix": "The user managed to fix the crash by replacing the code for calling MDI with the code from GenericAAPS, but this is described as a quick and dirty hack, not a real solution. No official fix is provided in the thread.",
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [
+  "NSClient",
+  "XDrip"
+ ],
+ "confidence": "low",
+ "evidence_quote": "the crash was caused by a Null pointer exception in src\\main\\java\\info\\nightscout\\androidaps\\interfaces\\PumpDescription.java SetPumpDescription Line 108 the value of `pumpCapability` was null"
+}

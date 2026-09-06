@@ -1,0 +1,15 @@
+{
+ "issue_id": 4192,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/4192",
+ "title": "Preselection of hypo TT in carb UI",
+ "symptom": "When entering carbs while low, the carb UI preselects 'start hypo TT', which can cancel an existing activity TT with a higher and longer duration. This can lead to the target resetting to default and the loop giving too much insulin, causing a severe hypo.",
+ "cause": "The carb UI preselects 'start hypo TT' even when a higher and longer TT is already set, causing the hypo TT to override the activity TT.",
+ "fix": "The issue was fixed by a patch (PR #4339) that changes the logic so that hypo TT is not automatically selected when there is already a high TT > 100 mg/dl or 5.5 mmol/L with a duration longer than the preset hypo TT duration.",
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [],
+ "confidence": "high",
+ "evidence_quote": "When low, I think Hypo TT should automatically be selected when entering carbs, unless: There is already a high TT > 100 mg/dl or 5,5 mmol/L with a duration longer than preset Hypo TT duration."
+}

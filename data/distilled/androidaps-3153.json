@@ -1,0 +1,20 @@
+{
+ "issue_id": 3153,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/3153",
+ "title": "strange format of basal calculation",
+ "symptom": "The numbers in the basal calculation are displayed in a strange format when using Dynamic ISF (dynisf) and no smooth. OpenAPS SMB algorithm works fine. The issue occurs every time Dynamic ISF is activated, and it started after an execution of Autotune.",
+ "cause": "The ApsDynIsfAdjustmentFactor was reset to 0, which gave incorrect sensitivity values and 0 as TDD value. The root cause of why it was reset is unknown.",
+ "fix": "Setting a proper ApsDynIsfAdjustmentFactor value made the Dynamic ISF algorithm work as expected again.",
+ "settings_changed": [
+  "ApsDynIsfAdjustmentFactor → proper value"
+ ],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [
+  "dynisf",
+  "OpenAPS SMB"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "For some reason the ApsDynIsfAdjustmentFactor was reset to 0, which in turn gave incorrect sensitivity values and 0 as TDD value."
+}

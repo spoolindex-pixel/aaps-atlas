@@ -1,0 +1,17 @@
+{
+ "issue_id": 768,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/768",
+ "title": "[AAPS 3.0-beta1] Local Profile not shown",
+ "symptom": "When selecting the tab PROFILE, the local Profile is not shown in the Dropdown menu. Only the existing Nightscout profiles are shown in the Dropdown menu.",
+ "cause": "The issue is caused by having Nightscout profile sync enabled while also having local profiles in AAPS. The Nightscout profiles are synced to the profile, and the local profile is not shown because the sync is on. Also, importing old configuration rewrites profiles with old timestamps, so they are likely replaced by newer profiles in Nightscout.",
+ "fix": "Set sync ON and clean up profiles at one place. They will appear on the second place. Alternatively, disable the option 'Gespeicherte Profile abrufen' (retrieve saved profiles) and recreate the local profile. The issue was fixed by a commit.",
+ "settings_changed": [
+  "Gespeicherte Profile abrufen → off"
+ ],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [],
+ "confidence": "high",
+ "evidence_quote": "well you cannot keep different profiles in AAPS and NS and have NS sync turned ON. Set sync ON and clean up profile at one place. They will appear on second place"
+}

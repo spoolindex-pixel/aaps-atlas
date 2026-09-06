@@ -1,0 +1,17 @@
+{
+ "issue_id": 3845,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/3845",
+ "title": "Profile Change to < 100% ends in error „Basalwert wurde durch den kleinstmöglichen Wert ersetzt: Profilwechsel“",
+ "symptom": "In version 3.2, switching the profile to 80% works without trouble, but in the current version, profile changes to less than 100% result in an error message: 'Basalwert wurde durch den kleinstmöglichen Wert ersetzt: Profilwechsel'.",
+ "cause": "The profile contains a basal rate of 0.05, which is the minimum allowed value. When the profile is reduced to a percentage below 100%, the basal rate would go below the minimum, causing the error.",
+ "fix": "Change the basal rate in the profile from 0.05 to a higher value (e.g., 0.06 or 0.07) so that after percentage reduction it stays above the minimum. The user changed it to 0.06 and could then switch to 90%.",
+ "settings_changed": [
+  "basal rate → 0.06"
+ ],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [],
+ "confidence": "high",
+ "evidence_quote": "Basal rate can't be lower than 0,05. So I guess your profile contains a basal rate = 0,05, then you will see this error. You could try to set it to 0,07 and check what basal rate is sent to pump. Then you will be able to reduce it."
+}
