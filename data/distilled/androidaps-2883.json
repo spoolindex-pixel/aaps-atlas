@@ -1,0 +1,22 @@
+{
+ "issue_id": 2883,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/2883",
+ "title": "AAPS back-fills BG gaps with interpolated values (dangerous)",
+ "symptom": "After a sensor change and bad calibration, there is a gap between last and new BG values. AAPS fills the gap with interpolated values, which can show a rise instead of the actual fall, potentially leading to dangerous behavior. This happens even with smoothing disabled.",
+ "cause": "The gap filling behavior has been present since the first version of AAPS, but was not displayed in older versions. It is used for calculation purposes (e.g., COB calculation) and no BG is added to the actual data.",
+ "fix": "No fix was provided in the thread. The maintainer states that the behavior is intentional and time-proved, and that it is only for calculation purposes.",
+ "settings_changed": [],
+ "devices": [
+  "Dexcom G6",
+  "Dexcom G7"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "exponential smoothing",
+  "smoothing",
+  "interpolation"
+ ],
+ "confidence": "low",
+ "evidence_quote": "filling the gap was always there. in older versions this was not displayed without interpolation COB calculation would not be working"
+}

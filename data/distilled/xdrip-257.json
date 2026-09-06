@@ -1,0 +1,15 @@
+{
+ "issue_id": 257,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/257",
+ "title": "xDrip did not spoke the trend after activating the setting in last nigthly (05.01)",
+ "symptom": "After activating the setting 'bg_to_speech_trend', the trend is not spoken; only the glucose value is spoken (e.g., 'Calculated text: 102'). The user expects to hear the glucose value and the trend arrow.",
+ "cause": "In BgToSpeech.java, the trend is only added when mgdl is not used (i.e., only in mmol/L mode). The code places the trend addition inside an else clause that handles non-mgdl, so when mgdl is used, the trend is omitted.",
+ "fix": "Move the trend addition code to the end of the constructText method so it is added regardless of mgdl usage. Also, the fix for repeat twice was committed. The user also contributed a pull request for translation.",
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [],
+ "confidence": "high",
+ "evidence_quote": "In bgSpeach the constructtext is not right maintained, because the trend will be added only if not mgdl is used (so only in mol it will be add). I'll change that, and will also try to implement translation, and will made than a Pull request if ok for you."
+}

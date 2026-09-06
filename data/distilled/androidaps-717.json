@@ -1,0 +1,20 @@
+{
+ "issue_id": 717,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/717",
+ "title": "[Dev 2.8.2.5-dev] NSClient Full Sync Kills Nightscout?",
+ "symptom": "AndroidAPS 2.8.2.5-dev with Nightscout 14.2.3 crashes the Nightscout site on Heroku; it only works when NSClient is paused and after restarting dynos. The issue occurs even with xDrip Cloud Upload disabled. Later reports include queue numbers in NSClient (e.g., 341, 311,764) and errors like 'xhr poll error'.",
+ "cause": "The thread identifies that pressing the 'Full Sync' button in NSClient causes AndroidAPS to send a lot of information, crashing Nightscout. A clean installation resolves it temporarily, but the issue recurs after pressing Full Sync again.",
+ "fix": "Perform a clean installation of AndroidAPS: clear storage from AndroidAPS, then import settings after the first app start. This resolved the issue for the original reporter. Later, the issue was reported solved with AndroidAPS 3.0-beta1. For some, changing MongoDB Node.js version to 3.7 or later appeared to help temporarily.",
+ "settings_changed": [
+  "MongoDB Node.js version → 3.7 or later"
+ ],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [
+  "NSClient",
+  "Full Sync"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "I found the \"problem\". AndroidAPS was sending a \"lot\" of information and making my Nightscout crash, I cleared storage from AndroidAPS, and import my settings after the first app start and now the issue is solved."
+}

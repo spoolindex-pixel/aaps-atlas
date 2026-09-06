@@ -1,0 +1,22 @@
+{
+ "issue_id": 2514,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/2514",
+ "title": "moved from heroku to google fine but looking to find the data api",
+ "symptom": "After migrating from Heroku to Google Cloud, the user's Fitbit clock face (from pedantic avenger) requests a DATA API URL and fails with the new host. Another user reports that xDrip as follower gets 'NS entries download was not succesful:401 unautorized' when using the NS follower box.",
+ "cause": "The thread explains that Heroku did not impose a limit on outgoing bandwidth, but on Google Cloud, if outgoing bandwidth goes over 1GB/month, it will not be free. To minimize egress by default, the AUTH_DEFAULT_ROLES variable is set to 'denied', which blocks unauthenticated read access, causing devices like Fitbit and xDrip that do not use tokens to fail.",
+ "fix": "Change the Nightscout variable AUTH_DEFAULT_ROLES from 'denied' to 'readable' and restart the server. This is a workaround for devices that cannot use tokens. The thread also suggests using apps/devices that support tokens as the proper solution.",
+ "settings_changed": [
+  "AUTH_DEFAULT_ROLES → readable"
+ ],
+ "devices": [
+  "Fitbit"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "nightscout",
+  "xdrip"
+ ],
+ "confidence": "high",
+ "evidence_quote": "The variable name is the following. AUTH_DEFAULT_ROLES The value it is set to now on your system must be: denied If you want to try the experiment, change it to: readable"
+}

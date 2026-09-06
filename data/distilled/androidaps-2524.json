@@ -1,0 +1,19 @@
+{
+ "issue_id": 2524,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/2524",
+ "title": "[DEV] DASH: Temp basal cancelled/stopped by pod for unkown reason, AAPS History not updated",
+ "symptom": "A temp basal of 0 U/h for 600 minutes was set on an Omnipod DASH, but after about 4 hours and 15 minutes the pod stopped the temp basal and resumed its programmed basal rate, while AAPS still showed the temp basal as active. The pod's delivery status changed from TEMP_BASAL_ACTIVE to BASAL_ACTIVE, but AAPS history and status were not updated.",
+ "cause": "The thread does not definitively identify the root cause. It is suspected that the issue is related to how AAPS handles long-duration temp basals in manual mode (loop disabled), possibly due to a serialization or command handling problem. The user jbr7rr notes that Loop (iOS) had a similar problem and implemented a workaround.",
+ "fix": "A workaround was implemented in pull request #2531, which fixes the core issue so that all basal rates work for all TBR rates. No other fix is stated.",
+ "settings_changed": [],
+ "devices": [
+  "Dash"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "dash"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "Hey! I think the serialization is not the problem, as Loop (iOS) had the same problem, I implemented a work around for the core issue in https://github.com/nightscout/AndroidAPS/pull/2531 which has been tested exenstivly, and with that fix all basal rates works for all TBR rates"
+}

@@ -1,0 +1,21 @@
+{
+ "issue_id": 380,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/380",
+ "title": "Consistent REST-API problem",
+ "symptom": "Users are receiving consistent error messages (pop-up) on their Android smartphone when uploading to Nightscout via REST API. Some BG readings go through sporadically and laggy, and treatments do not show up in Nightscout.",
+ "cause": "The issue was caused by an Azure App Service deployment that affected Android apps with older HTTP clients, leading to connection failures. The specific cause was the site config setting \"http20Enabled\" being set to true, which caused problems with HTTP/2.",
+ "fix": "The workaround is to change the Azure site config setting \"http20Enabled\" to false via resources.azure.com, and optionally replace https with http in the REST API cloud upload URL in xDrip+, then restart the Azure site.",
+ "settings_changed": [
+  "http20Enabled → false"
+ ],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [
+  "rest api",
+  "nightscout",
+  "azure"
+ ],
+ "confidence": "high",
+ "evidence_quote": "Customers experiencing this issue can self-mitigate by updating the site config setting \"http20Enabled\" to false via resources.azure.com."
+}

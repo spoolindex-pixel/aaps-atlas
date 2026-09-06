@@ -1,0 +1,15 @@
+{
+ "issue_id": 811,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/811",
+ "title": "can't set alarms anymore",
+ "symptom": "Since returning to the master fork, the alarm list is empty with both nightlies from 23.02 and 04.03, and new alarms cannot be set. When trying to set an alert, a warning appears: 'Warning! No active Low Alert exists, without this there will be no alert on low glucose! Please add or enable a low alert.' and the list remains empty.",
+ "cause": "The thread identifies that the AlertType table is missing the column 'force_speaker', causing an SQLiteException when inserting a new alert. This is likely because AlertType.fixUpTable() is missing from IdempotentMigrations, so the schema isn't properly set up before attempts to write data.",
+ "fix": "The fix was to add AlertType.fixUpTable() to IdempotentMigrations, which was resolved in the March 7th nightly. The user confirmed it is working again after that update.",
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [],
+ "confidence": "high",
+ "evidence_quote": "I think `AlertType.fixUpTable()` must be missing from `IdempotentMigrations` so the schema isn't properly set up before attempts are made to write the data. I can add this for the next nightly."
+}

@@ -1,0 +1,20 @@
+{
+ "issue_id": 39,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/39",
+ "title": "Erratic xDrip battery estimates",
+ "symptom": "After updating the circuit to xBridge2 firmware with battery charge indicator resistors, the battery percentage readings are erratic: overnight it wouldn't charge above 40%, then depleted quickly to 20%, then jumped to 79% when plugged into a 1A charger, charged to 100% quickly, but dropped to 84% immediately after disconnecting.",
+ "cause": "The xBridge2 battery indication is not a truly accurate measurement of battery capacity; it is only an indication based on battery voltage, not current in/out. The circuit design and off-the-shelf components cannot provide accurate readings.",
+ "fix": "Use the Adafruit charger's red/green LED to know when charging is complete; do not remove the bridge from charging until the green LED is lit. The indication will then stay at 100% for a fair period. Under the current design, only a rough indication is possible.",
+ "settings_changed": [],
+ "devices": [
+  "xBridge2",
+  "Wixel"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "xBridge2"
+ ],
+ "confidence": "high",
+ "evidence_quote": "the xBridge2 battery indication is NOT a truly accurate measurement of battery capacity, it is only an indication.based on battery voltage, not a measurement based on current in/out like most mobile phones."
+}

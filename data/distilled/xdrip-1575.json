@@ -1,0 +1,23 @@
+{
+ "issue_id": 1575,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/1575",
+ "title": "G6 values discarded after transmitter change and warmup due to small time sync difference",
+ "symptom": "After changing the transmitter and starting a new sensor using the hardware receiver, after warmup the hardware receiver got results but xdrip+ showed no readings. The log showed values received but discarded as invalid, with messages like 'invalid timestamp comparison for transmitter id' and 'No sensor, ignoring this bg reading'.",
+ "cause": "The thread does not definitively establish a root cause. The reporter observed a time difference between the hardware receiver and phone (3 minutes) and suspected it, but later agreed the actual reason might be something else. Maintainers suggested it might be related to Firefly G6 connectivity issues or other overlooked problems.",
+ "fix": "The reporter found that correcting the time on the hardware receiver resolved the issue in that instance. However, the thread does not confirm a definitive fix; it suggests ensuring correct time on both devices and possibly restarting the collector if readings are missed.",
+ "settings_changed": [],
+ "devices": [
+  "G6"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "OB1 collector",
+  "native algorithm",
+  "minimize scanning",
+  "G6",
+  "allow OB1 initiate bonding"
+ ],
+ "confidence": "low",
+ "evidence_quote": "I then noticed a time difference between hardware receiver and smartphone of 3 minutes. I updated the time on the hardware receiver and soon started getting results."
+}

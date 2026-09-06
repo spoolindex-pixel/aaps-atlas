@@ -1,0 +1,19 @@
+{
+ "issue_id": 4360,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/4360",
+ "title": "Bug : Medtrum manual bolus progression window",
+ "symptom": "When using manual bolus with Medtrum Nano pump, the bolus progression window initially shows the amount injected with the last bolus/SMB, then after 1 second shows the actual bolus being delivered, and then disappears after a few seconds. Tapping the line at the bottom of the UI does not bring it back.",
+ "cause": "The issue is Medtrum-specific and comes from NotificationPacket::handleNormalBolus where at start of a new bolus as a first message is sent result of last bolus (bolusCompleted = true, bolusDelivered = size_of_last_bolus).",
+ "fix": "The fix is in PR #4364 which resets the Medtrum bolus progress to zero when starting a bolus. This was merged by MilosKozak.",
+ "settings_changed": [],
+ "devices": [
+  "Medtrum Nano"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "Medtrum"
+ ],
+ "confidence": "high",
+ "evidence_quote": "It's metrum specific and it comes from: `NotificationPacket::handleNormalBolus` where at start of a new bolus as a first message is sent result of last bolus ie: `bolusCompleted = true` `bolusDelivered = size_of_last_bolus`"
+}

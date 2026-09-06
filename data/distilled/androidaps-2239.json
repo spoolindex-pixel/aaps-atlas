@@ -1,0 +1,19 @@
+{
+ "issue_id": 2239,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/2239",
+ "title": "[EOPATCH2] unable to change profile",
+ "symptom": "User reports being unable to do a (temp) profile change on AAPS 3.1.0.3-dev-c-nscv3. Another user reports same problem with eoPatch: after initial pairing profile changes worked, but after about 2 hours the profile was unable to switch back from a 130% temp profile.",
+ "cause": "The pump does not accept profile change during active mode. Specifically, the function setNewBasalProfile returns early when a bolus is active, but also when a temp basal is active, which prevents profile changes.",
+ "fix": "The issue was fixed by a commit (0c833d087ba0bdd57824cfa92a3fa28eb7d5db0c). A workaround is to suspend the pump from the eopatch screen and re-enable it, which allows the driver to set the profile again.",
+ "settings_changed": [],
+ "devices": [
+  "eoPatch"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "eopatch"
+ ],
+ "confidence": "high",
+ "evidence_quote": "fixed by https://github.com/nightscout/AndroidAPS/commit/0c833d087ba0bdd57824cfa92a3fa28eb7d5db0c"
+}

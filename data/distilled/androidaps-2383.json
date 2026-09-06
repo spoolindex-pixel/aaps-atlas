@@ -1,0 +1,22 @@
+{
+ "issue_id": 2383,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/2383",
+ "title": "[3.1.0.3] NSClient synchronisation stops loop and is extemely slow",
+ "symptom": "NSClient upload queue has ~180k entries and after 4.5 hours only down to ~160k, then stagnates at ~90k. Restarting NSClient, AAPS, NS, or phone doesn't help. While NSClient is uploading, the loop stops working (manual runs show 'no APS selected').",
+ "cause": "The thread suggests a race condition or busy phone causing the loop to stop, but maintainer MilosKozak states it's not intended and is a result of busy phone, and that disabling broadcast will speed up the process. The exact root cause is not definitively established.",
+ "fix": "Disabling local broadcast and upload to NS in xDrip+ allowed uploading all data in a couple of hours. Also, pausing NSClient makes the loop work. MilosKozak suggests trying dev branch as sync has been improved, and mentions sync is new in 3.2.",
+ "settings_changed": [
+  "local broadcast → disabled",
+  "upload to NS in XDrip+ → disabled"
+ ],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [
+  "NSClient",
+  "xDrip+",
+  "local broadcast"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "This is unlikely, as deactivating the local broadcast and upload to NS in XDrip+ enabled us to upload all data in a couple of hours."
+}

@@ -1,0 +1,24 @@
+{
+ "issue_id": 3398,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/3398",
+ "title": "xDrip can show an overlap when switching hardware data source",
+ "symptom": "When switching the hardware data source from a G6 collector to Nightscout follower, xDrip shows overlapping readings (backfilled data overlaps with existing data). The overlap occurs when switching from G6 collector to Nightscout follower, but not when switching from Nightscout follower to G6 collector.",
+ "cause": "The overlap is caused by xDrip backfilling data for a time period that already has readings, even if the timestamps are not exactly the same. The backfill does not check for existing data in the same time period.",
+ "fix": "Starting with the xDrip Nightly release of July 17, 2024, xDrip will only backfill (G6 or G7) starting from the last existing reading. This avoids the possibility of an overlap. As of the 2025.03.23 release, this is fixed for G7 to G7 switch as well.",
+ "settings_changed": [],
+ "devices": [
+  "G6",
+  "G7",
+  "Dexcom One",
+  "One+"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "Nightscout follower",
+  "G6 collector",
+  "G7"
+ ],
+ "confidence": "high",
+ "evidence_quote": "Starting with the xDrip Nightly release of July 17, 2024, xDrip will only backfill (G6 or G7) starting from the last existing reading. This will avoid the possibility of an overlap."
+}
