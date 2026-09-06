@@ -1,0 +1,77 @@
+{
+ "id": 3974706027,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4566,
+ "title": "Feature Request: Ability to backfill to Nightscout",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4566",
+ "state": "closed",
+ "labels": [
+  "enhancement"
+ ],
+ "created_at": "2026-02-22T14:43:00Z",
+ "closed_at": "2026-03-11T14:09:31Z",
+ "comment_count": 14,
+ "body": "If Nightscout upload fails for any reason, it would help to be able to upload past data to fill gaps.  \n\nI use 3,4,0,0.  \nI switched the Nightscout site for an experiment to figure out if full synchronization synchronizes past data or not.\nWhen I switched back to the original Nightscout site, I had a gap about 40 minutes.  \nFull synchronization does not fill it.\n\nHow can I fill that gap?\n\nxDrip as a Nightscout uploader can backfill.  I hope we can add this ability to AAPS.",
+ "comments": [
+  {
+   "id": 3977164192,
+   "user": "MilosKozak",
+   "created_at": "2026-02-28T13:24:30Z",
+   "body": "with NSCv3 Fullsync uploads all data stored in AAPS database"
+  },
+  {
+   "id": 3977177997,
+   "user": "Navid200",
+   "created_at": "2026-02-28T13:36:54Z",
+   "body": "No, tests performed by me and @psonnera showed that it didn't:\n"
+  },
+  {
+   "id": 3977463946,
+   "user": "MilosKozak",
+   "created_at": "2026-02-28T17:29:19Z",
+   "body": "then I need logs covering whole window to find out, what's wrong"
+  },
+  {
+   "id": 3986562908,
+   "user": "psonnera",
+   "created_at": "2026-03-02T19:53:29Z",
+   "body": "@MilosKozak [AndroidAPS.zip](https://github.com/user-attachments/files/25693248/AndroidAPS.zip)\nThis is the upload back to Nightscout phase. Not sure it contains what you need, let me know and I'll redo it. Thank you."
+  },
+  {
+   "id": 4026800781,
+   "user": "psonnera",
+   "created_at": "2026-03-09T20:45:39Z",
+   "body": "[edited] @MilosKozak it's more complicated than I though I understood. And not as simple to fix than what I though neither. But the feature would be great to have. @Navid200 the issue we encountered is that AAPS has the first Nightscout server \"_id\" already populated in its database (this \"_id\" is created when AAPS successfully creates new data in Nightscout). For AAPS, data with a Nightscout \"_id\" don't need to be sync'd with Nightscout since they should be already present. And this is why it fails to upload to another Nightscout instance. Deleting the \"_id\" in AAPS might not generate duplicates in Nightscout if data is already present, but will generate them in AAPS if switching back and forth from one Nightscout instance to another one and re-doing full sync."
+  },
+  {
+   "id": 4034788747,
+   "user": "Navid200",
+   "created_at": "2026-03-10T22:11:09Z",
+   "body": "@psonnera There have been times I have disabled xDrip from uploading to Nightscout for one reason or another.  After I have re-enabled xDrip to upload to Nightscout, xDrip has no way of knowing that there are data that needs to be uploaded.\nxDrip maintains a queue if the phone has no way of uploading because it has no access to the internet.  In that case, it maintains a queue and as soon as internet is restored, xDrip uploads the queue.  But, if I disable xDrip from uploading to Nightscout, it does not maintain a queue.\n\nThis may seem like a flaw.  I don't think it is.  And to address this issue, there is  the ability to backfill from xDrip to Nightscout.  So, in a case like that, after I re-enable upload to Nightscout, I just need to use the xDrip's backfill utility, which for one day takes a few seconds and everything will be back to normal.\n\nI performed a test with AAPS in order to help someone who had asked a question.  I disabled AAPS from uploading to Nightscout.  After I re-enabled it, I faced the exact same problem.  The data for the one-hour period I had disabled Nightsocut in AAPS was not going to be uploaded to Nightscout.  And there is no backfill utility in AAPS for that as far as I know.\n\nHaving to run a full synchronization to address missing data for just one hour seems like an overkill.  Anyway, I would appreciate an explanation of how this is meant to be addressed in AAPS when someone intentionally has disabled xDrip for a short period.  How can they upload the missing data?  \nI understand you are suggesting a way to make synchronization to work.  But, I am not sure if that is what you believe what every user should do for full synchronization?"
+  },
+  {
+   "id": 4036741100,
+   "user": "psonnera",
+   "created_at": "2026-03-11T06:05:32Z",
+   "body": "@Navid200 the queuing system is also present in AAPS and backfill should happen when connection to Nightscout is restored. This is something else as queued items do not yet have a Nightscout _id and should upload. I have also seen this recently and that might be a bug. I need to capture logs and post them here.\nFull sync is usually the best way to keep AAPS with historical data when changing phone. Some users without Nightscout want this support and create a new Nightscout site to ease migration, and it doesn't fulfill their wish. This scenario doesn't match our experiments and seems more related to the normal backfilling question raised."
+  },
+  {
+   "id": 4037272370,
+   "user": "MilosKozak",
+   "created_at": "2026-03-11T08:05:07Z",
+   "body": "AAPS handles this properly.\nIt doesn't use queue but it has capability to track db changes. Internaly it stores last successful timestamp and on enable it does continue\nFull sync just reset timestamp to zero, so all records are processed again"
+  },
+  {
+   "id": 4039152846,
+   "user": "Navid200",
+   "created_at": "2026-03-11T13:17:55Z",
+   "body": "I never suggested that the queuing function did not exist in AAPS.  I was hoping to convey why having a manual backfill mechanism (which exists in xDrip in addition to the queue) makes sense for a time when the queue is not going to help.  If you disable Nightscout upload, xDrip does not maintain a queue.  I don't see why AAPS would.\n\nAnyway, looking at my Nightscout, I cannot find the gap.  I have forgotten exactly which day it happened.  Either full synchronization worked but took a very long time to show in Nightscout or I am not looking at the right day.  And I hate to intentionally create another gap by disabling Nightscout upload because I don't know for sure how to fill it."
+  },
+  {
+   "id": 4103793162,
+   "user": "psonnera",
+   "created_at": "2026-03-21T17:39:43Z",
+   "body": "@Navid200 changing phone it happened today that it did not upload to Nightscout due to mobile data configuration error. I was suprised to see the queuing backfill all data in AAPSClient but not in Nightscout. And in Nightscout reports (day to day) there was no gap. This is another Nightscout client bug as the main display uses a cached version of the server (database) that is not always updated to the server data. Restarting Nightscout showed data without interruption. This comment just in case we were talking about this problem and not AAPS capacity to backfill (in this case even without full sync)."
+  }
+ ]
+}

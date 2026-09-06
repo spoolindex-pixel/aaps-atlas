@@ -1,0 +1,45 @@
+{
+ "id": 1084067845,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1086,
+ "title": "Unexpected errors/retries during OmniPod DASH activation",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1086",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-12-19T10:45:23Z",
+ "closed_at": "2022-01-16T21:40:33Z",
+ "comment_count": 5,
+ "body": "AndroidAPS 2.8.2.18-dev\r\n**Build:** e14cdd7c2\r\n**Flavor:** Fullrelease\r\n**Phone:** Samsung Note 9 (Android 10)\r\n\r\n**Problem description**:\r\nThe phone never showed any problem activating DASH.\r\nThis time however I got 3 errors during activation. Activation continued successfully after retry on all errors. First one was about not seeing the Pod (needed 2 retries, second error complained about connection and service not found?)\r\n\r\n**Additional information**\r\nThe log files show only 2 exception (I am sure I needed to hit the 'retry' button 3 times?\r\n\r\n_09:32:31.387 [RxCachedThreadScheduler-88] E/PUMP: [DashInitializePodViewModel$doExecuteAction$1$1.invoke():66]: Error in Pod activation part 1\r\ninfo.nightscout.androidaps.plugins.pump.omnipod.dash.driver.comm.exceptions.FailedToConnectException: Failed to connect: 54:27:8D:44:1C:C6\r\n\r\n09:32:43.335 [RxCachedThreadScheduler-82] E/PUMP: [DashInitializePodViewModel$doExecuteAction$1$1.invoke():66]: Error in Pod activation part 1\r\ninfo.nightscout.androidaps.plugins.pump.omnipod.dash.driver.comm.exceptions.ConnectException: Service not found: 1a7e-4024-e3ed-4464-8b7e-751e03d0dc5f_\r\n\r\n**Repro:** N.a.\r\nSuspecting Pod or incidental BT problem causing this issue?\r\nWill double check and update here for results on next activation.\r\n\r\n**Log files:**\r\n[AndroidAPS_LOG_1639903053512.log.zip](https://github.com/nightscout/AndroidAPS/files/7740652/AndroidAPS_LOG_1639903053512.log.zip)\r\n\r\n",
+ "comments": [
+  {
+   "id": 997369689,
+   "user": "vanelsberg",
+   "created_at": "2021-12-19T10:47:10Z",
+   "body": "Proposing to ignore this issue for now, unless more problems are reported.\r\nWill monitor connection quality for this Pod and retest for a possible repro on next DASH activation.\r\n"
+  },
+  {
+   "id": 1000535351,
+   "user": "robertrub",
+   "created_at": "2021-12-23T21:42:34Z",
+   "body": "Error while activating my last DASH. All went well, DASH on body and only _send profil and insert canula_ needs to be done. I hear the pod ticking, needle insertion and an error on AAPS. I hit _retry_ and it finished the activation process. \r\nDidn't have time to screen capture or get logs :("
+  },
+  {
+   "id": 1001066057,
+   "user": "robertrub",
+   "created_at": "2021-12-25T19:44:31Z",
+   "body": "![Screenshot_20211225-203056_AndroidAPS](https://user-images.githubusercontent.com/76626474/147392459-61f1369b-b399-4b1f-ae54-35fd2392d9da.jpg)\r\nI opened another issue. I'm not sure if it is the same thing or not #1096 "
+  },
+  {
+   "id": 1002655060,
+   "user": "avereha",
+   "created_at": "2021-12-29T15:40:58Z",
+   "body": "Fixed the issue reported by @robertrub with https://github.com/nightscout/AndroidAPS/pull/1108"
+  },
+  {
+   "id": 1002809119,
+   "user": "vanelsberg",
+   "created_at": "2021-12-29T23:15:01Z",
+   "body": "> Will monitor connection quality for this Pod and retest for a possible repro on next DASH activation.\r\nFWIW: Have not seen the problem I reported at last 3 Pod activations.\r\n\r\n"
+  }
+ ]
+}

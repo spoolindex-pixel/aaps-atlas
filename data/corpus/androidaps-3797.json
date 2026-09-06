@@ -1,0 +1,87 @@
+{
+ "id": 2821416873,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3797,
+ "title": "[Bug 3.3.1.3] AAPSclient does not fetch data from NS",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3797",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-01-30T17:31:21Z",
+ "closed_at": "2025-05-14T12:59:02Z",
+ "comment_count": 12,
+ "body": "Happens really frequently (several times a day) : suddenly AAPSClient stops receiving data from NS. If I hit \"deliver now\", I receive the data at once. I have tried with or without websockets with same result.\n\nIt started happening on 3.3.1.3 (my previous version was 3.3.1.0). My phone has proper internet access, because every time I see the last value displayed correctly on xdrip.\n\n[AndroidAPS.log](https://github.com/user-attachments/files/18606533/AndroidAPS.log)\n\nIt can be seen in this log several time during the day, from : \n08:03 to 08:21, \n08:49 to 09:04,\n09:32 to 09:51,\n14:17 to 14:35,\n14:38 to 15:02,\n15:03 to 15:47,\n15:48 to 16:30, \n16:59 to 17:15,\n17,43 to 17:54.\n",
+ "comments": [
+  {
+   "id": 2625266874,
+   "user": "olorinmaia",
+   "created_at": "2025-01-30T18:29:41Z",
+   "body": "I'm guessing you are using NSClientv3? \n\nCould you try on your AAPSClient, go to maintenance and reset DB. Exit app. And then do a full sync. And see if you experience it again? "
+  },
+  {
+   "id": 2625275800,
+   "user": "emilisev",
+   "created_at": "2025-01-30T18:33:35Z",
+   "body": "Yes NS v3. Thanks for the suggestion, I've tried that and will update here."
+  },
+  {
+   "id": 2626831545,
+   "user": "emilisev",
+   "created_at": "2025-01-31T10:10:21Z",
+   "body": "Unfortunately it didn't solve the issue."
+  },
+  {
+   "id": 2686832266,
+   "user": "fedemotta",
+   "created_at": "2025-02-27T04:26:26Z",
+   "body": "I am with the same issue. Same version."
+  },
+  {
+   "id": 2692349263,
+   "user": "MilosKozak",
+   "created_at": "2025-03-01T18:10:51Z",
+   "body": "Log is strange. Like AAPS is running twice. I'd restart AAPS or phone "
+  },
+  {
+   "id": 2692770840,
+   "user": "emilisev",
+   "created_at": "2025-03-02T15:01:02Z",
+   "body": "The issue was solved on my end after a factory reset of my phone (for another reason, I didn't expect it would solve this).\nI suspect that it could be due to the synchronization to the time server disabled on my phone, and being a few minutes off, but I have not verified that."
+  },
+  {
+   "id": 2692779089,
+   "user": "fedemotta",
+   "created_at": "2025-03-02T15:20:12Z",
+   "body": "I fixed deactivating nightscout cloud upload in the xdrip+ application."
+  },
+  {
+   "id": 2754431473,
+   "user": "zreptil",
+   "created_at": "2025-03-26T13:37:37Z",
+   "body": "Same here. When using NSClientV3 the glucose data from nightscout is not received. When switching back to NSClientV1 then it works again. I updated to 3.3.1.3 a few hours ago and used 3.3.1.0 for several weeks where the same occured. I tried to switch to NSV3 since the battery drain of NSV1 seems to be very high. At least i could not figure out any other app that could be responsible for this battery draining.\n\nWhat I have done so far to make NSV3 work:\n- close AAPS completely and restart it\n- clear the database in maintenance\n- reset the database in maintenance\n- checked time settings in phone settings (is set to automatic)\n- reboot the phone\n\nthe phone is a pixel 6 from google\n\nI set \"nightscout client bz\" as datasaource for glucose values. this works with NSV1 but not with NSV3. At the statuspage of NSV3 i can see that there are a lot of entries which start with \"RCV\" so I think the connection works well, but it really doesn't receive the glucose values."
+  },
+  {
+   "id": 2754684565,
+   "user": "MilosKozak",
+   "created_at": "2025-03-26T14:43:30Z",
+   "body": "If you don't receive data using v3 it only does mean it is not uploaded using v3.\nThis is directly against best practice to let only AAPS upload to NS"
+  },
+  {
+   "id": 2754789540,
+   "user": "zreptil",
+   "created_at": "2025-03-26T15:15:52Z",
+   "body": "Perfect, thank you so much :) I just had to update Juggluco to send it using v3 (declared as test in the app, but working) and now NSV3 works. Great 👍 "
+  },
+  {
+   "id": 2754859851,
+   "user": "MilosKozak",
+   "created_at": "2025-03-26T15:36:39Z",
+   "body": "Still not best practice\nProper way is Jugguco -> AAPS -> NS"
+  },
+  {
+   "id": 2754878280,
+   "user": "zreptil",
+   "created_at": "2025-03-26T15:41:15Z",
+   "body": "I looked for that possibility, but could not find it. So I stuck with reading the glucose values from nightscout. What have I to configure in aaps to read the glucose values from juggluco?\n\nI found out, how to do it. I had to enable the option \"xdrip Broadcast\" in Juggluco and set the glucose source in AAPS to xDrip+. The AAPS has also to be configured to save glucose values to nightscout. \n\nThanks Milos for pointing me in the right direction 👍 "
+  }
+ ]
+}

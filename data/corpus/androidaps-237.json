@@ -1,0 +1,27 @@
+{
+ "id": 787577458,
+ "repo": "nightscout/AndroidAPS",
+ "number": 237,
+ "title": "[Improvement] Allow a smaller minimum value for \"Pump unreachable threshold\"",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/237",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-01-16T23:50:21Z",
+ "closed_at": "2021-01-17T19:00:57Z",
+ "comment_count": 2,
+ "body": "Right now my setup with a Medtronic pump struggles with connection problems and I'm getting a pump unreachable alarm about two or three times a day. Quite often this happens at night. \r\n\r\nThis is not a bug report though, as I'm still investigating the source of the problem.\r\n\r\nWhat would help me is this: The default and at the same time minimum value for \"Pump unreachable threshold\" is 30 min. In my opinion that's too long, especially at night. It would be great, if the minimum allowed value could be set to maybe 5 min.",
+ "comments": [
+  {
+   "id": 761862328,
+   "user": "AdrianLxM",
+   "created_at": "2021-01-17T19:00:57Z",
+   "body": "AndroidAPS wakes up for maintenance every 5 minutes - but it does not connect to the pump every 5 minutes.\r\n\r\nIt only does so if it needs to in order to change something or latest it tries after 15 minutes of no connection, AndroidAPS will try to connect.\r\nIt might happen that the 15 minute wakeup doesn't connect as it in fact was only 14:55 minutes since the last connection.\r\nThen the forced connection would happen at the 20 minute mark.\r\n\r\nSo the minimum time to avoid constant false positive alarms would be 25 minutes.\r\nIf you then cannot connect because you happen to run away from the phone for just a few seconds this would also mean a false-positive alarm.\r\n\r\n30 minutes therefore seems quite reasonable as minimum time without connection to alarm for."
+  },
+  {
+   "id": 785266258,
+   "user": "Webifi",
+   "created_at": "2021-02-24T18:04:07Z",
+   "body": "> 30 minutes therefore seems quite reasonable as minimum time without connection to alarm for.\r\n\r\nDoes AAPS track missed SMBs, pump status checks, etc., due to no connection?   Is it possible to only alarm under 30min if there's been missed communication events?\r\n\r\n30 minutes seems very inadequate.  I've accidentally rushed out of the house without my RileyLink, only to get an alarm after I'm 20 miles away. \r\n"
+  }
+ ]
+}

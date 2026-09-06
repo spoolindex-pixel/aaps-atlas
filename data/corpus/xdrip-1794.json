@@ -1,0 +1,65 @@
+{
+ "id": 957578662,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1794,
+ "title": "web service gives EOF during sensor warm-up",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1794",
+ "state": "closed",
+ "labels": [
+  "sync"
+ ],
+ "created_at": "2021-08-01T20:23:51Z",
+ "closed_at": "2022-06-07T16:28:01Z",
+ "comment_count": 8,
+ "body": "Local web service produces an incorrect error response during sensor warm-up. The xDrip log shows it encounters an internal server error, but it does not return a correct HTTP error page -- instead it terminates the connection, causing an unexpected EOF on the client.\r\n\r\nVersions tried: 20210308-17cbcf0, 20210717-05352f5\r\nHardware: Dexcom G6, xDrip running on Pixel 3a XL with Android 11\r\nWeb client is a Raspberry Pi-based closed loop system that queries the phone every 5 minutes for SGV values.\r\n\r\nExpected behavior:\r\nThe most recent SGV values, from before the sensor change, or an empty JSON list of values, or a 400- or 500-series error page.\r\n\r\nActual behavior:\r\nThe client reports an unexpected EOF on the HTTP connection.\r\n\r\nSteps to reproduce the behavior:\r\nQuery the sgv.json endpoint during sensor warm-up.",
+ "comments": [
+  {
+   "id": 890945697,
+   "user": "tolot27",
+   "created_at": "2021-08-02T11:21:05Z",
+   "body": "@ecc1 Please can you try a newer version of xDrip, at least [2021.05.21](https://github.com/NightscoutFoundation/xDrip/releases/tag/2021.05.21). This introduces some enhancements to the WebService.\r\n\r\n@jwoglom Please can you have a look at this issue and maybe extend the unit tests you have introduced with #1710 to cover this edge case as well?"
+  },
+  {
+   "id": 891006138,
+   "user": "ecc1",
+   "created_at": "2021-08-02T13:01:45Z",
+   "body": "I mentioned that I also used 20210717 when reporting this bug."
+  },
+  {
+   "id": 891014357,
+   "user": "tolot27",
+   "created_at": "2021-08-02T13:11:07Z",
+   "body": "> I mentioned that I also used 20210717 when reporting this bug.\r\n\r\nSorry, just saw 20210308."
+  },
+  {
+   "id": 891305661,
+   "user": "jwoglom",
+   "created_at": "2021-08-02T20:18:28Z",
+   "body": "Hi @ecc1, could you identify the exception which is occurring here, ideally from an adb logcat?\n\nLikely the best fix here would be to fix the implementation of the web service framework itself so that it never EOF terminates the connection, and logs the exception properly. But we also want to fix the issue causing this exception in the first place. "
+  },
+  {
+   "id": 892145257,
+   "user": "jwoglom",
+   "created_at": "2021-08-03T20:31:12Z",
+   "body": "@tolot27 created https://github.com/NightscoutFoundation/xDrip/pull/1800 which should fix the unexpected EOF bug. I wasn't able to replicate the exact issue that resulted in this problem, but after this is merged we will be able to get a clean traceback."
+  },
+  {
+   "id": 1148771325,
+   "user": "Navid200",
+   "created_at": "2022-06-07T14:42:57Z",
+   "body": "@ecc1 Would you please try the current stable release (January 31, 2022) or any release after that and report if you still experience this?"
+  },
+  {
+   "id": 1148883744,
+   "user": "ecc1",
+   "created_at": "2022-06-07T16:16:41Z",
+   "body": "Sorry, I am no longer using xDrip so am unable to check this."
+  },
+  {
+   "id": 1148899148,
+   "user": "Navid200",
+   "created_at": "2022-06-07T16:28:01Z",
+   "body": "No problem.  Thanks for your response.  \r\n\r\nThis should have been fixed a long time ago.\r\nIf anyone still experiences this, please post here and provide detail and we can reopen this. "
+  }
+ ]
+}

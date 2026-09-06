@@ -1,0 +1,57 @@
+{
+ "id": 714133180,
+ "repo": "nightscout/AndroidAPS",
+ "number": 26,
+ "title": "Pumpe ICT - lokales Profil mit falschen Kombinationen",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/26",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2020-10-03T17:08:16Z",
+ "closed_at": "2020-10-17T13:15:31Z",
+ "comment_count": 7,
+ "body": "Alle Versionen\r\nWird ICT gewählt und anschließend das Profil editiert, so ist dort eine Basalrate zwingend anzugeben.\r\nDa bei ICT die Basalrate durchLangzeitinsulin erfolgt, dessen Wirkkurve nicht dokumentiert ist, ist die Angabe U/h ohne Dokumentation nicht sinnvoll. Es ist unklar, wie AAPS dieses Langzeitinsulin einrechnet.\r\nWird es nicht im Bolusrechner berücksichtigt, muss auch der Wert 0.0 zugelassen werden.\r\nWenn ICT künftig erhalten bleibt, muss zumindest die Doc angepasst werden.",
+ "comments": [
+  {
+   "id": 706740148,
+   "user": "Philoul",
+   "created_at": "2020-10-11T17:39:57Z",
+   "body": "Can you please write in english?"
+  },
+  {
+   "id": 706753462,
+   "user": "maheini",
+   "created_at": "2020-10-11T19:08:41Z",
+   "body": "I'll translate:\r\nPump MDI - local profile with wrong combinations\r\nAll versions\r\nIf MDI is selected and afterwards the profile is edited, then you'll need to type in the basal rate (obligatory).\r\nBut on MDI you'll take long acting insulin, whose action curve isn't documented. Because of this, the input as u/h doesn't make any sense.\r\nIt's unclear, how AndroidAPS is calculating those inputs. If it's not calculated in the wizard, then a basal of 0 should be accepted.\r\nIf MDI will remain, there should be at least a adjustment in the docs."
+  },
+  {
+   "id": 707194296,
+   "user": "Philoul",
+   "created_at": "2020-10-12T15:37:33Z",
+   "body": "Thank's for translation (ICT = MDI in english)\r\nFor long acting insulin, I suppose the best solution is to consider a constant basal rates with 1/24 the total amount of daily long acting insulin.\r\nFor example if you have 20 U of very long Acting insulin every day (i.e. Lantus or Toujeo in France), I think you can enter just one basal rate value of 20/24 = 0.83 Unit / Hour\r\n=> It's approximate and certainly less precise than with a pump, but that's how my basal rate was initialized when I switched to the pump.\r\nI agree for doc if not documented, we will propose an update (Doc is also available in github...)"
+  },
+  {
+   "id": 707219820,
+   "user": "MilosKozak",
+   "created_at": "2020-10-12T16:24:39Z",
+   "body": "basal 0 is impossible because of many internal things. thus there must be some. but because you cannot change TBR it doesn't matter because basal IOB is always zero"
+  },
+  {
+   "id": 710788730,
+   "user": "rICTx-T1D",
+   "created_at": "2020-10-17T10:03:31Z",
+   "body": "Hi folks,\r\nbecause I'm not sure that the answer reach @franzec, I will be translate to German for him:\r\n\r\n------\r\n\r\n> Der einfachste Weg (bei ultra-lang-wirkenden Insulin) ist es die gespritzte Menge an Basalinsulin durch 24h zu teilen und gleichmäßig im Profil auf die 24h aufzuteilen. Wenn du z.B. 20 IE von Lantus/Toujeo spritzt, ist das eine Basalrate von 0,83h je Stunde.\r\n> \r\n> Philoul bestätigt, das die Dokumentation diesbezüglich aktualisiert werden könnte und diese ebenfalls im github ist. (Hinweis von mir: du kannst die Doku also selbst ergänzen, wobei die English-Version vorrangig ist, bevor die nationalen Übersetzungen kommen.)\r\n> \r\n> MilosKozak sagt, eine Basalrate von 0 ist nicht möglich, da diese an vielen Stellen berücksichtigt wird. Da du mit der ICT die temporäre Basalrate nicht wie bei einer Pumpentherapie verändern kannst, ist das Basal-IOB immer 0.\r\n> \r\n> So ich hoffe ich konnte dir etwas helfen, bitte schließ den Fall, wenn keine weiteren Fragen existieren.\r\n\r\n------\r\n\r\nI hope I can help everyone to close this issue as soon as possible.\r\n@Philoul: The insulin Toujeo is available in Germany too, so I use it since aprox. 2 years.\r\n\r\nBye\r\nrICTx-T1D"
+  },
+  {
+   "id": 710933197,
+   "user": "franzec",
+   "created_at": "2020-10-17T13:05:50Z",
+   "body": "Thank you, I'll close the issue\nBye\n\n17.10.2020 12:03:44 rICTx-T1D <notifications@github.com>:\n\n> Hi folks,\n> because I'm not sure that the answer reach @franzec[https://github.com/franzec], I will be translate to German for him:\n> \n>>>>>  \n> Der einfachste Weg (bei ultra-lang-wirkenden Insulin) ist es die gespritzte Menge an Basalinsulin durch 24h zu teilen und gleichmäßig im Profil auf die 24h aufzuteilen. Wenn du z.B. 20 IE von Lantus/Toujeo spritzt, ist das eine Basalrate von 0,83h je Stunde.\n> \n> Philoul bestätigt, das die Dokumentation diesbezüglich aktualisiert werden könnte und diese ebenfalls im github ist. (Hinweis von mir: du kannst die Doku als selbst ergänzen, wobei die English-Version vorrangig ist, bevor die nationalen Übersetzungen kommen.)\n> \n> MilosKozak sagt, eine Basalrate von 0 ist nicht möglich, da diese an vielen Stellen berücksichtigt wird. Da du mit der ICT die temporäre Basalrate nicht wie bei einer Pumpentherapie verändern kannst, ist das Basal-IOB immer 0.\n> \n> So ich hoffe ich konnte dir etwas helfen, bitte schließ den Fall, wenn keine weiteren Fragen existieren.\n> <<<<\n> \n> I hope I can help everyone to close this issue as soon as possible.\n> @Philoul[https://github.com/Philoul]: The insulin Toujeo is available in Germany too, so I use it since aprox. 2 years.\n> \n> Bye\n> rICTx-T1D\n> \n> —\n> You are receiving this because you were mentioned.\n> Reply to this email directly, view it on GitHub[https://github.com/nightscout/AndroidAPS/issues/26#issuecomment-710788730], or unsubscribe[https://github.com/notifications/unsubscribe-auth/AL35ERXRN6QGOQBGVCGAQU3SLFTX5ANCNFSM4SDEFWRQ]. [https://github.com/notifications/beacon/AL35ERUOWLYL3FU7UVBUBZ3SLFTX5A5CNFSM4SDEFWR2YY3PNVWWK3TUL52HS4DFVREXG43VMVBW63LNMVXHJKTDN5WW2ZLOORPWSZGOFJO4M6Q.gif]\n> \n"
+  },
+  {
+   "id": 710945482,
+   "user": "franzec",
+   "created_at": "2020-10-17T13:16:20Z",
+   "body": "I'll try to change the doc."
+  }
+ ]
+}

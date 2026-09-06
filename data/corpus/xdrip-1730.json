@@ -1,0 +1,131 @@
+{
+ "id": 894712594,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1730,
+ "title": " xDrip occupies too much storage space on the phone",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1730",
+ "state": "closed",
+ "labels": [
+  "question"
+ ],
+ "created_at": "2021-05-18T19:35:38Z",
+ "closed_at": "2021-05-26T12:32:24Z",
+ "comment_count": 20,
+ "body": "Xdrip version: 17cbcfo-2021.03.08\r\ncode:210308´1944\r\ndowngradable to: 1603091400\r\n\r\nphone: Samsung j7 2016\r\n\r\nAndroid 8.1.0\r\n\r\nfrom yesterday (05-18-2021) to today (05-19-2021) the spaces change from 791 megas to 836 megas only in one day\r\n\r\nsave database daily is not enable",
+ "comments": [
+  {
+   "id": 844010575,
+   "user": "NickAlbanese85",
+   "created_at": "2021-05-19T11:26:25Z",
+   "body": "Xdrip version: 17cbcfo-2021.03.08\r\ncode:210308´1944\r\ndowngradable to: 1603091400\r\n\r\nphone: Samsung j7 2016\r\n\r\nfrom yesterday (05-18-2021) to today (05-19-2021) the spaces change from 791 megas to 836 megas only in one day\r\n\r\nsave database daily is not enable"
+  },
+  {
+   "id": 844132723,
+   "user": "NickAlbanese85",
+   "created_at": "2021-05-19T13:58:24Z",
+   "body": "\r\n![xdrip](https://user-images.githubusercontent.com/53303294/118825496-1ced1400-b891-11eb-8256-2e52826c1eef.jpeg)\r\n\r\n"
+  },
+  {
+   "id": 844198515,
+   "user": "tolot27",
+   "created_at": "2021-05-19T15:09:20Z",
+   "body": "Do you have verbose logging enabled (less common settings - extra logging settings - extra tags for logging)?\n\nWhat \"Glucose Retention\" have you set? 0?"
+  },
+  {
+   "id": 844205712,
+   "user": "NickAlbanese85",
+   "created_at": "2021-05-19T15:17:25Z",
+   "body": "![xdrip3](https://user-images.githubusercontent.com/53303294/118838554-2760db00-b89c-11eb-909b-769440b56e62.jpeg)\r\n"
+  },
+  {
+   "id": 844474918,
+   "user": "tolot27",
+   "created_at": "2021-05-19T21:09:05Z",
+   "body": "What about the verbose logging?"
+  },
+  {
+   "id": 844475244,
+   "user": "tolot27",
+   "created_at": "2021-05-19T21:09:40Z",
+   "body": "You could also do a backup of the database and look at its uncompressed size."
+  },
+  {
+   "id": 845005643,
+   "user": "NickAlbanese85",
+   "created_at": "2021-05-20T11:29:05Z",
+   "body": "yes, right now i will make that backup and maybe unistall and re-install if there is no another solution posible"
+  },
+  {
+   "id": 845041021,
+   "user": "NickAlbanese85",
+   "created_at": "2021-05-20T12:09:43Z",
+   "body": "768 megas uncompressed size!"
+  },
+  {
+   "id": 845528120,
+   "user": "tolot27",
+   "created_at": "2021-05-20T22:41:50Z",
+   "body": "At what is the largest table inside the SQlite database? I assume, `UserErrors`.\r\n\r\nYou still did not report whether you have extra logging enabled or not. I assume that this is the main reason of having such a large xDrip database."
+  },
+  {
+   "id": 845872763,
+   "user": "NickAlbanese85",
+   "created_at": "2021-05-21T11:05:51Z",
+   "body": "Here is a resume , make with sqlite_analyser \r\n\r\n* Page counts for all tables with their indices ***********\r\n```\r\nDESERTSYNC........................................ 144634      73.5%\r\nUSERERRORS........................................ 37184       18.9%\r\nLIBREBLOCK........................................ 8337         4.2%\r\nBGREADINGS........................................ 5633         2.9%\r\nUPLOADERQUEUE..................................... 610          0.31%\r\nTREATMENTS........................................ 55           0.028%\r\nCALIBRATION....................................... 38           0.019%\r\nREMINDER.......................................... 9            0.005%\r\n```"
+  },
+  {
+   "id": 845876333,
+   "user": "NickAlbanese85",
+   "created_at": "2021-05-21T11:12:27Z",
+   "body": "save database daily is not enable"
+  },
+  {
+   "id": 845877977,
+   "user": "NickAlbanese85",
+   "created_at": "2021-05-21T11:15:43Z",
+   "body": "> ¿Tiene habilitado el registro detallado (configuraciones menos comunes, configuraciones de registro adicionales, etiquetas adicionales para el registro)?\r\n> \r\n> ¿Qué \"Retención de glucosa\" ha establecido? 0?\r\n\r\nGlucose Retention 120 days"
+  },
+  {
+   "id": 846304256,
+   "user": "tolot27",
+   "created_at": "2021-05-21T23:11:43Z",
+   "body": "```\r\nDESERTSYNC........................................ 144634 73.5%\r\nUSERERRORS........................................ 37184 18.9%\r\n```\r\nAs you can see, most of the space is occupied by the desert sync feature. Do you really use it? If not, disable it in the \"xDrip+ Sync settings\".\r\n\r\nAlso, quite a lot of messages are logged to the USERERRORS table. I've asked you several times, if you have enabled some verbose logging (search the settings by \"Extra tags\"."
+  },
+  {
+   "id": 846332126,
+   "user": "Navid200",
+   "created_at": "2021-05-22T01:57:50Z",
+   "body": "@NickAlbanese85 \r\n\r\nPlease go to Settings -> xDrip+ Sync settings -> Desert Sync\r\nIs it on?\r\n\r\nPlease go to Settings -> Less common settings -> Extra Logging Settings -> Extra tags for logging\r\nPlease show what you see"
+  },
+  {
+   "id": 846447424,
+   "user": "NickAlbanese85",
+   "created_at": "2021-05-22T18:36:09Z",
+   "body": "> logged\r\n\r\n![Screenshot_20210522-153123_xDrip+](https://user-images.githubusercontent.com/53303294/119237482-6a78b380-bb13-11eb-899d-12aa85c325e8.jpg)\r\n"
+  },
+  {
+   "id": 846449251,
+   "user": "Navid200",
+   "created_at": "2021-05-22T18:52:45Z",
+   "body": "@NickAlbanese85 \r\nPlease tap on \"Etiquetas extra para el registro\", and show what you see."
+  },
+  {
+   "id": 846455446,
+   "user": "NickAlbanese85",
+   "created_at": "2021-05-22T19:48:46Z",
+   "body": "> @ NickAlbanese85\r\n> Por favor toque \"Etiquetas extra para el registro\" y muestre lo que ve.\r\n\r\n![Uploading Screenshot_20210522-164808_xDrip+.jpg…]()\r\n"
+  },
+  {
+   "id": 846457863,
+   "user": "Navid200",
+   "created_at": "2021-05-22T20:11:41Z",
+   "body": "@NickAlbanese85 Please upload it the same way you uploaded the previous images.\r\nWe cannot see the last image."
+  },
+  {
+   "id": 848730293,
+   "user": "NickAlbanese85",
+   "created_at": "2021-05-26T12:32:17Z",
+   "body": "Solucionado\r\n\r\nGracias a un desarrollador argentino hemos encontrado el inconveniente se daba en que xdrip contenia un fallo que reseteaba la aplicacion al menos 30 veces al dia, por lo cual no podia llegar a 24 horas para limpiar datos viejos y asi iba cargando cada vez mas y mas datos.\r\n\r\nLa solucion consistio en generar un backup de los datos para su reparacion, desinstalar y reinstalar la aplicacion. "
+  }
+ ]
+}

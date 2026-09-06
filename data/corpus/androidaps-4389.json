@@ -1,0 +1,117 @@
+{
+ "id": 3703184313,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4389,
+ "title": "AAPS Xdrip sends continuously and keeps app awake and burns battery",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4389",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-12-07T06:56:05Z",
+ "closed_at": "2025-12-08T21:40:22Z",
+ "comment_count": 17,
+ "body": "Sometimes I'll find that my phone is warm when not being used for a long time and when I check battery usage it's AAPS taking up 80% of battery and running it down by 30% in a couple of hours.\n\nEventually I realized that in Xdrip logs in AAPS it's showing it's continuously sending 100's of BG readings repeatedly, and once it approaches the end of the queue, it falls back several 100 readings and starts again.  This goes on continuously.\n\nThe only way to correct this is to force kill the app from the Android App Info screen.  Once it starts back up it does not have this problem.  Until the next time it has the problem which may be days or a week later.\n\nBuild version is 3.3.2.1, as built and provided by BCDiabetes looping program, but I've heard from others that it can be reproducible on their builds as well.\n\n[AndroidAPS_LOG_1765090256901.log.zip](https://github.com/user-attachments/files/24014154/AndroidAPS_LOG_1765090256901.log.zip)\n\n<img width=\"437\" height=\"256\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/640c7609-db24-4d9a-be76-e51688a93f94\" />\n<img width=\"599\" height=\"1337\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/83b96826-29c0-402e-811f-185e333ff90a\" />\n",
+ "comments": [
+  {
+   "id": 3621739801,
+   "user": "KWReid",
+   "created_at": "2025-12-07T06:58:32Z",
+   "body": "For reference where I was troubleshooting this in Discord AAPS group:\nhttps://discord.com/channels/629952586895851530/629954570394533889/1446990391676239903\n\nLatest theory based on some trial and error CrimsonKage is doing there is that while Xdrip queue send is being processed, if a new entry arrives and is added to the queue this queue resend issue happens and never recovers."
+  },
+  {
+   "id": 3622431181,
+   "user": "andyrozman",
+   "created_at": "2025-12-07T16:15:48Z",
+   "body": "You should disable sending of BG from AAPS. \n\nIf you have Xdrip for getting BG data, then only Xdrip should send BG data to NS. In Xdrip you should have broadcast enabled with AAPS as receiver, and in AAPS you set Xdrip as source.\n\nThis Queue of yours looks pretty weird though... Maybe I am missing how your configuration works, because you haven't described whole situation... When opening ticket you need to describe your configuration more in details, especially if you have some unconventional setup... "
+  },
+  {
+   "id": 3622886804,
+   "user": "KWReid",
+   "created_at": "2025-12-07T18:54:05Z",
+   "body": "> You should disable sending of BG from AAPS.\n> \n> If you have Xdrip for getting BG data, then only Xdrip should send BG data to NS. In Xdrip you should have broadcast enabled with AAPS as receiver, and in AAPS you set Xdrip as source.\n\nI am sending treatment data to xdrip from AAPs but is there some specific setting to not send bg data?  I don't see one. \n\n> This Queue of yours looks pretty weird though... Maybe I am missing how your configuration works, because you haven't described whole situation... When opening ticket you need to describe your configuration more in details, especially if you have some unconventional setup...\n\nGot it. My source for bg data is G7 -> xdrip -> AAPs. I don't think I've got anything odd in my setup, but my settings might have drifted over the years. \n\nI am sending treatment data back to xdrip from AAPs, but I don't see any option to specifically exclude bg data going back to xdrip. \n\n![Image](https://github.com/user-attachments/assets/0b7bdafe-33d8-41a5-a88d-9e5cccd1cc1a)\n![Image](https://github.com/user-attachments/assets/2d0fb92f-0658-4b05-8914-80f5ce49aa45)\n\n"
+  },
+  {
+   "id": 3623729849,
+   "user": "vanelsberg",
+   "created_at": "2025-12-07T23:13:15Z",
+   "body": "Assuming you get your sensor values form xDrip which is set as BG source in AAPS:\nWhen using NSClientV3, synchronisation option should set only \"Upload Data\" and \"Upload BG data\". All other options off!\nAnd then make sure xDrip is not syncing to NS!\n\nDid you maybe recently start a full synchronisation (AAPS, xDrip+ tab)?\nThis would cause a large queue that may take long to clear out (and yes: drain battery)"
+  },
+  {
+   "id": 3623733675,
+   "user": "vanelsberg",
+   "created_at": "2025-12-07T23:15:22Z",
+   "body": ">  ...it falls back several 100 readings and starts again.\n\nLook again. It sends BG values in batches of 100 BG values (all different) untill done..."
+  },
+  {
+   "id": 3623793312,
+   "user": "KWReid",
+   "created_at": "2025-12-07T23:39:46Z",
+   "body": "> > ...it falls back several 100 readings and starts again.\n> \n> Look again. It sends BG values in batches of 100 BG values (all different) untill done...\n\nLook again, again...  It sends in batches of 100 and then resets back several 100 and starts again.\n\n<img width=\"437\" height=\"256\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/9ae1cfef-9216-4f8f-8b19-ba1df3370a0e\" />"
+  },
+  {
+   "id": 3623800301,
+   "user": "KWReid",
+   "created_at": "2025-12-07T23:42:39Z",
+   "body": "> Assuming you get your sensor values form xDrip which is set as BG source in AAPS: When using NSClientV3, synchronisation option should set only \"Upload Data\" and \"Upload BG data\". All other options off! And then make sure xDrip is not syncing to NS!\n\nI use NSClientv1 from AAPS to push data to a Nightscout host. XDrip is not syncing to NS, just AAPS.\n\n> Did you maybe recently start a full synchronisation (AAPS, xDrip+ tab)? This would cause a large queue that may take long to clear out (and yes: drain battery)\n\nI did not.  Usually when this happens I'll be several hours into my workday when I check my phone that I've not been using and realize it's not cool to the touch.  When this does happen it'll be days to weeks between occurrences.  Most of the time it's not having this problem, but occasionally it starts up.\n\n"
+  },
+  {
+   "id": 3624140693,
+   "user": "crimsonkage",
+   "created_at": "2025-12-08T01:41:49Z",
+   "body": "I triggered a similar issue with a different setup when just triggering a full sync with Xdrip. \n\nSame behavior mentioned in original post. \n\nIt never gets past the BG sync, it just keeps restarting at entry 1 after it hits the last entry. \n\nIf I kill AAPS or restart the phone it does the Sync just fine. \n\nI had logcat open watching, I took an export when one of the loops happened. (logcat export filtering for Xdrip attached)\n\nI also  attached the snip of the AAPS log that contains the segment that the log cat is from. Looping happensat 19:13:44.725. \nHad to truncate the log to \n\n\n[AndroidAPS._2025-12-06_19.zip](https://github.com/user-attachments/files/24021729/AndroidAPS._2025-12-06_19.zip)\n\n(this screenshot is where it loops.) \n<img width=\"2529\" height=\"513\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/39098ba0-b902-423d-8ca4-595f61456645\" />\n\n[Google-Pixel-10-Pro-XL-Android-16_2025-12-06_191511.zip](https://github.com/user-attachments/files/24021504/Google-Pixel-10-Pro-XL-Android-16_2025-12-06_191511.zip)\n\nExtra info: \nBG data flow\n\nLIBRE 3 -> JUGGLUCO -> XDRIP & AAPS (in parallel) \nAAPS was sending broadcasts back to xdrip with all info. \nXdrip ignores BG if you aren't using Xdrip follower as the datasource.  (I think it shows that in the logcat.) "
+  },
+  {
+   "id": 3624152874,
+   "user": "crimsonkage",
+   "created_at": "2025-12-08T01:52:21Z",
+   "body": "another note, in the AAPS log it will show uploading all the way from the first entry. \nBut on the XD screen in AAPS it will show what the original post showed. Just the last segment of the entrees. \n\n<img width=\"1344\" height=\"2992\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/ce2f5e91-53b1-45dc-a75c-c957e363eb29\" />\n\nThe timestamps may be different from the earlier logs because it looks like I was repeating this for a couple hours to see what I could trigger. \n\nFew interesting things I noticed. \n\nIf Juggluco sends a BG entry to AAPS in the middle of the sync it seems to trigger this. \n\nIf I stop Juggluco from sending BG to aaps, then start the xdrip full sync from AAPS -> XDrip, then restart juggluco sending BG it works fine. \n\nIf I let a juggluco BG broadcast hit while the sync is in progress, then cut off Juggluco BG broadcast to AAPS it still just loops over and over again never finishing the BG section. \n\nI don't know if this is the exact thing that was happening to KWREID, but I got it to do something like this immediately and it looked just like what was happening with his setup. \n\nAlso to Add, I had KWREID do a full sync from AAPS -> Xdrip and it worked fine. \nhttps://discord.com/channels/629952586895851530/629954570394533889/1447114287586873445"
+  },
+  {
+   "id": 3624169941,
+   "user": "crimsonkage",
+   "created_at": "2025-12-08T02:05:19Z",
+   "body": "I also trimmed my database last night after this. \nSo I can't repeat this again as I can generate the full sync in between the 1 minute BG value broadcasts. "
+  },
+  {
+   "id": 3624218172,
+   "user": "crimsonkage",
+   "created_at": "2025-12-08T02:18:38Z",
+   "body": "KWReid, Can you upload the log from the time that the screenshot shows the issue happening. \n\nit looks like you terminated AAPS and the issue was cleared up in the logs you uploaded. \n\nhttps://androidaps.readthedocs.io/en/latest/GettingHelp/AccessingLogFiles.html#accessing-logfiles\n\nthis is the page in the docs for where to find the logs and how to get to them.\n"
+  },
+  {
+   "id": 3625082416,
+   "user": "KWReid",
+   "created_at": "2025-12-08T05:48:03Z",
+   "body": "Found a tmp file in Internal shared storage\\Android\\data\\info.nightscout.androidaps\\files\\ dated from 11-24 and will attach it here.\n\nAll other files are for the current day.\n\n[AndroidAPS._2025-11-24_16-00-01_.503104797966934849.zip](https://github.com/user-attachments/files/24025003/AndroidAPS._2025-11-24_16-00-01_.503104797966934849.zip)"
+  },
+  {
+   "id": 3625825755,
+   "user": "vanelsberg",
+   "created_at": "2025-12-08T09:09:49Z",
+   "body": "> LIBRE 3 -> JUGGLUCO -> XDRIP & AAPS (in parallel)\n\nYou are sending BG to both xDRIP+ and AAPS (in parallelle)?\n\nI think that is the problem as you are creating a loop:\n\n      xDrip -> AAPS -> xDrip -|\n         ^------------------ /\n\nHow it is supposed to work: Juggluco -> xDrip+ -> AAPS\nIn AAPS xDrip+ is only selected as BG source, so xDrip+ plugin is disabled.\n\nAlso make sure xDrip+ Sync settings and set it to \"Be master of followers\""
+  },
+  {
+   "id": 3625866707,
+   "user": "vanelsberg",
+   "created_at": "2025-12-08T09:19:11Z",
+   "body": "Other things to try:\n- Check xDrip+ version: install latest release version (currently from 2025.09.05 - so no nightly build versions)\n- Make sure to run latest release of AAPS!\n- Reset AAPS database. You can then do a full resync to get all data back from NS (sometimes database curruption can give problems and/or cause battery draining)\n\n"
+  },
+  {
+   "id": 3626213488,
+   "user": "MilosKozak",
+   "created_at": "2025-12-08T10:35:47Z",
+   "body": "hopefully fixed by https://github.com/nightscout/AndroidAPS/commit/854833857f4b872db0966f3acc01422062eba574"
+  },
+  {
+   "id": 3628517853,
+   "user": "Loax28",
+   "created_at": "2025-12-08T18:38:54Z",
+   "body": "\n\n\n\n> another note, in the AAPS log it will show uploading all the way from the first entry. But on the XD screen in AAPS it will show what the original post showed. Just the last segment of the entrees.\n> \n> <img alt=\"Image\" width=\"134\" height=\"200\" src=\"https://private-user-images.githubusercontent.com/131014050/523534932-ce2f5e91-53b1-45dc-a75c-c957e363eb29.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NjUyMTkyMjcsIm5iZiI6MTc2NTIxODkyNywicGF0aCI6Ii8xMzEwMTQwNTAvNTIzNTM0OTMyLWNlMmY1ZTkxLTUzYjEtNDVkYy1hNzVjLWM5NTdlMzYzZWIyOS5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUxMjA4JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MTIwOFQxODM1MjdaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT01MmExMTJjNzJjNDZjYWZhZGZhZjk3NWQ4MzVlNzU1NDM4MTBmZmZjZGEyNGVlZjVhMWQ4NmYyZjk3ZTIzMzFlJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.dHmU4m3e3IYqERtvFCy7H0CEKJ6B3POnSzy0HMHGSxg\">\n> The timestamps may be different from the earlier logs because it looks like I was repeating this for a couple hours to see what I could trigger.\n> \n> Few interesting things I noticed.\n> \n> If Juggluco sends a BG entry to AAPS in the middle of the sync it seems to trigger this.\n> \n> If I stop Juggluco from sending BG to aaps, then start the xdrip full sync from AAPS -> XDrip, then restart juggluco sending BG it works fine.\n> \n> If I let a juggluco BG broadcast hit while the sync is in progress, then cut off Juggluco BG broadcast to AAPS it still just loops over and over again never finishing the BG section.\n> \n> I don't know if this is the exact thing that was happening to KWREID, but I got it to do something like this immediately and it looked just like what was happening with his setup.\n> \n> Also to Add, I had KWREID do a full sync from AAPS -> Xdrip and it worked fine. https://discord.com/channels/629952586895851530/629954570394533889/14471142"
+  },
+  {
+   "id": 3629115713,
+   "user": "MilosKozak",
+   "created_at": "2025-12-08T21:40:22Z",
+   "body": "you can try this hints"
+  }
+ ]
+}

@@ -1,0 +1,33 @@
+{
+ "id": 1363449479,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2061,
+ "title": "[3.1.0.3] Basal history incorrect when importing parameters after clean install",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2061",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-09-06T15:17:51Z",
+ "closed_at": "2022-09-22T08:32:34Z",
+ "comment_count": 3,
+ "body": "Hi,\r\n\r\nToday, I did a clean install of AndroidAPS 3.1.0.3 and I noticed the basal history was incorrect after importing parameters.\r\n\r\nSince I'm using SMB, the basal is much lower than with AMA. But after AndroidAPS restores all the settings and values either from xDrip+ or Nightscout (tried both), it also restores the full basal like if AMA was being used. This creates a major discrepancy in IOB.\r\n\r\nWhen restoring settings on a fresh NSClient install, the basal history is correct (see attached screenshots below for comparison).\r\n\r\nIOB on AndroidAPS is at 1.08 (wrong) while IOB on NSClient is at 0.37 (correct).\r\n\r\nAndroidAPS Basal: https://imgur.com/a/pe8EYyn\r\nNSClient Basal: https://imgur.com/a/1J0hqzJ",
+ "comments": [
+  {
+   "id": 1248175695,
+   "user": "MilosKozak",
+   "created_at": "2022-09-15T14:23:18Z",
+   "body": "did it allign after some time?"
+  },
+  {
+   "id": 1248741568,
+   "user": "janvitos",
+   "created_at": "2022-09-15T23:20:11Z",
+   "body": "> did it allign after some time?\r\n\r\nNo.\r\n\r\nThe new basal data that comes in is good, but the imported basal history remains wrong.\r\n\r\nThis is not an issue that happens often as we rarely have to reinstall / import parameters, but it is causing problems when we update AndroidAPS, for instance."
+  },
+  {
+   "id": 1254701298,
+   "user": "MilosKozak",
+   "created_at": "2022-09-22T08:32:34Z",
+   "body": "yes, accepting TBR from NS is disabled in AAPS mode for safety reasons (it can be enabled only in engineering mode)\r\nBackground:\r\nentering TRB in NS is very easy and accepting wrong data from NS could damage DB consistency"
+  }
+ ]
+}

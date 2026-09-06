@@ -1,0 +1,69 @@
+{
+ "id": 2004018165,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3074,
+ "title": "3.2.0.1/2 Loop Calculation Stopped Working",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3074",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-11-21T11:02:09Z",
+ "closed_at": "2023-11-23T07:49:00Z",
+ "comment_count": 9,
+ "body": "\r\n[2023-11-22_093500_UserEntry.csv](https://github.com/nightscout/AndroidAPS/files/13438037/2023-11-22_093500_UserEntry.csv)\r\n[AndroidAPS (1).log](https://github.com/nightscout/AndroidAPS/files/13427877/AndroidAPS.1.log)\r\n![Screenshot_20231121-114126_AAPS](https://github.com/nightscout/AndroidAPS/assets/43484095/49d3426f-8e5d-4b58-bf95-6fb9abb68c17)\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/13425925/AndroidAPS.log)\r\n3.2.0.1 loop calculation stopped working at just before 4:00 this morning.  Rebooted phone, asps, un/selected profile, pump, xDrip no luck. Samsung A41 Android 12 UI 4.1.  BG on main screen and xDrip tab but not on calculation tab. Graphs in History page.\r\n\r\n![Screenshot_20231121-084246_AAPS](https://github.com/nightscout/AndroidAPS/assets/43484095/65f7dd0b-28f4-493f-bcae-08cd2a65e3a5)\r\n![Screenshot_20231121-093040_AAPS](https://github.com/nightscout/AndroidAPS/assets/43484095/320525f1-6708-4a4b-b89c-225ccddf3eed)\r\n![Screenshot_20231121-093051_AAPS](https://github.com/nightscout/AndroidAPS/assets/43484095/ad92e928-046a-4e4f-bd56-78b68d5095d5)\r\n![Screenshot_20231121-093112_AAPS](https://github.com/nightscout/AndroidAPS/assets/43484095/99b97335-220a-40a7-8b20-cde05a98fe9e)\r\n![Screenshot_20231121-100328_AAPS](https://github.com/nightscout/AndroidAPS/assets/43484095/1ad984b9-8da2-4f5f-96cc-ec9fcc386f58)\r\n\r\n[AndroidAPS._2023-11-21_00-00-03_.3.zip](https://github.com/nightscout/AndroidAPS/files/13425252/AndroidAPS._2023-11-21_00-00-03_.3.zip)\r\n[AndroidAPS._2022-10-23_01-00-10_.1.zip](https://github.com/nightscout/AndroidAPS/files/13425253/AndroidAPS._2022-10-23_01-00-10_.1.zip)\r\n\r\n\r\n\r\nReporting bugs\r\n--------------\r\n- **Note the precise time the problem occurred** and describe the circumstances and steps that caused\r\n  the problem\r\n- Note the Build version (found in the About dialog in the app, when pressing the three dots in the\r\n  upper-right corner).\r\n- Obtain the app's log files, which can be found on the phone in\r\n  _/storage/emulated/0/Android/data/info.nightscout.androidaps/_\r\n  See https://wiki.aaps.app/en/latest/Usage/Accessing-logfiles.html\r\n- Open an issue at https://github.com/nightscout/AndroidAPS/issues/new\r\n",
+ "comments": [
+  {
+   "id": 1820717270,
+   "user": "MilosKozak",
+   "created_at": "2023-11-21T11:14:27Z",
+   "body": "logs are not current"
+  },
+  {
+   "id": 1820769585,
+   "user": "chrisbev",
+   "created_at": "2023-11-21T11:50:03Z",
+   "body": "In case relevant Careportal pic added, the 3:45 may have been the start of it following we're probably be me to get things going.  I typically get a few a day as browsing when aaps restarts but otherwise seems OK. Ram at about 60% and storage about 90%.\r\n"
+  },
+  {
+   "id": 1820783672,
+   "user": "chrisbev",
+   "created_at": "2023-11-21T11:59:54Z",
+   "body": "AndroidAPS.log attached hope that is what you need."
+  },
+  {
+   "id": 1820799884,
+   "user": "MilosKozak",
+   "created_at": "2023-11-21T12:09:38Z",
+   "body": "calculation worker never finish. This part is not covered by detailed logging.\r\nProbably bad data in database. I'd reset database. If bad data is in NS too you'll need reset db + prevent loading it from NS"
+  },
+  {
+   "id": 1820803099,
+   "user": "MilosKozak",
+   "created_at": "2023-11-21T12:11:26Z",
+   "body": "log ends at 3:19 and loop was still working"
+  },
+  {
+   "id": 1821111580,
+   "user": "chrisbev",
+   "created_at": "2023-11-21T15:10:56Z",
+   "body": "Database reset from maintenance menu (isolated from NS), profile set and still have problem.  Tried another profile and still have problem.  AndroidAPS(1).log attached in case it helps."
+  },
+  {
+   "id": 1821159269,
+   "user": "MilosKozak",
+   "created_at": "2023-11-21T15:34:40Z",
+   "body": "then pm me your config and master password"
+  },
+  {
+   "id": 1822497522,
+   "user": "chrisbev",
+   "created_at": "2023-11-22T10:27:29Z",
+   "body": "I now have aaps loop calculating without uninstalling so will detaìl my actions/thoughts.\r\nThe treatments part of database had been reset and I was thinking about other parts of he db that could cause the problem and how to isolate which.  Stats has a separate reset and my AAPS App data is nearly 45MB even after clearing treatments so I thought there must be a lot of data.  Just in case I tried again setting different plugins from the config builder, see ...user.cvs attached in case order or which are important.  I then noticed Open Humans plugin was not selected and thought I had this running from ages ago!  Once I selected this (view was ticked and not altered) and then imported my preferences (over existing) to get back how I was the loop calculation started!  To try and repeat the problem I unticked OH and imported preferences and strangely what happened was the titles of the plugin tabs did not tie up from where OH should have been onwards and no last xDrip+bg data. \r\nAlthough not the original problem something a bit out of sync, I don't know how the code works and I fostered a postulation that if say the bg from xDrip goes to main screen and the xDrip tab but that the loop calculation is triggered by changes on the xDrip tab and some how the tab numbers (indexes) is one out and does not tie up with the tab that has xDrip data on a trigger will not then be triggered?\r\nMy problem possibly happened after an AAPS reboot (I get a few per day) so if say a minor race due to my h/w then I get to test quite a few over the years? Was it a glitch or: Are preferences saved correctly?  Are they imported correctly?  Is OH a red herring?\r\nWhile looking I noticed that config builder > loop > APS mode was not set and if set for me didn't appear to do anthing is this by design or is a separate Issue required for this?"
+  },
+  {
+   "id": 1824597619,
+   "user": "chrisbev",
+   "created_at": "2023-11-23T15:15:03Z",
+   "body": "Anyone here looking for similar problem, I was unable to recreate the original loop calc stopping which recovered after loading prefences (which had OH selected) on to aaps with OH selected and about to raise an issue for the incorrect loading of preferences when preferences had OH selected but aaps did not, as encountered above, when I thought it best to update to 3.2.0.2 first (this I had delayed due to watch update problems). For me 3.2.0.1 showed the incorrect plugin matching tabs title and data loading following an aaps restart but 3.2.0.2 was OK.  NB I get a few aaps restarts per day which I don't know if this is normal for this type of phone."
+  }
+ ]
+}

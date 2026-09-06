@@ -1,0 +1,165 @@
+{
+ "id": 1284496060,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1853,
+ "title": "Omnipod EROS: There is no way to forcefully wipe/reset the pod state in case of \"emergency\"",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1853",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-06-25T07:56:25Z",
+ "closed_at": "2022-07-09T16:17:54Z",
+ "comment_count": 25,
+ "body": "**AAPS version 3.0.0.1 release and higher**\r\n**Driver: Omnipod EROS**\r\n\r\n**Problem description:**\r\nThe Omnipod EROS driver has a bug that can lead to a situation where users get stuck with a pod registration that can not be continued or discarded. Several users reported running into this problem as a result of Pod activation failure.\r\n\r\nWork around used for not losing Objectives is importing 3.0 settings in AAPS version 2.8.1, discard the Pod and then export preferences that can be imported by AAPS 3.0\r\n\r\n**Proposed work around**:\r\nUntil the actual bug is solved, but also in general, I think the EROS driver should have a way to \"wipe\" the Pod state in case of \"emergencies\". Up to AAPS version 2.8 this could be done by editing the unencrypted preference file.\r\nAs of version 3.0 this is no longer an option.\r\n\r\nHow about an option to clear Pod state when running in developer mode? This way users have an \"escape\" option to get out of situations where there is Pod state without option to Discard. For AAPS 2.8 editing the preference file was used as a last resort\r\n\r\n",
+ "comments": [
+  {
+   "id": 1166220335,
+   "user": "vanelsberg",
+   "created_at": "2022-06-25T07:59:26Z",
+   "body": "Alternative \"_solution_\" to the problem would be resetting AAPS preferences or a reinstall.\r\nAn option to import \"objectives only\" would then ensure objectives are not lost\r\n\r\nSee https://github.com/nightscout/AndroidAPS/issues/1852\r\n"
+  },
+  {
+   "id": 1166220662,
+   "user": "vanelsberg",
+   "created_at": "2022-06-25T08:00:46Z",
+   "body": "Remark:\r\nOmnipod DASH implementation ensures that after 3 unsuccesfull retries user is offered the option to \"forcefully\" discarding the Pod.\r\n\r\nSomething like this maybe could also be implemented for EROS but expect this would need non-trivial driver changes?\r\nExpecting forcefully wiping pod state from developer mode can be done with less impact on drive code?\r\n"
+  },
+  {
+   "id": 1166259514,
+   "user": "MilosKozak",
+   "created_at": "2022-06-25T11:13:19Z",
+   "body": "what keys do you have to remove?"
+  },
+  {
+   "id": 1166273624,
+   "user": "vanelsberg",
+   "created_at": "2022-06-25T12:29:41Z",
+   "body": "> what keys do you have to remove?\r\n\r\n@MilosKozak \r\nClearing string value at `content: \"AAPS.Omnipod.pod_state\"` should effectively remove the Pod on settings import.\r\n\r\nCurrently not using EROS so unable to validate. Do have 3 EROS pods reserved for dev, so can test when needed.\r\n"
+  },
+  {
+   "id": 1166276233,
+   "user": "vanelsberg",
+   "created_at": "2022-06-25T12:43:44Z",
+   "body": "FYI: Apart from settings, some hints to implementation:\r\n\r\nThink PodState is accessible at `java/info/nightscout/androidaps/plugins/pump/omnipod/eros/manager/AapsErosPodStateManager.java`\r\nSee public methods `store/loadPodState()`\r\n\r\nAlso see also `OmnipodManager, deactivatePod()` at `java/info/nightscout/androidaps/plugins/pump/omnipod/eros/driver/manager/OmnipodManager.java`\r\nIt calls `podStateManager.discardState();` at line 504\r\n\r\nNote that when discarding state, any active Pod is lost.\r\nAs is now, user can restore state through importing settings exported for the active Pod. Importing state from settings is useful when uninstalling/reinstalling AAPS or (unsupported) moving AAPS to other hardware.\r\n\r\n\r\n\r\n"
+  },
+  {
+   "id": 1166276720,
+   "user": "vanelsberg",
+   "created_at": "2022-06-25T12:46:18Z",
+   "body": "![image](https://user-images.githubusercontent.com/45144129/175774087-fb073756-327e-4c3c-a0f1-c7a3f23de5d6.png)\r\n"
+  },
+  {
+   "id": 1166289084,
+   "user": "MilosKozak",
+   "created_at": "2022-06-25T13:39:32Z",
+   "body": "Discard pod is not enough in this state?\r\n![image](https://user-images.githubusercontent.com/11146458/175776063-bcef7f62-a862-417b-8a58-1a5aadc2d850.png)\r\nThis create empty pod state, only address is preserved"
+  },
+  {
+   "id": 1166289841,
+   "user": "vanelsberg",
+   "created_at": "2022-06-25T13:42:49Z",
+   "body": "Yes, the deactivation button normally should be used to solve a problematic pod.....\r\n\r\nThe bug/problem however is that AAPS/EROS somehow gets in a state where activation unexpectedly failed and activation process can not be continued. In that state however both the \"Deactivate Pod\" and \"Discard Pod\" buttons are disabled/invisible.\r\n\r\nNot sure but I think the \"Discard\" button is only visible after failing to deactivate.\r\n"
+  },
+  {
+   "id": 1166290493,
+   "user": "vanelsberg",
+   "created_at": "2022-06-25T13:46:01Z",
+   "body": "Most obvious solution would be to target this specific bug (proper error handling?). But that would mean touching driver code which you may not want at this stage?\r\n\r\nAlso in any other situation, there is still no ways to repair by wiping state ....\r\n"
+  },
+  {
+   "id": 1166292171,
+   "user": "MilosKozak",
+   "created_at": "2022-06-25T13:54:08Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/00f0446c21e059f1287333fc72578daeb6f8c8c2"
+  },
+  {
+   "id": 1166294529,
+   "user": "vanelsberg",
+   "created_at": "2022-06-25T14:05:06Z",
+   "body": "> [00f0446](https://github.com/nightscout/AndroidAPS/commit/00f0446c21e059f1287333fc72578daeb6f8c8c2)\r\n\r\nLooks good.\r\nIf I am reading the code correctly the \"Discard\" button is always active shown when in dev mode?\r\n\r\n\r\n"
+  },
+  {
+   "id": 1166296108,
+   "user": "vanelsberg",
+   "created_at": "2022-06-25T14:12:46Z",
+   "body": "Nice & easy \"solve\". Maybe add this to dev and let \"testers\" look at this.\r\n"
+  },
+  {
+   "id": 1166299822,
+   "user": "vanelsberg",
+   "created_at": "2022-06-25T14:30:09Z",
+   "body": "Testing this: Of only I new a way to reproduce the originating problem... will ask around.\r\n"
+  },
+  {
+   "id": 1166302964,
+   "user": "vanelsberg",
+   "created_at": "2022-06-25T14:44:47Z",
+   "body": "Thanks @MilosKozak for taking this so fast!"
+  },
+  {
+   "id": 1166306113,
+   "user": "MilosKozak",
+   "created_at": "2022-06-25T15:02:53Z",
+   "body": "you can test it just before pod expiration (to not waste it)"
+  },
+  {
+   "id": 1166334461,
+   "user": "vanelsberg",
+   "created_at": "2022-06-25T17:56:15Z",
+   "body": "Thanks. That is the safest way....\r\nBut not needed. Discard (should only) remove the pod registration without actually de-activating the Pod.\r\nSo, after Discarding it should be recoverable through importing settings (which contains the pod state)"
+  },
+  {
+   "id": 1172800810,
+   "user": "vincent1890",
+   "created_at": "2022-07-02T00:49:02Z",
+   "body": "Hello @MilosKozak \r\nUnfortunately I use the dev version and the delete button does not work tested on two different pod (see screenshot\r\n![Screenshot_20220627-021945_AndroidAPS](https://user-images.githubusercontent.com/5764518/176980481-0a88ab2e-e0ad-4ecc-b39f-d43f2c4f0761.jpg)\r\n![Screenshot_20220627-021931_AndroidAPS](https://user-images.githubusercontent.com/5764518/176980483-ec04e5e0-83b2-4dc4-963d-56115fc1badd.jpg)\r\n)\r\nI have been forced to re-import a backup without pod to be able to use a new pod without failure\r\n[AndroidAPS._2022-06-23_17-45-47_.0.zip](https://github.com/nightscout/AndroidAPS/files/9032151/AndroidAPS._2022-06-23_17-45-47_.0.zip)\r\n[AndroidAPS._2022-06-27_02-21-23_.0.zip](https://github.com/nightscout/AndroidAPS/files/9032152/AndroidAPS._2022-06-27_02-21-23_.0.zip)\r\n[AndroidAPS._2022-06-27_02-21-23_.1.zip](https://github.com/nightscout/AndroidAPS/files/9032153/AndroidAPS._2022-06-27_02-21-23_.1.zip)\r\n[AndroidAPS._2022-06-27_02-21-23_.2.zip](https://github.com/nightscout/AndroidAPS/files/9032154/AndroidAPS._2022-06-27_02-21-23_.2.zip)\r\n"
+  },
+  {
+   "id": 1172896259,
+   "user": "vanelsberg",
+   "created_at": "2022-07-02T13:10:30Z",
+   "body": "> ... Unfortunately I use the dev version and the delete button does not work ...\r\n\r\n@MilosKozak \r\nConfirming. The \"Discard\" button is active and responsive but pressing it does not have the expected effect (no errors)\r\nAssuming the underlying code does not allow discarding while the pump is in this state....\r\n\r\n"
+  },
+  {
+   "id": 1172897673,
+   "user": "vanelsberg",
+   "created_at": "2022-07-02T13:21:09Z",
+   "body": "@MilosKozak Should we re-open this issue or do new?"
+  },
+  {
+   "id": 1172921513,
+   "user": "MilosKozak",
+   "created_at": "2022-07-02T16:08:46Z",
+   "body": "I need more info what must be cleared"
+  },
+  {
+   "id": 1172954071,
+   "user": "happygirlnyc70",
+   "created_at": "2022-07-02T20:09:38Z",
+   "body": "I can confirm this as well.  I have used both 3.1 beta and dev-n 4f0f01883 with the same result."
+  },
+  {
+   "id": 1172985376,
+   "user": "vincent1890",
+   "created_at": "2022-07-03T00:41:41Z",
+   "body": "@MilosKozak \r\n> I need more info what must be cleared\r\n\r\nHello\r\nI don’t know if my answer will bring an element of answer but it would have to go back to the state when a POD is deactivated correctly \"No active POD\".\r\nCurrently dasn the capture shown have little to see that a POD is still half active in the AAPS system\r\n\r\n"
+  },
+  {
+   "id": 1173051867,
+   "user": "vanelsberg",
+   "created_at": "2022-07-03T10:08:47Z",
+   "body": "> I need more info what must be cleared\r\n\r\n@MilosKozak Discarding Pod is not Discarding properly....\r\nThink I found the (underlying) problem is in not discarding/handling pod state correctly. Have to look into this ...\r\nWill do a PR this week (currently family matters take prio)."
+  },
+  {
+   "id": 1173477786,
+   "user": "vanelsberg",
+   "created_at": "2022-07-04T07:54:48Z",
+   "body": "@MilosKozak \r\nPreparing a fix though https://github.com/nightscout/AndroidAPS/issues/1882"
+  },
+  {
+   "id": 1179508124,
+   "user": "vanelsberg",
+   "created_at": "2022-07-09T08:55:40Z",
+   "body": "Expect problem to be solved through https://github.com/nightscout/AndroidAPS/issues/1882\r\nProposing to leave https://github.com/nightscout/AndroidAPS/commit/00f0446c21e059f1287333fc72578daeb6f8c8c2 in (developer mode) as an optional escape."
+  }
+ ]
+}

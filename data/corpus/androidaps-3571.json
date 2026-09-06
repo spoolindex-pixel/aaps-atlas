@@ -1,0 +1,45 @@
+{
+ "id": 2709131770,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3571,
+ "title": "[Dev] NSv1/v3 is making duplicate entries to OpenAPS-log in AAPSClient and NS",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3571",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-12-01T12:58:39Z",
+ "closed_at": "2024-12-29T18:55:46Z",
+ "comment_count": 5,
+ "body": "AAPS / Client 3.3.0-dev-e\r\nBuild: cab69e7cae-2024.11.30\r\nNightscout version: 15.0.2\r\nEngineering mode enabled \r\n\r\nIn AAPSClient messages are duplicate and identical, in NS the information is abit different, one with mmol/l and other with mg/dl and some temp basal info.\r\n\r\nLogs:\r\nAAPS:[AndroidAPS_LOG_1733057278672.log.zip](https://github.com/user-attachments/files/17968944/AndroidAPS_LOG_1733057278672.log.zip)\r\n\r\nAAPSClient: [AndroidAPS_LOG_1733057260440.log.zip](https://github.com/user-attachments/files/17968942/AndroidAPS_LOG_1733057260440.log.zip)\r\n\r\nIn AAPSClient messages are identical:\r\n![image](https://github.com/user-attachments/assets/f976771d-dc65-4448-bbec-7c48491816dc)\r\n\r\nIn NS there is some difference:\r\n![image](https://github.com/user-attachments/assets/ef526a0f-84b1-4354-b0c4-cdc8dd881a92)\r\n",
+ "comments": [
+  {
+   "id": 2523941607,
+   "user": "emilisev",
+   "created_at": "2024-12-06T18:45:53Z",
+   "body": "Same issue for me on beta1"
+  },
+  {
+   "id": 2543376662,
+   "user": "olorinmaia",
+   "created_at": "2024-12-14T23:37:14Z",
+   "body": "Latest NS Dev with merged https://github.com/nightscout/cgm-remote-monitor/pull/8234\r\nFixes issue with showing mg/dl but still duplicate openaps entry. Here with identical output\r\n[AndroidAPS_LOG_1734219330736.log.zip](https://github.com/user-attachments/files/18138149/AndroidAPS_LOG_1734219330736.log.zip)\r\n\r\n![Screenshot_20241215-003230](https://github.com/user-attachments/assets/d018772f-7462-4858-823a-00974cc55045)\r\n![Screenshot_20241215_003454_AAPSClient](https://github.com/user-attachments/assets/9f78d203-db4d-474f-8420-28876f25a6e6)\r\n"
+  },
+  {
+   "id": 2549052928,
+   "user": "olorinmaia",
+   "created_at": "2024-12-17T17:04:01Z",
+   "body": "Relevant comment here: https://github.com/nightscout/AndroidAPS/issues/3620#issuecomment-2549008008"
+  },
+  {
+   "id": 2552170040,
+   "user": "bewest",
+   "created_at": "2024-12-18T20:04:44Z",
+   "body": "If possible, I recommend delaying sending a devicestatus until suggested and enacted can be reported as a single record.  This is how things worked with openaps."
+  },
+  {
+   "id": 2564812575,
+   "user": "MilosKozak",
+   "created_at": "2024-12-29T18:55:46Z",
+   "body": "from my point of view it's correct. Status is generated on more places (not only after enact) for example for cases like open loop, failed enact etc.\r\nI added logging anyway so you can see the reason https://github.com/nightscout/AndroidAPS/commit/5e706888e0982b8e5a626a3c8a3afe27217523d9"
+  }
+ ]
+}

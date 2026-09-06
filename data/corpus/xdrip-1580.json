@@ -1,0 +1,134 @@
+{
+ "id": 775492573,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1580,
+ "title": "treatment bg values are silently used for calibration despite answering \"no\" or setting to \"never\"",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1580",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "device-dexcom",
+  "ui",
+  "calibration"
+ ],
+ "created_at": "2020-12-28T16:53:36Z",
+ "closed_at": "2022-05-06T14:12:36Z",
+ "comment_count": 22,
+ "body": "Like the headline says, my xdrip uses treatment bg values for calibration no matter what I do.\r\nI noticed this several months ago but stopped caring about it since the G6 calibration still seems broken and doesn't work for me since the firefly transmitters. Maybe this affects other data sources as well.\r\nNonetheless, it is a major safety issue, as usually users have a good reason for not wanting a certain treatment value to be used for calibration - e.g., when they now the slope is very high. I personally ended up with some sensors that were dangerously off due to this bug.\r\n\r\n### environment\r\nsame on stable releases, 20200713 nightly , 20201001 nightly, 20210217 nightly.\r\nDexcom G6 native, 8H transmitter.\r\nSetting \"Use Treatment BG values\" set to \"Ask me every time\" or \"Never use them\"\r\nAutomatic Calibration off\r\nno Calibration Plugin\r\nUsing mg/dl\r\n\r\n### Expected behavior\r\nIf I answer the dialogue with \"No\" or set the setting to \"Never\", I expect a treatment BG value to show up on the graph and nothing else.\r\n\r\n### Actual behavior\r\nAfter entering the value, instantly there is a calibration inserted to the queue items. And this is (as long as it was still working with the older transmitters) actually sent to the transmitter.\r\n\r\n### Steps to reproduce the behavior:\r\nSet settings like described above\r\nMain screen, tap treatment, select fingertip button, enter a value, confirm\r\nIf xdrip is configured to \"ask\", select \"No\" in the dialogue box.\r\nCheck \"System Status\", calibration is queued.\r\n",
+ "comments": [
+  {
+   "id": 781736175,
+   "user": "Navid200",
+   "created_at": "2021-02-19T00:51:06Z",
+   "body": "Can you try this with a more recent release?  For example, January 29, 2021."
+  },
+  {
+   "id": 783782711,
+   "user": "Navid200",
+   "created_at": "2021-02-23T00:39:46Z",
+   "body": "Are you sure calibrations are submitted to the transmitter.  Do you see the log saying calibration was accepted by the transmitter?"
+  },
+  {
+   "id": 784363257,
+   "user": "gfornax",
+   "created_at": "2021-02-23T17:17:47Z",
+   "body": "I just tried with the latest nightly build. It still happens and I can definitely answer the question with yes.\r\nDespite answering \"no\" in the dialogue and despite xdrip showing the _Sensor data fails sanity test - Cannot Calibrate! raw:-0.1..._ message.\r\nThe calibration is shown right after the next sync in the dexcom receiver. There is no log entry that says accepted, but I guess the appearance in the receiver is proof enough."
+  },
+  {
+   "id": 784367190,
+   "user": "Navid200",
+   "created_at": "2021-02-23T17:23:44Z",
+   "body": "Would you mind posting a screenshot that shows the receiver showing the result of the calibration?"
+  },
+  {
+   "id": 784375187,
+   "user": "gfornax",
+   "created_at": "2021-02-23T17:35:25Z",
+   "body": "Sure, here you are. Oh and it is already up now, no worries.\r\n\r\n![IMG_20210223_183010](https://user-images.githubusercontent.com/5310025/108883291-8ef0ec80-7605-11eb-9b49-fe699ca55414.jpg)\r\n![Screenshot_2021-02-23-18-30-20-899_com eveningoutpost dexdrip](https://user-images.githubusercontent.com/5310025/108883334-9c0ddb80-7605-11eb-9ba0-0505358d62dc.jpg)\r\n"
+  },
+  {
+   "id": 784378014,
+   "user": "Navid200",
+   "created_at": "2021-02-23T17:39:34Z",
+   "body": "Would you also please show (or tell us) the firmware version of your transmitter?"
+  },
+  {
+   "id": 784380920,
+   "user": "gfornax",
+   "created_at": "2021-02-23T17:44:01Z",
+   "body": "I attached the log as well so you can see what happend in xdrip where I entered the BG reading..\r\n\r\nLet me just translate what you see in the first picture with the dexcom receiver (where I did NOT enter a calibration):\r\n```\r\nTime of insertion\r\nSensor expiration time\r\nLast calibration\r\nLast calibration value\r\n```\r\nSo by the last two lines, you can see the Dexcom receiver shows the BG reading I entered in xdrip, but chose to be discarded.\r\nDexcom Receiver FW is 5.1.2.0.26, Transmitter FW is 2.18.2.98 "
+  },
+  {
+   "id": 784383513,
+   "user": "Navid200",
+   "created_at": "2021-02-23T17:48:07Z",
+   "body": "Thanks.  Have no idea why the calibration is sent even though when you have disabled automatic calibration.\r\nLet's wait for someone who knows to respond.  "
+  },
+  {
+   "id": 784393613,
+   "user": "Navid200",
+   "created_at": "2021-02-23T18:02:53Z",
+   "body": "We may indeed have a bug.  But, instead of focusing on fixing the bug, I'd rather focus on making sure no more calibrations are sent to your transmitter unless you intend to do that.  \r\nMy suggestion is the following:\r\n\r\nUncheck the following\r\nSettings -> Less common settings -> Advanced Calibration -> Automatic Calibration\r\n\r\nOn the same page, tap on \"Use Treatment BG Values\".\r\nCheck \"Automatic mode\"."
+  },
+  {
+   "id": 784411680,
+   "user": "gfornax",
+   "created_at": "2021-02-23T18:21:44Z",
+   "body": "No worries, since I know about it my workaround is to not enter BG values in xdrip and use the dexcom device for calibration.\r\nWhat makes this bug dangerous is that it can really take a while until you realize what actually happens.\r\nIf there are things I can try to provide more details for looking into it just let me know, I'll be happy to help."
+  },
+  {
+   "id": 784415854,
+   "user": "Navid200",
+   "created_at": "2021-02-23T18:28:18Z",
+   "body": "I am not a developer.  There aren't many.  They can ask you for detail in order to solve this.\r\n\r\nWhat I know is that every time you send an unintended calibration to an 8H transmitter, you are rolling the dice!  If the transmitter has a fit, and believe me it can, you will have no readings possibly for hours.\r\nWhat I suggested should stop your BG treatment values to be sent as calibrations.\r\n\r\nYour first post says that you are using October 1, 2020 release.\r\nI also recommend that you upgrade your xDrip to the November 27, 2020 release.  "
+  },
+  {
+   "id": 784423659,
+   "user": "gfornax",
+   "created_at": "2021-02-23T18:40:40Z",
+   "body": "Agree, I'll give it a shot next time it is necessary.\r\nI updated the initial post as I have used the Feb 17 2021 release today for the confirmation."
+  },
+  {
+   "id": 1107942341,
+   "user": "Navid200",
+   "created_at": "2022-04-24T23:52:44Z",
+   "body": "@gfornax Can you try the release of April 11, 2022 or more recent and see if you still experience this?"
+  },
+  {
+   "id": 1108774308,
+   "user": "gfornax",
+   "created_at": "2022-04-25T16:14:10Z",
+   "body": "Yes, I can try it next week."
+  },
+  {
+   "id": 1116070265,
+   "user": "gfornax",
+   "created_at": "2022-05-03T13:00:21Z",
+   "body": "@Navid200 confirmed, still happening with nightly build from May 3rd 2022"
+  },
+  {
+   "id": 1116146298,
+   "user": "Navid200",
+   "created_at": "2022-05-03T14:10:42Z",
+   "body": "Thanks for testing.\r\nWould you please show this page so that we can see your settings?\r\n![Screenshot_20220503-100827](https://user-images.githubusercontent.com/51497406/166469351-3f2e24eb-e5e4-49f3-978f-ef40841eacf4.png)\r\n"
+  },
+  {
+   "id": 1116209848,
+   "user": "gfornax",
+   "created_at": "2022-05-03T15:07:18Z",
+   "body": "It was set to \"Ask me every time\" and I answered the prompt with \"no\" (do not use the value)"
+  },
+  {
+   "id": 1116215128,
+   "user": "Navid200",
+   "created_at": "2022-05-03T15:12:03Z",
+   "body": "@gfornax Thanks.\r\nWould you please show a screenshot of the logs corresponding to when it happened?\r\nPlease blackout any user IDs that may appear in the logs."
+  },
+  {
+   "id": 1116343071,
+   "user": "Navid200",
+   "created_at": "2022-05-03T17:11:02Z",
+   "body": "@gfornax Never mind.  I just tested and can see the problem.  Thanks so much for reporting this.  I will open a PR to fix this."
+  }
+ ]
+}

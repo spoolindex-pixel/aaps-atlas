@@ -1,0 +1,75 @@
+{
+ "id": 1216456119,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1680,
+ "title": "Calibrations entered in XDrip cause NSClient to crash",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1680",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-04-26T20:41:56Z",
+ "closed_at": "2022-05-10T18:29:55Z",
+ "comment_count": 12,
+ "body": "Hello, first time I've raised an issue.\r\n\r\nWhen BG calibrations are entered in XDrip, it causes NSClient to crash.  This makes it very difficult to manage our 8 yr old T1 daughter remotely via NSClient, eg. when she is at school.\r\n\r\nSometimes the situation can be recovered by restarting dyno's in Heroku, but it can take several restarts and perhaps 10 minutes for NSClient to operate correctly.\r\n\r\nThis problem started after updating to AAPS v3.0.0.1\r\n\r\nI have attached a screenshot of our NSClient logs, and Heroku logs.\r\n\r\nOur rig set up is as follows:\r\n- libre2, OOP2 to XDrip\r\n- XDrip sends to AAPS (v3.0.0.1)\r\n- AAPS uploads to Nightscout (v14.2.5)\r\n- Xdrip followers (parents and grandparents)\r\n- NSClient v3.0.0.1 used by parents and grandparents to correct carbs if school have entered them incorrectly, and do profile changes for PE etc.\r\n\r\nIt would be great if this issue could be resolved. Thank you for all your hard work, I don't know what we would have done without NS AAPS.\r\n\r\n[NSclient crash after calibration error log.txt](https://github.com/nightscout/AndroidAPS/files/8566732/NSclient.crash.after.calibration.error.log.txt)\r\n\r\n![NSClient screenshot](https://user-images.githubusercontent.com/70425875/165387821-4431909c-5feb-4e8c-b326-d649df5272aa.jpg)\r\n\r\n",
+ "comments": [
+  {
+   "id": 1113082857,
+   "user": "MilosKozak",
+   "created_at": "2022-04-29T09:05:55Z",
+   "body": "the situation is:\r\nyou calibrate in xdrip\r\ncalibration is passed to aaps(nsclient)\r\naaps upload calibration to NS\r\nNS crash\r\n\r\ncorrect?"
+  },
+  {
+   "id": 1113147333,
+   "user": "MilosKozak",
+   "created_at": "2022-04-29T10:21:30Z",
+   "body": "could you provide logs from aaps from that time?"
+  },
+  {
+   "id": 1113165562,
+   "user": "Mikeparmenter11",
+   "created_at": "2022-04-29T10:46:43Z",
+   "body": "Thanks for looking, Yes xdrip with OOP2 as data source feeds to AAPS / NS / NSCLIENT.  Finger pricks entered in xdrip crash NS and NSCLIENT.\nI can deliberately crash it later to get more logs but not now as she's at school.\nIt has become rather an issue safety wise as its making it tricky to keep the xdrip / libre calibrated.\nH\n\nSent from Yahoo Mail on Android \n \n  On Fri, 29 Apr 2022 at 10:06, Milos ***@***.***> wrote:   \n\n\nthe sutiation is:\nyou calibrate in xdrip\ncalibration is passed to aaps(nsclient)\naaps upload calibration to NS\nNS crash\n\ncorrect?\n\n—\nReply to this email directly, view it on GitHub, or unsubscribe.\nYou are receiving this because you authored the thread.Message ID: ***@***.***>\n  \n"
+  },
+  {
+   "id": 1114291448,
+   "user": "Mikeparmenter11",
+   "created_at": "2022-05-01T17:23:20Z",
+   "body": "Please find attached logs from straight after the crash.\nKR \nHannah\n\nSent from Yahoo Mail on Android \n \n  On Fri, 29 Apr 2022 at 11:20, Milos ***@***.***> wrote:   \n\n\ncould you provide logs from aaps from that time?\n\n—\nReply to this email directly, view it on GitHub, or unsubscribe.\nYou are receiving this because you authored the thread.Message ID: ***@***.***>\n  \n"
+  },
+  {
+   "id": 1114637637,
+   "user": "MilosKozak",
+   "created_at": "2022-05-02T08:57:57Z",
+   "body": "i see no logs"
+  },
+  {
+   "id": 1118569232,
+   "user": "Der-Schubi",
+   "created_at": "2022-05-05T13:41:55Z",
+   "body": "I can confirm. My NS is down after I entered a bloody measurement.\r\nI'll see if I can grab some logs."
+  },
+  {
+   "id": 1121489270,
+   "user": "MilosKozak",
+   "created_at": "2022-05-09T19:26:51Z",
+   "body": "no logs?"
+  },
+  {
+   "id": 1121491950,
+   "user": "Der-Schubi",
+   "created_at": "2022-05-09T19:29:41Z",
+   "body": "Have not been able to reproduce it up to now. "
+  },
+  {
+   "id": 1122731185,
+   "user": "MilosKozak",
+   "created_at": "2022-05-10T18:29:55Z",
+   "body": "fixed by https://github.com/nightscout/AndroidAPS/commit/6212bafcee0023fef452faa49b41eeb8ae9c6efa"
+  },
+  {
+   "id": 1122858230,
+   "user": "Mikeparmenter11",
+   "created_at": "2022-05-10T21:04:28Z",
+   "body": "Apologies for my inexperience, I was reading your messages as emails, replying and attaching the logs to the emails, not realising they weren't getting to you / onto github.\n\nSent from Yahoo Mail on Android \n \n  On Fri, 29 Apr 2022 at 10:06, Milos ***@***.***> wrote:   \n\n\nthe sutiation is:\nyou calibrate in xdrip\ncalibration is passed to aaps(nsclient)\naaps upload calibration to NS\nNS crash\n\ncorrect?\n\n—\nReply to this email directly, view it on GitHub, or unsubscribe.\nYou are receiving this because you authored the thread.Message ID: ***@***.***>\n  \n"
+  }
+ ]
+}

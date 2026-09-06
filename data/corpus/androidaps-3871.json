@@ -1,0 +1,171 @@
+{
+ "id": 2898160257,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3871,
+ "title": "3.3.1.3-dev crashes when (de-)selecting the Insulin button",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3871",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-03-05T18:49:25Z",
+ "closed_at": "2025-03-14T09:57:49Z",
+ "comment_count": 26,
+ "body": "With the dev version (1985) the app restarts everytime when I:\n- click on the preferences button to show Insulin button\n- click on the preferences button to deactivate the insulin button\n\nIt the same behaviour no matter whether SMB or AUTOISF plugin is active.\n\nUnfortunately I cannot find any trace of any logfile for the last 3 days. Was there a further increase in file protection?",
+ "comments": [
+  {
+   "id": 2701819997,
+   "user": "ga-zelle",
+   "created_at": "2025-03-05T19:01:41Z",
+   "body": "The other 3 buttons work fine.\nI have a virtual pump (Accu-Chek Combo) selected."
+  },
+  {
+   "id": 2701860568,
+   "user": "ga-zelle",
+   "created_at": "2025-03-05T19:21:48Z",
+   "body": "More weird observations:\nWhen I activate all 4 buttons the next time I want to de-activte any then the Carb button is not in the regular list but moved further down. I wonder whether it is related to the overlay of the Treatment button with the dev version indicator.\n\n![Image](https://github.com/user-attachments/assets/f0ee2594-d420-4f6c-bfaf-fbd493c7eef6)"
+  },
+  {
+   "id": 2701894981,
+   "user": "ga-zelle",
+   "created_at": "2025-03-05T19:39:06Z",
+   "body": "Still happening with 3.3.2.0-dev(1fdf)"
+  },
+  {
+   "id": 2701966195,
+   "user": "vanelsberg",
+   "created_at": "2025-03-05T20:13:57Z",
+   "body": "Confirming. \nLatest dev 3.3.2.0 crashed and was unable to stop it from crashing (enable the insuline button)\nDowngraded to latest 3.3.1.3 dev to repair and get the logfile.\n\n[AndroidAPS_LOG_1741205211390.log.zip](https://github.com/user-attachments/files/19095983/AndroidAPS_LOG_1741205211390.log.zip)"
+  },
+  {
+   "id": 2702012516,
+   "user": "MilosKozak",
+   "created_at": "2025-03-05T20:38:51Z",
+   "body": "fixed by https://github.com/nightscout/AndroidAPS/commit/6018b405d72ba47222e1279092b12d63c4fcc87e"
+  },
+  {
+   "id": 2702089189,
+   "user": "vanelsberg",
+   "created_at": "2025-03-05T21:13:10Z",
+   "body": "Confirming fixed 👍 "
+  },
+  {
+   "id": 2702095092,
+   "user": "ga-zelle",
+   "created_at": "2025-03-05T21:15:31Z",
+   "body": "The preference screen initially shows the correct, new version info **3.3.2.0(1220)**\nHowever, after clicking on the selections it changes back to **3.3.1.3(hash)**."
+  },
+  {
+   "id": 2702116012,
+   "user": "MilosKozak",
+   "created_at": "2025-03-05T21:26:40Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/8ba1a5e4166f0f9ba1e0dd504672d5633e6cc2c1"
+  },
+  {
+   "id": 2703760022,
+   "user": "vanelsberg",
+   "created_at": "2025-03-06T12:50:22Z",
+   "body": "@MilosKozak Not seeing any version at all.\nNot on overview, not on preferences or overview preferences. What up 🤔 \n\n[AndroidAPS_LOG_1741265861525.log.zip](https://github.com/user-attachments/files/19108654/AndroidAPS_LOG_1741265861525.log.zip)"
+  },
+  {
+   "id": 2704103515,
+   "user": "ga-zelle",
+   "created_at": "2025-03-06T15:02:03Z",
+   "body": "On my side everything looks fine."
+  },
+  {
+   "id": 2704132680,
+   "user": "MilosKozak",
+   "created_at": "2025-03-06T15:12:05Z",
+   "body": "Idon't show version on AAPSClient now. Isn't it your issue? @vanelsberg "
+  },
+  {
+   "id": 2704248943,
+   "user": "vanelsberg",
+   "created_at": "2025-03-06T15:53:41Z",
+   "body": "> Idon't show version on AAPSClient now. Isn't it your issue? [@vanelsberg](https://github.com/vanelsberg)\n\nI'm running latest commit AAPS 3.3.2.0-dev [8ba1a] (so not AAPSClient)(https://github.com/nightscout/AndroidAPS/commit/8ba1a5e4166f0f9ba1e0dd504672d5633e6cc2c1)\n\n- There is no version shown on overview.\n- There is no version shown anywhere in preferences (or where should I look?)\n\n![Image](https://github.com/user-attachments/assets/bdaa8ef1-c938-4e59-be7c-afd722ee4654)\n\n![Image](https://github.com/user-attachments/assets/bcaddd54-d394-4fc1-8f06-cdcdfad7de3c)\n\n![Image](https://github.com/user-attachments/assets/1bae9182-099e-4273-913e-15ffb6eefae3)\n"
+  },
+  {
+   "id": 2704344477,
+   "user": "vanelsberg",
+   "created_at": "2025-03-06T16:29:05Z",
+   "body": "@MilosKozak \n\nAh. Found the issue: I have selected \"**Dark theme**\"\nWhen I select \"Light theme\" version does show on overview and in preferences.\n\nKnowing this I can now see faintly the black colored version text:\n\n![Image](https://github.com/user-attachments/assets/eb5623a8-97d3-484f-94a9-f28366122882)"
+  },
+  {
+   "id": 2704427152,
+   "user": "ga-zelle",
+   "created_at": "2025-03-06T17:02:33Z",
+   "body": "On my Samsung it shows in clear red in all 3 themes. Also, on virtual Pixel8 in Studio it is visible in red in standard theme."
+  },
+  {
+   "id": 2704441373,
+   "user": "vanelsberg",
+   "created_at": "2025-03-06T17:08:19Z",
+   "body": "> On my Samsung it shows in clear red in all 3 themes. Also, on virtual Pixel8 in Studio it is visible in red in standard theme.\n\nHmmm... S22 Ultra. Version text shows in plain black (dark theme0 or grayisch (light them)\n(No special display settings. Tried switching AAPS between theme's and skins)\n\n![Image](https://github.com/user-attachments/assets/a0c4e390-a6ee-4ace-8adf-24e5b22481d8)\n\n"
+  },
+  {
+   "id": 2704514045,
+   "user": "MilosKozak",
+   "created_at": "2025-03-06T17:34:54Z",
+   "body": "it should be \ngray when commited\norange when expired\nred when uncommited\n"
+  },
+  {
+   "id": 2704858475,
+   "user": "vanelsberg",
+   "created_at": "2025-03-06T20:21:46Z",
+   "body": "> it should be gray when commited ...\n\nAh - that explains. So the color selection is as expected (only running clean dev build on this phone).\n\nBut actually, this gray is of similar \"gray\" used for background when in Dark mode.\nMaybe than the gray (text) should have the same color-code used for other \"gray\" items in overview?\n\n![Image](https://github.com/user-attachments/assets/6c92c37c-040e-4d33-b76e-acd1a36f8f38)\n"
+  },
+  {
+   "id": 2708218188,
+   "user": "vanelsberg",
+   "created_at": "2025-03-08T11:23:16Z",
+   "body": "Ok, did some more testing:\nWhen in AAPS 3.3 dev version text shows OK (gray on white background) on all my phones when in AAPS Light mode.\n\nIn AAPS dark mode (background color dark gray):\n- OK on a Nokia 5.4 test phone (version text light-grey, same color as other UI elements)\n- Hardly visible: Black on dark gray AAPS background on Samsung Note 9 (flashed Lineage OS, Android 13)\n- Hardly visible: Black on dark gray AAPS background on Samsung S22 Ultra (Android 14, One UI 6.1, latest updates)\n\nLooks like this depends on Display hardware, specific for text on the Samsung Display?\nStill, strange that on the Samsung phones version text is colored \"black\", not gray-ish as expected. All other UI elements show gray colors as expected.\n\n\n"
+  },
+  {
+   "id": 2708618861,
+   "user": "ga-zelle",
+   "created_at": "2025-03-09T01:57:16Z",
+   "body": "This testing is going more and more mysterious. For latest dev\n\n* on my Samsung S24+ (Android14, One UI 6.1) in  Dark Mode is visible as specified, in Light Mode not visible\n* on my Samsung S20FE (Android13, One UI 5.1) in  Dark Mode is visible as specified, in Light Mode not visible\n* on Pixel 8 in Meerkat (API 33) in Dark Mode is not visible; in Light Mode is visible  as specified\n* on Pixel 9 pro in Meerkat (API 34) in Dark mode is not visible; in Light Mode visible as specified\n"
+  },
+  {
+   "id": 2708901769,
+   "user": "ga-zelle",
+   "created_at": "2025-03-09T15:01:31Z",
+   "body": "This morning I got an idea. Besides dark and Light there is device theme. That displays always because it so happens, that it is Dark for my Samsungs and Light for the virtual Pixels in Meerkat."
+  },
+  {
+   "id": 2709094736,
+   "user": "vanelsberg",
+   "created_at": "2025-03-09T22:10:02Z",
+   "body": "> This morning I got an idea. Besides dark and Light there is device theme [....\n\nGood find!\n@ga-zelle Suggest reopening this issue...\n@MilosKozak Can confirm version text is following device theme, not AAPS theme:\n\nOn my S22 Ultra I have device theme set to \"Light\", AAPS theme however is set to dark \"Dark\" (and version text hardly shows)\nWhen I switch the Samsung's Display mode settings to \"Dark\", version text shows as expected.\n\n"
+  },
+  {
+   "id": 2712004024,
+   "user": "ga-zelle",
+   "created_at": "2025-03-10T22:38:59Z",
+   "body": "@vanelsberg Looks Iike I don't have the required permisson for re-opening.\n@MilosKozak Although probably not exactly related to the original crash issue it appears that one last change will settle the readability problem."
+  },
+  {
+   "id": 2712864343,
+   "user": "MilosKozak",
+   "created_at": "2025-03-11T06:50:58Z",
+   "body": "i reopened but i don't know how to help. for me it works well"
+  },
+  {
+   "id": 2714353323,
+   "user": "ga-zelle",
+   "created_at": "2025-03-11T13:45:00Z",
+   "body": "The trouble is that devs are interested in the message but users don't care and we cannot persuade them to select another device theme. How about changing the _commited color_ to something different from grey, let's say green or blue. For me at least the uncommited red shows in all themes."
+  },
+  {
+   "id": 2719217669,
+   "user": "vanelsberg",
+   "created_at": "2025-03-12T21:53:55Z",
+   "body": "> i reopened but i don't know how to help. for me it works well\n\nHave a fix. Needs review/testing....\nhttps://github.com/nightscout/AndroidAPS/pull/3879"
+  },
+  {
+   "id": 2722948161,
+   "user": "olorinmaia",
+   "created_at": "2025-03-13T23:51:24Z",
+   "body": "#3879 seem to work fine. I don't experience any crash in latest dev, didn't before either for that matter. :)\n\nI also didn't have any issues reading the version-number before this PR (Samsung galaxy S10 and Z Flip 4)\n\nI personally think it looks better if `view.setTypeface(null, Typeface.BOLD)` is removed.\n\nBold:\n\n![Image](https://github.com/user-attachments/assets/a45154bf-c044-4896-8f57-cefc8071df4d)\n\nNot bold:\n\n![Image](https://github.com/user-attachments/assets/01b63c40-088e-4dbf-8f4a-ae769ba4d06b)"
+  }
+ ]
+}

@@ -1,0 +1,105 @@
+{
+ "id": 1534976022,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2351,
+ "title": "[DEV][NSC V3] Pod/Canula change not reported to NS",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2351",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-01-16T13:52:46Z",
+ "closed_at": "2023-01-23T11:12:05Z",
+ "comment_count": 15,
+ "body": "Build 4fbb0128e6-2023.01.15 merged at 378002df336294fe31495c50002ef139e806e2a4\r\nPumps used: Insight and DASH\r\nTime: Switched from Insight to DASH at:  16-01-2023 11:45 and placed a new pod\r\nLogs: [AndroidAPS._2023-01-16_JB.zip](https://github.com/nightscout/AndroidAPS/files/10426348/AndroidAPS._2023-01-16_JB.zip)\r\nNS Version: 14.2.6\r\n\r\nCanula and pod changes are not reported to NS. When changing the Canula of the Insight pump few days ago I did not see a canula change in NS. Today I switched from Insight to Dash, And the pod change is not registered in NS. \r\nCAGE 4+ days from when I used NSC V1\r\n\r\n",
+ "comments": [
+  {
+   "id": 1399227099,
+   "user": "MilosKozak",
+   "created_at": "2023-01-21T10:49:34Z",
+   "body": "I tested it and it works . it appears in NS and in AAPS client too"
+  },
+  {
+   "id": 1399238702,
+   "user": "jbr7rr",
+   "created_at": "2023-01-21T12:04:41Z",
+   "body": "Well that's strange, 2 Days ago I switched to EO, that switch/change was also not noted. Any settings I can check on my side (NS or AAPS?) I looked trough the settings and did not find any option for that though.."
+  },
+  {
+   "id": 1399242914,
+   "user": "MilosKozak",
+   "created_at": "2023-01-21T12:31:59Z",
+   "body": "try to enter it from action tab . you can delete it afterwards"
+  },
+  {
+   "id": 1399326155,
+   "user": "jbr7rr",
+   "created_at": "2023-01-21T20:23:31Z",
+   "body": "Unfortunately manually entering in the actions tab does not work as well.. \r\nToday I did change to insight at: 20:48 and manual via actions at: 21:04\r\n[AndroidAPS_LOG_1674331834250.log.zip](https://github.com/nightscout/AndroidAPS/files/10472972/AndroidAPS_LOG_1674331834250.log.zip)\r\n\r\nDo you want my settings file via PM?\r\n"
+  },
+  {
+   "id": 1399344771,
+   "user": "MilosKozak",
+   "created_at": "2023-01-21T22:27:46Z",
+   "body": "to on default logging. it's quite impossible to search for something"
+  },
+  {
+   "id": 1399345218,
+   "user": "MilosKozak",
+   "created_at": "2023-01-21T22:31:08Z",
+   "body": "there is no treatment created at 21:04"
+  },
+  {
+   "id": 1399345660,
+   "user": "MilosKozak",
+   "created_at": "2023-01-21T22:33:47Z",
+   "body": "does the cannula age change localy?\r\ndo you see the record sent to NS within a few minutes?"
+  },
+  {
+   "id": 1399449314,
+   "user": "jbr7rr",
+   "created_at": "2023-01-22T10:30:34Z",
+   "body": "Oops, yeah I can see why it's hard to read, I resetted the log settings this morning and did a manual trigger at: 11:21\r\n[AndroidAPS_2023-01-22_JB.zip](https://github.com/nightscout/AndroidAPS/files/10474164/AndroidAPS_2023-01-22_JB.zip)\r\n\r\nYes, I see the change locally (note the missing NS)\r\n![WhatsApp Image 2023-01-22 at 11 23 25](https://user-images.githubusercontent.com/60566713/213911231-283cd41b-d788-44af-bb43-592f509a1a2f.jpeg)\r\n\r\nNS Log screen after canula change triggered:\r\n![WhatsApp Image 2023-01-22 at 11 24 58](https://user-images.githubusercontent.com/60566713/213911262-944d9d6c-fe72-47f0-b303-38f90bbb9521.jpeg)\r\n\r\n\r\n\r\n"
+  },
+  {
+   "id": 1399458025,
+   "user": "MilosKozak",
+   "created_at": "2023-01-22T11:20:47Z",
+   "body": "I see:\r\n```\r\n11:18:26.818 [DefaultDispatcher-worker-4] E/NSCLIENT: [NSClientV3Plugin$dbOperationTreatments$1$1.invokeSuspend():682]: Upload exception\r\ninfo.nightscout.sdk.exceptions.UnknownResponseNightscoutException: null\r\n\tat info.nightscout.sdk.NSAndroidClientImpl$createTreatment$2.invokeSuspend(NSAndroidClientImpl.kt:307)\r\n\tat kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)\r\n\tat kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:106)\r\n\tat kotlinx.coroutines.internal.LimitedDispatcher.run(LimitedDispatcher.kt:42)\r\n\tat kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:95)\r\n\tat kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:570)\r\n\tat kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:750)\r\n\tat kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:677)\r\n\tat kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:664)\r\n```\r\nunfortunately Http response is not logged. could you look via logcat why is NS refusing record?"
+  },
+  {
+   "id": 1399490553,
+   "user": "jbr7rr",
+   "created_at": "2023-01-22T13:38:27Z",
+   "body": "```\r\n14:29:41.025  I  <-- 400 https://jbr7rr-ns.up.railway.app/api/v3/treatments (287ms)\r\n14:29:41.025  I  x-dns-prefetch-control: off\r\n14:29:41.025  I  expect-ct: max-age=0\r\n14:29:41.025  I  strict-transport-security: max-age=31536000\r\n14:29:41.026  I  x-download-options: noopen\r\n14:29:41.026  I  x-content-type-options: nosniff\r\n14:29:41.026  I  x-permitted-cross-domain-policies: none\r\n14:29:41.026  I  referrer-policy: no-referrer\r\n14:29:41.026  I  x-xss-protection: 0\r\n14:29:41.026  I  access-control-allow-origin: *\r\n14:29:41.026  I  access-control-allow-methods: GET,PUT,POST,DELETE,OPTIONS\r\n14:29:41.026  I  access-control-allow-headers: Content-Type, Authorization, Content-Length, X-Requested-With\r\n14:29:41.026  I  content-type: application/json; charset=utf-8\r\n14:29:41.026  I  content-length: 70\r\n14:29:41.026  I  vary: Accept-Encoding\r\n14:29:41.026  I  date: Sun, 22 Jan 2023 13:29:40 GMT\r\n14:29:41.026  I  x-envoy-upstream-service-time: 145\r\n14:29:41.026  I  server: railway\r\n14:29:41.027  I  {\"status\":400,\"message\":\"Field date cannot be modified by the client\"}\r\n14:29:41.027  I  <-- END HTTP (70-byte body)\r\n14:29:41.035  E  [DefaultDispatcher-worker-3]: [NSClientV3Plugin$dbOperationTreatments$1$1.invokeSuspend():689]: Upload exception\r\n\t\t\t\t\t\t\t\t info.nightscout.sdk.exceptions.InvalidParameterNightscoutException: \r\n\t\t\t\t\t\t\t\t\t at info.nightscout.sdk.NSAndroidClientImpl$createTreatment$2.invokeSuspend(NSAndroidClientImpl.kt:323)\r\n\t\t\t\t\t\t\t\t\t at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)\r\n\t\t\t\t\t\t\t\t\t at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:106)\r\n\t\t\t\t\t\t\t\t\t at kotlinx.coroutines.internal.LimitedDispatcher.run(LimitedDispatcher.kt:42)\r\n\t\t\t\t\t\t\t\t\t at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:95)\r\n\t\t\t\t\t\t\t\t\t at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:570)\r\n\t\t\t\t\t\t\t\t\t at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:750)\r\n\t\t\t\t\t"
+  },
+  {
+   "id": 1399494590,
+   "user": "jbr7rr",
+   "created_at": "2023-01-22T13:55:43Z",
+   "body": "Im thinking it might be a problem on my server side. I use non standard settings. as V3  is using https will that be of influence?\r\n\r\nMy ENV:\r\n```\r\nALARM_HIGH=off\r\nALARM_LOW=off\r\nALARM_TIMEAGO_URGENT=off\r\nALARM_TIMEAGO_URGENT_MINS=30\r\nALARM_TIMEAGO_WARN=off\r\nALARM_TIMEAGO_WARN_MINS=15\r\nALARM_TYPES=simple\r\nALARM_URGENT_HIGH=off\r\nALARM_URGENT_LOW=off\r\nAPI_SECRET=xxxx\r\nAUTH_DEFAULT_ROLES=denied\r\nBASAL_RENDER=icicle\r\nBG_HIGH=15\r\nBG_LOW=3,9\r\nBG_TARGET_BOTTOM=3.9\r\nBG_TARGET_TOP=10\r\nBOLUS_RENDER_OVER=1\r\nBRIDGE_PASSWORD=\r\nBRIDGE_SERVER=US\r\nBRIDGE_USER_NAME=\r\nCUSTOM_TITLE=>(^,^)<\r\nDEVICESTATUS_ADVANCED=true\r\nDISPLAY_UNITS=mmol/L\r\nEDIT_MODE=off\r\nENABLE=rawbg food bwp cage sage iage iob cob basal ar2 pushover bgi pump openaps cors\r\nLANGUAGE=nl\r\nMMCONNECT_PASSWORD=\r\nMMCONNECT_SERVER=US\r\nMMCONNECT_USER_NAME=\r\nMONGODB_URI=xxxx\r\nNIGHT_MODE=off\r\nPUMP_FIELDS=reservoir battery\r\nSHOW_FORECAST=openaps\r\nSHOW_PLUGINS=dbsize rawbg cage sage iage iob basal pushover bgi pump openaps\r\nSHOW_RAWBG=always\r\nTHEME=colors\r\nTIME_FORMAT=24\r\nBAGE_URGENT=960\r\nBAGE_WARN=672\r\nCAGE_URGENT=120\r\nCAGE_WARN=72\r\nDBSIZE_URGENT_PERCENTAGE=95\r\nDBSIZE_WARN_PERCENTAGE=90\r\nIAGE_URGENT=72\r\nIAGE_WARN=144\r\nSAGE_URGENT=480\r\nSAGE_WARN=240\r\nUPBAT_URGENT=10\r\nUPBAT_WARN=20\r\nXDRIPJS_WARN_BAT_V=280\r\n```"
+  },
+  {
+   "id": 1399499191,
+   "user": "MilosKozak",
+   "created_at": "2023-01-22T14:11:55Z",
+   "body": "send larger chunk of log pls.\r\nsimulate it again and send at least 5 min before and after"
+  },
+  {
+   "id": 1399510217,
+   "user": "jbr7rr",
+   "created_at": "2023-01-22T14:49:29Z",
+   "body": "Triggered site change at 15:40\r\n\r\nLogcat:\r\n[logcat.log](https://github.com/nightscout/AndroidAPS/files/10474652/logcat.log)\r\n\r\n\r\nI also noted that the first note that was not logged in NS is not an actual site change but something else, Maybe that is holding up the queue? As there are also some number under \"waiting\" in the NS tab:\r\n\r\n![WhatsApp Image 2023-01-22 at 15 45 25](https://user-images.githubusercontent.com/60566713/213922077-89f3a9be-3aea-4f4c-8944-47430224f026.jpeg) \r\n\r\n![WhatsApp Image 2023-01-22 at 15 45 25(1)](https://user-images.githubusercontent.com/60566713/213922085-4c75dace-a574-454c-a161-91c568fb82ca.jpeg)\r\n\r\n\r\n\r\n"
+  },
+  {
+   "id": 1400117902,
+   "user": "MilosKozak",
+   "created_at": "2023-01-23T10:27:33Z",
+   "body": "I changed processing to continue with upload when error occurs.\r\nUpdate"
+  },
+  {
+   "id": 1400173508,
+   "user": "jbr7rr",
+   "created_at": "2023-01-23T11:12:05Z",
+   "body": "Nice, all records are sent to NS now (except one faulty one I guess) and NS parameters are updated.\r\nThanks!\r\n\r\n![WhatsApp Image 2023-01-23 at 12 10 16](https://user-images.githubusercontent.com/60566713/214025685-c3f3f7d2-3f22-48f8-a7a7-c38c3a7685bc.jpeg)\r\n"
+  }
+ ]
+}

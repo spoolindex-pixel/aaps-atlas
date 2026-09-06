@@ -1,0 +1,27 @@
+{
+ "id": 1059519266,
+ "repo": "nightscout/AndroidAPS",
+ "number": 969,
+ "title": "Failed basal notifications don't adhere to Local Alert Settings",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/969",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-11-21T23:31:08Z",
+ "closed_at": "2021-11-24T20:51:01Z",
+ "comment_count": 2,
+ "body": "In order to limit the intrusiveness of failed basal alerts, I tried adjusting alert settings but experienced unexpected behavior re. two settings:\r\n\r\n1) I lowered the media volume to 0 with vibration enabled, and set Preferences > Local Alerts > Advanced > 'Use system notifications for alerts and notifications':ENABLED. With this, I would have expected that failed basal updates would generate a system notification/vibration, however, the resulting alerts don't trigger notifications / vibrations as would be expected. Instead they trigger an audio alarm that is controlled by Media volume rather than Notification volume (i.e. the alert isn't generated as an Android system notification as per the configuration).\r\n\r\n2) In a similar fashion, setting Preferences > Local Alerts > Advanced > 'Alert if pump is unreachable' to DISABLED, to suppress these alerts. However, disabling this has no effect--failed basal adjustment alerts continue to appear even if this is disabled. Is this setting only meant to generate an alert when there's no associated failed bolus / basal adjustment?\r\n\r\nNote: \r\n- Tested with 3.0 Beta 6, with a Medtronic 554 connected to AAPS running on a Galaxy S7/Android 11 (Android Experience) via an Orangelink (2.5 firmware)\r\n- Related to: #889 , #884",
+ "comments": [
+  {
+   "id": 978211033,
+   "user": "MilosKozak",
+   "created_at": "2021-11-24T20:51:01Z",
+   "body": "there are different things\r\n* Notifications for events where resolution can be postponed, messages etc\r\n* Errors what can lead to serious problems ie what if cancel of TBR fail and your BG is heading double arrow down and running TBR is 500% ?? You sent bolus, locked phone and bolus was not successful ??\r\n* Pump unreachable when it's not pump is not available for longer time (btw should not be disabled because of the same reason)\r\n\r\nYour system must be reliable enough to not produce errors"
+  },
+  {
+   "id": 978783883,
+   "user": "rustymonkey",
+   "created_at": "2021-11-25T03:19:13Z",
+   "body": "Perhaps following local alert settings may not be the ideal approach in all cases (though the UI could use some wordsmithing to make it more understandable which Alerts follow which settings). However, if the objective is for the alerts to trigger users to address urgent issues immediately, the current design doesn't accomplish this as effectively as it could:\r\n1) It doesn't generate an associated vibration. So if the alarm sound is low or the user is in a noisy environment, the user isn't notified.\r\n2) The current design encourages users to turn the volume down to near 0 when they're in situations in which they cannot disturb others (e.g. presenting to a group / sitting in a lecture / etc.). Considering the absence of an associated vibration, this is the opposite outcome of what is desired.\r\n3) The current design encourages users to turn the volume down because it can be triggered in numerous scenarios that are not urgent and do not require immediate action. For example:\r\n- transient SMB failure (e.g. #983 )\r\n- transient failure to raise basal (e.g. #988 )\r\n- transient failure to lower basal when BG is very high"
+  }
+ ]
+}

@@ -1,0 +1,207 @@
+{
+ "id": 488965346,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 996,
+ "title": "Unable to read Miaomiao data after upgrade to Android 10",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/996",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2019-09-04T06:22:33Z",
+ "closed_at": "2021-03-06T19:07:10Z",
+ "comment_count": 32,
+ "body": "Title says it all really. Was working find until the latest Android upgrade. Can't find any errors anywhere. Changed a lot of the bluetooth settings around and no luck. xDrip can see the MiaoMiao device in bluetooth but just fails to connect.\r\n\r\nIf I switch to Wear collection it is able to perform one data collection before then starting to fail again.\r\n\r\nNot sure what logs I'm able to provide as they have no errors.\r\n![Screenshot_20190904-071957](https://user-images.githubusercontent.com/648797/64230414-b79e9700-cee4-11e9-8108-b2e392e0e9c0.png)\r\n![Screenshot_20190904-072010](https://user-images.githubusercontent.com/648797/64230416-ba00f100-cee4-11e9-8da4-162f6f8aa25d.png)\r\n\r\n",
+ "comments": [
+  {
+   "id": 527788563,
+   "user": "igoneporto",
+   "created_at": "2019-09-04T07:57:26Z",
+   "body": "I am having same problem. It was working perfectly till monday. And since day, can not anymore read with xdrip. \r\n![Errir2](https://user-images.githubusercontent.com/45388452/64236284-60a3bc80-cefa-11e9-870b-d27028bab2af.jpg)\r\n![Error1](https://user-images.githubusercontent.com/45388452/64236285-60a3bc80-cefa-11e9-8f64-75a0a039e97e.jpg)\r\n\r\n"
+  },
+  {
+   "id": 527790411,
+   "user": "igoneporto",
+   "created_at": "2019-09-04T08:02:53Z",
+   "body": "\r\n![Android](https://user-images.githubusercontent.com/45388452/64236671-2edf2580-cefb-11e9-9a6b-d7cfce3344f6.jpg)\r\nHowever, my android is not 10, but 9....so i think thats not the origin of the problem. Which xdrip version are u using @btdkomplex  ??"
+  },
+  {
+   "id": 527849890,
+   "user": "tzachi-dar",
+   "created_at": "2019-09-04T10:54:18Z",
+   "body": "The logs in your case says that reading data from the MM is OK.\r\n\r\nHow does your calibration graph look like?\r\n\r\nWe need to get more loggings to try and understand the problem.\r\nCan you please \r\ngo to settings->less common settings->extra loggings->extra tags for logging\r\nAnd there add: \r\nbgreading:v \r\nand send us the results."
+  },
+  {
+   "id": 527853055,
+   "user": "igoneporto",
+   "created_at": "2019-09-04T11:04:41Z",
+   "body": "@tzachi-dar if u are talking to me, i admit that with the language change, i dont not what should i include in the bgreading:v case.\r\n\r\n![Ajustes1](https://user-images.githubusercontent.com/45388452/64249592-51ca0380-cf14-11e9-9a8e-a64409f3f3ca.jpg)\r\n![Ajustes2](https://user-images.githubusercontent.com/45388452/64249597-55f62100-cf14-11e9-8e5d-40e4ac6c779d.jpg)\r\n![Ajustes3](https://user-images.githubusercontent.com/45388452/64249601-58f11180-cf14-11e9-95ca-d1d9ffc3e915.jpg)\r\n\r\nI have erased all the callibrations today and i can not enter new callibrations. I will change the sensor today and try resetting miao again. Dont know but i think its a bluetooth problem, although i am not able to find which is the problem. \r\nThanks. "
+  },
+  {
+   "id": 527863457,
+   "user": "tzachi-dar",
+   "created_at": "2019-09-04T11:39:40Z",
+   "body": "I think you need to move your phone to english to see where to set the logs.\r\nIn any case, if you see a line like:\r\n\"We have all the data that we need 363 checksum_ok =true \"\r\nThis means that xdrip has connected to the MM, got a full reading, this reading is correct.\r\nFor some reason xDrip was not able to calculate BG from that, but no problem with bluetooth."
+  },
+  {
+   "id": 527866262,
+   "user": "igoneporto",
+   "created_at": "2019-09-04T11:49:33Z",
+   "body": "The problem is that every log i get are errors....\n\nEl mié., 4 sept. 2019 13:39, tzachi-dar <notifications@github.com> escribió:\n\n> I think you need to move your phone to english to see where to set the\n> logs.\n> In any case, if you see a line like:\n> \"We have all the data that we need 363 checksum_ok =true \"\n> This means that xdrip has connected to the MM, got a full reading, this\n> reading is correct.\n> For some reason xDrip was not able to calculate BG from that, but no\n> problem with bluetooth.\n>\n> —\n> You are receiving this because you commented.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/996?email_source=notifications&email_token=AK2JFJF4GFD7ETTKQKIJR6TQH6NAHA5CNFSM4ITN4IKKYY3PNVWWK3TUL52HS4DFVREXG43VMVBW63LNMVXHJKTDN5WW2ZLOORPWSZGOD53I5II#issuecomment-527863457>,\n> or mute the thread\n> <https://github.com/notifications/unsubscribe-auth/AK2JFJECYKOSXTE3OGNK7OTQH6NAHANCNFSM4ITN4IKA>\n> .\n>\n"
+  },
+  {
+   "id": 527866458,
+   "user": "igoneporto",
+   "created_at": "2019-09-04T11:50:11Z",
+   "body": "Will try later to reinstall everything and try with a new sensor. And\ncomment back here.\n\nThanks\n\nEl mié., 4 sept. 2019 13:49, Igone Porto <igoneporto@gmail.com> escribió:\n\n> The problem is that every log i get are errors....\n>\n> El mié., 4 sept. 2019 13:39, tzachi-dar <notifications@github.com>\n> escribió:\n>\n>> I think you need to move your phone to english to see where to set the\n>> logs.\n>> In any case, if you see a line like:\n>> \"We have all the data that we need 363 checksum_ok =true \"\n>> This means that xdrip has connected to the MM, got a full reading, this\n>> reading is correct.\n>> For some reason xDrip was not able to calculate BG from that, but no\n>> problem with bluetooth.\n>>\n>> —\n>> You are receiving this because you commented.\n>> Reply to this email directly, view it on GitHub\n>> <https://github.com/NightscoutFoundation/xDrip/issues/996?email_source=notifications&email_token=AK2JFJF4GFD7ETTKQKIJR6TQH6NAHA5CNFSM4ITN4IKKYY3PNVWWK3TUL52HS4DFVREXG43VMVBW63LNMVXHJKTDN5WW2ZLOORPWSZGOD53I5II#issuecomment-527863457>,\n>> or mute the thread\n>> <https://github.com/notifications/unsubscribe-auth/AK2JFJECYKOSXTE3OGNK7OTQH6NAHANCNFSM4ITN4IKA>\n>> .\n>>\n>\n"
+  },
+  {
+   "id": 528266523,
+   "user": "btdkomplex",
+   "created_at": "2019-09-05T08:50:02Z",
+   "body": "Oddly it started to work again after disabling bluetooth, force quitting xDrip, restarting the phone, and resetting the Miaomiao. It then continued to fail to take readings for another 10 minutes or so and then started working as if nothing was wrong."
+  },
+  {
+   "id": 529106220,
+   "user": "reedhuish",
+   "created_at": "2019-09-07T13:01:11Z",
+   "body": "XDrip worked fine for me until yesterday, when I upgraded to Android 10. I have a Pixel 3 XL phone. Everything was working perfectly until the Android 10 upgrade. Tried a new Libre sensor with the MiaoMiao charge & reset. This always works. But it is the Android 10 to MiaoMiao bluetooth communication issue. XDrip can see the MiaoMiao (on Bluetooth Scan), and I select the MiaoMiao, then XDrip says \"communicating to device\".  And nothing happens. It never gets any data from the MiaoMiao. It is a bluetooth communication issue. When I use NFC instead I get the readings perfectly. Any update for XDrip?"
+  },
+  {
+   "id": 529128871,
+   "user": "tzachi-dar",
+   "created_at": "2019-09-07T17:37:04Z",
+   "body": "@reedhuish Can you please post a picture of your logs?"
+  },
+  {
+   "id": 529135992,
+   "user": "reedhuish",
+   "created_at": "2019-09-07T18:45:52Z",
+   "body": "> @reedhuish Can you please post a picture of your logs?\r\n\r\nYou can see some glucose readings on my xdrip (yes, I'm running low this morning). Those were all done via NFC capture.\r\n\r\nBluetooth doesn't work to my miaomiao / libre combination\r\n(and it worked PERFECTLY as of yesterday, before the upgrade to Android 10 on my Pixel 3 XL)\r\n\r\nSorry if I posted too many logs :(\r\n\r\nThank you,\r\n\r\nReed\r\n![Screenshot_20190907-113621](https://user-images.githubusercontent.com/44584628/64478943-e88cff00-d164-11e9-81e8-131554704935.png)\r\n![Screenshot_20190907-113627](https://user-images.githubusercontent.com/44584628/64478946-ecb91c80-d164-11e9-8e98-e9e8b9fa86a2.png)\r\n![Screenshot_20190907-113637](https://user-images.githubusercontent.com/44584628/64478947-ee82e000-d164-11e9-9775-219fb538458f.png)\r\n![Screenshot_20190907-113646](https://user-images.githubusercontent.com/44584628/64478948-f0e53a00-d164-11e9-989a-f5e02b65530e.png)\r\n![Screenshot_20190907-113657](https://user-images.githubusercontent.com/44584628/64478951-f2166700-d164-11e9-8b52-d0d9db090549.png)\r\n![Screenshot_20190907-113705](https://user-images.githubusercontent.com/44584628/64478952-f3e02a80-d164-11e9-8137-3c629471e05a.png)\r\n![Screenshot_20190907-113714](https://user-images.githubusercontent.com/44584628/64478953-f5a9ee00-d164-11e9-8a13-e8bab6c00003.png)\r\n![Screenshot_20190907-113726](https://user-images.githubusercontent.com/44584628/64478957-fb073880-d164-11e9-9ab4-83130e0ac9d8.png)\r\n![Screenshot_20190907-113735](https://user-images.githubusercontent.com/44584628/64478960-fcd0fc00-d164-11e9-8fc6-6a2f64f9da83.png)\r\n![Screenshot_20190907-113744](https://user-images.githubusercontent.com/44584628/64478961-fe9abf80-d164-11e9-80b1-dafde0d9d78b.png)\r\n![Screenshot_20190907-113754](https://user-images.githubusercontent.com/44584628/64478963-00648300-d165-11e9-9c1f-fcea3136cf25.png)\r\n"
+  },
+  {
+   "id": 529136209,
+   "user": "reedhuish",
+   "created_at": "2019-09-07T18:48:18Z",
+   "body": "oops. I forgot, and here are my bluetooth settings in Xdrip (yes, I have the very latest version of XDrip with a 1 Sep 2019 release date)\r\n\r\nTrust auto-connect always has to be turned off with any phone I've used (Samsung Note5 and my Pixel 3 XL)\r\n\r\nReed\r\n\r\n![Screenshot_20190907-114624](https://user-images.githubusercontent.com/44584628/64478980-5c2f0c00-d165-11e9-963f-afa90889117e.png)\r\n![Screenshot_20190907-114640](https://user-images.githubusercontent.com/44584628/64478982-5e916600-d165-11e9-874c-4b316a267b38.png)\r\n"
+  },
+  {
+   "id": 529136356,
+   "user": "reedhuish",
+   "created_at": "2019-09-07T18:50:05Z",
+   "body": "oops. I forgot, and here are my bluetooth settings in Xdrip (yes, I have\nthe very latest version of XDrip with a 1 Sep 2019 release date)\n\nTrust auto-connect always has to be turned off with any phone I've used\n(Samsung Note5 and my Pixel 3 XL)\n\nReed\n\nOn Sat, Sep 7, 2019 at 11:44 AM Reed Huish <reed@huish.net> wrote:\n\n> You can see some glucose readings on my xdrip (yes, I'm running low this\n> morning). Those were all done via NFC capture.\n>\n> Bluetooth doesn't work to my miaomiao / libre combination\n> (and it worked PERFECTLY as of yesterday, before the upgrade to Android 10\n> on my Pixel 3 XL)\n>\n> Thank you,\n>\n> Reed\n>\n> On Sat, Sep 7, 2019 at 10:37 AM tzachi-dar <notifications@github.com>\n> wrote:\n>\n>> @reedhuish <https://github.com/reedhuish> Can you please post a picture\n>> of your logs?\n>>\n>> —\n>> You are receiving this because you were mentioned.\n>> Reply to this email directly, view it on GitHub\n>> <https://github.com/NightscoutFoundation/xDrip/issues/996?email_source=notifications&email_token=AKUE5NGZHRNZUVP3DV2P42TQIPREPA5CNFSM4ITN4IKKYY3PNVWWK3TUL52HS4DFVREXG43VMVBW63LNMVXHJKTDN5WW2ZLOORPWSZGOD6E53JY#issuecomment-529128871>,\n>> or mute the thread\n>> <https://github.com/notifications/unsubscribe-auth/AKUE5NDQVO6ZRWXVAFK7BD3QIPREPANCNFSM4ITN4IKA>\n>> .\n>>\n>\n>\n> --\n>\n> =============================================================\n> Reed Huish\n> Mesa, Arizona, USA\n> Tel: (+1) 602-476-1085\n> Email: reed@huish.net\n> SKYPE: reedhuish\n>\n>\n\n-- \n\n=============================================================\nReed Huish\nMesa, Arizona, USA\nTel: (+1) 602-476-1085\nEmail: reed@huish.net\nSKYPE: reedhuish\n"
+  },
+  {
+   "id": 529142787,
+   "user": "tzachi-dar",
+   "created_at": "2019-09-07T20:03:16Z",
+   "body": "Thanks @reedhuish \r\nIt seems that there are no signs of bluetooth activity on your phone.\r\nCan you please:\r\ngo to settings->less common settings->extra loggings->extra tags for logging\r\nAnd there add:\r\nbgreading:v,DexCollectionService:v\r\n\r\nLet it run for 15 minutes and post the logs again.\r\n\r\nBy the way are you using wear, or using your phone directly?\r\n\r\nThanks\r\nTzachi\r\n"
+  },
+  {
+   "id": 529147613,
+   "user": "reedhuish",
+   "created_at": "2019-09-07T21:18:52Z",
+   "body": "hello Tzachi, I really do appreciate your help on this. Many many thanks. I've felt crappy even being off CGM for 1 day. :(\r\n\r\nI am using the phone directly (Pixel 3 XL bluetooth) to grab the glucose readings from my MiaoMiao (which is connected to my Freestyle Libre)\r\n\r\nI do have an Android Wear watch, which does NOT collect any glucose readings -- I wish that part worked, but it doesn't (grabbing the MiaoMiao readings directly from the Android Wear watch doesn't work).  \r\n\r\nThe Android Wear only displays the glucose readings, when my Pixel 3 XL sends it to my Android Wear Ticwatch E.\r\n\r\nI know you are not doubting me. But just to confirm, I did not change a thing in XDrip. It was communicating just perfectly. Pixel 3 XL to my MiaoMiao / Libre combination....\r\n\r\nUNTIL last night I upgraded to the Android 10 version on my Pixel 3 XL. \r\n\r\nThen, after the Android 10 upgrade, it will \"see\" the MiaoMiao in the Bluetooth Scan (see the images below), and it says \"connecting to the device\", but it doesn't get any glucose readings from the MiaoMiao. Nothing. Nada. Zip.\r\n\r\n(the only readings it gets is when I do an NFC scan)\r\n\r\nAnd my Pixel 3 XL bluetooth is working perfectly. Been busy on phone calls this morning (through my bluetooth headsets).\r\n\r\nIn summary, XDrip is not compatible with bluetooth on Android 10.\r\n\r\nThank you, Reed\r\n\r\nFYI - my MiaoMiao is device: E0:92:F2:85:B5:F1\r\n\r\n![Screenshot_20190907-134643](https://user-images.githubusercontent.com/44584628/64480308-39f3b900-d17a-11e9-97be-62f047150178.png)\r\n![Screenshot_20190907-141258](https://user-images.githubusercontent.com/44584628/64480310-3ceea980-d17a-11e9-9b23-2132b72c423f.png)\r\n![Screenshot_20190907-141308](https://user-images.githubusercontent.com/44584628/64480311-3f510380-d17a-11e9-87d8-faf60307e2e2.png)\r\n![Screenshot_20190907-141318](https://user-images.githubusercontent.com/44584628/64480312-411ac700-d17a-11e9-81f8-424a247d6fec.png)\r\n![Screenshot_20190907-141327](https://user-images.githubusercontent.c"
+  },
+  {
+   "id": 529150468,
+   "user": "tzachi-dar",
+   "created_at": "2019-09-07T22:03:10Z",
+   "body": "It seems that you are getting status 133 on your phone while trying to connect which is not a good thing.\r\n\r\nThere are two things that you can try and do:\r\n1) Turn the value of trust autoconnect to on (this is on settings->less common settings->bluetooth setting).\r\n2) Install an application that is called \"nrf connect\". This application when opened will scan for devices and show the miaomiao. Press connect there. If it will succeed, there is a chance that xDrip will also connect to the miaomiao.\r\n\r\nI hope this helps."
+  },
+  {
+   "id": 529154036,
+   "user": "reedhuish",
+   "created_at": "2019-09-07T23:13:01Z",
+   "body": "I did what I wrote:\r\n\r\n1. Autoconnect turned on (see screen shot)\r\n2. Installed NRF Connect and connected to my MiaoMiao. It says connected not bonded.\r\n\r\nBut nope. XDrip didn't grab readings from MiaoMiao.\r\n\r\nI tried doing the bluetooth / reset thing in XDrip, and it found MiaoMiao on the scan, but still won't grab any glucose readings.\r\n\r\nFYI - MiaoMiao has their own app, called Tomato, which they recommend (in addition to XDrip and Spike).\r\n\r\nI tried Tomato again (after disabling XDrip, which you can now do in Android 10 -- pretty cool!). Tomato will \"see\" the MiaoMiao, but this app also will not grab any glucose readings from the MiaoMiao.\r\n\r\nMaybe that is called \"binding\" or something like that.\r\n\r\nSo everything I've tried, XDrip, Tomato, now even Glimp.\r\n\r\nAndroid 10 updated bluetooth communication. Something just isn't working now with bluetooth communication to external devices.\r\n\r\nAnd when more people upgrade to Android 10, I think more and more clients will have issues connecting from XDrip to their bluetooth glucose device.\r\n\r\n\r\n\r\n![Screenshot_20190907-154509](https://user-images.githubusercontent.com/44584628/64481134-bc847480-d18a-11e9-8f5c-ed42f1623671.png)\r\n![Screenshot_20190907-154804](https://user-images.githubusercontent.com/44584628/64481138-c73f0980-d18a-11e9-9aa0-defffabfa37a.png)\r\n![Screenshot_20190907-154827](https://user-images.githubusercontent.com/44584628/64481140-cd34ea80-d18a-11e9-87d8-913fd4d8ea1a.png)\r\n![Screenshot_20190907-155044](https://user-images.githubusercontent.com/44584628/64481141-d58d2580-d18a-11e9-81e5-86ceee043d1f.png)\r\n![Screenshot_20190907-155052](https://user-images.githubusercontent.com/44584628/64481143-d9b94300-d18a-11e9-85ab-17989debf281.png)\r\n![Screenshot_20190907-155312](https://user-images.githubusercontent.com/44584628/64481145-de7df700-d18a-11e9-8e8f-5c64f7df410a.png)\r\n![Screenshot_20190907-155340](https://user-images.githubusercontent.com/44584628/64481146-e178e780-d18a-11e9-9352-63e5d878884a.png)\r\n![Screensho"
+  },
+  {
+   "id": 536738796,
+   "user": "jannesaukko",
+   "created_at": "2019-09-30T20:31:58Z",
+   "body": "I have same issue. Can this be fixed somehow?"
+  },
+  {
+   "id": 538041454,
+   "user": "loop2016",
+   "created_at": "2019-10-03T17:20:30Z",
+   "body": "I have the same issue after the Update to Android 10. But on my OnePlus 7 and my Dexcom G6. No readings."
+  },
+  {
+   "id": 538047204,
+   "user": "reedhuish",
+   "created_at": "2019-10-03T17:34:44Z",
+   "body": "the solution for me is posted on:\r\n\r\nhttps://github.com/NightscoutFoundation/xDrip/issues/1001\r\n\r\nI followed the instructions posted by: elrufoelrufo\r\n\r\n"
+  },
+  {
+   "id": 544261817,
+   "user": "GlimpRemco",
+   "created_at": "2019-10-20T15:18:44Z",
+   "body": "Same issue after upgrading my OnePlus 7 pro to Android 10. No connection with Xdrip+ or Tomato"
+  },
+  {
+   "id": 544659680,
+   "user": "loop2016",
+   "created_at": "2019-10-21T19:02:48Z",
+   "body": "> \r\n> \r\n> Same issue after upgrading my OnePlus 7 pro to Android 10. No connection with Xdrip+ or Tomato\r\n\r\nWasn't the [instruction](https://github.com/NightscoutFoundation/xDrip/issues/1001) from @reedhuish helpful to you?"
+  },
+  {
+   "id": 544673328,
+   "user": "jannesaukko",
+   "created_at": "2019-10-21T19:37:03Z",
+   "body": "Yes it works now but i have to do same procress always again when xdrip disconnects miaomaio. This happens among other things every single night."
+  },
+  {
+   "id": 545140599,
+   "user": "GlimpRemco",
+   "created_at": "2019-10-22T20:31:11Z",
+   "body": "Thank you, after executing the instructions, Xdrip can connect again"
+  },
+  {
+   "id": 569509454,
+   "user": "James866",
+   "created_at": "2019-12-29T14:15:23Z",
+   "body": "Hi Guys,\r\n\r\nHope you can help me solve this Bluetooth Android puzzle as I am having the same issue Btdkomplex describes. Every night between 3 and 4 am my phone (Oneplus6T) shows 'missed reading' on Xdrip+ (6d4d283-2019.10.27). This occurs since the Android upgrade to v10.3.0. Previously I had NO issues what so ever.\r\n\r\nIt seems that the Libre sensor itself is working fine (since I can use Abbott's LibreLink app via NFC without problems). Also there appears to be a bluetooth connection (in system status xDrip+ is showing 'connected' and in the event logs I see these \"We have all the data that we need 363 checksum_ok = true\" lines. \r\n\r\nI already disabled all the power saving options, 'digital welfare' settings, etc to make sure the BT connection isn't lost due to some power saving mode.\r\n\r\nFurthermore, I performed elrufoelrufo's instructions without any luck. Even toggling the 'trust auto-connect' option off or on doesn't make a difference.\r\n\r\nThere are a few options as workaround that seem to get the readings back:\r\n- rebooting the phone, followed by turning BT off and on several times, together with scanning and connection to the MM in xDrip+\r\n- connection the phone to the carkit BT\r\n- taking the MM off, resetting it (many) times, followed by the same BT toggling and reconnecting steps previously described\r\n\r\nAs you can imagine, neither is a 'welcome' option in the middle of the night.\r\n\r\nHope anyone of you has an idea what this annoying problem can solve... many thanks in advance for your help! I attach some screenshots of the BT settings and error logs beneath.\r\n\r\n![Missed reading issue](https://user-images.githubusercontent.com/59336226/71557950-d0135e00-2a4d-11ea-9fb9-d6e9ca070761.jpg)\r\n![BT setting 1](https://user-images.githubusercontent.com/59336226/71557956-ede0c300-2a4d-11ea-9f2a-d36482a3c54b.jpg)\r\n![BT setting 2](https://user-images.githubusercontent.com/59336226/71557957-ede0c300-2a4d-11ea-94e7-1e057886ddaf.jpg)\r\n![Error log 1 after 4 am despite no readi"
+  },
+  {
+   "id": 569513346,
+   "user": "tzachi-dar",
+   "created_at": "2019-12-29T15:00:33Z",
+   "body": "@James866 \r\nIs there a new power saving feature that needs to be disabled?\r\n\r\nCan you try the different combinations of the following setting:\r\n1) trust auto connect.\r\n2) use scanning.\r\n3) close gatt on ble disconnect.\r\n\r\nAnd see if any of them works for you (Since there are 3 switches, there should be 8 combinations)?"
+  },
+  {
+   "id": 569513849,
+   "user": "loop2016",
+   "created_at": "2019-12-29T15:07:09Z",
+   "body": "I had similar problems with my OnePlus 7 and its aggressive power saving. Please check [this thread](https://github.com/NightscoutFoundation/xDrip/issues/628) for further information."
+  },
+  {
+   "id": 569541597,
+   "user": "James866",
+   "created_at": "2019-12-29T21:00:11Z",
+   "body": "Thanks guys for your quick replies!\r\n@tzachi-dar I switched all three to 'enabled' now. will let you know tomorrow how it went through the night.\r\n@loop2016 thanks for the suggestion! I read through the thread(s). The deep optimisation and sleep standby optimisation were already both disabled (had a previous issue with them). I read about the 'minimize scanning' but I am not using a Dexcom (MM and Libre combi), so I cannot tweak this setting, isn't it."
+  },
+  {
+   "id": 569928602,
+   "user": "James866",
+   "created_at": "2019-12-31T13:27:01Z",
+   "body": "Hi guys,\r\nI promised to get back to you, however the first night I had to work, so wasn't really sure if it was really the different settings that made the difference. However, last night my phone did NOT loose the BT connection. Thumbs up to you guys. The only minor downside: sometimes when I go out of BT reach and come back to my phone, the connection is not re-established (and xDrip+ is showing 'not connected'). I'm already happy it stays connected trough the night. For other (oneplus) users, I'll past the BT settings below. Thanks for your help and wishing you all a happy new year!\r\n![BT-1](https://user-images.githubusercontent.com/59336226/71622961-91aaaa00-2bd9-11ea-9436-93d2c9e14f18.jpg)\r\n![BT-2](https://user-images.githubusercontent.com/59336226/71622962-91aaaa00-2bd9-11ea-9976-d492ba319b16.jpg)\r\n\r\n"
+  },
+  {
+   "id": 594415078,
+   "user": "rodrigowebjump",
+   "created_at": "2020-03-04T09:31:04Z",
+   "body": "Mine works yesterday after disable the trust auto connect option \r\n\r\nThanks "
+  },
+  {
+   "id": 785542623,
+   "user": "Navid200",
+   "created_at": "2021-02-25T03:07:12Z",
+   "body": "@btdkomplex Would you please close this issue if your problem has been resolved?\r\nOtherwise, you can use the support channels to consult with users to ensure you are aware of any possible solutions or work-arounds.\r\nhttps://www.facebook.com/groups/xDripG5\r\nhttps://gitter.im/jamorham/xDrip-plus\r\nThanks"
+  },
+  {
+   "id": 792027764,
+   "user": "Navid200",
+   "created_at": "2021-03-06T19:07:10Z",
+   "body": "Closing due to inactivity"
+  }
+ ]
+}

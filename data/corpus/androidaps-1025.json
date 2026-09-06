@@ -1,0 +1,21 @@
+{
+ "id": 1069934150,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1025,
+ "title": "Uploaded Data changed from 2.8.2 to 3.0beta",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1025",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-12-02T20:02:49Z",
+ "closed_at": "2021-12-03T08:33:52Z",
+ "comment_count": 1,
+ "body": "Hi there, i am developing Nightscout Reporter and had recently some users that had very high tdd. It turned out that they used aaps 3.0beta to upload the data. Further investigation showed me that in the treatments for temporary basal the attribute \"rate\" seems now to have values based on 100 instead of 1 as before. So 50% has now the value 50 in rate instead of 0.5 as before. Is there a reason this was changed or is this a failure in the upload to nightscout?\r\n\r\nHere are excerpts from the JSON-Data i got from one of the users. The first is a treatment of Temp Basal uploaded with version 3.0beta, the second one is a treatment of Temp Basal uploaded with version 2.8.2. Since this is not my data, please excuse the parts I replaced with x. I cannot reproduce this with my data, since i still use AAPS 2.8.2.\r\n\r\nJSON with AAPS 3.0beta\r\n{\"_id\":\"xxxxxxxxxxxxxxxxxxxxxxxx\",\"created_at\":\"2021-11-23T22:42:19.505Z\",\"enteredBy\":\"openaps://AndroidAPS\",\"eventType\":\"Temp Basal\",\"isValid\":true,\"duration\":24,\"durationInMilliseconds\":1486839,\"rate\":40,\"type\":\"NORMAL\",\"isAbsolute\":false,\"absolute\":0.72,\"pumpId\":1000000000000,\"pumpType\":\"ACCU_CHEK_COMBO\",\"pumpSerial\":\"xxxxxxxxx_xxxxxx_xxxxx\",\"endId\":1637708826344,\"carbs\":null,\"insulin\":null}\r\n\r\nJSON with AAPS 2.8.2\r\n{\"_id\":\"xxxxxxxxxxxxxxxxxxxxxxxx\",\"eventType\":\"Temp Basal\",\"duration\":15,\"absolute\":1.17,\"rate\":1.17,\"created_at\":\"2021-11-23T11:00:10Z\",\"enteredBy\":\"openaps://AndroidAPS\",\"NSCLIENT_ID\":\"xxxxxxxxxxxxx\",\"carbs\":null,\"insulin\":null}\r\n\r\nkind regards\r\nAndi",
+ "comments": [
+  {
+   "id": 985314919,
+   "user": "MilosKozak",
+   "created_at": "2021-12-03T08:33:52Z",
+   "body": "improved by https://github.com/nightscout/AndroidAPS/commit/682628e84543c3a8e5553c81b49832d8ce1cbc89"
+  }
+ ]
+}

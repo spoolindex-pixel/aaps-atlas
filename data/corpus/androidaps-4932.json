@@ -1,0 +1,39 @@
+{
+ "id": 4753838412,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4932,
+ "title": " 3.4.2.3 Eros - Issue with starting a fresh pod after the previous one failed (similar to Dash)",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4932",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2026-06-26T17:18:38Z",
+ "closed_at": "2026-07-29T08:23:53Z",
+ "comment_count": 4,
+ "body": "(A very similar issue was already reported for Dash [issue 4781](https://github.com/nightscout/AndroidAPS/issues/4781)  and two of us also reported it to happen in Eros in that same thread.\nFrom that thread it was suggested that possibly something like commits https://github.com/nightscout/AndroidAPS/commit/9d3bdce2a573c8bf49e693d6a045d72b95a9598d and https://github.com/nightscout/AndroidAPS/commit/79e6f6973875fa2d657a4c7fd259fa63c08c6696 that supposedly fixed Dash may have to be applied to the Eros driver too.\n\nI've been using Eros/Emalink with AAPS 3.4.2.3 (latest stable) for about 10 days on Samsung A52 5G (Android 12),\n1) There was a problem with activating a pod (Emalink started flashing red in the middle of activation so I rebooted the link although right after that the pod started clicking and activating). We lost communications so I eventually had to press \"discard\". \n\n2) There was no active pod in the pod tab so I activated a new one (although Emalink started alternating red and green flashes as well during activation) but within 10 seconds of activation the pod was disabled by AAPS without asking me and I only heard  a faint beep after which it just showed \"no active pod\".\nIt seems that the deactivation for the prior pod was left in queue and it went through after the new one was activated?\n\n3) Problem that I seemed to have overlooked the first time and I only saw now is that although there were no active pod in the pod tab, whenever I turned AAPS on it would show \"trying to connect\" in red at the bottom of the dashboard forever even though I never tried to activate a new one yet. In my opinion it seems that some queue is still holding onto some previous pod.\n\n4) I tried every suggestion I could find to get rid of that connecting  message starting from every bluetooth suggestion I could find, I restarted the app and Emalink multiple times, I put the old pods away in the microwave, I cleared app cache, nothing worked.\n\n5) I even cleared app data and restarted the app configuration from scratch but when reloading the saved settings obviously the presumed old pod was saved in those settings and it again started trying to connect \n\n6) After losing two pods and seeing the continued \"connecting for XXX sec\" message I uninstalled and went back to the old trusty 3.3.1.3 and it's been ok since. \nInterestingly 3.3.1.3 also had pod info from 13 days earlier but there I was able to stop the connecting message easily after \"discard pod\". \nThe same \"discard pod\" in 3.4.2.3 wouldn't stop the \"connecting for XXX seconds\" message.!\n\nScreenshots and logs:\n\n<img width=\"1080\" height=\"2400\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/787986e6-ed08-401a-a0de-580649011f96\" />\n<img width=\"1080\" height=\"2400\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/0cf8e22b-7d71-4dee-b1bd-e0dcf7179384\" />\n<img width=\"1080\" height=\"2400\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/0eba4b45-7f27-4e3c-83aa-a28a8e31e7d4\" />\n<img width=\"1080\" height=\"2400\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/c13b8e2d-9076-4eba-ab0e-c86261fe3765\" />\n\nUnfortunately I see that only one instance of logs survived (and it starts at 5:22, after the problem happened) although I made multiple savings both local and in the cloud; they probably got wiped when I uninstalled and presumably the ones in the cloud were overwritten?\nhttps://drive.google.com/file/d/1BKbmz1j-xc4MzNZ7Ff2FB2l4_Fospp_2/",
+ "comments": [
+  {
+   "id": 4929896074,
+   "user": "nl-ruud",
+   "created_at": "2026-07-09T21:54:40Z",
+   "body": "@nlof, would you be able to test this PR (#4961)? I don’t have an Eros and I’m not familiar with RileyLink devices, so I can’t verify it myself. I basically mirrored the change I previously made for the Dash, so I’d appreciate it if you could confirm it fixes the issue."
+  },
+  {
+   "id": 4943856769,
+   "user": "nl-ruud",
+   "created_at": "2026-07-11T08:24:15Z",
+   "body": "@nlof it's alteady merged into dev, that means you can easily use it already with browser build:\n - in your fork, under actions, select the 'cherry pick CI'\n - click 'run workflow'\n - under 'use workflow from', ensure 'master' is selected\n - under 'commit hashes to cherry-pick' enter `a8c5472`\n - select 'full release' as build variant \n - click 'run workflow'\n\nNow you get AAPS 3.4.2.3 with this fix. Install it, use it and confirm the issue is resolved. If it is, close this issue."
+  },
+  {
+   "id": 4945198811,
+   "user": "nlof",
+   "created_at": "2026-07-11T11:13:40Z",
+   "body": "Thanks much for the fix and the instructions!\n I'm away from home for the next few weeks and lack both time and enough pods to be able to test in the near future...\nHopefully someone else will be able to test before I get around to it...\n"
+  },
+  {
+   "id": 5114887610,
+   "user": "Ludovik95",
+   "created_at": "2026-07-29T08:10:23Z",
+   "body": "@nl-ruud I just tested version 3.4.2.3 with the fix, and I can confirm that it resolves the issue. I let the Eros pod expire after 80 hours, and using the “discard” button also removes the pod deactivation command, which previously remained pending and would deactivate the next pod.\n\nOneplus Nord 2 5G, Android 13"
+  }
+ ]
+}

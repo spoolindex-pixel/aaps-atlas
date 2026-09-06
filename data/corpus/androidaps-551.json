@@ -1,0 +1,33 @@
+{
+ "id": 912711519,
+ "repo": "nightscout/AndroidAPS",
+ "number": 551,
+ "title": "[dev-e5] graphs stopped to be updated",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/551",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-06-06T08:17:49Z",
+ "closed_at": "2021-06-22T18:58:58Z",
+ "comment_count": 3,
+ "body": "Sometime secondary graphs update is stopped see screenshots below: (I had this issue twice, last time this morning)\r\n- 1st screenshot: this morning when I saw the issue\r\n- Basal curve and all secondary graphs are \"frozen\" (only BG value and SMB remains updated\r\n- If I change time range (see 2nd screenshot), curves remain frozen (no update of vertical scale, if time range is longer no update of curve for previous values, only horizontal scale is updated...)\r\n- loop continue to works and NS is still updated\r\n- if I restart AAPS, graphs are immediatly updated\r\n\r\n![GraphsUpdate](https://user-images.githubusercontent.com/52934600/120918752-4b9f2300-c6b6-11eb-9031-625c523039e7.jpg)\r\n\r\n\r\nI can share my log if it can help...",
+ "comments": [
+  {
+   "id": 857557678,
+   "user": "MilosKozak",
+   "created_at": "2021-06-09T09:54:48Z",
+   "body": "it will be necessary to connect debugger when this happen and look at cached data"
+  },
+  {
+   "id": 865255580,
+   "user": "Philoul",
+   "created_at": "2021-06-21T18:34:01Z",
+   "body": "I catched the bug (see extract with log added at beginning and end of each preparexxx function)\r\n=> See synthesis below and complete log if usefull informations\r\n\r\nBug at 13:08:23.245\r\nJust before it entered in prepareIobAutosensData() but I don't get log of end line\r\n`13:08:20.781 [RxCachedThreadScheduler-10] D/UI: [OverviewData.prepareIobAutosensData():614]: prepareIobAutosensData()`\r\n\r\nafter Exception no more `D/UI: [OverviewPlugin.refreshLoop():247]: refreshLoop finished`\r\nOnly `prepareBucketedData()` and `prepareBgData()` is executed\r\n\r\n```\r\n13:07:48.075 [RxCachedThreadScheduler-51] D/UI: [OverviewData.prepareBucketedData():398]: prepareBucketedData()\t\r\n13:07:48.076 [RxCachedThreadScheduler-51] D/UI: [OverviewData.prepareBucketedData():411]: prepareBucketedData()  from 1624240900000 to 1624276900000\t\r\n13:07:48.077 [RxCachedThreadScheduler-51] D/UI: [OverviewData.prepareBgData():336]: prepareBgData()\t\r\n13:07:48.120 [RxCachedThreadScheduler-51] D/UI: [OverviewData.prepareBgData():350]: prepareBgData()  from 1624240900000 to 1624276900000\t\r\n13:07:50.290 [OverviewFragmentHandler] D/UI: [OverviewData.preparePredictions():356]: preparePredictions()\t\r\n13:07:50.293 [OverviewFragmentHandler] D/UI: [OverviewData.preparePredictions():392]: preparePredictions() from 1624240900000 to 1624276900000\t\r\n13:07:50.294 [OverviewFragmentHandler] D/UI: [OverviewData.prepareBasalData():417]: prepareBasalData()\t\r\n13:08:02.679 [OverviewFragmentHandler] D/UI: [OverviewData.prepareBasalData():510]: prepareBasalData()  from 1624240900000 to 1624276900000\t\r\n13:08:02.680 [OverviewFragmentHandler] D/UI: [OverviewData.prepareTemporaryTargetData():516]: prepareTemporaryTargetData()\t\r\n13:08:02.976 [OverviewFragmentHandler] D/UI: [OverviewData.prepareTemporaryTargetData():547]: prepareTemporaryTargetData() from 1624240900000 to 1624287524860\t\r\n13:08:02.977 [OverviewFragmentHandler] D/UI: [OverviewData.prepareTreatmentsData():553]: prepareTreatmentsData()\t\r\n13:08:02.994 [OverviewFragmentHandler] "
+  },
+  {
+   "id": 866250846,
+   "user": "Philoul",
+   "created_at": "2021-06-22T18:58:54Z",
+   "body": "I propose to close this issue. I'll reopen it later if the fix doesn't work..."
+  }
+ ]
+}

@@ -1,0 +1,159 @@
+{
+ "id": 3196664209,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4049,
+ "title": "No more connection when ending Nano (and DASH) pods",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4049",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-07-02T17:28:24Z",
+ "closed_at": "2025-10-05T07:54:47Z",
+ "comment_count": 24,
+ "body": "This happened 3 times with the deactivation of the Nano pod. Looks like deactivation terminated ok but seconds later, I get this \"pod basal injection\" error.\n\n![Screenshot_20250702_185650_AAPS.jpg](https://github.com/user-attachments/assets/217e69ca-42b1-41aa-a51b-c017b4047c8a)\n\nThe logs. Look around 18:57\n\n![AndroidAPS_LOG_1751475422509.log.zip](https://github.com/user-attachments/files/21022814/AndroidAPS_LOG_1751475422509.log.zip)\n\n",
+ "comments": [
+  {
+   "id": 3028698707,
+   "user": "robertrub",
+   "created_at": "2025-07-02T17:34:04Z",
+   "body": "![Screenshot_20250702_193249_AAPS.jpg](https://github.com/user-attachments/assets/0ba870cb-a9bf-476a-88b3-f193824696b0)\n\nThe last dev. No code change, juste minor limit modification."
+  },
+  {
+   "id": 3030769959,
+   "user": "TheNeskik",
+   "created_at": "2025-07-03T05:10:46Z",
+   "body": "I have this issue using Omnipod dash too.\n![Screenshot_20250703_071342_AAPS.jpg](https://github.com/user-attachments/assets/3bd03dd4-5502-4663-9ebf-83238182ab21)\n\n"
+  },
+  {
+   "id": 3030892484,
+   "user": "robertrub",
+   "created_at": "2025-07-03T05:46:12Z",
+   "body": "@TheNeskik Can you add logs next time you change a pod and the error happens please ? When did this started ? I think mine started with the last dev.\n"
+  },
+  {
+   "id": 3030925359,
+   "user": "TheNeskik",
+   "created_at": "2025-07-03T05:52:32Z",
+   "body": "\nI'm having this issue this last dev update too.\n\n![AndroidAPS._2025-07-01_19-36-01_.10.zip](https://github.com/user-attachments/files/21031067/AndroidAPS._2025-07-01_19-36-01_.10.zip)\n\nIssue appear when I'm starting a new pod\nIssue around 22h36 on my log file, line 4934\n\n"
+  },
+  {
+   "id": 3037210701,
+   "user": "TheNeskik",
+   "created_at": "2025-07-04T20:38:24Z",
+   "body": "![AndroidAPS_LOG_1751661223601.log.zip](https://github.com/user-attachments/files/21067712/AndroidAPS_LOG_1751661223601.log.zip)\n\nJust changed my pod.\nNo error on deactivate state but got two error during activation.\nFirst just before priming\nSecond just before cannula insert.\n\nCleaned my log just before changing my pod so log is cleaner :)"
+  },
+  {
+   "id": 3039247069,
+   "user": "robertrub",
+   "created_at": "2025-07-05T16:02:48Z",
+   "body": "Just changed my Nano with extreme attention to detail 😉\n\nI deactivated the pod, came to the _Ok / Next_ choice window. Hit OK to \"not start\" the new pod. I got the same _pump unreachable/basal not set_ alert.\n\nSo, AFA Nano is concerned, the no connection alert comes at the end of the pod deactivation (and not when starting the new one).\n\nAfter _OK_ ing the alert window, I started the new pod normally, without any problems or alerts."
+  },
+  {
+   "id": 3048387225,
+   "user": "vanelsberg",
+   "created_at": "2025-07-08T10:49:21Z",
+   "body": "@robertrub Confirming: seeing the same\n\n(latest AAPS-dev commits...)"
+  },
+  {
+   "id": 3051237178,
+   "user": "Philoul",
+   "created_at": "2025-07-09T06:03:03Z",
+   "body": "Have you found which commit is the root cause of this issue?\nOr at least what was the previous version/commit without the issue?"
+  },
+  {
+   "id": 3051413523,
+   "user": "robertrub",
+   "created_at": "2025-07-09T07:01:08Z",
+   "body": "It started with the last dev. I'm on vacation (Dordogne,  superbe 🤩) and without any PC 🥰"
+  },
+  {
+   "id": 3116532654,
+   "user": "HuismanErik",
+   "created_at": "2025-07-25T06:11:24Z",
+   "body": "\n\nI've also encountered this error a few times now when replacing a Dash Pod.\n\nAfter reviewing the log files, I noticed that the RunningMode is set to SUSPENDED_BY_PUMP during the activation of the new Pod. However, even while the Pod is still in its activation phase — during which it shouldn't accept any commands — a CANCEL TEMPBASAL command is being sent.\n\nThis results in the Pod is in an incorrect state error, which makes sense because programming commands aren't allowed until activation is fully completed.\n\nI'm not a very frequent tester of the dev branch, so I can't say exactly when this started. However, I saw that the RunningMode system was introduced in the following commit\n\nhttps://github.com/nightscout/AndroidAPS/commit/2e85d3be06e437d788d53b2c36aa72ffbf1d349e\n\nCould it be that this issue is related to the changes introduced in that commit?"
+  },
+  {
+   "id": 3146182493,
+   "user": "robertrub",
+   "created_at": "2025-08-02T03:44:03Z",
+   "body": "The bug is systematically present after each pod deactivation. Still the case with the latest dev.\n![Screenshot_20250729_122307_AAPS.jpg](https://github.com/user-attachments/assets/ccee5b28-6919-4b9b-813c-344351b34779)\n\n"
+  },
+  {
+   "id": 3146639338,
+   "user": "vanelsberg",
+   "created_at": "2025-08-02T17:47:36Z",
+   "body": "> The bug is systematically present after each pod deactivation. Still the case with the latest dev..\n\nConfirming!"
+  },
+  {
+   "id": 3185124752,
+   "user": "robertrub",
+   "created_at": "2025-08-13T19:01:13Z",
+   "body": "@MilosKozak @jbr7rr This bug is still present at the latest dev 😞 Really annoying at every pod change... If you could have a look pls. Thanks 😘"
+  },
+  {
+   "id": 3246122151,
+   "user": "vanelsberg",
+   "created_at": "2025-09-02T17:01:30Z",
+   "body": "Getting the alert with Medtrum Nano on every deactivation...\n\nIn pod deactivation, pump should be suspended (or loop disabled). I did had a look at the logs but could not find what was causing the problem...\n\nI think this might be about some timing or sequencing of events? On de-activation I'd say pump  is disabled, but to late - so  with some delay: I only get the alert once - immediately after deactivation. When I then go to overview, pump state shows as expected.\n\n**Logs with alert occuring**:\n[20250810-ChangePatch.zip](https://github.com/user-attachments/files/22100179/20250810-ChangePatch.zip)\n[20250814-ChangePatch.zip](https://github.com/user-attachments/files/22100186/20250814-ChangePatch.zip)\n[20250830-ChangePatch.zip](https://github.com/user-attachments/files/22100188/20250830-ChangePatch.zip)\n[20250902-ChangePatch.zip](https://github.com/user-attachments/files/22100191/20250902-ChangePatch.zip)\n"
+  },
+  {
+   "id": 3330625475,
+   "user": "MilosKozak",
+   "created_at": "2025-09-24T20:35:19Z",
+   "body": "could you check if it's caused by this commit?\n\n<img width=\"1593\" height=\"117\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/67e67ebc-a8e2-49a0-a9c8-3aa972b66313\" />"
+  },
+  {
+   "id": 3330668984,
+   "user": "robertrub",
+   "created_at": "2025-09-24T20:50:51Z",
+   "body": "> could you check if it's caused by this commit?\n> \n@MilosKozak I don't know how to check/build without that commit but, yes, it started around that date.\n\n"
+  },
+  {
+   "id": 3334155258,
+   "user": "vanelsberg",
+   "created_at": "2025-09-25T13:43:09Z",
+   "body": "> could you check if it's caused by this commit?\n\nI think I tried that by rolling back this specific commit (see [Discord](https://discord.com/channels/629952586895851530/1199783453793734677/1413242757513875477) )\n\nAbout to change Pod tomorrow. Currently on DASH but I think it has the same problem.\nWill try building AAPS #398c49b (=commit before 874ea86) to see if the problem is in there). If it is not I can then try Medtrum and we will know in 4 days or so...\n\n\n"
+  },
+  {
+   "id": 3336107870,
+   "user": "robertrub",
+   "created_at": "2025-09-25T22:18:22Z",
+   "body": "`About to change Pod tomorrow.`\nMilos changed Medtrum code. I'm building now to test in 2 days... 🤞🏻"
+  },
+  {
+   "id": 3338167699,
+   "user": "vanelsberg",
+   "created_at": "2025-09-26T11:08:28Z",
+   "body": "> could you check if it's caused by this commit?\n\nJust activated a DASH pod using **AAPS commit #398c49b (=commit before https://github.com/nightscout/AndroidAPS/commit/874ea86d0229bf11044a5590bc2f545bee764620)**:\nNo alert after de-activation, so the **problem does not exist** on this commit (at least not for DASH but I think this also applies to Medtrum).\n\nWill retest on next DASH activation in 3 days:\n\n- With (then) current dev commit\nor\n- With commit [874ea86](https://github.com/nightscout/AndroidAPS/commit/874ea86d0229bf11044a5590bc2f545bee764620) as requested.\n\n@MilosKozak Which of the above do you prefer?\n\n"
+  },
+  {
+   "id": 3338653110,
+   "user": "MilosKozak",
+   "created_at": "2025-09-26T13:07:26Z",
+   "body": "better only the one, to be sure"
+  },
+  {
+   "id": 3348613385,
+   "user": "vanelsberg",
+   "created_at": "2025-09-29T18:54:45Z",
+   "body": "> better only the one, to be sure\n\nWith commit [874ea86](https://github.com/nightscout/AndroidAPS/commit/874ea86d0229bf11044a5590bc2f545bee764620) _I did not get the alert_ after deactivation of a DASH) pod\n\n"
+  },
+  {
+   "id": 3355217062,
+   "user": "vanelsberg",
+   "created_at": "2025-10-01T08:07:49Z",
+   "body": "> better only the one, to be sure\n\nToday, tried commit 644bb402 (Aug 28): For DASH problem is **not** in this commit eighter.\nWill retry more recent commits on next pod deactivation.\n"
+  },
+  {
+   "id": 3364695812,
+   "user": "vanelsberg",
+   "created_at": "2025-10-03T08:05:23Z",
+   "body": "@MilosKozak Well done! 👍\nTested commit #b92d228a: fixes the problem for DASH."
+  },
+  {
+   "id": 3368137288,
+   "user": "robertrub",
+   "created_at": "2025-10-04T11:15:49Z",
+   "body": "@MilosKozak I changed my Medtrum Nano without any alerts after deactivation. Congratulations,  you solved the problem 🥂\n\n![Screenshot_20251002_185842_AAPS.jpg](https://github.com/user-attachments/assets/5e6e06d3-6fcb-4536-8446-4d56c978d6f4)\n\nI think you can close this issue."
+  }
+ ]
+}

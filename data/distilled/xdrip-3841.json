@@ -1,0 +1,25 @@
+{
+ "issue_id": 3841,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/3841",
+ "title": "AAPS 3.3.x and Libre 2/3 identifier sent from Xdrip",
+ "symptom": "With AAPS 3.3.x, SMB cannot be enabled for Libre 2 & 3 because AAPS reports 'active BG source doesn't support advanced filtering.' The issue is that xDrip sends an incorrect identifier for Libre sensors, such as LIBRE_1_OTHER or LIBRE_1_LIMMITER, instead of the expected 'Libre2', 'Libre2 Native', or 'Libre3'.",
+ "cause": "xDrip sends an incorrect source identifier in the broadcast to AAPS. AAPS expects 'Libre2', 'Libre2 Native', or 'Libre3' in com.eveningoutpost.dexdrip.Extras.SourceInfo, but xDrip sends identifiers like LIBRE_1_OTHER or LIBRE_1_LIMMITER (as seen in AAPS logs).",
+ "fix": "Update xDrip to send the correct identifiers ('Libre2', 'Libre2 Native', or 'Libre3') in the SourceInfo broadcast. This was reportedly fixed in a nightly commit (f6bd8e58c921c585f198e96ce14482fa7019e097). Users should also upgrade to the latest AAPS 3.3.1.3 to include the 'Libre2 Native' identifier.",
+ "settings_changed": [],
+ "devices": [
+  "Libre 2",
+  "Libre 3",
+  "FreeStyle Libre 2 plus"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "Libre Bluetooth",
+  "LimiTTer",
+  "OOP",
+  "Juggluco",
+  "patched Libre broadcast"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "AAPS expects `Libre2` or `Libre2 Native` or `Libre3` in `com.eveningoutpost.dexdrip.Extras.SourceInfo` to be able to properly identify Libre 2 or 3 for full SMB support in AAPS 3.3"
+}

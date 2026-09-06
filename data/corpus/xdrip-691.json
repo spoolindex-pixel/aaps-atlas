@@ -1,0 +1,65 @@
+{
+ "id": 383916244,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 691,
+ "title": "Webservice: Delta has no correlation to xDrips Delta",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/691",
+ "state": "closed",
+ "labels": [
+  "webservice"
+ ],
+ "created_at": "2018-11-23T19:47:40Z",
+ "closed_at": "2025-07-16T18:59:20Z",
+ "comment_count": 8,
+ "body": "In the last days I remarked a strange behaviour: The Delta given by the Webservice differs from the right Delta shown in xDrip+. I'm not shure if that could be related to my change to G6 (native mode).\r\n![image](https://user-images.githubusercontent.com/12517693/48958657-ed2f5080-ef60-11e8-9b17-41ad28683a20.png)\r\n![image](https://user-images.githubusercontent.com/12517693/48958669-00dab700-ef61-11e8-981c-cea527c61931.png)\r\n",
+ "comments": [
+  {
+   "id": 441431259,
+   "user": "swissalpine",
+   "created_at": "2018-11-25T10:49:32Z",
+   "body": "To show that this is a serious problem which could cause therapy decissions see this difference (delta +15 vs. delta -6):\r\n![image](https://user-images.githubusercontent.com/12517693/48978154-633dcf80-f0a7-11e8-94c0-5fa92ad23292.png)\r\n![image](https://user-images.githubusercontent.com/12517693/48978156-718beb80-f0a7-11e8-9260-ad8897aabc88.png)\r\nI'm not capable to look deeper in / understand your code but I'm wondering why you must calculate the deltas in the following line instead of displaying the allready calculated values:\r\nWebServiceSGV.java, line 116:\r\n```\r\nitem.put(\"delta\", new BigDecimal(reading.getDg_slope() * 5 * 60 * 1000).setScale(3, BigDecimal.ROUND_HALF_UP));\r\n```\r\n\r\n"
+  },
+  {
+   "id": 443199345,
+   "user": "jamorham",
+   "created_at": "2018-11-30T13:12:04Z",
+   "body": "Can you let me know which collector you are using where you are seeing this?"
+  },
+  {
+   "id": 443204320,
+   "user": "swissalpine",
+   "created_at": "2018-11-30T13:32:27Z",
+   "body": "Ob 1 G6 native mode\r\n\r\n"
+  },
+  {
+   "id": 753528360,
+   "user": "dmelliott20",
+   "created_at": "2021-01-02T20:53:50Z",
+   "body": "I am seeing the same issue on delta values uploaded to NS. "
+  },
+  {
+   "id": 1006997760,
+   "user": "tolot27",
+   "created_at": "2022-01-06T23:00:56Z",
+   "body": "@swissalpine Please can you test whether this problem still exists in the latest builds?"
+  },
+  {
+   "id": 1007159538,
+   "user": "swissalpine",
+   "created_at": "2022-01-07T05:54:06Z",
+   "body": "Of course it persists, the problem was never fixed.\r\nMy guess is that xDrip+ does not deliver the delta calculated in the app, but the original Dexcom delta. There may be different calculations at work here: xDrip+, AAPS and since then my Garmin watchfaces calculate the delta from the last two values; it seems to me that the genuine Dexcom delta is calculated differently and includes the trend, so this delta does not look back like ours, but tries to guess a future trend.\r\nHowever, the trend that xDrip+ sends to Nightscout with the genuine G6 sensor is different from the one displayed in the app."
+  },
+  {
+   "id": 1869801409,
+   "user": "BaQs",
+   "created_at": "2023-12-26T22:27:28Z",
+   "body": "Hello,\r\nAny news here ?\r\nI think this is the root cause of spike-app being unable to predict anymore (it was working when master was xdrip4ios and not xdrip+)"
+  },
+  {
+   "id": 2155738964,
+   "user": "Navid200",
+   "created_at": "2024-06-08T01:11:30Z",
+   "body": "Based on what I am seeing as the behavior of xDrip and everything I have read in all the issues in this repository, I can make the following conclusions:  \r\n  \r\n- xDrip submits to Nightscout/AAPS/webservice the exact same values it receives from G6 or G7 as the value of delta and as the trend arrow slope.\r\n\r\n- xDrip calculates the delta between its current reading and its previous reading and uses that as the delta and trend arow slope that it shows on the xDrip main screen.\r\n  \r\nTherefore, there is no discrepancy between what you would get from Dexcom app or Dexcom receiver and what xDrip submits to Nightscout or AAPS or webservice.  \r\n  \r\nThe only discrepancy is between what G6 or G7 reports as delta or trend arrow and what xDrip shows on its home screen.  \r\n  \r\nIf you disagree with any of that, please let me know.  \r\n  \r\n---  \r\n  \r\nIf anyone likes to open a PR to add a setting to set xDrip to show the same trend arrow and delta as G6 or G7, please go ahead.  \r\nPlease add the setting to the home shelf as that is where all the settings related to the trend arrow are.  \r\n  \r\nThis is not a bug.  This is the behavior of xDrip.  \r\nI don't think we ever had to perfectly match the trend arrow and delta of an app that performs smoothing and as a result adds delay.  \r\nYet, I understand if someone does not like the trend arrow to fluctuate so much.  So, a new setting could address this.  "
+  }
+ ]
+}

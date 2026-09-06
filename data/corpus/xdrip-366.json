@@ -1,0 +1,27 @@
+{
+ "id": 308399090,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 366,
+ "title": "Integrate rewrite history BG values into other calcs and functions",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/366",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2018-03-26T00:03:33Z",
+ "closed_at": "2021-08-06T14:38:17Z",
+ "comment_count": 2,
+ "body": "Rewrite history does not flow through to the following calcs and functions gracefully (there may be more)\r\n\r\n1. xDrip+ followers\r\n2. Nightscout\r\n3. Historical stats\r\n4. Noise calcs and downstream derivatives - takes time for noise to age-off\r\n5. Predictive simulation & Trend momentum - takes time for skewed predicted plot to settle. E.g. a calibration before dinner, resulting in a slope change will interfere with the accuracy of the predictive simulation, making dose calculation for the meal difficult (since this feature is used to visualise dose stacking by some).\r\n6. Undo button does not undo history rewrite.\r\n7. Auto calibration evaluates back 24hrs (soon to be 8). If a valid calibration is found in this window it is applied, and history rewrite does not match the calibrated timestamp. Instead it is applied for the current timestamp.\r\n8. Filtered plot does not follow re-write, instead it jumps with the newly calibrated plot. Awkward for those viewing filtered plot primarily.\r\n\r\nRewrite history is a coarse approximation - I know, but applying the 25 odd rewritten BGs to the above seems more logical to me than utilising incorrect data with a big jump in it. I understand completely there is creative license here.\r\n\r\nThe main scenario is where a calibration pulls the plot in a direction, and is interpreted by the above features as being a big BG jump which is being interpreted as verbatim by the down stream processes.\r\n",
+ "comments": [
+  {
+   "id": 376015040,
+   "user": "old-square-eyes",
+   "created_at": "2018-03-26T00:09:20Z",
+   "body": "Examples of number 5 above\r\n\r\n<img width=\"400\" src=\"https://user-images.githubusercontent.com/25760491/38358115-85fc4016-3918-11e8-80c2-393899f271f9.jpg\" /><img width=\"400\" src=\"https://user-images.githubusercontent.com/25760491/37881575-de3ac588-30f6-11e8-8db7-49c89d2cbc5f.png\" />\r\n"
+  },
+  {
+   "id": 894306546,
+   "user": "Navid200",
+   "created_at": "2021-08-06T14:38:17Z",
+   "body": "@old-square-eyes \r\nRewrite history capability exists in xDrip.  But, I don't think we will add any more to it or expend it to any other platforms or calculations etc.\r\n\r\nThis is my view:\r\nThe only justification I have heard for \"Rewrite history\" is the case of a user going to see their doctor and the doctor complaining about a low in their records.  But, the low is due to a CGM inaccuracy that can be proven by a calibration shortly after.\r\nSo, one may prefer to rewrite history in that case to raise the readings prior to the calibration in order to avoid the lows.\r\n\r\nThe problem is that we have no idea what the result would have been if the blood glucose reading had been done earlier. \r\n We are just speculating.\r\nEven if it is true that the reading is obviously is in error based on the calibration shortly after, that can be explained to the doctor as well.\r\n\r\nI would like to close this issue as I said I don't believe we will make any changes to xDrip to enhance/expand the rewrite history concept.\r\n\r\nAnyone who likes to present an opposing opinion can always post here, and we can always reopen a closed issue."
+  }
+ ]
+}

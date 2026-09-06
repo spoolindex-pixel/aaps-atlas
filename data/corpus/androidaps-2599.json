@@ -1,0 +1,27 @@
+{
+ "id": 1769914701,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2599,
+ "title": "3.2.0-dev-j app hangs (until app closed and restarted)",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2599",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-06-22T15:19:34Z",
+ "closed_at": "2023-06-24T18:24:14Z",
+ "comment_count": 2,
+ "body": "We recently switched from 3.1.0.3 to 3.2.0-dev-j (commit https://github.com/nightscout/AndroidAPS/commit/a5774b6e2eb398311c80e9e00c01bede82978633 on 2023-06-14) on our pixel a4 running android 13.\r\n\r\nWe noticed the dev branch \"hangs\" periodically for us. The OS asks if we want to \"wait\" or \"close\" the app. We eventually need to close and restart aaps\r\n\r\nExample from logs:\r\nui hangs sometime around 19:57:18.630\r\napp restart at 20:03:42.198\r\n[short log file](https://github.com/nightscout/AndroidAPS/files/11835487/AndroidAPS._2023-06-21_20-04-12_.17.small.log)\r\n[full log file zipped](https://github.com/nightscout/AndroidAPS/files/11835496/AndroidAPS._2023-06-21_20-04-12_.17.zip)\r\n\r\nI'm not sure if this is related or a separate concern: we also get more omnipod pump errors/alerts on the dev branch. Here's a [screenshot](https://github.com/nightscout/AndroidAPS/assets/21182133/5ffa36b1-7933-4874-b314-03897b8fbabf) of the four we got this morning. (Temp basal status not as expected)\r\nfour events in the logs\r\n07:55:19.487, 07:55:20.553, 07:55:44.607, 07:55:44.614\r\n[short log file](https://github.com/nightscout/AndroidAPS/files/11835934/AndroidAPS._2023-06-21_20-04-12_.40.small.log)\r\n[full log file zipped](https://github.com/nightscout/AndroidAPS/files/11835938/AndroidAPS._2023-06-21_20-04-12_.40.zip)\r\nanother [zipped log file with more pump errors](https://github.com/nightscout/AndroidAPS/files/11835949/AndroidAPS._2023-06-21_20-04-12_.41.zip)\r\n\r\nUpdate: we got more pod errors this afternoon. \"Bolus delivery status uncertain\", \"Failed to resume delivery\", and a couple more \"Temp basal status not as expected\"",
+ "comments": [
+  {
+   "id": 1605283499,
+   "user": "jbr7rr",
+   "created_at": "2023-06-24T06:13:23Z",
+   "body": "I had a look for the pod errors, it seems that your connection with the pod is unstable, can you provide a log file with also with the errors \"Bolus delivery status uncertain\", \"Failed to resume delivery\"? At this point I'm not sure it is related to the app hanging. "
+  },
+  {
+   "id": 1605677725,
+   "user": "sdolenc",
+   "created_at": "2023-06-24T18:24:14Z",
+   "body": "Sorry I didn't grab those logs. We ended up replacing the pod and moved back to 3.1.0.3\r\n\r\nI'm going to close this since I don't think there's any further action that can be taken. Maybe it can be reactivated if another person experiences similar issues. I'd love to help with the investigation\r\n\r\nIn any case: thanks for taking the time to look at my logs"
+  }
+ ]
+}

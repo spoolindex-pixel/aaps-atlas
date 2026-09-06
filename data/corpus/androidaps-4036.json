@@ -1,0 +1,69 @@
+{
+ "id": 3151916535,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4036,
+ "title": "How to Export All Data from AAPS (CGM, Basal, Bolus, IOB, etc.)",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4036",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-06-17T03:28:49Z",
+ "closed_at": "2025-07-12T12:18:33Z",
+ "comment_count": 9,
+ "body": "Dear AAPS team,\n\nI would like to export all data from AAPS, including:\n - CGM values (timestamps and readings)\n - Basal insulin rates and their timestamps\n - Bolus insulin doses and types (SMB vs. user-entered), with timestamps\n - IOB data\n - And any other logs related to therapy decisions\n\nI tried using the following menu path:\nHamburger Menu (≡) > Maintenance > Miscellaneous > EXPORT USER ENTRIES TO EXCEL (CSV)\n\nThis generated a .csv file at:\nAAPS > temp > DB > exports\n\nHowever, this file seems to include only user-entered log data (such as notes or manual entries), not the full dataset I am looking for.\n\nCould you please advise:\n\nIs there a way to export the complete dataset, including CGM, basal, bolus (SMB/user), and IOB data?\n\nIf not through the UI, is there a recommended method (e.g., database access, Nightscout sync, or API) to extract this data?",
+ "comments": [
+  {
+   "id": 2979075981,
+   "user": "Philoul",
+   "created_at": "2025-06-17T06:14:45Z",
+   "body": "Nightscout is the \"backup\" database.\nIf you switch loop on a new phone, a full sync will restore most of your data. (BG values, carbs, boluses, TBRs, Careportal events, profile switches...)\nIOB/COB are recalculate dynamically"
+  },
+  {
+   "id": 3010856810,
+   "user": "leedabid",
+   "created_at": "2025-06-27T00:23:38Z",
+   "body": "Thank you for your response.\n\nI have a follow-up question.\nTo export all data related to a user's blood glucose, insulin, and meal entries (in formats such as .csv, .xlsx, or .json), is it absolutely necessary to use Nightscout?\n\nFor users who do not use Nightscout, is there any way to directly download this data from the AAPS app on their phone?\n\nAlso, I would like to know if there is a way to export logs of user actions or interactions with AAPS—such as settings changes, manual overrides, or bolus confirmations."
+  },
+  {
+   "id": 3011730436,
+   "user": "Philoul",
+   "created_at": "2025-06-27T05:33:18Z",
+   "body": "@leedabid within AAPS, you can export all user entries in csv (Compatible with Excel)\nYou can launch thîs exports from Maintenance or from Treatments > UE icon on the right > 3 dots menu\nIt's the only available export from AAPS.\nYou will mainly miss BG value, but all actions done by the user or by the loop (SMB, TBR) are recorded."
+  },
+  {
+   "id": 3062268715,
+   "user": "ga-zelle",
+   "created_at": "2025-07-11T13:04:57Z",
+   "body": "@leedabid My situation is similar to yours in that I don't use Nightscout. I extract all the information I want from the AAPS logfiles. But creating and maintaining scripts for that is tedious, e.g. quasi permanent updating with every version/formatting change."
+  },
+  {
+   "id": 3064440200,
+   "user": "andyrozman",
+   "created_at": "2025-07-12T00:49:45Z",
+   "body": "Are you trying to export all the data to take a look at it, or do you just wish to transfer the data to different AAPS instance? "
+  },
+  {
+   "id": 3065177850,
+   "user": "MilosKozak",
+   "created_at": "2025-07-12T12:18:33Z",
+   "body": "If you upload data in NS, you can export them in json format very easy. Or from mongo directly\nAnd create NS can be done by a few clicks"
+  },
+  {
+   "id": 3065184865,
+   "user": "MilosKozak",
+   "created_at": "2025-07-12T12:21:36Z",
+   "body": "> [@leedabid](https://github.com/leedabid) My situation is similar to yours in that I don't use Nightscout. I extract all the information I want from the AAPS logfiles. But creating and maintaining scripts for that is tedious, e.g. quasi permanent updating with every version/formatting change.\n\nDo you like the \"complicated\" way?"
+  },
+  {
+   "id": 3076473671,
+   "user": "leedabid",
+   "created_at": "2025-07-16T02:03:59Z",
+   "body": "Thank you to everyone who replied!\n\nI now understand that when exporting data as a CSV file directly from AAPS, the blood glucose (BG) values I wanted are mostly omitted, and only user actions are mainly recorded.\n\nI also learned that although it's possible to extract and analyze the log files directly to get the desired data, managing the scripts for this can be quite challenging.\n\nI understand that using Nightscout allows for much easier export of comprehensive data in formats like JSON, and I was able to successfully extract my data this way. However, when I compared the BG values and timestamps stored in Dexcom Clarity with the CGM values and times from AAPS, I found that sometimes they match, but in other cases, there are consistent discrepancies. Could you explain why this happens? (Is it possible to modify CGM values within AAPS?)\n\nThank you again for your insightful answers!"
+  },
+  {
+   "id": 3077665772,
+   "user": "MilosKozak",
+   "created_at": "2025-07-16T09:09:54Z",
+   "body": "AAPS sends data to NS as they is received from BOYDA/xDrip"
+  }
+ ]
+}

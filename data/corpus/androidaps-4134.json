@@ -1,0 +1,63 @@
+{
+ "id": 3393064662,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4134,
+ "title": "AAPS CI keeps failing (dev branch)",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4134",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-09-08T07:58:23Z",
+ "closed_at": "2025-09-14T20:18:38Z",
+ "comment_count": 8,
+ "body": "08/09/2025:\nFor the past week AAPS CI build on the dev branch keeps failing.\n\n<img width=\"952\" height=\"610\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/957e2970-885c-4539-a02c-31edf4e6dff8\" />\n\n<img width=\"935\" height=\"470\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/2aa8c05d-9185-4e48-827f-e4d5274c887a\" />",
+ "comments": [
+  {
+   "id": 3265087598,
+   "user": "MilosKozak",
+   "created_at": "2025-09-08T08:07:10Z",
+   "body": "it's local issue. Mine is working fine https://app.circleci.com/pipelines/github/nightscout"
+  },
+  {
+   "id": 3265443275,
+   "user": "qq254344379",
+   "created_at": "2025-09-08T09:38:59Z",
+   "body": "I also encountered a situation where the browser could not compile Dev.\n\n<img width=\"1492\" height=\"858\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/4794f30a-25ab-413b-9584-9eb3af5f154a\" />"
+  },
+  {
+   "id": 3268293994,
+   "user": "vanelsberg",
+   "created_at": "2025-09-08T23:02:48Z",
+   "body": "> I also encountered a situation where the browser could not compile Dev.\n\nConfirming. At the moment, while building dev/fullRelease I also see exactly this error.\nBut it does not always fail at the same location (after code changes?)\n"
+  },
+  {
+   "id": 3271424947,
+   "user": "Angus-repo",
+   "created_at": "2025-09-09T16:21:42Z",
+   "body": "Hello everyone,\n\nI’ve tested it and was able to reproduce the issue on my own computer.\n\nWhen using Android Studio’s interface on the dev branch to build the APK, everything works fine.\nThe main difference with the AAPS-CI command line is that AAPS-CI builds both the app and wear simultaneously, which can sometimes cause ordering issues.\n\nI will adjust it so that AAPS-CI builds the app first, then the wear, which should prevent this problem."
+  },
+  {
+   "id": 3271822352,
+   "user": "vanelsberg",
+   "created_at": "2025-09-09T18:25:22Z",
+   "body": "> I will adjust it so that AAPS-CI builds the app first, then the wear, which should prevent this problem.\n\nInteresting. Wil have a look.\nActually this should not be a problem. My Docker Autobuild solution (uses command line build) can still build App en Wear-app in a single build without problems."
+  },
+  {
+   "id": 3271845231,
+   "user": "vanelsberg",
+   "created_at": "2025-09-09T18:32:57Z",
+   "body": "> I’ve tested it and was able to reproduce the issue on my own computer.\n\n1) What I have seen so far (for me), for current dev is building fulllDebug without problems.\nBut as soon as I try to build **fullRelease it fails**? Tried deleting cache but that does not solve.... 🤔\n\n2) Also seeing some problems when building with the latest version of Android Studio b.t.w:\n- Building signed APK's is no problem.\n- Assemble App run configuration is OK\nA build failure occurs for \"Assemble Project\"?\n\n\n\n"
+  },
+  {
+   "id": 3272926135,
+   "user": "Angus-repo",
+   "created_at": "2025-09-10T02:00:17Z",
+   "body": "@vanelsberg \n\nI have opened a PR #4139  with this change.  \nPlease help test the above cases to confirm stability.\n\nYou can use the PR CI with input 4139 to test the `fix/aaps-ci-assemble` branch (based on the dev branch).\n<img width=\"1080\" height=\"2400\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/6aae0ce4-a7fa-4d8a-be9f-7cd64956365b\" />"
+  },
+  {
+   "id": 3276249210,
+   "user": "vanelsberg",
+   "created_at": "2025-09-10T19:27:49Z",
+   "body": "Merged your repo's fix/aaps-ci-assemble branch into my local dev branche for testing.\nCongrats - I think you solved the problem!\n\n@MilosKozak Is far as me is concerned you can merge this PR into dev?\n"
+  }
+ ]
+}

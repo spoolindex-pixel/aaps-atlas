@@ -1,0 +1,75 @@
+{
+ "id": 2739861506,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3620,
+ "title": "[Dev] NSv3/v1 is spamming/duplicating entries in log",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3620",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-12-14T13:00:57Z",
+ "closed_at": "2024-12-29T18:54:01Z",
+ "comment_count": 16,
+ "body": "AAPS 3.3.0-dev-f\r\nBuild: b9686af643-2024.12.14\r\nRemote: https://github.com/nightscout/AndroidAPS\r\nFlavor: fullrelease\r\nNightscout version: 15.0.3\r\nEngineering mode enabled \r\n\r\nLogs\r\nAAPS \r\n[AndroidAPS_LOG_1734180646075.log.zip](https://github.com/user-attachments/files/18135892/AndroidAPS_LOG_1734180646075.log.zip)\r\n\r\nAAPSClient \r\n[AndroidAPS_LOG_1734180660737.log.zip](https://github.com/user-attachments/files/18135898/AndroidAPS_LOG_1734180660737.log.zip)\r\n\r\n\r\nI've seen this happen with TBR and now TT. Not sure what causes it to happen but attaching logs. \r\nAAPSClient and AAPS is running on same phone.\r\n\r\nIt makes the sync slower between client and AAPS. \r\n\r\n![Screenshot_20241214_135033_AAPS](https://github.com/user-attachments/assets/bd67aef6-eb0c-404d-a5c0-73a7dd5c4438)\r\n![Screenshot_20241214_134958_AAPS](https://github.com/user-attachments/assets/f0a9ebe9-f9a1-49ec-b587-b1bd02f61859)\r\n![Screenshot_20241214_134941_AAPS](https://github.com/user-attachments/assets/5d20f576-14d9-4170-aaf0-52d11b9902ab)\r\n",
+ "comments": [
+  {
+   "id": 2543358679,
+   "user": "olorinmaia",
+   "created_at": "2024-12-14T22:08:23Z",
+   "body": "Also tried changing to NSV1 on all phones and a loop also happens there. Eventually it will stop but it takes a long time.\r\n\r\n[AndroidAPS_LOG_1734213947732.log.zip](https://github.com/user-attachments/files/18137922/AndroidAPS_LOG_1734213947732.log.zip)\r\n\r\n\r\nhttps://github.com/user-attachments/assets/bd4e923f-f2f3-429d-8aca-d5bb3b7c9eb4\r\n\r\n"
+  },
+  {
+   "id": 2545659343,
+   "user": "MilosKozak",
+   "created_at": "2024-12-16T13:39:17Z",
+   "body": "test with another NS server"
+  },
+  {
+   "id": 2548427586,
+   "user": "MilosKozak",
+   "created_at": "2024-12-17T13:12:43Z",
+   "body": "did you start TT in one app and cancel in another ?"
+  },
+  {
+   "id": 2548547521,
+   "user": "olorinmaia",
+   "created_at": "2024-12-17T14:03:58Z",
+   "body": "Perhaps, I had an automation that set 5,5 mmol/l for 24 hours. I don't know if it is related but i'm not able to reproduce this on the new NS server."
+  },
+  {
+   "id": 2549008008,
+   "user": "emilisev",
+   "created_at": "2024-12-17T16:48:12Z",
+   "body": "I am noticing similar issue myself. When requesting the devicestatus collection of the API, I see that almost every 5 mn, I get 2 entries, a few seconds apart.\r\nFor example search in this log for \r\n* ADD devicestatus Sent PairDeviceStatus {\"created_at\":\"2024-12-17T16:25:17.451Z\"\r\n* ADD devicestatus Sent PairDeviceStatus {\"created_at\":\"2024-12-17T16:25:21.166Z\"\r\n\r\n[AndroidAPS.log](https://github.com/user-attachments/files/18168791/AndroidAPS.log)\r\n\r\nWhen looking a the timestamps in the devicestatus collection, I see only a few occurrences where there is no duplicate : \r\n\r\n![image](https://github.com/user-attachments/assets/c6e09d36-9db6-4587-93fd-84eebe6e07f1)\r\n\r\n\r\nI have checked my logs from 3.2 and the issue was not present."
+  },
+  {
+   "id": 2563083896,
+   "user": "MilosKozak",
+   "created_at": "2024-12-26T20:34:25Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/6a670611df1dc8a87c9b6300c1a632fe6dc358d6"
+  },
+  {
+   "id": 2564701814,
+   "user": "emilisev",
+   "created_at": "2024-12-29T12:00:39Z",
+   "body": "Still happening on dev-g with this fix.\r\nIn attached log, for ex search for `2024-12-29T11:50:18.992Z` and `2024-12-29T11:50:18.924Z`\r\n[AndroidAPS.log](https://github.com/user-attachments/files/18269505/AndroidAPS.log)\r\n"
+  },
+  {
+   "id": 2564704120,
+   "user": "olorinmaia",
+   "created_at": "2024-12-29T12:08:22Z",
+   "body": "Isn't this related to https://github.com/nightscout/AndroidAPS/issues/3571 which isn't closed? "
+  },
+  {
+   "id": 2564714684,
+   "user": "emilisev",
+   "created_at": "2024-12-29T12:48:51Z",
+   "body": "Yes, #3571 is still a current bug for me too. I was hoping to see both resolved at the same time."
+  },
+  {
+   "id": 2564812281,
+   "user": "MilosKozak",
+   "created_at": "2024-12-29T18:54:01Z",
+   "body": "from my point of view it's correct. Status is generated on more places (not only after enact) for example for cases like open loop, failed enact etc.\r\nI added logging anyway so you can see the reason https://github.com/nightscout/AndroidAPS/commit/5e706888e0982b8e5a626a3c8a3afe27217523d9"
+  }
+ ]
+}

@@ -1,0 +1,59 @@
+{
+ "id": 2189187872,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3266,
+ "title": "Enable SMB always while using xdrip in companion app mode and dexcom g7 original app",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3266",
+ "state": "closed",
+ "labels": [
+  "help wanted"
+ ],
+ "created_at": "2024-03-15T17:56:03Z",
+ "closed_at": "2024-11-27T10:15:00Z",
+ "comment_count": 7,
+ "body": "When using xdrip (latest nightly) in companion app mode fetching bg values from dexcom g7 app, aaps (3.2.0.3) still won't allow SMB to be enabled always. Please fix so that g7 users can use latest dexcom g7 app including clarity and still have hcl/fcl possibility in aaps.",
+ "comments": [
+  {
+   "id": 2001970982,
+   "user": "jbr7rr",
+   "created_at": "2024-03-16T12:22:21Z",
+   "body": "Problem is that xDrip doesn't send which sensor the data comes from in companion app mode., so AAPS can't determine if it is data from G7 or e.g. a medtronic sensor\r\nSo we need this information from xDrip when we want to enable it for ONE/G7 companion mode, I suggest you open a discussion/issue over at xDrip as well."
+  },
+  {
+   "id": 2008073305,
+   "user": "Pentagit",
+   "created_at": "2024-03-19T20:29:05Z",
+   "body": "Thank you. I understand. I have posted this on xdrip repo:\r\nhttps://github.com/NightscoutFoundation/xDrip/discussions/3396\r\n\r\nThough, why isn't AAPS enabling SMB always no matter which BG source xdrip is using?\r\nAFAIK, xDrip companion mode is available for the following vendor apps:\r\nG6 (master only)\r\nOne (only if the app shows BG notifications)\r\nG7 (master only)\r\nCamAPS\r\nGuardian\r\nMiniMed\r\nOmnipod 5 app\r\n\r\nIs any one of these apps a problem for always SMB in AAPS or why can't AAPS just enable it for the xdrip companion mode? But perhaps I'm misunderstanding something :)"
+  },
+  {
+   "id": 2008969926,
+   "user": "jbr7rr",
+   "created_at": "2024-03-20T07:49:57Z",
+   "body": "> Though, why isn't AAPS enabling SMB always no matter which BG source xdrip is using? AFAIK, xDrip companion mode is available for the following vendor apps: G6 (master only) One (only if the app shows BG notifications) G7 (master only) CamAPS Guardian MiniMed Omnipod 5 app\r\n\r\nFor Dexcom we know that they have good filtering, meaning that when there are erroneous values the sensor/transmitter doesn't send them. For the others we don't know"
+  },
+  {
+   "id": 2016921557,
+   "user": "Pentagit",
+   "created_at": "2024-03-24T19:39:21Z",
+   "body": "Why no mandatory smoothing (average/exponential) then when using xdrip companion data?"
+  },
+  {
+   "id": 2017449767,
+   "user": "jbr7rr",
+   "created_at": "2024-03-25T08:22:31Z",
+   "body": "> Why no mandatory smoothing (average/exponential) then when using xdrip companion data?\r\n\r\nDexcom does error detection, meaning it will not send data when there are erroneous values., with smoothing only there will still be a datapoint on the erroneous value, which can lead to wrong dosing. But this is already being discussed in other issues as well:\r\nhttps://github.com/nightscout/AndroidAPS/issues/3181\r\nhttps://github.com/nightscout/AndroidAPS/issues/2121\r\nhttps://github.com/nightscout/AndroidAPS/issues/2354"
+  },
+  {
+   "id": 2473567562,
+   "user": "MilosKozak",
+   "created_at": "2024-11-13T13:05:40Z",
+   "body": "Can anyone provide current state?"
+  },
+  {
+   "id": 2480659269,
+   "user": "Pentagit",
+   "created_at": "2024-11-16T16:44:10Z",
+   "body": "> Can anyone provide current state?\r\n\r\n@MilosKozak I tested it today on AAPS 3.3.0-dev-d (Build 986125e7e8) and now it seems to work! Closed loop possible even with xdrip companion app, nice!"
+  }
+ ]
+}

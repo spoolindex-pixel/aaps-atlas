@@ -1,0 +1,39 @@
+{
+ "id": 1229213080,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1711,
+ "title": "Hardcoded Limits Changes",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1711",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-05-09T05:56:57Z",
+ "closed_at": "2022-05-18T20:36:16Z",
+ "comment_count": 4,
+ "body": "I have build 3.0.0.1. \r\n\r\nI noticed the DIA in the Profile Editor is Hard Coded to have a Minimum Value of 5.0. However, my Endocrinologist has specified mine should be 4.0. \r\n\r\nAlso, in the Default Profile for the entire App, the Max Age is 19, and the Max Weight is 150.\r\n\r\nFinally, and this is a *big* one, the Max Insulin I can Bolus is Hard Limited to 17 units.  Frequently, that's OK; but, sometimes, I have to *try* to give myself more. The Calculator will say, for example, 18.50 units (per current Glucose and Carbs). I can *try* and administer 1.50 units, but sometimes I will get an error saying I can't Bolus any more Insulin yet, and I'll have my choice of three buttons: Snooze Indefinitely, Snooze for 5 minutes, and OK. And, really the first and third choices are the same.\r\n\r\nAnd, if I ever have a significant HIGH (which is what a Dexcom G6 CGM says when my Glucose is [rarely] over 400 mg/dL, I might have to wind up using my backup: syringe & Insulin vial.\r\n\r\nCan you fix these please?\r\n\r\nI believe the DIA Range should be 2 to 5. In my 28 years of being a T1, I was at first told current Insulins, like Novolog acted in 30min and were done in 2.5 hours. However, my current endocrinologist says 1 to 1.5 hours for peak effectiveness, and 4 hours until done; so, that's where that request is coming from.\r\n\r\nI believe the age should go up to 110.\r\nI believe the weight should go up to 300.\r\n\r\nI believe the Insulin Bolus Max should be 30 units, because that's what my pump manufacture's Max is. So, that's an actual medical company opinion, not just mine. They're Insulet, makers of the OmniPod. \r\n",
+ "comments": [
+  {
+   "id": 1120778465,
+   "user": "MilosKozak",
+   "created_at": "2022-05-09T08:07:26Z",
+   "body": "* DIA in loop perspective has different meaning than in classic pump therapy. 4h in DIA in pump has equivalent in about 8h in AAPS. Google internet for more info\r\n* Default profile has data for children so far\r\n* max bolus can be changed by selecting \"higher\" pacient type"
+  },
+  {
+   "id": 1123026107,
+   "user": "NethCoder",
+   "created_at": "2022-05-10T23:59:13Z",
+   "body": "But if profile only has \"children\" data, how *do* I select a higher patient type. I already selected adult. The only higher is \"pregnant.\" I'm male. Don't quire think those two things are compatible. Also, I am *not* going to use the loop. Call me \"paranoid.\"\r\n\r\nDid search Google, and from my bookmark:\r\n\" In traditional pump use, DIA is only used to calculate the remaining IOB at any given time after a bolus. That’s it. And when do we use remaining IOB in traditional pump therapy? Usually when we want to give a correction because a BG is stuck high or going low…in other words, DIA is used as a rough approximation to correct off-target BGs. It doesn’t have to be rocket science then…we’re making an approximation because some other numbers (carb count, basals, etc) weren’t behaving the way we were expecting either and therefore leading to an off-target BG.\r\n\r\nBut in looping, DIA (and its related IOB) plays a HUGE part in how the loop is anticipating and evaluating your BG movement. IOB is used literally every single minute for every single loop calculation for where to go next in setting a temp basal or providing a bolus recommendation.\r\n\r\nNot only that, but the STRENGTH of the insulin at any given time is also being used. Closed-loops know and care about whether your insulin was given recently and is due to peak soon (like between 60-90 minutes with novolog/humalog), or if it is in the slow tail portion hours later where BG impacts are going to be way less dramatic. So, DIA means a lot in your closed-looping world.\r\n\r\nWhat will happen if you use too short of a DIA in closed-looping? You’ll see it in a variety of ways, but too short a DIA will give the equivalent of insulin-stacking. \"\r\n\r\nSo, YES, I understand. *However,* as I said: I *will not* Loop. So, *please* allow the DIA to be lowered. Not everyone is equal. Not everyone is blue eyed, blond hair, buddy!"
+  },
+  {
+   "id": 1123372435,
+   "user": "MilosKozak",
+   "created_at": "2022-05-11T08:42:40Z",
+   "body": "DIA:\r\nhttps://seemycgm.com/2017/08/09/why-dia-matters/\r\nhttps://www.diabettech.com/insulin/why-we-are-regularly-wrong-in-the-duration-of-insulin-action-dia-times-we-use-and-why-it-matters/\r\n\r\nthis is the only reason for age settings: \r\nhttps://androidaps.readthedocs.io/en/latest/Usage/Open-APS-features.html?highlight=pregnant#overview-of-hard-coded-limits\r\n\r\nAnd you are mixing independent things together. Default profile is nothing more than a template in Profile helper. You may use it or not (and setup profile based on your experience). And like said before it has data only for children now."
+  },
+  {
+   "id": 1128437997,
+   "user": "KelvinKramp",
+   "created_at": "2022-05-17T05:46:14Z",
+   "body": "Hey neth, I understand your frustration, maybe you can adjust your dia in the code of your fork? "
+  }
+ ]
+}

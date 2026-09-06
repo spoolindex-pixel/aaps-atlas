@@ -1,0 +1,36 @@
+{
+ "id": 442984501,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 871,
+ "title": "Please support multiple BG sources",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/871",
+ "state": "closed",
+ "labels": [
+  "enhancement",
+  "status-postponed"
+ ],
+ "created_at": "2019-05-11T11:43:28Z",
+ "closed_at": "2021-02-25T02:22:14Z",
+ "comment_count": 3,
+ "body": "Since CGMs aren't entirely accurate, it would be great to be able to at least try multiple BG sources at the same time, like the Libre and G6 together, taking the average.  ESPECIALLY if you could weight those sources according to how accurate they are likely to be.\r\n\r\nDoing this might also simplify the code, unifying the bluetooth BG meter sources and the CGM sources, and possibly a newly factored out \"manual\" source which uses the UI, too.\r\n\r\nEssentially, this is a request to change the Hardware Data Source menu's mutually exclusive radio buttons into checkboxes, so that multiple sources can be chosen at once.\r\n\r\nIdeally, the menu (or settings within each sources' configuration) would allow weighting/prioritisation of those sources' data, adjusting up/down from 1.0 (or 0.0), or perhaps even just by dragging-and-dropping to re-order sources in the list according to trustworthiness.\r\n\r\nI think entering weight numbers would give significantly more control, though, which seems to be XDrip's usual approach to things.\r\n\r\nI think this would be an opportunity to improve XDrip's \"calibration override\" feature too, using the source priorities described above.  It's quite worrying right now, when the libre is far off the mark, and you enter a BG reading, but it doesn't calibrate sufficiently, forcing a \"reset calibrations\".  Priorities would allow you to say \"any time you get a BG reading from my meter over bluetooth, that is 100% the reading you should use.  Adjust everything accordingly, no matter what my CGM thinks.\"",
+ "comments": [
+  {
+   "id": 785527412,
+   "user": "Navid200",
+   "created_at": "2021-02-25T02:22:14Z",
+   "body": "@lee-b How would you enter the settings for each?\r\nFor example, Bluetooth Settings.  That settings page may contain a setting that needs to be checked for G6 but unchecked for Libre.  \r\n\r\nHow will you handle the timing?  xDrip wakes up and searches for the next reading once every 5 minutes.  But, having two different transmitter to deal with, it will have to have two different times.  What happens if they coincide?\r\n\r\nThis is going to complicate the code dramatically.  \r\nI agree that it can be useful in some cases.  But, how many people do you think are going to gave two sensors attached to them at the same time?\r\n\r\nIt sounds like an extreme cost to pay (development time and code complexity) to accomplish something that not many are going to benefit from.\r\n\r\nIf you absolutely need to perform this exercise, you can always install two versions of xDrip (one being a variant) on the same phone.  Or, for the experiment, you can use two phones and accomplish your objective.  \r\n\r\nI am going to close this.\r\nBut, we can always re-open it.\r\n\r\nPlease let me know what you think about my questions?\r\nThanks"
+  },
+  {
+   "id": 2156781432,
+   "user": "DmitriyShepelev",
+   "created_at": "2024-06-09T20:41:32Z",
+   "body": "I'd appreciate this issue being reopened.\r\n\r\nSince this issue was first opened, I think many more people have started using multiple BG sources, and demand for this feature exists. [autoISF](https://github.com/ga-zelle/autoISF/) users (an entire [Discord community for whom](https://discord.gg/Pn4t34TU) exists, with over 800 members) and other DIY AID system users frequently use two CGMs to ensure their BG data are accurate, and this feature would improve the quality of their lives significantly:\r\n* ability to broadcast a weighted average BG datum to AAPS (e.g., one can apply a simple 50/50 weighting to the data from two Dexcom G6 sensor BG sources); a more complex (though potentially more accurate) example would be to apply a function onto the sensor data based on the amount of time since the sensor was inserted. It's widely known that Dexcom G6 sensors have a tendency to be inaccurate the first 24 hours after insertion, as well as decreasing accuracy the last day/few hours of the sensor; a function therefore can be applied to the data from each BG source to maximize data fidelity. This feature in it of itself would:\r\n    * obviate the need for multiple xDrip variant apps and therefore having to manually switch the xDrip variant locally broadcasting to AAPS.\r\n    * lessen the effects of compression lows. (E.g., if a user has a sensor on each arm with one sensor compressed during sleep, then it is guaranteed that the other sensor is not being compressed, which can therefore smooth the compression low noise.)\r\n* potential to notify users of when a BG source has become faulty based on BG delta(s) compared to other BG sources. E.g., notify the user if BG source X has had an average delta > Y for at least Z minutes compared to BG source W. (A user can then potentially take action by replacing BG source X or having xDrip regress to a simple 50/50 BG weighting until the issue is resolved.) \r\n\r\n---\r\n\r\nGiven the benefit of this feature for those using multiple BG sources, I "
+  },
+  {
+   "id": 2156817044,
+   "user": "Navid200",
+   "created_at": "2024-06-09T22:26:02Z",
+   "body": "@DmitriyShepelev This would make xDrip extremely complicated for the xDrip users as well as for the xDrip developers.\r\n\r\nI don't believe the majority of those needing a CGM would care to have 2 sensors attached to them.  \r\nxDrip has many users worldwide.  I'd rather not make xDrip something that only experts can use.  I want everyone to be able to use it.\r\n\r\nRegardless of my personal opinion, nothing will happen unless a developer chooses to develop it with or without an open issue.\r\nJust look at our open issues.  There are some that have been open for years."
+  }
+ ]
+}

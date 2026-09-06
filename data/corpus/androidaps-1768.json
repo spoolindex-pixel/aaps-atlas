@@ -1,0 +1,131 @@
+{
+ "id": 1245709445,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1768,
+ "title": "Wrong IOB, because boluses are shown twice",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1768",
+ "state": "closed",
+ "labels": [
+  "medtronic"
+ ],
+ "created_at": "2022-05-23T21:21:52Z",
+ "closed_at": "2022-06-12T21:54:15Z",
+ "comment_count": 19,
+ "body": "In Androidaps 3.0, some meal-boluses and SMB's are shown twice in the treatments-tab. The pump (Medtronic 754) shows the boluses only once.\r\nBecause of this, the IOB in Androidaps is wrong (too high).\r\n\r\nI haven't connected AAPS to NS.\r\nIn previous AAPS-versions (<3.0), I've never seen this behaviour.\r\n\r\nHere are two examples:\r\n\r\n![IMG-20220517-WA0001](https://user-images.githubusercontent.com/64355375/169907518-bbf81b04-7ab6-4235-9785-c0e0e2eeaf27.jpg)\r\n![IMG-20220315-WA0010](https://user-images.githubusercontent.com/64355375/169907522-4e7302c4-9336-4544-9011-57cc1584a9be.jpg)\r\n",
+ "comments": [
+  {
+   "id": 1135197820,
+   "user": "ArthurusDent",
+   "created_at": "2022-05-23T22:26:54Z",
+   "body": "Please add your setup (smartphone, Android version, exact AndroidAPS version (upper right corner, three dot menu, About, build number) and logs."
+  },
+  {
+   "id": 1135202054,
+   "user": "andyrozman",
+   "created_at": "2022-05-23T22:33:58Z",
+   "body": "Haven't seen double bolus problem since version 2.3 (I think), where it was fixed... You are the first person reporting this in new database version (3.x)... Very weird..."
+  },
+  {
+   "id": 1135589649,
+   "user": "Milahan",
+   "created_at": "2022-05-24T08:50:10Z",
+   "body": "Thank you for your quick responses.\r\n\r\nOn Facebook, I've seen multiple posts about 'double boluses' in the pas few months. They were all Medtronic-users, with AAPS 3.0.\r\n\r\nI'm using a Samsung A52 5G, with Android 12.0. Here's a AAPS screenshot:\r\n\r\n![Screenshot_20220524-085309_AndroidAPS](https://user-images.githubusercontent.com/64355375/169990203-bb66c6fd-a1f0-459c-861f-619c12ea97a6.jpg)\r\n\r\nI don't have current logs, but I'l save and upload them the next time I notice this behaviour."
+  },
+  {
+   "id": 1138341337,
+   "user": "old-square-eyes",
+   "created_at": "2022-05-26T09:28:04Z",
+   "body": "Same issue I think. 3.0.0.1 S22 Ultra. 522 OL Pro. I may have walked away from the OL. I can't quite remember. I do use NS but only sync via NS client in AAPS. I don't enter any treatments in xDrip or NS. xDrip does not sync treatments to NS.\r\n\r\nSlight panic thinking I got double dosed. But pump confirms not. See the two 1.9U Wizard boluses in the treatment log (also double 0.4 SMB), and double IOB.\r\n\r\n![282097780_1809664652710682_4971669006559977780_n](https://user-images.githubusercontent.com/25760491/170459872-ebd18c74-ac4a-48d9-a4db-9138ba464f49.jpg)\r\n\r\n![282752724_1809664709377343_2334609141961821005_n](https://user-images.githubusercontent.com/25760491/170459876-034b972c-52b3-4c55-8719-8264cb9a4e21.jpg)\r\n\r\n![281852386_1809664642710683_5954677338454051204_n](https://user-images.githubusercontent.com/25760491/170459860-9db5884e-8f7d-40cd-9994-d3155625f365.jpg)"
+  },
+  {
+   "id": 1138363311,
+   "user": "MilosKozak",
+   "created_at": "2022-05-26T09:56:27Z",
+   "body": "> Same issue I think. 3.0.0.1 S22 Ultra. 522 OL Pro. I may have walked away from the OL. I can't quite remember. I do use NS but only sync via NS client in AAPS. I don't enter any treatments in xDrip or NS. xDrip does not sync treatments to NS.\r\n> \r\n> Slight panic thinking I got double dosed. But pump confirms not. See the two 1.9U Wizard boluses in the treatment log (also double 0.4 SMB), and double IOB.\r\n> \r\n> ![282097780_1809664652710682_4971669006559977780_n](https://user-images.githubusercontent.com/25760491/170459872-ebd18c74-ac4a-48d9-a4db-9138ba464f49.jpg)\r\n> \r\n> ![282752724_1809664709377343_2334609141961821005_n](https://user-images.githubusercontent.com/25760491/170459876-034b972c-52b3-4c55-8719-8264cb9a4e21.jpg)\r\n> \r\n> ![281852386_1809664642710683_5954677338454051204_n](https://user-images.githubusercontent.com/25760491/170459860-9db5884e-8f7d-40cd-9994-d3155625f365.jpg)\r\n\r\nno logs no help possible"
+  },
+  {
+   "id": 1151991013,
+   "user": "Milahan",
+   "created_at": "2022-06-10T06:12:39Z",
+   "body": "This morning, I saw there was another 'double bolus-situation' last night. This time, the boluses were not exactly at the same time (a few minutes apart), according to AAPS. The pump-history shows the bolus only once.\r\n\r\nI attached the log, screenshot and photo. I hope this helps in finding the cause.\r\n\r\n![Screenshot_20220610-075828_AndroidAPS](https://user-images.githubusercontent.com/64355375/173001568-e656b700-0fb9-4634-af8e-985dcc1d6a79.jpg)\r\n\r\n![20220610_075801](https://user-images.githubusercontent.com/64355375/173001618-5df9ff9f-e24c-4e01-a570-5a05635774f4.jpg)\r\n\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/8876160/AndroidAPS.log)\r\n\r\nEdit: browsing through the AAPS-treatments-screen, I found more (recent) examples.\r\n\r\n![Screenshot_20220610-104835_AndroidAPS](https://user-images.githubusercontent.com/64355375/173029972-ef2a7f19-b17d-40f0-81d0-a55d0393fb8a.jpg)\r\n\r\n![Screenshot_20220610-104919_AndroidAPS](https://user-images.githubusercontent.com/64355375/173029987-b2fba817-41ee-4701-b214-109d6e51fd41.jpg)\r\n\r\n![Screenshot_20220610-104937_AndroidAPS](https://user-images.githubusercontent.com/64355375/173030005-493ab418-1f63-4ade-a9f8-3f601476f843.jpg)\r\n\r\n\r\n"
+  },
+  {
+   "id": 1152860749,
+   "user": "Milahan",
+   "created_at": "2022-06-11T05:33:17Z",
+   "body": "Here's another example from last night (10-06-2022, 19:55-20:00). The pump-history shows the bolus only once.\r\nI also included the complete log file. \r\nThe previous log file might have been a damaged file (?).\r\n\r\n![Screenshot_20220611-072139_AndroidAPS](https://user-images.githubusercontent.com/64355375/173174208-0f96ae48-3972-4092-b680-bcb74e68b3db.jpg)\r\n\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/8883324/AndroidAPS.log)"
+  },
+  {
+   "id": 1152938074,
+   "user": "andyrozman",
+   "created_at": "2022-06-11T14:29:26Z",
+   "body": "Is there a problem with your communication? It seems that Bolus was placed 4 minutes before pump started it... \r\n\r\nWe pair boluses from pump history with local bolus, and difference can be only 1:59 minutes. \r\n\r\nIt seems like your communication is very spotty... Can you confirm that? "
+  },
+  {
+   "id": 1152946814,
+   "user": "Milahan",
+   "created_at": "2022-06-11T15:06:48Z",
+   "body": "Thanks for your quick response, Andy!\r\n \r\nI'm not experiencing connection problems. \r\nThe Rileylink is always near my phone and pump. \r\nIt sometimes does take about 20 seconds for AAPS to make the pump start a bolus. I've never noticed it taking >2 minutes. But if the log says it took so long, it probably did..\r\n\r\nIf thats the problem: would it be possible to automaticaly delete all past bolusses in AAPS, if they are not present in the pump-history?"
+  },
+  {
+   "id": 1152951245,
+   "user": "andyrozman",
+   "created_at": "2022-06-11T15:28:35Z",
+   "body": "Deleting anything automatically could be very dangerous. Question is why it took so long for bolus to come to pump. If you are using OL, using firmware 2.5 , might help you... \r\n\r\nThey have rewritten their firmware with version 3.x and while we support it, I think that 2.x communication was more stable."
+  },
+  {
+   "id": 1152954973,
+   "user": "Milahan",
+   "created_at": "2022-06-11T15:55:25Z",
+   "body": "I'm using the (older) Rileylink W2.\r\n\r\nI have no idea why some bolusses seem to take so long according to the log file. \r\nAlso, I wonder: why doesn't this happen with SMB's, but only (in combination) with meal bolusses? \r\n\r\nCould it be, AAPS/Riley/pump is trying (and struggling) to handle multiple requests at the same time (e.g: SMB+meal bolus, or maybe even: meal bolus+pump sync)?\r\n\r\nWhy would it not be safe to delete bolusses, if they are not in the pump history after syncing?"
+  },
+  {
+   "id": 1152968076,
+   "user": "andyrozman",
+   "created_at": "2022-06-11T17:19:33Z",
+   "body": "You can delete them manually... Situation that is happening with you is real anomally, which shouldn't happen... \r\n\r\nThere are no multiple requests happening... AAPS has a Queue, so there wouldn't be two commands happening at same time. Unless you have connected with some other device to pump, which you shouldn't... AAPS needs to be the only device connecting to the pump...\r\n\r\nIf AAPS can't connect to RL then it would try to determine new connection speeds, in such case it could take a while. I will try to take a look at log to see what is happening... "
+  },
+  {
+   "id": 1152995659,
+   "user": "old-square-eyes",
+   "created_at": "2022-06-11T20:50:42Z",
+   "body": ">  why doesn't this happen with SMB's, but only (in combination) with meal bolusses?\r\n\r\nMy example above shows a double SMB and a double wizard bolus."
+  },
+  {
+   "id": 1153006240,
+   "user": "andyrozman",
+   "created_at": "2022-06-11T22:12:41Z",
+   "body": "This is fix that might help. \r\n\r\nSo when we do bolus on pump, before entry is written into database, timestamp is adjusted (it doesn't contain previous timestamp, when AAPS/orefx sent bolus command, but timestamp when bolus was received on pump), so when history comes back it will easily be tied to actual bolus record. This might prevent double bolus... \r\n\r\nBranch is: https://github.com/andyrozman/AndroidAPS/tree/bug1768_2xbolus"
+  },
+  {
+   "id": 1153093225,
+   "user": "Milahan",
+   "created_at": "2022-06-12T07:33:13Z",
+   "body": "Thanks again, Andy! That sounds like a good solution.\r\n\r\nI do have two questions, to verify if I completely understand what you meant.\r\n\r\nYou described the current AAPS-functionality as: \"We pair boluses from pump history with local bolus, and difference can be only 1:59 minutes\".\r\nIn the new branch you said in AAPS the \"timestamp [bolus] is adjusted\". \r\n\r\nDoes this mean, the 2-minute-limit is gone? So AAPS will *always* match with the pump-history?\r\n\r\nDid I understand correctly: will the 'bolus-time' in the treatments-tab be empty, until the pump confirms the bolus?"
+  },
+  {
+   "id": 1153124054,
+   "user": "andyrozman",
+   "created_at": "2022-06-12T10:30:01Z",
+   "body": "No, limit is still there, but for example if AAPS starts bolus at 10:00 and queue is currently processing something, maybe Bolus would have to wait for few minutes so pump would get bolus at 10:04, previously we would still mark this bolus as 10:00 (as this is the time in the command), now this time will be adjusted so it will be have time 10:04. So when history comes back we can find which bolus from history is same as the one that was placed.. \r\n\r\nThis already worked like this in 2.x (I think since 2.3 or 2.4), but with refactoring of whole driver (to kotlin and then adding new database stuff) this change seems to have goten lost..."
+  },
+  {
+   "id": 1153127063,
+   "user": "Milahan",
+   "created_at": "2022-06-12T10:50:17Z",
+   "body": "Thanks for explaining and creating the fix! \r\nThis really sounds like a solution."
+  },
+  {
+   "id": 1153129072,
+   "user": "andyrozman",
+   "created_at": "2022-06-12T11:01:19Z",
+   "body": "You misunderstood the \"pairing\" bit... When we place the bolus, we don't know what \"id\" will pump will assign, so we have to \"pair\" it after we get first reading of history. So when we place bolus in AAPS we store bolus with temporaryId and we also store that bolus in temporary storage, when we read history we then try to see which bolus from history is same as new bolus (in temporary storage), since bolus on pump can be also done manually, we need to find bolus that is nearest to the ones in history, which is why we look for 2 minutes difference. Time on pump is adjusted if difference is more than 20s, so such entry should be easily detectable..."
+  },
+  {
+   "id": 1153167874,
+   "user": "andyrozman",
+   "created_at": "2022-06-12T13:28:23Z",
+   "body": "Opened PR: https://github.com/nightscout/AndroidAPS/pull/1825\r\n"
+  }
+ ]
+}

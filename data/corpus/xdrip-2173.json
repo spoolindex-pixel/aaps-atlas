@@ -1,0 +1,126 @@
+{
+ "id": 1267797970,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 2173,
+ "title": "Y-axis scaling can lead to confusing views",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/2173",
+ "state": "closed",
+ "labels": [
+  "enhancement",
+  "ui"
+ ],
+ "created_at": "2022-06-10T16:59:02Z",
+ "closed_at": "2026-01-03T10:38:27Z",
+ "comment_count": 18,
+ "body": "### Discussed in https://github.com/NightscoutFoundation/xDrip/discussions/2144\r\n\r\n<div type='discussions-op-text'>\r\n\r\n<sup>Originally posted by **christian-rummey** May 25, 2022</sup>\r\nHi - I just posted this in the xDrip FB group, and someone asked me to replicate it here: \r\n\r\nThe y-axis (BG value) currently is auto-scaled to the highest level within the last 24h - see an example on the screenshot (there was a 20+high the afternoon before). This makes sense during the high, and maybe few hours thereafter, for high insulin loads, or similar issues after the high. \r\n\r\nBut one day later, the curve can give confusing impressions. As we all know, the slope is actually more important than the actual value, and if the y-axis is scaled up to very high values, really steep slopes (eg, +/- 1.5 or more)  apper much flatter than they are. \r\n\r\n\r\nMy suggestion is to let the y-axis scale to a normal range by default (e.g, 0-12 or so?), and only scale it up if higher values are visible on screen. Or at least let the user decide how he wants to scaling to work.  \r\n\r\nhope that makes sense? \r\nthanks\r\n- Christian\r\n\r\n\r\n![Screenshot_20220525-092910_xDrip+](https://user-images.githubusercontent.com/41680029/170321866-55f28f8b-abf7-455c-a716-e305f77339fe.jpg)\r\n\r\n</div>",
+ "comments": [
+  {
+   "id": 1203767252,
+   "user": "thedewi",
+   "created_at": "2022-08-03T10:27:51Z",
+   "body": "The x-axis scaling is also unpredictable, which I find biases my reading of the chart as well. Can we lock the aspect ratio of the chart so gradients are consistent?"
+  },
+  {
+   "id": 1203771954,
+   "user": "thedewi",
+   "created_at": "2022-08-03T10:32:41Z",
+   "body": "In cases where scaling is warranted, it might be better to scale both axes consistently, so at least the gradient would be preserved.\r\n\r\nPersonally I would prefer if it stayed constant until manually changed."
+  },
+  {
+   "id": 1203859247,
+   "user": "Navid200",
+   "created_at": "2022-08-03T12:02:55Z",
+   "body": "@thedewi You can force the x axis range using time buttons.  \r\nhttps://navid200.github.io/xDrip/docs/TimeButtons.html  "
+  },
+  {
+   "id": 1203912708,
+   "user": "thedewi",
+   "created_at": "2022-08-03T12:54:35Z",
+   "body": "Thanks! Never knew you could long-press that."
+  },
+  {
+   "id": 1203917912,
+   "user": "thedewi",
+   "created_at": "2022-08-03T12:59:24Z",
+   "body": "I probably never would have figured out you need to long-press the time, as well, to lock it in"
+  },
+  {
+   "id": 1382712590,
+   "user": "christian-rummey",
+   "created_at": "2023-01-14T10:53:01Z",
+   "body": "So I liked the discussion in #874, and the time buttons. \r\n\r\nBut - I think the simple solution for this  issue would be instead of the last 24h, for the y-axis scaling we should use 4 hours (or so). \r\n\r\nMaybe a time when it's safe to say short-term insulin is out of the body after the peak?\r\n\r\nIt would keep us focused on what is relevant at the moment (and not what happened hours earlier). \r\n\r\nThanks for your help & discussion"
+  },
+  {
+   "id": 1474858966,
+   "user": "thedewi",
+   "created_at": "2023-03-18T13:58:21Z",
+   "body": "The locking isn't working anymore, in 689d22a-2022.12.24. I'm not sure what version this started but now that I'm using a longer insulin action curve the time axis crunches down significantly every time I look."
+  },
+  {
+   "id": 1474859829,
+   "user": "Navid200",
+   "created_at": "2023-03-18T14:02:35Z",
+   "body": "@thedewi This issue is about the y axis.\r\n\r\nWould you be so kind to open a discussion if you have any questions, tips, concerns, etc. about the time (x) axis?\r\n\r\nIt is very important for us to know if something is not working.   I am very interested to know what's going on with what you are experiencing.  Would you please click on new discussion here: https://github.com/NightscoutFoundation/xDrip/discussions"
+  },
+  {
+   "id": 1540495098,
+   "user": "Hexonium",
+   "created_at": "2023-05-09T16:25:46Z",
+   "body": "Another issue with the y-axis being scaled to the highest value within the last 24h: it suffices to have a single bad point for the graph being useless for 24 hours. Here is an example after starting a new Libre 2 sensor whose first point is 400 for no reason:\r\n\r\n![Screenshot_20230509-182436](https://github.com/NightscoutFoundation/xDrip/assets/34622676/7e3f703f-115e-43c4-adb2-0e523d1d0698)\r\n\r\n"
+  },
+  {
+   "id": 1540501200,
+   "user": "Navid200",
+   "created_at": "2023-05-09T16:30:08Z",
+   "body": "@Hexonium \r\nCan you delete the stop flag, shown in the image below?\r\n![237159266-7e3f703f-115e-43c4-adb2-0e523d1d0698](https://github.com/NightscoutFoundation/xDrip/assets/51497406/27b8aada-eca4-4d24-a1cd-d7171d3342ce)\r\n"
+  },
+  {
+   "id": 1540504811,
+   "user": "Hexonium",
+   "created_at": "2023-05-09T16:32:58Z",
+   "body": "Thanks, it's much better now! The y-axis still scales up to 400 but it's readable (I don't know if there is a way to remove that point?)."
+  },
+  {
+   "id": 1540531071,
+   "user": "Navid200",
+   "created_at": "2023-05-09T16:53:06Z",
+   "body": "You cannot remove a reading.  You can mark it as a bad reading.\r\n\r\nI will open a PR to remove bad readings from the view.  \r\n\r\nThe other intent is to pan the screen with very large readings.  That is going to take a little more time as it is challenging for me."
+  },
+  {
+   "id": 1540537560,
+   "user": "Navid200",
+   "created_at": "2023-05-09T16:57:51Z",
+   "body": "What I meant to say is to open a PR that will avoid resizing the vertical axis for a reading that is marked as bad."
+  },
+  {
+   "id": 1541895075,
+   "user": "christian-rummey",
+   "created_at": "2023-05-10T10:33:09Z",
+   "body": "It slowly gets old by now, but I still believe the 24h window for y-axis scaling makes no sense at all. \r\nIMHO 2-4 hours would be much more practical and usable.  \r\n#2144"
+  },
+  {
+   "id": 1542082574,
+   "user": "Navid200",
+   "created_at": "2023-05-10T12:02:35Z",
+   "body": "> , but I still believe the 24h window for y-axis scaling makes no sense at all. IMHO 2-4 hours would be much more practical and usable. #2144\r\n\r\nYou can scroll back up to 24 hours to see what happens yesterday.  If we make the change you suggest and you have very high readings and in 2 hours your axis goes back to normal, what will happen if you scroll back 2 hours?  Addressing that is not easy.\r\n\r\nHowever, if you have a very high reading because of an error, meaning your blood glucose is not really high but for a technical reason, the CGM shows one ore two very high readings, after this PR, you will be able to mark the high reading as a bad reading.  https://github.com/NightscoutFoundation/xDrip/pull/2825  \r\nThen, the vertical axis will not be adjusted to show the bad reading.  You won't even have to wait 2 hours then."
+  },
+  {
+   "id": 1542087649,
+   "user": "Navid200",
+   "created_at": "2023-05-10T12:05:54Z",
+   "body": "You may have correct readings that are very high one day resulting in the vertical axis being adjusted and kept like that for 24 hours.  My intent is to change xDrip such that it would automatically pan to always show the latest readings.\r\nIf you scroll back, it will also automatically pan.  So, the vertical axis will never be adjusted without your choice.\r\n\r\nBut, that is a very challenging programming exercise for me.  I will need time to complete it."
+  },
+  {
+   "id": 1542319454,
+   "user": "christian-rummey",
+   "created_at": "2023-05-10T14:35:50Z",
+   "body": "Thanks @Navid200, you're exactly right, and I understand the challenge.  \r\n\r\nI am not sure however, if the automatic panning is needed or the best option. The y-axis could just snap back to normal scale, once a few hours have passed.   \r\n\r\nWhen scrolling back, the curve would not be visible, but e.g., replaced by a big arrow (or more arrows) pointing upwards, where the curve would be. I remember this effect on an app (during my 35 T1-years), but can't which one it was. The larger y-scale could come back by clicking (e.g., on the arrow, see below). \r\n\r\nJust an idea - in any case thanks for trying. \r\n\r\n![ArrowUp](https://github.com/NightscoutFoundation/xDrip/assets/41680029/ae0dcd12-1b6f-44f4-8912-2b89c05a5ab7)\r\n\r\n"
+  },
+  {
+   "id": 3618971571,
+   "user": "Navid200",
+   "created_at": "2025-12-05T23:42:01Z",
+   "body": "I finally have a candidate that I am testing.\nIt pans instead of changing the axis min/max.  \nTherefore, the slopes never change.\nThe preview chart remains identical as is.  But, the main screen pans and you can see in the preview chart that the main screen is not showing the entire vertical range.  And you can pan manually to access readings that may be out of the viewing area.\n\nThe main screen keeps tracking the recent readings.  So, if you have very high readings, the main screen pans up so that you can continue to see all your recent readings.\nxDrip monitors all the readings during the past 3 hours and does the automatic panning based on all the readings during the past 3 hours.\nThis means if your readings return to normal, the panning will pan back to the normal range in 3 hours.\n\nBut, even when xDrip auto pans, it never changes the range of the y axis.  You control the range of the y axis by entering your choice of min and max.\nI like this because one of the main issues is that the slopes currently look different and stay different for 24 hours.\nIf this is approved and merged, we will never have to deal with modified slopes.\n\nI have to use this for a week or two to make sure ai have not overlooked anything before opening a PR."
+  }
+ ]
+}

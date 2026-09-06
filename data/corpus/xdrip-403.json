@@ -1,0 +1,79 @@
+{
+ "id": 316559352,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 403,
+ "title": "Rest-Api - Nightscout data download not working",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/403",
+ "state": "closed",
+ "labels": [
+  "question",
+  "sync-nightscout",
+  "type-discussion"
+ ],
+ "created_at": "2018-04-22T08:14:21Z",
+ "closed_at": "2021-05-18T19:50:43Z",
+ "comment_count": 14,
+ "body": "\"Also try to download data from Nightscout\" is activated, but no data from nightscout is beeing downloaded.",
+ "comments": [
+  {
+   "id": 423924615,
+   "user": "Splitfox",
+   "created_at": "2018-09-24T09:51:52Z",
+   "body": "Is there already a solution, because I have the same Issue"
+  },
+  {
+   "id": 439999688,
+   "user": "loopy321",
+   "created_at": "2018-11-19T18:46:05Z",
+   "body": "I too have this problem.  Treatments are downloaded from Nightscout and can be seen in Xdrip, but not BG data.  Thus, it does not appear to be a Nightscout configuration problem, but an Xdrip BG data processing/acceptance issue.  \"Nightscout Sync (REST-API)\" -> \"Download data\" is ON.  This problem is present in versions d1d4887-2018.09.08 and nightly-d31850f-20181115."
+  },
+  {
+   "id": 440050262,
+   "user": "anfichtn",
+   "created_at": "2018-11-19T21:37:12Z",
+   "body": "I'll have a similar problem. Treatments get backfilled when I set the download to on, but cgm data keeps missing. "
+  },
+  {
+   "id": 487225222,
+   "user": "ikniwn",
+   "created_at": "2019-04-26T22:53:55Z",
+   "body": "Did this get resolved?  I have the same issue - I can see treatments but no BG data.  I am using a Huawei p8 lite as a follower.  Base URL data is correct and Night Scout is receiving the uploads from the master. "
+  },
+  {
+   "id": 782704327,
+   "user": "Navid200",
+   "created_at": "2021-02-20T15:58:19Z",
+   "body": "@psonnera"
+  },
+  {
+   "id": 782720963,
+   "user": "psonnera",
+   "created_at": "2021-02-20T17:41:04Z",
+   "body": "I believe the menu item \"Download data\" should be renamed \"Download treatments\" or xDrip+ should accept incoming BG as it is and not bloodtest."
+  },
+  {
+   "id": 843508324,
+   "user": "Navid200",
+   "created_at": "2021-05-18T19:50:43Z",
+   "body": "xDrip cannot download BG readings from Nightscout.\r\nYou will need to transfer database from the old phone to the new phone.\r\nI have opened a pull request to change the menu to avoid this confusion as suggested by Patrick.\r\n\r\nI am closing this issue as the capability does not exist.  "
+  },
+  {
+   "id": 843754268,
+   "user": "jwoglom",
+   "created_at": "2021-05-19T05:20:20Z",
+   "body": "It strikes me as odd that xDrip, to my knowledge, doesn't support automatically downloading treatments (or CGM readings, although I don't have a direct need for that) on some periodic schedule from Nightscout. In my own workflow, I have pump treatments which upload directly to Nightscout via tconnectsync but unless I manually go into the xDrip settings and hit this download treatments button, they aren't ingested into xDrip. Ideally, whenever xDrip already uploads CGM data to Nightscout it could query to see whether there were new treatments to download and automatically ingest them to xDrip, if enabled by the user.\r\n\r\nAutomatically downloading treatments is a feature I was planning to build out for my own personal use, if it was implemented would others make use of it?"
+  },
+  {
+   "id": 843755357,
+   "user": "tolot27",
+   "created_at": "2021-05-19T05:23:15Z",
+   "body": "I do not fully understand the use case. The Nightscout Follower data source is designed to fetch the data from NS, both BG readings and treatments as well as notes.\nNow, you are requesting the same feature from Cloud Upload Agent \"Nightscout Sync (REST-API)\", aren't you?\n\nWhat's then your primary data source?"
+  },
+  {
+   "id": 843778552,
+   "user": "jwoglom",
+   "created_at": "2021-05-19T06:15:47Z",
+   "body": "@tolot27 Let me clarify. In my system, I have two parallel streams of data flow which are being funneled into Nightscout. xDrip on my phone grabs G6 sensor data and uploads it to Nightscout. Concurrently, I have a Tandem pump which has Tandem's own app running. This app automatically sends pump data (i.e. basal and bolus treatments) to Tandem's cloud system on a regular basis. I then have a tool, tconnectsync, which I wrote, that queries Tandem's cloud for new treatment data and puts that information into Nightscout, so that I can view bolus and basal data automatically in Nightscout. As a result, Nightscout now has combined CGM and pump data stored within it -- CGM data being uploaded via xDrip, pump data via tconnectsync. \r\n\r\nIn my ideal world, xDrip downloads the treatment data which was placed into Nightscout by tconnectsync into its own local database, so that I can view bolus/basal data within the xDrip UI as well. xDrip would be smart enough to then know not to re-upload that data back to Nightscout, since it downloaded it from Nightscout, in the same way that it currently downloads treatment data which was created directly in Nightscout."
+  }
+ ]
+}

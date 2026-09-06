@@ -1,0 +1,132 @@
+{
+ "id": 774553173,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1573,
+ "title": "xDrip cannot start a G6 sensor in no-code mode with a new (8J) transmitter",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1573",
+ "state": "closed",
+ "labels": [
+  "question",
+  "device-dexcom"
+ ],
+ "created_at": "2020-12-24T20:26:51Z",
+ "closed_at": "2021-01-06T04:05:09Z",
+ "comment_count": 20,
+ "body": "xDrip version: July 25, 2020\r\nDexcom G6\r\nTransmitter serial number: 8J****\r\nPhone (Android 9) runs xDrip as the collector\r\n\r\nWe were able to run in no-code mode, using xDrip, by entering 0000 as the calibration code.  I did that whenever I restarted my sensors with my 81 transmitters.  \r\n\r\nWith newer transmitters (I have tried 8J), after entering 0000 as the calibration code, no readings are ever provided after the warm-up period, and the transmitter eventually issues an error.\r\n\r\nThe Dexcom app can start a sensor (with new transmitter) in no-code mode apparently.  I personally have no experience with that app.  It would be great to be able to do the same using xDrip.",
+ "comments": [
+  {
+   "id": 751266433,
+   "user": "emp-00",
+   "created_at": "2020-12-25T16:01:50Z",
+   "body": "@Navid200 : Is there a good reason for using \"0000\" as calibration code? As you know - All 8G+ (Firefly) transmitters can only be used in \"Native Mode\" anyway - therefore the sensor needs the calibration code to be able to show \"correct\" BG values. \r\n\r\nManual calibration in xDrip (non-native mode like with 80/81 tx's) does NOT work anymore with these transmitters so you must calibrate them natively in the transmitter... I always use the factory code also for restarts => no problems. Only need to calibrate once after the restart since values are always consistently too high, e.g. 130-150 instead of real 100 mg/dl (due to built-in trauma compensation). One single calibration fixes this issue for me."
+  },
+  {
+   "id": 751267541,
+   "user": "Navid200",
+   "created_at": "2020-12-25T16:13:16Z",
+   "body": "@emp-00 \r\nYes, there is.\r\nIn no-code mode, G6 behaves as a G5.  Hence, the factory calibration, which is only valid for the first 10 days, becomes disabled in no-code mode.  \r\nThe Dexcom app offers that.  So, the fact that the transmitter is limited to Native mode is irrelevant.  The transmitter is in Native mode and in no-code mode, it behaves as a G5 with the Dexcom app.\r\n\r\nI would like xDrip code to be modified so that it can offer the same capability to those who use xDrip.\r\n\r\nI enter the code also and calibrate to correct the significant, dangerous, error because that's all I can do. \r\nBut, there is no reason not to improve things.  That's the purpose of these issues, isn't it?\r\n\r\nThere is a very good reason to fix this bug.\r\nI always worry someone may inject insulin, not realizing the error, and cause a hypo."
+  },
+  {
+   "id": 751269290,
+   "user": "emp-00",
+   "created_at": "2020-12-25T16:32:05Z",
+   "body": "@Navid200 : Sorry, I was not aware this is still possible with the 8G+ transmitters. \r\n\r\nHowever, I still don't understand the reason for doing this. Does this avoid the \"BG jump\" (trauma compensation)? I think you need to calibrate anyway - for sure anyway in non-native mode... So why not running native and using the factory calibration code? For me this works fine - only one calibration needed after restart and that's it. When restarting I guess everybody is aware of \"the side-effects\". Doesn't non-native mode have more chances for calibration errors? At least this is my personal experience -> been running 80/81 (non-native) and G6+ tx's. Native works much better for me. But OK, that's just my view of things. If there's a need for fixing this as requested - fine!"
+  },
+  {
+   "id": 751270071,
+   "user": "Navid200",
+   "created_at": "2020-12-25T16:42:00Z",
+   "body": "@emp-00\r\nYes, it avoids the BG jump.  The trauma existed even with G5.  But, G5 did not offer factory calibration.\r\nThe only reason you get the jump in readings when you use the original code with a sensor that is not new is that the factory calibration engages starting from day 1 when you are really on day 11.\r\n\r\nWhen you operate in the no-code mode, G6 behaves as if it was G5 relying on daily calibrations.  In that mode, G5 asked for a new calibration once every 12 hours.  G6 asks for one calibration a day in no-code mode.\r\n\r\nSo, if this is fixed for xDrip, the user will have options, each with its pros and cons:\r\n1- No-code mode where you will have to calibrate once a day when you restart (and twice a day for the first day)\r\n2- Use the code and make sure to correct the significant error before engaging your closed loop system.  Otherwise, you are up for a serious hypo episode.\r\n\r\nI don't understand why you keep bringing up native versus non-native.  This request has nothing to do with that.  This request is related to Native mode only.  There is no other option since the transmitter does not send raw data."
+  },
+  {
+   "id": 752329618,
+   "user": "nickb24",
+   "created_at": "2020-12-30T05:09:33Z",
+   "body": "@Navid200 After the warm up period with a no-code start, do you get a calibration error when trying to calibrate? \r\n\r\nI too like to restart my sensors after 10 days using the no-code. The issue I have is calibration errors. After some debugging I determined it's not the xDrip app, but the new firmware on the firefly transmitters. Using the Dexcom app also gives the same calibration errors. It doesn't happen every time I do a sensor restart, but it happens often. "
+  },
+  {
+   "id": 752538070,
+   "user": "Navid200",
+   "created_at": "2020-12-30T12:42:00Z",
+   "body": "Please have a look at the Dexcom G6 user guide.\r\n\r\nhttps://s3-us-west-2.amazonaws.com/dexcompdf/G6-CGM-Users-Guide.pdf\r\n\r\nPlease go to section 7.4 Calibrating\r\nYou will see the following followed by more detail about the no-code operation.\r\n\r\n\"If you didn’t enter a sensor code, you’ll need to do daily calibrations after completing\r\nyour initial calibrations\".\r\n\r\nSince it is in the manual, one can contact Dexcom and ask for a replacement if the transmitter is really the culprit.\r\n\r\n\r\nGoing back to your first question, it's been a long time since I tried this.  So, I am not 100% sure.  But, I believe the error was obvious right away after the warm-up period was over.\r\nIn case you are wondering why I have opened this case now if it has been a while, I was told by Jon that he suspected this was due to more security measures, for anti restart, Dexcom has put into their new transmitters.\r\n\r\nI wanted this to be on the record because I see people recommending code 0000 for new transmitters on facebook.  I want the issue to be on the record so that I can refer people to it if they ask me for a record of the problem.  So, thanks for sharing your experience."
+  },
+  {
+   "id": 752611790,
+   "user": "nickb24",
+   "created_at": "2020-12-30T13:37:20Z",
+   "body": "@Navid200 If you can confirm that the error recieved after the warmup is a calibration error, then I can confirm this is not an xDrip error. Therefore this issue can be closed because there is nothing that can be done in the xDrip code.\r\n\r\nUnless there was a way to overcome the error, but for that we need more information from users. For myself I can confirm that I was able to overcome the error and successfully get readings after a no code restart. I took about 1-2 hours after the warmup but it finally accepts the calibration values and then starts to work. I think what finally did it was to enter 3 glucose values at the same time with all the same value. You need to check the transmitter queue in the status page that shows 3 values in the queue before it makes the next connection. I'm not sure if it was just random luck or not so more testing is needed. \r\n\r\nPerhaps better user error codes are needed. The calibration error code in xDrip is too genetic. When I got the code I stopped the xDrip app and started the Dexcom app. It connected and then showed me a more clear message. Something like calibration rejected please wait until xxxx time to try again (which was 15 mins in the future). Even trying to calibrate with the Dexcom app would continue to result in an error and telling me to wait. However after an hour I tried to calibrate again and that time it worked. "
+  },
+  {
+   "id": 752643550,
+   "user": "emp-00",
+   "created_at": "2020-12-30T14:38:46Z",
+   "body": "I second the proposal \"_Perhaps better user error codes are needed._\" @nickb24 - your concrete proposal adding \"Please wait at least 15mins before entering another calibration\" to the xDrip error message makes perfect sense to me and should be very easy to implement. This could be a concrete action item from this issue. Agreed?"
+  },
+  {
+   "id": 752662135,
+   "user": "nickb24",
+   "created_at": "2020-12-30T15:29:22Z",
+   "body": "> I second the proposal \"_Perhaps better user error codes are needed._\" @nickb24 - your concrete proposal adding \"Please wait at least 15mins before entering another calibration\" to the xDrip error message makes perfect sense to me and should be very easy to implement. This could be a concrete action item from this issue. Agreed?\r\n\r\nI agree that better error messages should be displayed like it is on the Dexcom app. I will take a look at the decompiled Dexcom code and see if there is a clear 1 to 1 relationship with the error code and the text displayed to the user. I want to make sure that if xDrip reads error code 1 for example from the transmitter that it will always equal to the same text message to display to the user. I don't want a situation where for example error code 1 would equal different error messages depending on the state of the transmitter (warming up, after a warm up, after warmup from a no-code, etc). "
+  },
+  {
+   "id": 752688886,
+   "user": "emp-00",
+   "created_at": "2020-12-30T16:54:48Z",
+   "body": "Many thanks & appreciated! Could you develop this further into a Pull Request?"
+  },
+  {
+   "id": 752693351,
+   "user": "nickb24",
+   "created_at": "2020-12-30T17:09:43Z",
+   "body": "> Many thanks & appreciated! Could you develop this further into a Pull Request?\r\n\r\nI'm working on it now. But I will need to see how this effects the G5 and non-firefly G6.\r\nhttps://github.com/nickb24/xDrip/tree/g6_error_msg"
+  },
+  {
+   "id": 753221461,
+   "user": "Navid200",
+   "created_at": "2020-12-31T22:56:44Z",
+   "body": "@nickb24 If the problem is using no-code after a restart only, using no-code with a new sensor should work fine with no errors.  \r\n\r\nIn 7 days, I will restart using 0000 and report what error I get.\r\n5 to 10 days after that, I will start a new sensor with 0000 and report if I get any errors."
+  },
+  {
+   "id": 754303251,
+   "user": "Navid200",
+   "created_at": "2021-01-05T00:15:00Z",
+   "body": "I just successfully restarted using 0000 through xDrip.  It is currently working fine in no-code mode after the 2-hour warm-up.  So far, there have been three consecutive readings.\r\n\r\nThe only thing I did differently this time is that I re-enabled \"Double Calibration\" under Advanced Calibrations.  Previously, I had it disabled when a restart with code 0000 had failed.\r\n\r\nPlease let me monitor this for the next 24 hours to confirm that everything is working.  I will then close this."
+  },
+  {
+   "id": 754650744,
+   "user": "Navid200",
+   "created_at": "2021-01-05T13:56:04Z",
+   "body": "Woke up this morning with no readings.  Was shocked to see there was no connectivity.  This has never happened to me with a G6 that I can recall.\r\n\r\nThe event logs don't show anything I can recognize.  At 1:38, there is a log that I don't understand.  At 1:53, there is \"Error count Error count reached: 2\".  And at 1:55, I see the first log that shows there is no connectivity.\r\n\r\nI tapped on \"Forget Device\", and the connectivity was re-established and I saw a message on screen that calibration is needed.  \r\n\r\nAt this point, I went to settings and disabled double calibration.  I then used initial calibration from the top-left menu of xDrip to enter a single calibration, which went through with the usual errors I always get when calibrating a new G6.\r\n\r\nEverything seems to be OK again.\r\n\r\n![3](https://user-images.githubusercontent.com/51497406/103654147-81878200-4f33-11eb-8bb2-24b608fec350.png)\r\n![4](https://user-images.githubusercontent.com/51497406/103654149-81878200-4f33-11eb-8b02-d67a39340a95.png)\r\n![5](https://user-images.githubusercontent.com/51497406/103654150-82201880-4f33-11eb-96bc-b99757f05345.png)\r\n\r\n\r\n\r\n\r\n\r\n\r\n"
+  },
+  {
+   "id": 754702842,
+   "user": "nickb24",
+   "created_at": "2021-01-05T15:22:29Z",
+   "body": "I see you have the issue described here #1279 but I'm not sure if that's why you weren't getting any glucose values.\r\n\r\nAt 1:38 the session start time was reported from the transmitter, therefore it was communicating with the transmitter. Did you receive glucose values at that time?\r\n\r\nTo get a better idea of what's going on it would be best to enable the extra debug information as seen here: https://github.com/NightscoutFoundation/xDrip/wiki/Enabling-Debugging-for-OB1-collector "
+  },
+  {
+   "id": 754716877,
+   "user": "Navid200",
+   "created_at": "2021-01-05T15:44:13Z",
+   "body": "@nickb24 As far as I know, everyone has that issue.  Don't you?  \r\nI have not seen one log from a new G6 that does not show those messages consistently every 5 minutes.\r\n\r\nThe last reading was at 1:42.\r\n\r\nThanks for the link to how to enable the extra debug."
+  },
+  {
+   "id": 754725455,
+   "user": "nickb24",
+   "created_at": "2021-01-05T15:58:02Z",
+   "body": "@Navid200 I've been running my own version with this PR applied: https://github.com/NightscoutFoundation/xDrip/pull/1551\r\nI've been running it for 2 months now with no issues and my logs don't have the error message. \r\n\r\nIf you run the app with the extra debug logs, that would help in diagnosing the issue if it happens again. You can turn it off after. "
+  },
+  {
+   "id": 754727103,
+   "user": "Navid200",
+   "created_at": "2021-01-05T16:00:43Z",
+   "body": "@nickb24 Thanks.\r\n\r\nThe link tells me I can enable the extra logs by scanning.  But, it doesn't say how I can disable it.  How can I disable it when I am done?\r\n"
+  },
+  {
+   "id": 754728668,
+   "user": "nickb24",
+   "created_at": "2021-01-05T16:02:51Z",
+   "body": "@Navid200 Go to Settings -> Less common settings -> Extra Logging Settings -> Extra tags for logging\r\nDelete all the tags shown there and press ok. "
+  }
+ ]
+}

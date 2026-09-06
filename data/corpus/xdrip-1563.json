@@ -1,0 +1,65 @@
+{
+ "id": 771678600,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1563,
+ "title": "Automatic update not finding updates anymore",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1563",
+ "state": "closed",
+ "labels": [
+  "code:quality"
+ ],
+ "created_at": "2020-12-20T19:30:16Z",
+ "closed_at": "2020-12-27T16:45:06Z",
+ "comment_count": 8,
+ "body": "### Automatic update does not find updates anymore\r\nWhen I tap \"check for updates\", I get a toast message reporting that xdrip checks for updates. After that nothing is happening - although I'm not on the latest build.\r\n\r\n### Environment\r\n- The last automatic update that worked was to \"Nightly build 27th Nov 2020\". I've first realized this a few days ago. Today, I updated to the second-latest nightly (from 16th December). It didn't succeed either to show there is an update to the build from 18th Dec. When I check the logs, I can see it notices a difference to my version on wearos each time I request the update check but no other message show up.\r\n- I'm on a Nokia 7 with December 2020 security patches.\r\n\r\n\r\n### Expected behavior\r\nIn the past, the screen showed up with the option to download the latest version. I'm not sure about the expected behaviour in case there is no update - I'd expect a notification about being up to date.\r\n\r\n### Actual behavior\r\nNothing happens after the initial \"Checking for updates ..\" toast.\r\n",
+ "comments": [
+  {
+   "id": 748665525,
+   "user": "t1dast",
+   "created_at": "2020-12-20T20:16:45Z",
+   "body": "I just realized that I was saying \"automatic\" and described the manual workflow. Needless to say the automatic check does not provide results either."
+  },
+  {
+   "id": 748762380,
+   "user": "tolot27",
+   "created_at": "2020-12-21T05:15:07Z",
+   "body": "Do you have your own build of xDrip installed or the public version?"
+  },
+  {
+   "id": 749533400,
+   "user": "Navid200",
+   "created_at": "2020-12-22T13:12:18Z",
+   "body": "Are you sure you are still on the \"Nightly\" channel?"
+  },
+  {
+   "id": 749764400,
+   "user": "t1dast",
+   "created_at": "2020-12-22T20:38:00Z",
+   "body": "I am and have been using the APK published here. I double checked my settings and I am still on nightly.\r\n\r\nIs there a log tag I could whitelist to get more detailed log entries? "
+  },
+  {
+   "id": 750792613,
+   "user": "ralf-ms",
+   "created_at": "2020-12-24T07:47:03Z",
+   "body": "Same here, I've checked that I'm on the nightly channel, but updates will not be found"
+  },
+  {
+   "id": 751259090,
+   "user": "t1dast",
+   "created_at": "2020-12-25T14:50:29Z",
+   "body": "I've checked the code and added tag filters. Maybe someone can hint me at why I don't get any log entries? I've added \"jamorham update:v\" but no entries showed up. Anyway, assuming the log just wasn't written but the update check is working, I checked the URL and it seems the service reports the November 27th as the latest nightly!\r\nhttps://xdrip-plus-updates.appspot.com/update-check/nightly responds:\r\n\r\n> 2011270800\r\n> https://github.com/NightscoutFoundation/xDrip/releases/download/2020.11.27/xDrip-plus-20201127-b978bec.apk?\r\n> 11716485\r\n> \r\n> 6726580bc7ef215fd0c79859ccf9ea0b381fc9bd99210de8f64d7ad06e55a12c"
+  },
+  {
+   "id": 751410746,
+   "user": "tolot27",
+   "created_at": "2020-12-27T00:27:47Z",
+   "body": "@jamorham It looks like your [update-check](https://xdrip-plus-updates.appspot.com/update-check) does not work correctly. I thought it only provides updates till `2011270800` because I added a warning to the release of 2020.12.10. But after removal of this warning, the update-check did not recognize newer releases."
+  },
+  {
+   "id": 751489733,
+   "user": "tolot27",
+   "created_at": "2020-12-27T16:45:06Z",
+   "body": "jamorham posted at gitter: \"Recent changes to the CI server caused the issue, the nightly update channel should be working again now.\"\r\nI can confirm that it works, now."
+  }
+ ]
+}

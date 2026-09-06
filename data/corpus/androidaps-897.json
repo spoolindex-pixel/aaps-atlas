@@ -1,0 +1,138 @@
+{
+ "id": 1049749081,
+ "repo": "nightscout/AndroidAPS",
+ "number": 897,
+ "title": "(3.0beta5) Frozen screen/app crashes/update basal profile error",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/897",
+ "state": "closed",
+ "labels": [
+  "question - more info needed",
+  "combo"
+ ],
+ "created_at": "2021-11-10T12:13:26Z",
+ "closed_at": "2022-05-23T13:02:06Z",
+ "comment_count": 20,
+ "body": "Aaps 3.0 beta 5\r\nCombo/Ruffy\r\nDexcom G6 (Build your own app)\r\nPhone: Google Pixel 4XL Android 12\r\n\r\nProblems:\r\n- Screen freezes sometimes when I switch profile. Sometimes the app crashes with the message wait or close. I get that message a lot more now. \r\n- The connection with combo looks slower. \r\n- Update of basal profile failed error (at night, sometimes during the day\r\nThanks a lot.\r\n\r\nBattery optimization is off, Play Protect is off.\r\nThe app has all rights, ...\r\n![Screenshot_20211110-124849](https://user-images.githubusercontent.com/59743630/141110499-d056fa32-0b54-4f75-9ab3-332918bc6e81.png)\r\n![Screenshot_20211110-014421](https://user-images.githubusercontent.com/59743630/141110523-d64dda60-ccf4-4438-884b-d465f304006b.png)\r\n![Screenshot_20211109-194148](https://user-images.githubusercontent.com/59743630/141110581-0cf91c2f-56d0-45c1-ba65-0575fc006b42.png)\r\n![Screenshot_20211109-112519](https://user-images.githubusercontent.com/59743630/141110609-2bfdd10a-373b-464b-8fea-9c9ad3126bd2.png)\r\n[AndroidAPS._2021-11-10_06-20-19_.19.zip](https://github.com/nightscout/AndroidAPS/files/7512549/AndroidAPS._2021-11-10_06-20-19_.19.zip)\r\n![Screenshot_20211110-124849](https://user-images.githubusercontent.com/59743630/141111514-212124c6-34aa-4ff5-addf-771d708c4af0.png)\r\n",
+ "comments": [
+  {
+   "id": 965335572,
+   "user": "MilosKozak",
+   "created_at": "2021-11-10T14:59:26Z",
+   "body": "that's not enough info to resolve the issue\r\ndo you have logfiles?"
+  },
+  {
+   "id": 965400448,
+   "user": "Els3401",
+   "created_at": "2021-11-10T15:29:32Z",
+   "body": "[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/7513877/AndroidAPS.log)\r\nExcuse, I submitted the wrong file."
+  },
+  {
+   "id": 965423215,
+   "user": "Alamo04",
+   "created_at": "2021-11-10T15:37:28Z",
+   "body": "> Screen freezes sometimes when I switch profile. Sometimes the app crashes with the message wait or close. I get that message a lot more now.\r\n\r\nConfirmed for Pixel 5, it comes with Android 12, and all Defs/Betas are involved.\r\nI think its not AAPS, but Android 12 has still some problems."
+  },
+  {
+   "id": 965756644,
+   "user": "MilosKozak",
+   "created_at": "2021-11-10T21:23:20Z",
+   "body": "there is 6 min of log files and nothing supsicious there"
+  },
+  {
+   "id": 966192920,
+   "user": "Els3401",
+   "created_at": "2021-11-11T10:38:08Z",
+   "body": "[AndroidAPS._2021-11-10_06-20-19_.19 2 kopie.txt](https://github.com/nightscout/AndroidAPS/files/7519658/AndroidAPS._2021-11-10_06-20-19_.19.2.kopie.txt)\r\nI hope that this file can help. The error happened around 11:25.\r\nI switched again to master yesterday. And I find only zips of yesterday afternoon :s."
+  },
+  {
+   "id": 966236749,
+   "user": "MilosKozak",
+   "created_at": "2021-11-11T11:45:32Z",
+   "body": "i believe we need even following log\r\n@jotomo ?"
+  },
+  {
+   "id": 966272077,
+   "user": "jotomo",
+   "created_at": "2021-11-11T12:43:05Z",
+   "body": "At timestamp 11:30:12.011 the combo stops responding to key presses. Connection is there, pump display is returned, but no response to key presses. Pump then returns to main screen due to timeout.\r\n@dv1: could the comm buffer be full? Setting a new basal profile is the longest running command with a crazy amount of key presses."
+  },
+  {
+   "id": 966273196,
+   "user": "dv1",
+   "created_at": "2021-11-11T12:44:56Z",
+   "body": "@jotomo We'd need Ruffy logs to be sure. These should show error codes in the app layer packets that have a reliability bit set, perhaps also dedicated error response packets coming from the Combo."
+  },
+  {
+   "id": 966316795,
+   "user": "Els3401",
+   "created_at": "2021-11-11T13:49:00Z",
+   "body": "Where can I find those Ruffy logs? \r\n"
+  },
+  {
+   "id": 966318288,
+   "user": "dv1",
+   "created_at": "2021-11-11T13:51:13Z",
+   "body": "That's where it gets more complicated, since Ruffy uses Android.Log - it does not write to a text file. You'd have to use `adb logcat`, but this captures _all_ logging from Android and Android apps, so you'd have to filter out the Ruffy bits."
+  },
+  {
+   "id": 966424490,
+   "user": "Els3401",
+   "created_at": "2021-11-11T16:05:37Z",
+   "body": "I find only new logs. I did a profile switch. \r\n[Ruffy.txt](https://github.com/nightscout/AndroidAPS/files/7521644/Ruffy.txt)\r\n\r\nCombo log during a profile switch\r\n2021-11-11 16:54:38.477 12047-4449/? D/PUMP: [Thread-1377]: [ComboPlugin.disconnect():244]: Disconnect called with reason: Queue empty\r\n2021-11-11 16:54:39.755 12047-12175/? D/AUTOMATION: [RxCachedThreadScheduler-13]: [AutomationPlugin$onStart$13.accept():142]: Grabbed new BT event: EventBTChange[deviceAddress=00:0E:2F:E2:EF:D9,deviceName=SpiritCombo,state=DISCONNECT]\r\n2021-11-11 16:56:04.341 12047-12175/? D/AUTOMATION: [RxCachedThreadScheduler-13]: [AutomationPlugin$onStart$13.accept():142]: Grabbed new BT event: EventBTChange[deviceAddress=00:0E:2F:E2:EF:D9,deviceName=SpiritCombo,state=CONNECT]\r\n2021-11-11 16:56:06.306 12047-5195/? D/PUMP: [Thread-1461]: [ComboPlugin.checkHistory():1216]: Setting 'pumpHistoryChanged' false\r\n2021-11-11 16:57:52.630 12047-5195/? D/PUMP: [Thread-1461]: [ComboPlugin.disconnect():244]: Disconnect called with reason: Queue empty\r\n2021-11-11 16:57:54.035 12047-12175/? D/AUTOMATION: [RxCachedThreadScheduler-13]: [AutomationPlugin$onStart$13.accept():142]: Grabbed new BT event: EventBTChange[deviceAddress=00:0E:2F:E2:EF:D9,deviceName=SpiritCombo,state=DISCONNECT]\r\n2021-11-11 16:59:54.177 12047-12175/? D/AUTOMATION: [RxCachedThreadScheduler-13]: [AutomationPlugin$onStart$13.accept():142]: Grabbed new BT event: EventBTChange[deviceAddress=00:0E:2F:E2:EF:D9,deviceName=SpiritCombo,state=CONNECT]\r\n2021-11-11 16:59:56.689 12047-5754/? D/PUMP: [Thread-1500]: [ComboPlugin.checkHistory():1216]: Setting 'pumpHistoryChanged' false\r\n2021-11-11 17:01:53.106 12047-5754/? D/PUMP: [Thread-1500]: [ComboPlugin.disconnect():244]: Disconnect called with reason: Queue empty\r\n2021-11-11 17:01:54.409 12047-12175/? D/AUTOMATION: [RxCachedThreadScheduler-13]: [AutomationPlugin$onStart$13.accept():142]: Grabbed new BT event: EventBTChange[deviceAddress=00:0E:2F:E2:EF:D9,deviceName=SpiritCombo,state=DISCO"
+  },
+  {
+   "id": 968063245,
+   "user": "jotomo",
+   "created_at": "2021-11-13T12:49:27Z",
+   "body": "@Els3401 \r\n1) Thanks for the ruffy.log file. In that instance the basal profile was updated successfully, correct? We'd need a log showing an unsuccessful attempt to figure out what's going wrong.\r\n2) When you say you see more errors now, when did you see fewer errors, what has changed about your setup? Update to Android 12, new phone, update to AAPS 3 beta?"
+  },
+  {
+   "id": 968130596,
+   "user": "Els3401",
+   "created_at": "2021-11-13T20:22:27Z",
+   "body": "Thats correct. I transfered to master again because of the problems. So, I can't give you a log. Now I get the error only when I am to far away.\r\nWhen I have changed to beta 5, I saw the error a lot, freezing of the screen. I started with beta 4, but soon there was beta 5. \r\nI had also problems at night, when phone and combo are close together.\r\nIn master I have no problems with android 12 and aaps works fine (only the triangles). \r\nIf you want me to transfer again to beta 5... I will do that and try to log ruffy. not simply because the log is very short and the phone has to be connected with laptop."
+  },
+  {
+   "id": 981055003,
+   "user": "Els3401",
+   "created_at": "2021-11-28T09:49:42Z",
+   "body": "[Ruffy log.txt](https://github.com/nightscout/AndroidAPS/files/7613174/Ruffy.log.txt)\r\n\r\nThe problems occur when there is a profile switch. Or sometimes at night.\r\nBeta 7"
+  },
+  {
+   "id": 981073750,
+   "user": "dv1",
+   "created_at": "2021-11-28T12:06:53Z",
+   "body": "Hmm unfortunately I do not see anything that hints at the underlying cause. I do see the error, but not any more details. The RT_DISPLAY, RT_AUDIO etc. packets just eventually stop coming in because for unknown reasons the BT connection fails. I also checked the application layer packets that have the reliability bit set, and their error codes are set to 0. A nonzero code would give us more details. That is not a problem on your end - it is just that we don't get any more data from Ruffy or the Combo.\r\n\r\nStill, my main suspicion is also that the ringbuffer inside the Combo overruns. I see the following two options for how to proceed:\r\n\r\n1. Use git bisect to see if you can pinpoint a particular commit that introduced this problem.\r\n2. Lengthen the waiting periods between the basal rate factor updates (and maybe also during the factor updates), then see if this still happens. This amounts to tweaking some of the sleep() calls inside the Combo AAPS plugin. @jotomo , any suggestions which ones to tweak?"
+  },
+  {
+   "id": 981167919,
+   "user": "jotomo",
+   "created_at": "2021-11-28T22:53:24Z",
+   "body": "There's an additional sleep here (in addition the to 150ms after each press): https://github.com/nightscout/AndroidAPS/blob/32873e073087e8dc05c483d29bb836885b77e66c/combo/src/main/java/info/nightscout/androidaps/plugins/pump/combo/ruffyscripter/commands/SetBasalProfileCommand.java#L100\r\nThough that code hasn't changed in four years.\r\nI went through the changes between beta3 and beta5 (https://github.com/nightscout/AndroidAPS/compare/3.0-beta3...3.0-beta5), but there's nothing suspicious there (no change in Combo code, nothing that could cause hangs/ANRs).\r\nI doubt the issue is in ComboPlugin or ruffyscripter-land, the code is mature and functionally untouched for quiet a while.\r\n... somewhat at a loss as to what might cause the observed behavior.\r\n"
+  },
+  {
+   "id": 981692483,
+   "user": "dv1",
+   "created_at": "2021-11-29T14:35:47Z",
+   "body": "@jotomo  Perhaps this is a dormant bug that is only triggered in Android 12 for some reason. It would perhaps be useful to try to see if this happens in Android 10 and 11 as well."
+  },
+  {
+   "id": 982556969,
+   "user": "dv1",
+   "created_at": "2021-11-30T11:41:32Z",
+   "body": "@Els3401 Can you try to raise the sleep period in the location @jotomo mentioned from 50 to 200 for example? Perhaps it works then for you?"
+  },
+  {
+   "id": 986470659,
+   "user": "Els3401",
+   "created_at": "2021-12-06T06:12:35Z",
+   "body": "Thanks a lot. I have done this change to 200 several days ago and build a new apk. I don't see any changes :(. Or do I something wrong? I have also tried 250.\r\nI have done also a reset of wifi, bluetooth and mobile. I deleted Aaps and Ruffy before (and deleted also the bluetooth connections). And installed everything following the docs. Sadly, it doesn't help. \r\nReturn to Android 11 seems very difficult.\r\nI use beta 9."
+  },
+  {
+   "id": 993922554,
+   "user": "Els3401",
+   "created_at": "2021-12-14T19:46:17Z",
+   "body": "I switched from phone Monday evening (android 11).\r\nI got today (Tuesday) 2 failed update of basal profile. Bolus looks fine, connection also. I use UAM and have automations with profile switches. The error occurs then.\r\nNo freezes anymore :).\r\nBuild: 6e290a631-2021.12.02-13:33\r\nFlavor: full release\r\nEngineering mode is activated\r\nAndroidAps 3.0 - beta 9\r\nPhone: Samsung S21 Ultra\r\n[AndroidAPS._2021-12-14_06-44-10_.39.zip](https://github.com/nightscout/AndroidAPS/files/7714297/AndroidAPS._2021-12-14_06-44-10_.39.zip)\r\n[AndroidAPS._2021-12-14_17-09-03_.0.zip](https://github.com/nightscout/AndroidAPS/files/7714301/AndroidAPS._2021-12-14_17-09-03_.0.zip)"
+  }
+ ]
+}

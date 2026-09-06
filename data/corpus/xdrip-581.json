@@ -1,0 +1,258 @@
+{
+ "id": 358321948,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 581,
+ "title": "Tidepool Integration",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/581",
+ "state": "closed",
+ "labels": [
+  "enhancement",
+  "sync-tidepool"
+ ],
+ "created_at": "2018-09-08T19:31:31Z",
+ "closed_at": "2020-10-21T05:46:53Z",
+ "comment_count": 144,
+ "body": "xDrip should have the ability to upload data to Tidepool.",
+ "comments": [
+  {
+   "id": 419678222,
+   "user": "doc77",
+   "created_at": "2018-09-08T22:55:54Z",
+   "body": "That would be awesome! They brag on being very flexible and open source, so they should provide an easy to implement pathway to integration."
+  },
+  {
+   "id": 419689637,
+   "user": "jwoglom",
+   "created_at": "2018-09-09T04:14:52Z",
+   "body": "Appears as though tidepool's public API documentation is a bit lacking.. reaching out to them to see if they have an updated version of the info on this page. (the linked google doc is unavailable) https://developer.tidepool.org/tidepool-api/index/"
+  },
+  {
+   "id": 419697039,
+   "user": "jweismann",
+   "created_at": "2018-09-09T07:38:39Z",
+   "body": "@jamorham - Sounds great (as always). I have one design question related to sync follower setups and uploads to tidepool and other platforms. I have noticed that with NS rest api uploads I need to upload from followers too in order not to have a complete representation in NS. If I only upload from one phone in the sync-follower setup then I only get the data that is entered on this particular phone and not the data coming from the fellow followers. Is this intentional by design (or am I simply using it wrong) or would it be possible to have either the master or one of the followers to upload on behalf on the sync group?\r\n"
+  },
+  {
+   "id": 419726103,
+   "user": "dmelliott20",
+   "created_at": "2018-09-09T16:06:16Z",
+   "body": "This would be great"
+  },
+  {
+   "id": 419727870,
+   "user": "n0rbertg",
+   "created_at": "2018-09-09T16:35:01Z",
+   "body": "+1"
+  },
+  {
+   "id": 419735542,
+   "user": "yeagerm",
+   "created_at": "2018-09-09T18:35:37Z",
+   "body": "Yes, I agree, that would be helpful"
+  },
+  {
+   "id": 419736173,
+   "user": "stackenblochen",
+   "created_at": "2018-09-09T18:46:26Z",
+   "body": "Sounds great+1"
+  },
+  {
+   "id": 419745996,
+   "user": "kskandispersonal",
+   "created_at": "2018-09-09T21:23:54Z",
+   "body": "Agree, this would be awesome."
+  },
+  {
+   "id": 419772529,
+   "user": "bassettb",
+   "created_at": "2018-09-10T02:50:32Z",
+   "body": "I have a proof-of-concept Tidepool uploader working that takes an xDrip+ exported file (SiDiary format) and uploads the data to Tidepool. It is using their new, and yet unreleased API.  There's one messy workaround for uploading carbs.  The reason an updated doc is not published is because the new API is not yet done and released.  I think we will have to wait for its release to do any real work with it."
+  },
+  {
+   "id": 420388338,
+   "user": "NRiggall",
+   "created_at": "2018-09-11T19:11:45Z",
+   "body": "Hello! \r\n\r\n@bassettb is correct - Tidepool is still working toward the release of our public open APIs which will really open the floodgates for future integrations. Although there are a few exceptions - we have not given many access to info about the open API as so much is in flux and we do not want to waste anyone's efforts by letting them build on the API and then pulling the rug from beneath them with drastic changes. \r\n\r\nI am a big fan of all of the work of those who have worked on xDrip+, Nightscout, etc and I cannot wait to see this type of integration exist. \r\n\r\nThank you all and thank you @jamorham !"
+  },
+  {
+   "id": 421461164,
+   "user": "jamorham",
+   "created_at": "2018-09-14T19:29:22Z",
+   "body": "So I have a working implementation for xDrip+ written now (many thanks to @bassettb for the proof-of-concept c# example tool and Tidepool for access to the api)\r\n\r\nI've implemented it to be as modular and adaptable as possible in terms of the data structures, rest-api endpoints and the message sequence, bearing in mind the expectation that the api may be subject to change. I am fairly confident it will be possible to modify this very quickly as required.\r\n\r\nIt supports CGM data from all collectors, manual and automated synced blood test data, treatment items entered in xDrip or via Nightscout or from any followers or pump synchronization. It uses the data pulled from AAPS to upload the dynamic basal rate information.\r\n\r\nTo avoid problems with duplicated data I went with a completely linear upload strategy from oldest to newest never repeating the same uploaded time segment. It seems to take about 1 second to upload an entire days worth of data. \r\n\r\nOverall it is looking good and a very worthy addition to xDrip in my opinion as this is something I would rate as an **urgent priority for the community**. \r\n\r\nAs far as I understand it, the next steps would need to be Tidepool agreeing that it would be possible for the api to be utilized by xDrip users. I will contact Tidepool to discuss this and hopefully we can get interested people testing it soon.\r\n\r\n![2018-09-14_20-00-56](https://user-images.githubusercontent.com/12565568/45570806-f5318c80-b85b-11e8-9b3c-a5b644add64c.png)\r\n"
+  },
+  {
+   "id": 421462723,
+   "user": "doc77",
+   "created_at": "2018-09-14T19:35:57Z",
+   "body": "@JamOrHam  This is great news! Do you have a time frame for its inclusion into xDrip+?\r\n\r\nMany thanks to @bassettb for his hard work and to you for all you do for us xDrip+ users."
+  },
+  {
+   "id": 421473537,
+   "user": "kskandispersonal",
+   "created_at": "2018-09-14T20:19:55Z",
+   "body": "Thank you!! Looking forward to using this feature.  Question... do you think you could also go the other way?  If a user uploads their pump data to Tidepool, can you retrieve it into xDrip+ and NS?"
+  },
+  {
+   "id": 421478858,
+   "user": "jamorham",
+   "created_at": "2018-09-14T20:42:34Z",
+   "body": "@doc77 well the code is ready as far as I'm concerned but Tidepool need to be willing to receive data from xDrip. I would expect first steps would be a limited trial of nightly+engineering mode users perhaps.\r\n\r\n@kskandispersonal I haven't yet been able to retrieve datasets from tidepool, but if we could do that then yes definitely we could sync in both directions."
+  },
+  {
+   "id": 421716649,
+   "user": "gregorybel",
+   "created_at": "2018-09-16T07:36:07Z",
+   "body": "what are the benefits to use tidepool? as far as I have understood it seems to be a NS like?"
+  },
+  {
+   "id": 452383565,
+   "user": "jamorham",
+   "created_at": "2019-01-08T17:29:39Z",
+   "body": "@hartlijn does AndroidAPS expose that data in the treatment entries it broadcasts? I didn't think it did, but if it did then we could incorporate those in to any data uploaded. We also could sync carb ratio profiles from various sources."
+  },
+  {
+   "id": 452407283,
+   "user": "TecMunky",
+   "created_at": "2019-01-08T18:43:26Z",
+   "body": "I just set this up - and it seemed to work - at first.  (UniHertz Atom)\r\nIt seemed to upload data.  But now all I can only see data between Nov 13 and Nov 23, 2018..\r\nIs there a way to clear the data and start over?\r\nAlso, it is quite tedious to click back one day at a time - is there a way to go to a specific date?\r\n\r\nFinally - I don't see any useful reports for us Type 2 folks, except possibly the trend page - and Nightscout has a better looking report for that. \r\n\r\nCan someone convince me this is worth the effort?\r\n"
+  },
+  {
+   "id": 452472373,
+   "user": "pazaan",
+   "created_at": "2019-01-08T22:18:35Z",
+   "body": "@hartlijn The I:C ratio shown on the wizard event in Tidepool should be the _actual_ I:C ratio used for that wizard calculation, and is provided _to_ Tidepool as data, and is not calculated. If this value is incorrect, then xDrip+ needs to send the correct value."
+  },
+  {
+   "id": 452885854,
+   "user": "jamorham",
+   "created_at": "2019-01-09T22:04:06Z",
+   "body": "The 9th Jan Nightly now has support for the Production Tidepool servers and authorization from Tidepool to utilize them.\r\n\r\nBy default, nightly users will continue to be using the Integration servers. Switching to the production servers will mean registering a new account (or using your existing one if you had a tidepool account before).  You also will need to uncheck the checkbox in the xDrip Tidepool settings for this.\r\n\r\nData for users from the Integration tests wont get populated to the production system (but I can probably get something going with that in the near future if needed) The Tidepool support is still evolving but this is a real milestone."
+  },
+  {
+   "id": 452998997,
+   "user": "hartlijn",
+   "created_at": "2019-01-10T07:38:57Z",
+   "body": "this is really great!\r\n@jamorham insulin bolusses are included in the upload (also the super micro bolusses as shown as yellow triangles in xdrip), but basal rates aren't. Would it be possible to add the (temp) basal-rates in the upload? as shown in screenshot on top.\r\nThen we would have a full bridge between AndroidAPS and Tidepool (being xdrip with the upload integration)!\r\n![image](https://user-images.githubusercontent.com/28272471/50953177-e6c64b00-14b2-11e9-9cf1-62090365c8bc.png)\r\n"
+  },
+  {
+   "id": 453079290,
+   "user": "ddellspe",
+   "created_at": "2019-01-10T12:28:39Z",
+   "body": "@jamorham I just made the switch over this morning, I'm unable to get it to work after switching, is there a recommended way to deal with the migration from int-app to app?  The Error I get is `Upload chunk is null, cannot proceed.`  (Looks like that was because of the bad interval that I accidentally changed)\r\n\r\nIs there a way to force another backfill into the other domain?"
+  },
+  {
+   "id": 459136952,
+   "user": "kskandispersonal",
+   "created_at": "2019-01-30T22:33:13Z",
+   "body": "@jamorham @pazaan Would it be possible for xDrip+ to send step count to Tidepool?  Does Tidepool support steps in its app?  xDrip+ displays steps graphically on the home screen (and History screen), allowing users to see the correlation between exercise and BGs.  This would be a great feature on the Tidepool webapp.  Thank you!\r\n<img width=\"383\" alt=\"screen shot 2019-01-30 at 5 31 22 pm\" src=\"https://user-images.githubusercontent.com/16564065/52017322-0995bf00-24b5-11e9-9c66-43d908270c90.png\">\r\n"
+  },
+  {
+   "id": 459197276,
+   "user": "pazaan",
+   "created_at": "2019-01-31T03:03:55Z",
+   "body": "Hi @kskandispersonal. Exercise is supported by the Tidepool data model, but is currently not visualised in the web app."
+  },
+  {
+   "id": 459509162,
+   "user": "kskandispersonal",
+   "created_at": "2019-01-31T21:15:44Z",
+   "body": "@pazaan Thank you, looking forward to the visualised activity support in the web app! 👍 Also, unrelated, but I noticed when uploading OmniPod data using the Tidepool Uploader, that Carb only records are not uploaded.  OmniPod PDM users have the ability to enter Carbs without necessarily entering a bolus.  These are not displayed in the Tidepool app.  I am using Diasend, too, and they are displayed properly by that web app."
+  },
+  {
+   "id": 459933040,
+   "user": "JMehrtens",
+   "created_at": "2019-02-02T04:01:35Z",
+   "body": "Great that xdrip goes to Tidepool without having to day anything (be around wifi) - how can I get nightscout to upload to Tidepool- I would love to be able to see my AAPS on the app - I can only see overall and daily and trends at the moment.  I am technically challenged (old) so very plain English responses please ..."
+  },
+  {
+   "id": 460111490,
+   "user": "pazaan",
+   "created_at": "2019-02-04T02:00:49Z",
+   "body": "@JMehrtens There's not currently an easy way to do this using AAPS"
+  },
+  {
+   "id": 460119599,
+   "user": "JMehrtens",
+   "created_at": "2019-02-04T03:10:01Z",
+   "body": "Thanks Lennart\nhope your systems are all working well - AAPS is the best thing since\nsliced bread even if I can't get Tidepool or Fitbit playing nicely with it\ncheers\nJean Mehrtens\n\nOn Mon, Feb 4, 2019 at 1:00 PM Lennart Goedhart <notifications@github.com>\nwrote:\n\n> @JMehrtens <https://github.com/JMehrtens> There's not currently an easy\n> way to do this using AAPS\n>\n> —\n> You are receiving this because you were mentioned.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/581#issuecomment-460111490>,\n> or mute the thread\n> <https://github.com/notifications/unsubscribe-auth/Ahp8oYG8tFbfsD0YsuKmfQwmcjcMxn9Nks5vJ5RUgaJpZM4WgAMk>\n> .\n>\n\n\n-- \nJean Mehrtens\n61 3 9459 4063\nmob 0438 095 142\nKnit on, with confidence and hope, through all crises.   (Elizabeth\nZimmermann)\n"
+  },
+  {
+   "id": 466485145,
+   "user": "ImLateImLateForAVery",
+   "created_at": "2019-02-22T17:50:54Z",
+   "body": "Hello! I've scanned the thread and got the int version working with xdrip! However, does this mean that I can't use the (android) app on my phone? I know I can log on to the site using my mobile browser. Or can I now move to the non-int version and use the mobile app that way? Thanks "
+  },
+  {
+   "id": 469819349,
+   "user": "Lispro2011",
+   "created_at": "2019-03-05T19:12:18Z",
+   "body": "Is there a way to upload basalrates (from AAPS via nightscout) from xdrip to tidepool? "
+  },
+  {
+   "id": 470076289,
+   "user": "libxmike",
+   "created_at": "2019-03-06T11:40:10Z",
+   "body": "> Is there a way to upload basalrates (from AAPS via nightscout) from xdrip to tidepool?\r\n\r\nno, but as far as I know will be in the future."
+  },
+  {
+   "id": 470185002,
+   "user": "libxmike",
+   "created_at": "2019-03-06T16:51:14Z",
+   "body": "basal rate upload was working for me for maybe 24h on release before Feb 10 nightly, then stoped, I think after upgrade to Feb 10 nightly, what was the reason why stopped? settings? the upgrade?\r\nIt was on the tidepool production environment, never used the int env. Temp Basal is coming from AAPS\r\n![screen shot 2019-03-06 at 17 40 50 pm](https://user-images.githubusercontent.com/16604543/53898448-5c284500-4038-11e9-8fe6-4b0596aa8bd0.png)\r\n"
+  },
+  {
+   "id": 471898214,
+   "user": "Flori3000",
+   "created_at": "2019-03-12T08:12:04Z",
+   "body": "@jamorham please can you give me a short feedback about the current state of this interface?\r\nTidepool support told me that the public API is still not released.  In a couple of days I want to start loop testing with Omnipod + Xdrip + AndroidAPS. It means I won't get any data from the PDM to upload carbs and Insulin and BR via Windows Tidepool Uploader.  \r\nFinal question: Can I get  Carbs+Bolus+Basal rates from Xdrip up to Tidepool? \r\nYour feedback is very much appreciated."
+  },
+  {
+   "id": 472079105,
+   "user": "jamorham",
+   "created_at": "2019-03-12T16:36:14Z",
+   "body": "I've been using this with G6 and AndroidAPS in the Tidepool production environment. Blood Test, CGM and Carbs/Bolus data is all coming through fine. Basals are not implemented yet and still a work in progress that I need to finish."
+  },
+  {
+   "id": 509398878,
+   "user": "n0rbertg",
+   "created_at": "2019-07-08T21:27:56Z",
+   "body": "What about notes? I couldn't find them in Tidepool, is there any reason behind this?"
+  },
+  {
+   "id": 509455237,
+   "user": "pazaan",
+   "created_at": "2019-07-09T01:53:35Z",
+   "body": "@n0rbertg - there won't be any notes in Tidepool, because xDrip is not a Tidepool application. xDrip+ implements a 3rd party integration."
+  },
+  {
+   "id": 535643287,
+   "user": "Snowli1710",
+   "created_at": "2019-09-26T19:04:29Z",
+   "body": "Hallo, nutze die Dana RS, G6, xdrip+(2019.08.20) und AAPS(2.3) und habe die Verbindung zu Tidepool. Allerdings vermisse ich dort meine Basalraten. Was muss ich tun, damit das möglich ist mit anzeigen zu lassen?"
+  },
+  {
+   "id": 535648464,
+   "user": "k2s",
+   "created_at": "2019-09-26T19:18:57Z",
+   "body": "@Snowli1710 \r\nIch denke du muss https://github.com/NightscoutFoundation/xDrip/pull/973 mit daumen hoch markieren und warten. es gibt keine angabe ob der inzulin bolus oder basal ist in xdrip\r\n\r\nYou have to vote for https://github.com/NightscoutFoundation/xDrip/pull/973. This time there is no information if the insulin is basal or bolus in xdrip."
+  },
+  {
+   "id": 536268653,
+   "user": "MrSiimon",
+   "created_at": "2019-09-29T08:24:56Z",
+   "body": "Hello, \r\n\r\nAs I understand Tidepool integration service uploads data on Tidepool server on the flow based on Data Age Mins parameter. This parameter finally defnes the uplaod frequency... \r\n\r\n1. Is there a way to upload all history data available in xDrip? \r\n\r\n2. Sometime I remove my CGM for the night (Libre+MM+xDrip) so I get back data on xDrip in the morning only when I plug back my MM. If my first assumption is right, that means the frequency should be defined with the longest CGM interrupted time.\r\n\r\nThank you for hep and time, \r\nSimon "
+  },
+  {
+   "id": 711173042,
+   "user": "samspycher",
+   "created_at": "2020-10-18T14:08:07Z",
+   "body": "Does anyone have information on what still needs to be done here to add basal data to Tidepool?  \r\n\r\nWhile I accept that XDrip may not be the best candidate to upload pump data (including basals), this implementation does seem to be the furthest along (by far) with Tidepool integration.\r\n\r\nOr, if everyone has switched to Nightscout reporting for conversations with the doctor, should this issue be closed?\r\n\r\n@jamorham if you can provide some info here that would be fantastic. Thank you so much for all the incredible work!"
+  },
+  {
+   "id": 713319166,
+   "user": "tolot27",
+   "created_at": "2020-10-21T05:46:53Z",
+   "body": "The integration is almost complete. Remaining features are tracked in separate issues. Hence, closing this issue. "
+  }
+ ]
+}

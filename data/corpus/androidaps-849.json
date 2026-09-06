@@ -1,0 +1,33 @@
+{
+ "id": 1045767657,
+ "repo": "nightscout/AndroidAPS",
+ "number": 849,
+ "title": "Automation enhancement request - merge \"switch profile\" and % profile views",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/849",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-11-05T12:04:19Z",
+ "closed_at": "2021-11-08T20:57:48Z",
+ "comment_count": 3,
+ "body": "Use case/problem description: \r\nUsing Automations to accommodate weekly scheduled exercise for my 10yo daughter. \r\nIn the manual profile switch view we can either switch to a different profile, set a percentage or add a duration, or any combination of the above. In automation we have to choose between either a % of the current profile (permanent or duration), OR set a different profile permanently. As far as I know, setting a permanent profile change, will reset autosens, so if we do that several times a week, we will no longer get the full benefit of using autosens. \r\nThe other problem we have is that her insulin needs with exercise/higher activity level is very much lower than her \"at rest\" needs. This affects ISF, IC for the meal right before/after exercise, and basal. \r\nPreviously I have used a separate exercise profile that I manually switch to (with a duration) before she gets ready to exercise (before the previous meal). As she is 10 she can't be expected to to a manual switch every time it's necessary (and I don't want to increase her burden by requesting she do that). I am also finding that with life generally happening, I don't always remember to do it myself, my husband doesn't remember, etc. So I started scheduling in advance. But that is also not fail-safe, both as to accuracy in regards to setting the same details every week, aka same start time, same duration, and in actually remembering to preschedule. \r\nSo i started looking into automation. As a switch to different profile is only permanent in automation, and we use autosens, that method is out. Start checking out % profile change. Tested doing a 70% profile change for the duration of her exercise session, including the previous meal. Worked OK the one time she forgot to bolus for the meal she eats just before going into the gym. Not so well the next time when she was already a bit low, then bolused, and spent the entire exercise hugging the 4.5 line and dipping below a few times. So I figured, let's try 50% profile change. But automation view does not let me schedule that, it's only available if doing a manual profile change. \r\n\r\nSuggested enhancement:\r\nIn the automation event actions, merge the \"change profile to\" and \"profile percentage\" actions into one action \"change profile\".\r\nThe new \"change profile\" view should have the following options:\r\n- Percent -  with reduced safety limits (currently 70% to 130%, should be 30% to 250% like in manual profile switch)\r\n- Duration - could be set to max 24 hours or same as in manual profile switch\r\n- Profile - choose if using current profile or different profile.\r\nDefault values should be 100%, 0 duration (aka permanent), and current profile. \r\n\r\n",
+ "comments": [
+  {
+   "id": 963566528,
+   "user": "MilosKozak",
+   "created_at": "2021-11-08T20:57:48Z",
+   "body": "I understand what are you asking but it's exactly what we don't want\r\nautomation was developed to cover repeating situations and to provide hints to the algorithm\r\nthe important thing is that rules are executed on background and (usually) nobody watch it. thus we must be sure that even with wrong use you don't be killed fast. we believe that larger changes must be done manually with proper control"
+  },
+  {
+   "id": 963595645,
+   "user": "kristinsmotz",
+   "created_at": "2021-11-08T21:34:18Z",
+   "body": "I agree with you on safety limits for increased profile % (above 130%), but would it be possible to expand the range for decreased below 70%? Even down to 50% would enable me automating a gym class change, so we don't inadvertently keep running 100% when her need is very much lower, which in my opinion has a greater risk of overdosing or \"be killed fast\". \r\n\r\nAlso I would like to keep open the idea of adding duration for a switch to different profile. "
+  },
+  {
+   "id": 965729838,
+   "user": "MilosKozak",
+   "created_at": "2021-11-10T20:42:13Z",
+   "body": "@AdrianLxM ?"
+  }
+ ]
+}

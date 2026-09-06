@@ -1,0 +1,21 @@
+{
+ "id": 3971975926,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4564,
+ "title": "AAPS 3.4.0.0. crash after importing 3.3.1.3 settings due to Tidepool integration",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4564",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2026-02-21T12:51:15Z",
+ "closed_at": "2026-02-28T13:54:03Z",
+ "comment_count": 1,
+ "body": "Config:\n- Phone is Xiaomi 15 on Android 16 (HyperOS 3.0.7.0)\n- Using AAPS 3.3.1.3 fullrelease (built dec 2025.01.30) with Medtrum Nano patch and Xdrip glucose and Tidepool upload\n\nSteps taken\n- Build AAPS 3.4.0.0 using Android Studio with **new** signature keys (since laptop was lost and I didn't backup keys offsite)\n- Export settings of AAP 3.3.1.3.\n- Uninstall 3.3.1.3 and install AAPS 3.4.0.0. (due to new keys updating the app doesnt work)\n- Walk through setup steps in AAPS and grant all permissions, set AAPS folder the same as previous app. Note that I did not remove the AAPS folder.\n- Restore settings, then AAPS requests to close to apply settings.\n- After closure AAPS crashes after 1-2s after reopening\n\nPossible cause:\nAAPS seems to crash due to the Tidepool integration. Are there incompatibilities?\n\nWork-around\nDisable the Tidepool synchronisation on previous AAPS version (3.3.1.3) and export the settings. Importing these settings into AAPS 3.4.0.0. works without crash.\n\n[AndroidAPS.log](https://github.com/user-attachments/files/25457949/AndroidAPS.log)",
+ "comments": [
+  {
+   "id": 3977198322,
+   "user": "MilosKozak",
+   "created_at": "2026-02-28T13:54:04Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/2aac3128fd2322ebcc63b5e6c17f3c178e78fa53"
+  }
+ ]
+}

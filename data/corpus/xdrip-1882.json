@@ -1,0 +1,167 @@
+{
+ "id": 1065118705,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1882,
+ "title": "Dex Share follower doesn't receive data with new EU accounts having an email for username",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1882",
+ "state": "closed",
+ "labels": [
+  "sync-dexcom"
+ ],
+ "created_at": "2021-11-27T19:47:40Z",
+ "closed_at": "2022-02-09T13:41:25Z",
+ "comment_count": 43,
+ "body": "### Subject of the issue\r\nNew Dexcom users aren't proposed a username during account creation (only for linked accounts) and the username is the email address used to create the account. Dex Share follower doesn't receive any data with the email address in account credentials (checked correct server, username and password). Using a kid linked account with a username is functional.\r\n\r\n### Your environment\r\nI don't believe this is related to xDrip+ but Dex server recent changes.\r\n\r\n### Expected behavior\r\nDex Share follower should receive data from Dex share servers.\r\n\r\n### Actual behavior\r\nNo data is received by xDrip+ even if they are present in the vendor app followers.\r\n\r\n### Your environment\r\nI don't believe this is related to xDrip+ but Dex server recent changes.\r\n\r\n### Expected behavior\r\nDex Share follower should receive data from Dex share servers.\r\n\r\n### Actual behavior\r\nNo data.\r\n\r\n### Steps to reproduce the behavior:\r\nCreate a new Dex account, log in the vendor master app, add a follower (either vendor app or xDrip+) and enable share. Accept the invitation in the vendor follower app to check functionality, set xDrip+ to Dex Share follower with matching credentials and server. And wait...\r\n\r\n",
+ "comments": [
+  {
+   "id": 980802148,
+   "user": "tolot27",
+   "created_at": "2021-11-27T22:50:11Z",
+   "body": "Likely, Dexcom tries to enforce their API documented at https://developer.dexcom.com.\n\nI still don't know the source of the xDrip implementation, because nothing is documented. "
+  },
+  {
+   "id": 980873237,
+   "user": "psonnera",
+   "created_at": "2021-11-28T07:17:41Z",
+   "body": "@tolot27 I'm pretty sure it was documented there but even time travel machine doesn't have the original site... https://web.archive.org/web/20170919194707/https://developer.dexcom.com/ maybe @StephenBlackWasAlreadyTaken remembers or has some legacy documentation?"
+  },
+  {
+   "id": 981083822,
+   "user": "psonnera",
+   "created_at": "2021-11-28T13:15:45Z",
+   "body": "@tolot27 @Navid200 which debug tags could be enabled to allow me to give more information on what's going on?"
+  },
+  {
+   "id": 986145855,
+   "user": "fzelins",
+   "created_at": "2021-12-05T01:09:25Z",
+   "body": "I can confirm this bug. I have created new dexcom account, now my sensor expired so I deleted dexcom app, installed again and created new account. All new dexcom accounts now have email as login. I have also completely reinstalled xDrip app and I am still getting error:\r\n\r\nShareFollowCallback\r\n01:55 Get Share Data Failed: java.io.EOFException: End of input at line 1 column 1 path $\r\n\r\nShareFollowDL\r\n01:55 Interceptor Body size: 0\r\n01:55 Session id appears valid so going direct to get data\r\n01:55 Setting message: 01: 55 Connectivity problem reaching Share servers\r\n\r\nShareFollowCallback\r\n01:55 Get Share Data Failed: java.io.EOFException: End of input at line 1 column 1 path $\r\n\r\nShareFollowDL\r\n01:55 Interceptor Body size: 0\r\n01:55 Session id appears valid so going direct to get data"
+  },
+  {
+   "id": 986146839,
+   "user": "Navid200",
+   "created_at": "2021-12-05T01:19:08Z",
+   "body": "@psonnera So sorry I missed your question.\r\nThe only tag I am aware of is this:\r\nhttps://github.com/NightscoutFoundation/xDrip/wiki/Enabling-Debugging-for-OB1-collector\r\n\r\n@tolot27 knows about this subject (Dexcom share) more than anyone else I know."
+  },
+  {
+   "id": 988514815,
+   "user": "samgray85",
+   "created_at": "2021-12-08T05:36:13Z",
+   "body": "> I can confirm this bug. I have created new dexcom account, now my sensor expired so I deleted dexcom app, installed again and created new account. All new dexcom accounts now have email as login. I have also completely reinstalled xDrip app and I am still getting error:\r\n> \r\n> ShareFollowCallback 01:55 Get Share Data Failed: java.io.EOFException: End of input at line 1 column 1 path $\r\n> \r\n> ShareFollowDL 01:55 Interceptor Body size: 0 01:55 Session id appears valid so going direct to get data 01:55 Setting message: 01: 55 Connectivity problem reaching Share servers\r\n> \r\n> ShareFollowCallback 01:55 Get Share Data Failed: java.io.EOFException: End of input at line 1 column 1 path $\r\n> \r\n> ShareFollowDL 01:55 Interceptor Body size: 0 01:55 Session id appears valid so going direct to get data\r\n\r\nI have the same issue: https://github.com/Navid200/xDrip/discussions/146"
+  },
+  {
+   "id": 997314430,
+   "user": "samgray85",
+   "created_at": "2021-12-19T01:50:41Z",
+   "body": "> I can confirm this bug. I have created new dexcom account, now my sensor expired so I deleted dexcom app, installed again and created new account. All new dexcom accounts now have email as login. I have also completely reinstalled xDrip app and I am still getting error:\r\n> \r\n> ShareFollowCallback 01:55 Get Share Data Failed: java.io.EOFException: End of input at line 1 column 1 path $\r\n> \r\n> ShareFollowDL 01:55 Interceptor Body size: 0 01:55 Session id appears valid so going direct to get data 01:55 Setting message: 01: 55 Connectivity problem reaching Share servers\r\n> \r\n> ShareFollowCallback 01:55 Get Share Data Failed: java.io.EOFException: End of input at line 1 column 1 path $\r\n> \r\n> ShareFollowDL 01:55 Interceptor Body size: 0 01:55 Session id appears valid so going direct to get data\r\n\r\n@fzelins and @psonnera did you have any luck resolving"
+  },
+  {
+   "id": 997357643,
+   "user": "tolot27",
+   "created_at": "2021-12-19T09:35:15Z",
+   "body": "I've fixed this issue and will create a PR soon. Still have to implement some tests for it."
+  },
+  {
+   "id": 1001862036,
+   "user": "samgray85",
+   "created_at": "2021-12-28T04:23:50Z",
+   "body": "> I've fixed this issue and will create a PR soon. Still have to implement some tests for it.\r\n\r\nHappy to test it for you if that helps"
+  },
+  {
+   "id": 1019566160,
+   "user": "sudzwerg80",
+   "created_at": "2022-01-23T20:59:33Z",
+   "body": "Hello same problem here.would test it too.\r\nSteffen"
+  },
+  {
+   "id": 1022126563,
+   "user": "sudzwerg80",
+   "created_at": "2022-01-26T11:50:41Z",
+   "body": "Hello Tolot27,\r\nhow can we help to solve this thread.\r\ni want to use xdrip but i have to uninstall dexcom g6 app what is not so good because of my doc.\r\ncan i build an apk with your fix on my own ? when yes how ?"
+  },
+  {
+   "id": 1025732213,
+   "user": "usernamebeep",
+   "created_at": "2022-01-31T13:20:27Z",
+   "body": "following since it's still not working.."
+  },
+  {
+   "id": 1025922742,
+   "user": "Navid200",
+   "created_at": "2022-01-31T15:47:37Z",
+   "body": "@tolot27 I have added email format as one of the accepted options and opened a PR:\r\nhttps://github.com/NightscoutFoundation/xDrip/pull/1974\r\nI cannot test it because I don't have a Dex share account.\r\n\r\nFor all I know, you were going to release your fix  any minute now.  But, I have no idea.\r\nI can close my PR if needed."
+  },
+  {
+   "id": 1025968569,
+   "user": "Navid200",
+   "created_at": "2022-01-31T16:30:29Z",
+   "body": ">  I have a feeling @tolot27's fix was a little more involved than adding the email format ...\r\n\r\nYes, you may be correct.  \r\nBut, I don't know if you read my message.   \r\n\r\n\"I cannot test this\" is much more condemning than \"this may not be as involved\".\r\nSo, I don't know how else to clarify that this is just an attempt, and may absolutely be useless.  It may just be forgotten, and I will be quite happy with that."
+  },
+  {
+   "id": 1026171106,
+   "user": "tolot27",
+   "created_at": "2022-01-31T20:18:28Z",
+   "body": "> There are parents who cannot follow their children.\r\n\r\nMaybe we can clarify this or you can help me to resolve a misunderstanding from my side. As far as I know, parents can still follow their children (with xDrip and Dexcom Follow) if they have created a Dexcom account with a nickname instead of an email address and using the Dexcom App or xDrip as collector. At least, I can follow my son.\r\nAt the time, Dexcom switched to email addresses as account names, only newly created user accounts are affected. Those new users/parents cannot switch from the Dexcom app to xDrip as collector and likely did not use xDrip before. If they had, they have likely used another share service like Nightscout and just discovered that xDrip also supports Dexcom Share. Those users/parents can still follow their children using these services.\r\nTo conclude and as it mentioned in the issues title, only new users are affected which like to use xDrip instead of Dexcom. Those users cannot switch yet.\r\n\r\nPlease comment only, if I'm wrong. Otherwise, give me a few more hours to work on an apk for testing."
+  },
+  {
+   "id": 1026294458,
+   "user": "tolot27",
+   "created_at": "2022-01-31T22:58:47Z",
+   "body": "A debug apk for testing can be downloaded: [xDrip_20220131_b9d7a8027_dexPreAuth_debug.apk]( https://www.dropbox.com/s/6zq92llxghcl9hd/xDrip_20220131_b9d7a8027_dexPreAuth_debug.apk?dl=0). Please be aware that it cannot be installed over the existing app. Hence, make a backup of settings and database before you uninstall it."
+  },
+  {
+   "id": 1026348315,
+   "user": "samgray85",
+   "created_at": "2022-02-01T00:27:27Z",
+   "body": "I did the same as @KillaOfDawn .\r\n\r\nUnticked US (I'm  Australia), entered share username and password - confirmed these still work by using them to log into clarity.\r\n\r\nI am a newish dexcom user with an email address for a username\r\n\r\n<img width=\"350\" src=\"https://user-images.githubusercontent.com/86637332/151894867-19d51c9a-48a5-497a-8a5e-8feed8819e0b.png\" />\r\n"
+  },
+  {
+   "id": 1026539905,
+   "user": "tolot27",
+   "created_at": "2022-02-01T07:15:10Z",
+   "body": "@KillaOfDawn @samgray85 Please can you set the extra logging tag \"ShareFollowDL:v\", force xDrip to stop (settings -> apps) and start it again. Then please have a look at the logs. There should be some entries from ShareFollowDL like \"Creating instance for ...\". Please post the URL or a screenshot. I need the first log entries after startup.\r\n\r\nBTW: If you have some experience with adb and logcat, please let me know."
+  },
+  {
+   "id": 1026598465,
+   "user": "samgray85",
+   "created_at": "2022-02-01T08:42:54Z",
+   "body": "@tolot27  @KillaOfDawn \r\n\r\nMine is working now. Thank you\r\n\r\n<img width=\"350\" src=\"https://user-images.githubusercontent.com/86637332/151937257-fad9d41a-8cc0-4738-9f77-61386568529c.png\" /> <img width=\"350\" src=\"https://user-images.githubusercontent.com/86637332/151937266-1681c220-14d3-4bf7-abf2-b0d3a0cc1c77.png\" />\r\n\r\n"
+  },
+  {
+   "id": 1026609865,
+   "user": "samgray85",
+   "created_at": "2022-02-01T08:59:20Z",
+   "body": "I just did what @tolot27 told me\r\n\r\nWent:\r\n\r\n- xDrip Settings\r\n- Less common settings\r\n- Extra logging settings\r\n- Extra tags for logging\r\n- added: ShareFollowDL:v\r\n\r\nThen went into my phone settings > apps > xDrip+ > Force Stop\r\n\r\nReopened xDrip and it worked"
+  },
+  {
+   "id": 1026632132,
+   "user": "tolot27",
+   "created_at": "2022-02-01T09:24:06Z",
+   "body": "@KillaOfDawn Please can you verify your account data again? I suspect an error in either account name or password. Does it contain some special characters? In which country do you live? Maybe, your account is on the US server. Please can you try it?\r\n\r\n> I should be able to pick up instructions though if required :)\r\n\r\nIf you still cannot get it to work, I need the logcat output."
+  },
+  {
+   "id": 1026654674,
+   "user": "sudzwerg80",
+   "created_at": "2022-02-01T09:50:08Z",
+   "body": "> A debug apk for testing can be downloaded: [xDrip_20220131_b9d7a8027_dexPreAuth_debug.apk](https://www.dropbox.com/s/6zq92llxghcl9hd/xDrip_20220131_b9d7a8027_dexPreAuth_debug.apk?dl=0). Please be aware that it cannot be installed over the existing app. Hence, make a backup of settings and database before you uninstall it.\r\n\r\nit works on samsung s7\r\n<img width=\"350\" src=\"https://user-images.githubusercontent.com/51017703/151946664-08be238c-07d6-4f32-a8d6-4cf2272755a1.jpg\" />\r\n i am low sorry for that"
+  },
+  {
+   "id": 1026656883,
+   "user": "sudzwerg80",
+   "created_at": "2022-02-01T09:52:54Z",
+   "body": "thank you"
+  },
+  {
+   "id": 1026680547,
+   "user": "tolot27",
+   "created_at": "2022-02-01T10:17:34Z",
+   "body": "> I seemed to have set a password previously that was > 20 characters and this is likely what was causing it not to work. I reset the password and it all works now :)\r\n\r\nI'll verify the password length. As far as I know, xDrip does not restrict its length but maybe Dexcom?"
+  },
+  {
+   "id": 1027773283,
+   "user": "cmarcosmoneo",
+   "created_at": "2022-02-02T10:06:49Z",
+   "body": "As additional info in case it can help, my username is not an email address but includes a dot in the middle.\r\nI cannot use Xdrip+ since 30th November but I have tested this debug apk and it works fine.\r\nSo thank you so much for this and I am available of any further testing is needed. "
+  }
+ ]
+}

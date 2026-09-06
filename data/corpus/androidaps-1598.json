@@ -1,0 +1,57 @@
+{
+ "id": 1199117529,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1598,
+ "title": "Buttons disappear and sometimes don't reappear - dev-i",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1598",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-04-10T17:21:44Z",
+ "closed_at": "2022-04-11T19:04:54Z",
+ "comment_count": 7,
+ "body": "Carbs, calculator, insulin, treatments buttons. \nI'm guessing they've been set to hide at times to maximise screen space. When connecting to pump perhaps?\nI had an issue today that pump battery died so my buttons never reappeared (I'm guessing it was waiting for a pump disconnect event?). \nThis was quite a problem as I could have really used the calculator to tell me what I needed from my backup pen.",
+ "comments": [
+  {
+   "id": 1094347224,
+   "user": "Andries-Smit",
+   "created_at": "2022-04-10T18:49:33Z",
+   "body": "By design, the buttons are only available when you can use them."
+  },
+  {
+   "id": 1094348846,
+   "user": "JohnKitching",
+   "created_at": "2022-04-10T19:01:10Z",
+   "body": "Don't think I've ever needed them more than I did today to calculate a manual dose. \nIs the logic that if the pump isn't available the buttons can't be used? If so, I'd disagree with that. \nCalculator example as above. \nWhy not enter carbs that can be dealt with when pump available again?\nInsulin to record manual dose\nTreatment the same. "
+  },
+  {
+   "id": 1094360763,
+   "user": "Andries-Smit",
+   "created_at": "2022-04-10T20:14:25Z",
+   "body": "Carbs and CGM buttons are available  when pump is offline.\r\nTheoretical the insuline button can be used without the pump, as it is has a \"do not bolus, record only\" checkbox.\r\nBy removing the buttons it makes it realy clear to the users that there the regular therapy is not available.\r\n "
+  },
+  {
+   "id": 1094361121,
+   "user": "JohnKitching",
+   "created_at": "2022-04-10T20:16:52Z",
+   "body": "All the buttons were hidden for me today. \n\nIf you don't want to show the buttons how about providing another way to access the functionality?"
+  },
+  {
+   "id": 1095032348,
+   "user": "Andries-Smit",
+   "created_at": "2022-04-11T13:11:11Z",
+   "body": "To understand why the buttons are hidden, we can look in the code https://github.com/nightscout/AndroidAPS/blob/dev/app/src/main/java/info/nightscout/androidaps/plugins/general/overview/OverviewFragment.kt#L533\r\n- Profile should be selected\r\n- If the pump stores carbs info, you can not enter carbs when it is not connected; some Dana pumps do support it\r\n\r\nMaking the calculator available when the pump is not available is a niche function, and have to discuss effort / vs value with the team."
+  },
+  {
+   "id": 1095109133,
+   "user": "JohnKitching",
+   "created_at": "2022-04-11T14:16:42Z",
+   "body": "It's not a biggie to me. I rarely use the buttons. I was just reporting a problem. I thought that was the point of testing dev. Sorry. "
+  },
+  {
+   "id": 1095175631,
+   "user": "Andries-Smit",
+   "created_at": "2022-04-11T15:10:25Z",
+   "body": "@JohnKitching, no need for apologies; I am happy to help"
+  }
+ ]
+}

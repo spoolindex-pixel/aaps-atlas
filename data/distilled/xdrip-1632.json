@@ -1,0 +1,23 @@
+{
+ "issue_id": 1632,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/1632",
+ "title": "Dexcom sensor state inconsistently shown",
+ "symptom": "The Dexcom sensor state is not consistently shown across the main screen, menu and system status. After a sensor session ends the main screen says 'Stopped' while the menu still shows 'Stop sensor'; after starting a new sensor, xDrip can still show 'stopped' and warm-up messages even though the sensor has started. This is confusing, especially at sensor session beginnings/ends.",
+ "cause": "The thread identifies the original inconsistency as partly a hang-over from when xDrip supported coexisting native and non-native data: within xDrip, a sensor session isn't strictly tied to the native Dexcom session.",
+ "fix": "A nightly update added transitional states (for example, showing 'Starting Sensor' instead of 'Stopped' when a sensor is about to be started), which Navid states addressed the original menu/main-screen inconsistency. For sensor replacement cases, the thread describes a workaround: after stopping, wait for the transmitter to perform a final read, remove it, and keep it disconnected for at least 10 minutes before inserting it in a new sensor.",
+ "settings_changed": [],
+ "devices": [
+  "Dexcom G6"
+ ],
+ "android_versions": [
+  "Android 8.1.0"
+ ],
+ "driver_tags": [
+  "native mode",
+  "non-native",
+  "Dexcom receiver"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "The latest nightly includes some transitional states which I think should resolve most of the problems described in this issue. For example when a sensor is about to be started it will say `Starting Sensor` instead of its current actual state, eg `Stopped`"
+}

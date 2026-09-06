@@ -1,0 +1,111 @@
+{
+ "id": 1917154902,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2848,
+ "title": "[DEV-M] Widget is broken ",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2848",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-09-28T10:09:27Z",
+ "closed_at": "2023-09-30T19:38:54Z",
+ "comment_count": 17,
+ "body": "The widget is frozen after the update, re-adding (after deleting) is not possible.",
+ "comments": [
+  {
+   "id": 1738886236,
+   "user": "robertrub",
+   "created_at": "2023-09-28T10:29:13Z",
+   "body": "I confirm. My dev-l version widget disappeared and now, can't add widget from dev-m\n\nWidget is available but will not install. Android 13 S21FE\n![Screenshot_20230928_122813_AAPS.jpg](https://github.com/nightscout/AndroidAPS/assets/76626474/c75c6d24-d8b8-4840-8f39-06901d1cf743)\n\n"
+  },
+  {
+   "id": 1740026285,
+   "user": "MilosKozak",
+   "created_at": "2023-09-28T21:25:21Z",
+   "body": "it works in emulator. what android version?"
+  },
+  {
+   "id": 1740252719,
+   "user": "robertrub",
+   "created_at": "2023-09-29T03:14:01Z",
+   "body": "If I install dev-L, I can install the widget. With dev-M, I cannot install it. No update to the phone between the 2 versions. If I go back to dev-L, widget is \"installable\"\n\n\n![Screenshot_20230929_051258_Settings.jpg](https://github.com/nightscout/AndroidAPS/assets/76626474/e779d3b9-28ad-489e-ae7e-976c4ebc2ab8)\n\n"
+  },
+  {
+   "id": 1740385739,
+   "user": "robertrub",
+   "created_at": "2023-09-29T06:43:41Z",
+   "body": "The video, if it helps...\n\nhttps://github.com/nightscout/AndroidAPS/assets/76626474/51e511bc-1c33-401d-af9d-7eb9c444f925\n\n"
+  },
+  {
+   "id": 1740389232,
+   "user": "swissalpine",
+   "created_at": "2023-09-29T06:47:52Z",
+   "body": "Samsung Z Flip 4, Android 13, One UI 5.1.1 (September 2023)\r\nSame here: Fine with dev-l, buggy with dev-m\r\nLogcat after installing (widget freezes):\r\n```\r\n08:39:24.024  I  addProviderLocked Provider is added Provider{ProviderId{user:0, app:10423, cmp:ComponentInfo{info.nightscout.androidaps/app.aaps.ui.widget.Widget}}} at 107\r\n08:39:51.765  D  Provider info from ComponentInfo{info.nightscout.androidaps/app.aaps.ui.widget.Widget} won't be persisted.\r\n```\r\nLogcat after re-adding (only one line), widget not added:\r\n```\r\n08:45:23.693  D  bindAppWidgetIdIfAllowed() appWidgetIds = 121, provider = ComponentInfo{info.nightscout.androidaps/app.aaps.ui.widget.Widget}\r\n```\r\nMore info needed?\r\nThanks!"
+  },
+  {
+   "id": 1740891423,
+   "user": "CaroGo",
+   "created_at": "2023-09-29T13:22:54Z",
+   "body": "same here with Samsung Fold 4 , Android 13"
+  },
+  {
+   "id": 1741460236,
+   "user": "MilosKozak",
+   "created_at": "2023-09-29T20:35:52Z",
+   "body": "hmmm it does work in emulator :("
+  },
+  {
+   "id": 1741694461,
+   "user": "robertrub",
+   "created_at": "2023-09-30T06:32:28Z",
+   "body": "According to a book I read recently, we might all be the products of a huge emulator... ;)\n\nThe widget is working with this version.\n\n![Screenshot_20230926_181601_AAPS.jpg](https://github.com/nightscout/AndroidAPS/assets/76626474/de7f843a-e88c-4149-aa52-7c13a95a78e8)\n\nSomething changed between that and last Dev."
+  },
+  {
+   "id": 1741709428,
+   "user": "Josch24",
+   "created_at": "2023-09-30T08:02:00Z",
+   "body": "I installed the latest Dev-M. On my Pixel 4a the Widget is working. I am also on Android 13."
+  },
+  {
+   "id": 1741715112,
+   "user": "robertrub",
+   "created_at": "2023-09-30T08:33:29Z",
+   "body": "Maybe it is Samsung's ONE UI 5.x related... Both of us with problems are on Samsung phones."
+  },
+  {
+   "id": 1741715247,
+   "user": "MilosKozak",
+   "created_at": "2023-09-30T08:33:50Z",
+   "body": "you may try to uninstall aaps"
+  },
+  {
+   "id": 1741716886,
+   "user": "robertrub",
+   "created_at": "2023-09-30T08:43:48Z",
+   "body": "Uninstalling will loose too much data.\n\nTested again with dev-l and the widget installed\n\n![Screenshot_20230930_104240_One UI Home.jpg](https://github.com/nightscout/AndroidAPS/assets/76626474/560504f1-7d86-43e2-87c3-fa34db910048)\n\n"
+  },
+  {
+   "id": 1741728298,
+   "user": "HuismanErik",
+   "created_at": "2023-09-30T09:49:53Z",
+   "body": "I did a reinstall with this change https://github.com/nightscout/AndroidAPS/pull/2850 and it fixed the Widget "
+  },
+  {
+   "id": 1741732818,
+   "user": "ninelore",
+   "created_at": "2023-09-30T10:14:15Z",
+   "body": "For the record: This doesnt happen on my Pixel 6 Pro on commit 81548b7"
+  },
+  {
+   "id": 1741781703,
+   "user": "swissalpine",
+   "created_at": "2023-09-30T14:46:08Z",
+   "body": "Fix for the issue: https://github.com/nightscout/AndroidAPS/pull/2850\r\nThanks a lot!\r\n@HuismanErik "
+  },
+  {
+   "id": 1741795056,
+   "user": "robertrub",
+   "created_at": "2023-09-30T15:48:58Z",
+   "body": "I confirm too. Including Eric's PR 2850 on Dev solved the widget problem. When updating from dev-L to dev-M + PR2850, the widget disappears but can be put back in place."
+  }
+ ]
+}

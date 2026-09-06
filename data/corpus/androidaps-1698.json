@@ -1,0 +1,117 @@
+{
+ "id": 1227115853,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1698,
+ "title": "Wear App stops connecting/synchronizing after installing 3.0.0.2-dev-j  Commit#3d9b08e5 (compatibility break?)",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1698",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-05-05T19:55:54Z",
+ "closed_at": "2022-05-09T19:22:08Z",
+ "comment_count": 18,
+ "body": "**AndroidAPS 3.0.0.2-dev-j**\r\n**Build:** #3d9b08e5\r\n**Flavor**: Fullrelease\r\n\r\n**Watch**: Samsung Galaxy Watch4 44mm\r\n_Wear App_: 2022.02.14 (Release version)\r\nBuild: #B1D45833C\r\n\r\n**Problem description:**\r\nWith installing this build the Android Wear app stopped synchronizing.\r\nAPPS was updated at about 18:30h\r\n\r\nApp seems to not be connected,\r\nWear->RESEND DATA and Wear->OPEN SETTINGS ON WEAR have no effect.\r\n\r\n![Screenshot_20220505_213846_sysui](https://user-images.githubusercontent.com/45144129/167013609-3bccada6-f04f-4f81-a54b-22185c57bdac.png)\r\n\r\n![Screenshot_20220505_214022_androidaps](https://user-images.githubusercontent.com/45144129/167013629-3b1e9bc5-eeee-4857-859c-ecc4bc61bd29.png)\r\n\r\n** Log files **\r\n[AndroidAPS_LOG_1651779641963.log.zip](https://github.com/nightscout/AndroidAPS/files/8635517/AndroidAPS_LOG_1651779641963.log.zip)\r\n\r\n",
+ "comments": [
+  {
+   "id": 1118992065,
+   "user": "reijoahola-nightscout",
+   "created_at": "2022-05-05T19:58:08Z",
+   "body": "You have to update also Wear."
+  },
+  {
+   "id": 1118994640,
+   "user": "vanelsberg",
+   "created_at": "2022-05-05T20:01:29Z",
+   "body": "Expecting dev being compatible with release version. \r\nApparently, it is not?"
+  },
+  {
+   "id": 1118996443,
+   "user": "reijoahola-nightscout",
+   "created_at": "2022-05-05T20:03:44Z",
+   "body": "Not compatible in this case. There is some big reorganosation inside Wear dev-j."
+  },
+  {
+   "id": 1118998063,
+   "user": "reijoahola-nightscout",
+   "created_at": "2022-05-05T20:05:23Z",
+   "body": "I have both AAPS and Wear updated into dev-j but there seems to be mysterious problems what I do not understand. Could you update your systen and comment is it working without problems."
+  },
+  {
+   "id": 1119025201,
+   "user": "MilosKozak",
+   "created_at": "2022-05-05T20:39:58Z",
+   "body": "i see crashes comming from OnePlus Nord2 5G\r\ncaused by too old Wear OS"
+  },
+  {
+   "id": 1119036512,
+   "user": "vanelsberg",
+   "created_at": "2022-05-05T20:53:02Z",
+   "body": "Upgraded Wear App to current dev. Yes, it is now showing syncing/BG.\r\n\r\nUnfortunately for this version:\r\n\r\n- Tiles are no longer functioning\r\n- Watch faces layouts have \"problems\" (especially my favorite: \"DigitalStyle\")\r\n- Watch settings (double screen-tap, settings) crashes when scrolling down)\r\n\r\nSo, seems to be a work in progress...\r\n"
+  },
+  {
+   "id": 1119044078,
+   "user": "vanelsberg",
+   "created_at": "2022-05-05T21:03:48Z",
+   "body": "> caused by too old Wear OS\r\n\r\nWell, In my case an almost brand new Samsung Galaxy Watch4. Was working perfectly with tiles and all control functions.\r\nCame sort of as a surprise as I expected release version of the Wear app to stay compatible.\r\n"
+  },
+  {
+   "id": 1119063453,
+   "user": "MilosKozak",
+   "created_at": "2022-05-05T21:28:22Z",
+   "body": "tiles fixed, the rest is working well for me"
+  },
+  {
+   "id": 1119066554,
+   "user": "MilosKozak",
+   "created_at": "2022-05-05T21:32:23Z",
+   "body": "![image](https://user-images.githubusercontent.com/11146458/167029043-cdfdc480-e6e0-4817-979b-2ec4159aad04.png)\r\n"
+  },
+  {
+   "id": 1119077652,
+   "user": "vanelsberg",
+   "created_at": "2022-05-05T21:49:30Z",
+   "body": "> tiles fixed, the rest is working well for me\r\n\r\nAh, that's great!\r\nWill test tomorrow and let you know my findings "
+  },
+  {
+   "id": 1119080811,
+   "user": "vanelsberg",
+   "created_at": "2022-05-05T21:54:28Z",
+   "body": "**Tiles**:\r\n\r\nOnly the \"Action\" tile is now fixed, other two tiles do nothing\r\n\r\n**On UI:\r\n\r\nI am using same Watch face AAPS(digitalStyle)**\r\nLooks like UI is getting somewhat better now (layout may have been affected by database reset). But is off on some parts.\r\n\r\n- I can display date, including day name (as in THU, 5 MAY, 23:52) and week number\r\nIt shows \"52\" (should be day name) and \"52 MAY\" (date)\". Day name and date show \"minutes?\"\r\n\r\n- Arrow on BG complication is not showing (something seems to be there)\r\n\r\n- BG complication shows \"5.\" and then below something that looks like part of \"3\"\r\n\r\n- IOB Compilation is not showing correctly\r\n\r\n- Watch face settings (double-tap menue) crashes when scrolling to end\r\n\r\n![Screenshot_20220505_235635_sysui](https://user-images.githubusercontent.com/45144129/167032674-e0b30ce2-8441-4d05-b988-4b1cbeafa6d6.png)\r\n\r\n- Always on is also affected.\r\n\r\n![20220505_235925](https://user-images.githubusercontent.com/45144129/167032586-bbd7684b-d39b-48c3-a9a5-af87314957fe.jpg)\r\n\r\n** This is how release version looked **:\r\n\r\n![original](https://user-images.githubusercontent.com/45144129/167033204-d4fe7fdc-2026-4b34-a24e-c540891eb376.jpg)\r\n\r\n"
+  },
+  {
+   "id": 1119367059,
+   "user": "reijoahola-nightscout",
+   "created_at": "2022-05-06T08:13:39Z",
+   "body": "I have the same problems with the watchfaces. My watch is TicWatch Pro (from 2018) and the Wear OS should be the latest that the watch can update."
+  },
+  {
+   "id": 1120014332,
+   "user": "vanelsberg",
+   "created_at": "2022-05-06T21:17:42Z",
+   "body": ">> tiles fixed, the rest is working well for me\r\n\r\n> Ah, that's great! Will test tomorrow and let you know my findings\r\n\r\nTried (current) dev build: On install AAPS started cycled crashes on startup (Note9/Android10, Nokia5.4/Android11 test phone installs just fine?) So needed reverted back to previous build 3d9b08e5c2.\r\n\r\n\r\n"
+  },
+  {
+   "id": 1120145164,
+   "user": "TT83TT",
+   "created_at": "2022-05-07T06:23:53Z",
+   "body": "for me, missing trend arrow and duplicate BG, OnePlus 8t phone and Galaxy Wear 4 watc\r\n![IMAGE 2022-05-07 08:23:19](https://user-images.githubusercontent.com/28483752/167241702-5d005ca6-8665-40e9-8a86-fe14e0b51998.jpg)\r\n![IMAGE 2022-05-07 08:23:35](https://user-images.githubusercontent.com/28483752/167241719-043c56f7-94b0-49f1-95b2-4c3636101462.jpg)\r\n![IMAGE 2022-05-07 08:23:45](https://user-images.githubusercontent.com/28483752/167241725-250e3336-0300-459e-b192-5a7b9b3b8d82.jpg)\r\nh"
+  },
+  {
+   "id": 1120156828,
+   "user": "TT83TT",
+   "created_at": "2022-05-07T07:37:24Z",
+   "body": "New last commit 96f095ce8, still the same, missing arrow and double BG"
+  },
+  {
+   "id": 1120487723,
+   "user": "MilosKozak",
+   "created_at": "2022-05-08T21:11:38Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/e01647d496e405d3ae9617ae76f353147181ec02"
+  },
+  {
+   "id": 1121484042,
+   "user": "MilosKozak",
+   "created_at": "2022-05-09T19:22:08Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/b437307157420a8abcdf46bee5981ecae739df71\r\nif there is still somthing else, open new issue"
+  }
+ ]
+}

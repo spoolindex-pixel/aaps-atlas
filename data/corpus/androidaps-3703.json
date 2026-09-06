@@ -1,0 +1,81 @@
+{
+ "id": 2769116615,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3703,
+ "title": "Dynamicisf not starting",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3703",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-01-05T05:01:42Z",
+ "closed_at": "2025-01-06T21:28:36Z",
+ "comment_count": 11,
+ "body": "Hi\r\nI updated from 3.2 to 3.3 two days ago( uninstall 3.2 to then install 3.3 and imported setting), now I always get the message :\r\nReturning to smb not enough data, and returning to profile sensitivity not enough data reason tdd miss, any idea why? \r\nI also tried to sync to nightscout and get data from there but it's still the same.\r\nThanks\r\n[AndroidAPS_LOG_1736052945398.log.zip](https://github.com/user-attachments/files/18309200/AndroidAPS_LOG_1736052945398.log.zip)\r\n",
+ "comments": [
+  {
+   "id": 2571607064,
+   "user": "olorinmaia",
+   "created_at": "2025-01-05T12:20:31Z",
+   "body": "Hi. To avoid this you should update, not uninstall and install.\r\n\r\nCheck Statistics page, do you have 7 days of TDD there? If not you need to do a full sync with NSClientV3. Make sure you enable required settings to download bolus-data.\r\n\r\nIf you aren't able to download data you can disable Dynamic Sensitivity in SMB plugin and activate it again when you got 7 days of TDD data."
+  },
+  {
+   "id": 2571702844,
+   "user": "FalconEagleTest",
+   "created_at": "2025-01-05T17:51:51Z",
+   "body": "i am using NSClientV1 ,\r\nany reason to change to NSClientV3?\r\nthanks.\r\n@olorinmaia "
+  },
+  {
+   "id": 2571712748,
+   "user": "olorinmaia",
+   "created_at": "2025-01-05T18:29:35Z",
+   "body": "If you got 7+ days of TDD V3 will be able to get that back with full sync. V1 only takes two days I think. "
+  },
+  {
+   "id": 2571715838,
+   "user": "FalconEagleTest",
+   "created_at": "2025-01-05T18:41:42Z",
+   "body": "ok so i changed to v3 and did a full sync, now i see 7days in the Statistics , but still get the same message\r\n[AndroidAPS_LOG_1736101856336.log.zip](https://github.com/user-attachments/files/18311273/AndroidAPS_LOG_1736101856336.log.zip)\r\n@olorinmaia "
+  },
+  {
+   "id": 2573741324,
+   "user": "FalconEagleTest",
+   "created_at": "2025-01-06T19:09:45Z",
+   "body": "I checked again, started from clean install full sync with nightscout, but all of the nightscout data does not seems to be taken Into account, which is problematic , lats say your phone died instead of continuing with the new phone at the exact same condition you need to start over, if that can be fixed it will be amazing, thanks. "
+  },
+  {
+   "id": 2573812254,
+   "user": "olorinmaia",
+   "created_at": "2025-01-06T19:54:51Z",
+   "body": "What data is missing? Basal/ TBR?\r\n\r\nI think these two commits will improve this. Right now you need to enable all sync options in v3.\r\n\r\n967384e8129431ba319366df26c24d519cafa447\r\n380f5acf2e68786711f37708ac1a0d1562db4235\r\n\r\n@MilosKozak I think, but not 100% sure that you need to enable the setting hidden behind engineering mode to get TBR data with full sync with AAPS? With AAPSClient all is good. "
+  },
+  {
+   "id": 2573876575,
+   "user": "FalconEagleTest",
+   "created_at": "2025-01-06T20:32:29Z",
+   "body": "It seems like I am getting the full data since in the statistics I can see data from 30 days ago, but when I look in the log or in the smb window I see tdd24h=null all of those are null\r\n@olorinmaia "
+  },
+  {
+   "id": 2573902228,
+   "user": "olorinmaia",
+   "created_at": "2025-01-06T20:50:09Z",
+   "body": "That sounds strange indeed. Can you provide a screenshot of SMB plugin log and Statistics for TDD + logs? \r\n\r\nI see from your earlier logs that you only missed 7days tdd.\r\n`20:19:46.007 [DefaultDispatcher-worker-6] D/CONSTRAINTS: [ConstraintObject.set():28]: Setting value false -> true (tdd1D=24.349999999999998 tdd7D=null tddLast4H=4.158333333333333 tddLast8to4H=4.766666666666666 tddLast24H=21.929166666666674)[ConstraintObject]`"
+  },
+  {
+   "id": 2573912698,
+   "user": "olorinmaia",
+   "created_at": "2025-01-06T20:57:39Z",
+   "body": "If you are comfortable with it, try the following.\r\n1) Check NSClientV3 settings that all sync options are enabled to download bolus, carbs, etc. (just to be sure, you can disable what you don't need after)\r\n2) Maintenance > Export settings (In case of trouble)\r\n3) Maintenance > Reset databases\r\n4) Exit AAPS\r\n5) Start AAPS\r\n6) Do a full sync with NSClientV3\r\n\r\nI just did this on my test-rig, and recovered all TDD-data, carbs, tbr etc."
+  },
+  {
+   "id": 2573950888,
+   "user": "FalconEagleTest",
+   "created_at": "2025-01-06T21:23:11Z",
+   "body": "What you saw in the previous log was used for 3 days. So the one thing missing was the 7 days.\r\nYes if you dotl the full sync it seems to recover everything, but if you turn on the dynamicisf you will see that you will get an error saying tdd7d=null tdd24h=null etc.\r\n@olorinmaia  "
+  },
+  {
+   "id": 2573958305,
+   "user": "FalconEagleTest",
+   "created_at": "2025-01-06T21:28:36Z",
+   "body": "Yes!!! \r\nTurning everything on when syncing did the trick , thank you so much for your help @olorinmaia "
+  }
+ ]
+}

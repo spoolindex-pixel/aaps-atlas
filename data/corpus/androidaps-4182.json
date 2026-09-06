@@ -1,0 +1,87 @@
+{
+ "id": 3460507558,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4182,
+ "title": "AAPS Dev/Debug - LeakCanary results",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4182",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-09-27T16:35:44Z",
+ "closed_at": "2025-11-22T16:40:23Z",
+ "comment_count": 12,
+ "body": "Below info on **LeakCanary** (LC) results:\n\n- AAPS Logs\n- LC shared info .txt\n- Other",
+ "comments": [
+  {
+   "id": 3341908273,
+   "user": "vanelsberg",
+   "created_at": "2025-09-27T16:38:59Z",
+   "body": "Interesting: Just now LeakCanary got active whenever I start changing Automations?\n\n[20250927-1655-3.zip](https://github.com/user-attachments/files/22575505/20250927-1655-3.zip)\n\n![Image](https://github.com/user-attachments/assets/6ab91f48-a72f-45fb-b3d9-d018001e7297)\n"
+  },
+  {
+   "id": 3342488620,
+   "user": "vanelsberg",
+   "created_at": "2025-09-28T07:45:49Z",
+   "body": "Latest dev/debug build#5375e401 generated these Leak results during the past 6 hours.\nFirst one in list is continuesly updating every few minutes:\n\n[shared_text.txt](https://github.com/user-attachments/files/22580913/shared_text.txt)\n[shared_text (2).txt](https://github.com/user-attachments/files/22580936/shared_text.2.txt)\n[shared_text (3).txt](https://github.com/user-attachments/files/22580935/shared_text.3.txt)\n\n[AndroidAPS_LOG_1759045522082.log.zip](https://github.com/user-attachments/files/22580915/AndroidAPS_LOG_1759045522082.log.zip)\n\n![Image](https://github.com/user-attachments/assets/3dea25ad-1b05-47b3-b5a0-a832fbe88e26)"
+  },
+  {
+   "id": 3342502843,
+   "user": "vanelsberg",
+   "created_at": "2025-09-28T07:54:16Z",
+   "body": "Also seeing LeakCanary reporting OutOfMemoryError's on Heap analysis (think this is LeakCanary itself?)\nBtw: this phone has plenty of memory free (12GB, 5.6GB in use)\n\n![Image](https://github.com/user-attachments/assets/8ff8b150-aec9-4a4d-b92c-b30f68603066)\n\n![Image](https://github.com/user-attachments/assets/84a11111-3503-4254-baf6-9d223b55df5f)"
+  },
+  {
+   "id": 3348547273,
+   "user": "vanelsberg",
+   "created_at": "2025-09-29T18:39:00Z",
+   "body": "AAPS dev, commit #5375e401, Sep 27,2025:\n\n@MilosKozak:  LeakCanary txt tracefiles for latest dev commit:\n\n[1.zip](https://github.com/user-attachments/files/22604170/1.zip)\n[2.zip](https://github.com/user-attachments/files/22604172/2.zip)\n\n*Logfiles*\n[AndroidAPS_LOG_1759163252556.log.zip](https://github.com/user-attachments/files/22604163/AndroidAPS_LOG_1759163252556.log.zip)\n\n\n"
+  },
+  {
+   "id": 3348699504,
+   "user": "MilosKozak",
+   "created_at": "2025-09-29T19:22:10Z",
+   "body": "Equil Pairing:\n```\n D  ====================================\n D  HEAP ANALYSIS RESULT\n D  ====================================\n D  0 APPLICATION LEAKS\n D  \n D  References underlined with \"~~~\" are likely causes.\n D  Learn more at https://squ.re/leaks.\n D  ====================================\n D  0 LIBRARY LEAKS\n D  \n D  A Library Leak is a leak caused by a known bug in 3rd party code that you do not have control over.\n D  See https://square.github.io/leakcanary/fundamentals-how-leakcanary-works/#4-categorizing-leaks\n D  ====================================\n D  5 UNREACHABLE OBJECTS\n D  \n D  An unreachable object is still in memory but LeakCanary could not find a strong reference path\n D  from GC roots.\n D  \n D  android.widget.LinearLayout instance\n D  ​  Leaking: YES (ObjectWatcher was watching this because app.aaps.pump.equil.ui.pair.EquilPairAssembleFragment received\n D  ​  Fragment#onDestroyView() callback (references to its views should be cleared to prevent leaks) and View.mContext\n D  ​  references a destroyed activity)\n D  ​  key = f47ab0d0-c324-48bc-be3c-93b74d46fddf\n D  ​  watchDurationMillis = 101089\n D  ​  retainedDurationMillis = 96089\n D  ​  View not part of a window view hierarchy\n D  ​  View.mAttachInfo is null (view detached)\n D  ​  View.mWindowAttachCount = 1\n D  ​  mContext instance of app.aaps.pump.equil.ui.pair.EquilPairActivity with mDestroyed = true\n D  \n D  android.widget.LinearLayout instance\n D  ​  Leaking: YES (ObjectWatcher was watching this because app.aaps.pump.equil.ui.pair.EquilPairSerialNumberFragment\n D  ​  received Fragment#onDestroyView() callback (references to its views should be cleared to prevent leaks) and View.\n D  ​  mContext references a destroyed activity)\n D  ​  key = 8be8dc46-406d-4ca6-97fc-46613ba2be4f\n D  ​  watchDurationMillis = 69737\n D  ​  retainedDurationMillis = 64736\n D  ​  View not part of a window view hierarchy\n D  ​  View.mAttachInfo is null (view detached)\n D  ​  View.mWindowAttachCount = 1\n D  ​  mContext in"
+  },
+  {
+   "id": 3348726790,
+   "user": "vanelsberg",
+   "created_at": "2025-09-29T19:30:18Z",
+   "body": "> Equil Pairing:\n\nEquil?  - I see. To be honest, I did not check the trace txt's. \n\nHope you can you explain🤔 (As in: how does Equil get into this as Equil was not active?)\n"
+  },
+  {
+   "id": 3352023853,
+   "user": "vanelsberg",
+   "created_at": "2025-09-30T13:03:04Z",
+   "body": "@MilosKozak Btw: you need more of this?\nIf it helps, I can try running dev/debug with LeakCanary on major commits (or feel free to DM me)?"
+  },
+  {
+   "id": 3352089772,
+   "user": "MilosKozak",
+   "created_at": "2025-09-30T13:14:23Z",
+   "body": "reports are welcome from people running dev. but not necessary to hunt for them specifically "
+  },
+  {
+   "id": 3352126858,
+   "user": "vanelsberg",
+   "created_at": "2025-09-30T13:20:27Z",
+   "body": "> reports are welcome from people running dev. but not necessary to hunt for them specifically\n\nOk. Then I will run dev/leak versions on major commits to see if there are any new leaks popping up."
+  },
+  {
+   "id": 3366201848,
+   "user": "ga-zelle",
+   "created_at": "2025-10-03T15:32:32Z",
+   "body": "Today I get leak messages. I run a virtual Pixel in AS  and the only thing I find are files of type **hprof**. On download from device manager they are somewhat readable but include binary sections, too.\n\n@MilosKozak are those the filöes you want? Or is there an alternative, e.g. with logcat or similar?"
+  },
+  {
+   "id": 3366246032,
+   "user": "ga-zelle",
+   "created_at": "2025-10-03T15:47:42Z",
+   "body": "When I build it and run it my test phone everything seems quiet."
+  },
+  {
+   "id": 3446002530,
+   "user": "vanelsberg",
+   "created_at": "2025-10-25T06:38:50Z",
+   "body": "@MilosKozak Still interested in Leak-results for latest dev commits??\nIf so I'll post them here..."
+  }
+ ]
+}

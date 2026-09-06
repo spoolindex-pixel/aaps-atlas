@@ -1,0 +1,39 @@
+{
+ "id": 1380449221,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2085,
+ "title": "3.1.0.3 DEV-B AAPS restarts and kills db",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2085",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-09-21T07:20:23Z",
+ "closed_at": "2022-09-21T09:56:22Z",
+ "comment_count": 4,
+ "body": "Installation of dev-b makes AAPS restart all the time (probably kills the database).\n\nGoing back to dev-a, AAPS starts with an empty db.",
+ "comments": [
+  {
+   "id": 1253327406,
+   "user": "Der-Schubi",
+   "created_at": "2022-09-21T07:42:05Z",
+   "body": "Same here.\r\n[FC.log](https://github.com/nightscout/AndroidAPS/files/9614180/FC.log)\r\n"
+  },
+  {
+   "id": 1253338109,
+   "user": "Der-Schubi",
+   "created_at": "2022-09-21T07:52:55Z",
+   "body": "It's this commit from Monday: https://github.com/nightscout/AndroidAPS/commit/be30b3cd3de05db2589a5c6f5a7e3fc19544b930\r\n\r\napp/src/main/java/info/nightscout/androidaps/receivers/BTReceiver.kt:\r\n```\r\n-        val device: BluetoothDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE) ?: return\r\n+        val device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE, BluetoothDevice::class.java) ?: return\r\n```"
+  },
+  {
+   "id": 1253379410,
+   "user": "mick711",
+   "created_at": "2022-09-21T08:31:52Z",
+   "body": "Same problem need to go back and lost data"
+  },
+  {
+   "id": 1253388194,
+   "user": "Der-Schubi",
+   "created_at": "2022-09-21T08:39:51Z",
+   "body": "PR to fix this: https://github.com/nightscout/AndroidAPS/pull/2089"
+  }
+ ]
+}

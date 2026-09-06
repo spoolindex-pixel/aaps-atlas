@@ -1,0 +1,45 @@
+{
+ "id": 2581217327,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3461,
+ "title": "PR3487 Unattended settings export.",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3461",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-10-11T12:01:53Z",
+ "closed_at": "2024-11-04T13:14:08Z",
+ "comment_count": 5,
+ "body": "**Enabling unattended settings export.**\r\n\r\nCurrent AAPS functionality enables exporting AAPS settings to file which includes exporting sensitive information like pump connection specs. For this the user is required to enter the AAPS master password (which is not known to AAPS) for encryption.\r\n\r\nThe AAPS master password protects the (encrypted) settings file from unintended access. This PR is intended to enable automatic settings exports. Think of scheduled settings exports through automaton or after activating pumps like Omnipod EROS/DASH and Metrum.\r\n\r\nThis PR adds functionality to AAPS to initiate unattended exports from code (that is without need for the user to enter the master password):\r\n- Implement a Class interface to securely store secrets like the AAPS master password (locally) on the users phone protecting it from unintended retrieval.\r\n- Implement a Class interface for storing and retrieving encrypted password and state.\r\n- Integrate the above n AAPS for initiating unattended settings exports.\r\n- Implement a new automation for scheduling settings exports using the class interfaces above.\r\n\r\n**Requirements:**\r\n- User has a choice to enable/disable unattended exports through the maintenance settings.\r\nWhen disabled, no password is stored and unattended exports are unavailable.\r\n\r\n**When enabled:**\r\n- Password will be securely stored encrypted on the local phone's Android DataStore _(1)_ - so not in AAPS settings.\r\n- Encryption key needed for decrypting is generated and protected by the local phone's Android KeyStore _(2)_.\r\n- To ensure user needs to \"maintain\" the master password it will expire after 4 weeks with a grace periode of 1 week (non-configurable)\r\n- Stored password will be removed on changing the master password or AAPS password reset.\r\n- Importing setting or other functionality that needs entering the master password/PIN/Biometrics are not affected.\r\n\r\n**Functional short description:**\r\nThe master password should be entered as usual when manually exporting settings from the AAPS maintenance menu.\r\nWhen the \"unattended exports\" option is enabled in maintenance preferences, the entered password is encrypted and securely stored on the user's phone (not in AAPS). Subsequent exports will no longer require the user to enter the master password until it expires or is reset.\r\n\r\nWhen active, the new \"Export settings\" automation will alert in AAPS overview on exporting and (when relevant) not being enabled or password expiry. The user can (grace period) or is required (expired) to reenter the password executing a manual export.\r\n\r\n_Ad1) Android DataStore:_\r\n_This system provides a robust and flexible way of storing key-value pairs on the phones storage._\r\n\r\n_Ad2) Android Keystore:_\r\n_This system allows you to store cryptographic keys in a secure container, making them difficult to extract from the device._\r\n\r\n**Additional note:**\r\n\r\nThis above is currently under development. PR will follow soon.\r\nIt's goal will be to get basic functionality for unattended exports stabalized and get the bugs out.\r\n\r\nSuggestions on future functionality (requires additional PR(s)):\r\na) Logging at the bottom part of Maintenance tab log's similar to Automations.\r\nb) Records in db - user actions (successful/ unsuccessful backup and destination of backup)\r\nc) Dedicated automation for scheduled backups (daily/weekly/monthly/objective completed/new pump paired/....)\r\nd) Export destinations: AAPS folder, Google, MS OneDrive, NS...\r\n",
+ "comments": [
+  {
+   "id": 2407274067,
+   "user": "vanelsberg",
+   "created_at": "2024-10-11T12:06:48Z",
+   "body": "See also:\r\nFeature request: https://github.com/nightscout/AndroidAPS/issues/3296\r\nPR https://github.com/nightscout/AndroidAPS/pull/3487\r\n\r\n\r\n"
+  },
+  {
+   "id": 2427686897,
+   "user": "vanelsberg",
+   "created_at": "2024-10-21T20:46:51Z",
+   "body": "Updated the PR with latest changes today.\r\nTested merging with current dev OK.\r\nThink current could be the final PR. Waiting for field testing and bug-hunting."
+  },
+  {
+   "id": 2430191655,
+   "user": "vanelsberg",
+   "created_at": "2024-10-22T20:25:24Z",
+   "body": "Original PR#3463 had to many files.\r\n**Replaced by new PR3487**\r\nhttps://github.com/nightscout/AndroidAPS/pull/3487"
+  },
+  {
+   "id": 2437425355,
+   "user": "vanelsberg",
+   "created_at": "2024-10-25T10:22:06Z",
+   "body": "UpdateL added alerting for NSClient (e.g. kids phone)"
+  },
+  {
+   "id": 2454681675,
+   "user": "vanelsberg",
+   "created_at": "2024-11-04T13:11:59Z",
+   "body": "[PR3487](https://github.com/nightscout/AndroidAPS/pull/3487) was merged with dev"
+  }
+ ]
+}

@@ -1,0 +1,39 @@
+{
+ "id": 1323379725,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1978,
+ "title": "[3.1.0.2] Still issues with Omnipod Eros pods / reference to #1627",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1978",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-07-31T06:56:50Z",
+ "closed_at": "2022-10-04T10:23:35Z",
+ "comment_count": 4,
+ "body": "Referring to #1627, unfortunately my previous issue seems not to be resolved entirely. After I was not able to work with AAPS version 3.0.0.1, I switched back to 2.8.2.1 and was absolutely satisfied with this older version, it simply worked. Now as I am forced to update again (BTW: I would be happy to continue using the older version, but why are 2.8.2.1 users not allowed to keep the running system alive?), I tried to use the freshly compiled version 3.1.0.2.\r\nI have this issue: After importing my JSON file, erroneously an Eros pod is shown to be active. As it still cannot be deactivated, I can’t start a new one. Interestingly, the same JSON file (and I tried several ones) works with 2.8.2.1 without any error. How can that be explained, I what could I do to start the system with a new pod? Thank you.\r\nAttached: Screenshot of 3.1.0.2 with pod active after importing the JSON file\r\n![Screenshot_20220730-060547_AndroidAPS](https://user-images.githubusercontent.com/103875599/182014041-bdff764a-7d0c-4baf-9048-67efccb6ff10.jpg)\r\n",
+ "comments": [
+  {
+   "id": 1204559663,
+   "user": "happygirlnyc70",
+   "created_at": "2022-08-03T22:49:29Z",
+   "body": "@jalbers01 in the picture your rileylink is not connected. Does it ever connect? If it does connect is the option to discard pod available?"
+  },
+  {
+   "id": 1207284597,
+   "user": "jalbers01",
+   "created_at": "2022-08-06T21:22:30Z",
+   "body": "I had some issues with connecting to Riley. I assume something is wrong with my json file, because with an older version of the json file I was able to connect to Riley and to start a new pod. Looks weird to me, but just now it's up and running with 3.1.0.2. However, I had to activate the profile after changing to the virtual pump driver temporarily and then back to Omnipod to activate the new pod. Very much different and much more complex than it was with 2.8.2.1"
+  },
+  {
+   "id": 1207288710,
+   "user": "happygirlnyc70",
+   "created_at": "2022-08-06T21:58:41Z",
+   "body": "There was another issue thecubic reported.  He also had to use the virtual pump work around.  Milos just released 3.1.0.3. I plan to install it at my pod change today. I noticed there is a fix for the issue so everything should work just fine now.  @vanelsberg did great work fixing the original problem with pod errors. Hopefully your problem is solved now."
+  },
+  {
+   "id": 1207467385,
+   "user": "vanelsberg",
+   "created_at": "2022-08-07T19:06:19Z",
+   "body": "> I what could I do to start the system with a new pod?\r\n\r\nDue to a change in the way Pod state is handled, upgrading from 2.8 with an active Pod may give problems. To solve your problem:\r\n\r\n1. You can try the work around as described in the original issue #1963: Set the pump driver to the virtual pump, which allowed the profile switch to activate, then switched pump drivers back to Omnipod Eros and retry deactivating.\r\n3. Temporarily switch to developer mode. It offers an additional button to \"force-remove\" current Pod registration.\r\n\r\nSee also:\r\nhttps://github.com/nightscout/AndroidAPS/issues/1963\r\n"
+  }
+ ]
+}

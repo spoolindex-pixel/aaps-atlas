@@ -1,0 +1,47 @@
+{
+ "id": 1966823968,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2998,
+ "title": "Master 3.2.0.1 Winter time open loop",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2998",
+ "state": "closed",
+ "labels": [
+  "enhancement"
+ ],
+ "created_at": "2023-10-29T03:05:02Z",
+ "closed_at": "2024-12-15T13:21:01Z",
+ "comment_count": 5,
+ "body": "I got a message in AAPS telling that the loop was not closed as the winter time change was in 3 h (or something similar, I was half asleep...)\n\nBut, the UI showed the closed loop icon\n\n![Screenshot_20231029_035659_AAPS.jpg](https://github.com/nightscout/AndroidAPS/assets/76626474/7e19aad3-4ff4-45aa-a4a1-3c2bec4ea357)\n\nAnd when I looked in the OpenSMB tab, nothing was selected (not even open loop)\n\n![Screenshot_20231029_035750_AAPS.jpg](https://github.com/nightscout/AndroidAPS/assets/76626474/70a694b2-5934-47b9-86ce-b216d3620225)\n\nAnd, strangely, I didn't get the usual \"update time in DASH pod\" messages....\n\nThe logs\n\n![AndroidAPS_LOG_1698548595820.log.zip](https://github.com/nightscout/AndroidAPS/files/13197132/AndroidAPS_LOG_1698548595820.log.zip)\n\n",
+ "comments": [
+  {
+   "id": 1783990655,
+   "user": "mtanjagithub",
+   "created_at": "2023-10-29T03:50:18Z",
+   "body": "Check the docs.\r\nOther pumps\r\nThis feature is available since AAPS version 2.2.\r\n\r\nTo prevent difficulties the Loop will be deactivated for 3 hours AFTER the\r\nDST switch. This is done for safety reasons (IOB too high due to duplicated\r\nbolus prior to DST change).\r\n\r\nYou will receive a notification on the main screen prior to DST change that\r\nloop will be disabled temporarily. This message will appear without beep,\r\nvibration or anything.\r\n\r\nhttps://androidaps.readthedocs.io/en/latest/Usage/Timezone-traveling.html#time-adjustment-daylight-savings-time-dst\r\n\r\n\r\n\r\n\r\n\r\nOp zo 29 okt. 2023 04:05 schreef Robrub ***@***.***>:\r\n\r\n> I got a message in AAPS telling that the loop was not closed ad the winter\r\n> time change was in 3 h (or something similar, I was half asleep...)\r\n>\r\n> But, the UI showed the closed loop icon\r\n>\r\n> [image: Screenshot_20231029_035659_AAPS.jpg]\r\n> <https://user-images.githubusercontent.com/76626474/278848600-7e19aad3-4ff4-45aa-a4a1-3c2bec4ea357.jpg>\r\n>\r\n> And when I looked in the OpenSMB tab, nothing was selected (not even open\r\n> loop)\r\n>\r\n> [image: Screenshot_20231029_035750_AAPS.jpg]\r\n> <https://user-images.githubusercontent.com/76626474/278848641-70a694b2-5934-47b9-86ce-b216d3620225.jpg>\r\n>\r\n> And, strangely, I didn't get the usual \"update time in DADH pod\"\r\n> messages....\r\n>\r\n> —\r\n> Reply to this email directly, view it on GitHub\r\n> <https://github.com/nightscout/AndroidAPS/issues/2998>, or unsubscribe\r\n> <https://github.com/notifications/unsubscribe-auth/A6KTSVTJMUCCGNJBPP2FCX3YBW2WDAVCNFSM6AAAAAA6UQVK36VHI2DSMVQWIX3LMV43ASLTON2WKOZRHE3DMOBSGM4TMOA>\r\n> .\r\n> You are receiving this because you are subscribed to this thread.Message\r\n> ID: ***@***.***>\r\n>\r\n"
+  },
+  {
+   "id": 1784008572,
+   "user": "robertrub",
+   "created_at": "2023-10-29T06:05:26Z",
+   "body": "Except the point above, it was the easiest summer/winter time change ever. No need to set pod time, no other messages etc :)"
+  },
+  {
+   "id": 1784009764,
+   "user": "robertrub",
+   "created_at": "2023-10-29T06:14:27Z",
+   "body": "@mtanjagithub  Yes, I know the drill and the reason. That is NOT the \"bug\".\n\nThe strange/buggy (?) part is the icon, it says closed loop... And the loop selection just disappears.\n\nMaybe adding a barred TZ or DST on the closed loop icon to represent the situation correctly would be better (for those who wake up in the middle of the might ;) )"
+  },
+  {
+   "id": 1784100818,
+   "user": "olorinmaia",
+   "created_at": "2023-10-29T12:56:45Z",
+   "body": "My input:\r\nI couldn't see a reason in SMB / DynISF tab tonight why loop wasnt working, maybe I was to tired to see where it was tho. So at first I thought it was a bug with DynISF that is new for us ;)\r\n\r\nI had to see inside \"Loop\"-tab to see error message, \"DST helper: DST in last 3 hours\" isn't really self-explantory either. I can't remember getting any warning in AAPS. \r\n\r\nLoop icon should turn red (disabled) and SMB/dynisf-tab should also show error why loop isnt working during these 3 hours. That may be easy to fix."
+  },
+  {
+   "id": 1784139326,
+   "user": "robertrub",
+   "created_at": "2023-10-29T15:08:56Z",
+   "body": "```\n couldn't see a reason in SMB / DynISF tab tonight why loop wasnt working\n```\n\nNormally you had a message in AAPS telling that loop can't ve closed due to DST...\n\nBut agreed on the modified icon."
+  }
+ ]
+}

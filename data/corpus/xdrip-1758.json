@@ -1,0 +1,169 @@
+{
+ "id": 925022137,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1758,
+ "title": "After NFC Scan of Libre 2 no BG readings appear in xDrip",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1758",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "device-libre",
+  "build-nightly"
+ ],
+ "created_at": "2021-06-18T15:43:48Z",
+ "closed_at": "2021-06-28T17:43:12Z",
+ "comment_count": 25,
+ "body": "Hi all,\r\nI have a problem with the NFC scan of my FSL2 sensor running in xDrip via OOPAlgorithm2 since I updated xDrip to build 11 June 2021.\r\nThe build from 21 May was still running correctly. It only came up when I updated to build 11 June 2021 2 days ago. One NFC scan is enough and the BT connection to the sensor is disabled and needs to be re-established. Also, after a BT loss of about 15 minutes, I noticed that after an NFC scan, the missing records were not filled in either, which the 21 May version still did without any problems.\r\nBest regards Thomas\r\n",
+ "comments": [
+  {
+   "id": 864131252,
+   "user": "Navid200",
+   "created_at": "2021-06-18T15:51:17Z",
+   "body": "@Thomas-Wolff \r\nIs this problem not present when using the May 21, 2021 release of xDrip?"
+  },
+  {
+   "id": 864231524,
+   "user": "adenis76",
+   "created_at": "2021-06-18T19:22:39Z",
+   "body": "I have trouble today with latest nightly from 11.6.2021. After xdrip update blucon stop receiving data from libre 1 and NFC scan stop working. Error message is that sensor clock didn't advance. After xdrip version downgrade everything working again without problems."
+  },
+  {
+   "id": 864238751,
+   "user": "Thomas-Wolff",
+   "created_at": "2021-06-18T19:40:48Z",
+   "body": "What does this mean, going back to the construction of 21 May 2021?"
+  },
+  {
+   "id": 864239779,
+   "user": "Navid200",
+   "created_at": "2021-06-18T19:43:26Z",
+   "body": "@Thomas-Wolff I am just asking you to confirm that you experience the problem with the June 11, release and you are not experiencing the problem with the May 21 release.  Can you confirm please?"
+  },
+  {
+   "id": 864240380,
+   "user": "adenis76",
+   "created_at": "2021-06-18T19:45:03Z",
+   "body": "Yes, exactly."
+  },
+  {
+   "id": 864240500,
+   "user": "Thomas-Wolff",
+   "created_at": "2021-06-18T19:45:26Z",
+   "body": "Yes\r\n"
+  },
+  {
+   "id": 864381288,
+   "user": "jk1993",
+   "created_at": "2021-06-19T09:24:03Z",
+   "body": "I have noticed similar on the latest build, where an NFC scan appears to do nothing when there are missing data points. But if you go to \"Show Libre trend\" then you can see the per-minute values and there seem to be lots of them but it does not update the main graph. When this happens, in the logs there are plenty of logs saying \"Removing data point\" so I suspect it could be that OOP2 is seeing these readings as invalid and removing them from the main graph. I have also been seeing the \"Sensor age did not advance\" and \"Sensor age has gone backwards\" quite a few times"
+  },
+  {
+   "id": 864394633,
+   "user": "jamorham",
+   "created_at": "2021-06-19T11:37:18Z",
+   "body": "@tzachi-dar could you take a look at this? thanks"
+  },
+  {
+   "id": 864466501,
+   "user": "tzachi-dar",
+   "created_at": "2021-06-19T21:34:05Z",
+   "body": "@jk1993 Are you using libre2 or libre 1?\r\n@adenis76 Are you sure this is libre1? Are you running with the oop on blueon? (if yes which of them)?\r\n@Thomas-Wolff were you able to receive data using libre2 bluetooth connection?\r\n\r\nA request for all, can you please send me your xDrip db to tzachi.dar@gmail.com\r\nIf that is not possible, can you send a printing of the logs with the problems?\r\n\r\nThanks\r\nTzachi\r\n"
+  },
+  {
+   "id": 864468237,
+   "user": "adenis76",
+   "created_at": "2021-06-19T21:53:32Z",
+   "body": "I am 100% sure that is libre 1. I am not running any of oop."
+  },
+  {
+   "id": 864469881,
+   "user": "tzachi-dar",
+   "created_at": "2021-06-19T22:10:22Z",
+   "body": "@adenis76 \r\nCan you share your logs with me?\r\n\r\nPlease press the 3 points to the right.\r\nThen please go to backup->back of db.\r\nOnce the back up of the db will finish there will be a share button there.\r\nCan you then share it with me at. (tzachi.dar@gmail.com).\r\n\r\nThanks\r\nTzachi\r\n"
+  },
+  {
+   "id": 864470164,
+   "user": "adenis76",
+   "created_at": "2021-06-19T22:13:17Z",
+   "body": "I am just send you screenshots of logs and I will send you database in few minutes."
+  },
+  {
+   "id": 864470896,
+   "user": "jk1993",
+   "created_at": "2021-06-19T22:22:18Z",
+   "body": "@tzachi-dar I'm using libre 2 with OOP2. I will try and send you a db export tomorrow"
+  },
+  {
+   "id": 864472737,
+   "user": "Thomas-Wolff",
+   "created_at": "2021-06-19T22:46:41Z",
+   "body": "did you get the log file?\n\nGreetings Thomas\n\n \n\nVon: tzachi-dar ***@***.***> \nGesendet: Sonntag, 20. Juni 2021 00:11\nAn: NightscoutFoundation/xDrip ***@***.***>\nCc: Thomas-Wolff ***@***.***>; Mention ***@***.***>\nBetreff: Re: [NightscoutFoundation/xDrip] NFC-Scan Problem mit xDrip bau vom 11 Juni 2021 (#1758)\n\n \n\n@adenis76 <https://github.com/adenis76> \nCan you share your logs with me?\n\nPlease press the 3 points to the right.\nThen please go to backup->back of db.\nOnce the back up of the db will finish there will be a share button there.\nCan you then share it with me at. ***@***.*** ***@***.***> ).\n\nThanks\nTzachi\n\n—\nYou are receiving this because you were mentioned.\nReply to this email directly, view it on GitHub <https://github.com/NightscoutFoundation/xDrip/issues/1758#issuecomment-864469881> , or unsubscribe <https://github.com/notifications/unsubscribe-auth/AOGE5EQ5YXBHVY7ULC6SOCTTTUIVTANCNFSM4655AH5Q> .\n\n"
+  },
+  {
+   "id": 864475174,
+   "user": "tzachi-dar",
+   "created_at": "2021-06-19T23:20:54Z",
+   "body": "@adenis76 I have received your db, but I don't understand what the problem is. Any chance that you can run with your phone attached to a pc and run with adb? (If not, we can try getting this information in a different way).\r\n\r\nThanks\r\nTzachi"
+  },
+  {
+   "id": 864475603,
+   "user": "adenis76",
+   "created_at": "2021-06-19T23:28:28Z",
+   "body": "Unfortunately I can't do that now. You can send me on email step by step instructions and I will do it tomorrow. Thank you."
+  },
+  {
+   "id": 864509074,
+   "user": "tzachi-dar",
+   "created_at": "2021-06-20T06:58:08Z",
+   "body": "@adenis76 let's try something simpler:\r\nPlease go to settings->less common settings->extra logging-settings->extra tags for logging:\r\nSet there:\r\nBlukon:v,BgReading:v\r\n\r\nPlease run with the version that is creating problems for 30 minutes, and send me the logs again.\r\nIt should give us more information about what is going on.\r\nPlease also let me know, what time you have been running with the new version.\r\n\r\nThanks\r\nTzachi"
+  },
+  {
+   "id": 864538652,
+   "user": "adenis76",
+   "created_at": "2021-06-20T11:22:21Z",
+   "body": "I am send log file via xdrip feedback. Is there some way to save them and send directly to you? I think problem is starting after NFC scan. In feedback I am include message that log file should be send to you. I am try 11.6 and 19.6 nightly build and they are creating same problem after NFC scan.\r\n\r\nBest regards."
+  },
+  {
+   "id": 864540854,
+   "user": "tzachi-dar",
+   "created_at": "2021-06-20T11:41:11Z",
+   "body": "@adenis76 \r\nPlease press the 3 points to the right.\r\nThen please go to backup->back of db.\r\nOnce the back up of the db will finish there will be a share button there.\r\nCan you then share it with me at. (tzachi.dar@gmail.com)."
+  },
+  {
+   "id": 864551202,
+   "user": "tzachi-dar",
+   "created_at": "2021-06-20T13:01:18Z",
+   "body": "@adenis76 I have received your db, and looking at it.\r\nAre you not getting any readings at all with the new build\r\nCan you let me know at what time there should be a gap in the readings?"
+  },
+  {
+   "id": 864558398,
+   "user": "tzachi-dar",
+   "created_at": "2021-06-20T13:50:22Z",
+   "body": "@adenis76 I can now see some problems in the logs, but I think that readings should exist.\r\nDid you see a place in the graphs that had no readings?"
+  },
+  {
+   "id": 864573102,
+   "user": "Thomas-Wolff",
+   "created_at": "2021-06-20T15:42:26Z",
+   "body": "@tzachi-dar, the outage was exactly from 11:20 to 11:41."
+  },
+  {
+   "id": 864591576,
+   "user": "tzachi-dar",
+   "created_at": "2021-06-20T18:09:11Z",
+   "body": "OK,\nI think that I now understand what the issue is.\nI'll try to create a version with a fix tonight.\n\nOn Sun, 20 Jun 2021 at 18:42, Thomas-Wolff ***@***.***> wrote:\n\n> @tzachi-dar <https://github.com/tzachi-dar>, the outage was exactly from\n> 11:20 to 11:41.\n>\n> —\n> You are receiving this because you were mentioned.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/1758#issuecomment-864573102>,\n> or unsubscribe\n> <https://github.com/notifications/unsubscribe-auth/AB4TBZGKJZNB6CHNLCXGONDTTYD63ANCNFSM4655AH5Q>\n> .\n>\n"
+  },
+  {
+   "id": 864611987,
+   "user": "tzachi-dar",
+   "created_at": "2021-06-20T21:07:01Z",
+   "body": "There have been two issues here:\r\n1) Make sure we always use only the first 0x158 bytes of the data.\r\n2) In the case of libre2, also allow flags == 0 as a legal packet.\r\n\r\nThe following link should solve both. Please try it.\r\nPlease note:\r\n1) The file will be downloaded with a .zip extention. Please remove it (it should be apk).\r\n2) You will need to remove your version before you can install this version. Please backup your settings and db, and only then, do the uninstall and install.\r\n\r\nhttps://drive.google.com/uc?id=1pgbkt3zwe5WJcjqv_Tc4_ZbXUxtbExH2&export=download\r\n\r\nThanks\r\nTzachi"
+  },
+  {
+   "id": 866676963,
+   "user": "hapvlz",
+   "created_at": "2021-06-23T09:21:30Z",
+   "body": "Hi Tzachi,\r\n\r\nI've tested, this version works amazing so far.\r\nThank you a lot!\r\n"
+  }
+ ]
+}

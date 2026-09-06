@@ -1,0 +1,257 @@
+{
+ "id": 1032453204,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1859,
+ "title": "XDrip+ is causing audio to pause",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1859",
+ "state": "closed",
+ "labels": [
+  "bluetooth"
+ ],
+ "created_at": "2021-10-21T12:47:06Z",
+ "closed_at": "2021-10-26T20:56:19Z",
+ "comment_count": 47,
+ "body": "XDrip+ version c98a3c4-2021.10.17 is causing audio to pause when playing music/podcasts over Bluetooth.\r\n\r\nThe issue happens when the connection is made with the transmitter every 5 minutes; I've been able to reproduce it will all of my Bluetooth headphones and car Bluetooth.\r\n\r\nI am using a Pixel 4a on Android 12 with a G6 transmitter.\r\n\r\nThe issue was present on Android 11 with XDrip+ version c98a3c4-2021.10.17 too.  I tried the previous nightly and the issue did not resolve itself.  This issue was not present previously.\r\n\r\nI've tried resetting all Bluetooth devices and deleting and reinstalling xDrip+.  I have submitted logs.\r\n\r\nThe problem persists after uninstalling xDrip+ and installing the native Dexcom app.  Prior to installing the Dexcom app I forgot the transmitter in the Bluetooth settings and reboot the phone.\r\n\r\nThank you for looking into this.\r\n\r\nUPDATE: The issue seems to be coming for the Roku app.  Deleting the Roku app resolves the issue.",
+ "comments": [
+  {
+   "id": 948642230,
+   "user": "Navid200",
+   "created_at": "2021-10-21T13:55:00Z",
+   "body": "Another user, on facebook, has experienced the same, with Pixel 4a, after having updated to Android 12.\r\nHe then switched to the Dexcom app, on the same phone, and the issue persisted.  "
+  },
+  {
+   "id": 948855165,
+   "user": "BenMc19",
+   "created_at": "2021-10-21T17:38:15Z",
+   "body": "Came here to make this post, glad (I guess?) to see that it's not just me.  Just so weird how this just started happening a few days ago.  Nothing has been updated on my phone's side (Samsung S20 FE, Android 11, September 1, 2021 security patch) or on the Xdrip side.  Very strange."
+  },
+  {
+   "id": 948913549,
+   "user": "abehrens",
+   "created_at": "2021-10-21T18:59:01Z",
+   "body": "Seeing the same behavior on my pixel 5.  Tried silencing all notifications for the app and it didn't do the trick.  Does not occur when playing from the speaker, only via bluetooth.   (Edit) Security patch is from October 5 2021, xdrip version 17cbf0-2021.03.08"
+  },
+  {
+   "id": 948926099,
+   "user": "Navid200",
+   "created_at": "2021-10-21T19:16:07Z",
+   "body": "@BenMc19 @abehrens and anyone else experiencing this, would you please include what Android version you have experienced this on?"
+  },
+  {
+   "id": 948929329,
+   "user": "abehrens",
+   "created_at": "2021-10-21T19:20:27Z",
+   "body": "Happened on Android 11, just updated to 12 and same behavior."
+  },
+  {
+   "id": 949089650,
+   "user": "DaveGee281",
+   "created_at": "2021-10-22T00:04:53Z",
+   "body": "It started happening to me on a Samsung Galaxy S8+ which uses Android 9. \r\n\r\nFor the past 2 weeks, my Bluetooth ear buds disconnect every 5 minutes when Xdrip+ connects to the Dexcom transmitter and downloads BG data from the transmitter to the phone. I need to manually restart the earbuds. \r\nI'm using Xdrip version 17cbcf0=2021.03.08."
+  },
+  {
+   "id": 949288605,
+   "user": "tolot27",
+   "created_at": "2021-10-22T05:01:57Z",
+   "body": "> The problem persists after uninstalling xDrip+ and installing the native Dexcom app. Prior to installing the Dexcom app I forgot the transmitter in the Bluetooth settings and reboot the phone.\r\n\r\nThis indicates a bug in the Bluetooth stack since at least two apps are affected."
+  },
+  {
+   "id": 949290899,
+   "user": "tolot27",
+   "created_at": "2021-10-22T05:07:58Z",
+   "body": "@abehrens and others: Please edit your previous comments and add your security patch level."
+  },
+  {
+   "id": 949623135,
+   "user": "bryanw20",
+   "created_at": "2021-10-22T13:16:41Z",
+   "body": "Thanks for starting this; I haven't made time to comment just yet. I think I'm the other user @Navid200  mentioned.\r\n\r\nI also have a pixel 4a; everything (almost) worked fine on droid 11; but then the phone upgraded to 12.\r\nThe only problem I had on 11 was with my soundcore brand devices AND amzifit band 5. Only those brands would garble the music on every 5min send tot he watch face. If I disabled the watch in xdrip, no more audio problems.  Sorry I deleted that xdrip ver & installed the newest one, but it was the 'offchute' built specific for amazift band 5, a slight change from the miband 5 version.\r\n\r\nSo currently I'm running 17cbcf0-2021.03.08 code 2103081944   NOT running the amazift band 5 (it is connected to the phone's BT; but I can't make it work with this ver of xdrip yet. But I have the audio issuse when it's been 'forgotten' in the phone bt menu)\r\n\r\nAs mentioned when DEX 6 sends it's signal; bt audio is paused, regardless of brand (I tried 3) or app playing audio/video.\r\nI turned dex source to none, installed the official dex app, same issue; so it's got to be a phone/OS issue; not xdrip.\r\n\r\nI have turned ON Gabeldorsche in developer mode; still have the issue (as I checked this it's now off; not sure how long it stays enabled)\r\nI have also changed \"disable BT A2DP Hardware offload\" to ON, no change\r\nChg AVRCP version from 1.6 to 1.4 (no idea what it is/does; choices are default 1.5, 1.3 1.4 & 1.6(this is what mine was on I think)\r\n\r\nI can provide any logs; if you tell me how to make them; I will probably wipe & go back to 11 this weekend.\r\n\r\n[bugreport-sunfish-SP1A.210812.015-2021-10-21-11-51-24.zip](https://github.com/NightscoutFoundation/xDrip/files/7397392/bugreport-sunfish-SP1A.210812.015-2021-10-21-11-51-24.zip)\r\n[bugreport-sunfish-SP1A.210812.015-2021-10-21-13-42-57.zip](https://github.com/NightscoutFoundation/xDrip/files/7397394/bugreport-sunfish-SP1A.210812.015-2021-10-21-13-42-57.zip)\r\n"
+  },
+  {
+   "id": 949629554,
+   "user": "BenMc19",
+   "created_at": "2021-10-22T13:24:37Z",
+   "body": "I just don't understand how this could have been affected this past week. I listen to Bluetooth audio everyday, so i can tell you exactly when it started happening. I got the September update nearly 4 weeks ago, and this just started happening beginning of this week. \r\n\r\nSo in theory nothing on my phone changed. Xdrip didn't change. And the transmitter didn't change. You guys are smarter than me with this stuff but just doesn't make sense. If I can offer any other info to help just let me know. "
+  },
+  {
+   "id": 949633108,
+   "user": "aaroecker",
+   "created_at": "2021-10-22T13:29:02Z",
+   "body": "> > The problem persists after uninstalling xDrip+ and installing the native Dexcom app. Prior to installing the Dexcom app I forgot the transmitter in the Bluetooth settings and reboot the phone.\r\n> \r\n> This indicates a bug in the Bluetooth stack since at least two apps are affected.\r\n\r\nI tried turning on Gabeldorsche stack in the Developer Options and the issue still persists."
+  },
+  {
+   "id": 949639382,
+   "user": "aaroecker",
+   "created_at": "2021-10-22T13:36:41Z",
+   "body": "> Thanks for starting this; I haven't made time to comment just yet. I think I'm the other user @Navid200 mentioned.\r\n> \r\n> I also have a pixel 4a; everything (almost) worked fine on droid 11; but then the phone upgraded to 12. The only problem I had on 11 was with my soundcore brand devices AND amzifit band 5. Only those brands would garble the music on every 5min send tot he watch face. If I disabled the watch in xdrip, no more audio problems. Sorry I deleted that xdrip ver & installed the newest one, but it was the 'offchute' built specific for amazift band 5, a slight change from the miband 5 version.\r\n> \r\n> So currently I'm running [17cbcf0](https://github.com/NightscoutFoundation/xDrip/commit/17cbcf0ce1d5c65f95755c17d3d02198e4775213)-2021.03.08 code 2103081944 NOT running the amazift band 5 (it is connected to the phone's BT; but I can't make it work with this ver of xdrip yet. But I have the audio issuse when it's been 'forgotten' in the phone bt menu)\r\n> \r\n> As mentioned when DEX 6 sends it's signal; bt audio is paused, regardless of brand (I tried 3) or app playing audio/video. I turned dex source to none, installed the official dex app, same issue; so it's got to be a phone/OS issue; not xdrip.\r\n> \r\n> I have turned ON Gabeldorsche in developer mode; still have the issue (as I checked this it's now off; not sure how long it stays enabled) I have also changed \"disable BT A2DP Hardware offload\" to ON, no change Chg AVRCP version from 1.6 to 1.4 (no idea what it is/does; choices are default 1.5, 1.3 1.4 & 1.6(this is what mine was on I think)\r\n> \r\n> I can provide any logs; if you tell me how to make them; I will probably wipe & go back to 11 this weekend.\r\n> \r\n> [bugreport-sunfish-SP1A.210812.015-2021-10-21-11-51-24.zip](https://github.com/NightscoutFoundation/xDrip/files/7397392/bugreport-sunfish-SP1A.210812.015-2021-10-21-11-51-24.zip) [bugreport-sunfish-SP1A.210812.015-2021-10-21-13-42-57.zip](https://github.com/NightscoutFoundation/xDrip/files/7397394/bugr"
+  },
+  {
+   "id": 949642290,
+   "user": "aaroecker",
+   "created_at": "2021-10-22T13:40:21Z",
+   "body": "> I just don't understand how this could have been affected this past week. I listen to Bluetooth audio everyday, so i can tell you exactly when it started happening. I got the September update nearly 4 weeks ago, and this just started happening beginning of this week.\r\n> \r\n> So in theory nothing on my phone changed. Xdrip didn't change. And the transmitter didn't change. You guys are smarter than me with this stuff but just doesn't make sense. If I can offer any other info to help just let me know.\r\n\r\nIt began Wednesday morning for me on my commute.  At first I thought it was my podcast app.  Tuesday night I was listening to audio over Bluetooth for approximately an hour without issue."
+  },
+  {
+   "id": 949651964,
+   "user": "BenMc19",
+   "created_at": "2021-10-22T13:52:02Z",
+   "body": "> > I just don't understand how this could have been affected this past week. I listen to Bluetooth audio everyday, so i can tell you exactly when it started happening. I got the September update nearly 4 weeks ago, and this just started happening beginning of this week.\r\n> > So in theory nothing on my phone changed. Xdrip didn't change. And the transmitter didn't change. You guys are smarter than me with this stuff but just doesn't make sense. If I can offer any other info to help just let me know.\r\n> \r\n> It began Wednesday morning for me on my commute. At first I thought it was my podcasts app. Tuesday night I was listening to audio over Bluetooth for approximately an hour without issue.\r\n\r\nThinking back, that very well may have been the exact date for me too. "
+  },
+  {
+   "id": 949655816,
+   "user": "DaveGee281",
+   "created_at": "2021-10-22T13:56:37Z",
+   "body": "I got the same issue on a Samsung S8+ (android 9). It started about 2 weeks\nago. The only thing that happened at the time was that I stopped using my\nGarmin Vivoactive 3 to display my CGM readings - I'll be getting it back\nsoon and will check to see if it makes a difference.\n\nOn Fri, Oct 22, 2021, 9:40 AM aaroecker ***@***.***> wrote:\n\n> I just don't understand how this could have been affected this past week.\n> I listen to Bluetooth audio everyday, so i can tell you exactly when it\n> started happening. I got the September update nearly 4 weeks ago, and this\n> just started happening beginning of this week.\n>\n> So in theory nothing on my phone changed. Xdrip didn't change. And the\n> transmitter didn't change. You guys are smarter than me with this stuff but\n> just doesn't make sense. If I can offer any other info to help just let me\n> know.\n>\n> It began Wednesday morning for me on my commute. At first I thought it was\n> my podcasts app. Tuesday night I was listening to audio over Bluetooth for\n> approximately an hour without issue.\n>\n> —\n> You are receiving this because you commented.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/1859#issuecomment-949642290>,\n> or unsubscribe\n> <https://github.com/notifications/unsubscribe-auth/AWFHE5PEZIEPIWUBW6YQBVTUIFSU7ANCNFSM5GOBWXZQ>\n> .\n> Triage notifications on the go with GitHub Mobile for iOS\n> <https://apps.apple.com/app/apple-store/id1477376905?ct=notification-email&mt=8&pt=524675>\n> or Android\n> <https://play.google.com/store/apps/details?id=com.github.android&referrer=utm_campaign%3Dnotification-email%26utm_medium%3Demail%26utm_source%3Dgithub>.\n>\n>\n"
+  },
+  {
+   "id": 950385456,
+   "user": "eliaskass",
+   "created_at": "2021-10-24T19:59:48Z",
+   "body": "I'm having this issue as well.\r\n\r\nXdrip+ \r\nVersion:17cbcf0-2021.03.08\r\nCode: 2103081944\r\n\r\nAndroid 11\r\n\r\nAndroid security update\r\nOctober 1, 2021\r\n\r\nGoogle Play system update\r\nAugust 1, 2021\r\n\r\nBaseband version g7250-00132-210419-B-7294132\r\n\r\nKernel version\r\n4.19.160-g85b17737b5f2-ab7508408 #1 Wed Jun 30 08:01:04 UTC 2021\r\n\r\nBuild number RQ3A.211001.001"
+  },
+  {
+   "id": 951360559,
+   "user": "vandykej17",
+   "created_at": "2021-10-25T21:52:50Z",
+   "body": "I also have this issue, but with the Dexcom app. I have been trying to google it and luckily stumbled on this. Mine also started this past week, definitely before Friday, but not 100% how much before that.\r\n\r\nPixel 2 XL\r\nAndroid 11\r\nSecurity update: Oct 5, 2020\r\nGoogle play system update: Aug 1, 2021\r\n\r\n"
+  },
+  {
+   "id": 951363016,
+   "user": "Navid200",
+   "created_at": "2021-10-25T21:57:27Z",
+   "body": "@vandykej17 Have you contacted Dexcom?"
+  },
+  {
+   "id": 951371548,
+   "user": "vandykej17",
+   "created_at": "2021-10-25T22:10:11Z",
+   "body": "> @vandykej17 Have you contacted Dexcom?\r\n\r\nI was thinking about it, but they'll just blame Android. And tbh, they probably should, since this happens on XDrip and Dexcom. I haven't changed transmitters recently either."
+  },
+  {
+   "id": 951373909,
+   "user": "abehrens",
+   "created_at": "2021-10-25T22:14:02Z",
+   "body": "> > @vandykej17 Have you contacted Dexcom?\r\n> \r\n> I was thinking about it, but they'll just blame Android. And tbh, they probably should, since this happens on XDrip and Dexcom. I haven't changed transmitters recently either.\r\n\r\nI wonder if there was some threshold crossed with an internal variable on the device, like something is causing an overrun of a buffer somewhere and it was the passage of time that caused this to occur.  It feels strange that this just appeared seemingly without the introduction of any other modifications."
+  },
+  {
+   "id": 951377371,
+   "user": "Navid200",
+   "created_at": "2021-10-25T22:19:39Z",
+   "body": "@vandykej17  \r\nAsking them what's going on is a reasonable question.   Regardless of whose fault it is, Dexcom is the party you pay, or your insurance pays.  Your phone is on their support list.  \r\n\r\nConsidering all of that, if Dexcom cannot address this, I'm not sure what xDrip can do. "
+  },
+  {
+   "id": 951440448,
+   "user": "bryanw20",
+   "created_at": "2021-10-26T00:19:24Z",
+   "body": "I have not contacted dexcom yet, but went on their website and it says, for my 4a at least, it says android versions 8(?)- 11.\r\n\r\nSo idk if 12 isn't listed because it's still to new or because there's an issue.\r\n\r\n\r\nBtw I've done a factory reset, ok 2 resets. It was working, then I started opening apps that had been downloaded from my backup. I didn't pause between opening apps and testing, so after like 20 apps I tried audio again and it was broken.\r\nSo I tried a 2nd reset and it's been 2 days and it's working for now, but I've only used like 10% of my previous apps.\r\n\r\nSo far I've used: \r\nFacebook/msg, text, phone, Pandora, YouTube, reddit, Walmart, sam's & a few others.\r\nI haven't added my bt watch, Amazfit band 5 yet, or any other wifi/bt apps . Added 2 soindcore bt devices so far.\r\n\r\nOh and I have a support ticket open with Google/pixel. He checks in with me about once a day, asking the obvious questions. First we did a wifi/bt reset, then the factory reset, then asked where the phone came from, is it USA, is it damaged/water damaged.\r\nI keep saying it's not just me..."
+  },
+  {
+   "id": 951481890,
+   "user": "BenMc19",
+   "created_at": "2021-10-26T01:53:09Z",
+   "body": "> I have not contacted dexcom yet, but went on their website and it says, for my 4a at least, it says android versions 8(?)- 11.\r\n> \r\n> So idk if 12 isn't listed because it's still to new or because there's an issue.\r\n> \r\n> Btw I've done a factory reset, ok 2 resets. It was working, then I started opening apps that had been downloaded from my backup. I didn't pause between opening apps and testing, so after like 20 apps I tried audio again and it was broken. So I tried a 2nd reset and it's been 2 days and it's working for now, but I've only used like 10% of my previous apps.\r\n> \r\n> So far I've used: Facebook/msg, text, phone, Pandora, YouTube, reddit, Walmart, sam's & a few others. I haven't added my bt watch, Amazfit band 5 yet, or any other wifi/bt apps . Added 2 soindcore bt devices so far.\r\n> \r\n> Oh and I have a support ticket open with Google/pixel. He checks in with me about once a day, asking the obvious questions. First we did a wifi/bt reset, then the factory reset, then asked where the phone came from, is it USA, is it damaged/water damaged. I keep saying it's not just me...\r\n\r\nKeep us updated. I really think this is something on Dexcom's end. "
+  },
+  {
+   "id": 951958271,
+   "user": "aaroecker",
+   "created_at": "2021-10-26T13:47:52Z",
+   "body": "> @vandykej17 Have you contacted Dexcom?\r\n\r\nA few have added reviews in the Google Play Store for the Dexcom G6 app, myself included, stating that the app is causing audio to pause.  "
+  },
+  {
+   "id": 951958835,
+   "user": "aaroecker",
+   "created_at": "2021-10-26T13:48:30Z",
+   "body": "> I have not contacted dexcom yet, but went on their website and it says, for my 4a at least, it says android versions 8(?)- 11.\r\n> \r\n> So idk if 12 isn't listed because it's still to new or because there's an issue.\r\n> \r\n> Btw I've done a factory reset, ok 2 resets. It was working, then I started opening apps that had been downloaded from my backup. I didn't pause between opening apps and testing, so after like 20 apps I tried audio again and it was broken. So I tried a 2nd reset and it's been 2 days and it's working for now, but I've only used like 10% of my previous apps.\r\n> \r\n> So far I've used: Facebook/msg, text, phone, Pandora, YouTube, reddit, Walmart, sam's & a few others. I haven't added my bt watch, Amazfit band 5 yet, or any other wifi/bt apps . Added 2 soindcore bt devices so far.\r\n> \r\n> Oh and I have a support ticket open with Google/pixel. He checks in with me about once a day, asking the obvious questions. First we did a wifi/bt reset, then the factory reset, then asked where the phone came from, is it USA, is it damaged/water damaged. I keep saying it's not just me...\r\n\r\nAny update on this is it still working correctly? "
+  },
+  {
+   "id": 951988415,
+   "user": "vandykej17",
+   "created_at": "2021-10-26T14:18:19Z",
+   "body": "Just called Dexcom, fairly unhelpful... They first told me it was a hardware issue with my phone - \"it probably can't connect to multiple devices at a time\". After explaining to them I've been using Dexcom on my phone for 2 years now without this issue, they suggested uninstalling and re-installing the app. My session ends tomorrow so I will go ahead and do that today and report back if that helps.\r\n\r\nThey also suggested reaching out to my phone manufacturer to get their support on this issue. I know their suggestion will be a factory reset. So I guess I will do that next, if the app re-install doesn't help.\r\n\r\nJake"
+  },
+  {
+   "id": 952233172,
+   "user": "aaroecker",
+   "created_at": "2021-10-26T19:12:22Z",
+   "body": "I went back and looked to see what apps were updated when this issue began for me.  With that said, I think the issue is coming from the Roku app.  I have deleted it and the issue has resolved itself for the past 30 minutes."
+  },
+  {
+   "id": 952244112,
+   "user": "BenMc19",
+   "created_at": "2021-10-26T19:27:03Z",
+   "body": "Oh my goodness, you may be a saint! I don't even use the Roku app anymore but it's on there. Just deleted it and it made the first 2 readings without pausing!"
+  },
+  {
+   "id": 952255966,
+   "user": "PeterStamford",
+   "created_at": "2021-10-26T19:35:57Z",
+   "body": "aaroecker If you're ever in Cumbria, England I will buy you a pint. Awesome work"
+  },
+  {
+   "id": 952263338,
+   "user": "Navid200",
+   "created_at": "2021-10-26T19:45:43Z",
+   "body": "I hope this is not a joke.\r\n\r\nCan everyone confirm if uninstalling Roku solves the problem?"
+  },
+  {
+   "id": 952265070,
+   "user": "vandykej17",
+   "created_at": "2021-10-26T19:48:12Z",
+   "body": "Wait, how would the Roku app do this? And only to users with both Dexcom/XDrip and Roku? Not discounting the proof, but it's just crazy :)\r\n\r\nDoes Roku even use Bluetooth?"
+  },
+  {
+   "id": 952266081,
+   "user": "vandykej17",
+   "created_at": "2021-10-26T19:49:45Z",
+   "body": "@Navid200 I am testing right now, will post back within 10 minutes.\r\n\r\nedit - trying a few things before fully removing"
+  },
+  {
+   "id": 952284370,
+   "user": "vandykej17",
+   "created_at": "2021-10-26T20:08:28Z",
+   "body": "#### Tested the following and still paused after 5 min:\r\n- No change (just to make sure its still happening)\r\n- Removed \"media & file\" permission from the Roku app\r\n- Cleared storage and cache\r\n\r\n#### Successfully went 6 minutes with no music pause:\r\n- Uninstalling app completely (has been playing for 15 minutes now)"
+  },
+  {
+   "id": 952299003,
+   "user": "DaveGee281",
+   "created_at": "2021-10-26T20:28:59Z",
+   "body": "Same here. Never used the Roku app. Uninstalling it, and Bluetooth audio\nworks. This is on a Samsung S8+.\n\nBig thanks to everyone\n\nOn Tue, Oct 26, 2021, 4:08 PM vandykej17 ***@***.***> wrote:\n\n> Tested the following and still paused after 5 min:\n>\n>    - No change (just to make sure its still happening)\n>    - Removed \"media & file\" permission from the Roku app\n>    - Cleared storage and cache\n>\n> Successfully went 6 minutes with no music pause:\n>\n>    - Uninstalling app completely fixed it (has been playing for 7 minutes\n>    now)\n>\n> —\n> You are receiving this because you commented.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/1859#issuecomment-952284370>,\n> or unsubscribe\n> <https://github.com/notifications/unsubscribe-auth/AWFHE5JPSAOP5KDVNR7WJJDUI4DEPANCNFSM5GOBWXZQ>\n> .\n> Triage notifications on the go with GitHub Mobile for iOS\n> <https://apps.apple.com/app/apple-store/id1477376905?ct=notification-email&mt=8&pt=524675>\n> or Android\n> <https://play.google.com/store/apps/details?id=com.github.android&referrer=utm_campaign%3Dnotification-email%26utm_medium%3Demail%26utm_source%3Dgithub>.\n>\n>\n"
+  },
+  {
+   "id": 952299283,
+   "user": "bryanw20",
+   "created_at": "2021-10-26T20:29:25Z",
+   "body": "So here's the updates I received.\r\n\r\nGoogle/pixel says no issues with them,  send phone in for repair.\r\n\r\nDexcom says:\r\n\"\r\nUnfortunately android 12 is not yet fully compatible thus causing numerous issues, we are currently investigating this one, android 12 was just recently released 2 weeks ago and we at Dexcom run series of tests on Android/IOS and smart devices where we plan to support after they are publicly released. It may take several weeks or months to complete the necessary vetting and update. The Dexcom medical device and app are Federally regulated, which means phone models/OS must be tested before they can be used.\"\r\n\r\n"
+  },
+  {
+   "id": 952300224,
+   "user": "bryanw20",
+   "created_at": "2021-10-26T20:30:45Z",
+   "body": "Personally I'm on day 3 of factory reset and so far it's still working, but I still haven't logged into/opened all the apps I have installed yet.\r\nBut a majority of the ones I use frequently I have opened.\r\n\r\nI also have the Roku app, never use it so gonna delete it now."
+  },
+  {
+   "id": 952304712,
+   "user": "vandykej17",
+   "created_at": "2021-10-26T20:37:07Z",
+   "body": "@bryanw20 have you re-installed the Roku app yet?"
+  },
+  {
+   "id": 952311069,
+   "user": "aaroecker",
+   "created_at": "2021-10-26T20:44:50Z",
+   "body": "> Wait, how would the Roku app do this? And only to users with both Dexcom/XDrip and Roku? Not discounting the proof, but it's just crazy :)\r\n> \r\n> Does Roku even use Bluetooth?\r\n\r\nI checked and the app was given the permission for \"Nearby Devices\"; I believe Bluetooth can be used for this.  I haven't tested, but I wonder if the permission is not granted if the app would function nicely with xDrip+.  With that said, if the permission is not given the Roku app might not work correctly either.  As for why it's causing the issue, I have no idea.  I just had a hunch that it might to be an app due to when the issue began."
+  },
+  {
+   "id": 952313096,
+   "user": "Navid200",
+   "created_at": "2021-10-26T20:47:47Z",
+   "body": "@aaroecker \r\n> I went back and looked to see what apps were updated when this issue began for me. With that said, I think the issue is coming from the Roku app. I have deleted it and the issue has resolved itself for the past 30 minutes.\r\n\r\nThanks for thinking of that approach.  Thanks for sharing the results.  \r\nCan I share this solution if someone else, now or in the future, experiences this problem?"
+  },
+  {
+   "id": 952315517,
+   "user": "aaroecker",
+   "created_at": "2021-10-26T20:51:24Z",
+   "body": "> @aaroecker\r\n> \r\n> > I went back and looked to see what apps were updated when this issue began for me. With that said, I think the issue is coming from the Roku app. I have deleted it and the issue has resolved itself for the past 30 minutes.\r\n> \r\n> Thanks for thinking of that approach. Thanks for sharing the results. Can I share this solution if someone else, now or in the future, experiences this problem?\r\n\r\nYes, please do 🙂 "
+  }
+ ]
+}

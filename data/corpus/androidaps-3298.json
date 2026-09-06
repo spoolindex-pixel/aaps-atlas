@@ -1,0 +1,39 @@
+{
+ "id": 2232793421,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3298,
+ "title": "Data does not upload to Nightscout after switch the Insulin type to Lyumjev ",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3298",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-04-09T07:31:26Z",
+ "closed_at": "2024-04-29T09:33:19Z",
+ "comment_count": 4,
+ "body": "\r\n**Scenario:**\r\nWe use Omnipod Dash with Dexcom G6 \r\nWe moved to use Lyumjev Insulin 2 days ago \r\nIn the configuration builder we configure the AAPS in the \"Insulin Type section to use Lyumjev instead of \"Rapid Insulin Oref..\" \r\nSince we did that , the child's phone does not upload data to Nightscout and we also did not see his sugar data in the Dexcom Follow app either\r\nEverything is fine with the child on the phone, he sees sugar data in Dexcom and in AAPS and also receives basal etc..\r\nHowever , we could not see any data in NightScout site.\r\nIn addition we could not see any data in the Dexcom Follow app\r\n\r\n**The Bug:**\r\nIt turns out that if you start using Lyumjev and change it in the AAPS configuration builder as well, it make problem in the pump and the loop and the AAPS does not upload data to the cloud and the Dexcom also stops showing data in the Follow app\r\nOnly After we switched back to \"rapid insulin\" everything worked out and we could see data in Nightscout site and in the Dexcom Follow app",
+ "comments": [
+  {
+   "id": 2044375490,
+   "user": "MilosKozak",
+   "created_at": "2024-04-09T07:56:33Z",
+   "body": "There must be a different reason. Uploading to Dexcom has NO relation to AAPS"
+  },
+  {
+   "id": 2047216704,
+   "user": "vanelsberg",
+   "created_at": "2024-04-10T10:58:23Z",
+   "body": "> There must be a different reason. Uploading to Dexcom has NO relation to AAPS\r\n\r\nConfirming for dev-x. Have been switching insulin type several times in the past view weeks. No issue..."
+  },
+  {
+   "id": 2047369001,
+   "user": "amitayg",
+   "created_at": "2024-04-10T12:04:50Z",
+   "body": "Note that this comes together with the clock change (move to summer\r\nclock)in addition the child phone is with Google parental control\r\n(Family link).\r\ni think that the combination of the above cause the issue :\r\n\r\nScenario:\r\n1.Change the insulin type\r\n2.phone under parent supervision with Google Family link\r\n3.Clock should be changed to summer clock (one hour forward)\r\n4.before the child go to sleep i disabled the automatic time update in the\r\nandroid configuration\r\n5.the next day i move the clock manually 1 hour forward to summer clock\r\n\r\nFrom this stage we have started to get many problems and error messages\r\nthat the pump is not synchronized and no basal will be received etc..\r\nWe played a lot with the phone time and update the pump accordingly\r\nEventually , no data uploaded to Nightscout unless we change the insulin\r\ntype to Rapid again and from this stage everything fixed\r\n\r\n\r\n\r\nOn Wed, Apr 10, 2024 at 1:58 PM Theodoor ***@***.***> wrote:\r\n\r\n> There must be a different reason. Uploading to Dexcom has NO relation to\r\n> AAPS\r\n>\r\n> Confirming for dev-x. Have been switching insulin type several times in\r\n> the past view weeks. No issue...\r\n>\r\n> —\r\n> Reply to this email directly, view it on GitHub\r\n> <https://github.com/nightscout/AndroidAPS/issues/3298#issuecomment-2047216704>,\r\n> or unsubscribe\r\n> <https://github.com/notifications/unsubscribe-auth/AOPGAQXRNSSY2OXKNI47XZLY4ULOLAVCNFSM6AAAAABF6A4AA2VHI2DSMVQWIX3LMV43OSLTON2WKQ3PNVWWK3TUHMZDANBXGIYTMNZQGQ>\r\n> .\r\n> You are receiving this because you authored the thread.Message ID:\r\n> ***@***.***>\r\n>\r\n"
+  },
+  {
+   "id": 2082275666,
+   "user": "MilosKozak",
+   "created_at": "2024-04-29T09:33:19Z",
+   "body": "Manually setting time can cause lot of troubles in synchronization. You should avoid it"
+  }
+ ]
+}

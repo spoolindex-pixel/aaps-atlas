@@ -1,0 +1,75 @@
+{
+ "id": 1610189450,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2449,
+ "title": "AAPSClient missing entries from AAPS",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2449",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-03-05T12:55:36Z",
+ "closed_at": "2023-05-14T08:43:04Z",
+ "comment_count": 10,
+ "body": "Both on Android 12\nNS Dev15\nAAPS DEV-h \nLogs attached.\nWebsockets ON on both.\n\nTreatments entered by AAPS on 10:23 (25gr carbs), bolus 0.7 at 10:54 and bolus 1.1 at 12:19 not reflected on AAPSClient.\n\n![Screenshot_20230305_134447_info.nightscout.aapsclient2.jpg](https://user-images.githubusercontent.com/4725280/222961389-507a619b-9146-4650-9d04-cc2b2c240c00.jpg)\n\n![Screenshot_20230305_134910_com.google.android.apps.photos.jpg](https://user-images.githubusercontent.com/4725280/222961404-6f93125a-b51f-48d6-add0-867ebabafc91.jpg)\n\n![Screenshot_20230305_135005_info.nightscout.aapsclient2.jpg](https://user-images.githubusercontent.com/4725280/222961553-92cf92f8-7093-49ae-b6ab-c2de95e214b3.jpg)\n\n![Screenshot_20230305_135414_com.google.android.apps.photos.jpg](https://user-images.githubusercontent.com/4725280/222961599-c2c6bdaa-34a2-4b10-a8cf-26912d1fb9c7.jpg)\n\n\n\n![Screenshot_20230305_134536_info.nightscout.aapsclient2.jpg](https://user-images.githubusercontent.com/4725280/222961320-5c65b96c-8d14-4d0e-985a-99071c8a3c69.jpg)\n\n![Screenshot_20230305_134755_com.google.android.apps.photos.jpg](https://user-images.githubusercontent.com/4725280/222961345-cb2913f6-7030-47ca-ab77-63a613e61ce3.jpg)\n\n![AndroidAPS_LOG_1678020298233.log.zip](https://github.com/nightscout/AndroidAPS/files/10891852/AndroidAPS_LOG_1678020298233.log.zip)\n\n![AndroidAPS_LOG_1678020291169.log.zip](https://github.com/nightscout/AndroidAPS/files/10891853/AndroidAPS_LOG_1678020291169.log.zip)\n\n\n",
+ "comments": [
+  {
+   "id": 1455571448,
+   "user": "streethawk22",
+   "created_at": "2023-03-06T07:14:53Z",
+   "body": "I have the same experience. Not all comes to the AAPSclient or AAPS. The comunication problem is also by the switching profile on AAPSclient App, not always get the command trough the NS to the Master App."
+  },
+  {
+   "id": 1456038144,
+   "user": "MilosKozak",
+   "created_at": "2023-03-06T12:22:13Z",
+   "body": "could you check if there is WS reconnection around missing period?"
+  },
+  {
+   "id": 1456977767,
+   "user": "bchris21",
+   "created_at": "2023-03-06T20:54:47Z",
+   "body": "Manual NSClient restart and AAPS yes; while troubleshooting in order to see if a restart will finally push the missing treatments.\nNow if there was an instant network disconnection I cannot confirm.\n\nLet me know if I can assist troubleshooting in any way.\n\nWithout a fully working AAPSClient and NS being able to set temp targets, enter carbs etc it's very challenging to remotely control our kid while being at school. As a workaround TeamViewer/Airdroid is used to remotely control (also SMS Commands)."
+  },
+  {
+   "id": 1460105286,
+   "user": "gpgerrard",
+   "created_at": "2023-03-08T12:50:02Z",
+   "body": "Having the exact same problem with AAPSClient 3.2.0-beta1 and NS15 using v3 API.  Websockets on. Treatments appearing OK on one AAPSClient instance but not on another. Will keep an eye out for WS reconnections. "
+  },
+  {
+   "id": 1465199275,
+   "user": "CaroGo",
+   "created_at": "2023-03-12T13:24:51Z",
+   "body": "Same observation...entering carbs or tt in nightscout manually or via ifttt is not displayed and taken into account in AAPS. (Infos arrive in xdrip and nightscout). "
+  },
+  {
+   "id": 1489199895,
+   "user": "jumalakarhu",
+   "created_at": "2023-03-29T19:43:36Z",
+   "body": "I have a similar experience, but the opposite way. AAPS client is set to _not_ upload treatments and profile but to download treatments and profiles. Still when I enter 1 g carbs on AAPS client this is sent to Nightstcout side and further to AAPS. \r\nAlso - Profiles from AAPS are not uploaded to NS and not sent to AAPS client. Tested on new install of AAPS client and another with total wipe (force stop, clear cache and storage and folders) before reinstall. If I set \r\nAll boxes in AAPS nsv3 sync ticket except receive/backfill cgm data. Have done full sync on both AAPS an client to no avail. As it is now AAPS client does not have valid profile, only invalid local profile1 without data. \r\nAAPS Android 12, and client android 11 dev-i, NS dev15 websockets ticked."
+  },
+  {
+   "id": 1491515424,
+   "user": "MilosKozak",
+   "created_at": "2023-03-31T08:21:52Z",
+   "body": "> Same observation...entering carbs or tt in nightscout manually or via ifttt is not displayed and taken into account in AAPS. (Infos arrive in xdrip and nightscout).\r\n\r\nyou didn't read limitations in release notes"
+  },
+  {
+   "id": 1491517199,
+   "user": "MilosKozak",
+   "created_at": "2023-03-31T08:23:23Z",
+   "body": "> Having the exact same problem with AAPSClient 3.2.0-beta1 and NS15 using v3 API. Websockets on. Treatments appearing OK on one AAPSClient instance but not on another. Will keep an eye out for WS reconnections.\r\n\r\nit has been improved in dev-i"
+  },
+  {
+   "id": 1492513651,
+   "user": "jumalakarhu",
+   "created_at": "2023-03-31T19:49:58Z",
+   "body": "> \r\n\r\nUpdate: Seems like a restart of dynos on Heroku and then a full sync from AAPS have fixed issues with profile sync. Still get carb entries entered in AAPSClient uploaded to NS and AAPS even though sync from AAPSClient is not enabled."
+  },
+  {
+   "id": 1546843173,
+   "user": "MilosKozak",
+   "created_at": "2023-05-14T08:43:04Z",
+   "body": "this has been improved. open new issue if this re-appear"
+  }
+ ]
+}

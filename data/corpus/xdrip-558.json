@@ -1,0 +1,227 @@
+{
+ "id": 352611539,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 558,
+ "title": "Desert Sync Feature",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/558",
+ "state": "closed",
+ "labels": [
+  "enhancement"
+ ],
+ "created_at": "2018-08-21T16:08:06Z",
+ "closed_at": "2021-08-07T02:14:01Z",
+ "comment_count": 35,
+ "body": "Requests and a bounty offer have been received to implement xDrip follower sync without an internet connection.\r\n\r\nIf you are interested in this feature, please add a comment with your usage case and how you would want this to work. By adding a comment you should get notified of updates to this issue when there is anything to test.",
+ "comments": [
+  {
+   "id": 414782533,
+   "user": "Kustomwireless",
+   "created_at": "2018-08-21T18:50:13Z",
+   "body": "This would be very help full to us We spend a lot of time on a motor bike my wife's phone is the master and most times in her bag my phone is the follower and is set up on the handle bars and we both can see Xdrip as we are going down the road works great as long as we have phone service but many times no service so the follower will not get updates this is why I am asking."
+  },
+  {
+   "id": 416405666,
+   "user": "jamorham",
+   "created_at": "2018-08-27T23:54:00Z",
+   "body": "Okay the 27th Aug nightly has the new `Desert Sync` feature for when you are in an internet desert.\r\n\r\nTo enable it you need to establish a connection between the phones. In testing I did this by using the wifi hotspot feature of the master phone and then connecting the follower phone to it via wifi.\r\n\r\nOnce you have the link established, go in to `xDrip+ Sync Settings` and in to the `Desert Sync` section. Here you can enable the service. Once enabled then you can use the option to display the QR code on the master and then on the follower phone camera scan this with the `xDrip+ Settings` -> `Auto Configure` feature.\r\n\r\nWhat you should then find is that if you turn off mobile data on both handsets then they continue to be able to sync without internet access. Indeed you can use a hybrid of mobile data and wifi and it will use both, so you get the advantages of data transfer whether you are out of range of the other handset or cellular data.\r\n\r\nThis is an early release and there may still be some rough edges and bugs or small delays with the syncing. I should be able to improve these but I have included it in the nightly so anyone who is interested can test it out."
+  },
+  {
+   "id": 416471296,
+   "user": "er0780",
+   "created_at": "2018-08-28T06:52:28Z",
+   "body": "Hello Jamorham,\r\n sorry for being offline for many days. We had bad times according to strange blood sugars.\r\nBut know I am back.\r\n\r\nWe have been in holiday some weeks ago and ... there I found some good reasons:\r\nIn the appartment near to the seaside there was no WLAN and the mobile internet connect was very slow with a lot of interruptions. So a \"Desert sync\" feature (nice name ;)) would have been helpful. On the beach there was no connectivity at all. So another possibility to get data to the follower.\r\n"
+  },
+  {
+   "id": 416551141,
+   "user": "keencave",
+   "created_at": "2018-08-28T11:32:23Z",
+   "body": "The feature works! Using a master/follower is no possible for me in my company wifi network. Seems the Google firebase service is blocked on the gateway router. After enabling the desert sync option I got data on my follower phone via local wifi. Perfect!"
+  },
+  {
+   "id": 416707051,
+   "user": "jweismann",
+   "created_at": "2018-08-28T19:14:27Z",
+   "body": "Hello Jamorham - I'm very interested in testing this. I have two followers today. If I upgrade xdrip on master and the two followers to the latest version, is all it takes that I turn the dessert sync on on all three phones or would I need to do more ?\r\n"
+  },
+  {
+   "id": 416769883,
+   "user": "tzachi-dar",
+   "created_at": "2018-08-28T23:11:10Z",
+   "body": "A very nice feature. Very impressive.\r\n\r\nA few notes:\r\n1) This feature could be used even inside the house where there is internet all the time. This is to avoid issues when there is no internet connection when there is an isp failure.\r\n\r\n2) This can be used (with some modifications) for remote snoozes. Current gms messaging might take a minute or two for messages to pass which is too slow for remote snoozing. This mechanism (if extended should work faster).\r\n\r\n3) If I understand correctly, the server IP is received through scanning for it. This will work at the beginning but after some time ip addresses change (many times a router reset will cause ip changes).\r\nI believe that adding a mechanism like mdns (see https://developer.android.com/training/connect-devices-wirelessly/wifi-direct for example) should work well in this cases. Needs some more thinking, but as a general rule.\r\n\r\nGreat initiative."
+  },
+  {
+   "id": 417051258,
+   "user": "jamorham",
+   "created_at": "2018-08-29T18:12:10Z",
+   "body": "@jweismann yes upgrade to the latest nightly and then follow the instructions I provided a few comments up to enable it."
+  },
+  {
+   "id": 417362675,
+   "user": "jweismann",
+   "created_at": "2018-08-30T15:32:21Z",
+   "body": "@jamorham - Thanks! I want to share my first experiences with you. It seemed to work fine during the night and when she moved to a new location in the morning it started to fail regularly. I have a detailed logfile that I will send to you from one of the follower phone that lost data regularly (both followers did).\r\nIt seems that the IP of the master changed but I wasn't there to re-autoconfigure. I should be mentioned that all phones were on 4G data and no wifi involved at the problematic location. I was wondering if the master would be able to share a new IP address with its followers using its 4G data connectivity assuming that is working well so desert sync will be able recover its state automatically. Thanks again. Please let me know if more logs would be useful to you.\r\n"
+  },
+  {
+   "id": 417367042,
+   "user": "tzachi-dar",
+   "created_at": "2018-08-30T15:44:33Z",
+   "body": "@jweismann if you have 4g connectivity to both phones, why do they need the desert mode? they can talk in the normal way can't they?"
+  },
+  {
+   "id": 417457360,
+   "user": "jweismann",
+   "created_at": "2018-08-30T20:31:37Z",
+   "body": "@tzachi-dar I have seen periods where one or both followers are loosing signals for 30 mins or more with classical xdrip sync mode (no nsclient involved) and if this issue is indeed 4G related then I was hoping to see something different with desert mode and learn from that. Moreover, I wanted to help test this new feature by trying it out and share experiences. Apparently my original problem seems to persist with desert mode but desert mode was explicit in saying that the master IP appears unreachable."
+  },
+  {
+   "id": 417487773,
+   "user": "jamorham",
+   "created_at": "2018-08-30T22:28:27Z",
+   "body": "Automatic re-tracking of changed master/follower IP addresses is coming soon."
+  },
+  {
+   "id": 417788537,
+   "user": "jweismann",
+   "created_at": "2018-08-31T21:03:49Z",
+   "body": "@jamorham - sounds great. I will be happy to help you test this. Thanks"
+  },
+  {
+   "id": 417948178,
+   "user": "bordeb",
+   "created_at": "2018-09-02T18:01:54Z",
+   "body": "couldn't resist to say, an excellent feature, thumbs up, great job, many tnx!!"
+  },
+  {
+   "id": 418047429,
+   "user": "dideldum",
+   "created_at": "2018-09-03T08:53:51Z",
+   "body": "Thanks, thanks, thanks!\r\n\r\nThis is a great feature, which I was not hoping to see so soon!\r\n\r\nOur constellation with our daughter is: xDrip+ as a master on a full Android smartwatch (worn by her in her pump belt). A phone with xDrip+ as a follower and AndroidAPS to control her pump (AAPS would run on the watch, but it is very uncomfortable to use it and for a 5years old girl the watch is to big to wear it on her arm, so it is without the straps inside a pocket in the pump belt). Now even in zones without cellular network we can have the connection between watch and phone using a hotspot and have the full system working.\r\nYou made me very happy!!!\r\n"
+  },
+  {
+   "id": 418048320,
+   "user": "jamorham",
+   "created_at": "2018-09-03T08:56:58Z",
+   "body": "The Sept 3rd nightly includes improvements to the `Desert Sync` feature. \r\n\r\nMaster IP address changes are now fed back locally and over the google cloud, so if the IP changes and both devices are still on the same wifi network or have internet access, then the new address can be learned by the followers. \r\n\r\nFollowers also track two ip addresses, so if you have a situation where you are alternating between personal hotspot and hotel wifi, for example, and the connection on the follower is lost, eg when the personal hotspot is switched off/on, the follower will attempt to revert to the previous known alternate address of the master. "
+  },
+  {
+   "id": 418084288,
+   "user": "er0780",
+   "created_at": "2018-09-03T11:17:44Z",
+   "body": "@dideldum \r\nSorry, I did not get it.\r\nWhat are you doing with your daugther?! The Android smartwatch is the master?!"
+  },
+  {
+   "id": 418164319,
+   "user": "jweismann",
+   "created_at": "2018-09-03T17:15:58Z",
+   "body": "@jamorham - GREAT! That was fast. I installed the latest on the three phones and not sure if I need to auto reconfigure them but I tried to do this on both followers and found that I persistently got \"Got exception installing preferences\" when trying to scan the code. This was consistent across the two followers. Not sure if I actually need to auto-reconfigure or not. Maybe the exception is due to the fact that they are already set up as master/follower or?"
+  },
+  {
+   "id": 418183165,
+   "user": "jweismann",
+   "created_at": "2018-09-03T19:41:33Z",
+   "body": "@jamorham - I forgot that all phones had to be on the wifi before doing the sync. When I did that, they got configured alright. If time permits, maybe this could be hinted in the log. Thanks again. Looking forward to test it now. Will get back."
+  },
+  {
+   "id": 418186897,
+   "user": "jweismann",
+   "created_at": "2018-09-03T20:13:06Z",
+   "body": "@jamorham I tried to disable wifi and data connectivity on one follower and it has not seen signals on this phone since. Would the logfile from the follower be useful to you? Would you need logfiles from the other follower and master too?"
+  },
+  {
+   "id": 418193250,
+   "user": "jamorham",
+   "created_at": "2018-09-03T21:09:39Z",
+   "body": "@jweismann Feel free to upload the logs but they may not show much as only certain errors are logged. Does the phone get data again if you re-enable connectivity on it?"
+  },
+  {
+   "id": 418193513,
+   "user": "jweismann",
+   "created_at": "2018-09-03T21:12:27Z",
+   "body": "@jamorham Yes, when I set it back on wifi (to upload the log), it got all the lost signals. I will upload logs from the master data too. Are there any underlying assumptions regarding android versions that I should be aware of?"
+  },
+  {
+   "id": 418194068,
+   "user": "jweismann",
+   "created_at": "2018-09-03T21:18:24Z",
+   "body": "@jamorham - the relevant period of time is around 22:00 and ~1 hours test before tuning wifi and mobiledata on again."
+  },
+  {
+   "id": 418194726,
+   "user": "jweismann",
+   "created_at": "2018-09-03T21:24:47Z",
+   "body": "@jamorham - silly question: I had the master and the other follower on wifi still. Is that a problem? Will they all have to change \"state\" or can I have some (say master and one follower) on wifi/mobildata and others (the last follower) on neither wifi nor mobiledata ?"
+  },
+  {
+   "id": 419074078,
+   "user": "yosepito",
+   "created_at": "2018-09-06T12:24:36Z",
+   "body": "working fine between two smartphones (two Xiaomis Redmi 3s) because I used the feature of scanning the bar code. But, I have a smartwatch (4g, wifi...) and it cannot scan the bar code. Please, which are the 7 changes it introduces in prefs? I need to do this manually in the smartwatch. The Master IP is 192.168.43.1 but this is the only change I've been able to introduce in the smartwatch, and it is not working.\r\nthanks for the feature!"
+  },
+  {
+   "id": 419232297,
+   "user": "jamorham",
+   "created_at": "2018-09-06T20:35:09Z",
+   "body": "@yosepito you need to set the `Inter-app settings` -> `web service secret` the same on all devices. This is generated randomly when Desert Sync is first set up. You may want to simplify this password to type in on your watch."
+  },
+  {
+   "id": 419232613,
+   "user": "jamorham",
+   "created_at": "2018-09-06T20:36:07Z",
+   "body": "@jweismann it wont work if there is no connectivity between the devices. There needs to be either mobile data or wifi, the wifi can be one phone (ideally the master) running a personal hotspot."
+  },
+  {
+   "id": 419623981,
+   "user": "jweismann",
+   "created_at": "2018-09-08T08:38:35Z",
+   "body": "@jamorham - thanks! I have looked more into the particular issue I have and found that it's a smart-board that disturb one of the phones, say p2. It disturb it to an extend where the only work-around to regain 4G cellular data services on p2 is to toggle flight-mode on/off (very annoying!). I have a 4 phones setup in xdrip sync mode (+desert), i.e. no nsclient involved in the sync setup. Two of the other phones are not close (p3,p4) but the main phone p1 (the one connected to the G5) is indeed often close to the phone that has a problem with the smart-board. I'm wondering if the best strategy for this challenge would be to setup p1 as a wifi hotspot for p2 so that p2 has two access routes - wifi when p1 is close and 4G cellular data when it's not broken. Will p3 and p4 get data via the sync mode when p1 and p2 syncs over wifi whereas p3 and p4 would need to sync with p1/p2 over the Internet. Can p1 sync with p2 over wifi and with p3,p4 over cellular data and will p1 forward data from p2 to p3,p4 in this case? Thanks in advance."
+  },
+  {
+   "id": 419723157,
+   "user": "jamorham",
+   "created_at": "2018-09-09T15:21:17Z",
+   "body": "@jweismann I think the answer is that yes any combination of desert and normal sync will work but I haven't tested all those configurations to be sure."
+  },
+  {
+   "id": 419726363,
+   "user": "jweismann",
+   "created_at": "2018-09-09T16:10:45Z",
+   "body": "@jamorham - thanks and no worries. I will be happy to help testing it. I will get back when I have experimented with this."
+  },
+  {
+   "id": 422573761,
+   "user": "jamorham",
+   "created_at": "2018-09-18T22:08:10Z",
+   "body": "How are people getting on with Desert Sync? Is it working reliably? Has anyone had a chance to use it \"in the wild\" yet?"
+  },
+  {
+   "id": 422927139,
+   "user": "jweismann",
+   "created_at": "2018-09-19T19:21:40Z",
+   "body": "@jamorham I can say that it works perfectly for us. We have one master and 4 followers with 1-2 followers often close to master. The master (+1-2 followers) will commute between two LANs on a daily basis and the switch is picked up automatically with no noticeable data delay. Great! THANKS!!!!\r\n\r\nI have been wondering if one of the followers should be removed eventually (some of them were added for testing purposes). I can reinstall on the follower to be removed but how will the remaining 4 phones get this info and remove it from their internal list of followers?"
+  },
+  {
+   "id": 424225902,
+   "user": "er0780",
+   "created_at": "2018-09-25T06:45:14Z",
+   "body": "@jamorham Hello, I tested the Desert Sync function and ... it is great!\r\nWe use it in the night, in the car and in the city center where we do not always have mobile connectivty. It will be used during our holiday trips.\r\n\r\nI found something that it not working well for us. I am not sure, whether this is a problem that only counts for us, because nobody else metioned it:\r\nThe AndroidUploader is getting the data from the Minimed 640g Insulinpump and then the Uploader is sending this data to xDrip (or xDrip is reading the data from the AndroidUploader). However, since we updated to the xDrip-version containing the DesertSync function we lost the data backfill in xDrip.\r\nWhen our little one is coming home from child care we take the master phone, connect the Contour Next Link and start the Android Uploader. As befor the xDrip software update the AndroidUploader shows the actual CGM value and is doing a data backfill. Befor the xDrip software update these data were transferred to xDrip and were shown there. Since the xDrip software update all data are still shown in the AndroidUploader (incl. data backfill) but xDrip itself shows only the data that have been collect from starting from the time point when the Contour Next Link was connected to the master mobile phone.\r\nWhen our little one is turning around at night and one data point is missed the AndroidUploader is doing a backfill when reading out the next data point. But the data point that is backfilled is not transferred to xDrip.\r\nOne the follower mobile phone the appeareance is the same (as expected): Data that are not show in master's xDrip are also not shown on followers xDrip.\r\n\r\nTwo other independent questions:\r\nWhen using the urchin watchface on a Pebble watch you can see little strips for every given bolus. That means that the AndroidUploader is not only collecting CGM values but also timepoints (and values?) of given bolus'. Is it possible to transfer this data to xDrip and to show them in the CGM curve?\r\n\r"
+  },
+  {
+   "id": 425578781,
+   "user": "jamorham",
+   "created_at": "2018-09-28T22:04:28Z",
+   "body": "@er0780 can you explain to me, where does Nightscout sit in your setup. Does your AndroidUploader send to xDrip or Nightscout or both? xDrip can download treatment entries from Nightscout and it supports this from AAPS but I don't think AndroidUploader (via its local broadcast feature)"
+  },
+  {
+   "id": 425617642,
+   "user": "er0780",
+   "created_at": "2018-09-29T05:32:53Z",
+   "body": "@jamorham We are not using Nightscout.\r\n\r\nThe AndroidUploader on the Master sends its data directly to xDrip on the same phone.\r\n\r\nThe AndroidUploader itself shows no treatments. But when connecting a Pebble Watch with Urching watchface with the AndroidUploader you can see the treatments as little \" , \" in the time scale under the CGM curve. So the AndroidUploade must load this data from the insulin pump.\r\n\r\nYesterday I set the xDrip version back to that one without Desert Sync ... on both phones, master and follower ... and now data backfill is working fine.\r\nThen I updated again to that vesion with Desert Sync and there is again no data backfill. xDrip only takes those data from the (completely backfilled) AndroidUploader that are collected starting from that timepoint when the Contour Next Link is connected to the Master."
+  },
+  {
+   "id": 894591231,
+   "user": "Navid200",
+   "created_at": "2021-08-07T02:14:01Z",
+   "body": "@jamorham I hope you don't mind me closing this issue.\r\nIt can still be found by search and provide information to users."
+  }
+ ]
+}

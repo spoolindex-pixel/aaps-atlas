@@ -1,0 +1,53 @@
+{
+ "id": 1063426924,
+ "repo": "nightscout/AndroidAPS",
+ "number": 987,
+ "title": "[3.0-beta6] Eros: Message bolus stopped not cleared",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/987",
+ "state": "closed",
+ "labels": [
+  "omnipod eros"
+ ],
+ "created_at": "2021-11-25T10:47:17Z",
+ "closed_at": "2022-06-21T16:54:54Z",
+ "comment_count": 6,
+ "body": "Only a minor detail.\r\nWhen I initiated a bolus I pressed by accident the stop button, even before the bolus injection was initiated.\r\nThe bolus was initiated but almost immediately stopped again with a message. This behavior is fine of course.\r\nThat message (Bolus interrupted or stopped) remained on the screen and could not be closed.\r\nOnly by selecting another app and going back to APS cleared the message.",
+ "comments": [
+  {
+   "id": 979370834,
+   "user": "MilosKozak",
+   "created_at": "2021-11-25T17:18:27Z",
+   "body": "screenshot?"
+  },
+  {
+   "id": 979493207,
+   "user": "regiorunner",
+   "created_at": "2021-11-25T22:16:50Z",
+   "body": "Unfortunately I have no screenshot. Will try to reproduce tomorrow, but use now beta7, error occurred with beta6."
+  },
+  {
+   "id": 980598142,
+   "user": "regiorunner",
+   "created_at": "2021-11-27T13:04:59Z",
+   "body": "In the mean time I am running beta7.\r\nThe problem is still present.\r\nThere is no difference whether you press stop button before the injection starts or after the injection started.\r\nThe overlay screen remains visible and does not disappear. I find no other way to get rid of the overlay screen than deselecting the app via the square button at the bottom and selecting APS again. Then the screen is rebuild and the overlay message disappears.\r\n\r\nThis time I have a screenshot, one when pressing the stop button before the injections started, the other when the injection already was running. The result is the same.\r\n\r\nI hope it ismore clear now.\r\n\r\n![Screenshot_20211126-160702](https://user-images.githubusercontent.com/90383626/143682451-7aac94c5-fb63-4d10-b938-327661dd544d.png)\r\n![Screenshot_20211126-161055](https://user-images.githubusercontent.com/90383626/143682454-8bb97593-e993-484a-97d6-ad10ea03285c.png)\r\n\r\n\r\n"
+  },
+  {
+   "id": 982780027,
+   "user": "StephenBrown2",
+   "created_at": "2021-11-30T16:05:10Z",
+   "body": "Can confirm this happened to me as well, on 3.0-beta7 with Eros Pod"
+  },
+  {
+   "id": 985330784,
+   "user": "kristinsmotz",
+   "created_at": "2021-12-03T08:58:37Z",
+   "body": "Had this yesterday with beta9 on Eros pod. Originally thought it stuck because it had trouble stopping the bolus, so I ran after my daughter waving her rileylink at the pod (she left cake half eaten to go do something, which is why I was stopping the bolus after about 2 thirds was delivered).\r\nAs soon as I noticed it still didn't go away I started screen recording (remembered seeing this issue report and recognized it). After about 30 seconds I swiped away the app and reopened it and the message was gone. \r\nExported logs as well. \r\nFrom the calc in Treatments tab I can see that it originally was supposed to bolus 8.65U, But the bolused amount was changed to 5.65U. So it did stop the bolus as soon as I pressed stop. \r\n\r\n\r\nhttps://user-images.githubusercontent.com/71758682/144573536-781ab104-6520-4014-8d87-ac1fe8a71107.mp4\r\n[AndroidAPS_LOG_1638462933925.log.zip](https://github.com/nightscout/AndroidAPS/files/7648013/AndroidAPS_LOG_1638462933925.log.zip)\r\n\r\n\r\n![Screenshot_20211203-095216_NSClient](https://user-images.githubusercontent.com/71758682/144573927-c1529f8f-dc01-489c-8d9d-8fb16270aa20.jpg)\r\n\r\n![Screenshot_20211203-095234_NSClient](https://user-images.githubusercontent.com/71758682/144573940-a59eb7a4-c914-49b1-b585-b751d41ab629.jpg)\r\n\r\n\r\n"
+  },
+  {
+   "id": 1162012565,
+   "user": "MilosKozak",
+   "created_at": "2022-06-21T16:54:54Z",
+   "body": "hopefully fixed by https://github.com/nightscout/AndroidAPS/commit/bbcbf3f90535c719fb70bbcb41c486cc7bf475ad"
+  }
+ ]
+}

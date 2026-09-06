@@ -1,0 +1,39 @@
+{
+ "id": 374338568,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 643,
+ "title": "Future BG reading is continously broadcast if option 'send display glucose' is enabled",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/643",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2018-10-26T11:16:26Z",
+ "closed_at": "2021-02-17T23:17:26Z",
+ "comment_count": 4,
+ "body": "While simulating the upcoming DST change, I changed the clock forward, which resulted in a reading of 119mg/dl being taken in the future. After going back to the current time, xDrip continuously broadcasted this future record. This only happens if _Inter-app communication->Send display glucose_ is enabled.\r\n\r\nWhen processing a new BgReading, with the above option set, at https://github.com/NightscoutFoundation/xDrip/blob/master/app/src/main/java/com/eveningoutpost/dexdrip/UtilityModels/BroadcastGlucose.java#L53 the value of the youngest BgReading record is retrieved from the DB and send instead.\r\n\r\nThis issue is probably elsewhere in the code as well, as the UI correctly charted the readings, but also displayed that future reading continuously:\r\n\r\n![screenshot_20181026-124231_xdrip](https://user-images.githubusercontent.com/1732305/47563027-c3164e80-d920-11e8-8e9a-0c1a3584c2e7.png)\r\n \r\n",
+ "comments": [
+  {
+   "id": 433374850,
+   "user": "jotomo",
+   "created_at": "2018-10-26T11:17:34Z",
+   "body": "P.S. The fix was to delete future records via _System status_."
+  },
+  {
+   "id": 433386358,
+   "user": "AdrianLxM",
+   "created_at": "2018-10-26T12:09:01Z",
+   "body": "If I'm not mistaken, the display glucose now gets injected into the BG object (for NS upload). So it could be used instead of the recent one?!\r\n"
+  },
+  {
+   "id": 433405835,
+   "user": "AdrianLxM",
+   "created_at": "2018-10-26T13:23:33Z",
+   "body": "This imho should not affect DST itself as the underlying timestamp should continue to be sent without jumps. It affects switching the phone's time (as you did for testing)."
+  },
+  {
+   "id": 780788102,
+   "user": "Navid200",
+   "created_at": "2021-02-17T19:15:03Z",
+   "body": "@jotomo Is this still a problem?\r\nIf not, can we close the issue?\r\nIs there a solution if it happens?"
+  }
+ ]
+}

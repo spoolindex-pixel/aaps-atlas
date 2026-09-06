@@ -1,0 +1,43 @@
+{
+ "id": 676106702,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1398,
+ "title": "Data collection for Dexcom G6 transmitters to predict impending failure",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1398",
+ "state": "closed",
+ "labels": [
+  "enhancement",
+  "algorithmics",
+  "device-dexcom-transmitter"
+ ],
+ "created_at": "2020-08-10T12:43:00Z",
+ "closed_at": "2021-03-06T20:14:24Z",
+ "comment_count": 4,
+ "body": "With the advent of the Dexcom G6 system there are also a lot more different transmitter models. xDrip+ does have a rudimentary model to predict failure of transmitters by reading out their voltages (upper left corner -> hamburger menu -> Settings -> G5/G6 Debug Settings -> Battery Warning (bottom of the page)). But the recommended threshold voltage of 280 hasn't been very accurate for me and maybe others (https://androidaps.readthedocs.io/en/latest/EN/Configuration/xdrip.html#dexcom-specific-settings). \r\n\r\nIssue #1085 tries to also find a solution for failing transmitters but persues a more complex solution. This solution would require some developers to implement the feature in xDrip+. Given the fact that this issue has been untouched by a developer since November 2019, it might take a while to be completed or it might never happen.\r\n\r\nThat's why some of us on Gitter came up with the idea to start collecting transmitter failure data in a spreadsheet. If enough people enter their data, we might be able to come up with better voltage recommendations for the different transmitter models. This solution doesn't depend on the work of the developers.\r\n\r\nIf you want to help, please read the instructions at the top of the spreadsheet and enter your data accordingly. You can also participate if you have a rebatteried transmitter. \r\nhttps://docs.google.com/spreadsheets/d/1gDxhwR1ci4IVrCWBB-SKxVznThf6YK1Pt-QGB1HoWwQ/edit#gid=0\r\n\r\nIf issue #1085 ever gets implemented, the collected data might also proof useful.\r\n\r\n#### IMPORTANT: I'm unsure how to handle the old transmitter models that can be reset (80..., 81...). \r\nIf I'm not mistaken, these transmitters can be hardware reset once, some even twice, with the original battery. Entering the data would only be useful, if they have been reset and used until they didn't respond/couldn't be reset any more. Does that make sense to you? I'm mentioning this in the spreadsheet. If you think that is incorrect, please let me know.\r\n\r\n#### IMPORTANT2: Are there rebatteried transmitters whose batteries have enough power left to be reset after ~90 days?\r\nRight now, I haven't heard of that so I didn't include that case in the spreadsheet.",
+ "comments": [
+  {
+   "id": 671502565,
+   "user": "emp-00",
+   "created_at": "2020-08-10T18:01:57Z",
+   "body": "Issue [#1085](https://github.com/NightscoutFoundation/xDrip/issues/1085) is proposing a simple new trend graph implemented in xDrip+ showing the voltages/resistance (Y-axis) over transmitter days (X-axis). This will help users to predict early failures e.g. by a steep fall of the curve. Currently only single values are shown in the system status but as of experience these values are rather noisy and can go up/down +-15% reading after reading every 12 hours. Therefore a graphical trend would be helpful allowing the human eye to correct for the noise: _\"single values mean nothing, the trend is your friend\"_\r\n\r\n![image](https://user-images.githubusercontent.com/60714349/89815051-6c552580-db44-11ea-89eb-b3f92e68bda3.png)\r\n\r\nThe proposed data collection in this issue is an attempt to collect data from the community with the disadvantage that the multitude of available systems (models, revisions, rebatteried modifications etc) will make it hard to get consistent data. Manual data entry bears additional risk for misunderstandings. Final data \"at point of failure\" is proposed which may not be a sharp definition valid for all people. Manual outlier data correction would be needed and it will probably take a few months until somewhat statistical relevant data is collected (?). After all, honestly, I don't believe there is a \"one fits all\" threshold value for the battery warning. **But this is just my personal opinion - I don't want to stop the idea of data collection!**\r\n\r\nAnother good alternative would be implementation of \"automatic transmitter model + battery data transfer\" to a central server for data collection thus eliminating the need for manual data entry and offering the chance for collecting much more and more reliable data in much shorter time. However, this requires user consent and a reliable server infrastructure.\r\n\r\nHowever, personally, I'd be happy with implementation of a simple trend graph as proposed in Issue [#1085](https://github.com/NightscoutFoundation/"
+  },
+  {
+   "id": 672916392,
+   "user": "ArthurusDent",
+   "created_at": "2020-08-12T14:46:19Z",
+   "body": "It's impolite to use other people's issues for self-promotion and hijack them. I have included the issue where you presented your idea with a reason. A discussion about your idea should therefore happen over in #1085. If you had just posted your critique that would have been ok with me, since you then had added to the discussion about this issue.\r\n\r\nI'm not happy to also be redundant (it's already in the first post) but it seems to be necessary: In my experience open source projects live and die with their developers. If there are no developers available who are willing to do the actual work the followers can dream up complex, wonderful features all day long. They will never end up in the software. So please be more cognisant of that when you propose new features and critique other people's ideas. \r\n\r\nWould I like a feature like yours in xDrip+? Sure. But you don't seem to be a developer and I'm neither. We have to make due with what's possible right now. A bird in the hand is two in the bush.\r\n\r\nThe object of the data collection isn't finding one threshold for all transmitters. The transmitter models are being collected so each model could get an individual voltage value. \r\n\r\nI will try to find a clearer definition of transmitter failure."
+  },
+  {
+   "id": 787151447,
+   "user": "Navid200",
+   "created_at": "2021-02-27T21:38:07Z",
+   "body": "We are asking people to use these issues to either report a bug, after having consulted with the user community, or to request a new feature, only if there is no work-around.\r\n\r\nUnless I misunderstand, this issue is neither (please let me know if I have misunderstood) and rather is about your work to gather data about G6 failure.  That is a very useful effort.  Thanks for doing it.  After we improve prioritize these issues and sort out documentation, we may have a place for similar activity.\r\nBut, right now, the only available channels for that are the support channels.\r\nhttps://www.facebook.com/groups/xDripG5\r\nhttps://gitter.im/jamorham/xDrip-plus\r\n\r\nIf you are in agreement, would you please close this issue?\r\nThanks"
+  },
+  {
+   "id": 792045003,
+   "user": "Navid200",
+   "created_at": "2021-03-06T20:14:24Z",
+   "body": "Closing due to inactivity"
+  }
+ ]
+}

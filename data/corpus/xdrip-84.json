@@ -1,0 +1,63 @@
+{
+ "id": 214193299,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 84,
+ "title": "Add multicast support for xDrip",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/84",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2017-03-14T20:16:17Z",
+ "closed_at": "2021-03-04T14:22:02Z",
+ "comment_count": 8,
+ "body": "There are 3 casses where users can enjoy from multicast packets:\r\nThis is not intended instead of other ways, but as a way to make data more reliable and fast when one is at home.\r\n\r\n1) In the case of all house coverage. Currently there are two ways that xDrip can connect to the receivers. The first is through the cloud (parakeet or mongo) or through configuring static ip addresses.\r\nFrom my experience, many users have a problem with static ip addresses (configuring routers and so on).\r\nSo the suggestion is to have the wixel receivers send the data as multicast as well.\r\n\r\n2) Remote snoozing: This messages usually reach all tablets at home, but it might take a few minutes for the messages to arrive. In the case of an alarm, this is sometimes too long.\r\n\r\n3) sending normal bg data. As before, the messages arive through the cloud, but it would be nicer to have the bg reach faster.\r\n\r\nxDrip should listen to a predefined udp port and receive these messages.\r\n\r\nFormat for 1 should be:\r\nconst number^ version^ Dex ID   ^ unfilt        ^ filt    ^ G4bat   ^ sigstrength   ^ txcount   ^ xDripBat  ^ time from packet captering\r\n0x16324234        1     10858926 120488    111488               216          -49                   105              3021    0\r\n\r\nFormat for 2,3 are the same as they today, (with their existing encription).\r\n\r\nDoes this sound reasonable?\r\n",
+ "comments": [
+  {
+   "id": 286583078,
+   "user": "jamorham",
+   "created_at": "2017-03-14T22:35:57Z",
+   "body": "I'm not sure use of multicast is going to be practical due to the way android handles multicast power saving etc. As far as I understand it, a multicast lock is required which causes battery drain and isn't suitable for background operation as a receiver.\r\n\r\nStatic IP addresses are already not required any more in the case of raspberry pi based wixel receivers because multicast dns is supported which scans the local network and you click on the `raspberry.local` hosts which appear in `System Status` -> `IP Collector` to add/remove them as collectors."
+  },
+  {
+   "id": 286699621,
+   "user": "tzachi-dar",
+   "created_at": "2017-03-15T10:19:45Z",
+   "body": "OK, so let's replace the multicast with broadcast, and then I think that we should be fine.\r\n\r\nCan you please explain more on what is needed for xDrip to find the pi listeners. I'm trying to understand if solutions based on NodeMCU will be able to use it.\r\nAlso what happens if receivers change their ip? does the user has to do anything?"
+  },
+  {
+   "id": 286789656,
+   "user": "jamorham",
+   "created_at": "2017-03-15T16:02:06Z",
+   "body": "As far as I know, multicast locking is required for anything which isn't unicast. So both broadcast and multicast would be equally affected.\r\n\r\nSet up for raspberry pi receivers is described here: https://github.com/jamorham/python-usb-wixel-xdrip/blob/master/HOWTO.md\r\n\r\nSimplistically you just install avahi mdns daemon:\r\n`sudo apt-get install avahi-daemon`\r\n\r\nFor nodemcu I think this would require the mdns module:\r\nhttps://github.com/nodemcu/nodemcu-firmware/blob/master/docs/en/modules/mdns.md\r\n\r\nAnd the nodemcu would need to advertise the service type: `_workstation._tcp.` I haven't really looked in to this as I've been playing around with the Raspberry Pi Zero W model which also has a very good price point and footprint."
+  },
+  {
+   "id": 286893111,
+   "user": "tzachi-dar",
+   "created_at": "2017-03-15T21:59:54Z",
+   "body": "I'm not sure that android has the freedom to ignore bcast messages, but I'll make a small program that checks it and repeat back once I know more."
+  },
+  {
+   "id": 289283595,
+   "user": "tzachi-dar",
+   "created_at": "2017-03-26T13:20:29Z",
+   "body": "I have added multicast support for xDrip and it seems to receive almost all packets. (Did not have a problem with phone going to sleep or anything alike.\r\n\r\nOne thing that might explain this is that xDrip was configured to use BT wixel, but the BT device was not available. (so it was retrying connecting to it all the time).\r\nI'll check that with wifi collection method and see how this will work."
+  },
+  {
+   "id": 317948954,
+   "user": "danpowell88",
+   "created_at": "2017-07-26T05:07:59Z",
+   "body": "@jamorham \r\nfor nodemcu wixel\r\nhttps://nodemcu.readthedocs.io/en/master/en/modules/mdns/\r\n\r\nusing the example \r\n`mdns.register(\"fishtank\", { description=\"Top Fishtank\", service=\"http\", port=80, location='Living Room' })\r\n`\r\nwould it be\r\n\r\n`mdns.register(\"nodemcu-Wixelxxxx\", {description=\"NodeMCUWixel\", service = \"workstation\", port=\"50005\", location=\"foo\"}}`"
+  },
+  {
+   "id": 783365427,
+   "user": "Navid200",
+   "created_at": "2021-02-22T13:15:04Z",
+   "body": "@tzachi-dar What is the status of this?\r\nThanks"
+  },
+  {
+   "id": 790652581,
+   "user": "Navid200",
+   "created_at": "2021-03-04T14:22:02Z",
+   "body": "Closing due to inactivity\r\n"
+  }
+ ]
+}

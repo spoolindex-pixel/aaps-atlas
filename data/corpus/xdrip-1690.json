@@ -1,0 +1,206 @@
+{
+ "id": 845222276,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1690,
+ "title": "xDrip detect future data",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1690",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "help",
+  "device-libre",
+  "device-miaomiao"
+ ],
+ "created_at": "2021-03-30T20:36:39Z",
+ "closed_at": "2025-07-17T02:31:08Z",
+ "comment_count": 31,
+ "body": "Hi Guys,\r\n\r\nI've been using xDrip for some time but today I've experienced seems like a bug.\r\nOn main page I can see that last update of glucose is from 182 minutes ago.\r\n\r\nIn Status page I can see message \"Your device has future data on it, Please double check the time and timezone on this phone\"\r\nRestarting collector, forgetting device, deleting future data do not help. \r\n\r\nIn log viewer I can see error \"NonMonotonicSequenceException: org.apache.commons.math3.exception.NonMonotonicSequenceException: points 20 and 21 are not strictly increasing (1 621 420 351 801 >= 1 617 126 284 505) \r\n\r\nNo any other errors observed. Sensor can be scanned using other apps, but manual scan also fails on xDrip.\r\n\r\nI am using FreeStyle Libre 1 + Miao Miao 2 -> xDrip\r\nxDrip version is: 1f9d6e6-2021.03.26 \r\nPhone is: Xiaomi Mi 8 Pro Android 10 QKQ1\r\n\r\n- Tried to restart phone\r\n- Since we recently had timezone change (i think 2-3 days ago) I've tried to change manually phone to 1 hour back but not helped.\r\n\r\nNot sure what is causing this behavior.\r\nAny ideas?\r\n\r\n// What I've noticed that in the background the reading looks fine, when I scan manually sensor with NFC graph seems to showing correct value, however main screen and it value on the top is getting crazy, same about the time. \r\nAlso due to that data is not being passed to Nightscout, and also dats is not fetched from miao miao.",
+ "comments": [
+  {
+   "id": 810666461,
+   "user": "hapvlz",
+   "created_at": "2021-03-31T00:32:51Z",
+   "body": "Do you have somewhere available alternative xDrip source that can be used in parallel with original xDrip?\r\nI don't want to mess with the original app, but in other hand I would like to debug this issue, however source code base on the released version and while starting it in android studio it's trying to replace the original one on my phone.\r\n\r\nI've already installed alternative release on phone, but need to debug it with source.\r\nSeems the problem is somewhere in function : CalculateFromDataTransferObject() in file LibreAlarmReceiver.\r\n\r\nSeems like failing on this catch - \r\n\r\n```\r\nif(polyxList.size() >= 3) {\r\n                    // The need to have at least 3 points is a demand from the interpolate function.\r\n                    try {\r\n                        PolynomialSplineFunction polySplineF = splineInterp.interpolate(\r\n                                Forecast.PolyTrendLine.toPrimitiveFromList(polyxList),\r\n                                Forecast.PolyTrendLine.toPrimitiveFromList(polyyList));\r\n    \r\n                        final long startTime = mHistory.get(0).realDate;\r\n                        final long endTime = mHistory.get(mHistory.size() - 1).realDate;\r\n    \r\n                        for (long ptime = startTime; ptime <= endTime; ptime += 300000) {\r\n                            if (d)\r\n                                Log.d(TAG, \"Spline: \" + JoH.dateTimeText((long) ptime) + \" value: \" + (int) polySplineF.value(ptime));\r\n                            if (use_raw) {\r\n                                // Here we do not use smoothed data, since data is already smoothed for the history\r\n                                createBGfromGD(new GlucoseData((int) polySplineF.value(ptime), ptime), false, true);\r\n                            } else {\r\n                                BgReading.bgReadingInsertFromInt((int) polySplineF.value(ptime), ptime, false);\r\n                            }\r\n                        }\r\n                    } catch (org.apache.commons.math3.exc"
+  },
+  {
+   "id": 811050557,
+   "user": "Navid200",
+   "created_at": "2021-03-31T13:03:15Z",
+   "body": "The suggestion was to use facebook first, not to use facebook and also open an issue here.\r\n\r\n\r\nAnyway, do you have a watch or any other device like a pump that you have not mentioned?\r\n\r\nCan you show Android settings -> System -> Date & Time"
+  },
+  {
+   "id": 811073284,
+   "user": "hapvlz",
+   "created_at": "2021-03-31T13:35:21Z",
+   "body": "There are but nothing that should interfere with xDrip.\r\nSamsung Galaxy Smartwatch but it's not connected directly to xDrip, it's going through G-Watch application that fetch data from xDrip I guess.\r\nPump is not connected to this loop at all.\r\nNightscout is set with xDrip but I've disabled it for the time when problem appear.\r\n\r\nAfter a day xDrip started working properly, it's fully working now. (It fixed by it own) from a scan to scan error about NonMonotonicSequenceException disappear.\r\nHowever I would like to keep this issue open to avoid such situation in future or find solution for it.\r\n\r\nDate time is set to use network provided.\r\nTimezone is also set to automatically use network provided timezone.\r\n\r\nI think screen is not needed here, anyway most likely it will not be understandable as it's in my language which is not English.\r\nThe problem seems to be in data received from sensor that could not be parsed properly. \r\n\r\nIf needed I can also provide the dump of sensor memory from time when problem happened for further investigation.\r\n"
+  },
+  {
+   "id": 811076441,
+   "user": "Navid200",
+   "created_at": "2021-03-31T13:39:49Z",
+   "body": "This can be found in a search even after it is closed.  If your issue has been resolved, there is no reason to keep this issue open.\r\n\r\nAnd if you find instructions or more data that you like to add, you can continue to add it here even after the issue is closed."
+  },
+  {
+   "id": 811082592,
+   "user": "hapvlz",
+   "created_at": "2021-03-31T13:48:30Z",
+   "body": "Additional useful information, issue happened between:\r\nStarted - \r\n**30-March-2021 19:35** (First error about \"Cannot inject display glucose value as time different is too great: 2021-05-19 12:33:10 vs 2021-03-30 19:35:23)\r\n**30-March-2021 19:50** (First error about \"NonMonotonicSequenceException: org.apache.commons.math3.exception.NonMonotonicSequenceException: points 30 and 31 are not strictly increasing (1 621 420 329 790 >= 1 617 126 262 494)\r\n\r\nEnded: \r\n**31-March-2021 03:30** (Last error about \"NonMonotonicSequenceException: org.apache.commons.math3.exception.NonMonotonicSequenceException: points 0 and 1 are not strictly increasing (1 621 420 320 865 >= 1 617 126 253 569)"
+  },
+  {
+   "id": 811084680,
+   "user": "hapvlz",
+   "created_at": "2021-03-31T13:51:00Z",
+   "body": "I've tried to close this issue, however it's not appearing anymore on list of open issues.\r\nWhich is not the point, the issue is still open, can re-occur anytime not just for me but everyone, and we don't know what is the reason of it, or how to fix/avoid that.\r\n\r\nI would still like to keep it open maybe someone will have idea for it.\r\nThe fact that it's not happening for now doesn't mean as for me that it should be closed."
+  },
+  {
+   "id": 811088540,
+   "user": "Navid200",
+   "created_at": "2021-03-31T13:56:12Z",
+   "body": "Duplicate: https://github.com/NightscoutFoundation/xDrip/issues/1493"
+  },
+  {
+   "id": 811151595,
+   "user": "hapvlz",
+   "created_at": "2021-03-31T15:21:27Z",
+   "body": "Dear @Navid200,\r\n\r\nhow is it a duplicate? I've did research across all the issues and I seen just one similar behavior but it was happening for Libre2.\r\nIssue that you pinned as duplicate is not relevant at all to issue that I've reported, I don't see a single point that would be the same in pinned duplicate issue and mine.\r\n\r\nCan you please provide more info how the issue explained in #1493 is relevant to the one reported by me ?\r\nTimezone switch in my country happened on 27-March, and issue happened on 30 March. \r\n\r\nAlso subject of MiBand and everything else is not relevant.\r\n\r\nThe relevant issue is #1294 but there was never an answer/fix."
+  },
+  {
+   "id": 811153949,
+   "user": "Navid200",
+   "created_at": "2021-03-31T15:24:33Z",
+   "body": "He calls it legal time.  But, he means daylight savings time, which is the issue.\r\n"
+  },
+  {
+   "id": 811159647,
+   "user": "hapvlz",
+   "created_at": "2021-03-31T15:32:11Z",
+   "body": "But it's not related at all, as you can see in my previous posts here, I'm mentioning that xDrip discover data from 2 months in **future**. That seems to be not relevant for daylight saving time at all. \r\n\r\nQuote - \r\n\r\n30-March-2021 19:35 (First error about \"Cannot inject display glucose value as time different is too great: **2021-05-19** 12:33:10 vs **2021-03-30** 19:35:23)\r\n\r\nI'm fine having marked it as duplicate, doesn't matter that much for me.\r\nHowever I don't see any connection between those two issues - sorry.\r\n\r\n"
+  },
+  {
+   "id": 811166426,
+   "user": "Navid200",
+   "created_at": "2021-03-31T15:41:15Z",
+   "body": "Your description states that this whole thing started because you changed the time.\r\n\r\nWhenever you have multiple devices communicating and transferring data, time synchronization is a requirement.  If the times are not synchronized, you could have all sorts of symptoms.  The symptoms may be different.  But, if we open a unique issue for every single symptom, we will have hundreds of issues, which aren't real issues, burying the real issues."
+  },
+  {
+   "id": 811176550,
+   "user": "hapvlz",
+   "created_at": "2021-03-31T15:54:43Z",
+   "body": "@Navid200 Sorry then, I didn't meant that that the issue started after changing the time.\r\nI've changed time to see if the problem with time difference will change as I was suspecting that recent daylight switch time happened on 27-March could cause this. But changing the time manually didn't change anything, the issue was still the same.\r\n\r\nI didn't touch the date/time before the issue happened.\r\nAlso the problem occurred 3 days after the daylight switch happened, so that's not an option it cause the issue."
+  },
+  {
+   "id": 811180000,
+   "user": "Navid200",
+   "created_at": "2021-03-31T15:59:36Z",
+   "body": "That's OK.  The label suggests that there are commonalities.  That's all."
+  },
+  {
+   "id": 811281876,
+   "user": "Navid200",
+   "created_at": "2021-03-31T17:41:46Z",
+   "body": "Can you describe a method to reproduce this?"
+  },
+  {
+   "id": 811307813,
+   "user": "hapvlz",
+   "created_at": "2021-03-31T18:22:23Z",
+   "body": "I have one a little bit advanced way. I have exported memory of sensor while the issue happened. I was able to import the memory into another sensor that is not used anymore and xDrip while reading showing exactly the same error.\r\n\r\nApart from this I have no idea how we can re-produce that, it just randomly happened.\r\n\r\nIf any of dev willing to try it out I can share the memory dump, or if something I am available to collect traces or whatever is needed from xDrip using the sensor with \"corrupted\" memory. I am also available for remote session if needed.\r\n\r\nI will put my all efforts to help you fix it if it's a bug (and seems it is).\r\nWe have private group of people sick in Poland, already 3-4 people experienced it randomly (not just in past week) but month-two months."
+  },
+  {
+   "id": 811348157,
+   "user": "Navid200",
+   "created_at": "2021-03-31T18:59:38Z",
+   "body": "I personally only know about Dexcom and I am not a developer yet.  \r\nHopefully, someone who has experience with Libre can help."
+  },
+  {
+   "id": 812311087,
+   "user": "Navid200",
+   "created_at": "2021-04-02T04:31:12Z",
+   "body": "Do you have a Bluetooth glucose meter?"
+  },
+  {
+   "id": 812400949,
+   "user": "hapvlz",
+   "created_at": "2021-04-02T08:00:39Z",
+   "body": "Yes, but not connected to xDrip/Phone. "
+  },
+  {
+   "id": 812910493,
+   "user": "hapvlz",
+   "created_at": "2021-04-03T18:54:15Z",
+   "body": "Again, the same problem happening on a fresh new sensor.\r\nI've just injected new one, activated with Libre application, 60 minutes passed, and xdrip showing exactly the same error and it cannot pass the start new sensor procedure.\r\n\r\nSome screens -\r\n\r\nhttps://i.imgur.com/1AkFKBM.png\r\nhttps://i.imgur.com/fiAa1sf.png\r\nhttps://i.imgur.com/eO7YmN3.png\r\nhttps://i.imgur.com/vdffRDM.png\r\nhttps://i.imgur.com/9qtG2tc.png\r\n\r\nI can try re-install the app, maybe some of the settings I use cause this.\r\nNot sure if I re-install if I lose all the historic.\r\n"
+  },
+  {
+   "id": 817150677,
+   "user": "hapvlz",
+   "created_at": "2021-04-10T15:06:21Z",
+   "body": "Another person in another group experienced similar issue with same error -\r\n\r\nhttps://i.imgur.com/aT79Gh3.png"
+  },
+  {
+   "id": 827234666,
+   "user": "hapvlz",
+   "created_at": "2021-04-27T01:01:01Z",
+   "body": "New sensor started, error still appear -\r\n\r\n\"NonMonotonicSequenceException: org.apache.commons.math3.exception.NonMonotonicSequenceException: points 0 and 1 are not strictly increasing (1 619 473 052 521 >= 1 619 473 052 521)\r\n\r\nApplication updated to latest possible beta version."
+  },
+  {
+   "id": 841728623,
+   "user": "slawie",
+   "created_at": "2021-05-15T21:32:43Z",
+   "body": "haplz - just to let you know that are not alone.  My xDrip has had the exact same issue for the second time yesterday.  The first time it happened I tried all the same things you did with the same observations.\r\nYesterday (14th May 2021) the logs are showing that there are glucose values from the 4th July 2021, waaay into the future.\r\nI live in Brisbane so there are no timezone changes here at any time of the year.\r\nMy setup is Libre 1, with maiomaio 1, and I also sync data to my nightscout site and my Garmin Nautix 5 watch."
+  },
+  {
+   "id": 942142194,
+   "user": "yosepito",
+   "created_at": "2021-10-13T10:11:09Z",
+   "body": "Hi, just a question related to this. I'm suffering from BLE disconnections with both direct link to FL2, patched app passing data to Xdrip and MM2. Any configuration shares the problem that, ocasionally, when the BLE is interrupted, xdrip is unable to yield the BG reading, despite OOP2 has replied to query. The main error in log is \"sensor age has not advanced\" and it seems to me -I am not a techie expert at all- that the main problem is that every 5 minutes xdrip takes values from FRAM. When a reading is lost, the most updated set of readings still contains readings in the past so, somehow, xdrip understoods that sensor age has not advanced (timestamp readings from sensor contain some past readings and \"future\" readings). Can this problem be related to your issue? Is it a common problem of time handling with FL2?\r\n\r\nEarlier versions that did not use FRAM do not have this problem. Furthermore, when I NFC scanned the sensor in Xdrip it yielded readings, but with newer versions the problem is \"sensor age has not advanced\" when doing such NFC scan.\r\n\r\nAny update on this?"
+  },
+  {
+   "id": 942145727,
+   "user": "tolot27",
+   "created_at": "2021-10-13T10:14:59Z",
+   "body": "@tzachi-dar Do you have any idea what is causing the \"\"sensor age has not advanced\" message?"
+  },
+  {
+   "id": 1564537217,
+   "user": "nwsiqueira",
+   "created_at": "2023-05-26T15:08:53Z",
+   "body": "Hello, @hapvlz \n\nDid you manage to find any solution?\nI had the same problem here out of the blue, I can't get it back to normal at all...\n\n\n\n![Screenshot_2023-05-26-12-05-26-659_com.eveningoutpost.dexdrip.png](https://github.com/NightscoutFoundation/xDrip/assets/49767311/68f19a8d-ca22-49d1-b7d5-6c619afd27c6)\n\n![Screenshot_2023-05-26-12-00-59-638_com.eveningoutpost.dexdrip.jpg](https://github.com/NightscoutFoundation/xDrip/assets/49767311/00094c50-a93a-46dc-be53-d6a89b301fe9)\n\n"
+  },
+  {
+   "id": 1980799825,
+   "user": "Navid200",
+   "created_at": "2024-03-06T12:50:09Z",
+   "body": "@PhilTU Do you know anything about this?"
+  },
+  {
+   "id": 1981368139,
+   "user": "tzachi-dar",
+   "created_at": "2024-03-06T17:05:39Z",
+   "body": "Is this still happening to anyone?"
+  },
+  {
+   "id": 1981680728,
+   "user": "PhilTU",
+   "created_at": "2024-03-06T19:57:41Z",
+   "body": "Not quite sure what's being asked, but we do see data being removed with timing related error messages :- \r\n![417485411_10231246882012905_7642145974842450362_n](https://github.com/NightscoutFoundation/xDrip/assets/76240903/940f6294-57e0-48d3-a007-506645a7c703)\r\n"
+  },
+  {
+   "id": 1981716387,
+   "user": "Navid200",
+   "created_at": "2024-03-06T20:21:09Z",
+   "body": "> Not quite sure what's being asked, but we do see data being removed with timing related error messages :- !\r\n\r\nNo readings, with the message: future data"
+  },
+  {
+   "id": 1981755249,
+   "user": "PhilTU",
+   "created_at": "2024-03-06T20:48:25Z",
+   "body": "\r\n> No readings, with the message: future data\r\n\r\ndon't recall seeing that. Sensor age backwards is more common. Will keep an eye out."
+  },
+  {
+   "id": 3082230645,
+   "user": "Navid200",
+   "created_at": "2025-07-17T02:30:46Z",
+   "body": "Let's continue this as a discussion.  If we can ever recreate it, we can open an issue."
+  }
+ ]
+}

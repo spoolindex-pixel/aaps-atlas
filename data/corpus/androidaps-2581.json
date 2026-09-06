@@ -1,0 +1,81 @@
+{
+ "id": 1755168244,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2581,
+ "title": "Double arrows DOWN when BGs are going UP !!",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2581",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-06-13T15:36:08Z",
+ "closed_at": "2023-08-16T18:10:36Z",
+ "comment_count": 11,
+ "body": "Very strange. The BGs (coming from xDrip) are going up, the numbers are going up in AAPS too but AAPS shows double DOWN arrows ???\n\nLogs are attached. The times are on the screen captures.\n\n![Screenshot_20230602_203522_AAPS.jpg](https://github.com/nightscout/AndroidAPS/assets/76626474/67489cd4-0c93-4637-b312-789d3ced6d6f)\n\n![Screenshot_20230613_162949_xDrip+.jpg](https://github.com/nightscout/AndroidAPS/assets/76626474/f89a36ab-bf63-495f-aa95-e2f17aa519cd)\n\n![Screenshot_20230613_162930_AAPS.jpg](https://github.com/nightscout/AndroidAPS/assets/76626474/d1e765d6-85bd-4deb-8864-177fa9f77a7a)\n\n![AndroidAPS_LOG_1686670359765.log.zip](https://github.com/nightscout/AndroidAPS/files/11736660/AndroidAPS_LOG_1686670359765.log.zip)\n\n",
+ "comments": [
+  {
+   "id": 1590966340,
+   "user": "MilosKozak",
+   "created_at": "2023-06-14T10:56:34Z",
+   "body": "log starts 16:29\r\nbut generaly aaps displays arrow received from BG source"
+  },
+  {
+   "id": 1591026035,
+   "user": "robertrub",
+   "created_at": "2023-06-14T11:37:45Z",
+   "body": "Yes, that's what I thought but xDrip (the source) gave the correct arrow...\n\nRestarting the phone solved the problem.\n"
+  },
+  {
+   "id": 1621279938,
+   "user": "robertrub",
+   "created_at": "2023-07-05T08:26:40Z",
+   "body": "Hi @MilosKozak \n\nGot bitten by the double down arrows once more. It might be related to very jumpy BGs and the smoothing algorithm.\n\nYou have the times from the screenshots.\n\n![Screenshot_20230705_102055_AAPS.jpg](https://github.com/nightscout/AndroidAPS/assets/76626474/57aa3e8f-6f30-495d-aaa1-501203664dfe)\n\n![Screenshot_20230705_102142_xDrip+.jpg](https://github.com/nightscout/AndroidAPS/assets/76626474/35e08da8-063a-4a76-acb8-f2953e1364af)\n\n![Screenshot_20230705_102330_AAPS.jpg](https://github.com/nightscout/AndroidAPS/assets/76626474/382d8b36-7481-477f-af4a-0203931c6e64)\n\n![Screenshot_20230618_213209_AAPS.jpg](https://github.com/nightscout/AndroidAPS/assets/76626474/4c2b1bbe-bad1-476f-a7ee-8427ecf7e117)\n\n![AndroidAPS_LOG_1688545277936.log.zip](https://github.com/nightscout/AndroidAPS/files/11955666/AndroidAPS_LOG_1688545277936.log.zip)\n\n"
+  },
+  {
+   "id": 1621304873,
+   "user": "robertrub",
+   "created_at": "2023-07-05T08:42:39Z",
+   "body": "As before, very strangely, force stop AAPS, clear cache memory doesn't solve the problem.\n\nRestarting phone does solve the problem.\n\nI wonder what's the difference between _force stop and clear cache_ vs _restart phone_... Maybe a lock on a file that is reset at reboot. 🤔"
+  },
+  {
+   "id": 1639558991,
+   "user": "robertrub",
+   "created_at": "2023-07-18T06:17:35Z",
+   "body": "Once again, I have the double arrows for no reason.\nI'm using at the moment xDrip and xDrip variant1 at the same time (end of one sensor and the new one \"heating up\" for 48h). xDrip variant1 doesn't send any data nowhere. I wonder if for some reason this could be the cause... The last time I reported it, it was 13 days ago, probably I had double xDrip running too. xDrip variant has been running for 23 hours and double arrows happened just now.\n\n![Screenshot_20230718_081403_AAPS.jpg](https://github.com/nightscout/AndroidAPS/assets/76626474/a8e43812-7be2-4ba8-8371-6e248fbfd92b)\n\n"
+  },
+  {
+   "id": 1648791915,
+   "user": "robertrub",
+   "created_at": "2023-07-25T00:22:30Z",
+   "body": "Once again, I have the double arrows for no reason.\nI'm using at the moment xDrip and xDrip variant1 at the same time (end of one sensor and the new one \"heating up\" for 48h). xDrip variant1 doesn't send any data nowhere. I wonder if for some reason this could be the cause...\n\n![Screenshot_20230718_081403_AAPS.jpg](https://github.com/nightscout/AndroidAPS/assets/76626474/a8e43812-7be2-4ba8-8371-6e248fbfd92b)\n\n EDIT : It is NOT related to having 2 xDrip/G6 running at the same time. I have only 1 G6 at the moment and have the double arrows (only in AAPS with smoothing). Might help, this sensor is very sensitive to pressure and declaires lows when I sleep on it and goes to normal when I change positions.\n\n![Screenshot_20230725_021812_AAPS.jpg](https://github.com/nightscout/AndroidAPS/assets/76626474/4c852e55-b37a-42e9-8e3a-a704d871ad60)\n\n"
+  },
+  {
+   "id": 1649372128,
+   "user": "robertrub",
+   "created_at": "2023-07-25T08:30:37Z",
+   "body": "@MilosKozak I really think that the bug comes from the smoothing algorithm. The double arrows arrive after there has been a dive in the BGs for 1 reading.\n\n![Screenshot_20230725_102923_AAPS.jpg](https://github.com/nightscout/AndroidAPS/assets/76626474/32aa68f0-1993-40dd-b7c4-1fe6ca2d500b)\n\n![Screenshot_20230725_102610_AAPS.jpg](https://github.com/nightscout/AndroidAPS/assets/76626474/693b46af-bd12-4682-9b50-fe54aed1aee0)\n\n![Screenshot_20230725_102627_xDrip+.jpg](https://github.com/nightscout/AndroidAPS/assets/76626474/a19dfdc3-0a8f-4731-b120-d492aa2317d7)\n\n![AndroidAPS_LOG_1690273721008.log.zip](https://github.com/nightscout/AndroidAPS/files/12158886/AndroidAPS_LOG_1690273721008.log.zip)\n\nNB I'm using **_Anubis_**. I don't know if it can be a part of the issue..."
+  },
+  {
+   "id": 1651176706,
+   "user": "robertrub",
+   "created_at": "2023-07-26T07:58:25Z",
+   "body": "@MilosKozak I really think that the bug comes from the smoothing algorithm. The double arrows arrive after there has been a dive in the BGs for 1 reading.\n\n![Screenshot_20230725_102923_AAPS.jpg](https://github.com/nightscout/AndroidAPS/assets/76626474/32aa68f0-1993-40dd-b7c4-1fe6ca2d500b)\n\n![Screenshot_20230725_102610_AAPS.jpg](https://github.com/nightscout/AndroidAPS/assets/76626474/693b46af-bd12-4682-9b50-fe54aed1aee0)\n\n![Screenshot_20230725_102627_xDrip+.jpg](https://github.com/nightscout/AndroidAPS/assets/76626474/a19dfdc3-0a8f-4731-b120-d492aa2317d7)\n\n![AndroidAPS_LOG_1690273721008.log.zip](https://github.com/nightscout/AndroidAPS/files/12158886/AndroidAPS_LOG_1690273721008.log.zip)\n\n"
+  },
+  {
+   "id": 1651179999,
+   "user": "robertrub",
+   "created_at": "2023-07-26T08:00:50Z",
+   "body": "Ok, more testing and the problem seems unrelated to smoothing. I turned it off yesterday and I still have the double arrows problem. I'm still with the same bumpy G6 sensor.\n\n![Screenshot_20230726_092842_AAPS.jpg](https://github.com/nightscout/AndroidAPS/assets/76626474/b056aa52-5473-4b12-afa4-744f54cf81f0)\n\n![Screenshot_20230724_190648_AAPS.jpg](https://github.com/nightscout/AndroidAPS/assets/76626474/196ca6e5-9014-46d5-aed8-2901e3eb1915)\n\n"
+  },
+  {
+   "id": 1672779669,
+   "user": "robertrub",
+   "created_at": "2023-08-10T08:21:39Z",
+   "body": "I confirm that it is smoothing related. Smoothing was off thill this morning. I set it back ON and an hour later, I get the double down arrows...\n\n![Screenshot_20230810_101623_AAPS.jpg](https://github.com/nightscout/AndroidAPS/assets/76626474/febc9477-8bd9-4e93-950c-33dbbf59f7af)\n\n![AndroidAPS_LOG_1691655874523.log.zip](https://github.com/nightscout/AndroidAPS/files/12310620/AndroidAPS_LOG_1691655874523.log.zip)\n\n"
+  },
+  {
+   "id": 1681066452,
+   "user": "MilosKozak",
+   "created_at": "2023-08-16T18:10:36Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/fa7b73bc8b8c114cafa88372af7ba497f8dbe5ce"
+  }
+ ]
+}

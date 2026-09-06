@@ -1,0 +1,35 @@
+{
+ "id": 757714762,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1541,
+ "title": "Sensor insert time is connected to database, why?",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1541",
+ "state": "closed",
+ "labels": [
+  "question"
+ ],
+ "created_at": "2020-12-05T16:27:30Z",
+ "closed_at": "2021-02-26T05:10:53Z",
+ "comment_count": 3,
+ "body": "Hi,\r\nI just noticed that when i import my database it have saved the sensor state from earlier not just the data points, why is this?\r\n\r\nThis can make some annoying  sensor start dates, even if its just started it can say it started months ago.",
+ "comments": [
+  {
+   "id": 739971939,
+   "user": "nickb24",
+   "created_at": "2020-12-07T15:00:12Z",
+   "body": "The warning on the import database page warns that the operation is for expert users. The 'database' is actually the state of the application as it is at the moment when the export is done. This does include the fact that a sensor is started because that is what the current state of the application is when the export was made. \r\n\r\nYou can use an SQLite database editor and see the tables of the database yourself. Here are what the tables look like:\r\n![image](https://user-images.githubusercontent.com/2193756/101366054-7c6ede80-3872-11eb-89a3-66b1f89199f8.png)\r\nYou can open the 'Sensors' table and delete the last row which should have a field called 'stopped_at' with the value '0' which indicates a running sensor. If you delete that row, then save the database and use that for the xDrip import then you won't have a running sensor. "
+  },
+  {
+   "id": 744752284,
+   "user": "tolot27",
+   "created_at": "2020-12-14T22:31:51Z",
+   "body": "@flango Is your question fully answered by nickb24? If yes, please close this issue."
+  },
+  {
+   "id": 786415261,
+   "user": "Navid200",
+   "created_at": "2021-02-26T05:10:53Z",
+   "body": "Closing due to inactivity"
+  }
+ ]
+}

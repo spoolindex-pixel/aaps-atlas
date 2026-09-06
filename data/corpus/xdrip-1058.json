@@ -1,0 +1,93 @@
+{
+ "id": 507650699,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1058,
+ "title": "Broadcast data to Xdrip",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1058",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2019-10-16T06:46:53Z",
+ "closed_at": "2021-03-01T00:55:09Z",
+ "comment_count": 13,
+ "body": "Dear developer,\r\ncan i send data to xDrip like AndroidAps ? if i can, How should i do?\r\nThank you very much for your recovery.\r\n\r\nmore\r\nIf you are interested in learning about us, please contact me at gitter.I tried to contact you, but I didn't get a response, Or please give me an email to contact you.\r\n\r\n",
+ "comments": [
+  {
+   "id": 542607606,
+   "user": "MasterPlexus",
+   "created_at": "2019-10-16T09:13:55Z",
+   "body": "This is dependent on several things. \r\n- Wich data you want to send (is it something new, or established known datafileds)?\r\n- from.where this want to be transfered\r\n\r\nGenerally you can produce intends to transfer data to a other app. Normally this must be implemented on sender app and receiver app. And booth apps should know that there is an allowed receiver... So without any further information it is not easy to give a suggestion, as also other ways of transferring of data is possible (web pull, Export Import and so.on)..."
+  },
+  {
+   "id": 542942394,
+   "user": "WalkingMyRoad",
+   "created_at": "2019-10-17T00:14:56Z",
+   "body": "Sorry, I didn't elaborate completely.\r\nwe are CGM company named POCTech Co.,Ltd. ,Similar to Dexcome. We already have our own sensors and app named POCTech Care Mobile in googleplay store. we want send our glucose data to xDrip via Broadcast .\r\nWe have successfully passed the data to Androidaps. we also want to do this in xDrip.\r\nSorry for the slow response due to the time zone problem\r\n\r\n\r\n> This is dependent on several things.\r\n> \r\n> * Wich data you want to send (is it something new, or established known datafileds)?\r\n> * from.where this want to be transfered\r\n> \r\n> Generally you can produce intends to transfer data to a other app. Normally this must be implemented on sender app and receiver app. And booth apps should know that there is an allowed receiver... So without any further information it is not easy to give a suggestion, as also other ways of transferring of data is possible (web pull, Export Import and so.on)...\r\n\r\nSorry, I didn't elaborate completely.\r\nwe are CGM company named POCTech Co.,Ltd. ,Similar to Dexcome. We already have our own sensors and app named POCTech Care Mobile in googleplay store. we want send our glucose data to xDrip via Broadcast .\r\nWe have successfully passed the data to Androidaps. we also want to do this in xDrip.\r\nSorry for the slow response due to the time zone problem.\r\n\r\nWe broadcast the data to Androidaps.\r\n<img width=\"922\" alt=\"WeChat81045d24c90d49562890dfac3accdb54\" src=\"https://user-images.githubusercontent.com/12733707/66968529-26603a00-f0b8-11e9-8d41-658367cc43d2.png\">\r\n"
+  },
+  {
+   "id": 543330577,
+   "user": "MasterPlexus",
+   "created_at": "2019-10-17T19:41:29Z",
+   "body": "Normally this should not be not a big problem. But it will be better to place it as an extra intend to xdrip imo, so it is clear selectable for the receiver.\r\n\r\nNormally the best is, if someone who has also one or more of your sensors, and some experiences in coding, to implement it in xdrip, or as Xdrip is open source, so it is open to you to give a pull request for implementing the processing of the data receiving from your app. \r\n\r\nUnder the line I see not that this will not be possible, but at the end @jamorham has to decide when a pull request comes up... "
+  },
+  {
+   "id": 544387071,
+   "user": "WalkingMyRoad",
+   "created_at": "2019-10-21T07:32:36Z",
+   "body": "> Normally this should not be not a big problem. But it will be better to place it as an extra intend to xdrip imo, so it is clear selectable for the receiver.\r\n> \r\n> Normally the best is, if someone who has also one or more of your sensors, and some experiences in coding, to implement it in xdrip, or as Xdrip is open source, so it is open to you to give a pull request for implementing the processing of the data receiving from your app.\r\n> \r\n> Under the line I see not that this will not be possible, but at the end @jamorham has to decide when a pull request comes up...\r\n\r\nThank you for your reply ,  i think implementting it in xdrip is very diffcult , so i want our app as an open souece in Hardware Data Source.\r\n![Screenshot_20191021-152015_xDrip+](https://user-images.githubusercontent.com/12733707/67184706-e9c57300-f416-11e9-8182-4d4a365e82ce.jpg)\r\n\r\nwe do the same in AndroidAps.\r\n![Screenshot_20191021-151340](https://user-images.githubusercontent.com/12733707/67184832-301ad200-f417-11e9-8d0a-4e3472648325.png)\r\n\r\nI'm sorry I didn't leave a contact information last time\r\nmy email : simon.min@poctech.net \r\nI'm sorry that I can't reply immediately due to the time zone problem. If you are interested, please contact me. Our products have been used in Greece，We want to help more diabetics get a better experience. Thank you . @jamorham @MasterPlexus "
+  },
+  {
+   "id": 544411142,
+   "user": "MasterPlexus",
+   "created_at": "2019-10-21T08:38:46Z",
+   "body": "@WalkingMyRoad That was what I mean. I did not stated to implement the hole connection to be implemented in xDrip. \r\nI see the implementation in AndroidAPS, and it looks like not that complex, but I'm not that deep in handling Intends.  But as far as I could see, you should add in your app als that the intends will be send to xdrip in addition (at the moment in your screenshot I see `intend.setPackage(packageNameAndroidaps);`\r\nand I'm not sure that xDrip could receive it, as it is not placed for it."
+  },
+  {
+   "id": 544599213,
+   "user": "tzachi-dar",
+   "created_at": "2019-10-21T16:35:28Z",
+   "body": "If you only want to send BG data as intents, you can do that, but the user will have to select things that are not related to your CGM. Are you sure it is a good thing to do?\r\n\r\nIf yes, I can point you on how to do it."
+  },
+  {
+   "id": 544773189,
+   "user": "WalkingMyRoad",
+   "created_at": "2019-10-22T01:30:11Z",
+   "body": "> If you only want to send BG data as intents, you can do that, but the user will have to select things that are not related to your CGM. Are you sure it is a good thing to do?\r\n> \r\n> If yes, I can point you on how to do it.\r\n\r\nBecause we don't collect users' data to the cloud, but we need to give users a way to watch their children's blood sugar at home. Xdrip is the best choice. For now, we only want to send BG data as intents, but how to give xdrip compliant coding parameters , please give some Suggestions and examples."
+  },
+  {
+   "id": 544775080,
+   "user": "WalkingMyRoad",
+   "created_at": "2019-10-22T01:42:27Z",
+   "body": "> @WalkingMyRoad That was what I mean. I did not stated to implement the hole connection to be implemented in xDrip.\r\n> I see the implementation in AndroidAPS, and it looks like not that complex, but I'm not that deep in handling Intends. But as far as I could see, you should add in your app als that the intends will be send to xdrip in addition (at the moment in your screenshot I see `intend.setPackage(packageNameAndroidaps);`\r\n> and I'm not sure that xDrip could receive it, as it is not placed for it.\r\n\r\nWe designed a switch option to let users choose which application to transfer data to. every switch sets different package.\r\n![Screenshot_20191022-093730](https://user-images.githubusercontent.com/12733707/67254493-e92ceb00-f4af-11e9-92e3-94d4ef098ebf.png)\r\nOf course, we will add xdrip if the test passes.\r\n"
+  },
+  {
+   "id": 545141358,
+   "user": "tzachi-dar",
+   "created_at": "2019-10-22T20:33:01Z",
+   "body": "Here is the way that the oop sends data back to xDrip:\nhttps://github.com/tzachi-dar/LibreOOPAlgorithm/blob/8ac65ad064f19a1b259ddf18b6382bc74b61e2f0/app/src/main/java/com/hg4/oopalgorithm/oopalgorithm/IntentsReceiver.java#L120\n\nYou can send it on the same way.\nFor this to work, your users will have to configure xDrip according to\nthe following instructions:\n\n1) Install xDrip\n2) Choose libre as the sensor type.\n3) Choose miaomiao\n4) Go to settings->hw data source and choose libre wifi\n5) Go to list of receivers and enter 127.0.0.1:5000\n6) Start a new sensor (answer not today).\n7) Go to settings->less common settings->other misc options-> and set \"use\noop algorithm\"\n\nThis configuration is far from being intuitive, but users will see the BG\nand alerts will work and so on.\n\nOn Tue, 22 Oct 2019 at 04:42, minyc <notifications@github.com> wrote:\n\n> @WalkingMyRoad <https://github.com/WalkingMyRoad> That was what I mean. I\n> did not stated to implement the hole connection to be implemented in xDrip.\n> I see the implementation in AndroidAPS, and it looks like not that\n> complex, but I'm not that deep in handling Intends. But as far as I could\n> see, you should add in your app als that the intends will be send to xdrip\n> in addition (at the moment in your screenshot I see\n> intend.setPackage(packageNameAndroidaps);\n> and I'm not sure that xDrip could receive it, as it is not placed for it.\n>\n> We designed a switch option to let users choose which application to\n> transfer data to. every switch sets different package.\n> [image: Screenshot_20191022-093730]\n> <https://user-images.githubusercontent.com/12733707/67254493-e92ceb00-f4af-11e9-92e3-94d4ef098ebf.png>\n> Of course, we will add xdrip if the test passes.\n>\n> —\n> You are receiving this because you commented.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/1058?email_source=notifications&email_token=AB4TBZB3F62JO33WL74XPRLQPZLALA5CNFSM4JBG7LQKYY3PNVWWK3TUL52HS4DFVREXG4"
+  },
+  {
+   "id": 573147423,
+   "user": "emaragkos",
+   "created_at": "2020-01-10T18:16:10Z",
+   "body": "Hey there all!\r\n@WalkingMyRoad are you planning to implement the connection between POCTech and xDrip?\r\nAlso do you have any documentation about connecting POCTech with Nightscout and Androidaps\r\nThank you :)"
+  },
+  {
+   "id": 781656851,
+   "user": "Navid200",
+   "created_at": "2021-02-18T21:49:19Z",
+   "body": "@WalkingMyRoad   If the questions have not been answered, please update.  "
+  },
+  {
+   "id": 785552554,
+   "user": "Navid200",
+   "created_at": "2021-02-25T03:37:25Z",
+   "body": "You can post in the Gitter room.  The developers see the posts.\r\nhttps://gitter.im/jamorham/xDrip-plus"
+  },
+  {
+   "id": 787566612,
+   "user": "Navid200",
+   "created_at": "2021-03-01T00:55:09Z",
+   "body": "Closing due to inactivity"
+  }
+ ]
+}

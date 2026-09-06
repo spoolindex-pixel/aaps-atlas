@@ -1,0 +1,45 @@
+{
+ "id": 1897347452,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2781,
+ "title": " [DEV] Profile switch takes long time to sync in AAPSClient",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2781",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-09-14T21:45:42Z",
+ "closed_at": "2023-09-20T13:06:19Z",
+ "comment_count": 5,
+ "body": "AAPSClient 3.2.0-dev-l\r\nBuild: 471ed28a04-2023.09.14\r\nFlavor: aapsclientrelease\r\nNightscout version: NS15 dev\r\n\r\nStep by step\r\n1) Enact temp profile 120% duration 30 min in AAPSClient. time: 23:31\r\n2) Sync to NS/AAPS fast.\r\n3) Takes about 5 minutes for enacted profile switch to show in AAPSClient\r\n4) Switch back to 100% profile in AAPSClient. Time: 23:37\r\n5) Sync to NS/AAPS fast.\r\n6) Takes about 5 minutes for enacted profile switch to show in AAPSclient\r\n\r\nExpected behaviour is for profile switch to show in AAPSClient much faster, similar to 3.1.0.3 v1 API.\r\n\r\nLogs AAPSClient:\r\n[AndroidAPS_LOG_1694727749738.log.zip](https://github.com/nightscout/AndroidAPS/files/12613551/AndroidAPS_LOG_1694727749738.log.zip)\r\n\r\nLogs AAPS:\r\n[AndroidAPS_LOG_1694727788503.log.zip](https://github.com/nightscout/AndroidAPS/files/12613549/AndroidAPS_LOG_1694727788503.log.zip)\r\n\r\n![image](https://github.com/nightscout/AndroidAPS/assets/114103483/2012a6ba-2b0e-4462-b3e9-e01bea073590)\r\n\r\n",
+ "comments": [
+  {
+   "id": 1722294906,
+   "user": "MilosKozak",
+   "created_at": "2023-09-16T19:02:22Z",
+   "body": "this is common behavior. enacting profile may take some time"
+  },
+  {
+   "id": 1722295824,
+   "user": "olorinmaia",
+   "created_at": "2023-09-16T19:07:27Z",
+   "body": "Profile change done in AAPSClient syncs to NS/AAPS ASAP, which is the most important thing. It's just the speed of showing in AAPSClient that the profile actually changed in AAPS that is slower in v3 API then 3.1.0.3 v1 API. I'm not sure if it's a big problem tho, just thinking if possible should be improved to be on par with 3.1.0.3 v1 API. :)"
+  },
+  {
+   "id": 1722322407,
+   "user": "olorinmaia",
+   "created_at": "2023-09-16T21:44:01Z",
+   "body": "*edit* due to wrong setup of random BG I believe."
+  },
+  {
+   "id": 1722544356,
+   "user": "olorinmaia",
+   "created_at": "2023-09-17T19:07:45Z",
+   "body": "In dev v1/v3 doesnt matter so much it seem. Try compare with 3.1.0.3 NSClient profile change vs DEV AAPSclient profile change.\r\n\r\nSeems like the profile gets visually changed faster in 3.1.0.3 AAPS then after that syncing fast with NSClient.\r\n\r\nIn dev it says \"profile set OK\" asap after profile change in AAPSClient, but it can take abit of time before AAPS internally visually change profile and then sync to AAPSClient. "
+  },
+  {
+   "id": 1727692050,
+   "user": "MilosKozak",
+   "created_at": "2023-09-20T13:06:19Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/7cb27fced0a6260bc9486f005b7ab779dade38c8"
+  }
+ ]
+}

@@ -1,0 +1,27 @@
+{
+ "id": 993779297,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1824,
+ "title": "[UX] \"Add treatment\" shortcut on graph",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1824",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-09-11T07:58:17Z",
+ "closed_at": "2021-09-11T12:36:10Z",
+ "comment_count": 2,
+ "body": "There is a \"Add note\" button when we click on a graph.\r\n\r\nMy idea is to add a treatment shortcut with the time value prefilled with the one of the plot we clicked on the graph.\r\n\r\nI tend to enter carbs late, when we forget to log one I tend to click on the graph to add the missing one.\r\n\r\nIt seam that ppl may tend intuitively to click on the graph and add note instead of adding treatment (maybe because of others software that only support text)\r\n\r\nAnother suggestion is to parse entered note and if someone entered units (carbs or others keywords) as note, poping an infobox asking if the user meant to enter a treatment\r\n\r\nTo unclutter the UI we can maybe use pictograms on the footer, instead of text (not sure if it'll help or confuse ppl)",
+ "comments": [
+  {
+   "id": 917400310,
+   "user": "Navid200",
+   "created_at": "2021-09-11T12:36:10Z",
+   "body": "This capability already exists.\r\nWhen you opened this, you were asked to please post in one of our support channels to make sure this should be an issue before you open one.\r\nDid you?\r\n\r\nWould you please post first in the support channels before opening an issue?\r\nhttps://github.com/NightscoutFoundation/xDrip/blob/master/.github/ISSUE_TEMPLATE/feature-request.md"
+  },
+  {
+   "id": 917436846,
+   "user": "BenoitAnastay",
+   "created_at": "2021-09-11T16:46:27Z",
+   "body": "@Navid200 I'm not sure to understand I see no shortcuts to such things\n\nThere two types of buttons one for note and for specific to blood test\n\n```\nswitch (type) { case PointValueExtended.BloodTest: final String fuuid = uuid; final View.OnClickListener mBtOnClickListener = new View.OnClickListener() { @Override public void onClick(View v) { Home.startHomeWithExtra(xdrip.getAppContext(), Home.BLOOD_TEST_ACTION, time.toString(), fuuid); } }; Home.snackBar(R.string.blood_test, message, mBtOnClickListener, callerActivity); break; default: final View.OnClickListener mOnClickListener = new View.OnClickListener() { @Override public void onClick(View v) { Home.startHomeWithExtra(xdrip.getAppContext(), Home.CREATE_TREATMENT_NOTE, time.toString(), Double.toString(ypos)); } }; Home.snackBar(R.string.add_note, message, mOnClickListener, callerActivity); break; }\n```\n\nWhat I would like is opening treatment with time prefilled after I clicked a PointValue\n\nI do not thing that there is such implementation or it's kinda hidden\n\n"
+  }
+ ]
+}

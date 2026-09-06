@@ -1,0 +1,135 @@
+{
+ "id": 1509778823,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2300,
+ "title": "[DEV] NSClient keeps re-uploading profiles 2 times per minute",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2300",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-12-23T21:07:13Z",
+ "closed_at": "2022-12-27T20:03:10Z",
+ "comment_count": 21,
+ "body": "Build 5d9155daab-2022.12.23 merged at 0f5d3b5813b591613c21b0ec5dbd55c2498a0313\r\nTime: 2022-12-23 21:51\r\nLogs:  [AndroidAPS_2022-12-23_JB.zip](https://github.com/nightscout/AndroidAPS/files/10297325/AndroidAPS_2022-12-23_JB.zip)\r\n\r\nFor some reason AAPS keeps syncing (resending) my profile with NS 2 times per minute, resulting in my database growing larger and larger...\r\n\r\nI use the smoothing branch, but another user reported the same problem on discord using dev:\r\nhttps://discord.com/channels/629952586895851530/629954570394533889/1055885334149349377\r\n\r\n<img src=\"https://user-images.githubusercontent.com/60566713/209405458-109b99ba-acba-4297-aacf-5281961f73e1.jpeg\" width=\"200\">\r\n",
+ "comments": [
+  {
+   "id": 1364411362,
+   "user": "MilosKozak",
+   "created_at": "2022-12-23T23:40:08Z",
+   "body": "maybe this https://github.com/nightscout/AndroidAPS/commit/dbc73f22f42988c9623128e66a94b015962fc9ae fixed it?"
+  },
+  {
+   "id": 1364478427,
+   "user": "jbr7rr",
+   "created_at": "2022-12-24T07:24:38Z",
+   "body": "It did not unfortunately.\r\n\r\nreverting back to old dev (2022.12.01) and back fixed it until I change one of my profiles.. But that also means I can reliably reproduce this for myself"
+  },
+  {
+   "id": 1364501695,
+   "user": "Alamo04",
+   "created_at": "2022-12-24T10:01:06Z",
+   "body": "Confirmed.\r\nMy last working version is from 09.12.2022 00:02. I stay now with that version."
+  },
+  {
+   "id": 1364515877,
+   "user": "MilosKozak",
+   "created_at": "2022-12-24T11:43:13Z",
+   "body": "profile upload is not acked by NS.\r\nfull DB?\r\nit's working well with my setup\r\n"
+  },
+  {
+   "id": 1364521864,
+   "user": "mick711",
+   "created_at": "2022-12-24T12:22:01Z",
+   "body": "I test the dbc73f2 because I have a problem like that but it's possible my database the problem because I use nightscout on my nas synology. All data was resent... \r\n![Screenshot_20221221-234505988](https://user-images.githubusercontent.com/441734/209436091-9d850a20-30d5-4dcd-b266-4d9f9579b3fb.jpg)\r\n![Screenshot_20221221-234438447](https://user-images.githubusercontent.com/441734/209436108-bc72b905-fbda-441d-b34f-d3f0b85bf033.jpg)\r\n"
+  },
+  {
+   "id": 1364523764,
+   "user": "Alamo04",
+   "created_at": "2022-12-24T12:36:45Z",
+   "body": "If you have not mutch space in your NS Database, you will become a problem, there are thousands of profile entry's after that issue comes up. See picture, that are only a few of the entrys and there are so mutch, that you can't delete them with NS tools.\r\n\r\n![Screenshot_20221224-132348_Chrome~2](https://user-images.githubusercontent.com/36486505/209436499-8a363af0-72e2-450f-b15b-e46c12f55b30.jpg)\r\n"
+  },
+  {
+   "id": 1364524266,
+   "user": "Alamo04",
+   "created_at": "2022-12-24T12:41:04Z",
+   "body": "And @MilosKozak \r\nMy database isn't full, have 2GB space.\r\n\r\n- If you don't change the profile, everything works fine.\r\n- If you change the profile, spamming starts.\r\n\r\nI'm now on dev from yesterday, but must first install and start an old dev (09.12.2020). After that I can update to the actual dev until I don't change something in my profile.\r\n\r\nIn NS Client - Sync there are only upload data and upload BG to NS activated. Nothing will be downloaded from NS.\r\n\r\nTrying also clean installations and database reset, didn't fix that."
+  },
+  {
+   "id": 1364528615,
+   "user": "jbr7rr",
+   "created_at": "2022-12-24T13:12:50Z",
+   "body": "I did clean my NS this morning and removed all doubled profiles, there is more then enough space now (it was 81% before). I changed some profile around 14:00 and it started spamming again.\r\n\r\nIf it is not acked it might be a problem on the Nightscout side? I can open a ticket there if you like..\r\n\r\nNew logs for good measure:\r\n[AndroidAPS_LOG_1671886923881.log.zip](https://github.com/nightscout/AndroidAPS/files/10298636/AndroidAPS_LOG_1671886923881.log.zip)\r\n\r\n"
+  },
+  {
+   "id": 1365037244,
+   "user": "MilosKozak",
+   "created_at": "2022-12-26T09:36:14Z",
+   "body": "how many profiles do you have in AAPS?"
+  },
+  {
+   "id": 1365086420,
+   "user": "jbr7rr",
+   "created_at": "2022-12-26T11:00:49Z",
+   "body": "I have 5 profiles, had a lot more in the past without issues"
+  },
+  {
+   "id": 1365225770,
+   "user": "Alamo04",
+   "created_at": "2022-12-26T14:37:27Z",
+   "body": "3 at me."
+  },
+  {
+   "id": 1365229806,
+   "user": "MilosKozak",
+   "created_at": "2022-12-26T14:48:38Z",
+   "body": "pm me your configuration with master pass"
+  },
+  {
+   "id": 1365240634,
+   "user": "Alamo04",
+   "created_at": "2022-12-26T15:09:25Z",
+   "body": "Sendet over discord.\r\n"
+  },
+  {
+   "id": 1365298161,
+   "user": "jbr7rr",
+   "created_at": "2022-12-26T17:29:19Z",
+   "body": "Sent over Discord as well"
+  },
+  {
+   "id": 1365805390,
+   "user": "Alamo04",
+   "created_at": "2022-12-27T10:51:58Z",
+   "body": "@MilosKozak \r\n\r\nJust now tested the last Dev version:\r\nWith that version you didn't need a profile switch to force this issue, this version starts spamming  directly after upgrade.\r\n\r\nIt takes only 2 minutes, before I was back to the old version, but in that time it is spamming so fast, that you can't delete the entries manually.  \r\n\r\nHave to clear the Profiles Database over 10be again.\r\n\r\nMy System:\r\n- Google Pixel 5\r\n- Dexcom G6 over Boyda\r\n- BG data over AAPS to NS\r\n- XDrip only for the Smartwatch  (no uploads)\r\n- No downloads from NS are allowed in AAPS\r\n\r\n**Edit 27.12.2022 13:50**\r\nNext try to fix it.\r\n\r\nBuild a complete new Dev and did not only update it over Git.\r\n- now the old issue is back, but spamming starts first after profile switch again and only all 30 seconds. \r\n- So I can use this version, until I need a profile switch."
+  },
+  {
+   "id": 1365847221,
+   "user": "jbr7rr",
+   "created_at": "2022-12-27T11:52:50Z",
+   "body": "For all other users that are affected by this bug, I have created a small python script that removes the duplicates from your mongo db. Use at your own discretion and use only if you know what it does, as this will edit your mongo db. It also can take quite a while to run when there are lots of duplicates\r\n```\r\nfrom pymongo import MongoClient\r\nimport pprint\r\n\r\n# Replace the uri string with your MongoDB deployment's connection string.\r\nuri = \"mongodb+srv://<user>:<password>@<cluster-url>?retryWrites=true&writeConcern=majority\"\r\n\r\nclient = MongoClient(uri)\r\n\r\n# database and collection code goes here\r\n\r\ndb = client.ns0 # REPLACE ns0 with your database name!\r\ncollection = db.profile\r\n\r\nprevStartDate = ''\r\nfor doc in collection.find():\r\n    #pprint.pprint(coll.find_one(doc)) \r\n    profile = collection.find_one(doc)\r\n    \r\n    startDate = profile['startDate']\r\n    if startDate == prevStartDate:\r\n        print('duplicate found, removed!') \r\n        print('startDate: ' + startDate)\r\n        collection.delete_one(doc)\r\n    # We delete one by one so one original copy is still left..\r\n    prevStartDate = profile['startDate']\r\n\r\n\r\n# Close the connection to MongoDB when you're done.\r\nclient.close()\r\n```"
+  },
+  {
+   "id": 1366038831,
+   "user": "MilosKozak",
+   "created_at": "2022-12-27T16:47:52Z",
+   "body": "> @MilosKozak\r\n> \r\n> Just now tested the last Dev version: With that version you didn't need a profile switch to force this issue, this version starts spamming directly after upgrade.\r\n> \r\n> It takes only 2 minutes, before I was back to the old version, but in that time it is spamming so fast, that you can't delete the entries manually.\r\n> \r\n> Have to clear the Profiles Database over 10be again.\r\n> \r\n> My System:\r\n> \r\n> * Google Pixel 5\r\n> * Dexcom G6 over Boyda\r\n> * BG data over AAPS to NS\r\n> * XDrip only for the Smartwatch  (no uploads)\r\n> * No downloads from NS are allowed in AAPS\r\n> \r\n> **Edit 27.12.2022 13:50** Next try to fix it.\r\n> \r\n> Build a complete new Dev and did not only update it over Git.\r\n> \r\n> * now the old issue is back, but spamming starts first after profile switch again and only all 30 seconds.\r\n> * So I can use this version, until I need a profile switch.\r\n\r\nresolved by https://github.com/nightscout/AndroidAPS/commit/43cef1e7b631c6efcaf4f9dbe1f8ff59c7d6044b\r\nbut this is not related to multiple uploads od profile store"
+  },
+  {
+   "id": 1366061423,
+   "user": "Alamo04",
+   "created_at": "2022-12-27T17:25:20Z",
+   "body": "@MilosKozak \r\n\r\nNot resolved.\r\n\r\nStill uploading profiles every queue, after profile switch.\r\nWithout profile switch, everything is fine. "
+  },
+  {
+   "id": 1366066911,
+   "user": "MilosKozak",
+   "created_at": "2022-12-27T17:35:13Z",
+   "body": "profile store upload fixed by https://github.com/nightscout/AndroidAPS/commit/3472f0f83e81164869453e580094677ceb1e5b73"
+  },
+  {
+   "id": 1366087699,
+   "user": "jbr7rr",
+   "created_at": "2022-12-27T18:16:30Z",
+   "body": "Can confirm, for me it works now as it should! Many thanks!"
+  }
+ ]
+}

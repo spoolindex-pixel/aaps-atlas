@@ -1,0 +1,21 @@
+{
+ "id": 2873661899,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3849,
+ "title": "[Visual Bug] Word-wrapping occurs with negative insulin amounts in Bolus Wizard in some instances",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3849",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-02-24T01:39:43Z",
+ "closed_at": "2026-03-08T12:32:42Z",
+ "comment_count": 1,
+ "body": "As noted in https://github.com/nightscout/AndroidAPS/issues/3798, when there is a negative insulin amount involved in the calculations, the \"U\" after the insulin amount wraps to the next line, in some circumstances.\nThis occurs on my Pixel 9 Pro with what, I think, was the default font size (though I can't be 100% sure I didn't change it on installation), but can be reproduced/resolved on any device, including Android Studio emulator devices, by adjusting the font size on the device, to anything larger than the 2nd smallest font size (out of 7 available sizes).\n\nThe easiest way to reproduce it in emulator is to:\n* open any/generic AVD (eg. medium API 35) and run AAPS (or use your own device)\n* Open the Bolus calculator \n* It is not necessary to have any real SG data or insulin history, just enter a negative correction amount (if necessary) so that there is at least one negative insulin value shown\n* Open the Device UI shortcuts menu/button, and change the font size to anything larger than the 2nd smallest option\n* The changed font size and \"U\" wrapping can be seen in the underlying AAPS Bolus wizard screen, even without closing the UI menu.\n\n![Image](https://github.com/user-attachments/assets/5d550791-ec20-463a-ba12-9d6ec5af85ef)\n![Image](https://github.com/user-attachments/assets/8ecda815-934b-40ea-8a69-d4ac37dc8e9f)\n",
+ "comments": [
+  {
+   "id": 4018969041,
+   "user": "MilosKozak",
+   "created_at": "2026-03-08T12:32:41Z",
+   "body": "This will be addressed in AAPS 4 (Compose rewrite)."
+  }
+ ]
+}

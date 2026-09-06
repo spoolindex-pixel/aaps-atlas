@@ -1,0 +1,57 @@
+{
+ "id": 2080839836,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3172,
+ "title": "Prevent translation for the abbreviation of hours and days ",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3172",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-01-14T18:16:44Z",
+ "closed_at": "2024-01-22T12:30:15Z",
+ "comment_count": 7,
+ "body": "In the master version of AAPS 3.2.0.3, there is a big mistake in the german translation. Someone changed the value\r\n„\\<string name=\"shorthour\">h\\</string>“\r\nin the file\r\ncore/interfaces/src/main/res/values-de-rDE/strings.xml\r\nto\r\n„\\<string name=\"shorthour\">s\\</string>“\r\nBut „s“ is the abbreviation for the physical unit „seconds“.\r\nNow we see a lot of time information like\r\n2d2s\r\ninstead of\r\n2d2h\r\nOne hour = 3660 seconds (1h=3660s), thats a big difference and thats the mistake.\r\nThe problem for the german abbreviating/translation of day, hour, minute and seconds are discussed here https://german.stackexchange.com/questions/14895/abbreviating-time\r\n\r\nLonger abbreviations of days and hours in AAPS are not possible because of the problems on the overview page. There, the status line is interrupted and not shown completely, when the abbreviation of days and hours contain more than one character.",
+ "comments": [
+  {
+   "id": 1891055696,
+   "user": "olorinmaia",
+   "created_at": "2024-01-14T19:56:52Z",
+   "body": "The best way to solve this is to join the translation team at crowdin and search for the string `shorthour `and suggest the correct translation.\r\n\r\nhttps://crowdin.com/project/androidaps/de"
+  },
+  {
+   "id": 1891063691,
+   "user": "winni67",
+   "created_at": "2024-01-14T20:27:37Z",
+   "body": "@olorinmaia thats the way to correct that value. Thats already done. But we need a way to prevent this values (strings) from translating in the future.\r\n\r\n"
+  },
+  {
+   "id": 1891065824,
+   "user": "olorinmaia",
+   "created_at": "2024-01-14T20:36:54Z",
+   "body": "For my part and as a translator of norwegian this is a string I want translated. I don't think a string can be made untranslatable for one language only. So with this example, and as with any other translatable strings, it's a matter of ensuring correct translation for given language imo :)\r\n\r\nMaybe a discussion @ crowdin to make sure the right ppl approve translations is due?"
+  },
+  {
+   "id": 1892328183,
+   "user": "MilosKozak",
+   "created_at": "2024-01-15T14:56:27Z",
+   "body": "there is a \"short\" in name. it means there is not much space for it"
+  },
+  {
+   "id": 1892329086,
+   "user": "MilosKozak",
+   "created_at": "2024-01-15T14:56:58Z",
+   "body": "maybe \"st\" would be good translation"
+  },
+  {
+   "id": 1894296186,
+   "user": "winni67",
+   "created_at": "2024-01-16T18:26:52Z",
+   "body": "The question is, if the error can be corrected in the master version. For me, I solved the problem by changing the code. I prefer day (d), hour (h), minute (min), second (s). Perhaps it could be possible to change the non standard units on the overview page (status line) by own local settings in the AAPS app. With big displays, people can use abbreviations with more than one character. On smaller displays, only one character for abbreviations is allowed. So, everyone can change it to the own preferred abbreviation."
+  },
+  {
+   "id": 1903906809,
+   "user": "MilosKozak",
+   "created_at": "2024-01-22T12:30:15Z",
+   "body": "all changes must go through dev"
+  }
+ ]
+}

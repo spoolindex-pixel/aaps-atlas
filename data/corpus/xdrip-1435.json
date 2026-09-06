@@ -1,0 +1,48 @@
+{
+ "id": 702806575,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1435,
+ "title": "Mi Band (5): Enhancements",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1435",
+ "state": "closed",
+ "labels": [
+  "enhancement",
+  "device-miband"
+ ],
+ "created_at": "2020-09-16T14:18:24Z",
+ "closed_at": "2021-02-16T22:51:02Z",
+ "comment_count": 5,
+ "body": "I'm using a Mi Band 5 and would like to propose the following enhancements:\r\n\r\n1. The colour of HIGH blood sugars is red but in xDrip+ it's orange. I think it should be the same as in xDrip+ or at least some light orange for better legibility, if that's a problem. EDIT: LOW values are in blue, which I also do not understand. Shouldn't they be red?\r\n\r\n2. I'm coming from a Pebble and its watchface makes it easier to see how old the last received blood sugar is. Currently the Mi Band watchface displays the time at which the last bg was received. If I want to know how old the bg is I have to first look at the time of the bg and then at the current time and calculate the difference. It would be much easier, if the watchface calculated the passed time itself. The Pebble can do this on the watchface but I think the Mi Band can't. Can the Mi Band maybe just display something like \"BG_delta, 5 min ago\", \"BG_delta, 10 min ago\" etc.? Or \"BG_delta, 5+ min ago\", \"BG_delta, 10+ min ago\"? Maybe even with a colour change if it passes 15min?\r\n\r\n3. I already expect this to be impossible but can the \"Syncing\" while updating the watchface be disabled?\r\n\r\n4. xDrip+ doesn't show the steps and heart rate on the graph any more (compared to my old Pebble). Could this be added?\r\n\r\n5. When I'm getting an alert on the watchface the bg is being displayed in small writing. Could the bg (and maybe also HIGH and LOW) be set to broad?\r\n\r\n6. I believe that when writing the european way of writing the date there is missing a dot on the watchface. Currently it's 16.09 but I think it should be 16.09.\r\n\r\nGreat work so far, thank you! :)",
+ "comments": [
+  {
+   "id": 694889770,
+   "user": "ArthurusDent",
+   "created_at": "2020-09-18T14:07:24Z",
+   "body": "I know that none of the regular xDrip+ developers write code for the Mi Bands. But I do asume that @bigdigital follows this project and therefore gets informed about issues. Just to make sure he is aware of this issue, I have now tagged him."
+  },
+  {
+   "id": 697199276,
+   "user": "bigdigital",
+   "created_at": "2020-09-23T07:55:21Z",
+   "body": "Hi.\r\n\r\n1. Initially, the line colors was the same as in the xdrip, but many people use different lines preferences, and in some cases, they were hard to see on the small screen. So the line colors were hardcoded. In the future, i planing to implement a watchface config file. By using this config file it would be possible to change elements position and colors. This will allow achieving the different design of the wathcfaces.\r\n2. Unfortunately such approach cannot be implemented on miband. The miband data is a static image, which is generated before watchface uploading. If you lose bluetooth connection, you wouldn't know how old the data on the screen.  For example if the latest watchaface was uploaded with text 5 min ago, and there would be some problem with the connection, you would see the outdated text until the next successful watch face uploading, which i think would be totally unacceptable. \r\nAs for the outdated data highlighting. If the bg data considered as outdated (usually they considered as outdated if there were no new values during 15 min) then the BG data, would be crossed out. I guess this should be enough.\r\n3. Not possible. This behaviour embedded into the miband firmware.\r\n4. The heart rate should work. You would need to configure heart rate update interval in MiFit or any thirdparty application. To see heart rate data in xdrip, the options \"Use Health Data\" and \"Heart Rate sensor\" which is located in Settings -> Smartwarch Features -> Smart watch sensors,  should be enabled.\r\n5. Do you mean to uppercase text?\r\n6. Unfortunately the miband wathcface has a very limited functionality so there no way to add an additional dot after the month digits. Also, to be honest, i never saw such data format usage."
+  },
+  {
+   "id": 698487750,
+   "user": "Klaus3d3",
+   "created_at": "2020-09-24T17:39:35Z",
+   "body": "> \r\n> \r\n> Hi.\r\n> \r\n>     1. Initially, the line colors was the same as in the xdrip, but many people use different lines preferences, and in some cases, they were hard to see on the small screen. So the line colors were hardcoded. In the future, i planing to implement a watchface config file. By using this config file it would be possible to change elements position and colors. This will allow achieving the different design of the wathcfaces.\r\n> \r\n>     2. Unfortunately such approach cannot be implemented on miband. The miband data is a static image, which is generated before watchface uploading. If you lose bluetooth connection, you wouldn't know how old the data on the screen.  For example if the latest watchaface was uploaded with text 5 min ago, and there would be some problem with the connection, you would see the outdated text until the next successful watch face uploading, which i think would be totally unacceptable.\r\n>        As for the outdated data highlighting. If the bg data considered as outdated (usually they considered as outdated if there were no new values during 15 min) then the BG data, would be crossed out. I guess this should be enough.\r\n> \r\n>     3. Not possible. This behaviour embedded into the miband firmware.\r\n> \r\n>     4. The heart rate should work. You would need to configure heart rate update interval in MiFit or any thirdparty application. To see heart rate data in xdrip, the options \"Use Health Data\" and \"Heart Rate sensor\" which is located in Settings -> Smartwarch Features -> Smart watch sensors,  should be enabled.\r\n> \r\n>     5. Do you mean to uppercase text?\r\n> \r\n>     6. Unfortunately the miband wathcface has a very limited functionality so there no way to add an additional dot after the month digits. Also, to be honest, i never saw such data format usage.\r\n\r\n@2 the actual value will only be crossed when the phone losses the connection to the sensor but not to the band. Am i right? The crossing only happens with a watchface update."
+  },
+  {
+   "id": 756748925,
+   "user": "bigdigital",
+   "created_at": "2021-01-08T13:12:47Z",
+   "body": "Hello, sorry for the delay, haven't seen your question. In any case, i'll reply. Yes, I use a small trick here. When the values is not valid and connections between phone persist, would be generated and uploaded watch face with crossed value (like in xdrip apk). But if miband will lose connections with the phone, you also will see the crossing value. For this, I use a Bluetooth connection status icon, which was styled as a crossed line and displays above the bg value."
+  },
+  {
+   "id": 778895123,
+   "user": "Navid200",
+   "created_at": "2021-02-15T02:10:56Z",
+   "body": "@ArthurusDent Would you please close this issue if your questions have been answered?\r\nIf not, please use the support channels:\r\nhttps://www.facebook.com/groups/xDripG5\r\nhttps://gitter.im/jamorham/xDrip-plus\r\nThanks"
+  }
+ ]
+}

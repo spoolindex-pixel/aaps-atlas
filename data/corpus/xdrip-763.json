@@ -1,0 +1,27 @@
+{
+ "id": 403842792,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 763,
+ "title": "G6: Calibrations are added into OB1 collector even when OB1 collector is not used",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/763",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2019-01-28T14:33:38Z",
+ "closed_at": "2021-02-26T20:08:22Z",
+ "comment_count": 2,
+ "body": "So I am G6 user, at the moment I am not using OB1.\r\n\r\nWhen I do calibration with my meter (I am using Contour One), calibration is added into two queues: NativeCalibrationPipe and OB1G5StateMachine. \r\n\r\nProblem is I am not using OB1, and when I tried to switch to OB1 I couldn;t because my queue had about 40 elements, and every 5 minutes xDrip tried to process one unit from Queue, he couldn't do that because calibration in Queue was very old, so it got error and just deleted that entry from queue and went into to wait state. On next cycle it started again. (Queue did get smaller, but wait time to clean it would be few hours)\r\n\r\nProposed solutions (both should be implemented):\r\nA.) If OB1 is not enabled, then Calibration is not put in the queue\r\nB.) When OB1 processes the queue, queue should be cleaned up before (all too old calibrations (and maybe any other events) should be removed)",
+ "comments": [
+  {
+   "id": 780971426,
+   "user": "Navid200",
+   "created_at": "2021-02-18T01:28:58Z",
+   "body": "@andyrozman Would you please mention what the status is now?\r\nThanks"
+  },
+  {
+   "id": 786867891,
+   "user": "Navid200",
+   "created_at": "2021-02-26T20:08:22Z",
+   "body": "If you like to reopen this issue, please update your current settings."
+  }
+ ]
+}

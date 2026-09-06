@@ -1,0 +1,57 @@
+{
+ "id": 1590474760,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2422,
+ "title": "AAPS not syncing properly with AAPSClient",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2422",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-02-18T21:23:33Z",
+ "closed_at": "2023-03-04T16:42:42Z",
+ "comment_count": 7,
+ "body": "Versions: \nAAPS Dev-h 0ae21b7a7d\nNSClient Dev-h 21b3a70ad9\n\nAAPS values are different than AAPSClient even though they seem to properly sync.\n\nCarbs and Temp Targets sent via NS treatment menu do not pass to AAPS.\n\n![Screenshot_20230218_165219_info.nightscout.aapsclient2.jpg](https://user-images.githubusercontent.com/4725280/219899588-d62f27d8-9a3f-4a5d-842a-b6054a111d11.jpg)\n\n![Screenshot_20230218_165237.jpg](https://user-images.githubusercontent.com/4725280/219899590-048df86b-7c06-4e77-b4a5-a9e06a07a708.jpg)\n\n![Screenshot_20230218_165411_com.google.android.apps.photos.jpg](https://user-images.githubusercontent.com/4725280/219899589-5eaf9ff7-088d-4009-8a4d-1d3d59213a80.jpg)\n\n![Screenshot_20230218_165612.jpg](https://user-images.githubusercontent.com/4725280/219899591-108b66b6-1ee2-4444-84dd-2b071d0f1068.jpg)\n\n![AndroidAPS_LOG_1676754291117.log.zip](https://github.com/nightscout/AndroidAPS/files/10775212/AndroidAPS_LOG_1676754291117.log.zip)\n\n![AndroidAPS_LOG_1676754237579.log.zip](https://github.com/nightscout/AndroidAPS/files/10775214/AndroidAPS_LOG_1676754237579.log.zip)\n\nNS hosted on 10be.de\n\n\nReporting bugs\n--------------\n- **Note the precise time the problem occurred** and describe the circumstances and steps that caused\n  the problem\n- Note the Build version (found in the About dialog in the app, when pressing the three dots in the\n  upper-right corner).\n- Obtain the app's log files, which can be found on the phone in\n  _/storage/emulated/0/Android/data/info.nightscout.androidaps/_\n  See https://androidaps.readthedocs.io/en/latest/Usage/Accessing-logfiles.html\n- Open an issue at https://github.com/nightscout/AndroidAPS/issues/new\n",
+ "comments": [
+  {
+   "id": 1435777273,
+   "user": "MilosKozak",
+   "created_at": "2023-02-18T21:54:14Z",
+   "body": "read realease notes , especially the part regarding websockets"
+  },
+  {
+   "id": 1435782090,
+   "user": "bchris21",
+   "created_at": "2023-02-18T22:26:02Z",
+   "body": "> websockets\n\nIs there a way to sacrifice battery life to faster sync or it's a fixed functionality with v3 to have less frequent communication?\nI am monitoring my son at school and I would like to have values syncing as soon as possible.\nThank you"
+  },
+  {
+   "id": 1435786413,
+   "user": "bchris21",
+   "created_at": "2023-02-18T22:53:21Z",
+   "body": "> > websockets\n> \n> Is there a way to sacrifice battery life to faster sync or it's a fixed functionality with v3 to have less frequent communication?\n> I am monitoring my son at school and I would like to have values syncing as soon as possible.\n> Thank you\n\nWebsockets are on, on both AAPS and NSClient but still there are delays."
+  },
+  {
+   "id": 1436035645,
+   "user": "bchris21",
+   "created_at": "2023-02-19T16:46:37Z",
+   "body": "With websockets ON or OFF there is an inconsistency in IOB and Carbs between AAPS and NSClient.\n\n![Screenshot_20230219_012707_com.teamviewer.teamviewer.market.mobile.jpg](https://user-images.githubusercontent.com/4725280/219962161-35b4ef94-6929-434f-ad8d-fe2b211d1e3c.jpg)\n\n![Screenshot_20230219_174319_com.google.android.apps.photos.jpg](https://user-images.githubusercontent.com/4725280/219962159-61221040-252f-436f-bfc7-6133664beeac.jpg)\n\n\n\nIs there something I can do to troubleshoot? Shall I delete the database on AAPSClient ?\n\nThank you"
+  },
+  {
+   "id": 1438254474,
+   "user": "MilosKozak",
+   "created_at": "2023-02-21T10:43:52Z",
+   "body": "I see different time on both screenshots"
+  },
+  {
+   "id": 1454075237,
+   "user": "bchris21",
+   "created_at": "2023-03-03T20:13:14Z",
+   "body": "Sorry Milos, wrong screenshots were chosen. Titles were truncated when chosen via mobile app and attached the wrong ones.\n\nI still have an issue though with wrong carbs added via NSClient. They are added to AAPS (and NS) but they are not deleted when removed from NSClient Treatments.\n\nThat's a bit of an issue when kid is at school.\n\nTest was made on 20:22 with 2gr test carbs entered from NSClient. They were deleted a few seconds away from treatments menu, but they are still in AAPS.\n\n![Screenshot_20230303_210428_com.google.android.apps.photos.jpg](https://user-images.githubusercontent.com/4725280/222817289-72109b96-7752-4bec-85b4-a4d69126cecd.jpg)\n\n![Screenshot_20230303_205537_info.nightscout.aapsclient2.jpg](https://user-images.githubusercontent.com/4725280/222817290-06a25e26-73d4-4bcd-aa2f-f1ea59acb370.jpg)\n\n\n\nI don't know if logs help here. I attach from both.\n\nAAPSClient2 3.1.0.3-dev-h\nBuild: da76506e01-2023.02.21\n\nAAPS 3.1.0.3-dev-h\nBuild: da76506e01-2023.02.21\n\n![AndroidAPS_LOG_1677873353708.log.zip](https://github.com/nightscout/AndroidAPS/files/10885757/AndroidAPS_LOG_1677873353708.log.zip)\n\n![AndroidAPS_LOG_1677873380036.log.zip](https://github.com/nightscout/AndroidAPS/files/10885758/AndroidAPS_LOG_1677873380036.log.zip)\n\nFinal question:\nWhen passing a Temp Target with NSClient, it syncs only when BG change arrives thus every 5th minute. Is this expected or should sync right away when NSClient sends a change ?\n\nThank you \n\n"
+  },
+  {
+   "id": 1454798789,
+   "user": "MilosKozak",
+   "created_at": "2023-03-04T16:42:42Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/d8235bab29db86a9abb8765c09009fc404a7756e"
+  }
+ ]
+}

@@ -1,0 +1,75 @@
+{
+ "id": 1354120987,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2055,
+ "title": "SMBs often fail [3.1.0.3] [DASH]",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2055",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-08-29T11:17:21Z",
+ "closed_at": "2022-09-27T08:38:11Z",
+ "comment_count": 10,
+ "body": "Based on observation, it appears that after an initial SMB has been successfully given, subsequent SMBs will often fail for a few loop cycles (I think that basals are adjusting correctly though). This issue only started occurring after upgrading from 3.0.3 to 3.1.0.3 (3.0 experienced occasional disconnects from the DASH, but not multiple sequential SMB failures that often result in high BG).\r\n\r\nI've replicated this using BOOST 3.1.0.3, with Boost disabled. In the example below, you can see a successful SMB at 5:51am, and then failed boluses at 5:06 and 6:01. My son was sleeping (no change in position).\r\n\r\nNote: When the SMBs fail there's no notification in AAPS or a system notification.\r\n\r\n![2022-08-29_AAPS_551](https://user-images.githubusercontent.com/34991028/187188313-3819b1ef-5344-45eb-8eee-a9390bf97983.jpg)\r\n\r\n![2022-08-29_AAPS_556](https://user-images.githubusercontent.com/34991028/187188343-636be20f-de2a-4a81-a813-0c62d5551c16.jpg)\r\n\r\n![2022-08-29_AAPS_601](https://user-images.githubusercontent.com/34991028/187188378-7bfae0e2-6dad-419f-90c3-ca4331652c96.jpg)\r\n\r\n[AndroidAPS_LOG_1661768474395.zip](https://github.com/nightscout/AndroidAPS/files/9444031/AndroidAPS_LOG_1661768474395.zip)\r\n",
+ "comments": [
+  {
+   "id": 1230169847,
+   "user": "Thomas-Wolff",
+   "created_at": "2022-08-29T11:40:01Z",
+   "body": "I can confirm the same behaviour with the Eros. The newly calculated basal rate is switched through to the pump, the SMB flashes briefly and the update of the main runs so that the SMB fails. In the Loop TAB under SMB there is then the information 'waiting for pump result'.\r\n\r\nI have just switched to version 3.0.0.2 for testing, SMB runs cleanly.\r\n\r\nHardware:\r\n\r\nSamsung Galaxy A40 Android 11\r\nDexcom G6 via Byoda\r\n\r\nGreetings Thomas"
+  },
+  {
+   "id": 1230352131,
+   "user": "Ashley112885",
+   "created_at": "2022-08-29T14:02:37Z",
+   "body": "I seem to be having a similar issue and often find the Loop tab says “SMB set by pump: waiting for result” and have to manually select “run” to trigger the SMB.\r\nOmnipod Dash\r\nAAPS 3.1.0.3 (Boost)\r\nPixel 3a\r\nAndroid 12\r\nDexcom G6 via BYOD"
+  },
+  {
+   "id": 1230578003,
+   "user": "rustymonkey",
+   "created_at": "2022-08-29T16:57:22Z",
+   "body": "2 other users on the Boost Discord channel also mentioned experiencing this problem on 3.1.x and that it might be caused by a timing issue described at #1395.\r\n\r\nEDIT: but if it's a problem of calculations taking > 1 minute, then why would the issue occur with 3.1.x and not 3.0.x..."
+  },
+  {
+   "id": 1235585323,
+   "user": "rustymonkey",
+   "created_at": "2022-09-02T14:40:12Z",
+   "body": "Update: reverting to Boost based on AAPS 3.0.2 also resolved the failed SMBs for my son."
+  },
+  {
+   "id": 1236362557,
+   "user": "Thomas-Wolff",
+   "created_at": "2022-09-04T15:16:54Z",
+   "body": "A small note from me, that this problem occurs on BOOST has already been described extensively here, I have carried out further tests with EatingNow and with the current master version dev-a with Dymamic ISF, the timing problem also occurs with these.\r\nI have now switched back to OpenAPS SMB, as TBR and SMBs are switched through cleanly here, no timing problems at all.\r\n\r\nHave a nice Sunday Thomas"
+  },
+  {
+   "id": 1247065838,
+   "user": "rustymonkey",
+   "created_at": "2022-09-14T17:10:04Z",
+   "body": "Other reports of this problem on 3.1:\r\nhttps://discord.com/channels/942399415770050581/970651783078768680/1010447891262865529\r\nhttps://discord.com/channels/942372379097698325/943074159955701770/1015368147349553192\r\nhttps://discord.com/channels/942372379097698325/943074159955701770/1016331845773820024\r\n"
+  },
+  {
+   "id": 1256739170,
+   "user": "justmara",
+   "created_at": "2022-09-23T22:27:28Z",
+   "body": "here is the 100% proof that smb's are canceled\r\nBUT thats not because of long calculation, but because **both** basal+smb are present in result\r\nsee my log:\r\n00:47:02.033 calculation finished \r\n00:47:02.160 pump 'performing TEMP BASAL' started\r\n\r\nfor another crazy 1m21s ruffy were crowling through Combo menu setting basal\r\n\r\n00:48:23.970 set basal finished: `Result rate: 0.18 durationInMinutes: 30 success: true enacted: true`\r\n\r\ninstantly after that SMB loop started:\r\n\r\n00:48:24.027 D/PUMPQUEUE: [CommandQueueImplementation.add():152]: Adding: CommandSMBBolus - SMB BOLUS 0,50 ед\r\n00:48:24.127 D/PUMPQUEUE: [QueueThread.run():128]: performing SMB BOLUS 0,50 ед\r\n00:48:24.137 D/PUMPQUEUE: [CommandSMBBolus.execute():26]: Last bolus: 1663966620000 23.09.2022 23:57:00\r\n00:48:24.138 D/PUMPQUEUE: [CommandSMBBolus.execute():34]: SMB bolus canceled. deliverAt: 24.09.2022 00:46\r\n00:48:24.138 D/PUMPQUEUE: [CommandSMBBolus.execute():36]: Result success: false enacted: false\r\n\r\nbut were canceled right away. because of [this](https://github.com/nightscout/AndroidAPS/blob/master/app/src/main/java/info/nightscout/androidaps/queue/commands/CommandSMBBolus.kt#L30) line. it gives SMB no more than a minute to be delivered. a minute since original calculation, not the command start. and whole that time were consumed by set basal command which is for sure not a time-critical.\r\n\r\nthe funny part is that TempBasalCommand [does](https://github.com/nightscout/AndroidAPS/blob/master/app/src/main/java/info/nightscout/androidaps/queue/commands/CommandTempBasalPercent.kt) [not](https://github.com/nightscout/AndroidAPS/blob/master/app/src/main/java/info/nightscout/androidaps/queue/commands/CommandTempBasalAbsolute.kt) have such timeout\r\n\r\n[smb-fail.log](https://github.com/nightscout/AndroidAPS/files/9637317/smb-fail.log)\r\n"
+  },
+  {
+   "id": 1256741314,
+   "user": "justmara",
+   "created_at": "2022-09-23T22:29:00Z",
+   "body": "looks like simplest solution would be swapping order of smb and basal commands, so smb comes first, and then basal after it"
+  },
+  {
+   "id": 1259176034,
+   "user": "MilosKozak",
+   "created_at": "2022-09-27T08:38:11Z",
+   "body": "fixed by https://github.com/nightscout/AndroidAPS/commit/baab2dad4c50ff9e3ab7d93660f2204d3c2ffcf5"
+  },
+  {
+   "id": 1265789472,
+   "user": "rustymonkey",
+   "created_at": "2022-10-03T17:24:41Z",
+   "body": "Fix confirmed: After testing for 36 hours on Boost_Test_Platform which includes this fix, all SMBs were delivered successfully.\r\n\r\nEDIT: to clarify--the version of the code that I tested included the fix by @MilosKozak  and not the one by @justmara "
+  }
+ ]
+}

@@ -1,0 +1,27 @@
+{
+ "id": 3400077383,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4138,
+ "title": "SMB bolus should stop dosing if there is change of trend",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4138",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-09-09T21:46:42Z",
+ "closed_at": "2025-09-12T17:04:57Z",
+ "comment_count": 2,
+ "body": "I'm seeing from time to time such bad logic when SMB is giving more and more insulin because of rising BG but it didn't stop even after change of the trend (when BG is already going down). IMHO there should be additional check for trend change before every single SMB dose. \n\nCheck the example from the screenshot and last 0,4u bolus. \n\nBG data is from Freestyle Libre 3 with 1 minute interval. There is no xdrip as a proxy or any rounding/smoothing enabled on AAPS.\n\n![Image](https://github.com/user-attachments/assets/c71eacbf-d074-4013-bca2-04b11795f1c3)",
+ "comments": [
+  {
+   "id": 3286121958,
+   "user": "MilosKozak",
+   "created_at": "2025-09-12T17:04:58Z",
+   "body": "issuing SMBs (insulin at all) doesn't rely on trend but on predictions (estimated BG)\nin your case the low was caused by: either wrong basal or wrong ISF or temporary ISF change not caught by AAPS"
+  },
+  {
+   "id": 3286410023,
+   "user": "zibra",
+   "created_at": "2025-09-12T18:27:10Z",
+   "body": "That's why I'm suggesting there should be additional safety check. Its not always case of basal, ISF etc. but just characteristics of the day like activity. Firing SMB when trend is starting to go down is just bad idea. It could be for example postponend 5-10 seconds to ensure we still need more insuline. After such time calculations will gice different result becasue of lat 15 minutes trend."
+  }
+ ]
+}

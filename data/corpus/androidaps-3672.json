@@ -1,0 +1,69 @@
+{
+ "id": 2765112619,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3672,
+ "title": "Accu-Chek Combo Page not showing Values with 3.3.0.0",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3672",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-01-01T14:53:56Z",
+ "closed_at": "2025-01-04T14:04:21Z",
+ "comment_count": 9,
+ "body": "After Update to Version 3.3.0.0 on the Combo Page there are missing some Values:\r\nDriver Status, Last Connection to Pump, Battery, Reservoir.\r\nWith Version 3.2.* those Values were shown.\r\n\r\n![Screenshot_20250101-153634~3](https://github.com/user-attachments/assets/7595a757-83f6-49d7-b4e8-1386b82cc314)\r\n\r\nOn the main page i can see the content in ml of the reservoir. That means the data is  there and i have also checked, the values are correct. So this is just a display Issue.",
+ "comments": [
+  {
+   "id": 2567122576,
+   "user": "MilosKozak",
+   "created_at": "2025-01-01T19:37:07Z",
+   "body": "no logs = no help"
+  },
+  {
+   "id": 2567145416,
+   "user": "Koeppchen",
+   "created_at": "2025-01-01T21:03:08Z",
+   "body": "I don't have the logs becase i have set them to Log nothing a long time ago. And also: Now i can See this Data, i don't know why. I have even tried to kill aaps to reproduce it, but directly after start the status is shown, not like in the screenshot i have added.\r\nI don't know how to proceed, I will just close this because i can not reproduce it."
+  },
+  {
+   "id": 2569832227,
+   "user": "swissalpine",
+   "created_at": "2025-01-03T21:20:30Z",
+   "body": "It is a display problem and only affects the fields whose font color changes: In the light theme all entries are available, in the dark theme the font color is black, unless warn or urgent color are activated.\r\nI have helped myself this way, but this is only a workaround, I have not found a real solution: I commented out all attr.defaultTextColor and the text is visible again. Here is an example (Line 116 ff.):\r\n\r\n```\r\n/* TODO\r\nbinding.combov2DriverState.setTextColor(\r\n      when (connectionState) {\r\n             ComboV2Plugin.DriverState.Error -> rh.gac(app.aaps.core.ui.R.attr.warningColor)\r\n             ComboV2Plugin.DriverState.Suspended -> rh.gac(app.aaps.core.ui.R.attr.urgentColor)\r\n             else -> rh.gac(app.aaps.core.ui.R.attr.defaultTextColor)\r\n       }\r\n)*/\r\n```\r\n\r\nOder so (line 161):\r\n```\r\nBatteryState.FULL_BATTERY -> {\r\n      binding.combov2Battery.text = rh.gs(R.string.combov2_battery_full_indicator)\r\n      //binding.combov2Battery.setTextColor(rh.gac(app.aaps.core.ui.R.attr.defaultTextColor))\r\n}\r\n```"
+  },
+  {
+   "id": 2571084302,
+   "user": "MilosKozak",
+   "created_at": "2025-01-04T10:02:29Z",
+   "body": "`app.aaps.core.ui.R.attr.defaultTextColor` is used on many places without problem"
+  },
+  {
+   "id": 2571255330,
+   "user": "Koeppchen",
+   "created_at": "2025-01-04T11:05:00Z",
+   "body": "Now i do get it.\r\nTo reproduce: Set pixel phone to automatic mode for design.\r\nSet aaps to dark background. In this case the System default Color for text is used. This is black in the case of this screenshot, because system settings are used.\r\n@swissalpine : As a workaround i have set aaps to use the system design settings. At the moment everything works. Using the dark design is broken on Pixel with the automatic change."
+  },
+  {
+   "id": 2571260300,
+   "user": "swissalpine",
+   "created_at": "2025-01-04T11:26:42Z",
+   "body": "> `app.aaps.core.ui.R.attr.defaultTextColor` is used on many places without problem\r\n\r\nYes, I know, but unfortunately not in the combo tab.\r\n\r\n> As a workaround i have set aaps to use the system design settings. At the moment everything works. Using the dark design is broken on Pixel with the automatic change.\r\n\r\nUnfortunately, this workaround does not work for me because I use my Samsung Galaxy Flip 4 in light mode. Unfortunately, the light mode is much worse than the dark mode in AAPS (contrasts, colors), so I can't go to system settings here.\r\nBut I can personally live with my commenting out - but it will affect others who don't know how to help themselves.\r\n\r\n"
+  },
+  {
+   "id": 2571262826,
+   "user": "MilosKozak",
+   "created_at": "2025-01-04T11:39:03Z",
+   "body": "hmmm it didn't work even on @jbr7rr 's initial commit https://github.com/nightscout/AndroidAPS/commit/424128d65c902d1da75a1d9ea4ae21bbf1d3885b"
+  },
+  {
+   "id": 2571278952,
+   "user": "swissalpine",
+   "created_at": "2025-01-04T12:48:09Z",
+   "body": "Yes, it only changed the problem, instead of white color on white background (light mode) now black on black (dark mode).\r\n\r\nI suspect that my workaround might be a solution if you only define the deviations urgent and warn, and otherwise leave the text color as it is.\r\nThis would only require reformulating the two when queries.\r\nIf that is a solution for you @MilosKozak, I can prepare a fix\r\n"
+  },
+  {
+   "id": 2571313651,
+   "user": "MilosKozak",
+   "created_at": "2025-01-04T14:04:21Z",
+   "body": "fixed by https://github.com/nightscout/AndroidAPS/commit/69dc95cf5181942551da7b6a7524d548a1f85bc9"
+  }
+ ]
+}

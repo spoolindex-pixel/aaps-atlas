@@ -1,0 +1,75 @@
+{
+ "id": 757655393,
+ "repo": "nightscout/AndroidAPS",
+ "number": 97,
+ "title": "[2.7] connection to pump get lost (#72) didn't solve problem",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/97",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2020-12-05T11:03:13Z",
+ "closed_at": "2021-01-03T17:02:05Z",
+ "comment_count": 10,
+ "body": "Hello,\r\nthe closed Issue #72 doesn't solve the problem completely. I'm using the DEV-Version of AAPS to check if the closed issue is solved. Result: Better then in the master version (problem occurs not so often) but the problem still can appear.\r\n\r\nWhat is the problem ?\r\nDuring the day and also night it could happen, that APPS is waiting, waiting, waiting ..... for results of the pump after sending smb information or temp basal changes.\r\n\r\nBluetooth is still activ on my phone. Dexcom G6 delivers new BG values every 5 minutes correctly. After getting a new BG APPS tries to send change information to the pump but these information aren't correctly sent to teh pump. APPS is wainting for pump results in a loop and nothing happens.\r\nThe problem at night is, that this can happen for a long time and the high or low BG isn't changed anymore.\r\n\r\nHow can the problem be solved ? Easy by closing APPS and starting AAPS directly afterwards again. Now everything is OK up to the next problem that can happen hours or days later again.\r\n\r\nAttached you can find some screenshot and the logfile.\r\n\r\nHere you can see that since 4:00 am APPS isn't acting anymore\r\n![20201205_090419](https://user-images.githubusercontent.com/37514390/101240551-1fe3b600-36f0-11eb-9b88-d283c3fba654.jpg)\r\n\r\nThe latest sent change entry (TBR) to the pump was on 03:47 am\r\n![20201205_090707](https://user-images.githubusercontent.com/37514390/101240603-8ec10f00-36f0-11eb-97d1-2ef4d2216f6a.jpg)\r\n\r\nThe latest SMB change entry was on 02:22 am\r\n![20201205_090641](https://user-images.githubusercontent.com/37514390/101240615-b021fb00-36f0-11eb-8b5a-b76ce22eb154.jpg)\r\n\r\nHere you can see, that BG values are delivered every 5 minutes correctly\r\n![20201205_090720](https://user-images.githubusercontent.com/37514390/101240633-d3e54100-36f0-11eb-9e18-34c2607ce3c8.jpg)\r\n\r\nAnd here you can see that AAPS is still waiting for a result from the pump. (I assume that no new change information was sent before although it should be)\r\n![20201205_090431](https://user-images.githubusercontent.com/37514390/101240685-29215280-36f1-11eb-84d9-80dec90919a0.jpg)\r\n\r\nAnd here is the logfile. Please use as time for the error log the range 09:01 am to 09:08\r\n[AndroidAPS_LOG_1607155497361.log.zip](https://github.com/nightscout/AndroidAPS/files/5646923/AndroidAPS_LOG_1607155497361.log.zip)\r\n am\r\n\r\nIf you have questions please feel free to ask me. Thanks\r\nThomas\r\n\r\n",
+ "comments": [
+  {
+   "id": 740160559,
+   "user": "MilosKozak",
+   "created_at": "2020-12-07T20:26:33Z",
+   "body": "turn off sensitivity logging if you don't needed. it's too verbose"
+  },
+  {
+   "id": 740161441,
+   "user": "MilosKozak",
+   "created_at": "2020-12-07T20:28:14Z",
+   "body": "the problem happened before this log"
+  },
+  {
+   "id": 740718889,
+   "user": "Bommyt",
+   "created_at": "2020-12-08T16:11:06Z",
+   "body": "@MilosKozak \r\n\"the problem happened before this log\". Yes that's the problem. Normally in the night you will not recognize that AAPS isn't working well and when you recognize the problem the issue was earlier than the logfile.\r\n\r\nYes you're right. Solving the problem by fighting against  the triggers is the best way but sometimes a medicine that covers a problem could also be helpful.\r\n\r\nNormally I would assume that AAPs should know how long AAPS is waiting for a result of the pump (TBR and / or SMB). Is the time linger than 360 sec why can't AAPS being restsrtet automatically and the problem is solved as soon as the new BG is delivered?\r\n\r\nBy the way attached you can find a new log. Please look at the time range 16:12 to 16:17. Thanks in advance.\r\n\r\nThomas\r\n\r\n[AndroidAPS_LOG_1607440623166.log.zip](https://github.com/nightscout/AndroidAPS/files/5660381/AndroidAPS_LOG_1607440623166.log.zip)\r\n"
+  },
+  {
+   "id": 750857257,
+   "user": "febe20",
+   "created_at": "2020-12-24T11:36:49Z",
+   "body": "@thomasmenges Hi Thomas, sadly i have the exact same problem. The only difference is that i use a Pixel 5 with Android 11. Did you find any solution or workaround yet? The 2.7.2 dev does not work for me either."
+  },
+  {
+   "id": 751387899,
+   "user": "Bommyt",
+   "created_at": "2020-12-26T19:25:27Z",
+   "body": "Hi @febe20,\r\ngood to know that not only me have the problems.\r\n\r\nThe problems aren't solved and occur 2 or 3 times a day. I'm really frustrated because the problem leads to bad BG values.\r\n\r\nOne thing can also be seen then the problem is alive.\r\nA new connection to the DANA RS pump isnt't done anymore. Normaly you see on the pump that a bluetooth connection is on. But then the problem in AAPS occurs nothing is sent to the pump anymore.\r\n\r\nAnd an other point I could see. Sometimes AAPS wants to send a temp basal change or a SMB to the pump and the result of the pump is 'false'. I do not know why the pump refuses to change temporarily the basal rate. \r\nPerhaps that can lead to the problem in this issue."
+  },
+  {
+   "id": 753616958,
+   "user": "classchneider",
+   "created_at": "2021-01-03T13:26:06Z",
+   "body": "I am experiencing the same problem.\r\n\r\nIt is potentially unhealthy/dangerous when AndroidAPS for hours does not react on low/high BG, so a temporary fix as the one recommended by thomasmenges above should be implemented.\r\n"
+  },
+  {
+   "id": 753646322,
+   "user": "MilosKozak",
+   "created_at": "2021-01-03T17:02:05Z",
+   "body": "all i can say is that pump hangs during bolus and never disconnect from phone.\r\nIt's not clear if the problem is on RS or Android side but AAPS cannot resolve this situation.\r\nTry another phone or pump\r\nAnyway I added disconnect from Android side in this situation https://github.com/nightscout/AndroidAPS/commit/fd934fde2bd6dc22ce71b1e606ae9c8763f7576a"
+  },
+  {
+   "id": 755731464,
+   "user": "Bommyt",
+   "created_at": "2021-01-06T21:41:30Z",
+   "body": "Hi @MilosKozak,\r\nyour mentioned changes in situation fd934fd solves the problem. So I'm using the DEV version and I'm lucky. Thanks "
+  },
+  {
+   "id": 756585282,
+   "user": "febe20",
+   "created_at": "2021-01-08T06:53:48Z",
+   "body": "@thomasmenges @MilosKozak Sadly its not working for me. Im sure now that everything has to do with my up-to-date Pixel 5 Android 11. All my Problems started after the new \"Pixel Feature Drop\"-Update in early dec 2020. damn"
+  },
+  {
+   "id": 756938314,
+   "user": "classchneider",
+   "created_at": "2021-01-08T19:00:14Z",
+   "body": "Thanks for advice. I am looking into buying another phone.\n\nBy the way, I am using OmniPod Eros pump - your disconnect\ncorrection mentioned above, is that only for danaPump?\n\nIn case your commit also applies for my pump, can you help med with a link\nto the version to build?\n\nDen søn. 3. jan. 2021 kl. 18.02 skrev Milos Kozak <notifications@github.com\n>:\n\n> all i can say is that pump hangs during bolus and never disconnect from\n> phone.\n> It's not clear if the problem is on RS or Android side but AAPS cannot\n> resolve this situation.\n> Try another phone or pump\n> Anyway I added disconnect from Android side in this situation fd934fd\n> <https://github.com/nightscout/AndroidAPS/commit/fd934fde2bd6dc22ce71b1e606ae9c8763f7576a>\n>\n> —\n> You are receiving this because you commented.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/nightscout/AndroidAPS/issues/97#issuecomment-753646322>,\n> or unsubscribe\n> <https://github.com/notifications/unsubscribe-auth/AHTRWEJP5HICXBS5SP6EIETSYCPJVANCNFSM4UOPA5RA>\n> .\n>\n"
+  }
+ ]
+}

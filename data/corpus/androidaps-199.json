@@ -1,0 +1,75 @@
+{
+ "id": 781745296,
+ "repo": "nightscout/AndroidAPS",
+ "number": 199,
+ "title": "Basal is On when 0 Basal is registered",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/199",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-01-08T00:30:10Z",
+ "closed_at": "2021-01-08T10:35:55Z",
+ "comment_count": 34,
+ "body": "\r\n![7498e6e7-ddef-45ed-aa96-bc3393c87e2e](https://user-images.githubusercontent.com/35005706/103961614-246b1680-5155-11eb-9c2b-55db4a4494b5.jpeg)\r\nHypo alert right now:\r\n\r\nSo suddenly the log evedicence logs that the pump is set to 0, while the pump is actually still giving some other units.\r\nIt happens around 17:30.... unknown what exactually changed during that time.\r\nnot able to stop the problems right now, did a restart.  and don't know where to look.\r\nMore information tomorrow. when hypo is fixed and a night sleep is done.\r\n\r\n\r\n![464aea22-93fd-49b8-a8da-6cac43b29d22](https://user-images.githubusercontent.com/35005706/103959946-5c705a80-5151-11eb-9ef4-c7f0ecbf7f3d.jpeg)\r\n![f204bb1b-b9d4-4500-858d-3330b2244bf7](https://user-images.githubusercontent.com/35005706/103959947-5d08f100-5151-11eb-88b2-24426d374a06.jpeg)\r\n![Schermafbeelding 2021-01-08 013355](https://user-images.githubusercontent.com/35005706/103960037-9b061500-5151-11eb-89cd-73c05a0438ff.png)\r\n\r\nVersion: 2.8.0\r\nbuild: d40c5079d-2021.01.06-13-45.\r\nflavor full release.\r\n\r\nPump: omnipod with emalink\r\nsensor: FSL 2 directly in xdrip (nightly build Pre-release\r\n 2020.12.23\r\n 18885dd\r\nNightly build 23rd Dec 2020\r\n@jamorham jamorham released this 15 days ago\r\n\r\nAutomated nightly build.\r\n\r\n\r\n\r\n\r\nstill adding information, did commit it to early, give me an other 30 minutes\r\n\r\nReporting bugs\r\n--------------\r\n- **Note the precise time the problem occurred** and describe the circumstances and steps that caused\r\n  the problem\r\n- Note the Build version (found in the About dialog in the app, when pressing the three dots in the\r\n  upper-right corner).\r\n- Obtain the app's log files, which can be found on the phone in\r\n  _/storage/emulated/0/Android/data/info.nightscout.androidaps/_\r\n  See https://androidaps.readthedocs.io/en/latest/EN/Usage/Accessing-logfiles.html\r\n- Open an issue at https://github.com/nightscout/AndroidAPS/issues/new\r\n\r\n[AndroidAPS._2021-01-07_23-55-51_.1.zip](https://github.com/nightscout/AndroidAPS/files/5784577/AndroidAPS._2021-01-07_23-55-51_.1.zip)\r\n",
+ "comments": [
+  {
+   "id": 756496640,
+   "user": "bartsopers",
+   "created_at": "2021-01-08T01:53:37Z",
+   "body": "This is once again a dangerous situation because of NS upload only was not enabled. @smokkelaar now set NS to upload only and it works now.\r\n@MilosKozak we **really** need to fix this, either by completely disabling the option to download from NS, or by not allowing NS to change the truth (= create/overwrite treatments in the present). Only the pump driver should be able to create treatments in the present."
+  },
+  {
+   "id": 756503915,
+   "user": "bartsopers",
+   "created_at": "2021-01-08T02:19:24Z",
+   "body": "![image](https://user-images.githubusercontent.com/15631208/103966049-5ed9b100-515f-11eb-8ed9-dfd22d7f65da.png)\r\n@MilosKozak you can see here that this treatment keeps being bounced back from NS. You can also see it in the attached logs.\r\n[AndroidAPS._2021-01-07_23-55-51_.txt](https://github.com/nightscout/AndroidAPS/files/5784868/AndroidAPS._2021-01-07_23-55-51_.txt)\r\n"
+  },
+  {
+   "id": 756506644,
+   "user": "bartsopers",
+   "created_at": "2021-01-08T02:29:28Z",
+   "body": "Another option would be to allow to backfill from NS once on intial setup, when no data is present yet. Anyway in the current form it is dangerous. It frequently causes all kinds of problems and it should be removed ASAP."
+  },
+  {
+   "id": 756683133,
+   "user": "MilosKozak",
+   "created_at": "2021-01-08T10:35:55Z",
+   "body": "this will be resolved by new NSClient"
+  },
+  {
+   "id": 756683973,
+   "user": "bartsopers",
+   "created_at": "2021-01-08T10:37:42Z",
+   "body": "@MilosKozak We should at least show a proper warning under that setting in the mean time."
+  },
+  {
+   "id": 756698072,
+   "user": "Rhabarbara745",
+   "created_at": "2021-01-08T11:09:04Z",
+   "body": "I agree with @bartsopers \r\nI've had situations where aaps administered way too much Insulin (**smbs given twice, the full amount of maxSMBBasalMinutes delivered every single time although there was already too much IOB, etc)** because NS sporadically corrupted treatments in aaps!\r\n\r\n=> Downloading treatments-data from NS should be completely disabled until we have a safe solution  - my two cent\r\n\r\n\r\n"
+  },
+  {
+   "id": 756700626,
+   "user": "MilosKozak",
+   "created_at": "2021-01-08T11:14:48Z",
+   "body": "it's in wiki and default is upload only .... what can we do more?"
+  },
+  {
+   "id": 756700899,
+   "user": "MilosKozak",
+   "created_at": "2021-01-08T11:15:25Z",
+   "body": "and think it's wrong xdrip configuration in many cases\r\n"
+  },
+  {
+   "id": 756701821,
+   "user": "bartsopers",
+   "created_at": "2021-01-08T11:17:39Z",
+   "body": "@MilosKozak Add a text in the setting description? Something like \"WARNING only disable this temporarily to backfill data from NS. Continuous download from NS may cause unexpected and unwanted behavior\""
+  },
+  {
+   "id": 756702315,
+   "user": "bartsopers",
+   "created_at": "2021-01-08T11:18:48Z",
+   "body": "And I agree with @Rhabarbara745. The only real right thing to do for now is to completely disable it."
+  }
+ ]
+}

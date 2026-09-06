@@ -1,0 +1,75 @@
+{
+ "id": 1200429112,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1609,
+ "title": "Absolute Insuline negative",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1609",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-04-11T19:22:16Z",
+ "closed_at": "2022-04-13T11:41:29Z",
+ "comment_count": 11,
+ "body": "Hello,\r\n\r\nI encountered a bug where my absolute insule was negative. What should not be possible.\r\nIOB was -2.5 it seems.\r\nProfile has 0.9u/h\r\n![1649704714546](https://user-images.githubusercontent.com/52744345/162814276-ea6da202-9c23-4a50-bd01-c0a022c61927.jpg)\r\n\r\n\r\nContext:\r\nThis happened the night/morning after a day of drinking, and drinking too much.\r\nFirst hypo in the night that I didn't feel, AAPS managed then hypo when I woke up and I had never seen an IOB that low.\r\n\r\nLogs attached.\r\nAll log parameters were not checked\r\n\r\n[AndroidAPS._2022-04-10_06-09-05_.2.log](https://github.com/nightscout/AndroidAPS/files/8467140/AndroidAPS._2022-04-10_06-09-05_.2.log)\r\n[AndroidAPS._2022-04-10_06-09-05_.3.log](https://github.com/nightscout/AndroidAPS/files/8467143/AndroidAPS._2022-04-10_06-09-05_.3.log)\r\n[AndroidAPS._2022-04-10_06-09-05_.4.log](https://github.com/nightscout/AndroidAPS/files/8467145/AndroidAPS._2022-04-10_06-09-05_.4.log)\r\n[AndroidAPS._2022-04-10_06-09-05_.5.log](https://github.com/nightscout/AndroidAPS/files/8467147/AndroidAPS._2022-04-10_06-09-05_.5.log)\r\n\r\nI can't get a history browser capture. It takes too long to load, I tried for 30 minutes without success",
+ "comments": [
+  {
+   "id": 1096098341,
+   "user": "lua-vr",
+   "created_at": "2022-04-12T05:43:24Z",
+   "body": "Edit: sorry, I misread it 😅 \r\n\r\nIOB is zero when you have in your body the amount of insulin prescribed by your profile basal. When AAPS turns off the basal this lack of insulin is seen as negative IOB, because in principle it should make your BG go up.\r\nSee:\r\n![Capture d’écran de 2022-04-12 02-40-55](https://user-images.githubusercontent.com/4229115/162888722-8ffe7e79-b984-467d-9fa5-b993fa035777.png)\r\nhttps://androidaps.readthedocs.io/en/latest/Getting-Started/FAQ.html?highlight=IOB#impact\r\nhttps://androidaps.readthedocs.io/en/latest/Getting-Started/Screenshots.html?highlight=IOB#section-d-iob-cob-br-and-as\r\n"
+  },
+  {
+   "id": 1096122040,
+   "user": "antoinekh",
+   "created_at": "2022-04-12T06:02:20Z",
+   "body": "> @kamlox IOB is zero when you have in your body the amount of insulin prescribed by your profile basal. When AAPS turns off the basal this lack of insulin is seen as negative IOB, because in principle it should make your BG go up.\r\n> See:\r\n> ![Capture d’écran de 2022-04-12 02-40-55](https://user-images.githubusercontent.com/4229115/162888722-8ffe7e79-b984-467d-9fa5-b993fa035777.png)\r\n> https://androidaps.readthedocs.io/en/latest/Getting-Started/FAQ.html?highlight=IOB#impact\r\n> https://androidaps.readthedocs.io/en/latest/Getting-Started/Screenshots.html?highlight=IOB#section-d-iob-cob-br-and-as\r\n\r\nHello Lucas,\r\n\r\nThe issue is not about IOB being negative.\r\nI understand that I totally normal.\r\nBut about absolute insuline being negative.\r\n\r\nAbsolute insuline is the total of insuline and I can’t be negative.\r\n"
+  },
+  {
+   "id": 1096389647,
+   "user": "antoinekh",
+   "created_at": "2022-04-12T08:52:41Z",
+   "body": "Same problem today, but no alcohol.\r\nThere is no way my IOB is that low.\r\nI've had this behavior for a week since I upgrade in the last dev.\r\n\r\n![1649753130625](https://user-images.githubusercontent.com/52744345/162920786-0db62932-9742-4682-8689-3e31aa5fe6ce.jpg)\r\n\r\n![1649753108823](https://user-images.githubusercontent.com/52744345/162920778-27af4556-6c90-421d-91d9-0c237f6c85a9.jpg)\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/8471303/AndroidAPS.log)\r\n\r\n"
+  },
+  {
+   "id": 1096418755,
+   "user": "MilosKozak",
+   "created_at": "2022-04-12T09:12:44Z",
+   "body": "do yopu have screenshot of treatment - bolus & basal tab from the same time?\r\nsome time before and after"
+  },
+  {
+   "id": 1096433834,
+   "user": "antoinekh",
+   "created_at": "2022-04-12T09:22:49Z",
+   "body": "> do yopu have screenshot of treatment - bolus & basal tab from the same time? some time before and after\r\n\r\nDo you need more infos?\r\n\r\n![1649755205196](https://user-images.githubusercontent.com/52744345/162927065-4b55a741-fb80-4f44-9807-9313352012de.jpg)\r\n![1649755205207](https://user-images.githubusercontent.com/52744345/162927071-6ecb54ce-e171-412a-9cf1-f21700361ade.jpg)\r\n\r\n"
+  },
+  {
+   "id": 1096469718,
+   "user": "MilosKozak",
+   "created_at": "2022-04-12T09:50:06Z",
+   "body": "note. this seems to be the problem\r\n![image](https://user-images.githubusercontent.com/11146458/162932721-f4c2c52e-b9b6-486d-a09b-240876d5a9df.png)\r\n"
+  },
+  {
+   "id": 1096488710,
+   "user": "mick711",
+   "created_at": "2022-04-12T10:04:53Z",
+   "body": "If i remember #robertrub have open an issue with the 4800mins "
+  },
+  {
+   "id": 1096765830,
+   "user": "Ede1975",
+   "created_at": "2022-04-12T13:57:39Z",
+   "body": "Its not stopping Zero temp and continues counting negative Insulin, same as in #1597. Even without the 4800 minutes it would go wrong"
+  },
+  {
+   "id": 1096771070,
+   "user": "antoinekh",
+   "created_at": "2022-04-12T14:01:49Z",
+   "body": "> Its not stopping Zero temp and continues counting negative Insulin, same as in #1597. Even without the 4800 minutes it would go wrong\r\n\r\nand like you I use the dash"
+  },
+  {
+   "id": 1097950807,
+   "user": "MilosKozak",
+   "created_at": "2022-04-13T11:41:29Z",
+   "body": "fixed by https://github.com/nightscout/AndroidAPS/commit/b756a870887015f8af609e5915f2c03f47ee8518"
+  }
+ ]
+}

@@ -1,0 +1,33 @@
+{
+ "id": 1537564950,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2355,
+ "title": "[dev-g] BG Source gets reset to BYODA when switching to latest build",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2355",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-01-18T08:07:07Z",
+ "closed_at": "2023-01-20T20:42:58Z",
+ "comment_count": 3,
+ "body": "Switching to latest dev build (d57ec150a5789a61f15c2781bf20ea5a90ae0644), the BG Source (in my case xDrip+) gets reset to BYODA.\r\nIs it possible to retain that setting?",
+ "comments": [
+  {
+   "id": 1398678295,
+   "user": "MilosKozak",
+   "created_at": "2023-01-20T17:07:24Z",
+   "body": "It didn't happen to me. is it repeatable?"
+  },
+  {
+   "id": 1398729644,
+   "user": "parapenT1sta",
+   "created_at": "2023-01-20T17:40:22Z",
+   "body": "It happened to me, I had xDrip as source then was switch do BYODA"
+  },
+  {
+   "id": 1398912658,
+   "user": "MilosKozak",
+   "created_at": "2023-01-20T20:42:58Z",
+   "body": "right. it's due to https://github.com/nightscout/AndroidAPS/commit/c71fc275a544bd3ae477549e8786e4188a69fe70 where XdripPlugin was renamed to XdripSourcePlugin to have original name preserved for xDrip synchronization plugin. \r\nI believe new naming convention is more logical but it means we cannot resolve this issue.\r\nWe must mention it in release notes\r\n"
+  }
+ ]
+}

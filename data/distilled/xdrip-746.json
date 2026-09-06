@@ -1,0 +1,33 @@
+{
+ "issue_id": 746,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/746",
+ "title": "Starting G6 sensor and Xdrip not asking for code",
+ "symptom": "When starting a Dexcom G6 sensor, xDrip does not ask for the sensor code and directly gives blood glucose values. The user is unsure whether to have 'Go on without calibrations' checked or unchecked, and whether to calibrate.",
+ "cause": "The issue is caused by not using the OB1 collector with the G6 option enabled, or by not properly stopping and starting the sensor. Specifically, if the OB1 collector is turned off, xDrip will not prompt for the sensor code.",
+ "fix": "Ensure the OB1 collector is enabled and the G6 option is enabled. Use the 'Stop Sensor' and 'Start Sensor' menu items to start a new sensor, and it will ask for the code. If the OB1 collector was turned on after starting the sensor, stop and start the sensor to force it to update the code.",
+ "settings_changed": [
+  "Restart Sensor → unchecked",
+  "Preemptive restarts → checked",
+  "Go on without calibrations → checked",
+  "Use the OB1 Collector → Yes",
+  "Native Algorithm → Yes",
+  "Fallback to xDrip → No",
+  "Minimize Scanning → No",
+  "G6 Support → Yes",
+  "Allow OB1 unbonding → Yes",
+  "Allow OB1 initiate bonding → Yes"
+ ],
+ "devices": [
+  "G6 sensor",
+  "Sony Smartwatch 3"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "OB1 collector",
+  "native algorithm",
+  "G6"
+ ],
+ "confidence": "high",
+ "evidence_quote": "@jlecount If you are using the OB1 collector and have G6 option enabled then it should ask you for a code when starting a sensor."
+}

@@ -1,0 +1,103 @@
+{
+ "id": 726153258,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1477,
+ "title": "upload basal rate to Tidepool",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1477",
+ "state": "closed",
+ "labels": [
+  "enhancement",
+  "sync-tidepool",
+  "insulin"
+ ],
+ "created_at": "2020-10-21T05:43:41Z",
+ "closed_at": "2022-05-16T05:08:02Z",
+ "comment_count": 23,
+ "body": "Currently, basal rate information is not uploaded to Tidepool but is often requested and discussed in [#581 (comment)](https://github.com/NightscoutFoundation/xDrip/issues/581#issuecomment-471898214).",
+ "comments": [
+  {
+   "id": 714094068,
+   "user": "pazaan",
+   "created_at": "2020-10-22T00:56:30Z",
+   "body": "The [code for the data model upload to Tidepool is there](https://github.com/NightscoutFoundation/xDrip/blob/master/app/src/main/java/com/eveningoutpost/dexdrip/tidepool/EBasal.java), so I'm not sure why it's not being uploaded.\r\nPerhaps [this code is not working as expected?](https://github.com/NightscoutFoundation/xDrip/blob/a91b660ec68809418a7904fa8f710beb3c8ab937/app/src/main/java/com/eveningoutpost/dexdrip/tidepool/UploadChunk.java#L149-L176)"
+  },
+  {
+   "id": 743241276,
+   "user": "esayles",
+   "created_at": "2020-12-11T14:58:59Z",
+   "body": "Thanks for making a separate issue for this. Is anyone aware of any progress or remaining obstacles for this feature? "
+  },
+  {
+   "id": 821884215,
+   "user": "simonpickering",
+   "created_at": "2021-04-17T20:39:15Z",
+   "body": "My data appear to be uploaded to the standard site (I didn't tick the box to take me to the int- site)\r\n\r\nJust as a random note, for those on basal-bolus (or at the very least for me), basal injections entered in XDrip+ appear as standard bolus injections in TidePool, which is a little confusing.\r\n\r\nIn my view of the data on the website there are only two types of insulin: named \"basal\" and \"bolus\", I'm not sure whether the API can work with different types of insulin in a given category. I will do some looking through the docs though."
+  },
+  {
+   "id": 877664060,
+   "user": "fjpezuela",
+   "created_at": "2021-07-10T16:23:28Z",
+   "body": "Hello,\r\n\r\nA few days ago I connected xDrip with Tidepool. Everything syncs correctly except the basal ones. I have found this thread and the referenced one and it seems that there are users who have worked for it.\r\n\r\nDo you know what the problem is and at what point is a possible solution?\r\n\r\nThank you very much for all the support."
+  },
+  {
+   "id": 877665586,
+   "user": "simonpickering",
+   "created_at": "2021-07-10T16:34:42Z",
+   "body": "The issue is afaiu on the Tidepool side. I raised the same question on the Tidepool.org #general Slack channel on April 18th at 11:18am (UK time) - they have added in the internal plumbing but it's not yet supported in Blip, which does the uploading afaicr.\r\n\r\nWith that said, that was a little while ago, so it may now be working in the uploader and requires a mod to the XDrip+ code, I'll need to have a dig unless someone else knows offhand?\r\n\r\nIf you can't find the Slack thread give me a shout and I'll copy and paste the response in here."
+  },
+  {
+   "id": 877692855,
+   "user": "fjpezuela",
+   "created_at": "2021-07-10T19:36:54Z",
+   "body": "Thank you very much for the reply.\r\n\r\nI don't have access to Slacks. I would appreciate if you put the answer here.\r\n\r\nIf I have not misunderstood, making some modifications in xDrip, the basal rise should work.\r\n\r\nHopefully this can be corrected soon.\r\n\r\nThanks again."
+  },
+  {
+   "id": 877780333,
+   "user": "simonpickering",
+   "created_at": "2021-07-11T11:03:42Z",
+   "body": "No worries, here's the thread copied and pasted from Slack. As far as I remember a modification will be required in the XDrip+ upload code but only once Tidepool supports it in Blip. I've not check on the status of either - I had a yearly hospital appointment and was trying to work out how to share my data with them. I will have a further dig at some point in the not to distant future to see what the status is.\r\n\r\n-------------------------------\r\n\r\nSimon Pickering Apr 18th at 11:18 AM\r\nMorning all, I've been looking through the docs to see whether different types of bolus insulin can be recorded. I can't see anything obvious. I'm on basal-bolus with a pair of pens. When uploading from XDrip+ my basal data appears as a bolus and looks identical to the usual bolus injections. I guess the answer here is to add annotations to the injection events.\r\n\r\nSimon Pickering  3 months ago\r\nSo I've got 3 questions you might be able to help me with: 1) Have I missed a better way of doing this? 2) Should basal insulin which is only injected once a day be uploaded as a basal type (though these all assume a duration over which a quantity will be injected, which would mean fudging the data to make it fit the model) or as a bolus (but it would be nice to mark this as basal and have it appear as such in the web interface - I'm guessing the annotation isn't enough to do this), 3) Can I arbitrarily create annotations or do they have to be listed in annotationdefinitions.js beforehand? Thanks :slightly_smiling_face:\r\n\r\ngerrit  3 months ago\r\nHi @Simon Pickering!\r\nWe have created an insulin data type to record injection events, but it's not yet in the public documentation.\r\nI'm not sure if/how we're visualising the insulin data type in Tidepool Web, so I'm checking on that for you.\r\nIf you create a new annotation, it will show up with a default text (We cant be 100% certain of the data displayed here.. ) until the definition is added to annotationdefinitions.js.\r\n\r\nSimon Pickering  3 months "
+  },
+  {
+   "id": 878393462,
+   "user": "fjpezuela",
+   "created_at": "2021-07-12T15:52:40Z",
+   "body": "Thanks again. See if someone can check it out and readjust the code. I will continue to monitor the progress."
+  },
+  {
+   "id": 968315297,
+   "user": "akhilshah128",
+   "created_at": "2021-11-14T15:44:28Z",
+   "body": "Sorry for duplicating this issue\r\n\r\nHas there been any update regarding this?\r\n\r\nMany thanks"
+  },
+  {
+   "id": 1006742363,
+   "user": "janvitos",
+   "created_at": "2022-01-06T16:49:38Z",
+   "body": "Hi! I was wondering if there's any updates on this ?\r\n\r\nWe also normally use Tidepool to share our diabetic child's data with his endocrinologist, and having the basal uploaded from xDrip to Tidepool is a must. Since we switched from regular Omnipod to AndroidAPS + xDrip, we no longer have the basal in Tidepool, so we'll have to send his endo the reports generated from Nightscout for now. Hopefully, this will do for the time being.\r\n\r\nThanks!"
+  },
+  {
+   "id": 1127036658,
+   "user": "jgslade",
+   "created_at": "2022-05-15T21:17:56Z",
+   "body": "I just logged into my tidepool and I have basal rates in now. I am using version 2122051214."
+  },
+  {
+   "id": 1127094435,
+   "user": "janvitos",
+   "created_at": "2022-05-16T00:12:36Z",
+   "body": "> I just logged into my tidepool and I have basal rates in now\r\n\r\nGonna check that out right now! Thanks for the info :)\r\n\r\nEdit: Unfortunately, even after updating to 2122051214, I don't see the basal rate in Tidepool.\r\n\r\nAnything specific you did in xDrip for the basal rate to show up?"
+  },
+  {
+   "id": 1127124907,
+   "user": "jgslade",
+   "created_at": "2022-05-16T01:34:18Z",
+   "body": "> > I just logged into my tidepool and I have basal rates in now\r\n> \r\n> Gonna check that out right now! Thanks for the info :)\r\n> \r\n> Edit: Unfortunately, even after updating to 2122051214, I don't see the basal rate in Tidepool.\r\n> \r\n> Anything specific you did in xDrip for the basal rate to show up?\r\n\r\nNo, I haven't adjusted my settings for a very long time. \r\n"
+  },
+  {
+   "id": 1127226181,
+   "user": "tolot27",
+   "created_at": "2022-05-16T05:08:02Z",
+   "body": "This was implemented/activated with 5058163 and released with [2022.04.30](https://github.com/NightscoutFoundation/xDrip/releases/tag/2022.04.30).\r\n@psonnera Please can you add it to the [Changelog](https://xdrip.readthedocs.io/en/latest/changelog)?\r\n\r\nWill close this issue since it is resolved."
+  }
+ ]
+}

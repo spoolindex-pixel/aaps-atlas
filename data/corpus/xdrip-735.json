@@ -1,0 +1,54 @@
+{
+ "id": 396389922,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 735,
+ "title": "Treatments entered by followers are not uploaded to Nightscout",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/735",
+ "state": "closed",
+ "labels": [
+  "enhancement",
+  "sync-nightscout"
+ ],
+ "created_at": "2019-01-07T08:22:15Z",
+ "closed_at": "2024-02-24T13:30:14Z",
+ "comment_count": 6,
+ "body": "Treatments (carbs, insuling) added on follower phone shows up in the graph in the master phone/xdrip and on other followers, but not in Nightscout as they are added. \r\n\r\nXdrip is set to use Nightscout REST API to upload. Values from sensor and calibrations are successfully synced to Nightscout, but not treatments.\r\n\r\nBUT if I use Back-fill data, all the old treatments get synced. So it seems something is wrong with syncing new treatments as they are added.\r\n\r\nThe Xdrip master is a Samsung Galaxy S4, Android 4.3, Xdrip latest stable version. Nightscout is latest from master. \r\n\r\nI can see no related log messages on the xdrip. Is there some way I can trace these requests to Nightscout in order to figure out where it stops?",
+ "comments": [
+  {
+   "id": 451890847,
+   "user": "jweismann",
+   "created_at": "2019-01-07T10:29:44Z",
+   "body": "I have observed and reported this too. Only the treatment data entered on the phone that syncs to nightscout is uploaded to nightscout, not the treatment data entered on other phones in the sync group. A work-around is the have all phones in the sync group to upload to nightscout. That way, all treatment data in the sync group  is uploaded to nightscout too. "
+  },
+  {
+   "id": 452289181,
+   "user": "anderser",
+   "created_at": "2019-01-08T12:58:28Z",
+   "body": "@jweismann but wouldn't that suggestion mean that all BG-values also are uploaded twice (or more) (from each phone). I suppose that could mean trouble/duplication?"
+  },
+  {
+   "id": 674284643,
+   "user": "tolot27",
+   "created_at": "2020-08-14T21:43:43Z",
+   "body": "@jamorham Please assign this issue to me and rename it to \"Treatments entered by followers are not uploaded to Nightscout\"."
+  },
+  {
+   "id": 1050216892,
+   "user": "Anoukmdv",
+   "created_at": "2022-02-24T20:04:41Z",
+   "body": "Is this resolved or worked around? Thanks "
+  },
+  {
+   "id": 1176639525,
+   "user": "rossi32s",
+   "created_at": "2022-07-06T19:55:15Z",
+   "body": "My T1 Son is on iPhone with the dex app.  I have nightscout server setup and has been pulling the data from dexshare fine for months.  My wife and I both have Xdrip on our androids with nightscout as the datasource..  When she enters a treatment on her phone, it shows up on her phone/xdrip and the nightscout site.  If i do a treatment on my phone it shows up on my phone/xdrip and the nightscout site.  I cannot get the treatments she enters to my xdrip and she cannot see the ones I enter.  \r\n\r\nIf I load the nightscout page and add a treatment,  it shows up correctly/as expected on my phone and hers.\r\n\r\nREST-API is setup on both of our phones."
+  },
+  {
+   "id": 1962364679,
+   "user": "Navid200",
+   "created_at": "2024-02-24T13:30:14Z",
+   "body": "In order for the follower to upload treatments to Nightscout, you will need to enable `Settings` &#8722;> `Cloud Upload` &#8722;>  `Nightscout Sync (REST_API)` &#8722;> `Enabled`.\r\n\r\nThen, on the same page, enter Base URL including either an API_SECRET or a token with write privilage.\r\n\r\nThen, also enable `Settings` &#8722;> `Cloud Upload` &#8722;>  `Nightscout Sync (REST_API)` &#8722;> `Extra Options` &#8722;> `Upload treatments`.  \r\n  \r\nI'm not sure if the downloaded bg readings will be uploaded again.  I am curious if that happens.  \r\nBut, even if it does, Mongo looks at the timestamp and just ignores them since the exact same timestamp already exists.  \r\n\r\nI am closing this.  But, we can reopen if needed.  Please let us know if you have any questions."
+  }
+ ]
+}

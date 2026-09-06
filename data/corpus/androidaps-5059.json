@@ -1,0 +1,21 @@
+{
+ "id": 5079557871,
+ "repo": "nightscout/AndroidAPS",
+ "number": 5059,
+ "title": "isAnySceneActive() ignores expired-but-undismissed scenes, blocking automation gated on \"no scene running\"",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/5059",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2026-08-06T09:08:54Z",
+ "closed_at": "2026-08-06T13:44:22Z",
+ "comment_count": 1,
+ "body": "> **Note:** This issue was found and drafted with AI assistance (Claude Code), while investigating an unrelated bug report on a fork, then verified by hand against the current `dev` branch before filing. Flagging this per repo policy on AI-assisted contributions.\n\n## Summary\n\n`SceneAutomationApiImpl.isAnySceneActive()` does not honor the \"not yet expired\" part of its own documented contract, so any automation gated on \"no scene running\" stays blocked forever once a scene expires, until the user manually dismisses the \"scene ended\" banner.\n\n## Where\n\n- Contract: `core/interfaces/src/main/kotlin/app/aaps/core/interfaces/scenes/SceneAutomationApi.kt`\n  ```kotlin\n  /** Whether a scene is currently active (running, not yet expired). */\n  fun isAnySceneActive(): Boolean\n  ```\n- Implementation: `implementation/src/main/kotlin/app/aaps/implementation/scenes/SceneAutomationApiImpl.kt`\n  ```kotlin\n  override fun isAnySceneActive(): Boolean = activeSceneManager.isActive()\n  ```\n  `ActiveSceneManager.isActive()` is `true` for **any** non-null `ActiveSceneState`, including one whose `lifecycle == SceneLifecycle.EXPIRED` — i.e. a scene whose effects already reverted (`SceneExecutor.onExpiry()` ran) but whose \"ended\" banner/notification hasn't been dismissed yet. `ActiveSceneManager.isExpired()` exists specifically to distinguish this state, but `isAnySceneActive()` never checks it.\n\n## Impact\n\nBoth real consumers of this method are automation gates meant to mean \"nothing is currently running\":\n\n- `TriggerSceneActive` with `ComparatorExists.Compare.NOT_EXISTS` (a trigger users can add to any automation rule)\n- `ActionRunScene`'s own built-in `precondition = TriggerSceneActive(injector, ComparatorExists.Compare.NOT_EXISTS)` — \"Skip activation if a scene is already running\"\n\nOnce a scene's duration elapses, `SceneExpiryWorker` correctly reverts the profile switch / SMB toggle and marks the scene `EXPIRED`, but the banner is intentionally left up for the user to dismiss (`SceneExecutor.dismiss()`). Until that dismiss happens, `isAnySceneActive()` keeps returning `true`, so:\n\n- A `TriggerSceneActive(NOT_EXISTS)` condition never fires\n- `ActionRunScene` refuses to start a new scene (\"a scene is already running\") even though the previous one's effects already ended\n\nThis can silently block automations for an arbitrary amount of time (until the user notices the banner and taps Close), with no error surfaced to explain why.\n\n## Fix\n\n```kotlin\noverride fun isAnySceneActive(): Boolean = activeSceneManager.isActive() && !activeSceneManager.isExpired()\n```\n\nThis matches the documented contract exactly (\"running, not yet expired\") and doesn't need any other change — `activeFlow` (used to drive the Wear tile's list/STOP toggle) is intentionally separate and keeps its current null-check semantics.\n\nI won't be opening a PR for this myself (repo policy on AI-assisted PRs) — flagging it here so a maintainer can apply the one-line fix.\n",
+ "comments": [
+  {
+   "id": 5205450043,
+   "user": "MilosKozak",
+   "created_at": "2026-08-06T13:44:22Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/7fc8205e9a73259cec2982fc199f3d2055f84347"
+  }
+ ]
+}

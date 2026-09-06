@@ -1,0 +1,141 @@
+{
+ "id": 1234371684,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1727,
+ "title": "Wear App: Tiles not communicating with app on phone",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1727",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-05-12T19:00:56Z",
+ "closed_at": "2022-05-18T12:19:56Z",
+ "comment_count": 21,
+ "body": "When I try to enter carbs using the AndoidAPS tiles on my Galaxy Watch 4 I no longer get the confirmation and the carbs aren't sent to the phone.\r\n\r\nI did a demonstration at 12:36.\r\n\r\nMy phone is a Samsung s21FE the watch is a Galaxy Watch 4. I am using a dexcom g6 with BYODA and the Omnipod Dash. I am using an xdrip watchface. BYODA is sending data to both AAPS and xdrip, AAPS is uploading to nightscout and xdrip is uploading to tidepool.\r\n\r\nBuild number: ff46cbf19-2022.05.12-10:33 on the phone and FF46CBF19-2022.05.12 on the watch.\r\n\r\nVideo demonstarting the problem\r\nhttps://user-images.githubusercontent.com/29897815/168148294-39e4ee4e-f21c-4f5c-a87c-1ca89495e4e8.mp4\r\n\r\nLogs of the time surrounding the event.\r\n[AndroidAPS_time surrounding event.log](https://github.com/nightscout/AndroidAPS/files/8681846/AndroidAPS_time.surrounding.event.log)\r\n\r\nEDIT: I installed the wear app using adb from my computer.\r\n\r\n",
+ "comments": [
+  {
+   "id": 1125363508,
+   "user": "jgslade",
+   "created_at": "2022-05-12T19:49:26Z",
+   "body": "I saw on the discord that you need to reinstall the wear app, not just update. I have uninstalled and reinstalled the app. Since the tiles would work for me for a bit after installation on dev-j then stop I'll give it a few hours and if it's still working I close this ticket as an id10t error."
+  },
+  {
+   "id": 1125378972,
+   "user": "vanelsberg",
+   "created_at": "2022-05-12T20:08:15Z",
+   "body": "Confirming/known issue: full uninstall/reinstall is required.\r\nFor me tiles work OK for me."
+  },
+  {
+   "id": 1125430153,
+   "user": "jgslade",
+   "created_at": "2022-05-12T21:16:11Z",
+   "body": "Just tried again. No longer getting the confirmation dialog and carbs aren't being sent to the phone.\r\n\r\nI tried at 15:07 and again at 15:09\r\n[AndroidAPS_time surrounding event 2.log](https://github.com/nightscout/AndroidAPS/files/8682622/AndroidAPS_time.surrounding.event.2.log)\r\n\r\nHere's the full log as well as the cut down version.\r\n[AndroidAPS (2).log](https://github.com/nightscout/AndroidAPS/files/8682627/AndroidAPS.2.log)\r\n\r\n"
+  },
+  {
+   "id": 1125439437,
+   "user": "jgslade",
+   "created_at": "2022-05-12T21:30:17Z",
+   "body": "Restarted my watch and tried again and it worked.\r\nI entered the carbs at 15:26\r\n\r\n[AndroidAPS (3).log](https://github.com/nightscout/AndroidAPS/files/8682682/AndroidAPS.3.log)\r\n\r\nI'll wait a couple of hours and see if it is still working."
+  },
+  {
+   "id": 1125543209,
+   "user": "jgslade",
+   "created_at": "2022-05-13T00:29:57Z",
+   "body": "Not working again.  I tried at 18:25. \r\n\r\nTiles did work on dev-i without issue. On dev-j I experienced these same issues. \r\n\r\n[AndroidAPS (4).log](https://github.com/nightscout/AndroidAPS/files/8683242/AndroidAPS.4.log)\r\n\r\nI guess the next step will be to rebuild the wear apk to see if that fixes it. \r\n"
+  },
+  {
+   "id": 1126282153,
+   "user": "jgslade",
+   "created_at": "2022-05-13T17:28:52Z",
+   "body": "I've rebuilt the apk, and removed and replaced the wear app.\r\n\r\nSame issues.\r\n\r\nI also reset the watch. still having the same issues.\r\n\r\n[AndroidAPS (5).log](https://github.com/nightscout/AndroidAPS/files/8689767/AndroidAPS.5.log)\r\n\r\n"
+  },
+  {
+   "id": 1126340015,
+   "user": "FreDiabetics",
+   "created_at": "2022-05-13T18:37:02Z",
+   "body": "I have the exact same issue since AAPS V3.0 uninstalled and reinstalled wear apk before updating it. No confirmation and no treatments can be made. "
+  },
+  {
+   "id": 1126371374,
+   "user": "jgslade",
+   "created_at": "2022-05-13T19:21:05Z",
+   "body": "I tried to enter some carbs from the AAPS app on the watch and it worked, and it's now working on the tiles. It's been about 30 minutes, I'll check again in an hour or so then update with logs."
+  },
+  {
+   "id": 1126424513,
+   "user": "jgslade",
+   "created_at": "2022-05-13T20:16:16Z",
+   "body": "Tried again and not getting the confirmation dialog anymore and the carbs aren't being sent to the watch. Tried the AAPS app instead of the tiles and it didn't work either this time, took the number but the confirmation dialog didn't pop up.\r\n\r\nI started around 14:08\r\n[AndroidAPS (6).log](https://github.com/nightscout/AndroidAPS/files/8691071/AndroidAPS.6.log)\r\n\r\nFrom earlier it was about 12:45 ( don't remember the exact time I was at the park with my daughter.)\r\n[AndroidAPS._2022-05-13_11-30-33_.1.zip](https://github.com/nightscout/AndroidAPS/files/8691081/AndroidAPS._2022-05-13_11-30-33_.1.zip)\r\n\r\n "
+  },
+  {
+   "id": 1126798432,
+   "user": "jgslade",
+   "created_at": "2022-05-14T19:23:34Z",
+   "body": "I went to an AAPS watchface and the tiles appear to be working reliably now.  So it seems that the watchface is doing something with the connection with the phone that the tiles aren't doing on their own. \r\n\r\nSwitched to the AAOS watchface around 11:40ish\r\n[AndroidAPS._2022-05-14_00-00-06_.9.zip](https://github.com/nightscout/AndroidAPS/files/8693730/AndroidAPS._2022-05-14_00-00-06_.9.zip)\r\n\r\n\r\n"
+  },
+  {
+   "id": 1126802083,
+   "user": "Foxy7",
+   "created_at": "2022-05-14T19:51:57Z",
+   "body": "I've found the same issue with Dev, that tiles not working correctly, but also that the calculator (previously called wizard) doesn't calculate insulin for a given amount of carbs, always returns zero uints.\r\n\r\nNote, full uninstall of AAPS watch face and re-install didn't fix the issue, it still persisted.\r\n\r\nGalaxy Watch 4."
+  },
+  {
+   "id": 1126998331,
+   "user": "vanelsberg",
+   "created_at": "2022-05-15T19:08:03Z",
+   "body": "On current build #FF46CBF195: Tiles are working just fine for me (Samsung Watch4 Classic)"
+  },
+  {
+   "id": 1126999868,
+   "user": "vanelsberg",
+   "created_at": "2022-05-15T19:17:17Z",
+   "body": "> I've found the same issue with Dev, that tiles not working correctly, but also that the calculator (previously called wizard) doesn't  calculate insulin for a given amount of carbs, always returns zero uints.\r\n\r\n@Foxy7 \r\n\r\nIn \"double-tap settings\", try setting \"calculator percentage\" to \"ON\"\r\nThink this may be a bug. Waer app for 3.0 syncs the default percentage form AAPS settings. It does not seem to do that when setting is \"OFF\"?\r\n\r\nhttps://github.com/nightscout/AndroidAPS/issues/1738"
+  },
+  {
+   "id": 1127000076,
+   "user": "vanelsberg",
+   "created_at": "2022-05-15T19:18:24Z",
+   "body": "@jgslade Install might be missing a privilege or power setting.\r\nHow are you installing the wear app to the watch?\r\n"
+  },
+  {
+   "id": 1127038977,
+   "user": "jgslade",
+   "created_at": "2022-05-15T21:23:11Z",
+   "body": "I have tried installing it through adb from the computer and using the wear installer from my phone. I get the same results either way. I didn't change the settings on the phone or watch between dev i and dev k, except for when I reset the watch to see if that will help, then any settings that weren't backed up may not have been reset to where they were before."
+  },
+  {
+   "id": 1127041400,
+   "user": "vanelsberg",
+   "created_at": "2022-05-15T21:27:09Z",
+   "body": "> I have tried installing ...\r\n\r\nWear installer should be fine (using this myself). So that should not be the problem.\r\n\r\n"
+  },
+  {
+   "id": 1127043890,
+   "user": "vanelsberg",
+   "created_at": "2022-05-15T21:36:29Z",
+   "body": "@jgslade \r\n\r\n> I am using an xdrip watchface....\r\n\r\nAh... you are running the xDrip watchface?\r\nTiles are part of the AAPS watch face so the xDrip watch face wont work.\r\nTry selecting the AAPS(DigitalStyle) watch face?\r\n\r\n\r\n\r\n"
+  },
+  {
+   "id": 1127044104,
+   "user": "jgslade",
+   "created_at": "2022-05-15T21:37:20Z",
+   "body": "The tiles are working if I use an AAPS watchface, but when I use xdrip watchface they don't work, but they did work in dev i."
+  },
+  {
+   "id": 1129336657,
+   "user": "vanelsberg",
+   "created_at": "2022-05-17T21:31:59Z",
+   "body": "I think you cannot expect tiles designed for the AAPS watch face to work without it being active."
+  },
+  {
+   "id": 1129391325,
+   "user": "jgslade",
+   "created_at": "2022-05-17T22:41:40Z",
+   "body": "They did work with the xdrip watchfaces, but now they don't.  So if the goal is to get back the same functionality that existed before the translation to kotlin this is a legitimate bug. "
+  },
+  {
+   "id": 1129936742,
+   "user": "MilosKozak",
+   "created_at": "2022-05-18T12:19:56Z",
+   "body": "current dev wear code is not compatible with xdrip watchfaces anymore (comm has changed)\r\nYou must use the same version of AAPS and WEAR to keep it working"
+  }
+ ]
+}

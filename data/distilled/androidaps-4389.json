@@ -1,0 +1,28 @@
+{
+ "issue_id": 4389,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/4389",
+ "title": "AAPS Xdrip sends continuously and keeps app awake and burns battery",
+ "symptom": "Phone becomes warm when not in use, battery usage shows AAPS taking 80% and draining 30% in a couple of hours. Xdrip logs in AAPS show it continuously sending hundreds of BG readings repeatedly, and once it approaches the end of the queue, it falls back several hundred readings and starts again. This goes on continuously until the app is force killed.",
+ "cause": "The issue is triggered when a new BG entry arrives and is added to the queue while the Xdrip queue send is being processed, causing the queue resend to loop and never recover. This was observed when Juggluco sends a BG entry to AAPS in the middle of a sync.",
+ "fix": "The issue was fixed by a commit referenced by MilosKozak: https://github.com/nightscout/AndroidAPS/commit/854833857f4b872db0966f3acc01422062eba574. Additionally, a workaround is to force kill the app, and configuration advice includes disabling sending of BG from AAPS when using xDrip as source, and ensuring only xDrip sends BG data to NS.",
+ "settings_changed": [],
+ "devices": [
+  "Libre 3",
+  "Juggluco",
+  "xDrip",
+  "AAPS"
+ ],
+ "android_versions": [
+  "Android 16"
+ ],
+ "driver_tags": [
+  "xdrip",
+  "broadcast",
+  "NSClientV3",
+  "NSClientv1",
+  "full sync"
+ ],
+ "confidence": "high",
+ "evidence_quote": "Latest theory based on some trial and error CrimsonKage is doing there is that while Xdrip queue send is being processed, if a new entry arrives and is added to the queue this queue resend issue happens and never recovers."
+}

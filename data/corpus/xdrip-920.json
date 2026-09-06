@@ -1,0 +1,43 @@
+{
+ "id": 458045893,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 920,
+ "title": "Uploading incorrect delta to Nightscout",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/920",
+ "state": "closed",
+ "labels": [
+  "duplicate",
+  "sync-nightscout",
+  "algorithmics"
+ ],
+ "created_at": "2019-06-19T14:24:45Z",
+ "closed_at": "2023-04-11T12:49:43Z",
+ "comment_count": 4,
+ "body": "Originally created as https://github.com/nightscout/cgm-remote-monitor/issues/4693\r\n\r\n**Describe the bug**\r\nThe delta reported by the nightscout API (for example `/api/v1/entries/current.json`) is different from the actual BG delta. According to @sulkaharo this is caused by xDrip uploading incorrect deltas to Nightscout.\r\n\r\n**To Reproduce**\r\n1. Observe delta reported by xDrip (in the xDrip app)\r\n2. Calculate actual delta (using last two readings, should be the same as xDrip)\r\n3. Observe delta reported by Nightscout (not API, should also be the same as xDrip)\r\n4. Observe delta reported by API (this is often different)\r\n\r\n**Expected behavior**\r\nThe BG delta uploaded to Nightscout should be the actual delta.\r\n\r\n**Screenshots**\r\n[Recording displaying discrepancy](https://i.eliens.co/1560937263212.mp4)\r\n\r\n**Your setup information**\r\n- Nightscout version 0.11.2-rc2-20190323\r\n- xDrip nightly 20190530-a25cacb\r\n- Dexcom G6\r\n\r\n**Additional information**\r\nThis issue never occurred for me when I was using a Dexcom G5.\r\n",
+ "comments": [
+  {
+   "id": 753528076,
+   "user": "dmelliott20",
+   "created_at": "2021-01-02T20:51:05Z",
+   "body": "did you get to the bottom of this. I'm experiencing the same issue"
+  },
+  {
+   "id": 753590836,
+   "user": "cascer1",
+   "created_at": "2021-01-03T09:33:09Z",
+   "body": "I bought a new phone that doesn't work well with xDrip so i switched to another app."
+  },
+  {
+   "id": 894691119,
+   "user": "Navid200",
+   "created_at": "2021-08-07T18:37:24Z",
+   "body": "@cascer1 \r\n>Observe delta reported by Nightscout (not API, should also be the same as xDrip)\r\n\r\nWhere is this delta, which is correct, coming from if not from xDrip?"
+  },
+  {
+   "id": 1503269750,
+   "user": "Navid200",
+   "created_at": "2023-04-11T12:49:43Z",
+   "body": "I can recreate this problem.  So, I will see if I can understand more about it and hopefully fix it.\r\n\r\nBut, the problem seems to be, at least for me, directly related to the problem reported here: https://github.com/NightscoutFoundation/xDrip/issues/691\r\n\r\nIf there is a reason this is a different matter, please explain and help me understand and I will reopen this.\r\nThanks for reporting."
+  }
+ ]
+}

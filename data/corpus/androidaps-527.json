@@ -1,0 +1,107 @@
+{
+ "id": 895208601,
+ "repo": "nightscout/AndroidAPS",
+ "number": 527,
+ "title": "Lyumjev U200/ML",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/527",
+ "state": "closed",
+ "labels": [
+  "for_discussion"
+ ],
+ "created_at": "2021-05-19T09:26:29Z",
+ "closed_at": "2026-07-22T13:02:36Z",
+ "comment_count": 15,
+ "body": "**An idea to work out for the developers in one of the following AAPS updates:**\r\n\r\nRequest to make an adjustment in AndroidAPS to use Lyumjev U200/ml safely.\r\nProbably won't be very difficult for a programmer to code this and a U200/ml is definitely a good thing I think.\r\n\r\nthanks in advance.\r\n",
+ "comments": [
+  {
+   "id": 849064201,
+   "user": "petervanrijt",
+   "created_at": "2021-05-26T19:37:06Z",
+   "body": "Yes, please! How can I help? Saw some refelctions in https://www.facebook.com/groups/AndroidAPSUsers/permalink/3001351296752934/ "
+  },
+  {
+   "id": 854621426,
+   "user": "MilosKozak",
+   "created_at": "2021-06-04T11:07:51Z",
+   "body": "it's not planned so far. explanation on fb"
+  },
+  {
+   "id": 1345524644,
+   "user": "koelewij",
+   "created_at": "2022-12-11T11:11:36Z",
+   "body": "I do not totally agree with the conclusions on facebook. And sadly I was not involved in the period of the discussion. My idea was to keep everything for the user in units and that is in my opinion the safest. Now users work with fake values and inputs and therefore the communication with their endocrinologist becomes even more complex. I see that as a bigger safety concern than keeping everything in the UI and nightscout reports exactly the same. I might have underestimated the development impact for increments in the profile. But the idea was based on Omnipod because that pump has no UI of its own and everything is managed from AAPS. So if the AAPS UI shows everything in units I don’t see any safety concerns, only safety increase. In principle all commands going to the pump need to be multiplied by a factor, and all feedback from the pump divided by that same factor. \r\nBasal units/hour are already at 0.01 increments, which is already smaller than most pumps can handle. So some rounding might be required here and there. \r\nThe only thing that is important in my opinion is that the users is kept aware of this correction in the UI. Changing a profile to 50% does not work with Dynamic ISF!\r\nPlease reconsider!"
+  },
+  {
+   "id": 1345542771,
+   "user": "MilosKozak",
+   "created_at": "2022-12-11T12:32:08Z",
+   "body": "I'm using U200 with DynISF and don't see any issues.\r\n(I have new 100% profile which is adequate to 50% of common one) "
+  },
+  {
+   "id": 1345573465,
+   "user": "Roozeboom007",
+   "created_at": "2022-12-11T14:46:17Z",
+   "body": "Will there be an adjustment to safely use Lyumjev U200/ml in one of the next updates of AndroidAPS?"
+  },
+  {
+   "id": 1345597991,
+   "user": "MilosKozak",
+   "created_at": "2022-12-11T16:27:58Z",
+   "body": "> Will there be an adjustment to safely use Lyumjev U200/ml in one of the next updates of AndroidAPS?\r\n\r\nwhat is it?"
+  },
+  {
+   "id": 1346694912,
+   "user": "Roozeboom007",
+   "created_at": "2022-12-12T15:24:28Z",
+   "body": "The discussion was reopened, so I'm asking the question again.\r\nPerhaps a manual in the AndroidAPS documentation will suffice for this.........."
+  },
+  {
+   "id": 1346923577,
+   "user": "MilosKozak",
+   "created_at": "2022-12-12T17:26:56Z",
+   "body": "@koelewij the main issue i see is that you have to always keep in mind if in communication with aaps you should use U100 values or U200 values. When there is no support it's pretty clear that what you must do"
+  },
+  {
+   "id": 1352667266,
+   "user": "koelewij",
+   "created_at": "2022-12-15T07:35:49Z",
+   "body": "@MilosKozak My first consideration would be to implement this only for pumps that have no UI on the pump itself. \r\nBecause the inconsistency between the values in the UI of the Pump and the UI of AAPS. \r\nWhen a users would set basal to 1U/hr in AAPS and see on the pump 0.5U/hr is to my opinion causing a lot of issues. \r\nSince Omnipod and possibly other remote controlled pumps do not have their own UI and everything is controlled from AAPS, a simple division of the commands going to the pump, and multiplication with the same factor of reported values from the pump would then be enough to align everything.\r\nI understand that there is extra effort needed, in the UI to accommodate for a higher/lower resolution to overcome possible rounding in the commands to and results coming back from the pump.\r\nLimiting the factor for instance to 0.1-2 (U-10 to U-200), would make the rounding manageable. Or create an LOV with some common strengths like: U-10, U-25, U-50, U-100 and U-200.\r\nFor instance the lowest bolus given to an Omnipod is 0.05U, translating that to U-200 would result in a bolus of 0.025U which rounded to the resolution of the pump, becomes either 0.00U or 0.05U, therefore the UI, needs a lower limit for the bolus of 0.1U. \r\nI do not know how the code in AAPS is currently dealing with resolution differences between pumps, but I presume, that there is already some effort done to accommodate the resolution differences in the different pumps.  \r\nWe might introduce an extra safety, that a user can only unlock this feature in engineering mode, or a similar method like engineering mode. This to prevent everyone being able to access that parameter, and accidentally change it. \r\nWith my current knowledge of the code, I have no clue how much effort is involved here, but once done and tested for one pump, duplicating this to another pump, would be significantly less. \r\n"
+  },
+  {
+   "id": 1352671649,
+   "user": "koelewij",
+   "created_at": "2022-12-15T07:42:05Z",
+   "body": "Additional safety is guaranteed, because all the soft but also hard limits in AAPS for bolus, IOB, etc. are becoming useless when a person starts adjusting his profile to U-200. All limits are then twice as high. Something, that is not wishful too. "
+  },
+  {
+   "id": 1369159489,
+   "user": "savek-cc",
+   "created_at": "2023-01-02T19:17:01Z",
+   "body": "When switching to U200, you need to adjust your values within AAPS exactly once - and then have them stay that way. With using U200 and \"translate\" it within AAPS, the only advantage would be that you can directly use the values to talk to your endo?\r\nI don't have an issue with telling them that \"anything insulin delivered you see in nightscout needs to be multiplied by 2\". In other news, I can just pretend that I just got that much more sensitive to insulin, to that I now only need half of my previous doses (including basal rate) ;)."
+  },
+  {
+   "id": 3783585523,
+   "user": "koelewij",
+   "created_at": "2026-01-22T10:13:11Z",
+   "body": "Coming back to this discussion again, 3 years later. I made the switch myself 3 years ago, and I am currently fine with this. My mind is totally reset to using U200 insulin instead of U100, so for me there is no issue anymore. Also my Endo is happy with my BG numbers since I am using AAPS, so she isn't looking at Basal or Bolus values anymore.\n\nAnd it isn't only for U200. There are a lot of parents of infants, that are working with diluted insulin due to the very low doses that those little kids need, and they might have to make multiple transitions from U25, to U50, to eventually U100. \nIt would in my opinion be safer if everything in the AAPS UI would be just the same. 1U is 1U delivered. \n\nStill I see the issue coming up again in Discord, when U200 is mentioned:\n\n- Please be aware you need to adjust your Profile!\n- Please keep in mind you need to convey the correct numbers to your Endo!\n- Make sure if you do a manual bolus, that you are working with a stronger (or weaker) dose and do the correct math! \n\nSo even at this moment that I don't need it anymore for myself, I am sure it will make life a lot easier for the people that need to start with this somewhere in the future. \nI sincerely think, it could be handled fully in the pump driver and does not require any changes in AAPS core. Therefore the setting could be a pump related setting."
+  },
+  {
+   "id": 3783823057,
+   "user": "andyrozman",
+   "created_at": "2026-01-22T11:08:39Z",
+   "body": "I think there is feature being worked on for this (insulin concentrations), but it is still in development... "
+  },
+  {
+   "id": 3792231170,
+   "user": "savek-cc",
+   "created_at": "2026-01-23T20:21:07Z",
+   "body": "Currently in work here: https://github.com/nightscout/AndroidAPS/pull/4248"
+  },
+  {
+   "id": 5046082902,
+   "user": "MilosKozak",
+   "created_at": "2026-07-22T13:02:36Z",
+   "body": "v4"
+  }
+ ]
+}

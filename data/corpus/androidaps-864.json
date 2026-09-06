@@ -1,0 +1,39 @@
+{
+ "id": 1046767621,
+ "repo": "nightscout/AndroidAPS",
+ "number": 864,
+ "title": "2.8.2.9-dev: Profiles in NS deleted when going through setup wizard",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/864",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-11-07T14:55:27Z",
+ "closed_at": "2021-11-07T15:38:17Z",
+ "comment_count": 4,
+ "body": "Clean install of AAPS to a new phone without importing any settings. Using the wizard and connecting to NS results in deletion of all existing profiles in NS. This is because AAPS by default is set to upload data and to receive/sync profiles. Since iOS Loop cannot import setting and are most likely to  use virtual pump in the beginning this should either be declared in wizard and/or in documentation. Another solution will be to not sync profiles as default.\r\nTested with most recent version 2.8.2.9-dev and also previous dev (6?) version.\r\nCan provide logs if necessary, but will be messy since I did not remove old files from before testing again today.\r\n",
+ "comments": [
+  {
+   "id": 962632498,
+   "user": "MilosKozak",
+   "created_at": "2021-11-07T15:38:17Z",
+   "body": "It's not true.\r\n* if you go through SetupWizard, enter NS credentials (see NS connected below), and continue to Profile, you'll start with profiles from NS. Every NS profile is validated before accepting by AAPS so will not see invalid profiles\r\n* if you don't connect to NS and continue to Profile, then new empty profile is created and sent to NS\r\n\r\neven in second case you still can go to NS profile editor, find previous profiles and do \"Clone\". This way you make old profiles \"newer\" and they will be sent to AAPS\r\n"
+  },
+  {
+   "id": 962648538,
+   "user": "jumalakarhu",
+   "created_at": "2021-11-07T17:18:31Z",
+   "body": "I'm not trying to do anything else than testing rigorously and trying to anticipate what questions new users will ask. Most (all) testers are already aaps users and go directly to import settings.\r\nI did exactly what you said. New profile is sent, but all existing profiles in NS were deleted. If I could \"manage\" this others can too.\r\nStill I could get the old profiles in NS - thanks."
+  },
+  {
+   "id": 962692687,
+   "user": "MilosKozak",
+   "created_at": "2021-11-07T22:31:16Z",
+   "body": "try it again.\r\nI did a test before my reply to check if it's right\r\nImporting settings will be more tricky because you import data with old timestamp. in this case probably manual intervention will be needed anyway"
+  },
+  {
+   "id": 962692904,
+   "user": "MilosKozak",
+   "created_at": "2021-11-07T22:32:46Z",
+   "body": "if you don't use NS for editing profiles you can disable accepting profiles from NS. then local profile always stay intact"
+  }
+ ]
+}

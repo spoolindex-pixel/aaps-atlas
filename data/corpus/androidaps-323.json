@@ -1,0 +1,27 @@
+{
+ "id": 806268406,
+ "repo": "nightscout/AndroidAPS",
+ "number": 323,
+ "title": "AAPS reporting Unsupported Version of Nightscout for dev build of both",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/323",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-02-11T10:41:13Z",
+ "closed_at": "2021-02-11T15:19:43Z",
+ "comment_count": 2,
+ "body": "The issue last occurred in my logs at 10:57:24.  Logs will be forwarded as reuested.\r\n\r\nI'm using AAPS 95e87af68 2.8.2.1-dev with Engineering mode enabled\r\nI'm using Nightscout 83d7fb2a 14.2.0\r\n\r\nPeriodically, AAPS reports that I'm using an \"Unsupported Version of Nightscout\".  It's only an INFO message so just mildly irritating at the moment.\r\n\r\nHaving looked into the AAPS code for that specific error message, I found it only exists in NSSettingsStatus.kt.  That file is referenced by NSClientService.java, which specifically calls handleNewData from NSSettingsStatus.kt.  handleNewData receives three parameters, the first two of which are nightscoutVersionName and nightscoutVersionCode.  The first contains the data from the version attribute in the output of status.json from my NS site.  The second is looking for versionNum, which in the logs is listed as null (and doesn't appear if you request status.json directly from my site).\r\n\r\nnightscoutVersionCode is being compared to config.SUPPORTEDNSVERSION and because it is null, that comparison is succeeding (nightscoutVersionCode < config.SUPPORTEDNSVERSION) and triggering this notification.\r\n\r\nI'm not sure what changed to trigger this new issue but it has only been happening for a day or so.  I only just turned on NSClient logging so I don't have any strong indication of when exactly it started.",
+ "comments": [
+  {
+   "id": 777353621,
+   "user": "guydavies",
+   "created_at": "2021-02-11T10:42:23Z",
+   "body": "[AndroidAPS_LOG_1613037582126.log.zip](https://github.com/nightscout/AndroidAPS/files/5964626/AndroidAPS_LOG_1613037582126.log.zip)\r\n"
+  },
+  {
+   "id": 777569962,
+   "user": "guydavies",
+   "created_at": "2021-02-11T15:19:43Z",
+   "body": "Looks like this is related to an update in Nightscout dev (commit 4a9f492e).  I've reverted that change and redeployed and all seems well.  I've raised an issue in the appropriate git repo.  I'll close this issue because it's not a bug in AAPS."
+  }
+ ]
+}

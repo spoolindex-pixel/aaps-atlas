@@ -1,0 +1,33 @@
+{
+ "issue_id": 304,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/304",
+ "title": "direct connection from blucon to watch fails",
+ "symptom": "When the phone is out of range, the watch does not receive measurement results despite 'Enable Collector' and 'Force Collector' settings being set. The log shows 'syncBGData new BgReading calibrationUuid not found by byuuid'.",
+ "cause": "The Ticwatch E does not reliably collect data directly from the Blucon or Bluereader; the connection is unstable and stops after a while. It may be due to a bug in xDrip+ or the need for a patch for certain Wear OS devices.",
+ "fix": "One user reported success by updating the Ticwatch to Android 8.0, using the nightly xDrip+ from 21st May, and performing a Bluetooth dance: turn off phone Bluetooth, reset Blucon, pair watch to Blucon, turn phone Bluetooth back on, then enable 'Enable wear collection service', 'Force wear collection service', and 'Only use wear' in the Android Wear Integration menu. However, this fix was not stable for all users.",
+ "settings_changed": [
+  "Enable wear collection service",
+  "Force wear collection service",
+  "Only use wear"
+ ],
+ "devices": [
+  "Blucon",
+  "Ticwatch E",
+  "Bluereader",
+  "MiaoMiao",
+  "Libre"
+ ],
+ "android_versions": [
+  "Android 8.0",
+  "Android 8.1.0",
+  "Android 7.1.1"
+ ],
+ "driver_tags": [
+  "wear collection service",
+  "force wear collection service",
+  "only use wear"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "Then I performed a little Bluetooth dance as follows: 1. Turn OFF phone bluetooth to disconnect phone and watch 2. Use the metal pin that comes with the Blucon to \"reset\" it 3. On watch, scan for available devices 4. Select BLUXXXXX, and type in the PIN code when prompted 5. Turn phone bluetooth back on 6. Then select all of the following in the \"Android Wear Integration\" menu in the xDrip settings on the phone: - Enable wear collection service - Force wear collection service - Only use wear"
+}

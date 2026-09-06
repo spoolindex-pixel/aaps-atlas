@@ -1,0 +1,39 @@
+{
+ "id": 4343266806,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4774,
+ "title": "Unable to discard Omnipod Dash pod after error",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4774",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2026-04-28T12:50:40Z",
+ "closed_at": "2026-05-05T14:42:50Z",
+ "comment_count": 4,
+ "body": "**App version**: 4.0.0-dev (commit `ad190db781`)\n\nMy pod ran into an error which turned it into a screecher. So, I removed it from my body and broke the PCB to make it shut up.\n\nThen, when I got home to replace it, I had to first disconnect the pump. I expected that this would not work because the pod was no longer functional. However, the app went through the deactivation sequence as expected (there were no delays between any of the stages, as you can see in the attached video below.)\n\nI remember from version 3 of the app that after a few failed disconnects, the option to discard a pod appears. So, I tried to disconnect a few times but it never worked. So, I guess that in this case the app doesn't register the failed disconnection attempts as such.\n\nEventually I manually adjusted the code to make sure the discard button becomes visible in the state I was in: [Ensure_dash_discard_button_is_visible_when_pod_is_kaput.patch](https://github.com/user-attachments/files/27165467/Ensure_dash_discard_button_is_visible_when_pod_is_kaput.patch)\n\n**Video & Screenshot**\n\n<img width=\"250\" alt=\"Dash management page screenshot\" src=\"https://github.com/user-attachments/assets/48d2a029-e360-453f-ad17-a75545ba2d9b\" />\n\nhttps://github.com/user-attachments/assets/282aa0ae-34b8-455a-a4b8-a77747b0cfc1",
+ "comments": [
+  {
+   "id": 4335803011,
+   "user": "MilosKozak",
+   "created_at": "2026-04-28T13:46:42Z",
+   "body": "do you have logs from that time?"
+  },
+  {
+   "id": 4336811008,
+   "user": "cascer1",
+   "created_at": "2026-04-28T15:40:05Z",
+   "body": "Yes, I exported this just after recording the video.\n\n[AndroidAPS.log](https://github.com/user-attachments/files/27172200/AndroidAPS.log)"
+  },
+  {
+   "id": 4380354847,
+   "user": "MilosKozak",
+   "created_at": "2026-05-05T14:42:50Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/76c25c5b88ba80871b79d108ca651ddf16fa925b\ntest again"
+  },
+  {
+   "id": 4429356372,
+   "user": "9A6DQB",
+   "created_at": "2026-05-12T09:57:30Z",
+   "body": "[AndroidAPS_LOG_1778579926583.log\\[1\\].zip](https://github.com/user-attachments/files/27630898/AndroidAPS_LOG_1778579926583.log.1.zip)\nI have same problem. Cannot got to release old pod. Deactivate does not work and just finishes, with no results."
+  }
+ ]
+}

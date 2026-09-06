@@ -1,0 +1,87 @@
+{
+ "id": 314006258,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 392,
+ "title": "Blucon fails to reconnect",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/392",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2018-04-13T08:01:18Z",
+ "closed_at": "2018-04-29T18:11:02Z",
+ "comment_count": 12,
+ "body": "With Apr 7th 2018 nightly or newer Blucon fails to reconnect after phone was out of range. Restarting Blucon or restarting collector on phone does not help. Only way to reconnect is tapping \"Forget device\" and running a bluetooth scan.\r\n\r\nPhone: Nexus 6P\r\nOS phone: Android 8.1.0",
+ "comments": [
+  {
+   "id": 381168892,
+   "user": "Son1k02",
+   "created_at": "2018-04-13T15:18:11Z",
+   "body": "I've run into something extremely similar, but have found that using the April 9th nightly, & disabling Bluetooth bonding (clicking on it in the 2nd page system status) that the disconnects go away. I was having good luck with the latest nightly tonight until an hour ago when it decided to start with the disconnect. Have read on fb alot of people finding the same issue, hopefully someone can identify the issue soon! "
+  },
+  {
+   "id": 381328812,
+   "user": "wannabeflatliner",
+   "created_at": "2018-04-14T13:20:45Z",
+   "body": "I'm having the same issues :("
+  },
+  {
+   "id": 382400239,
+   "user": "zshh",
+   "created_at": "2018-04-18T14:11:02Z",
+   "body": "Same here, rolled back to one of the March builds....\r\n"
+  },
+  {
+   "id": 382402370,
+   "user": "ralf-ms",
+   "created_at": "2018-04-18T14:17:12Z",
+   "body": "I had to do the same:\r\nrolled back to the March 30th version (...5b7b3c7): no bluetooth problems with this release.\r\n"
+  },
+  {
+   "id": 382403349,
+   "user": "Klaus3d3",
+   "created_at": "2018-04-18T14:19:52Z",
+   "body": "Go into bluetooth settings and deactivate \"allow blucon unbonding\""
+  },
+  {
+   "id": 382404627,
+   "user": "zshh",
+   "created_at": "2018-04-18T14:23:32Z",
+   "body": "Anyone tested commit from April 17th? \r\n\r\nDexCollectionService: more rework for blukon issues\r\n\r\nhttps://github.com/NightscoutFoundation/xDrip/commit/ee34dd2e697ec43a2277b4b6ff1cf91b8245f6bc"
+  },
+  {
+   "id": 382405575,
+   "user": "ralf-ms",
+   "created_at": "2018-04-18T14:26:02Z",
+   "body": "updated to the latest nightly (April 17th) and deactivated \"allow blucon unbonding\".\r\nWill keep you informed if this has solved the issue."
+  },
+  {
+   "id": 382555241,
+   "user": "jamorham",
+   "created_at": "2018-04-18T22:58:26Z",
+   "body": "Please also make sure to untick the following item if you are having any problems with reconnections:\r\n\r\n`Settings` -> `Less Common Settings` -> `Bluetooth Settings` -> `Close GATT on BLE Disconnection` -> `Unchecked`"
+  },
+  {
+   "id": 382627689,
+   "user": "gregorybel",
+   "created_at": "2018-04-19T06:41:41Z",
+   "body": "17th April is running a lot better. \r\nunchecked automatic unbonding, close GATT\r\nenabled Agressive service Restart\r\n\r\notherwise see https://github.com/gregorybel/xDrip-plus/wiki/How-to-use-Blukon-with-xdrip\r\n\r\n"
+  },
+  {
+   "id": 382647381,
+   "user": "ralf-ms",
+   "created_at": "2018-04-19T08:04:46Z",
+   "body": "so far no more problem with deactivated settings above (\"allow blucon unbonding\", \"close GATT on BLE Disconnection\").\r\nI'm happy again :-)"
+  },
+  {
+   "id": 383288550,
+   "user": "zackallan",
+   "created_at": "2018-04-21T11:39:22Z",
+   "body": "Thanks for your advice. With the latest nightly and the recommended settings the connection between Blucon and Phone is stable. It is working much better than before.\r\nBut unfortunately another problem now occurs: Sometimes the phone receives no readings although the status page reports that Blucon is connected. Restarting Blucon manually helps. The log message lists: DexCollectionService – Got null pointer trying to set CCCD descriptor"
+  },
+  {
+   "id": 385270082,
+   "user": "zackallan",
+   "created_at": "2018-04-29T18:10:56Z",
+   "body": "The reconnection issue seems to be solved. But I will start a new bug report regarding the above mentioned problem."
+  }
+ ]
+}

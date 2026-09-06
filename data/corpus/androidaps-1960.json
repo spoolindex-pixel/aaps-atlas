@@ -1,0 +1,75 @@
+{
+ "id": 1315886183,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1960,
+ "title": "3.1.0.2: Important info truncated in main screen",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1960",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-07-24T11:52:52Z",
+ "closed_at": "2023-05-14T10:50:51Z",
+ "comment_count": 10,
+ "body": "Hi,\r\n\r\nwith 3.1. some UI improvements have been applied. Unfortunately now a 6 inch phone (Xioami Mi A2) with a resolution 1080 x 2160 pixels is no longer able to display important information on the main screen due to truncation:\r\n\r\n![signal-2022-07-24-134333_002](https://user-images.githubusercontent.com/72160775/180645623-0a009cf9-1d94-43f6-988d-3787d4509e65.png)\r\n\r\nThe red 1 in the middle of the line is the first digit of the remaining insulin units. At the moment the screenshot was taken it was 19 IU (which makes quite a different to 1 IU as displayed).\r\n\r\nCan you rethink and enhance the new layout to make sure that all information can be displayed as before in 3.0?\r\n\r\n\r\nthank you,\r\nArne\r\n\r\n",
+ "comments": [
+  {
+   "id": 1193358907,
+   "user": "Alamo04",
+   "created_at": "2022-07-24T17:11:36Z",
+   "body": "Confirmed\r\nIt's because the german translation is to long (Std) instead the english (h).\r\n\r\nSolution for development: Don't translate this information and let it stay in english.\r\n\r\nSolution for user: If needed, set AAPS language to english. "
+  },
+  {
+   "id": 1194025625,
+   "user": "cr582",
+   "created_at": "2022-07-25T13:08:00Z",
+   "body": "This issue is also seen in treatment tab among other locations. See also discussion and screenshots in #1394 (which was unfortunately and incomprehensibly closed). Switching to english does not fix it. "
+  },
+  {
+   "id": 1203684106,
+   "user": "jgordon5",
+   "created_at": "2022-08-03T09:05:32Z",
+   "body": "I have the same problem with my Honor 50 5g. Sometimes it shows full information on home screen, at other times it's truncated. I put in the screen/pixel dimensions in Android Studio but it's still often truncated and doesn't show COB in full or IOB. "
+  },
+  {
+   "id": 1203685911,
+   "user": "MilosKozak",
+   "created_at": "2022-08-03T09:07:14Z",
+   "body": "> I have the same problem with my Honor 50 5g. Sometimes it shows full information on home screen, at other times it's truncated. I put in the screen/pixel dimensions in Android Studio but it's still often truncated and doesn't show COB in full or IOB.\r\n\r\nscreenshot?"
+  },
+  {
+   "id": 1207275774,
+   "user": "jgordon5",
+   "created_at": "2022-08-06T20:08:09Z",
+   "body": "Here are the screenshots - apologies for the delay. The first one shows what the IOB actually was. Quite often the amount of insulin in the reservoir only shows 1 figure when it should be showing 3.  Sorry tried to make them smaller but they ended up not being. Apologies.\r\n\r\n![Screenshot_20220805_195429_edited](https://user-images.githubusercontent.com/38868358/183264555-e2c3716c-8e39-44db-9d10-924903ff69c0.jpg)\r\n![Screenshot_20220805_195415_edited](https://user-images.githubusercontent.com/38868358/183264560-28713ea5-0c08-4204-9968-6ba4f009712c.jpg)\r\n."
+  },
+  {
+   "id": 1209150992,
+   "user": "MilosKozak",
+   "created_at": "2022-08-09T09:39:40Z",
+   "body": "this is not resolvable. you are using too large font on small display"
+  },
+  {
+   "id": 1209151769,
+   "user": "MilosKozak",
+   "created_at": "2022-08-09T09:40:26Z",
+   "body": "I updated all translation to one letter"
+  },
+  {
+   "id": 1209354856,
+   "user": "cr582",
+   "created_at": "2022-08-09T13:03:15Z",
+   "body": "> I updated all translation to one letter\r\n\r\nwhich does not solve it (even in native english it's not fully readable). This is a screenshot of my Samsung S20FE 5G with standard font size. It's neither readable how many IE insulin is left in the cartridge nor how many percantage the battery has left\r\n\r\n![Screenshot_20220809-150009_AndroidAPS](https://user-images.githubusercontent.com/62606176/183653602-69b061cb-b6b1-4ff2-9855-c40c75a6f58e.jpg)\r\n\r\n"
+  },
+  {
+   "id": 1209356647,
+   "user": "cr582",
+   "created_at": "2022-08-09T13:04:54Z",
+   "body": "and here's the same device in landscape mode\r\n\r\n![Screenshot_20220809-150336_AndroidAPS](https://user-images.githubusercontent.com/62606176/183654063-0b2531c7-d83d-4995-a900-e8f28a454885.jpg)\r\n"
+  },
+  {
+   "id": 1546869291,
+   "user": "MilosKozak",
+   "created_at": "2023-05-14T10:50:51Z",
+   "body": "improved by https://github.com/nightscout/AndroidAPS/commit/c86edb94fd59ca1105a03296a565bf405d5d2636"
+  }
+ ]
+}

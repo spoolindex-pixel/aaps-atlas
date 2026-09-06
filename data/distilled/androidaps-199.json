@@ -1,0 +1,24 @@
+{
+ "issue_id": 199,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/199",
+ "title": "Basal is On when 0 Basal is registered",
+ "symptom": "The user got a hypo alert because AAPS/log evidence reported the pump was set to 0 basal while the pump was actually still delivering insulin. The problem started around 17:30 without a known trigger, and a restart did not immediately stop it.",
+ "cause": "Nightscout (NS) upload only was not enabled, so AAPS was downloading from NS. NS was bouncing back/corrupting treatment data and could create or overwrite current treatments, including a false 0-basal treatment, that did not match what the pump was actually doing.",
+ "fix": "Set NS to upload only in AndroidAPS; the user did this and it worked. Commenters also recommended completely disabling continuous download from NS and adding a warning, while the maintainer said the issue would be resolved by the new NSClient.",
+ "settings_changed": [
+  "NS → upload only"
+ ],
+ "devices": [
+  "omnipod with emalink"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "ns",
+  "emalink",
+  "xdrip",
+  "nsclient"
+ ],
+ "confidence": "high",
+ "evidence_quote": "This is once again a dangerous situation because of NS upload only was not enabled. @smokkelaar now set NS to upload only and it works now."
+}

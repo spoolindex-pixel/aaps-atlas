@@ -1,0 +1,18 @@
+{
+ "issue_id": 3173,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/3173",
+ "title": "Error in dynamicISF algorithm",
+ "symptom": "In version dev3.3.0 build on 14.01.24 the dynamicISF gives an abnormal result. The dynamicISF adjustment factor changes to 0 without user interaction, causing an abnormal high ISF.",
+ "cause": "The dynamicISF adjustment factor was set to 0 without user interaction, possibly due to a bug in the app. The code only reads the value, so it should not change by itself, but multiple users reported it happening after updating to latest dev.",
+ "fix": "Manually set the dynamicISF adjustment factor back to the desired value (e.g., 100% or previous value like 80) in preferences. A commit was made to address the issue.",
+ "settings_changed": [
+  "dynamicISF adjustment factor → 100%",
+  "dynamicISF adjustment factor → 80"
+ ],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [],
+ "confidence": "medium",
+ "evidence_quote": "I've entered preferences to check the value (did not edit it), and it was zero. I've set it back to the normal value, but 1 loop run was affected, and I had a similar high ISF."
+}

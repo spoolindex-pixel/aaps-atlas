@@ -1,0 +1,78 @@
+{
+ "id": 944223505,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1778,
+ "title": "G6 Timestamp Issue when newly activated.",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1778",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "device-dexcom-transmitter"
+ ],
+ "created_at": "2021-07-14T09:19:52Z",
+ "closed_at": "2024-03-21T21:33:49Z",
+ "comment_count": 10,
+ "body": "When first activating a G6 transmitter xDrip incorrectly reports the timestamps as negative for the first few hours. The transmitters internal times starts from 0ms.\r\n\r\nThis prevents xDrip from generating any packets that need a timestamp (like backfill requests) from being generated for the first few hours after a new transmitter is activated \r\n\r\nOnce xDrips timestamp goes positive <0 the errors go away.\r\n<img width=\"500\" src=\"https://user-images.githubusercontent.com/3621222/125596909-ad129196-1141-4964-81f2-6d0054fba118.jpg\" />",
+ "comments": [
+  {
+   "id": 879780763,
+   "user": "tolot27",
+   "created_at": "2021-07-14T10:30:19Z",
+   "body": "While investigating the issue I discovered that the screenshot above shows slightly different values of \"tx start:\" (`transmitter_start_timestamp`). That is really strange because the transmitter start time is stored in the database. "
+  },
+  {
+   "id": 879811756,
+   "user": "jamorham",
+   "created_at": "2021-07-14T11:24:34Z",
+   "body": "I think this is probably quite simple. Its just that a transmitter timestamp before transmitter start is being requested.\r\n\r\nI expect this will come from backfilling and simply capping the backfill window to the transmitter start (or session start) would resolve the issue. I will look at that.\r\n\r\nI don't think its related to the other mentioned issues. "
+  },
+  {
+   "id": 879824958,
+   "user": "tolot27",
+   "created_at": "2021-07-14T11:49:23Z",
+   "body": "@jamorham And why are different time strings reported for \"tx start\"? The max difference is 12 seconds. That cannot be a rounding issue."
+  },
+  {
+   "id": 880117559,
+   "user": "emp-00",
+   "created_at": "2021-07-14T18:30:42Z",
+   "body": "@joshbohmer : I have never seen such an error message. No hits in my logs for \"TimeKeeper\" and \"comparison\". Running Dexcom G6 with xDrip nightly 2021-05-21. Also never saw such messages (before or after sensor start) with other xDrip versions. Totally new to me."
+  },
+  {
+   "id": 881806680,
+   "user": "theunknown86",
+   "created_at": "2021-07-17T03:05:09Z",
+   "body": "@jamorham think you're correct about the backfill observation\r\n\r\nThe timestamp reaches 0 after 3 hours, so it makes sense.\r\n\r\n@emp-00 You'll only ever see this for the first 3 hours after waking a transmitter wakeup & if xDrip requests backfill data (or anything else that calculates the timestamp before 0)"
+  },
+  {
+   "id": 1981106391,
+   "user": "Navid200",
+   "created_at": "2024-03-06T15:17:22Z",
+   "body": "The limitation that backfill does not work until the start time is 3 hours in the past gets really bad with G7.  Instead of 3 hours, the limitation is 24 hours for G7.\r\n![Screenshot_20240306-101114](https://github.com/NightscoutFoundation/xDrip/assets/51497406/7dae86a2-6153-49af-b384-40a14a6481c2)\r\n\r\nI will try to condition the backfill action so that it will not attempt to backfill prior to the start time."
+  },
+  {
+   "id": 1981826031,
+   "user": "theunknown86",
+   "created_at": "2024-03-06T21:33:51Z",
+   "body": "Interesting, I thought that was done already but clearly not.\r\n\r\nSimplest method I would think will be to do MAX(0,start_timestamp)\r\n\r\nThis will ensure we never request before the transmitter start"
+  },
+  {
+   "id": 1981878155,
+   "user": "Navid200",
+   "created_at": "2024-03-06T22:00:54Z",
+   "body": "@joshbohmer The start_timestamp would be the start time on the current sensor, right?\r\nWith G7, if you pre-soak, that would be about 12 hours before the last timestamp of the previous sensor.  \r\n\r\nThis gets a little bit complicated as we have seen overlapping curves.\r\nSo, it needs to be done carefully taking into account all the different overlapping issues.\r\n\r\nI hope to be able to create the overlapping curves and explain why it happens and if I can do that, I should be able to avoid it."
+  },
+  {
+   "id": 1987368745,
+   "user": "Navid200",
+   "created_at": "2024-03-10T21:30:32Z",
+   "body": "After today's Nightly (March 10, 2024), I just tested with a G6 and was able to backfill shortly after a start.\r\nI will be able to test a G7 in about 14 days."
+  },
+  {
+   "id": 2013811481,
+   "user": "Navid200",
+   "created_at": "2024-03-21T21:33:49Z",
+   "body": "xDrip could not backfill a G7 until 24 hours after start.\r\nWith the latest Nightly, March 10, 2024, that problem seems to have been resolved.\r\n\r\nI am closing this only because I don't believe there is anything else to fix.  But, if I am overlooking something in that respect, please let me know and we can reopen.\r\nThanks."
+  }
+ ]
+}

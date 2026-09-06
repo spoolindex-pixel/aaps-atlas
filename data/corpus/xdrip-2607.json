@@ -1,0 +1,77 @@
+{
+ "id": 1523845808,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 2607,
+ "title": "Snooze locked phone",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/2607",
+ "state": "closed",
+ "labels": [
+  "enhancement"
+ ],
+ "created_at": "2023-01-07T13:54:42Z",
+ "closed_at": "2023-05-24T12:13:49Z",
+ "comment_count": 10,
+ "body": "\"_Please state in the description that @Navid200 has asked you to open an issue instead of a discussions._\" ([link](https://www.facebook.com/groups/xDripG5/posts/8482050608535026/)).\r\n\r\n### Your environment\r\nUsing latest xDrip stable (2122111608, installed December 24, 2022) with latest Android (v12, last update December 5, 2022). My T1D girlfriend uses a Samsung Galaxy S10e as master, I am using a Samsung Galaxy S10e as xDrip follower.\r\n\r\n### Expected behavior\r\nSnooze the sound of a 'Low Alert' using a volume button of the phone. \r\n\r\n### Actual behavior\r\nSnoozing an xDrip 'Low Alert' using the volume button of the phone no longer works. We now have to unlock the screen and swipe to snooze the sound.\r\n\r\nWhen the 'Low Alert' rings when the screen is already unlocked it is not possible to use volume buttons to snooze. To use them you need to lock and unlock the screen, then it works again and alarm is snoozed.\r\n\r\n### Steps to reproduce the behavior:\r\nI apologize for not being able to conduct more thorough testing at this time, as I recently had a daughter (she is doing well at 11 days old) and therefor I have a limited availability. \r\n\r\nHowever, I have noticed some discrepancies in the behavior of the 'Low Alert' and 'Missed Reading Alert' functions. Specifically, the volume down and volume up buttons do not snooze the 'Low Alert', but they do work correctly for the 'Missed Reading Alert'. The snooze mechanism works now different for the alerts. It would be helpful and greatly appreciated if a volunteer in this group could conduct further testing, using the details provided by Navin as a guide (see [this Facebook thread](https://www.facebook.com/groups/xDripG5/posts/8482050608535026/)):\r\n\r\n> It would be wonderful if you can identify which version was the first that caused this. \r\nIf you set up a phone as a follower and on it enable missed reading alert and disable wifi and data on it, the missed reading alert will trigger.\r\nThis way, you don't have to wait for a high or a low to trigger an alert. You can trigger it by simply disabling internet access.\r\nYou can reduce the timing trigger on the missed reading alert so that you can repeat it as you try different versions easily.\r\nYou don't have to do the test. I'm just saying if you did, we will have less work to do to fix this.\r\n\r\nI can reproduce on current xDrip version:\r\n1. Allow xDrip to trigger a 'Low Alert'. Ensure that the 'Low Alert' is enabled and configured to trigger at a certain glucose level. (Settings > Alarms and Alerts > Glucose Level Alerts List > set threshold 'Low Alert' at 15 mmol/l to probably fire it within a few minutes. Do not forget to write down original threshold.)\r\n2. 'Low Alert' rings. Screen is off, after pressing volume up or volume down the alarm keeps going.\r\n3. 'Low Alert' still rings. Screen is on but locked, after pressing volume up or volume down the alarm keeps going.\r\n4. 'Low Alert' still rings. Screen is unlocked, after pressing volume up or volume down the alarm stops.\r\n5. Settings > Alarms and Alerts > Glucose Level Alerts List > restore threshold 'Low Alert' to the value of step 1.\r\n\r\n### Extra information\r\n- Setting 'Buttons silence alarms' is enabled.\r\n- We recently noticed that the volume down and volume up buttons do not snooze the 'Low Alert' function, which was working properly before the last update of Samsung and/or xDrip. However, I cannot be certain as to when this issue began.\r\n- Also see [this Facebook thread](https://www.facebook.com/groups/xDripG5/posts/8482050608535026/).\r\n- Used ChatGPT for some of the translations in this issue :-).\r\n\r\n### Screenshots\r\n- On December 14, 2022, we updated our Samsung Galaxy S10e to the latest version of Android:\r\n![Screenshot_20230106_213133_Settings](https://user-images.githubusercontent.com/13611404/211154011-54441f1a-a7b1-4e5e-ab11-aa0ddeb38d2a.jpg)\r\n\r\n- On December 24, 2022, we updated our xDrip to latest stable:\r\n![Screenshot_20221224_212303_xDrip+](https://user-images.githubusercontent.com/13611404/211031458-a4ae9ab3-2cc4-4ce5-a8a2-5798c623530b.jpg)",
+ "comments": [
+  {
+   "id": 1374513662,
+   "user": "Navid200",
+   "created_at": "2023-01-07T15:19:48Z",
+   "body": "@jamorham @tzachi-dar What am I doing wrong?!\r\nOn an Android 8 phone, I have installed the official (not self compiled) 2021.02.17.\r\nI have set up missed reading alert and I have enabled \"Buttons silence alarms\".\r\n\r\nDisabling WiFi triggers the missed reading alert.  But, pressing the volume buttons inside the app just adjusts the volume and does not snooze the alert.\r\n\r\nThe same thing happens with the latest release.  I thought that something may have broken lately and wanted to go back to see when this happened.  But, going all the way back almost 2 years, I see the same behavior."
+  },
+  {
+   "id": 1374531779,
+   "user": "petervanrijt",
+   "created_at": "2023-01-07T16:23:19Z",
+   "body": "> Thanks\n> \n> The title is confusing.  This never worked with the screen locked.\n\nTitle changed. We are quite sure this worked because when having a low at night we did not have to turn the screen on (and light) to snooze the low alarm. Now we must turn it on to snooze it. "
+  },
+  {
+   "id": 1374532156,
+   "user": "petervanrijt",
+   "created_at": "2023-01-07T16:24:41Z",
+   "body": "> @jamorham @tzachi-dar What am I doing wrong?!\n> On an Android 8 phone, I have installed the official (not self compiled) 2021.02.17.\n> I have set up missed reading alert and I have enabled \"Buttons silence alarms\".\n> \n> Disabling WiFi triggers the missed reading alert.  But, pressing the volume buttons inside the app just adjusts the volume and does not snooze the alert.\n> \n> The same thing happens with the latest release.  I thought that something may have broken lately and wanted to go back to see when this happened.  But, going all the way back almost 2 years, I see the same behavior.\n\nI experienced when you lock the screen and then unlock the screen during that alarm it works again as expected. Could it be like this because of the recent Android update?"
+  },
+  {
+   "id": 1374532921,
+   "user": "Navid200",
+   "created_at": "2023-01-07T16:27:24Z",
+   "body": "You cannot snooze an alert this way when the phone is locked.  Please see this conversation explaining why that has been the case always:  https://github.com/NightscoutFoundation/xDrip/issues/73"
+  },
+  {
+   "id": 1374845211,
+   "user": "petervanrijt",
+   "created_at": "2023-01-08T14:07:26Z",
+   "body": "Thanks Navid. I see #73 was created in feb-2017. Today (almost 6 years later) I used ChatGPT to come up with a possible solution, probably turning this issue into a feature request:\r\n\r\n![chatgpt](https://user-images.githubusercontent.com/13611404/211200595-bec3793a-afcd-4228-8d22-f77959e2f7db.png)"
+  },
+  {
+   "id": 1374847253,
+   "user": "Navid200",
+   "created_at": "2023-01-08T14:17:07Z",
+   "body": "Sounds good.  I would change the title to \"Snooze locked phone\" or something like that.  It will be obvious that it is a feature request because the developers know that is currently not possible.\r\nI would consider this a plus for xDrip if it is possible.  Let's wait for @jamorham to review.\r\nHopefully, it will not increase power consumption or compromise anything else.\r\n\r\nThis would be such a plus for xDrip that I personally will not even object to adding a new setting for it if needed.\r\nBut, let's wait for a review and feedback from jamorham."
+  },
+  {
+   "id": 1374848363,
+   "user": "petervanrijt",
+   "created_at": "2023-01-08T14:22:39Z",
+   "body": "> Sounds good.  I would change the title to \"Snooze locked phone\" or something like that.  It will be obvious that it is a feature request because the developers know that is currently not possible.\n> I would consider this a plus for xDrip if it is possible.  Let's wait for @jamorham to review.\n> Hopefully, it will not increase power consumption or compromise anything else.\n> \n> This would be such a plus for xDrip that I personally will not even object to adding a new setting for it if needed.\n> But, let's wait for a review and feedback from jamorham.\n\nThank you. Changed title to match better with a feature request. If I can be of any help please let me know."
+  },
+  {
+   "id": 1374866741,
+   "user": "petervanrijt",
+   "created_at": "2023-01-08T15:49:48Z",
+   "body": "\"I have asked two more questions. I cannot say anything about the quality but it may be indicative for implementation.\r\n\r\n![1 jpg](https://user-images.githubusercontent.com/13611404/211206045-80cc5be9-5441-4366-b584-3718e42fdf12.png)\r\n\r\n![2](https://user-images.githubusercontent.com/13611404/211206052-3773b570-6a7d-44d6-a729-cc9c50050a5b.png)\r\n"
+  },
+  {
+   "id": 1385948506,
+   "user": "jamorham",
+   "created_at": "2023-01-17T19:36:16Z",
+   "body": "We can try this but as far as I know you can't receive those broadcasts unless either the screen is on or there is active audio playing. While the actual alert is sounding it might be possible, but the normal way to snooze an alert from the lock-screen is to just swipe the notification off the lockscreen afaik.\r\n"
+  },
+  {
+   "id": 1561011089,
+   "user": "Navid200",
+   "created_at": "2023-05-24T12:13:49Z",
+   "body": "@petervanrijt \r\nBy default, you cannot snooze an alert when your phone is locked.  But, you can change a few settings to make it possible.\r\n\r\nFirst, you need to change an Android notifications setting so that it would show notification details on lock screen.\r\n\r\nThen, there is a relatively new xDrip setting that turns the screen on when there is a notidication.\r\n\r\nAfter that, as soon as an alert triggers, you will see the notification on the screen of your phone, and swiping it right will snooze the alert with your phone still locked.\r\nPlease give it a try.\r\n\r\nI have all of this shown here: https://navid200.github.io/xDrip/docs/Snooze.html\r\n\r\nI will close this issue.  We can always reopen if needed."
+  }
+ ]
+}

@@ -1,0 +1,57 @@
+{
+ "id": 2204573276,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3275,
+ "title": "AAPS 3.3.0-dev-b: Administering carbs and bolus from watch tile are ignored by AAPS",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3275",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-03-24T21:47:50Z",
+ "closed_at": "2024-04-02T07:39:31Z",
+ "comment_count": 7,
+ "body": "**AndroidAPS 3.3.0-dev-b**\r\nBuild: 5b13a68d4d7076fdf695cd5115617f30ce982432\r\nWatchface: same build, *AAPS Watchface: Custom Watchface*\r\nFlavor: Fullrelease\r\n\r\n**Problem description:**\r\nSinds latest dev build carbs entered from watch through the AAPS watchface tiles are only registered once after (re)starting AAPS. Any subsequent carbs are ignored by AAPS (not added to COB, not listed in treatments)\r\n\r\n**Repro:**\r\nSee screenshots of AAPS treatments:\r\n- AAPS restarted through ... menu:\r\nAt 22:05h carbs where administered from the tile for the amounts of 1,2 and 3 grams of carbs from the watch.\r\n\r\n- AAPS restarted through ... menu:\r\nAt 22:07h carbs where administered from the tile for the amounts of 11,12,13 and 14 grams of carbs from the watch.\r\n\r\nNote that only the entries for 1 and 11 grams (first actions after restarting AAPS) are registered. Any subsequent carbs entered from the watch are ignored by AAPS. Standard confirmations on watch, no errors on watch or in AAPS\r\n\r\n**Screenshots**\r\n![tile](https://github.com/nightscout/AndroidAPS/assets/45144129/87d56465-215b-4599-a2d4-40c47a796ba7)\r\n\r\n![Treatments](https://github.com/nightscout/AndroidAPS/assets/45144129/d2d9127f-df0a-47a3-af79-3f8b7b9ab027)\r\n\r\n**logs & screenshots**\r\n![ActionECarbsPreCheck](https://github.com/nightscout/AndroidAPS/assets/45144129/2b003673-8d38-4b5a-8dc7-5b69e1d42624)\r\n\r\n[AndroidAPS_LOG_1711314549045.log.zip](https://github.com/nightscout/AndroidAPS/files/14736884/AndroidAPS_LOG_1711314549045.log.zip)\r\n",
+ "comments": [
+  {
+   "id": 2016957705,
+   "user": "vanelsberg",
+   "created_at": "2024-03-24T21:54:58Z",
+   "body": "The problem may have been introduced around commit 342141b3 at 18/03.\r\nAt least I noticed the problem for the first time around 19/03 after updating to latest build?"
+  },
+  {
+   "id": 2016961542,
+   "user": "vanelsberg",
+   "created_at": "2024-03-24T22:09:24Z",
+   "body": "Remark:\r\nAround the time administering the 1 grams of carbs through the watch I found following exceptions below.\r\n*Note that the exception coincided with action administering 1 grams of carbs (which was succesfile!)(\r\n\r\n**22:05:52.388** _ [RxCachedThreadScheduler-15] D/PUMPQUEUE: [CommandQueueImplementation.bolus_$lambda$10():273]: Going to store carbs_\r\n_22:05:52.390 [RxCachedThreadScheduler-15] E/CORE: [FabricPrivacyImpl.logException():96]: Crashlytics log exception: \r\njava.lang.NullPointerException: null_\r\n\tat app.aaps.plugins.sync.wear.wearintegration.DataHandlerMobile.doBolus(DataHandlerMobile.kt:1286)\r\n\tat app.aaps.plugins.sync.wear.wearintegration.DataHandlerMobile.doECarbs(DataHandlerMobile.kt:1342)\r\n\tat app.aaps.plugins.sync.wear.wearintegration.DataHandlerMobile.doECarbs$default(DataHandlerMobile.kt:1334)\r\n\tat app.aaps.plugins.sync.wear.wearintegration.DataHandlerMobile$30.accept(DataHandlerMobile.kt:263)\r\n\tat app.aaps.plugins.sync.wear.wearintegration.DataHandlerMobile$30.accept(DataHandlerMobile.kt:261)\r\n\tat io.reactivex.rxjava3.internal.observers.LambdaObserver.onNext(LambdaObserver.java:63)\r\n\tat io.reactivex.rxjava3.internal.operators.observable.ObservableObserveOn$ObserveOnObserver.drainNormal(ObservableObserveOn.java:202)\r\n\tat io.reactivex.rxjava3.internal.operators.observable.ObservableObserveOn$ObserveOnObserver.run(ObservableObserveOn.java:256)\r\n\tat io.reactivex.rxjava3.internal.schedulers.ScheduledRunnable.run(ScheduledRunnable.java:65)\r\n\tat io.reactivex.rxjava3.internal.schedulers.ScheduledRunnable.call(ScheduledRunnable.java:56)\r\n\tat java.util.concurrent.FutureTask.run(FutureTask.java:264)\r\n\tat java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:307)\r\n\tat java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)\r\n\tat java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)\r\n\tat java.lang.Thread.run(Thread.java:1012)_"
+  },
+  {
+   "id": 2018290629,
+   "user": "olorinmaia",
+   "created_at": "2024-03-25T15:33:19Z",
+   "body": "Can confirm this issue myself in latest dev, I'm pretty sure this wasn't an issue when I tested this PR isolated directly from PR branch"
+  },
+  {
+   "id": 2024239562,
+   "user": "vanelsberg",
+   "created_at": "2024-03-28T01:29:08Z",
+   "body": "Just tested:\r\ncommit#675fbb95d9f736bf5110e6b378e482c84ae2f827 (Merge PR:3254) was ok.\r\n**Problem was introduced since commit#f6ce817d423be7c3d56e8ab236b6f661e6b357a7** (fix merge errors for previous 2 commits on radicalb/dev_quick_wizard2 with lots of changes in DataHandlerMobile)\r\n\r\n@MilosKozak  Any ideas?"
+  },
+  {
+   "id": 2024245346,
+   "user": "vanelsberg",
+   "created_at": "2024-03-28T01:37:18Z",
+   "body": "Btw: this morning same problem occurred with administering insulin from the tile...."
+  },
+  {
+   "id": 2027967399,
+   "user": "Philoul",
+   "created_at": "2024-03-30T08:20:20Z",
+   "body": "@vanelsberg can you test my working branch shared on discord to check if issue is fixed or not?\n- I fixed the exception you got in fabric privacy\n- I made additional little update that could solve the problem"
+  },
+  {
+   "id": 2028450706,
+   "user": "vanelsberg",
+   "created_at": "2024-03-30T19:35:14Z",
+   "body": "> @vanelsberg can you test my working branch shared on discord to check if issue is fixed or not?\r\n\r\nDone.\r\nQuick test shows this fixes the problem.\r\nThanks!\r\n\r\n\r\n"
+  }
+ ]
+}

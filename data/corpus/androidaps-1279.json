@@ -1,0 +1,75 @@
+{
+ "id": 1125015668,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1279,
+ "title": "Nightscout crashes after updating to 3.0.0.1",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1279",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-02-05T19:46:57Z",
+ "closed_at": "2022-05-19T21:38:27Z",
+ "comment_count": 10,
+ "body": "AAPS Build: 479bfc410\r\nNightscout version: 14.2.5 (current)\r\n\r\nNighscout hosted on herokku crashes after AAPS tryies to upload treatments to it.\r\nIt seems like AAPS is sending some null data:\r\n```\r\n2022-02-05T19:31:15.632726+00:00 app[web.1]: Got results null\r\n2022-02-05T19:31:15.634857+00:00 app[web.1]: /app/node_modules/mongodb/lib/utils.js:106\r\n2022-02-05T19:31:15.634858+00:00 app[web.1]:       throw err;\r\n2022-02-05T19:31:15.634859+00:00 app[web.1]:       ^\r\n2022-02-05T19:31:15.634859+00:00 app[web.1]: \r\n2022-02-05T19:31:15.634859+00:00 app[web.1]: TypeError: Cannot read property '_id' of null\r\n```\r\nThen I disable NS upload in AAPS, crashes never happen. Also AAPS is recieving data from Nightscout without any issues.\r\n\r\n[androidaps-log.txt](https://github.com/nightscout/AndroidAPS/files/8008776/androidaps-log.txt)\r\n[heroku-log.txt](https://github.com/nightscout/AndroidAPS/files/8008777/heroku-log.txt)\r\n",
+ "comments": [
+  {
+   "id": 1030804064,
+   "user": "illepidus",
+   "created_at": "2022-02-06T10:32:24Z",
+   "body": "After hours of exploring my problem I found out that the Nightscout crashes only if both\r\n- Upload Data to NS\r\n- Receive therapy events\r\n\r\noptions are ON. So it's defenitly therapy sync problem.\r\nOther NSClient synchronization options doesn't cause NS crash.\r\n\r\nIf someone face the same problem as me, try:\r\n1.  AAPS->NSClient tab->check Paused.\r\n2. AAPS->NSClient tab->NSClient Preferences->Synchronization->Turn off \"Recieve therapy events\".\r\n_Other options might be in ON state depending on your needs._\r\n3. AAPS->Maintenance->Reset Databases\r\n_That would compleatly delete all treatments in AAPS database. **Be careful, CoB and IoB will become zero after it**. That could lead to insulin overdoze!_\r\n4. AAPS->Exit\r\n5. https://dashboard.heroku.com/apps/%YOUR_APP_NAME%/ -> More -> Restart all dynos\r\n6. Launch AAPS\r\n7. AAPS->NSClient tab->uncheck Paused."
+  },
+  {
+   "id": 1030810015,
+   "user": "illepidus",
+   "created_at": "2022-02-06T11:08:07Z",
+   "body": "NSClient 3.0.0 causes the same NS crush, but scince NSClient doesn't have NSClient tab->NSClient Preferences->Synchronization settings, it's impossible to turn off \"Recieve therapy events\".\r\nSo the only way to use NSClient for me and people having same issue is sticking with NSClient 2.8.2 [194549adc]."
+  },
+  {
+   "id": 1031517495,
+   "user": "vagtil2005",
+   "created_at": "2022-02-07T14:18:03Z",
+   "body": "Have exactly the same problem, on 3.0 RC3, 3.0 and 3.0.0.1. Whenever there is a new calibration through xdrip, Nightscout crashes. Sometimes it takes 2 and 3 times to restart dynos in order to come back up. I am attaching the log files from heroku.\r\n\r\n[heroku-logs-1644241845841.txt](https://github.com/nightscout/AndroidAPS/files/8015890/heroku-logs-1644241845841.txt)\r\n"
+  },
+  {
+   "id": 1031569814,
+   "user": "MilosKozak",
+   "created_at": "2022-02-07T15:08:39Z",
+   "body": "try NS with this PR https://github.com/nightscout/cgm-remote-monitor/pull/7285\r\n"
+  },
+  {
+   "id": 1035936885,
+   "user": "vagtil2005",
+   "created_at": "2022-02-11T07:17:37Z",
+   "body": "> try NS with this PR [nightscout/cgm-remote-monitor#7285](https://github.com/nightscout/cgm-remote-monitor/pull/7285)\r\n\r\nI updated to patch-2 but the problem persists. "
+  },
+  {
+   "id": 1036793303,
+   "user": "timocm",
+   "created_at": "2022-02-11T23:52:48Z",
+   "body": "    AndroidAPS 3.0.0.1\r\nBuild: 3bbb57f33-2022.02.04-00:20\r\nRemote: https://github.com/nightscout/AndroidAPS\r\nFlavor: fullrelease\r\nNightscout version: 14.2.5\r\n  xDrip+ G5 lastest night.   With calibration in xDrip+ nightscout crashes.      https://drive.google.com/file/d/11hoTq3sAGmJOxppT7MmnUkxiHAgHteyH/view?usp=drivesdk"
+  },
+  {
+   "id": 1046185202,
+   "user": "timocm",
+   "created_at": "2022-02-20T08:10:48Z",
+   "body": " Did a deploy of NS with MilosZoxak-patch-2  (14.2.6) and an update to 3.0.0.1\r\nHighlighted slow down uploads in settings  of he NSClient tab in AAPS.  Restarted dynos in heroku when the web socket crashed. It happened about 2 -3 times before there was no more crashing.\r\n Had to repeat the slow down upload setting and the restarting of dynos (2-4 times) each time I installed NSClient on a following phone (2 phones).\r\nAfter a calibration form xDrip+ (G5) : crash and restarted dynos 3 times\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/8103611/AndroidAPS.log)\r\n"
+  },
+  {
+   "id": 1047251507,
+   "user": "timocm",
+   "created_at": "2022-02-21T21:51:26Z",
+   "body": "NS crashed at 7.14am  22 Feb with calibration in xDrip\r\n\r\nNightscout 14.2.6\r\n\r\nAAPS 3.0.0.1\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/8112239/AndroidAPS.log)\r\n\r\n\r\n\r\n\r\n"
+  },
+  {
+   "id": 1073927613,
+   "user": "adenis76",
+   "created_at": "2022-03-21T13:55:40Z",
+   "body": "I am also have same problem. When I enter calibration in xdrip ns crashes. I have to reset all dynos in heroku to have ns work again. If I enter calibration in aaps nothing is happening. I have two ns and I am sending all data in same time. Only ns with active aaps is crashing."
+  },
+  {
+   "id": 1078081029,
+   "user": "andrzej-aps",
+   "created_at": "2022-03-24T19:56:10Z",
+   "body": "> NSClient 3.0.0 causes the same NS crush, but scince NSClient doesn't have NSClient tab->NSClient Preferences->Synchronization settings, it's impossible to turn off \"Recieve therapy events\". So the only way to use NSClient for me and people having same issue is sticking with NSClient 2.8.2 [[194549a](https://github.com/nightscout/AndroidAPS/commit/194549adc488c40b01f97b9ce8bc9c0b93586933)].\r\n\r\nThere is a way to change synchronisation option also for NSclients take a look here: https://github.com/nightscout/AndroidAPS/issues/1486"
+  }
+ ]
+}

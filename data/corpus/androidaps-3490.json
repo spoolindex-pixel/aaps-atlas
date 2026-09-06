@@ -1,0 +1,59 @@
+{
+ "id": 2609243747,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3490,
+ "title": "Medtrum Nano / stop bolus gives error",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3490",
+ "state": "closed",
+ "labels": [
+  "medtrum"
+ ],
+ "created_at": "2024-10-23T16:48:45Z",
+ "closed_at": "2025-11-23T22:41:12Z",
+ "comment_count": 7,
+ "body": "Last dev. Systematically, if I stop an ongoing bolus, I get a pump unreachable alert.\n\nEither stopping the bolus messes with the BT connection, or triggers a wrong alert message. In both cases, it is a bug.\n\nLogs are below. Check around 18:00\n\n![AndroidAPS_LOG_1729699332528.log.zip](https://github.com/user-attachments/files/17495626/AndroidAPS_LOG_1729699332528.log.zip)\n\n",
+ "comments": [
+  {
+   "id": 2473098458,
+   "user": "jbr7rr",
+   "created_at": "2024-11-13T10:21:35Z",
+   "body": "Looking into this one, requested more info from Robby at discord"
+  },
+  {
+   "id": 2473235336,
+   "user": "robertrub",
+   "created_at": "2024-11-13T11:08:22Z",
+   "body": "Ok, correction, it was a partial user error. The text says check amounts but the 3 buttons look as it was a pump unreachable alert...\n\n![Screenshot_20241113_115953_Discord.jpg](https://github.com/user-attachments/assets/d359dd21-b4b7-4782-9a2e-9791e18fd4e8)\n\n"
+  },
+  {
+   "id": 2473432665,
+   "user": "jbr7rr",
+   "created_at": "2024-11-13T12:09:49Z",
+   "body": "Clarified the texts in:\r\nhttps://github.com/nightscout/AndroidAPS/pull/3529\r\n\r\nIn addition we may want to have a separate error dialog for bolus with only an OK button @MilosKozak any thoughts on this?"
+  },
+  {
+   "id": 2473485522,
+   "user": "MilosKozak",
+   "created_at": "2024-11-13T12:33:17Z",
+   "body": "what should be there?"
+  },
+  {
+   "id": 2473531708,
+   "user": "robertrub",
+   "created_at": "2024-11-13T12:50:51Z",
+   "body": "@MilosKozak  Actually, the message says check IOB (and COB with the last commit) but shows the same 3 buttons as a connection problem. The first one is mute for 5 min, the 2nd says mute...but there are no sounds to mute.\n\nOnly an OK button is needed under the \"check amount of IOB & COB delivered\" message.\n\nHaving the 3 buttons (and a _failed_ text) of the connection problems is confusing.\n\n![Screenshot_20241113_115953_Discord.jpg](https://github.com/user-attachments/assets/22aef865-3e91-4d2a-9929-1de8d902b0f3)\n\n"
+  },
+  {
+   "id": 3472449305,
+   "user": "robertrub",
+   "created_at": "2025-10-31T10:42:11Z",
+   "body": "@MilosKozak This bug is still present in dev-d. If I stop an ongoing bolus, I get a _pump unreachable_ alert.\n"
+  },
+  {
+   "id": 3488250516,
+   "user": "Philoul",
+   "created_at": "2025-11-04T22:37:20Z",
+   "body": "Fixed with #4283 (if the bolus was canceled by the user, it should should return success, it's done that way within Insight Driver).\n\n@jbr7rr, this is my first contribution to Medtrum (could you check my PR please ?)."
+  }
+ ]
+}

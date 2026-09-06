@@ -1,0 +1,78 @@
+{
+ "id": 509321663,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1062,
+ "title": "Unparseable date when Nightscout has DE_NORMALIZE_DATES enabled",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1062",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "sync"
+ ],
+ "created_at": "2019-10-18T21:36:56Z",
+ "closed_at": "2022-01-28T18:17:20Z",
+ "comment_count": 10,
+ "body": "After setting the `DE_NORMALIZE_DATES` config var for Nightscout to `true` (required for proper data upload from OpenAPS 0.6), xDrip+ is unable to download treatments from Nightscout. The error listed in the \"Uploaders\" section of the System Status in xDrip+ is\r\n```\r\nUnable to do REST API Download\r\njava.text.ParseException:\r\nUnparseable date: \"2019-10-18T20:21:22.781+00:00\"\r\nUnparseable date: \"2019-10-18T20:21:22.781+00:00\"\r\nurl: https://....herokuapp.com/api/v1/\r\n```\r\n\r\nI can confirm that xDrip+ is able to download the missing treatment info after I set `DE_NORMALIZE_DATES` to `false`.",
+ "comments": [
+  {
+   "id": 543963318,
+   "user": "inventor96",
+   "created_at": "2019-10-18T21:41:53Z",
+   "body": "I'm wondering if this is related to #309?"
+  },
+  {
+   "id": 784476814,
+   "user": "Navid200",
+   "created_at": "2021-02-23T20:07:18Z",
+   "body": "@inventor96 Is this still the case?"
+  },
+  {
+   "id": 786510134,
+   "user": "inventor96",
+   "created_at": "2021-02-26T09:03:17Z",
+   "body": "Yes, this is still a current issue.\r\n\r\nMy Nightscout instance I use for xDrip+ previously did not have the config var set. I added `DE_NORMALIZE_DATES` with a value of `true`, and then I took this screenshot.\r\n\r\n<img src=\"https://user-images.githubusercontent.com/7132744/109279243-bea31e80-77d6-11eb-8c06-d988a3e33c54.png\" width=\"300\" />\r\n"
+  },
+  {
+   "id": 786646240,
+   "user": "tolot27",
+   "created_at": "2021-02-26T13:25:06Z",
+   "body": "The reason and possible solutions are documented here: https://stackoverflow.com/a/36798830"
+  },
+  {
+   "id": 974548749,
+   "user": "tolot27",
+   "created_at": "2021-11-20T00:02:11Z",
+   "body": "@inventor96 What is your time zone and time offset from UTC, -7?\r\n\r\nI'm wondering that it differs between your initial comment (offset is +00:00) and your last screenshot (offset is -07:00)."
+  },
+  {
+   "id": 974736817,
+   "user": "inventor96",
+   "created_at": "2021-11-21T01:21:47Z",
+   "body": "I live in the US Mountain timezone. The fact that the treatment had a timezone other than UTC in the second screenshot could be due to a Nightscout update and/or because I was running OpenAPS 0.7 at that time.\r\n\r\nI wouldn't think the timezone difference would be part of the issue, though; the timestamp is still in the same format."
+  },
+  {
+   "id": 974743073,
+   "user": "tolot27",
+   "created_at": "2021-11-21T02:10:38Z",
+   "body": "I've fixed this issue and will create a PR soon. The timezone matters during format conversation and if you travel into a different timezone."
+  },
+  {
+   "id": 1026160403,
+   "user": "tolot27",
+   "created_at": "2022-01-31T20:06:14Z",
+   "body": "@inventor96 Does the latest build fixes the issue for you as well?"
+  },
+  {
+   "id": 1038563747,
+   "user": "inventor96",
+   "created_at": "2022-02-14T02:33:37Z",
+   "body": "It seems to be getting all of the treatments from nightscout, and I haven't seen any errors on the respective status page regarding parsing dates. So it looks like we're good!"
+  },
+  {
+   "id": 1038709031,
+   "user": "tolot27",
+   "created_at": "2022-02-14T06:42:56Z",
+   "body": "Great! Thanks for the feedback."
+  }
+ ]
+}

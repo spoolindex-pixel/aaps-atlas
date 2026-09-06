@@ -1,0 +1,93 @@
+{
+ "id": 2610130139,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3492,
+ "title": "Negative carbs ?",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3492",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-10-24T00:57:49Z",
+ "closed_at": "2024-11-30T14:15:11Z",
+ "comment_count": 13,
+ "body": "Yesterday afternoon, I set a negative carbs entry as the big carbs entered in the morning were still not finished around 14:00\n\n![Screenshot_20241024_025421_AAPS.jpg](https://github.com/user-attachments/assets/f8e70f23-f527-413b-a7b8-ebc9879c7fcc)\n\nAfter the negative carbs entered,  I could bolus normally (COB was set to 0).\n\nThis morning, I see negative carbs on the main screen.... \n\n![Screenshot_20241024_025208_AAPS.jpg](https://github.com/user-attachments/assets/c2d9af61-8b0f-4a76-adfb-80cc0c7d47e0)\n\nThe negative carbs entered should \"erase\" carbs of COB but should not generate negative carbs.",
+ "comments": [
+  {
+   "id": 2451671576,
+   "user": "MilosKozak",
+   "created_at": "2024-11-01T10:40:33Z",
+   "body": "I cannot reproduce this issue"
+  },
+  {
+   "id": 2452101518,
+   "user": "robertrub",
+   "created_at": "2024-11-01T15:46:12Z",
+   "body": "I don't use neg carbs so can't tell if it happens regularly.\n\nWill try to trigger it again.\n\nIi has set neg IOB to clear the 15gr to 0 then add the meal carbs and bolus. Some hours later, I saw the neg carbs."
+  },
+  {
+   "id": 2453029194,
+   "user": "vanelsberg",
+   "created_at": "2024-11-02T15:51:18Z",
+   "body": "_Confirming_: notices the same.\r\nNo details on repro. In my case it happend on carbs decaying beyond 0gr after registering negative carbs (?)\r\nWill try to trigger again.."
+  },
+  {
+   "id": 2453073218,
+   "user": "robertrub",
+   "created_at": "2024-11-02T18:14:20Z",
+   "body": "@MilosKozak It happened again. I have the screenshot the treatments tab (if it can help reproduce).\n\nI saw the negative COB at 19h10 but it probably appeared earlier.\n\n![Screenshot_20241102_191025_AAPS.jpg](https://github.com/user-attachments/assets/914ed39d-6840-487b-bf07-8eb8c4631f34)\n\n![Screenshot_20241102_191043_AAPS.jpg](https://github.com/user-attachments/assets/91395353-2b89-4ddb-b5da-03f1c011b47c)\n\n![AndroidAPS_LOG_1730571053438.log.zip](https://github.com/user-attachments/files/17607915/AndroidAPS_LOG_1730571053438.log.zip)\n\n![Screenshot_20241021_162223_AAPS.jpg](https://github.com/user-attachments/assets/fd1958ae-abb2-4be7-ac27-7b79a7dc4a49)\n\n"
+  },
+  {
+   "id": 2453621344,
+   "user": "olorinmaia",
+   "created_at": "2024-11-03T23:38:19Z",
+   "body": "It would make more sense to \"edit\" a carb entry that is overestimated than actually adding a negative carb entry at a given time. It needs to be supported in NS v1/v3 api to sync correctly.\r\n\r\nIt is possible to edit directly in NS > Reports > Treatments, but it doesn't sync back to AAPS/AAPSClient. What I do today is to delete the carb entry that is wrong, and add a new entry with about same timestamp with correct number of carbs."
+  },
+  {
+   "id": 2453805637,
+   "user": "robertrub",
+   "created_at": "2024-11-04T04:26:20Z",
+   "body": "Normally I don't use neg carbs. I'm just testing the function. It seems that some people had a need for neg carbs though. It is faster to enter neg carbs than delete the carbs, enter new carbs with the old time stamp."
+  },
+  {
+   "id": 2453901547,
+   "user": "olorinmaia",
+   "created_at": "2024-11-04T06:20:05Z",
+   "body": "Yes, I am testing it as well. But I wonder if it is possible to add a function to edit instead within AAPS / AAPSClient. "
+  },
+  {
+   "id": 2454153914,
+   "user": "vanelsberg",
+   "created_at": "2024-11-04T09:05:21Z",
+   "body": "> It would make more sense to \"edit\" a carb entry that is overestimated.\r\n\r\nyes & no?\r\nWhen I overestimated carbs I also remove and then add the actual amount of carbs. So similar to \"editing\" as you propose.\r\n\r\nBut I think **the original intention of negative carbs** was not so much \"editing\" for \"over/underestimated\" carbs, but a way to handle _situations where calculated carbs absorption is to slow_, _without changing original amount of carbs registered_.\r\nThat is a feature that I find extremely useful in certain situations."
+  },
+  {
+   "id": 2454170698,
+   "user": "robertrub",
+   "created_at": "2024-11-04T09:13:21Z",
+   "body": "Yes, \"eliminating\" slow COB reduction is where I use/test the option too."
+  },
+  {
+   "id": 2473071276,
+   "user": "MilosKozak",
+   "created_at": "2024-11-13T10:10:36Z",
+   "body": "try with https://github.com/nightscout/AndroidAPS/commit/9f3cbe21505da570054f06f86dc8f2b0c6841d9a"
+  },
+  {
+   "id": 2473240920,
+   "user": "robertrub",
+   "created_at": "2024-11-13T11:09:32Z",
+   "body": "Will build this afternoon and test 👍🏻"
+  },
+  {
+   "id": 2508974526,
+   "user": "MilosKozak",
+   "created_at": "2024-11-30T14:11:43Z",
+   "body": "result?\r\n"
+  },
+  {
+   "id": 2508974937,
+   "user": "olorinmaia",
+   "created_at": "2024-11-30T14:13:20Z",
+   "body": "I haven't been able to reproduce at least "
+  }
+ ]
+}

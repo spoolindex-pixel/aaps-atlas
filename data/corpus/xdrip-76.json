@@ -1,0 +1,165 @@
+{
+ "id": 210353185,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 76,
+ "title": "Default Minimum Slope needs correcting",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/76",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2017-02-26T22:11:42Z",
+ "closed_at": "2021-02-22T18:09:25Z",
+ "comment_count": 25,
+ "body": "The default minimum slope for the calibration algorithm is problematic.  I originally noticed a problem calibrating some sensors last year.  Adrian helped me resolve my issues, and created a new \"DexParametersAdrian\" class, which could be enabled when engineering mode is enabled.  This method allowed me to continue using at least 6 of my sensors that would otherwise be useless, and still occasionally I need a slope lower than the default minimum (1.08).  Since that time I have helped 5 or 6 other people enable this special mode to get their calibration slopes to fit the data.  I am reasonably certain that for every person that discovers this issue, there must be many more that are not aware of it and may be throwing out perfectly good sensors.  \r\n\r\nI suggest the default minimums be changed for everyone -- copying the class DexParametersAdrian to DexParamters may be the proper solution.  Except I would consider opening the ranges between lows and highs a little to allow for more flexibility - I had at least two sensors where I had to lower even the Adrian defaults to get them to calibrate properly.  Maybe the DexParametersAdrian class could be kept, but extended even further for special situations.\r\n\r\nI am submitting this issue in the hopes of helping more people without having them enable the potentially dangerous \"engineering mode\".\r\n\r\nEDIT:  This is in the dexdrip/Models/Calibration.java source file\r\n",
+ "comments": [
+  {
+   "id": 282594949,
+   "user": "jamorham",
+   "created_at": "2017-02-26T22:47:57Z",
+   "body": "Do you know any of the example numbers for the slopes you had for reference?\r\n\r\nMaking the DexParametersAdrian the default values might be a good idea. @AdrianLxM should have some thoughts on this too.\r\n\r\nI'd also be interested to know whether the Datricsae calibration plugin would handle the situation you experienced as that also allows for wider slopes than DexParametersAdrian"
+  },
+  {
+   "id": 282599367,
+   "user": "TecMunky",
+   "created_at": "2017-02-26T23:50:29Z",
+   "body": "-----------  This is my current code:  -----------------------\r\n    DexParametersAdrian() {\r\n        LOW_SLOPE_1 = 0.60;\r\n        LOW_SLOPE_2 = 0.55;\r\n        HIGH_SLOPE_1 = 1.5;\r\n        HIGH_SLOPE_2 = 1.6;\r\n        DEFAULT_LOW_SLOPE_LOW = 0.60;\r\n        DEFAULT_LOW_SLOPE_HIGH = 0.55;\r\n        DEFAULT_SLOPE = 1;\r\n        DEFAULT_HIGH_SLOPE_HIGH = 1.5;\r\n        DEFAULT_HIGH_SLOPE_LOW = 1.4;\r\n    }\r\n------------- this is the current released code ---------------\r\n    DexParametersAdrian() {\r\n        LOW_SLOPE_1 = 0.75;\r\n        LOW_SLOPE_2 = 0.70;\r\n        HIGH_SLOPE_1 = 1.3;\r\n        HIGH_SLOPE_2 = 1.4;\r\n        DEFAULT_LOW_SLOPE_LOW = 0.75;\r\n        DEFAULT_LOW_SLOPE_HIGH = 0.70;\r\n        DEFAULT_SLOPE = 1;\r\n        DEFAULT_HIGH_SLOPE_HIGH = 1.3;\r\n        DEFAULT_HIGH_SLOPE_LOW = 1.2;\r\n    }\r\n\r\n"
+  },
+  {
+   "id": 282601633,
+   "user": "TecMunky",
+   "created_at": "2017-02-27T00:23:02Z",
+   "body": "I have an issue using the Datricsae algorithm - when a calibration is performed, it moves ALL data points in the past (all the way back to the beginning of the first reading in the database) based on the new slope and intercept value - this action invalidates at the very least all data from previous sensors - and also, the characteristic response of sensors change over time, so it also invalidates information on the current sensor.  This is a huge problem for me, as it makes the statistics useless.  If it were to only affect the previous 30 readings, like the normal calibration algorithm does, it would be much more useful.  In that case it might even be more accurate.\r\n\r\nI was using the Datricsae plugin for a while, and was liking the results - until I noticed the above problem.\r\n"
+  },
+  {
+   "id": 282622411,
+   "user": "jstevensog",
+   "created_at": "2017-02-27T03:55:07Z",
+   "body": "Just adding my $0.02.\nI believe that any new calibration should NOT affect ANY past readings.\nAnd any change to calibration algorithm should NOT affect ANY past\nreadings.  Altering past readings based on any change in slope/intercept,\nwhether by calibration input or algorithm change simply should not impact\nany past data, for exactly the reasons Jim E states.  It screws with the\nstatistics and other data regarding sensors in the past.  This is why in\nthe original xDrip we had a setting to allow a person to turn off\n\"backdating\" a calibration, just to smooth out the trend (the only reason\nit was there in the first place).  I still use the original xDrip, haven't\nhad the time to go through xDrip+ to ensure I am happy with what it does as\nfar as BGL recordings and readings are concerned.  Too time poor right\nnow.  Hearing this, I am glad I have not changed.\n\nAdditionally, I believe we need to get over the fear of a negative\nintercept.  There are a number of reasons for this regarding accuracy and\nincreasing useful life of sensor.  But that is an argument others with more\nknowledge in that area than I can undertake.  I simply see the sense of\ntheir arguments.\nI understand why Dexcom (and others) have an issue with negative\nintercepts, but cannot help but think it is also advantageous to their\nbottom line.\n\nCheers\n\nOn Mon, Feb 27, 2017 at 11:23 AM, Jim E <notifications@github.com> wrote:\n\n> I have an issue using the Datricsae algorithm - when a calibration is\n> performed, it moves ALL data points in the past (all the way back to the\n> beginning of the first reading in the database) based on the new slope and\n> intercept value - this action invalidates at the very least all data from\n> previous sensors - and also, the characteristic response of sensors change\n> over time, so it also invalidates information on the current sensor. This\n> is a huge problem for me, as it makes the statistics useless. If it were to\n> only affect the previous 30 readings, like the normal calibr"
+  },
+  {
+   "id": 282623758,
+   "user": "AdrianLxM",
+   "created_at": "2017-02-27T04:09:39Z",
+   "body": "@jamorham \r\nI'm using those parameters for quite a while now. Milos also uses them for a closed loop system.\r\nI'd be happy if they would become the default ones.\r\n\r\n@jstevensog, xDrip+ still has the same default calibration method like xDrip-E. That's the one I use (with the wider range for allowed slopes).\r\nOnly that with a plugin system you can opt for different algorithms.\r\nBut for sure I agree, it should not change the past more than  a few readings. (I haven't experienced that yet - not using the plugin system though).\r\n\r\ncheers, Adrian"
+  },
+  {
+   "id": 282660923,
+   "user": "jamorham",
+   "created_at": "2017-02-27T08:49:29Z",
+   "body": "@TecMunky @jstevensog @AdrianLxM The 24th Feb nightly has historical slope querying for calibration plugins so that they should behave the same as the original algorithm with regards to historical views. "
+  },
+  {
+   "id": 282723839,
+   "user": "TecMunky",
+   "created_at": "2017-02-27T13:47:12Z",
+   "body": "@jamorham - could you point me to the relevant code for the historical slope querying?  And possibly how I could look at the recent changes?  thanks.\r\n\r\nI much prefer the limited recent history change rather than a sudden jump to new values.  This does mean that the NightScout site does not show the same data as xDrip+, however, but I can live with that.\r\n\r\nI guess now we need to decide what final values to use.  I prefer the values I am currently using - but I admit I am biased.\r\n\r\nOh, and I suppose we need to decide if negative intercepts should be allowed.  I don't know the reasons for allowing or preventing these.  Maybe someone could elaborate the arguments.  EDIT:  I always get negative intercepts - did you mean positive intercepts, or am I missing something?"
+  },
+  {
+   "id": 282724668,
+   "user": "TecMunky",
+   "created_at": "2017-02-27T13:51:00Z",
+   "body": "@jamorham - I turned the Datricsae algorithm back on and will see how that works for me now. \r\n\r\nUpdate:  -- it is still affecting historical data.  Back off again."
+  },
+  {
+   "id": 282728304,
+   "user": "TecMunky",
+   "created_at": "2017-02-27T14:03:12Z",
+   "body": "Datricsae ON vs OFF you can see a difference in the peak\r\nyou can also see the lighter dots indicating the other values not being used\r\n\r\nThis is a snapshot of yesterday when I just turned Datricsae ON\r\n\r\n![screenshot_20170227-075852](https://cloud.githubusercontent.com/assets/2284781/23364027/ff43d76a-fcc2-11e6-9cf4-16083a62bcd7.png)\r\n\r\nThis is Back OFF again -- same time period\r\n\r\n![screenshot_20170227-075920](https://cloud.githubusercontent.com/assets/2284781/23364059/2e2784aa-fcc3-11e6-8921-64a6746e6959.png)\r\n\r\n"
+  },
+  {
+   "id": 282763023,
+   "user": "jamorham",
+   "created_at": "2017-02-27T16:02:53Z",
+   "body": "@TecMunky Historical slope querying for calibration plugins was introduced in this commit: https://github.com/NightscoutFoundation/xDrip/commit/2b10c1106de1dc0d6b105e227c1af46d4e99bbf2\r\n\r\nThe calibration plugins usually work as a dynamic overlay, so you're going to see a difference if you enable glucose from the plugin. In the screenshots above it looks to me just as if the secondary and primary plots swap over, which is exactly what I would expect.\r\n\r\nWhat changed with the historical slope querying is that before it was introduced, your previous readings from a plugin (Datricsae etc) would alter based only on the most recent calibration. After the changes for historical querying it will show what it would have shown at that point in time. \r\n\r\nSo as it is now, if you had Datricsae enabled as your primary and you had a glucose number of 200 but then re-calibrated so that the same raw value would then result in a glucose value of 180, the graph will still show the 200 value at that historical point in time. The plugin is dynamically recalculating based on the calibrations present at that point in time as it would have been. This gives much more consistent results with what you would expect. It looks immutable but it is actually being dynamically calculated. \r\n\r\nIf you really want immutable data calculated from a plugin, it is possible to do it but I wouldn't recommend that at this point because of the experimental nature of the plugins. As it stands they don't normally alter the BgReading database table at all.\r\n "
+  },
+  {
+   "id": 282821923,
+   "user": "TecMunky",
+   "created_at": "2017-02-27T19:19:55Z",
+   "body": "Thanks for the explanation @jamorham and the pointer to the code that changed.\r\n\r\nHelp me understand.  Here is a hypothetical:\r\nI have the Datricsae Plugin enabled, \"Plugin plot on graph\" ON, \"Use Plugin Glucose\" OFF.\r\nI enter calibrations over time.  Each time the xDrip algorithm and the Datricsae Plugin calibration graphs both change based on calibration data.  Changing the \"Use Plugin Glucose\" selection to ON will change the plot over time based on the selected algorithm, and the new data would look the same as if the \"Use Plugin Glucose\" was ON the whole time - is this correct?  If this is true, the historical data still changes back to the beginning, but changes to values they would have been if the Plugin was in use throughout that time.  Do I have that correct?\r\n\r\nIf the above is correct - then I don't see a problem.  If not, please explain.  If you would rather take this conversation to another channel (email or facebook messaging) please do so.\r\n\r\nAND -- if I understand correctly -- the actual BG readings in the database don't change at all, the data sent to NightScout, Dexcom Follow, and the Smart Watch, are still based on the BG readings in the database?\r\n\r\nFinally -- the statistics are based on the database values, so they don't change either -- is this correct?\r\n"
+  },
+  {
+   "id": 282845637,
+   "user": "jamorham",
+   "created_at": "2017-02-27T20:38:36Z",
+   "body": "> the historical data still changes back to the beginning, but changes to values they would have been if the Plugin was in use throughout that time. Do I have that correct?\r\n\r\nYes this is correct. The only caveat to this is that the original xDrip algorithm has an option where it smooths data from the previous few hours to the current value at the point of calibration. Effectively bending the graph so that the curve appears smooth. It actually rewrites the history in the database itself. You can often see where this has happened because it doesn't rewrite the `filtered` plot so the grey line curve can show where it used to be.\r\n\r\nThis feature is controlled by the `Rewrite History` checkbox in xDrip+ Display Settings. Even with it turned off, we still rewrite the last couple of readings to avoid a sudden jump in the delta value which is calculated looking at the last few readings. \r\n\r\nOn the original topic of this issue, I believe we should move to using the \"Adrian\" slope parameters as the default and probably enable these universally, but before doing that I want to ensure that the current crop of changes to calibrations+plugins are all stable and any issues with those eliminated to avoid changing too many things at once.\r\n"
+  },
+  {
+   "id": 282865876,
+   "user": "TecMunky",
+   "created_at": "2017-02-27T21:48:51Z",
+   "body": "I actually like the \"rewrite history\" option - and would like to see that implemented in the plugin - but since the plugin doesn't actually rewrite data into the database, I don't know how that would be accomplished.  Unless the plugin result is affected anyway due to the original algorithm rewriting recent history.  \r\n\r\nOn the original topic - while the \"Adrian\" slope parameters are better than the defaults, I suggest we widen the range of defaults similar to the values I currently use as my \"Adrian\" slope parameters, as mentioned my first response under \"this is my current code\".  "
+  },
+  {
+   "id": 282974267,
+   "user": "tzachi-dar",
+   "created_at": "2017-02-28T08:26:49Z",
+   "body": "Rewriting the history is not a great feature.\nThe way that it was implemented is to change the values with a change that\nis bigger relatively to the time of the last calibration.\n\nThis looks great on the graph, but it can make a falling bg look like it is\nraising, or vice versa. This is espeicialy true if the calibration values\nhave changed dramatically.\nThis can lead to bad decisions about insulin usage.\n\nA different approach can be to re-calculate all values for (let's say last\nhour) based on the last calibration values. In that case, bg going high\nwill stay going high. If I understand correctly, this is what is actually\ngoing on with new plugin.\n\nTzachi\n\nOn Mon, Feb 27, 2017 at 11:48 PM, Jim E <notifications@github.com> wrote:\n\n> I actually like the \"rewrite history\" option - and would like to see that\n> implemented in the plugin - but since the plugin doesn't actually rewrite\n> data into the database, I don't know how that would be accomplished. Unless\n> the plugin result is affected anyway due to the original algorithm\n> rewriting recent history.\n>\n> On the original topic - while the \"Adrian\" slope parameters are better\n> than the defaults, I suggest we widen the range of defaults similar to the\n> values I currently use as my \"Adrian\" slope parameters, as mentioned my\n> first response under \"this is my current code\".\n>\n> —\n> You are receiving this because you are subscribed to this thread.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/76#issuecomment-282865876>,\n> or mute the thread\n> <https://github.com/notifications/unsubscribe-auth/AHkw5Dc-aZupGZvAEqzIqEHWy289XU8qks5rg0TEgaJpZM4MMioT>\n> .\n>\n"
+  },
+  {
+   "id": 285763962,
+   "user": "jamorham",
+   "created_at": "2017-03-10T19:36:09Z",
+   "body": "I'm due to start a new sensor tomorrow so I'm going to run through it all with the `AdrianSlopeParameters` as an additional check that these at least appear sound tested locally. Then I plan to install those as the default slopes in a new nightly and provide a TecMunky set of slopes as an engineering mode option replacing the Adrian default slopes.\r\n\r\nThe only thing I'm not sure about is whether to provide an option to fallback to the current \"classic\" slopes. Are there any circumstances where these would actually be advantageous? "
+  },
+  {
+   "id": 285875850,
+   "user": "TecMunky",
+   "created_at": "2017-03-11T15:39:02Z",
+   "body": "I have come to the conclusion that re-writing history is not something that I want anymore.  Sure it looks great and has a smoother graph, but as tzachi-dar implied, it distorts reality.  \r\n\r\nI might reconsider if there was an option to see raw values on the graph so I could still see historical trends.  Raw data would not have any jumps at calibration points either.  (By raw, I mean the unfiltered data read from the sensor.)"
+  },
+  {
+   "id": 287798295,
+   "user": "jamorham",
+   "created_at": "2017-03-20T15:37:30Z",
+   "body": "Widening of the slope parameters by making the \"Adrian slope parameters\" the default was added in this commit: https://github.com/NightscoutFoundation/xDrip/commit/be27a9ea07163f2d2718a72ee31da4f501f40fa2  It is still possible to use the old parameters through engineering mode should anyone want to do that.\r\n\r\nThe logic for adding these slopes is that, other than the original slopes, these have received the greatest testing. I've also tested locally for a week from starting a new sensor and in that single sensor test they worked correctly and appeared to my eye to perform better than the previous default slopes.\r\n\r\nI'm running the Datricsae plugin with bluetooth meter automated calibration as well and the comparative accuracy status line also reports improved accuracy (presumably due to less use of default slopes) although it is still less than datricsae in my very limited testing which almost certainly doesn't hit enough of the edge cases to be in any way conclusive."
+  },
+  {
+   "id": 300633964,
+   "user": "Nargly",
+   "created_at": "2017-05-10T22:46:12Z",
+   "body": "I have to disagree with you TecMunky on the adjusting past values due to a calibration.  If the calibration is off, then the recent past values are incorrect.  So adjusting them seems like it makes sense to me."
+  },
+  {
+   "id": 305953631,
+   "user": "TecMunky",
+   "created_at": "2017-06-03T05:49:18Z",
+   "body": "Should this issue be closed - Or should the default slopes be made wider again?"
+  },
+  {
+   "id": 305973330,
+   "user": "Nargly",
+   "created_at": "2017-06-03T12:53:01Z",
+   "body": "Instead of putting the decision on one person or a small group, just make the feature a selectable option in the settings for the app.  That way you can fit any user's desire for their own control.  Make sense?"
+  },
+  {
+   "id": 308155653,
+   "user": "jamorham",
+   "created_at": "2017-06-13T15:31:03Z",
+   "body": "If we don't have a standardized set of slope parameters it makes it very hard indeed to diagnose issues related to calibration I think.\r\n\r\nAny comments on these values to try to bring xDrip classic closer to the slopes that Datricsae supports?\r\n\r\n```\r\nclass DexParameters extends SlopeParameters {\r\n    DexParameters() {\r\n        LOW_SLOPE_1 = 0.75;\r\n        LOW_SLOPE_2 = 0.70;\r\n        HIGH_SLOPE_1 = 1.5;\r\n        HIGH_SLOPE_2 = 1.6;\r\n        DEFAULT_LOW_SLOPE_LOW = 0.75;\r\n        DEFAULT_LOW_SLOPE_HIGH = 0.70;\r\n        DEFAULT_SLOPE = 1;\r\n        DEFAULT_HIGH_SLOPE_HIGH = 1.5;\r\n        DEFAULT_HIGH_SLOPE_LOW = 1.4;\r\n    }\r\n\r\n}\r\n```"
+  },
+  {
+   "id": 317040610,
+   "user": "gigabyte72",
+   "created_at": "2017-07-21T16:00:02Z",
+   "body": "TecMunky - Sorry for this in the public thread but github doesn't appear to offer a private messaging feature.  Due to me typically being a very tight range, when i got outside of it (hypo/hyper), it gets very dangerous (glucose was \"70\" but in reality after waking up from having a glucagon injection), that wasn't my true reading.  Looking for high-level steps of altering the slope manually (already have engineering mode enable/disable ability). "
+  },
+  {
+   "id": 317045775,
+   "user": "TecMunky",
+   "created_at": "2017-07-21T16:21:40Z",
+   "body": "@gigabyte72 - the proper place to ask these questions is in the gitter channel:\r\nhttps://gitter.im/jamorham/xDrip-plus\r\n\r\nIn the calibration graph screen, the 3-dot menu allows you to override the slope and intercept.  The overrides will go away when you next calibrate."
+  },
+  {
+   "id": 783363058,
+   "user": "Navid200",
+   "created_at": "2021-02-22T13:11:06Z",
+   "body": "@TecMunky Hi,\r\nHas this been addressed already?\r\nThanks"
+  },
+  {
+   "id": 783565480,
+   "user": "TecMunky",
+   "created_at": "2021-02-22T18:09:25Z",
+   "body": "> @TecMunky Hi,\r\n> Has this been addressed already?\r\n> Thanks\r\n\r\nYes - this has been addressed to my satisfaction.  I am closing the issue now.\r\nOthers may still have comments.  "
+  }
+ ]
+}

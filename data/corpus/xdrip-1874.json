@@ -1,0 +1,73 @@
+{
+ "id": 1050389678,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1874,
+ "title": "xDrip Missed Reading Issues ",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1874",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "device-libre",
+  "device-miaomiao"
+ ],
+ "created_at": "2021-11-10T23:00:49Z",
+ "closed_at": "2022-04-24T23:19:06Z",
+ "comment_count": 9,
+ "body": "I had an update to xDrip, version 49817a5-2021.10.04 code 2110041402, from 17cbcf0-2021.03.08 and since then I'm seeing multiple signal missed issues.To resolve, I've got to restart the collector, one time had to disconnect Bluetooth, then reconnect. Before the update I rarely had a signal missed issue. Have rolled back to 2021.03.08 and it worked again. Tested by upgrading to each release from 8th March, and found they work up to 2021.05.21. After this release, starting with 3b8665e-2021.06.11 missed signals with happen within 90 minutes of installing. \r\n\r\nPhone brand and model: Samsung Galaxy A70\r\nAndroid version on the phone: 11 One UI 3.1\r\nSensor brand and model: Libre Freestyle 14 day US\r\nHardware data source: MioaMioa 2, OOPalgorithm fa218ef-de-libre2-sensors-2019.11.22 build 1911221114\r\nWorks fine with xDrip version: 3df0152-2021.05.21\r\nFails with the next xDrip version: 3b8665e-2021.06.11\r\n![FB_IMG_1636584896525](https://user-images.githubusercontent.com/62366031/141207395-b89c64dd-d25f-46e0-aa24-0fb49610245f.jpg)\r\n![FB_IMG_1636584902262](https://user-images.githubusercontent.com/62366031/141207419-54a1700b-cf05-4d58-b646-8e62f3fcf546.jpg)\r\n![FB_IMG_1636584929000](https://user-images.githubusercontent.com/62366031/141207426-b5051abf-6fcf-46f0-a924-eb7de893620c.jpg)\r\n![IMG-20211110-WA0004](https://user-images.githubusercontent.com/62366031/141207494-cd548ad6-9fa1-48f2-ae98-5ad2ad653481.jpg)\r\n",
+ "comments": [
+  {
+   "id": 966545601,
+   "user": "LuisPuertollano",
+   "created_at": "2021-11-11T18:55:02Z",
+   "body": "Hello people, :-)\r\n\r\nI updated to last solid version (version 2021.10.04) 2 to 3 days ago and today I had the same problem.\r\nIf it helps, I can confirm that thurning back to xDrip version: 3df0152-2021.05.21 solves the issue.\r\nPhone brand and model: Samsung Galaxy A52 5G\r\nAndroid version on the phone: 11 One UI 3.1\r\nSamsung Security Patch: October 2021\r\nSensor brand and model: Libre Freestyle 2\r\nHardware data source: Libre 2 (Patched App)\r\n\r\nThank you all! :-D\r\nBR"
+  },
+  {
+   "id": 966626749,
+   "user": "tzachi-dar",
+   "created_at": "2021-11-11T21:08:56Z",
+   "body": "There are two different issues here:\r\n1) Us sensors, using mm2 and oop1\r\n2) Libre2 sensors with patched app.\r\n\r\nI'm not so familiar with the patched app so LuisPuertollano can you try installing oop2?\r\n\r\nAs for bjblackmore - Since the issue happens after 90 minutes, I suspect that something has changed in the way that our BT is working. But comparing the two revisions, I did not see a change in our BT code.\r\n\r\nSo, both: Can you run with the phone connected to a computer and send me the logs that you get from \"adb logcat -v\" ?\r\nIf not, can you follow the instructions at [minimal looper](https://www.minimallooper.com/post/how-to-setup-freestyle-libre-2-and-oop2-to-use-a-native-bluetooth-connection-in-xdrip) to add the extra tags for logging?\r\nThen please send the logs to tzachi.dar@gmail.com"
+  },
+  {
+   "id": 966685441,
+   "user": "bjblackmore",
+   "created_at": "2021-11-11T23:01:27Z",
+   "body": "Once I've enabled logging, do you want me to perform an upgrade to a non working xDrip version? Or do you only want the logs for the working version?"
+  },
+  {
+   "id": 966693564,
+   "user": "Navid200",
+   "created_at": "2021-11-11T23:18:52Z",
+   "body": "@tzachi-dar I only asked @bjblackmore to open this issue.\r\nWould you please focus on his issue and ignore everyone else?\r\nHe has gone back and forth between two consecutive releases of xDrip with consistent behaviors for the two releases.\r\n\r\nIf anyone else experiences a similar issue, please be patient allowing the intended case to be resolved first before coming forward with your case.  \r\nYou can always open a discussion for your situation.  https://github.com/Navid200/xDrip/discussions\r\nIt is possible that what you are experiencing is related.  But, even a single different component is enough to throw off the intent of the thread as you can see above."
+  },
+  {
+   "id": 966715305,
+   "user": "tzachi-dar",
+   "created_at": "2021-11-12T00:11:57Z",
+   "body": "Please only send the logs for the non-working version."
+  },
+  {
+   "id": 968144064,
+   "user": "tzachi-dar",
+   "created_at": "2021-11-13T21:48:01Z",
+   "body": "Hi,\r\n\r\nThe logs supplied show that there is a problem but I could not find what it is.\r\n\r\nPlease install the following version:\r\nhttps://drive.google.com/uc?id=1nLaouqpNbbvqnmn0gugXD-uaeE0JI0fK&export=download\r\nIt is based on the latest code, and has more debug information.\r\n\r\n(you will have to remove your version of xdrip from the phone, which means that you will have to backup your settings and db and restore them after the new install).\r\n\r\nOnce this is done, please send me your updated DB.\r\nyou probably need to keep running until you see something like:\r\n\r\n\r\n2021-11-12 03:43:59 jamorham nsemulator NSEmulator onReceiver: com.eveningoutpost.dexdrip.NS_EMULATOR\r\n2021-11-12 03:43:59 jamorham nsemulator Receiving NSEmulator broadcast\r\n2021-11-12 03:43:59 LibreOOPAlgorithm handleData called with {\"oOPResultsArray\":[{\"currentBg\":75,\"currentTime\":11708,\"currentTrend\":0,\"historicBg\":[{\"bg\":79,\"quality\":0,\"time\":11235},{\"bg\":92,\"quality\":0,\"time\":11250},{\"bg\":103,\"quality\":0,\"time\":11265},{\"bg\":92,\"quality\":0,\"time\":11280},{\"bg\":79,\"quality\":0,\"time\":11295},{\"bg\":80,\"quality\":0,\"time\":11310},{\"bg\":84,\"quality\":0,\"time\":11325},{\"bg\":84,\"quality\":0,\"time\":11340},{\"bg\":85,\"quality\":0,\"time\":11355},{\"bg\":85,\"quality\":0,\"time\":11370},{\"bg\":83,\"quality\":0,\"time\":11385},{\"bg\":83,\"quality\":0,\"time\":11400},{\"bg\":82,\"quality\":0,\"time\":11415},{\"bg\":86,\"quality\":0,\"time\":11430},{\"bg\":107,\"quality\":0,\"time\":11445},{\"bg\":137,\"quality\":0,\"time\":11460},{\"bg\":153,\"quality\":0,\"time\":11475},{\"bg\":159,\"quality\":0,\"time\":11490},{\"bg\":166,\"quality\":0,\"time\":11505},{\"bg\":175,\"quality\":0,\"time\":11520},{\"bg\":179,\"quality\":0,\"time\":11535},{\"bg\":173,\"quality\":0,\"time\":11550},{\"bg\":158,\"quality\":0,\"time\":11565},{\"bg\":142,\"quality\":0,\"time\":11580},{\"bg\":129,\"quality\":0,\"time\":11595},{\"bg\":118,\"quality\":0,\"time\":11610},{\"bg\":109,\"quality\":0,\"time\":11625},{\"bg\":100,\"quality\":0,\"time\":11640},{\"bg\":94,\"quality\":0,\"time\":11655},{\"bg\":87,\"quality\":0,\"time\":11670},{\"bg\":82,\"quality\":0,\"time\":11685},{\"bg\":0,\""
+  },
+  {
+   "id": 980487475,
+   "user": "Navid200",
+   "created_at": "2021-11-27T02:14:07Z",
+   "body": "@bjblackmore This explains how to backup the database:\r\nhttps://github.com/Navid200/xDrip/wiki/Backup-Database\r\nYou should do that right before when you intend to uninstall xDrip.\r\nAfter, you should install the other version.\r\nAfter the new version has been installed, you can follow this to restore the saved database:\r\nhttps://github.com/Navid200/xDrip/wiki/Restore-Database\r\n\r\nYou can do the exact same thing every time you want to change xDrip to a version that cannot be installed over.\r\n\r\nAll the official xDrip versions have the same signature and you will not need to uninstall to change releases.\r\nBut, you have been asked to install a version released for troubleshooting, which has a different signature."
+  },
+  {
+   "id": 985379101,
+   "user": "tzachi-dar",
+   "created_at": "2021-12-03T09:52:56Z",
+   "body": "@bjblackmore Still waiting for data from you."
+  },
+  {
+   "id": 1107937549,
+   "user": "Navid200",
+   "created_at": "2022-04-24T23:19:06Z",
+   "body": "@bjblackmore It's been almost 5 months since a developer attempted to help you get this issue resolved.\r\nI hope that the reason you have ignored the request is that your problem has been resolved.  So, I am closing this issue.\r\nWe can always reopen if needed.  "
+  }
+ ]
+}

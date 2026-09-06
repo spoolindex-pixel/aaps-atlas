@@ -1,0 +1,22 @@
+{
+ "issue_id": 1279,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/1279",
+ "title": "Dexcom G6 / 8G tx: every 5mins \"Could not read after AuthRequestTX\" & \"Could not read reply to auth challenge\"",
+ "symptom": "Since using 8G Dexcom transmitters, xDrip+ logs the same errors every 5 minutes: \"Could not read after AuthRequestTX\" and \"Could not read reply to auth challenge\", along with \"Failed to write DisconnectTxMessage\" GATT exceptions. Blood glucose readings continue to work, but the repeated error messages are annoying and clutter the event log.",
+ "cause": "A debug discovery of the Dexcom device shows the authentication characteristic (F8083535-849E-531C-C594-30F1F86A4EA5) advertises as WRITE and INDICATE, while xDrip attempts to do a READ operation in Ob1G5StateMachine, producing the repeated GATT read failures on Firefly transmitters.",
+ "fix": "The xDrip main repository did not fix the authentication code itself; instead, logging was changed so the errors are suppressed or appear much less frequently. Users are advised to update to a recent release (e.g., Feb. 11, 2021) to stop seeing the log messages. A separate user fork/branch (firefly_transmitter) contains a code-level fix for the read operation, but it was not merged as a clean PR at the time.",
+ "settings_changed": [],
+ "devices": [
+  "Dexcom G6"
+ ],
+ "android_versions": [
+  "Android 9"
+ ],
+ "driver_tags": [
+  "ob1",
+  "native"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "The authentication was not enhanced, only the logging has been changed to not show the errors in most cases."
+}

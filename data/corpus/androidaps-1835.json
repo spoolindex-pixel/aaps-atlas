@@ -1,0 +1,41 @@
+{
+ "id": 1274737479,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1835,
+ "title": "bug: Notes field not delivered to nightscout (at leats for carb correnctions)",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1835",
+ "state": "closed",
+ "labels": [
+  "enhancement"
+ ],
+ "created_at": "2022-06-17T08:30:19Z",
+ "closed_at": "2022-08-09T18:42:16Z",
+ "comment_count": 4,
+ "body": "**Steps to reproduce:**\r\n\r\n- open `carbs` dialog, \r\n- enter carbs amount, \r\n- enter `test note` text in `Notes` field\r\n- press `ok`, then `ok` to send\r\n- wait event to be delivered to NS\r\n- open nightscout -> reports -> treatments. there will be your new `carb correction` (or `meal bolus`) treatment with empty `Notes` column\r\n<img width=\"1319\" alt=\"image\" src=\"https://user-images.githubusercontent.com/4157587/174256868-0c05d0cb-550d-4d09-864a-21caa55df763.png\">\r\nin nightscout's db field `notes` is empty, like if it wasn't even sent to nighscout\r\n\r\n**Expected behavior**\r\n`test note` text in `Notes` field\r\n\r\n**versions used**\r\nChecked in nsclient 3.0.0.2 (downloaded from releases in github) and aaps 3.0.0.2 (built myself).\r\nNightscout 14.2.5\r\n\r\nadditional screenshots:\r\n(this is add carbs screen from aaps, but in russian, sorry :))\r\n<img width=\"346\" alt=\"image\" src=\"https://user-images.githubusercontent.com/4157587/174257591-fab6148c-0822-4d92-b034-b4db46ceb8ab.png\">\r\nnote correctly shown in treatments (but still missing in nightscout)\r\n<img width=\"405\" alt=\"image\" src=\"https://user-images.githubusercontent.com/4157587/174257699-c0b2b161-5a03-464c-b60f-a4657aab1095.png\">\r\n\r\nthis is 2.8.2 nsclient behavior:\r\n<img width=\"328\" alt=\"image\" src=\"https://user-images.githubusercontent.com/4157587/174259482-34d88dd6-abb8-424d-8a1b-b952646e67d9.png\">\r\n\r\n<img width=\"1522\" alt=\"image\" src=\"https://user-images.githubusercontent.com/4157587/174259428-a58287a4-aa0d-45db-aeff-481e80e6765c.png\">\r\n\r\n",
+ "comments": [
+  {
+   "id": 1158708531,
+   "user": "justmara",
+   "created_at": "2022-06-17T09:54:34Z",
+   "body": "this is how it seems from nightscout logs\r\n```\r\n [32mWS: \u001b[0mdbAdd client ID:  P0NQlXvnhQyg6nOqAAAC  data:  {\r\n  collection: 'treatments',\r\n  data: {\r\n    eventType: 'Carb Correction',\r\n    carbs: 1,\r\n    created_at: '2022-06-17T09:20:52.000Z',\r\n    isValid: true,\r\n    date: 1655457652000\r\n  }\r\n}\r\n\u001b[35mDEDUPE: \u001b[0mAdding new record\r\ngot data-received event, requesting reload\r\n\u001b[32mWS: \u001b[0mdbUpdate client ID:  nzi8xvBB9O9gGzpuAAAA  data:  {\r\n  collection: 'treatments',\r\n  _id: '62ac4794324e1700041bf697',\r\n  data: {\r\n    eventType: 'Carb Correction',\r\n    carbs: 1,\r\n    created_at: '2022-06-17T09:20:52.000Z',\r\n    isValid: true,\r\n    date: 1655457652000\r\n  }\r\n}\r\ngot data-received event, requesting reload\r\nGot results {\r\n  _id: 62ac4794324e1700041bf697,\r\n  eventType: 'Carb Correction',\r\n  carbs: 1,\r\n  created_at: '2022-06-17T09:20:52.000Z',\r\n  isValid: true,\r\n  date: 1655457652000\r\n}\r\n```\r\n\r\nthis is same action sent from 2.8.2\r\n```\r\n\u001b[32mWS: \u001b[0mdbAdd client ID:  TaiSKeiBC1Z2lck7AAAD  data:  {\r\n  collection: 'treatments',\r\n  data: {\r\n    eventType: 'Carb Correction',\r\n    carbs: 1,\r\n    created_at: '2022-06-17T09:38:54Z',\r\n    date: 1655458734000,\r\n    isSMB: false,\r\n    notes: 'test note',\r\n    NSCLIENT_ID: '1655458748903'\r\n  }\r\n}\r\ngot data-received event, requesting reload\r\n\u001b[35mDEDUPE: \u001b[0mAdding new record\r\ngot data-received event, requesting reload\r\nLoad Complete:\r\n\t sgvs:557, treatments:78, mbgs:2, profiles:1, devicestatus:845, sitechangeTreatments:1, insulinchangeTreatments:1, batteryTreatments:1, sensorTreatments:1, profileTreatments:2, tempbasalTreatments:4\r\ndata loaded: reloading sandbox data and updating plugins\r\n\u001b[32mWS: \u001b[0memitted notification to all clients\r\n2022-06-17T09:39:16.492Z\tEMITTING NOTIFICATION:\r\n  {\"level\":\"Info\",\"title\":\"Carb Correction\",\"message\":\"\\nCarbs: 1g\\nNotes: test note\",\"group\":\"default\",\"plugin\":\"treatmentnotify\"}\r\n  ```"
+  },
+  {
+   "id": 1160176450,
+   "user": "MilosKozak",
+   "created_at": "2022-06-20T09:04:48Z",
+   "body": "Note: db schema must be extended"
+  },
+  {
+   "id": 1160469927,
+   "user": "justmara",
+   "created_at": "2022-06-20T13:45:58Z",
+   "body": "@MilosKozak Why `enhancement` label? This feature were working on 2.0 and was lost during update to 3.x. And there is also UI input that is not processed/stored/sent as intended.\r\nSo it's a real bug introduced in 3.0 version of app, not a new feature/enhancement. "
+  },
+  {
+   "id": 1160653858,
+   "user": "MilosKozak",
+   "created_at": "2022-06-20T16:37:38Z",
+   "body": "https://github.com/nightscout/AndroidAPS/pull/1842#issuecomment-1160627114"
+  }
+ ]
+}

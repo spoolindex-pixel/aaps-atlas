@@ -1,0 +1,63 @@
+{
+ "id": 303115398,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 339,
+ "title": "Pebble app is causing 60min+ missed readings (possibly)",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/339",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2018-03-07T14:17:29Z",
+ "closed_at": "2018-03-14T13:03:23Z",
+ "comment_count": 8,
+ "body": "Moto G5 plus, stock 7.0 phone.\r\nXdrip+ latest nightly builds, or latest stable version (Nov I think it is)\r\n\r\nI may need to do more testing; but I think the pebble app is causing me to lose signal for 60min+. A restart collector occasionally works; swapping collector type [ob1/old] sometimes helps too. But usually needs a phone reboot to restore the connection.\r\nThis drop out can happen in different locations (home, work, car, etc) So I don't believe it to be interference from something specific. It can be at anytime of day/night. But usually only happens once in a day - 2 days (not several times a day/24hr period).\r\n\r\nI first tried turning off the pebble watch, still had app installed. still had missed readings.\r\nRemoved the Pebble app; as recommended by @jamorham  and tested for about 36-48 hours & no large missed readings happened (several 10-15; but never more than about 15min)\r\nAfter re-installing the pebble app I got a missed reading w/in a few hours, and again the next night.\r\n\r\nI have been using this Moto for about a year. I used to get ~88% capture rate pre ob1; and ~98% post.\r\n\r\nI have sent logs from xdrip in; I'm not sure if/how I can attach them here.",
+ "comments": [
+  {
+   "id": 371186166,
+   "user": "jamorham",
+   "created_at": "2018-03-07T15:59:55Z",
+   "body": "I don't think its the pebble app exactly. I expect it will be bluetooth resource starvation within Android.\r\n\r\nBasically you can imagine that whenever android is hunting to connect to a bluetooth device it is using up a slot. Anything you have paired or any apps which are searching for peripheral devices will be using this up. Too many slots used up and bluetooth has problems.\r\n\r\nDoes your pebble app have watches in there you are not using? Do you have anything else paired in android bluetooth settings that you're not using? Try removing those if so."
+  },
+  {
+   "id": 371201916,
+   "user": "bryanw20",
+   "created_at": "2018-03-07T16:45:32Z",
+   "body": "Thanks.\r\nI did just now delete all but a few watch faces. I use xdrip clay 98% of the time. When I take a dex break for a few days I use another face.\r\nLet's see if that helps.\r\n\r\nas for BT devices, I have a few paired with my phone. I use headphones 1-4times a week, so I want to keep them paired. as well as the onetouch meter. I could possibly remove the OBDii device until I need to use it on a car.\r\n\r\nif it is BT congestion; are there xdrip setting(s) I can try? \r\nI think I have the OB1 selected, and the restart if no reading for 20min; but it never locks on again if it is restarting...???\r\n\r\n![bt](https://user-images.githubusercontent.com/26827860/37105352-8a259fec-21f4-11e8-961d-8dd0c4d6af75.png)\r\n\r\nhere's my log from today just as you were replying, I caught it at 15min missed; rebooted & back up at the 20min mark.\r\n![log1](https://user-images.githubusercontent.com/26827860/37105387-a3b14e7a-21f4-11e8-969d-fa1f003cc58e.png)\r\n"
+  },
+  {
+   "id": 371202372,
+   "user": "bryanw20",
+   "created_at": "2018-03-07T16:46:53Z",
+   "body": "And here's some log data for the other day. Post re-install pebble app. probably a 60-75min missed time.\r\n\r\n![log2](https://user-images.githubusercontent.com/26827860/37105433-ca6a9ae4-21f4-11e8-880c-e5ddd0d3e0af.png)\r\n![log3](https://user-images.githubusercontent.com/26827860/37105434-ca820c9c-21f4-11e8-928d-4e8ecb09bbd1.png)\r\n![log4](https://user-images.githubusercontent.com/26827860/37105436-cae5b184-21f4-11e8-9203-536b45a822c7.png)\r\n"
+  },
+  {
+   "id": 371205694,
+   "user": "bryanw20",
+   "created_at": "2018-03-07T16:56:18Z",
+   "body": "Thanks again for taking time to help.\r\n\r\nWhile I'm on the subject of pebble; I don't think it's adding any step/motion tracking to xdrip. Pebble shares with google fit.\r\n\r\nI have a little guy on my screen, but he's always at 1503, every day. no motion blur colors on the graph.\r\n\r\n???\r\n![tracking1](https://user-images.githubusercontent.com/26827860/37105909-0065fca0-21f6-11e8-8391-587479146029.png)\r\n![tracking2](https://user-images.githubusercontent.com/26827860/37105910-007cd664-21f6-11e8-9e3d-85a10dd182b4.png)\r\n![tracking3](https://user-images.githubusercontent.com/26827860/37105911-00929ddc-21f6-11e8-8ec7-0536baa38da8.png)\r\n![tracking4](https://user-images.githubusercontent.com/26827860/37105912-00b06fce-21f6-11e8-8089-121651d098ea.png)\r\n\r\n"
+  },
+  {
+   "id": 371736012,
+   "user": "JimZam",
+   "created_at": "2018-03-09T07:33:32Z",
+   "body": "@bryanw20 Good morning from Spain. I'm sorry to write in your post as my question is not related to it, I haven't found a way to write you a prívate message.\r\nIs it possible to use Pebble as a collector when you are away from the phone? I have read it is but the option doesn't appear in xdrip (it does if you choose Android Wear) If yes, does it work with Pebble round too?\r\nThank you so much for your help.\r\nKind regards"
+  },
+  {
+   "id": 371802003,
+   "user": "bryanw20",
+   "created_at": "2018-03-09T12:40:25Z",
+   "body": "@Antonio2001 I'm still new at things. But my understanding is pebble can only display xdrip data from the phone.\r\nI believe certain Android watches that have a full Android on them are the only ones capable of being a collector. Like a Sony sw3 I think."
+  },
+  {
+   "id": 372017058,
+   "user": "JimZam",
+   "created_at": "2018-03-10T09:38:47Z",
+   "body": "Thank you bryanw20"
+  },
+  {
+   "id": 373012911,
+   "user": "bryanw20",
+   "created_at": "2018-03-14T13:03:23Z",
+   "body": "Apparently it's just me; and I guess reducing the # of watch faces may have helped, or possibly something in a newest build; either way it's been several days now w/o a major loss of signal."
+  }
+ ]
+}

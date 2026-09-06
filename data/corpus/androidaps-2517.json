@@ -1,0 +1,39 @@
+{
+ "id": 1679258579,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2517,
+ "title": "How does Total Delivered calculated for Omnipod DASH ",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2517",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-04-22T01:26:51Z",
+ "closed_at": "2023-08-21T18:27:27Z",
+ "comment_count": 4,
+ "body": "Reporting bugs\r\n\r\nBackgroud: \r\n\r\nHello, my AndroidAPS cannot automatically run the closed-loop function. The blood glucose data is constantly updated and synchronized, and the communication with the insulin pump is normal. However, I can see a progress bar scrolling at the bottom of the home page, as if it is loading something.\r\n\r\nIn addition, there seems to be a problem with my Nightscout upload. The upload queue often remains stagnant, and the logs show that data from some dates are being uploaded repeatedly. Moreover, when I enable Nightscout upload, the usage time of my insulin pump and CGM becomes incorrect, including carbohydrates. It seems that AndroidAPS does not prioritize the latest calculation tasks and local device data, and is stuck in a loop with some historical data.\r\nI had sent logs via email\r\n\r\n------\r\nYesterday I just reset my database before I activate a new DASH Pod, then changed a new Pod and took 2 boluses(0.5u and 1.0 U),but I saw that the Omnipod Page displayed 【Total Delivered ：4.65 U】, so I went to the Pod history page to check ,there are only two boluses events :0.5u and 1u ,so I am curious about how the Total Delivered calculated for Omnipod DASH .\r\n\r\nhere I attached two screenshots ：\r\n\r\n![image](https://user-images.githubusercontent.com/4321387/233754529-0b496b33-4ac5-4591-bc29-99a001bde5bd.png)\r\n \r\n![image](https://user-images.githubusercontent.com/4321387/233754548-2c910108-364a-488d-913d-69095e4121a4.png)\r\n\r\n\r\n--------------\r\n- **Note the precise time the problem occurred** and describe the circumstances and steps that caused\r\n  the problem\r\n- Note the Build version (found in the About dialog in the app, when pressing the three dots in the\r\n  upper-right corner).\r\n\r\n----Build: 3.1.0.3  Base Code \r\n----Branch:  https://github.com/tim2000s/Boost-master-v3/tree/Boost_Test_Platform\r\n\r\n\r\n- Obtain the app's log files, which can be found on the phone in\r\n  _/storage/emulated/0/Android/data/info.nightscout.androidaps/_\r\n  See https://androidaps.readthedocs.io/en/latest/EN/Usage/Accessing-logfiles.html\r\n- Open an issue at https://github.com/nightscout/AndroidAPS/issues/new\r\n",
+ "comments": [
+  {
+   "id": 1518534730,
+   "user": "mtanjagithub",
+   "created_at": "2023-04-22T06:43:04Z",
+   "body": "It is normal for the Dash to fill the cannula by starting up. The Dash needs +/- 3 U for this"
+  },
+  {
+   "id": 1518537716,
+   "user": "birdfly",
+   "created_at": "2023-04-22T06:55:29Z",
+   "body": "> It is normal for the Dash to fill the cannula by starting up. The Dash needs +/- 3 U for this\r\n\r\nUnderstood, but as I know the Boost algorithm uses TDD to calculate ISF"
+  },
+  {
+   "id": 1520680733,
+   "user": "vanelsberg",
+   "created_at": "2023-04-24T19:05:04Z",
+   "body": "It is designed; also see https://github.com/nightscout/AndroidAPS/issues/805"
+  },
+  {
+   "id": 1520702886,
+   "user": "vanelsberg",
+   "created_at": "2023-04-24T19:19:35Z",
+   "body": "> but as I know the Boost algorithm uses TDD to calculate ISF\r\nTTD is calculated from data in the database,\r\n\r\nIf Boost would use the \"Insuline Delivered\" as reported by DASH to calculate it would fail:\r\n- DASH can not report insuline reservoir values above 50U (it will show report 50U until below)\r\n- The reservoir value does not take into account insulin registered as \"record only\" (like when using a PEN)\r\n\r\n\r\n"
+  }
+ ]
+}

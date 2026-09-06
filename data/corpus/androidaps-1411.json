@@ -1,0 +1,27 @@
+{
+ "id": 1160314688,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1411,
+ "title": "25u bolus given without my knowledge,  bypassing AAPS hard limits",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1411",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-03-05T10:52:54Z",
+ "closed_at": "2022-03-16T13:45:40Z",
+ "comment_count": 2,
+ "body": "My hard settings in AAPS are: 'Adult' patient with a maximum bolus of 17.5U; Max total IOB is 22.17; max minutes of basal to limit smb to is 35 (mins). Despite these hard limits, I received a bolus of 25U **yesterday morning (04/03/2021) at 11.09**, which I wasn't aware of and which I didn't enter into AAPS that I'm aware of, leading to a day of recurrent, scary hypo's. I've attached the log from yesterday. I'd be grateful for some help to try to figure out how this happened please, because it was dangerous and frightening and I'd hate for it to happen again. It may well have been a pump and not an AAPS issue, but I would desperately like to know which. My Insight pump only administers instant boluses in 0.1U increments and vibrates each time and so it's inconceivable and I would have almost certainly noticed if this had been what led to the bolus. Thank you!\r\n\r\nMy set-up is: Pixel 4a; **AAPS 3.0.0.1**; Accu-Chek Insight; Libre 2; OOP2; xDrip+\r\n\r\n[AndroidAPS._2022-03-04_17-50-59_.pdf](https://github.com/nightscout/AndroidAPS/files/8190499/AndroidAPS._2022-03-04_17-50-59_.pdf)\r\n\r\n\r\nReporting bugs\r\n--------------\r\n- **Note the precise time the problem occurred** and describe the circumstances and steps that caused\r\n  the problem\r\n- Note the Build version (found in the About dialog in the app, when pressing the three dots in the\r\n  upper-right corner).\r\n- Obtain the app's log files, which can be found on the phone in\r\n  _/storage/emulated/0/Android/data/info.nightscout.androidaps/_\r\n  See https://androidaps.readthedocs.io/en/latest/EN/Usage/Accessing-logfiles.html\r\n- Open an issue at https://github.com/nightscout/AndroidAPS/issues/new\r\n",
+ "comments": [
+  {
+   "id": 1069148321,
+   "user": "MilosKozak",
+   "created_at": "2022-03-16T13:45:40Z",
+   "body": "there is something wrong with the pump. whole day repeats \"Pump started\" and  \"Pump paused\"\r\ni see bolus\r\n```\r\n11:20:18.258 [Thread-89556] D/DATABASE: [PumpSyncImplementation.syncBolusWithPumpId():191]: Inserted Bolus Bolus(id=625, version=0, dateCreated=1646392818253, isValid=true, referenceId=null, interfaceIDs_backing=InterfaceIDs(nightscoutSystemId=null, nightscoutId=null, pumpType=ACCU_CHEK_INSIGHT_BLUETOOTH, pumpSerial=31024263, temporaryId=null, pumpId=8623, startId=null, endId=null), timestamp=1646392145248, utcOffset=0, \r\n mount=25.0, type=NORMAL, isBasalInsulin=false, insulinConfiguration=null)\r\n```\r\nbut not entered through AAPS (probably on pump)\r\n\r\nbased on this didn't you press buttons on pump randomly?"
+  },
+  {
+   "id": 1069191958,
+   "user": "benedicthenry",
+   "created_at": "2022-03-16T14:29:28Z",
+   "body": "Thanks Milos. I didn't knowingly press any buttons on the pump, it's just a relief to know that it wasn't AAPS. Thanks again and thank you for all your other work with AAPS."
+  }
+ ]
+}

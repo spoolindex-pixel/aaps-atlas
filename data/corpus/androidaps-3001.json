@@ -1,0 +1,101 @@
+{
+ "id": 1966900159,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3001,
+ "title": "Discussion: Why open loop when DST ?",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3001",
+ "state": "closed",
+ "labels": [
+  "for_discussion"
+ ],
+ "created_at": "2023-10-29T08:46:00Z",
+ "closed_at": "2024-12-15T13:21:29Z",
+ "comment_count": 14,
+ "body": "I'm on DASH and @jbt7rr has Medtrum. I had a 3h open loop with the summer/winter time change but he did not...\n\n![Screenshot_20231029_093845_Discord.jpg](https://github.com/nightscout/AndroidAPS/assets/76626474/077bbd31-70e9-45da-8f40-22bd7dbd3e60)\n\nAs AAPS knows IOB and COB at the moment of the change, the only thing that can change between 2AM and 3AM is the profile.\n\nIt would be good if, after the time change, AAPS sends new time to pump, then sends active profile to pump automatically. This way, we can keep closed loop for DASH too \n",
+ "comments": [
+  {
+   "id": 1784101886,
+   "user": "olorinmaia",
+   "created_at": "2023-10-29T13:00:10Z",
+   "body": "Two thumbs up for this one ;) Caused major confusion tonight =D"
+  },
+  {
+   "id": 1784144607,
+   "user": "jbr7rr",
+   "created_at": "2023-10-29T15:30:33Z",
+   "body": "This is a thing that would needs to be done in the pump driver. For dash I can see if I can do something however, in the coming weeks I'm tight on time. \r\n"
+  },
+  {
+   "id": 1784150444,
+   "user": "robertrub",
+   "created_at": "2023-10-29T15:52:36Z",
+   "body": "```\nhowever, in the coming weeks I'm tight on time.\n```\n\nNo hurry, you have 6 months to finish it 🤣"
+  },
+  {
+   "id": 1784176044,
+   "user": "vanelsberg",
+   "created_at": "2023-10-29T17:28:16Z",
+   "body": "> As AAPS knows IOB and COB at the moment of the change,\r\n\r\nWhen timeshift is backwards, think the problem is that the database values get \"duplicates\" in time:\r\nBG values, but also and oRef calculations on IOB and COB (database entries, decay times) become invalid....\r\nSo IMHO better stop loop for some time!\r\n\r\nBtw: DASH pumptime is updated but needs users OK to do that. Think I would like to keep that this way?\r\n\r\n\r\n"
+  },
+  {
+   "id": 1784180321,
+   "user": "robertrub",
+   "created_at": "2023-10-29T17:45:42Z",
+   "body": "```\nneeds users OK to do that. Think I would like to\n```\n\nWhy validating the time by the user is important?"
+  },
+  {
+   "id": 1784181221,
+   "user": "robertrub",
+   "created_at": "2023-10-29T17:50:02Z",
+   "body": "```\nBG values, but also and oRef calculations on IOB and COB (database entries, decay times) become invalid....\nSo IMHO better stop loop for some time!\n```\n\nYes, going back in time might be complicated. Need to think about how it can be solved.\n\nAt least, on _time move forward,_ it will be easier to solve.\n\nThe Medtrum pump did not open the loop yesterday night. So, it can be done 👍"
+  },
+  {
+   "id": 1784218232,
+   "user": "vanelsberg",
+   "created_at": "2023-10-29T20:34:52Z",
+   "body": "> Why validating the time by the user is important?\r\n\r\nUser should know about DST change, check pump, confirm all is ok?\r\n\r\nFor DASH, this is a Pod alert status as we know (beep, refresh, ack) for other events like Pod expiration or Pod status issues\r\nPurpose of the alert is to inform user and let him/her confirm. This is why Pod alerts are not handled automatically..\r\n\r\nBtw: Even though I got the DASH Pod alert (time on Pod) to be confirmed, DASH continued to operate even when my confirmation was 5 hours later.\r\n"
+  },
+  {
+   "id": 1784222502,
+   "user": "robertrub",
+   "created_at": "2023-10-29T20:55:14Z",
+   "body": "```\nUser should know about DST change, check pump, confirm all is ok?\n```\n\nI don't know about other pumps but with DASH, what is there to check and confirm? What options do you have other than accepting the DST change ?\n\nOk, for informing the user about the DST change in x hours (this is already done actually) but when it is time to change, user doesn't really have any choice."
+  },
+  {
+   "id": 1784223456,
+   "user": "robertrub",
+   "created_at": "2023-10-29T20:59:35Z",
+   "body": "```\nPurpose of the alert is to inform user and let him/her confirm. This is why Pod alerts are not handled automatically..\n```\n\nWe are not talking about pod alerts. In pod alerts, user must do something (as in _Ok, I heard that pod will end in 2 hours_ or _Ok, low insulin reservoir_ ...)\n\nIn each alert, user must prepare an action to come (change pod). \n\nWith DST, the user has nothing to do. If user has no options to choose or to do, why bugger him/her with a useless question?"
+  },
+  {
+   "id": 1784224283,
+   "user": "robertrub",
+   "created_at": "2023-10-29T21:03:14Z",
+   "body": "_Btw: Even though I got the DASH Pod alert (time on Pod) to be confirmed, DASH continued to operate even when my confirmation was 5 hours later._\n\nThe problem is not the alert. It is the open loop for 3 hours.\n\nAAPS can send a message telling that pump has been set to the DST change if you want. It is useless but why not.\n\nYou phone, computer, car etc don't show an alert telling you that it has set the new DST time."
+  },
+  {
+   "id": 1784226477,
+   "user": "vanelsberg",
+   "created_at": "2023-10-29T21:12:32Z",
+   "body": "> The problem is not the alert. It is the open loop for 3 hours.\r\n\r\nIMHO\r\n**As all Loop calculations are time based the only sensible and safe(!) way to handle DST changes is to STOP the loop.\r\nBecause of safety concerns I strongly feel we should not change this!**\r\n\r\n"
+  },
+  {
+   "id": 1784226639,
+   "user": "vanelsberg",
+   "created_at": "2023-10-29T21:13:15Z",
+   "body": "Only know EROS/DASH but in general I do not see DST as a problem. However I can imagine users being confused and concerned about this. They should not be?\r\n\r\n* User should know about DST\r\n* User may need to take appropriate actions (mostly pump specific, YMMV).\r\n\r\nMakes no sense trying  to \"automate\" this at this mostly depends on the type of change (DST or TZ travel) as wel as pump & user/profile specifics as described in documentation?"
+  },
+  {
+   "id": 1784228364,
+   "user": "vanelsberg",
+   "created_at": "2023-10-29T21:21:12Z",
+   "body": "> The problem is not the alert. It is the open loop for 3 hours.\r\n\r\nHow much of a problem is this actually? It is not for me.\r\n\r\nAAPS switches to standard basals which should be ok in most cases. Sensor alert should protect.\r\nWhen in doubt: set an alarm clock for a wake-up to check?\r\n\r\n"
+  },
+  {
+   "id": 1784237075,
+   "user": "vanelsberg",
+   "created_at": "2023-10-29T22:00:04Z",
+   "body": ">  why bugger him/her with a useless question?\r\n\r\nI get your point and you may be are right here.\r\nPersonally I do not think it is useless? Confirming means the user tells the Pod to update the time on the Pod \"_now_\".\r\n\r\nYes, this could be automated. But as this is not a trivial change in the Pod's operational logic it could have unknown side effects? It affects the Pod's internal default basal rates, could triggering a secondary alert (expiry) or even a Pod fault? So implementing such should not be seen lightly.\r\n\r\n_Anyway, I would prefer to be around when Pod's time is reprogrammed. I know - I'm a tech ;-)_\r\n_For the general user, yes this is maybe not a bad idea._"
+  }
+ ]
+}

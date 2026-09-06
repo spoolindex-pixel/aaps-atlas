@@ -1,0 +1,255 @@
+{
+ "id": 491961096,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1009,
+ "title": "Google Pixel 3a, Dexcom G5",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1009",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2019-09-11T00:46:41Z",
+ "closed_at": "2021-02-18T18:44:40Z",
+ "comment_count": 47,
+ "body": "Anyone have any luck with xDrip on a Google Pixel 3a running android 10 connecting to Dexcom G5?\r\n\r\nMy logs show continuous \"No valid timestamp stored for transmitter: 41U5BR\", and Classic Status Page says \"Bluetooth Device: None Set\".  Was working with a Moto G6 before.",
+ "comments": [
+  {
+   "id": 530421171,
+   "user": "Webifi",
+   "created_at": "2019-09-11T15:00:31Z",
+   "body": "Not exactly sure what fixed it, but it's working now on my Pixel 3a.\r\n\r\nThings I did:\r\n1. Disabled collection in xdrip.\r\n2. Installed Dexcom G5 Mobile app (modified version that allows use on unsupported devices), restarted phone, and wasn't able to get the transmitter working with the dexcom app either.\r\n3. Changed the device name of my phone's Bluetooth to something shorter, without spaces, apostrophes, etc.\r\n4. Restarted phone again.  Dexcom G5 app started to be able to communicate with transmitter.\r\n5. Uninstalled Dexcom G5, re-enabled G5 collection in xdrip. xdrip was now able to communicate with the transmitter.\r\n"
+  },
+  {
+   "id": 531496486,
+   "user": "IsaacRoitman",
+   "created_at": "2019-09-14T17:08:33Z",
+   "body": "Having the exact same issue on my Pixel 3a XL ever since changing the sensor yesterday; no Bluetooth connection and seeing \"No valid timestamp stored for transmitter\".  \r\n\r\nStill not working after changing the phone / BT name."
+  },
+  {
+   "id": 531509401,
+   "user": "Webifi",
+   "created_at": "2019-09-14T20:05:54Z",
+   "body": "I ran into the issue again after closing this issue, but fumbling for a bit was able to clear it up.  Still not exactly sure what fixed it as my \"fix\" was more analogous to a monkey pounding on the keyboard, doing most of this with my BG hovering around 40-60 mg/dL .  (Love xdrip, but its UI does require way too much cognitive load for me in that state.)\r\n\r\nProbably the most relevant things I did while flailing about:\r\n1. Set scan for G5 constantly.\r\n2. Removed any G5 pairings in the phone's Bluetooth settings.\r\n3. Restarted phone. (both restart, and power off, power on.)\r\n4. Opened up the phone's bluetooth pairing screen and Xdrip in split screen mode.  Keeping the phone awake, waited for the G5 to pop up on the phone's Bluetooth list (didn't pair it there), and hit \"RESTART COLLECTOR\" in Xdrip's \"Classic Status Page\", then switched to \"G5/G6 Status\" and waited for a successful connection.  (Probably did 3 & 4 a half dozen times before it started to work again.)\r\n\r\nBeen working for about 2 days now without issue.  Really not sure what's going on.\r\n\r\nEDIT:  I also disabled collection in xdrip, re-installed the [modified \"official\" G5 app](https://www.reddit.com/r/diabetes/comments/6xvwks/oc_build_your_own_dexcom_g5_android_app_no_phone/), did 2 & 3 from above, got it working there, then uninstalled the \"official\" app, re-enabled G5/G6 in xdrip, (didn't work), then started flailing about as above. "
+  },
+  {
+   "id": 531510353,
+   "user": "IsaacRoitman",
+   "created_at": "2019-09-14T20:20:35Z",
+   "body": "Glad it's working for you!\n\nIn an effort to troubleshoot I tried going back to the G6 receiver... It also couldn't find or pair with the transmitter.\n\nSo I'm assuming the transmitter is defective, just spoke to Dexcom support and they are sending a replacement.\n________________________________\nFrom: Webifi <notifications@github.com>\nSent: Saturday, September 14, 2019 4:06:01 PM\nTo: NightscoutFoundation/xDrip <xDrip@noreply.github.com>\nCc: Isaac Roitman <isaac_roitman@hotmail.com>; Comment <comment@noreply.github.com>\nSubject: Re: [NightscoutFoundation/xDrip] Google Pixel 3a, Dexcom G5 (#1009)\n\n\nI ran into the issue again after closing this issue, but fumbling for a bit was able to clear it up. Still not exactly sure what fixed it as my \"fix\" was more analogous to a monkey pounding on the keyboard.\n\nThings I did, in random order while flailing about:\n\n  1.  Set scan for G5 constantly.\n  2.  Removed any G5 pairings in the phone's Bluetooth settings.\n  3.  Restarted phone. (both restart, and power of,f power on.)\n  4.  Opened up the phone's bluetooth pairing screen and Xdrip in split screen mode. Keeping the phone awake, waited for the G5 to pop up on the phone's Bluetooth list (didn't pair it there), and hit \"RESTART COLLECTOR\" in Xdrip's \"Classic Status Page\", then switched to \"G5/G6 Status\" and waited for a successful connection. (Probably did 3 & 4 a half dozen times before it started to work again.)\n\nBeen working for about 2 days now without issue. Really not sure what's going on.\n\n—\nYou are receiving this because you commented.\nReply to this email directly, view it on GitHub<https://github.com/NightscoutFoundation/xDrip/issues/1009?email_source=notifications&email_token=AMUPPYY2IDBEZHGWZKKWNSDQJU72TA5CNFSM4IVN6SYKYY3PNVWWK3TUL52HS4DFVREXG43VMVBW63LNMVXHJKTDN5WW2ZLOORPWSZGOD6XDBGI#issuecomment-531509401>, or mute the thread<https://github.com/notifications/unsubscribe-auth/AMUPPYYBFENTBPAZ3EAJN4DQJU72TANCNFSM4IVN6SYA>.\n"
+  },
+  {
+   "id": 532588242,
+   "user": "nsghub",
+   "created_at": "2019-09-18T08:51:30Z",
+   "body": "Do you still having errors? I am also using a Pixel 3a, but did not upgrade to Android 10 yet."
+  },
+  {
+   "id": 532757007,
+   "user": "Webifi",
+   "created_at": "2019-09-18T16:13:57Z",
+   "body": "Working so far.   Not sure if/when I'll run in to issues again, nor am I exactly sure what I did to fix it."
+  },
+  {
+   "id": 536196443,
+   "user": "nsghub",
+   "created_at": "2019-09-28T14:52:52Z",
+   "body": "I've also upgraded my Pixel 3a to Android 10. Missed the first reading but that was probably because the setup was still running afert the first reboot. Since then no issues, runs as fine as with Android 9."
+  },
+  {
+   "id": 536241013,
+   "user": "IsaacRoitman",
+   "created_at": "2019-09-29T02:16:03Z",
+   "body": "Looks good now!  Was actually a defective Dexcom transmitter and not the Android 10 upgrade, just weird timing.\n________________________________\nFrom: nsghub <notifications@github.com>\nSent: Saturday, September 28, 2019 10:53:00 AM\nTo: NightscoutFoundation/xDrip <xDrip@noreply.github.com>\nCc: Isaac Roitman <isaac_roitman@hotmail.com>; Comment <comment@noreply.github.com>\nSubject: Re: [NightscoutFoundation/xDrip] Google Pixel 3a, Dexcom G5 (#1009)\n\n\nI've also upgraded my Pixel 3a to Android 10. Missed the first reading but that was probably because the setup was still running afert the first reboot. Since then no issues, runs as fine as with Android 9.\n\n—\nYou are receiving this because you commented.\nReply to this email directly, view it on GitHub<https://github.com/NightscoutFoundation/xDrip/issues/1009?email_source=notifications&email_token=AMUPPY6SOFL5G7BT2BARBJ3QL5VUZA5CNFSM4IVN6SYKYY3PNVWWK3TUL52HS4DFVREXG43VMVBW63LNMVXHJKTDN5WW2ZLOORPWSZGOD723KWY#issuecomment-536196443>, or mute the thread<https://github.com/notifications/unsubscribe-auth/AMUPPY76FOHOCVHBBCBGAHTQL5VUZANCNFSM4IVN6SYA>.\n"
+  },
+  {
+   "id": 538078787,
+   "user": "nshtg",
+   "created_at": "2019-10-03T18:55:49Z",
+   "body": "My transmitter was working perfectly until I upgraded to Android 10; Now the brainstate is caught in \"scanning\" forever and no values are received.\r\n\r\nMy Dexcom receiver worked for an hour and then it stopped receiving data too.\r\n\r\n@jamorham Maybe XDrip+ in combination with Android 10 is killing the transmitters?!\r\n\r\nEdit: Using Dexcom G6."
+  },
+  {
+   "id": 538086002,
+   "user": "gregorybel",
+   "created_at": "2019-10-03T19:16:02Z",
+   "body": "it looks like android 10 has some strange/new behaviours with BLE bonding."
+  },
+  {
+   "id": 538116527,
+   "user": "nshtg",
+   "created_at": "2019-10-03T20:33:07Z",
+   "body": "@gregorybel \r\nDowngrading to Android 9 fixed all issues. Receiver started to work again after 30min too."
+  },
+  {
+   "id": 538301906,
+   "user": "gregorybel",
+   "created_at": "2019-10-04T08:29:48Z",
+   "body": "then it confirms it has something to do with Android 10. thanks for info.\r\n\r\nlet's hope google provides a fix soon."
+  },
+  {
+   "id": 538305714,
+   "user": "nshtg",
+   "created_at": "2019-10-04T08:38:29Z",
+   "body": "@gregorybel \r\nMaybe the new privacy changes have something to do with it? I read you need new permissions in the manifest to allow BLE scans.\r\n\r\nhttps://developer.android.com/about/versions/10/privacy/changes#methods-fine-location"
+  },
+  {
+   "id": 538724241,
+   "user": "nathanac2013",
+   "created_at": "2019-10-06T08:39:33Z",
+   "body": "I got it to work , it was being difficult untill I \r\n\r\nAdb shell pm grant com.eveningoutpost.dexdrip Android.permissions.WRITE_SECURE_SETTINGS\r\n\r\nI'm typing that off the top of my head so if it doesn't work make sure the package name is right \r\n\r\nAdb shell pm list packages | grep -i xdrip;\r\nThat will give you the package name and make sure the android.permisions.WRITE_SECURE_SETTINGS is the right one a few other apps use the same work around so a quick Google search or a navbar app will tell you"
+  },
+  {
+   "id": 538724677,
+   "user": "nshtg",
+   "created_at": "2019-10-06T08:45:36Z",
+   "body": "@jamorham \r\nMaybe this could fix some of the problems seen on Android 10?"
+  },
+  {
+   "id": 549183977,
+   "user": "jtargoff",
+   "created_at": "2019-11-03T22:06:24Z",
+   "body": "I struggled for 24 hours with new transmitter on what had been working on my 3a with prior transmitter, and then appinfo suggestion (above, 10/18/19) from nshtg solved the issue.  Thank you!\r\nI have always had OB1 collector on. "
+  },
+  {
+   "id": 549949635,
+   "user": "BenMc19",
+   "created_at": "2019-11-05T18:14:50Z",
+   "body": "I've tried enabling that permission, as well as the unbounding option.  Granted this transmitter is way past its expiration date.  I'll give it a day or so fiddling with the settings.  If I can't get it to work I'll just use an old Android phone as a receiver until it dies, then maybe move to the Dexcom receiver until there's a permanent solution.  \r\n\r\nI know these major updates are a pain, but thank you again @jamorham for all the hard work.  I mentioned it in another thread, but if you are interested in purchasing a Pixel 3a (assuming thats the most affordable reference device for these updates) I'm sure many of us would love to help.  You have single handedly saved me so much money over the past 3 years or so."
+  },
+  {
+   "id": 549970505,
+   "user": "Webifi",
+   "created_at": "2019-11-05T19:02:48Z",
+   "body": "I have the following set, though I'm not sure if they're all required for things to work:\r\n\r\n![Screenshot_20191105-125616](https://user-images.githubusercontent.com/5082671/68237523-e14f6980-ffcc-11e9-9a98-30527af129e7.png)\r\n\r\n![Screenshot_20191105-125630](https://user-images.githubusercontent.com/5082671/68237533-e6141d80-ffcc-11e9-8566-298f35a45ba1.png)\r\n\r\n\r\nThe steps that seem to most reliably fix the issue for me are:\r\n\r\n1. Forgetting the DexcomAM devices(s) in your Bluetooth Settings -> Connected Devices.\r\n2. Select \"Pair a new devices\" in your phone's Bluetooth settings (but don't actually select or pair the device here.  Just let it scan...)\r\n3. Get split screen going so you can see both the Bluetooth scanning and x-drip at the same time.\r\n4. In x-drip, go to system status -> classic status page.  Click restart collector.  switch to G5/G6 Status.    Keep your phone awake.  Wait for the dexcom device to show up in your Bluetooth settings scanner, (Could take up to five minutes, depending on the last time your transmitter woke up to send data).\r\n5. If xdrip doesn't authorize and connect,  try restarting the collector. \r\n6. May take a few tries for it to work.\r\n"
+  },
+  {
+   "id": 549972425,
+   "user": "BenMc19",
+   "created_at": "2019-11-05T19:07:22Z",
+   "body": "@Webifi  With all of those steps and settings, you have had good result?  Does it stick after a reboot or is it a temporary fix?"
+  },
+  {
+   "id": 549972999,
+   "user": "Webifi",
+   "created_at": "2019-11-05T19:08:45Z",
+   "body": "Seems to have stuck so far.   Been running on a new transmitter since Oct. 13th without issue."
+  },
+  {
+   "id": 549975275,
+   "user": "spencertollefson",
+   "created_at": "2019-11-05T19:14:14Z",
+   "body": "I'll share my settings as well. My coverage has been fantastic since I turned off OB1 and used these (few) settings with my G5 and Pixel 3a.\r\n\r\nAfter rebooting my device this morning for the newest security patch, I did need to `RESTART COLLECTOR` and `FORGET DEVICE`. It picked up the signal immediately afterward.\r\n\r\n![image](https://user-images.githubusercontent.com/22157182/68238081-67bc7900-ffd6-11e9-9b88-95241a619b17.png)\r\n\r\n![image](https://user-images.githubusercontent.com/22157182/68238091-6c812d00-ffd6-11e9-8a39-500f2a07ebc0.png)\r\n\r\n![image](https://user-images.githubusercontent.com/22157182/68238116-7efb6680-ffd6-11e9-9394-5b0fccc0fccb.png)"
+  },
+  {
+   "id": 549979022,
+   "user": "Webifi",
+   "created_at": "2019-11-05T19:22:45Z",
+   "body": "I've noticed that not using the native algorithm kills the battery on my G5 transmitters pretty quickly, so I recommend using it.   If the native algorithm is disable from being too old, you can reset the transmitter's timer:\r\nhttps://github.com/NightscoutFoundation/xDrip/issues/386\r\n"
+  },
+  {
+   "id": 550023595,
+   "user": "BenMc19",
+   "created_at": "2019-11-05T21:16:01Z",
+   "body": "> I have the following set, though I'm not sure if they're all required for things to work:\r\n> \r\n> ![Screenshot_20191105-125616](https://user-images.githubusercontent.com/5082671/68237523-e14f6980-ffcc-11e9-9a98-30527af129e7.png)\r\n> \r\n> ![Screenshot_20191105-125630](https://user-images.githubusercontent.com/5082671/68237533-e6141d80-ffcc-11e9-8566-298f35a45ba1.png)\r\n> \r\n> The steps that seem to most reliably fix the issue for me are:\r\n> \r\n> 1. Forgetting the DexcomAM devices(s) in you Bluetooth Settings -> Connected Devices.\r\n> 2. Select \"Pair a new devices\" in your phone's Bluetooth settings (but don't actually select or pair the device here.  Just let it scan...)\r\n> 3. Get split screen going so you can see both the Bluetooth scanning and x-drip at the same time.\r\n> 4. In x-drip, go to system status -> classic status page.  Click restart collector.  switch to G5/G6 Status.    Keep your phone awake.  Wait for the dexcom device to show up in your Bluetooth settings scanner, (Could take up to five minutes, depending on the last time your transmitter woke up to send data).\r\n> 5. If xdrip doesn't authorize and connect,  try restarting the collector.\r\n> 6. May take a few tries for it to work.\r\n\r\nWhatever voodoo magic this is, has made mine work properly for the past 2 hours.  I have commented on a few other threads with these issues, so after a day or so I will copy your solution over.  "
+  },
+  {
+   "id": 550027751,
+   "user": "spencertollefson",
+   "created_at": "2019-11-05T21:25:51Z",
+   "body": "@Webifi - thanks for the battery tip. I had no idea! I just switched to trying out the settings you shared. I'll give it another go."
+  },
+  {
+   "id": 550046506,
+   "user": "BenMc19",
+   "created_at": "2019-11-05T22:13:27Z",
+   "body": "@Webifi Was out of range for one reading, and then it went back to failing to read and scanning.  Something you did definitely made it work better, but still must be something off.  I'm going to keep messing with settiings and hopefully I'll get something to click."
+  },
+  {
+   "id": 550078625,
+   "user": "Webifi",
+   "created_at": "2019-11-06T00:00:10Z",
+   "body": "Post a screenshot of your G5/G6 Status page if you can."
+  },
+  {
+   "id": 550109332,
+   "user": "BenMc19",
+   "created_at": "2019-11-06T02:10:26Z",
+   "body": "First picture is a screenshot 15 minutes or so after it lost connection. As of right now the phone has been in range and it is 47 minutes since last reading. \r\n\r\nI can fix by \"forgetting device\" in xdrip app, and it works great until next time it missed a reading. \r\n\r\n![Screenshot_20191105-193404](https://user-images.githubusercontent.com/57396167/68262228-41afcc80-0008-11ea-90e1-b26a55e50a20.jpg)\r\n\r\n![Screenshot_20191105-195305](https://user-images.githubusercontent.com/57396167/68262244-4d02f800-0008-11ea-8bfe-2934847df18b.jpg)\r\n\r\n"
+  },
+  {
+   "id": 550110006,
+   "user": "BenMc19",
+   "created_at": "2019-11-06T02:13:33Z",
+   "body": "Here was the screenshot of it before it lost connection. \r\n![Screenshot_20191105-182821](https://user-images.githubusercontent.com/57396167/68262374-bd117e00-0008-11ea-939c-6a82fd206bcd.jpg)\r\n"
+  },
+  {
+   "id": 550330259,
+   "user": "Webifi",
+   "created_at": "2019-11-06T14:20:51Z",
+   "body": "Battery is getting kinda low there.  Could be the transmitter isn't waking up exactly at its predicted 5 min intervals.  How long has that transmitter been active.\r\n\r\nDo you have  \"Less common settings\" -> \"Aggressive service restarts\" enabled?\r\n\r\nAlso \"Less common settings\" -> \"Bluetooth Settings\" -> \"G5 Bluetooth Watchdog\"?"
+  },
+  {
+   "id": 550374768,
+   "user": "BenMc19",
+   "created_at": "2019-11-06T15:57:04Z",
+   "body": "@Webifi   Yes I have those settings.  I let it continue to go and usually within an hour it did pick back up, and then filled in the missing data, without me having to forget the device.  Definitely is an old transmitter, so that could be the issue.  I am glad to see that it does eventually resolve itself, even if it takes a bit longer.  Thanks for all your help!"
+  },
+  {
+   "id": 550484910,
+   "user": "BenMc19",
+   "created_at": "2019-11-06T20:23:37Z",
+   "body": "Lost connection this morning and it failed to regain signal.  Thought I would do a test, as I have an old android phone here at work running Android 8 (LG G6).  I reconnected my Dexcom to the old phone, force closed the xdrip app on my current phone, to see if I could deduce the problem. \r\n\r\nI purposefully took the phone a distance away to make it miss a reading, and after 15 minutes or so, I went to retrieve it, and it reconnected on the next available opportunity.  Considering that my OnePlus 6T worked flawlessly on Android 9, and the fact that this transmitter works perfectly with the LG G6 device, there has to be something in my Android 10 update that is causing connection issues.  \r\n\r\nAlso, there aren't many phones with Android 10 on it (may just be Pixels and OnePlus phones).  So it is possible that it is just OnePlus Android 10 that is the culprit, which is why it doesn't reproduce this on the Pixels.  Who knows.\r\n\r\nThis is the screenshot of the LG G6 status screen for comparison to my OnePlus 6T screenshot if that is helpful.\r\n![Screenshot_2019-11-06-13-50-34](https://user-images.githubusercontent.com/57396167/68334839-03b2b700-00a1-11ea-99be-715c6f22dcec.png)\r\n"
+  },
+  {
+   "id": 550646135,
+   "user": "BenMc19",
+   "created_at": "2019-11-07T03:35:39Z",
+   "body": "Update:\r\n\r\nTried something this afternoon when i experienced the inability for xdrip to automatically reconnect. I deleted the app, and downloaded the latest nightly (November 2nd). Going on 6 hours with multiple walk away disconnects and everything is working great so far. \r\n\r\nNot sure if it was the fact of just redownloading any xdrip app, or if specifically getting the newer nightlies made the difference, either way so far it is working great. "
+  },
+  {
+   "id": 551160711,
+   "user": "Webifi",
+   "created_at": "2019-11-07T16:38:52Z",
+   "body": "Sorry, should have asked what version x-drip you're running.  I've been running on the alpha update channel for awhile now. "
+  },
+  {
+   "id": 552143666,
+   "user": "jedduff123",
+   "created_at": "2019-11-09T22:30:54Z",
+   "body": "Thought I would jump in - got a new OnePlus 7T last night - received some initial readings then during the evening dropped and have not been able to connect.  Was on my way to the store to get another phone and saw this thread.  Really appreciate everyone taking the time to look.  What I did was the following, as above:  Unchecked the \"Use the OB1 Collector\" - I was immediately asked to provide a calibration.  I also through Android - went into Apps & Notifications - xDrip - Advanced - Modify System Settings and enabled Allow modifying system settings.  As stated above.  Since doing this, I have been able to reboot, walk-away from my phone and haven't dropped.  Will keep everyone posted but so far so good.  Again appreciate the info above, it is greatly appreciated!!\r\n"
+  },
+  {
+   "id": 563269605,
+   "user": "Webifi",
+   "created_at": "2019-12-09T14:42:50Z",
+   "body": "Made the mistake of updating to the most recent nightly of x-drip.  Now, even after reverting to the previous version, X-Drip stops getting data from my G5, requiring me to jump through my aforementioned hoops to get it going again -- which will only last a couple hours or less. \r\n\r\nCan't seem to get my x-drip back in to the magic state it was in before."
+  },
+  {
+   "id": 564979602,
+   "user": "dougboss",
+   "created_at": "2019-12-12T12:05:02Z",
+   "body": "Webifi, I'm having same issue, since recent nightly update I can't maintain a decent connection to g5 on pixel 3 w Android 10.  I downgraded Xdrip to last version that worked but no change .... "
+  },
+  {
+   "id": 565517333,
+   "user": "Webifi",
+   "created_at": "2019-12-13T16:54:09Z",
+   "body": "Not sure if it's just a coincidence or if it will actually last, but since doing the following, xdrip has not lost connection with my G5:\r\n\r\n1. Settings -> Less common settings -> Bluetooth Settings\r\n2. Enable \"G5 Bluetooth Watchdog\"\r\n3. Enable \"Always discover services\"\r\n4. Enable \"Allow blucon unbonding\"\r\n5. Settings -> Less common settings\r\n6. Enable \"Aggressive service restarts\"\r\n7. Restart phone\r\n8. Follow steps from https://github.com/NightscoutFoundation/xDrip/issues/1009#issuecomment-549970505\r\n"
+  },
+  {
+   "id": 566643878,
+   "user": "Webifi",
+   "created_at": "2019-12-17T16:37:35Z",
+   "body": "Must have been a coincidence, since it finally broke again.\r\n\r\nUninstalled x-drip, and re-installed x-drip (lost my history and settings), then re-configured.  Seems to be working so far.\r\n"
+  },
+  {
+   "id": 781532933,
+   "user": "Navid200",
+   "created_at": "2021-02-18T18:04:41Z",
+   "body": "@Webifi Would you please close this issue?\r\nWe are working on improving documentation.\r\nThere are already two support channels with some documentation provided on each.\r\nhttps://www.facebook.com/groups/xDripG5\r\nhttps://gitter.im/jamorham/xDrip-plus\r\n\r\nThese issues are supposed to be used for reporting bugs and feature requests.\r\nWould you please help us accomplish that?\r\nThanks"
+  },
+  {
+   "id": 781557025,
+   "user": "Webifi",
+   "created_at": "2021-02-18T18:44:19Z",
+   "body": "I'll close this issue, but documentation that require you create an account to read, as is often the case with facebook, or require you to sift through an endless thread of messages and/or create an account to be one of the many that re-ask the same questions over and over, as is the case with gitter, is a non-starter for me, and likely many others."
+  }
+ ]
+}

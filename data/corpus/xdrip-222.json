@@ -1,0 +1,255 @@
+{
+ "id": 278090515,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 222,
+ "title": "Feature Request: Show full Glucose Reading in Notification bar",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/222",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2017-11-30T11:41:10Z",
+ "closed_at": "2021-02-22T17:04:54Z",
+ "comment_count": 55,
+ "body": "Hi,\r\n\r\nfirst I want to thank all contributors for this great app! Makes my life with Type 1 a lot easier.\r\n\r\nHope its OK to request a feature this way.\r\n\r\nI have an application named AccuBattery which always shows the battey percentage as an Notification bar Icon. I would love to see this implemented with the current BG Reading.\r\n\r\nThanks Max\r\n\r\n![screenshot_20171130-122221_li 2](https://user-images.githubusercontent.com/8474446/33429049-83f13818-d5cb-11e7-8c92-a47518c9887d.jpg)\r\n\r\n",
+ "comments": [
+  {
+   "id": 348420281,
+   "user": "gitanO0",
+   "created_at": "2017-12-01T07:17:13Z",
+   "body": "+1"
+  },
+  {
+   "id": 348423469,
+   "user": "AdrianLxM",
+   "created_at": "2017-12-01T07:36:13Z",
+   "body": "When I last looked at it, google removed the possibility to add text there (at least for non-system apps) - and also the possibility to add dynamically rendered icons. Too many apps where pushing advertisement there, without the possibility for the user to know what app it was :/\r\nNewer versions of Android might get (have gotten) the possibility to do that again?\r\n\r\nWhat apps then usually did was exchanging the icon. Having a range from 40 to 400, this would mean more than 360 icons for mg/dl alone. Additionally those for mmol/l."
+  },
+  {
+   "id": 348440903,
+   "user": "jamorham",
+   "created_at": "2017-12-01T09:05:20Z",
+   "body": "Even if it is possible to dynamically render the icon I believe its going to be limited to a tiny space and getting 3 digits in there is going to pretty difficult and for it to be readable."
+  },
+  {
+   "id": 348577010,
+   "user": "gitanO0",
+   "created_at": "2017-12-01T18:50:37Z",
+   "body": "What about some sort of middle ground... perhaps three or four icons:  red:  low, green:  in range, yellow: high... or some such thing."
+  },
+  {
+   "id": 348686343,
+   "user": "micro17",
+   "created_at": "2017-12-02T11:38:17Z",
+   "body": "Great to see that my suggetion receives attention.Thanks for this!\r\n\r\nIm running the Pixel 2 XL with Android Oreo. Im not sure how AccuBattery implements this feature as im not really an expert in that regard...\r\n\r\n\r\nPerhaps ill photoshop a mockup to see if 3 digits would be feasible. But Im hopeful that it would fit the space as accubattery uses 2 digits + the circle.\r\n\r\nThe color solution depends on the android version youre running. From my experience Android Oreo converts every notification with colored icons to b/w. "
+  },
+  {
+   "id": 349037161,
+   "user": "gitanO0",
+   "created_at": "2017-12-04T17:27:10Z",
+   "body": "Well... I guess the takeaway here is that \"more information is better\".  Currently the status bar icon of a static xdrip symbol brings very little to no \"information\" value.  There are certainly tons of apps, such as this weather app I use that successfully show dynamic info in that space... such as the current temp (which in \"f\" can range from -xx to +xxx temps).  So, it certainly is possible.  The heartache seems to be on the implementation side... all the work to make icons with each BG value.  So, the bottom line is... is the value gained by having a dynamic status bar icon greater than the work involved?  I'd certainly volunteer my time in the grunt work of creating those BG png files.  We'd be looking at what... Maybe an \"L\" symbol for 40 and lower... then 41 -> 300 or so?  Then an \"H\" for high?"
+  },
+  {
+   "id": 349609950,
+   "user": "Klaus3d3",
+   "created_at": "2017-12-06T11:19:20Z",
+   "body": "Hi there,\r\n\r\nmy guess is that a dynamic xdrip symbol will also bring that information on an always on display wich ist a feature i'd really like.\r\nTo bring the BG-Level on the AOD it would maybe also possible use to the static note, wich you can put on the AOD. If this is a string, wich is somewhere found in the systems settings, it should be possible to dynamize it. Or maybe, similar to gitanO0s request, changing the color of the AOD Clock should be easely done and should work for all AOD generations, i guess. "
+  },
+  {
+   "id": 355689260,
+   "user": "TheDonDan",
+   "created_at": "2018-01-05T23:03:37Z",
+   "body": "+1"
+  },
+  {
+   "id": 361244728,
+   "user": "Klaus3d3",
+   "created_at": "2018-01-29T13:27:25Z",
+   "body": "Hi there, i think this should'nt be any problem at all with since Marshmallow seems to accept Text as Icon. I made myself an app with Tasker and autonotification to show the value in the notification bar and on AOD. So it should'nt be any problem to do this directly from XDrip+.\r\nSee: https://www.google.de/amp/s/amp.reddit.com/r/tasker/comments/4sarl0/dev_autonotification_updates_full_status_bar_icon/"
+  },
+  {
+   "id": 364155283,
+   "user": "Klaus3d3",
+   "created_at": "2018-02-08T15:53:39Z",
+   "body": "@jamorham \r\n@AdrianLxM \r\n\r\nfrom api 23 + i had luck with this code for a 2 -3 character long String as notification icon.\r\nThe Textsize will be dynamicly changed to fit into the icon.\r\n\r\nString text =\"99\";\r\n\r\n        public void ClickButton (View view) {\r\n        Paint paint = new Paint();\r\n        Integer width = (int) getResources().getDimension(android.R.dimen.notification_large_icon_width);\r\n        Integer height = (int) getResources().getDimension(android.R.dimen.notification_large_icon_height);\r\n        paint.setStyle(Paint.Style.FILL);\r\n        paint.setColor(Color.WHITE);\r\n        paint.setAntiAlias(true);\r\n        paint.setTypeface(Typeface.MONOSPACE);\r\n        paint.setTextAlign(Paint.Align.LEFT);\r\n        paint.setTextSize(16);\r\n        Rect bounds = new Rect();\r\n        paint.getTextBounds(text, 0, text.length(), bounds);\r\n        float textsize = 16 * width / bounds.width();\r\n        paint.setTextSize(textsize);\r\n        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ALPHA_8);\r\n        Canvas c = new Canvas(bitmap);\r\n        c.drawText(text, 0, height-paint.descent(), paint);\r\n        Notification.Builder mBuilder =\r\n                new Notification.Builder(this)\r\n                        .setSmallIcon(Icon.createWithBitmap(bitmap))\r\n                        .setContentTitle(Integer.toString(width))\r\n                        .setContentText(Float.toString(textsize))\r\n                        .setOngoing(false);\r\n\r\n        int mNotificationId = 001;\r\n        NotificationManager mNotifyMgr = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);\r\n        mNotifyMgr.notify(mNotificationId, mBuilder.build());\r\n\r\n    }\r\n}\r\n\r\nI'm not a coder at all, so integrating this into xdrip+ is way to complex for me."
+  },
+  {
+   "id": 368237997,
+   "user": "jamorham",
+   "created_at": "2018-02-24T15:58:10Z",
+   "body": "@klaus3d3 this is very helpful thank you"
+  },
+  {
+   "id": 369669925,
+   "user": "gitanO0",
+   "created_at": "2018-03-01T17:38:40Z",
+   "body": "Wow, just saw this feature request has been updated.  Is this going to make it into a future release?  I just got a phone with \"always on display\" which always shows the little xdrip+ \"drop\" symbol on my always-on screen, which is totally useless.  Would be SSSSOOOOO great if instead of that, the icon/symbol was the actual glucose reading and even another step further... the glucose reading and a small up or down arrow (or no arrow if flat) next to it showing the trend.  But I know that may be a stretch."
+  },
+  {
+   "id": 371104670,
+   "user": "jamorham",
+   "created_at": "2018-03-07T11:07:11Z",
+   "body": "Can anyone who is interested in this feature please chime in with phone model, and android version and whether it supports always on display? There are complexities with making this work correctly."
+  },
+  {
+   "id": 371118240,
+   "user": "micro17",
+   "created_at": "2018-03-07T12:06:37Z",
+   "body": "Pixel 2 XL, Stock Andoid 8.1.0 + always on display here."
+  },
+  {
+   "id": 371197418,
+   "user": "gitanO0",
+   "created_at": "2018-03-07T16:32:25Z",
+   "body": "Same for me:  Pixel 2 XL, Stock Andoid 8.1.0 + always on display here."
+  },
+  {
+   "id": 371302503,
+   "user": "gitanO0",
+   "created_at": "2018-03-07T22:08:40Z",
+   "body": "swissalpine, did you wait for the next reading?  I think it has to go through a full data refresh before you'll see the number."
+  },
+  {
+   "id": 371303066,
+   "user": "swissalpine",
+   "created_at": "2018-03-07T22:10:24Z",
+   "body": "Yes. Tried many things, restart and so on, nothing."
+  },
+  {
+   "id": 371306391,
+   "user": "izywizy",
+   "created_at": "2018-03-07T22:22:14Z",
+   "body": "Working fine on my Oneplus 5 Android 8.0, although the font could do with increasing a point or two to match the time and other stuff on the notification bar on the 5 inch screen.\r\n\r\n... and thanks very much for this fantastic app, using it with Libre/Blucon.\r\n\r\n![screenshot_20180307-221259](https://user-images.githubusercontent.com/36773149/37121696-f1df3b0a-2255-11e8-9e16-522776040dd4.jpg)\r\n\r\n"
+  },
+  {
+   "id": 371313728,
+   "user": "gitanO0",
+   "created_at": "2018-03-07T22:50:11Z",
+   "body": "I'll agree with izywizy.  Would be great, if possible to bump that font size up a hair.  It's much smaller on my device than the other status bar texts.  \r\n![screenshot_20180307-154850](https://user-images.githubusercontent.com/6887761/37122833-29aa9e08-221f-11e8-9c36-e14eb9004a3b.png)\r\n"
+  },
+  {
+   "id": 371338569,
+   "user": "gitanO0",
+   "created_at": "2018-03-08T00:49:38Z",
+   "body": "Ok so I rebooted my device and the number is now reverted to the drop icon. Not sure how to get it back."
+  },
+  {
+   "id": 371347702,
+   "user": "gitanO0",
+   "created_at": "2018-03-08T01:36:38Z",
+   "body": "After about 15 minutes or so the icon changed back to the bg number. Odd."
+  },
+  {
+   "id": 371368782,
+   "user": "TecMunky",
+   "created_at": "2018-03-08T03:40:24Z",
+   "body": "Pixel 2 XL -- works great\r\nAlso, this is a great feature - love it.\r\nI also got a toast message.\r\nAndroid 8.1.0 - February 2018 Security Patch"
+  },
+  {
+   "id": 371371838,
+   "user": "TecMunky",
+   "created_at": "2018-03-08T04:02:53Z",
+   "body": "Jelly Pro\r\nNumber Test passed - and showed up in notifications\r\n-But Glucose Number does not appear in notification area.-\r\n\r\nWait - I just looked at it, and it is there - maybe it needed a reading first.\r\n"
+  },
+  {
+   "id": 371374837,
+   "user": "Klaus3d3",
+   "created_at": "2018-03-08T04:26:08Z",
+   "body": "@ gitan00 i think ghe text size is variable depending on how many digits your reading has. 99 has bigger font size then 100.\r\n"
+  },
+  {
+   "id": 371381306,
+   "user": "Klaus3d3",
+   "created_at": "2018-03-08T05:14:04Z",
+   "body": "@gitanO0 i had the same here. Numbers were gone after restart and reapear after 15 minutes.\r\nSo i had a look into the code...it's a Feature. :-):\r\n\r\nif (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {  \r\n**// in case the graphic crashes the system-ui we wont do it immediately after reboot so the  \r\n// user has a chance to disable the feature**  \r\n**if (SystemClock.uptimeMillis() > Constants.MINUTE_IN_MS * 15) {**  \r\nif (NumberGraphic.numberIconEnabled()) {  \r\nif ((dg != null) && (!dg.isStale())) {  \r\nfinal Bitmap icon_bitmap = NumberGraphic.getBitmap(dg.unitized);  \r\nif (icon_bitmap != null) b.setSmallIcon(Icon.createWithBitmap(icon_bitmap));  \r\n         }  \r\n       }  \r\n     }  \r\n }  \r\n\r\n\r\n\r\n\r\n\r\n"
+  },
+  {
+   "id": 371427822,
+   "user": "jamorham",
+   "created_at": "2018-03-08T09:16:51Z",
+   "body": "I might be able to increase the font a tiny bit but it runs the risk of getting truncated. It has to fit in the same size box as for example the NFC or Wifi icons on your screenshots."
+  },
+  {
+   "id": 371428463,
+   "user": "jamorham",
+   "created_at": "2018-03-08T09:19:17Z",
+   "body": "@Klaus3d3 thats right otherwise its possible for the user to potentially soft-brick their phone if they enable the feature despite the test failing."
+  },
+  {
+   "id": 371439784,
+   "user": "Klaus3d3",
+   "created_at": "2018-03-08T10:01:30Z",
+   "body": "it maybe possible to increase the text size by using a narrower font, but i guess ist already at its limits to show a 4 digit number.\r\nSee it as a Motivation to keep your Glucose Level under 100. ;-)"
+  },
+  {
+   "id": 371447049,
+   "user": "boysim",
+   "created_at": "2018-03-08T10:28:37Z",
+   "body": "works great on ZTE axon on lineage 14.1 and blucon as datasource!"
+  },
+  {
+   "id": 371554356,
+   "user": "gitanO0",
+   "created_at": "2018-03-08T17:08:39Z",
+   "body": "Ah, ok.  We just need to know that for the first 15 minutes, we'll get the drop symbol for safety reasons.  Makes sense."
+  },
+  {
+   "id": 371774368,
+   "user": "old-square-eyes",
+   "created_at": "2018-03-09T10:26:57Z",
+   "body": "Working well on S8, stock Nougat. Thanks for implementing this. Have wanted it for a long time! Will allow for BG value while navigating.\r\n\r\nAs for font size, a taller font might be more legible. At least for mmol/L which has a thinner set of characters.\r\n\r\nGreat work. Very useful.\r\n"
+  },
+  {
+   "id": 372061474,
+   "user": "gregtcm",
+   "created_at": "2018-03-10T20:03:58Z",
+   "body": "**Wow!  Thank you @jamorham.**  Just tested on a Galaxy S7 with an SW3 collecting from a Dexcom G5 and it is working well\r\n\r\n**Initial reaction ... I think an option to show the background color of in-range, high, or low would be _extremely_ helpful, too.**  Would this be hard to add?\r\n\r\nThanks again for this great feature."
+  },
+  {
+   "id": 372091803,
+   "user": "TecMunky",
+   "created_at": "2018-03-11T05:56:28Z",
+   "body": "Maybe it would be better to use a tall narrow font, so numbers over 99 don't look so small"
+  },
+  {
+   "id": 372808461,
+   "user": "cybernissart",
+   "created_at": "2018-03-13T20:32:31Z",
+   "body": "Reached the roof for testing purpose :)\r\nPolice used is probably too thin for letter display.\r\n![screenshot_20180313-090710](https://user-images.githubusercontent.com/24457611/37368254-f858b89e-2705-11e8-94cb-283174062510.jpg)\r\n"
+  },
+  {
+   "id": 373991616,
+   "user": "Klaus3d3",
+   "created_at": "2018-03-18T11:42:24Z",
+   "body": "For High and Low cases i would reduce the Text to HI and LO and maybe ER in case of missed readings, to keep the text readable."
+  },
+  {
+   "id": 379044794,
+   "user": "pmcdougal",
+   "created_at": "2018-04-05T19:08:46Z",
+   "body": "Not working on my S8 Oreo sadly. Test worked and showed the number but the actual results don't show. Tried restarting and reenabling. \r\n\r\nWould any system settings/font settings prevent it from working?"
+  },
+  {
+   "id": 379047096,
+   "user": "pmcdougal",
+   "created_at": "2018-04-05T19:17:16Z",
+   "body": "Ah well it's all fixed! The force English font setting was preventing it from working. As soon as I disabled that the numerical data showed. "
+  },
+  {
+   "id": 379077126,
+   "user": "themotoden",
+   "created_at": "2018-04-05T21:07:36Z",
+   "body": "Xiaomi Redmi 3S NOT working...( Test is not passed.\r\nAndroid 6.0.1 MIUI Global 9.2.2.0 (MALMIEK) "
+  },
+  {
+   "id": 774375275,
+   "user": "Navid200",
+   "created_at": "2021-02-06T01:46:38Z",
+   "body": "@micro17 Unless this still has not been addressed, would you please close the issue?  Thanks"
+  },
+  {
+   "id": 783523532,
+   "user": "Navid200",
+   "created_at": "2021-02-22T17:04:54Z",
+   "body": "Closing due to inactivity"
+  }
+ ]
+}

@@ -1,0 +1,81 @@
+{
+ "id": 260006162,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 184,
+ "title": "InfluxDB - change or add numeric field for \"direction\"",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/184",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2017-09-23T12:59:14Z",
+ "closed_at": "2021-02-26T13:20:07Z",
+ "comment_count": 11,
+ "body": "Hi,\r\nFirst - thanks for Xdrip+ and InfluxDB support.\r\nI'm using InfluxDB as a Cloud Upload - everything looks good, but maybe we can add new filed to transform string value \"direction\" to something numeric?\r\n\r\nNow in DB we have:\r\n```\r\ntime                delta   direction     filtered noise rssi unfiltered value_mgdl value_mmol\r\n----                -----   ---------     -------- ----- ---- ---------- ---------- ----------\r\n1506024103759000000 -4.414  Flat          164588   1     100  164588     136        7.5739263617482\r\n1506024401373000000 -7.827  FortyFiveDown 156823   1     100  156823     128        7.14297321437499\r\n```\r\nField \"Direction\" is now string, but Grafana can not visuale this filed (only on single stat as a text, without alerts, without mapping/colors), On Grafana's github is now open issue to add avability for mapping and colorize strings in singlestat plugin, but if you could add new filed with numerc value I would like to use them in grafana to visualize arrows, for ex Flat as a 0, next I can map 0 in Grafana to → :)\r\n\r\nMy mapping suggestion:\r\n```\r\n 3  = DoubleUp\r\n 2  = SingleUp\r\n 1  = FortyFiveUp\r\n 0  = Flat\r\n-1 = FortyFiveDown\r\n-2 = SingleDown\r\n-3 = DoubleDown\r\n```\r\n\r\nGuys, What do you think?",
+ "comments": [
+  {
+   "id": 331903227,
+   "user": "jamorham",
+   "created_at": "2017-09-25T14:41:49Z",
+   "body": "Direction is just calculated from the delta so I would have thought something could be done with that already. Tagging @pimeys who produced the influx integration."
+  },
+  {
+   "id": 331906506,
+   "user": "pimeys",
+   "created_at": "2017-09-25T14:51:52Z",
+   "body": "@michalterbert How I visualize the direction, I just get the derivative from `value_mmol`:\r\n\r\n```\r\nSELECT derivative(mean(\"value_mmol\"), 5m) FROM \"glucose\" WHERE $timeFilter GROUP BY time($interval) fill(null)\r\n```\r\n\r\nAnd then display it in its own graph:\r\n\r\n![delta](https://user-images.githubusercontent.com/34967/30814859-aa2c0c6c-a211-11e7-984d-ebe2506e9b85.png)\r\n\r\nNow it's nice to hear somebody else is using the InfluxDB integration. I still don't really know how to adjust the graphs for calibration, and do I even have all the data available to do that. Also I'm very interested about dashboards other people have been doing with Grafana.\r\n\r\nAny suggestions how to make this better, I'm open for them. I kind of don't like the big jumps you get when the calibration's quite off from the shown value."
+  },
+  {
+   "id": 334838298,
+   "user": "michalterbert",
+   "created_at": "2017-10-06T18:43:43Z",
+   "body": "I'm working on it (dashboards) - also are avaliable on my fork of this git repo :)\r\n\r\n![image](https://user-images.githubusercontent.com/15417117/31293051-16e2c6b2-aad6-11e7-911b-36eee20d6081.png)\r\n\r\n@pimeys are you sure that direction can be visualize by derivatice form value_mmol?\r\nmy example: \r\n![image](https://user-images.githubusercontent.com/15417117/31293127-5dbd85cc-aad6-11e7-808a-217585022a11.png)\r\n\r\nBut Direction from influx db is FortyFiveUp :/ For my the best form of visualize this will be SingleStat and transform from integer to string/char  (↑ → ↓ ↘) so if you add to code this small part - will be great :+1: \r\n\r\nI'm also using grafana notification (alerts) and Slack integration - I have realtime alerts on my phone whe my son has low or high level of glucose :)\r\n\r\nWhat is a problem with adjust the graphs for calibration, could you put more lights on this?\r\n\r\nBTW. I'm still waiting for Grafana improvement:\r\nhttps://github.com/grafana/grafana/issues/7631"
+  },
+  {
+   "id": 334847083,
+   "user": "michalterbert",
+   "created_at": "2017-10-06T19:22:02Z",
+   "body": "Ok, I have update :)\r\nmore or less:\r\n![image](https://user-images.githubusercontent.com/15417117/31294708-4760955c-aadc-11e7-9941-c9fe446b8e32.png)\r\nCorrect me if I am wrong.\r\nQuery - Last Delta (float)\r\nAnd effect:\r\n![image](https://user-images.githubusercontent.com/15417117/31294738-61108732-aadc-11e7-9d15-b5314540367a.png)\r\nThanks!"
+  },
+  {
+   "id": 334852499,
+   "user": "pimeys",
+   "created_at": "2017-10-06T19:46:50Z",
+   "body": "I like that. I made an arrow too, but what kind of color settings you use?\r\n\r\n![trend](https://user-images.githubusercontent.com/34967/31295648-a3df2a0c-aadf-11e7-811d-1434b6c3e482.png)\r\n"
+  },
+  {
+   "id": 334854981,
+   "user": "pimeys",
+   "created_at": "2017-10-06T19:57:31Z",
+   "body": "This Grafana plugin I found also very useful to see the big picture:\r\n\r\nhttps://grafana.com/plugins/petrslavotinek-carpetplot-panel\r\n\r\nSet it to override the relative time from the settings to something like 1 month to see a pattern where you're hyper and where hypo.\r\n\r\nI use the average per hour over a month, with the query:\r\n\r\n```\r\nSELECT mean(\"value_mmol\") FROM \"glucose\" WHERE $timeFilter GROUP BY time($__interval) fill(null)\r\n```\r\n\r\nAnd spectral color scheme, so hardcore hyperglycemias are red, down from yellow -> green -> blue."
+  },
+  {
+   "id": 442051962,
+   "user": "ghost",
+   "created_at": "2018-11-27T13:08:17Z",
+   "body": "Hi,\r\nI also would love to set up my own local server with influxdb as you guys did –\r\nMy problem is, that I dont have the skills nor the know how to do it the propper way. The rare Info I found on the net is not foolproof enought for me :( \r\nI dont know what kind of hardware I need (rasperyp?), nor what exactly I have to install on it to run with my working xdrip/libre/Smartphone settings. \r\nIt would be wonderfull if someone could give me and other people a starting point or a kind of description of your personal setup. \r\nThanks, Wolfgang"
+  },
+  {
+   "id": 444516127,
+   "user": "michalterbert",
+   "created_at": "2018-12-05T15:03:12Z",
+   "body": "> Hi,\r\n> I also would love to set up my own local server with influxdb as you guys did –\r\n> My problem is, that I dont have the skills nor the know how to do it the propper way. The rare Info I found on the net is not foolproof enought for me :(\r\n> I dont know what kind of hardware I need (rasperyp?), nor what exactly I have to install on it to run with my working xdrip/libre/Smartphone settings.\r\n> It would be wonderfull if someone could give me and other people a starting point or a kind of description of your personal setup.\r\n> Thanks, Wolfgang\r\n\r\nHi,\r\nPlease send me an email - michal@jakicukier.pl, I have nice platform InfluxDB + Grafana for xDrip purpose - please check jakicukier.pl :)"
+  },
+  {
+   "id": 578528108,
+   "user": "razerrazer",
+   "created_at": "2020-01-26T18:14:50Z",
+   "body": "I'm working on it (dashboards) - also are avaliable on my fork of this git repo :)\r\n\r\nWhat i can see so is there any of this code on your github repository ?\r\nI would like to have your dashboard on my grafana server."
+  },
+  {
+   "id": 782090409,
+   "user": "Navid200",
+   "created_at": "2021-02-19T13:56:05Z",
+   "body": "What is the status of this issue?\r\nCan we close it?"
+  },
+  {
+   "id": 786475763,
+   "user": "michalterbert",
+   "created_at": "2021-02-26T07:51:12Z",
+   "body": "My dashboard (json file).\r\n[dashboard.txt](https://github.com/NightscoutFoundation/xDrip/files/6048146/dashboard.txt)\r\n\r\nPlease close issue.\r\n\r\n"
+  }
+ ]
+}

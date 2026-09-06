@@ -1,0 +1,21 @@
+{
+ "id": 3759432025,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 4302,
+ "title": "Add support for Yuwell Anytime 5 (CT5) - Encryption Cracked",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/4302",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-12-24T07:02:50Z",
+ "closed_at": "2025-12-24T12:34:54Z",
+ "comment_count": 1,
+ "body": "Hi team,\nI have successfully reverse-engineered the Yuwell Anytime 5 (CT5) sensor. It uses a different encryption than the older CT3 model.\nI extracted the decryption logic from the official APK. Here is the working algorithm in Python that turns the encrypted bytes into raw data:\n# Decryption logic for Yuwell CT5\n# Input: encrypted_bytes (from packet) and key (from Serial Number)\ndef decrypt(encrypted_bytes, key):\n    # 1. XOR with Key\n    xor_data = [b ^ (key & 0xFF) for b in encrypted_bytes]\n    \n    # 2. Convert to bits\n    bits = []\n    for byte in xor_data:\n        for i in range(7, -1, -1):\n            bits.append((byte >> i) & 1)\n            \n    # 3. Bit-flipping magic (from APK)\n    for i in range(len(bits) - 1):\n        if bits[i+1] == 0:\n            bits[i] = 1 - bits[i] # Invert\n            \n    # 4. Reconstruct bytes\n    decrypted = bytearray()\n    for i in range(0, len(bits), 8):\n        byte_val = 0\n        for bit in bits[i:i+8]:\n            byte_val = (byte_val << 1) | bit\n        decrypted.append(byte_val)\n        \n    return decrypted\n\nPacket info:\nHeader: 0x37\nPayload length: 15 bytes\nThe Key is derived from the Serial Number.\nI can provide Bluetooth logs if needed. Please let me know where to implement this in xDrip code.\nThanks!",
+ "comments": [
+  {
+   "id": 3689688239,
+   "user": "Navid200",
+   "created_at": "2025-12-24T12:34:29Z",
+   "body": "Please follow our protocol and do not open an issue as a first step.\nI will convert this to a discussion now."
+  }
+ ]
+}

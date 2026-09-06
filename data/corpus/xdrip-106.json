@@ -1,0 +1,225 @@
+{
+ "id": 222675653,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 106,
+ "title": "uploader Battery Stuck on latest release ",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/106",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2017-04-19T09:28:50Z",
+ "closed_at": "2017-04-26T06:33:10Z",
+ "comment_count": 35,
+ "body": "Hi, \r\n\r\nThe battery status got stuck at 2% on the Sony Z3C we use as an uploader. Tried deleting documents, restarting Azure, reboot of phone and all had no effect. Rolled back to the previous release we were using and issue resolved immediately.",
+ "comments": [
+  {
+   "id": 295187117,
+   "user": "jamorham",
+   "created_at": "2017-04-19T09:32:43Z",
+   "body": "Can you describe your setup in detail, which hardware components are you using? The later versions support uploading of multiple battery status for different devices and nightscout shows the lowest of these in the battery pill."
+  },
+  {
+   "id": 295188139,
+   "user": "ghost",
+   "created_at": "2017-04-19T09:35:23Z",
+   "body": "Dexcom G4 with Xdrip bluetooth wixel in form of the xdrip kit. Sony Z3 compact running android 6.0.1 "
+  },
+  {
+   "id": 295188523,
+   "user": "ghost",
+   "created_at": "2017-04-19T09:36:22Z",
+   "body": "issue is with using version 1704030800 Xdrip + "
+  },
+  {
+   "id": 295190095,
+   "user": "jamorham",
+   "created_at": "2017-04-19T09:40:14Z",
+   "body": "Is there a possibility that, for example, your bluetooth wixel was reporting a battery level of 2% ? Does the battery % indicator normally work with that device? Is it running xBridge firmware?"
+  },
+  {
+   "id": 295191181,
+   "user": "ghost",
+   "created_at": "2017-04-19T09:43:16Z",
+   "body": "not running xBridge firmware but it could be thinking it's the wixel power although I know it's got far more than 2% power at the moment due to recharging schedules."
+  },
+  {
+   "id": 295193880,
+   "user": "jamorham",
+   "created_at": "2017-04-19T09:50:38Z",
+   "body": "So you have rolled forward again to 1704030800 which was problematic for you? And now you're seeing the battery status you would expect?"
+  },
+  {
+   "id": 295195039,
+   "user": "ghost",
+   "created_at": "2017-04-19T09:53:27Z",
+   "body": "Hi Sorry yes is was 1704030800 that introduced the issue for me, rolling back to 1701201513 resolved the issue and battery level for uploader is reporting correctly on NS site"
+  },
+  {
+   "id": 295244039,
+   "user": "jamorham",
+   "created_at": "2017-04-19T12:11:59Z",
+   "body": "But now it is working correctly on 1704030800 ?"
+  },
+  {
+   "id": 295245121,
+   "user": "ghost",
+   "created_at": "2017-04-19T12:14:43Z",
+   "body": "Sorry for earlier confusion on my posts as got the version numbers the wrong way. On the 1704030800 the battery status is stuck. Works fine on 1701201513"
+  },
+  {
+   "id": 295253902,
+   "user": "jamorham",
+   "created_at": "2017-04-19T12:37:25Z",
+   "body": "Okay, if you upgrade again to the latest version (you should find it in your downloads folder) when you see the stuck at 2% on Nightscout battery pill, can you hover your mouse over it and see a description of multiple battery readings like as shown in this screenshot?\r\n\r\nhttps://www2.pic-upload.de/img/33033744/xdrip-nightscout-batterie-status.jpg\r\n\r\nIf you do get the description text, can you tell me what items you have and what battery % levels they are at. Thanks."
+  },
+  {
+   "id": 295254636,
+   "user": "ghost",
+   "created_at": "2017-04-19T12:39:26Z",
+   "body": "No worries, will get on it within next 20 minutes"
+  },
+  {
+   "id": 295259400,
+   "user": "ghost",
+   "created_at": "2017-04-19T12:53:44Z",
+   "body": "Before and after updating\r\n![screenshot 2017-04-19 at 13 50 33](https://cloud.githubusercontent.com/assets/14259726/25180863/79465cce-2507-11e7-823f-4f15ea310f0f.png)\r\n\r\n![screenshot 2017-04-19 at 13 51 43](https://cloud.githubusercontent.com/assets/14259726/25180871/80139f76-2507-11e7-930a-5da9d3daf173.png)\r\n\r\nnothing happens when I roll mouse over pil in either version"
+  },
+  {
+   "id": 295260951,
+   "user": "ghost",
+   "created_at": "2017-04-19T12:59:03Z",
+   "body": "Maybe this helps, If I enable 'display bridge battery' in less common settings it shows on screen of uploader at - yes you've guessed it 2%"
+  },
+  {
+   "id": 295287719,
+   "user": "kskandispersonal",
+   "created_at": "2017-04-19T14:23:22Z",
+   "body": "@jamorham I also see nothing when I hover over the battery pill.  Should I not see the watch (as bridge_battery) and the phone?  It only shows phone.  Just took a look at NightscoutUploader.java and see that it only loads on `DexCollectionType.hasBattery()` which does not include DexcomG5.  I guess we need to change the condition in NightscoutUploader.java to:\r\n       ` if (DexCollectionType.hasBattery() || (Home.get_forced_wear() && DexCollectionType.getDexCollectionType().equals(DexCollectionType.DexcomG5))) batteries.add(\"Bridge\");\r\n`\r\nWhen I add that, NS does indeed display the wear battery now but not the phone!  On hover, nothing happens.  The JSON that gets sent is:\r\n`\r\n{\"device\":\"samsung SM-N910V\",\"uploader\":{\"battery\":97}}\r\n{\"device\":\"DexcomG5\",\"uploader\":{\"battery\":99}}`\r\n\r\nSo xDrip+ does send multiple uploader batteries but it appears my NS site only displays the last entry."
+  },
+  {
+   "id": 295288367,
+   "user": "kskandispersonal",
+   "created_at": "2017-04-19T14:25:14Z",
+   "body": "I'm on Nightscout version 0.9.0\r\n"
+  },
+  {
+   "id": 295289559,
+   "user": "jamorham",
+   "created_at": "2017-04-19T14:28:49Z",
+   "body": "Okay thanks for that @kskandispersonal I'm on 0.9.2 and I don't see the hover text either but when I asked about this in the nightscout channel I was sent the screenshot I linked to above which is from 0.9.1-dev Its my understanding that it is supposed to show the multiple battery statuses."
+  },
+  {
+   "id": 295290718,
+   "user": "kskandispersonal",
+   "created_at": "2017-04-19T14:32:11Z",
+   "body": "@jamorham Okay.  I haven't checked the nightscout channel in a long while.  I don't see any pref that would enable multiple batteries.  I think we should add that code snippet to NightscoutUploader in any case, don't you think?"
+  },
+  {
+   "id": 295293399,
+   "user": "jamorham",
+   "created_at": "2017-04-19T14:40:04Z",
+   "body": "@kskandispersonal If you're forwarding the wear battery and treating it as the bridge battery in the case of forced wear with G5 then yes it makes sense to add the condition you suggested to get the wear battery uploaded as well.\r\n\r\nThe original problem appears to be that the xdripkit bridge device is stuck reporting a 2% battery life but a secondary problem is that this isn't clear in nightscout as the hover text isn't showing the breakdown of each entry. \r\n\r\nWhat I don't know yet is whether that is a nightscout issue or something to do with the format of the data xDrip is uploading to nightscout which is preventing it showing the detailed view."
+  },
+  {
+   "id": 295296779,
+   "user": "ghost",
+   "created_at": "2017-04-19T14:50:12Z",
+   "body": "If there's anything you want me to try out at all to help just let me know. "
+  },
+  {
+   "id": 295305978,
+   "user": "kskandispersonal",
+   "created_at": "2017-04-19T15:15:47Z",
+   "body": "@jamorham Yes, we are forwarding the wear battery data and treating as the bridge battery for forced wear with G5.  We also performs the `checkBridgeBattery()` on it."
+  },
+  {
+   "id": 295708033,
+   "user": "jamorham",
+   "created_at": "2017-04-20T12:04:05Z",
+   "body": "@doodah how do you feel about installing the xBridge firmware on your xdripkit device? You should be able to do this without changing any of the soldering. I'm hoping this will resolve your battery status issue.\r\n\r\n"
+  },
+  {
+   "id": 295709698,
+   "user": "ghost",
+   "created_at": "2017-04-20T12:08:18Z",
+   "body": "I can certainly give it a go. Looking likely a sensor change is imminent so might get on it this afternoon."
+  },
+  {
+   "id": 295751425,
+   "user": "ghost",
+   "created_at": "2017-04-20T14:09:39Z",
+   "body": "Wixel flashed with xbridge (at least I think!) seems to have connected to uploader and and have made sure that's on the latest release so will keep you posted after new sensor is inserted and we are rock and rolling again. "
+  },
+  {
+   "id": 295823763,
+   "user": "ghost",
+   "created_at": "2017-04-20T17:23:13Z",
+   "body": "@jamorham new sensor started and on latest release downloaded today still showing in the pill on NS what it thinks the wixel battery status is not the actual uploader status. Will try rolling back to older version to see if issue goes away again."
+  },
+  {
+   "id": 295835572,
+   "user": "ghost",
+   "created_at": "2017-04-20T18:00:09Z",
+   "body": "Yep back to displaying uploader status after rollback to earlier version. "
+  },
+  {
+   "id": 296710651,
+   "user": "jamorham",
+   "created_at": "2017-04-24T15:39:04Z",
+   "body": "@kskandispersonal  has tracked this down and as a first step, can you try setting: `DEVICESTATUS_ADVANCED` to `true` in your environment variables for nightscout? You should then see all your devices when you hover over the battery pill in nightscout."
+  },
+  {
+   "id": 296722666,
+   "user": "ghost",
+   "created_at": "2017-04-24T16:09:52Z",
+   "body": "I assume as that variable appears to be missing from his NS site that I should add that under app settings in Azure as a new line? I've done that and deleted existing documents in the admin panel so I'll report back after a couple of updates to see if anything has changed. I did roll back to the earlier version of xdrip+ though so we could keep seeing the correct battery level and I did reflash the wixel with the standard xdrip firmware as the xbridge seemed to use more battery as it ran out unexpectedly "
+  },
+  {
+   "id": 296730888,
+   "user": "kskandispersonal",
+   "created_at": "2017-04-24T16:30:09Z",
+   "body": "Yep, under Applications Settings, create the new setting, DEVICESTATUS_ADVANCED, with value, true."
+  },
+  {
+   "id": 296732941,
+   "user": "ghost",
+   "created_at": "2017-04-24T16:34:45Z",
+   "body": "Done and the pill still showed nothing so updated to latest xdrip+ version and we have movement. Pill displays the 3% still but it does now when hovering over it display both Sony with correct % and wixel at the 3%"
+  },
+  {
+   "id": 296811849,
+   "user": "jamorham",
+   "created_at": "2017-04-24T20:25:48Z",
+   "body": "Okay so I think the issue still remains that you're getting a reported bridge battery, but that your bridge battery indication value is bogus and is still causing confusion on nightscout. \r\n\r\nI think for this circumstance I will need to implement a mechanism to ignore the battery value coming from xbridge. I haven't yet thought of any clever automated way of doing this reliably without increasing the complexity of the settings pages.\r\n\r\nI'm a little surprised though because I run xbridge without any battery monitoring circuit and mine just always is reporting at 100% so I don't know why yours is stuck at 3%"
+  },
+  {
+   "id": 296813031,
+   "user": "ghost",
+   "created_at": "2017-04-24T20:30:37Z",
+   "body": "I always like to provide a challenge 😊"
+  },
+  {
+   "id": 297174863,
+   "user": "jamorham",
+   "created_at": "2017-04-25T21:46:33Z",
+   "body": "Okay, so the 25th April Nightly contains a new option within `Cloud Upload` -> `API Upload` -> `Extra Options` which is a checkbox for `Upload bridge battery` which you can uncheck if your bridge battery sensor is broken and this should stop it being uploaded to Nightscout.\r\n\r\nIt may take approx 30 minutes before nightscout expires the old data. Please let me know if this works for you. "
+  },
+  {
+   "id": 297195406,
+   "user": "jstevensog",
+   "created_at": "2017-04-25T23:36:00Z",
+   "body": "Actually, if you do NOT have the battery monitoring circuit on your\nxBridge, the battery should indicate 0%, unless you have modified the\nxBridge code.  No voltage divider circuit on the wixel input, means the\ninput sees 0v, which is less than the 0% value, so xBridge sets it to 0%.\nCheers\n\nOn Wed, Apr 26, 2017 at 7:46 AM, Jamorham <notifications@github.com> wrote:\n\n> Okay, so the 25th April Nightly contains a new option within Cloud Upload\n> -> API Upload -> Extra Options which is a checkbox for Upload bridge\n> battery which you can uncheck if your bridge battery sensor is broken and\n> this should stop it being uploaded to Nightscout.\n>\n> It may take approx 30 minutes before nightscout expires the old data.\n> Please let me know if this works for you.\n>\n> —\n> You are receiving this because you are subscribed to this thread.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/106#issuecomment-297174863>,\n> or mute the thread\n> <https://github.com/notifications/unsubscribe-auth/AIQs8wX4PDoX_rZtINK0UCNnkzYNwMOiks5rzmm5gaJpZM4NBbJ1>\n> .\n>\n\n\n\n-- \nJohn Stevens\n\"You are how you live, not what you have.\"\n"
+  },
+  {
+   "id": 297247590,
+   "user": "ghost",
+   "created_at": "2017-04-26T06:06:55Z",
+   "body": "Done and option unchecked. Will report back in a couple of hours to see what's occurring. \r\n\r\n@jstevensog I only use a xdrip setup with xdrip firmware so don't know if that makes a difference. This battery issue uploading issue only appeared recently."
+  },
+  {
+   "id": 297253315,
+   "user": "ghost",
+   "created_at": "2017-04-26T06:33:10Z",
+   "body": "I can confirm that unchecking the option has done the trick. Really appreciate your help on tracking down this and sorting it out. "
+  }
+ ]
+}

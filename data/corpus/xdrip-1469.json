@@ -1,0 +1,41 @@
+{
+ "id": 723708956,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1469,
+ "title": "Phone Battery Level is sent to AAPS instead of Sensor Battery Level",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1469",
+ "state": "closed",
+ "labels": [
+  "bug"
+ ],
+ "created_at": "2020-10-17T08:50:17Z",
+ "closed_at": "2020-12-10T18:06:00Z",
+ "comment_count": 4,
+ "body": "Hi,\r\n\r\nI wanted to add Sensor battery level in AAPS User Interface, but I was a little bit disappointed to find \"Phone Battery Level\" instead of \"Sensor Battery Level\" behind key ```com.eveningoutpost.dexdrip.Extras.SensorBattery```...  (currently this value is not used in AAPS, that's why this bug was not detected earlier...)\r\n\r\nSee screenshot below (Sensor Battery Level 75, Phone Battery Level 97) and extract of Log captured in AAPS...\r\n\r\n![Screenshot_20201017-102718_xDrip+ 1](https://user-images.githubusercontent.com/52934600/96332460-5f811080-1064-11eb-950c-a0e3834530a3.jpg)\r\n\r\n2020-10-17 10:20:49.259 ? D/BGSOURCE: [IntentService[DataService]]: [XdripPlugin.handleNewData():42]: Received xDrip data: Bundle{ ...; com.eveningoutpost.dexdrip.Extras.SensorBattery => 97; ...; }Bundle\r\n\r\nNote: detected with xDrip Nightly build 1st Oct 2020",
+ "comments": [
+  {
+   "id": 711055449,
+   "user": "Philoul",
+   "created_at": "2020-10-17T17:43:11Z",
+   "body": "I'm not a specialist of xDrip code (I'm working on AAPS code...) but after a quick analysis, I suspect line 115 of BroadcastGlucose.java file:\r\n\r\nMay be \r\n```bundle.putInt(Intents.EXTRA_SENSOR_BATTERY, PowerStateReceiver.getBatteryLevel());``` \r\ncould be replaced by something like\r\n```bundle.putInt(Intents.EXTRA_SENSOR_BATTERY, BridgeBattery.getBestBridgeBattery());```\r\n\r\n(not tested, it's just what I suppose after 1 hour of research into xdrip code)\r\n=> If you think it's correct, I can make a PR if it could help..."
+  },
+  {
+   "id": 711152321,
+   "user": "tolot27",
+   "created_at": "2020-10-18T11:11:33Z",
+   "body": "@Philoul Please create a PR. You analysis seem to be correct. @jamorham can review the PR."
+  },
+  {
+   "id": 711169617,
+   "user": "Philoul",
+   "created_at": "2020-10-18T13:40:17Z",
+   "body": "Thank's for your comment...\r\nPR done."
+  },
+  {
+   "id": 720152284,
+   "user": "Philoul",
+   "created_at": "2020-11-01T21:13:07Z",
+   "body": "Do you think this PR could be included in the next nightly build version? I think proposed fix is simple with very few risks...\r\n=> I did my PR on the Master branch two weeks ago, I don't know if it's the right way to do it on the xdrip + project because nothing has changed on this branch for a month, and I didn't find a \"dev\" branch like on AAPS project ...\r\nThank's"
+  }
+ ]
+}

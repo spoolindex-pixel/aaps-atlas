@@ -1,0 +1,57 @@
+{
+ "id": 314461067,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 396,
+ "title": "Race condition for \"Disable Forced Wear on Missed Readings\"",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/396",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2018-04-15T23:04:31Z",
+ "closed_at": "2021-06-08T04:14:20Z",
+ "comment_count": 7,
+ "body": "If you are force collecting via Wear, and switch off your phone:\r\n\r\nWhen you turn it on again, if the time delta is > than your `Disable Forced Wear on Missed Readings`, `Minutes since last Reading` value, the phone will disable forced Wear before Wear can sync and backfill BG data collected while the phone was off.\r\n\r\nI experience this frequently as I turn off my phone most days at some point.",
+ "comments": [
+  {
+   "id": 404856954,
+   "user": "JimZam",
+   "created_at": "2018-07-13T14:52:36Z",
+   "body": "Good evening. I'm sorry to post here, I don't know any other way to contact you...\r\nI've read one of your post saying that about the xbridge2 build: \"Even on the new circuit, you can disable the sleep cycle if you prefer through a serial toggle\" How do you do that?\r\nThank you for your help and my appologies again for the off topic.\r\nRegards"
+  },
+  {
+   "id": 405044685,
+   "user": "old-square-eyes",
+   "created_at": "2018-07-14T19:28:53Z",
+   "body": "Hi @Antonio Press B with a USB serial connection open to the Wixel.\r\n\r\nLast page from the doc https://github.com/jstevensog/wixel-sdk/blob/master/apps/xBridge2/xBridge2.pdf\r\n\r\n"
+  },
+  {
+   "id": 405261973,
+   "user": "JimZam",
+   "created_at": "2018-07-16T14:15:34Z",
+   "body": "Thank you so much, old-square-eyes, maybe this way I'll avoid missing packets.\r\nKind regards"
+  },
+  {
+   "id": 848317083,
+   "user": "Navid200",
+   "created_at": "2021-05-25T22:44:18Z",
+   "body": "@old-square-eyes Is this still happening with the recent releases of xDrip?"
+  },
+  {
+   "id": 855466497,
+   "user": "old-square-eyes",
+   "created_at": "2021-06-06T21:34:31Z",
+   "body": "@Navid200 No doesn't seem to happen any more. However, often the phone struggles to pick up the missed readings stored in the Wear DB for several cycles (or at all) without rebooting the phone and watch. During this time it can pass the threshold for \"Disable Forced\" and then the phone tries to take over. After that the readings on the watch seem orphaned. The phone then grabs the history from the TX (if you're using Native mode).\r\n\r\nSometimes it syncs after a reading or two though and it's fine. "
+  },
+  {
+   "id": 855471694,
+   "user": "Navid200",
+   "created_at": "2021-06-06T22:17:42Z",
+   "body": "> @Navid200 No doesn't seem to happen any more. \r\n\r\nSo, do you want to edit the title to reflect what the current problem is?\r\nOr, do you want to close the issue if you believe this issue does not happen anymore?\r\n\r\n"
+  },
+  {
+   "id": 856424654,
+   "user": "old-square-eyes",
+   "created_at": "2021-06-08T04:13:59Z",
+   "body": "Will close and create a new issue when I get some video of it happening."
+  }
+ ]
+}

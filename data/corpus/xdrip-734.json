@@ -1,0 +1,257 @@
+{
+ "id": 396232067,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 734,
+ "title": "Unihertz Atom Bluetooth Connection Lost Dexcom G6",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/734",
+ "state": "closed",
+ "labels": [
+  "help"
+ ],
+ "created_at": "2019-01-06T06:20:47Z",
+ "closed_at": "2020-09-29T12:04:12Z",
+ "comment_count": 122,
+ "body": "Xdrip will not stay connected to the sensor, as after about 15-20 mins of being disconnected, xdrip phone gets stuck in the \"Scanning\" state  and the only way I can get it to connect again, after losing the connection, is to restart the phone.  I have tested seemingly every setting in xdrip, android, fitbit, and specific to atom, and can't say that any configuration has helped at all.\r\n\r\n**Settings:** \r\nUnihertz Atom running new November 2018 build of firmware\r\nXdrip 12/27/2018 Nightly Build\r\nFitbit Versa running Glance and new 3.0 software\r\n\r\n**Observations:**\r\n- The connection seems very stable between sensor and xdrip when the phone and sensor are in range - to get readings.  When the phone goes out of range for more than 1 or two readings, the data stops getting captured from the sensor and the phone gets stuck \"Scanning\".  The only way I know how to resolve this is to reboot the phone (Restarting the collector does not seem to reslove this.)\r\n\r\n- One user has suggested that when they try to use SSW3 watch and atom phone, with xdrip, they have the same connectivity problems I do, but when they don't use the watch the phone functions much better.  I have a Fitbit Versa with updated 3.0 Fitbit firmware and need to be able to use the phone and watch combination, so I am reluctant to call it a problem using a watch.  \r\n\r\n- It also seems possible that after watching a video or surfing on the phone, the phone misses a couple of readings and gets stuck scanning as well, but I have not completely verified this.\r\n\r\n+++\r\n\r\nThe phone has a perfect form factor for a collector, and I would very much like to work with you to get it to function properly, for me and for others.  Thank you for your assistance.",
+ "comments": [
+  {
+   "id": 452489774,
+   "user": "jamorham",
+   "created_at": "2019-01-08T23:30:03Z",
+   "body": "It sounds like the phone's bluetooth stack has problems. I don't have one of these phones to test with. If anyone can loan me one I should be able to discover more quite quickly."
+  },
+  {
+   "id": 452498979,
+   "user": "AdrianLxM",
+   "created_at": "2019-01-08T23:45:18Z",
+   "body": "The Atom BT stack is quite messed up it seems.\r\nI also have problems keeping the BT connection up with a combo pump and with a Dana RS. So neither BLE nor older BT standards seem to work reliably.\r\n\r\nIt would be good if you could contact the tech support of unihertz. They will give you a guide how to send them system logs. I hope if they get them with different setups they will find a fix.\r\nI don't have much hope as the December update still had the may security patch level of android :("
+  },
+  {
+   "id": 452546594,
+   "user": "tech-support-unihertz",
+   "created_at": "2019-01-09T02:14:37Z",
+   "body": "Hi, We are the technical support of unihertz.\r\nAs the document <log-check-20190109.pdf> describes, can Xdrip app give some instructions and why is it broken?\r\n[log-check-20190109.pdf](https://github.com/NightscoutFoundation/xDrip/files/2739098/log-check-20190109.pdf)\r\n"
+  },
+  {
+   "id": 452624089,
+   "user": "2flea",
+   "created_at": "2019-01-09T09:11:23Z",
+   "body": "Hey guys, I am currently using ATOM (latest firmware) together with xDrip (latest nightly) reading G6 and AAPS (latest dev) with Dana RS pump. It works so far (> 1-2 weeks) without the need to do regular restarts. \r\nWhen I try to add my Sony SWR50 I get BT communication problems - mostly with AAPS. \r\n\r\nI was in contact with Unihertz since I got the phone back in October and we have tried to identify what's amiss (I guess the log above is from mine from end of Nov) but without any success. \r\n\r\nI really would like to use the ATOM with my setup together with a smartwatch - this would be my idea of a perfect system for looping.\r\n\r\nPlease let me know if I can help with any testing.\r\n\r\nI have made screenshots of my current system and app settings for your reference: https://photos.app.goo.gl/bi8axT9pnRTHBuH9A\r\n\r\n-------------\r\nAdrian, Unihertz says on their ATOM FB group that the patch level was updated with their latest FW but not recognized by Google. \r\n![image](https://user-images.githubusercontent.com/38214111/50888538-3430b280-13f6-11e9-9c58-fa579e147621.png)\r\n"
+  },
+  {
+   "id": 452636639,
+   "user": "jamorham",
+   "created_at": "2019-01-09T09:51:44Z",
+   "body": "@tech-support-unihertz I am the developer of the OB1G5Service. The dexcom transmitter wakes up periodically (every 5 minutes) for a short period of time and during that wake up window we need to connect to it to retrieve the data.  That is what the service is doing.\r\n\r\nI don't have an atom device to test here in the lab but the reports from users have been that the whole phone needs to be rebooted which in my experience implies that it is quite likely the android bluetooth subsystem itself is crashing."
+  },
+  {
+   "id": 452671043,
+   "user": "tech-support-unihertz",
+   "created_at": "2019-01-09T11:54:56Z",
+   "body": "@jamorham Can you help analyze this log? (Thanks for the log provider @2flea  :)\r\nhttps://www.dropbox.com/s/0f2cmdvxjqmt5ni/mtklog_20181127.zip?dl=0\r\nFrom the log analysis, Bluetooth data interaction is normal from 21:02 to 21:38. At 21:39:38 seconds, because there is no data interaction, Bluetooth switches to IDLE mode, causing the connection to be disconnected. \r\nCan you tell us if the xdrip app received an error code when the problem occurred?"
+  },
+  {
+   "id": 452679889,
+   "user": "2flea",
+   "created_at": "2019-01-09T12:28:58Z",
+   "body": "As far as I remember the log set above was done with the pre-release firmware including the \"Bluetooth has stopped\" message not the current version. Also I had different settings in the Atom battery saving. \r\n@tech-support-unihertz, @jamorham I can provide new log data with the current setup and then with the Sony smartwatch if you want. Let me know if should add anything special in xDrip log settings."
+  },
+  {
+   "id": 452711392,
+   "user": "roco5",
+   "created_at": "2019-01-09T14:17:30Z",
+   "body": "Hey guys, I am also currently using ATOM (latest firmware) together with xDrip (latest nightly) reading G6, and fitbit versa and have struggled to keep a connection to bluetooth when adding a smartwatch (Fitbit Versa) to the configuration.\r\n\r\n**History:  \r\nTest1:**  Tried atom and versa with xdrip and **Atom October firmware**. Tested every battery, fitbit, and collector setting combination imaginable with no joy.\r\n**Result1:** Had tons of connection drops and the only way to resolve them was to reboot phone.  Happened every few hours.\r\n\r\n**Test2:**  Updated **atom firmware to November (latest)** and tuned xdrip, fitbit,  and android settings.  Also \"Forgot\" Sensor in Bluetooth, and let xdrip populate a new Dexcom Bluetooth connection. Still using versa smartwatch.\r\n**Result2:**  Seemed to stay connected a little better, but still had disconnects when the phone was out of range and brought back into range.  Many unrecoverable disconnects a day that required rebooting the phone to solve.\r\n\r\n**Test3**: Did a factory reset with **latest november atom firmware** installed.  Installed xdrip but not fitbit versa yet.\r\n**Result3**: So far, we are going on about 36 hours without needing to reboot, and data capture has  been consistent where phone has come in and out of range with sensor after being separated from more than 25 mins.\r\n\r\n**Test4:**  Will install fitbit versa on atom, and try to use Versa smartwatch with Test 3 configuration and collecting log data on xdrip and per unihertz instructions.\r\n**Result4:**  ????\r\n\r\n"
+  },
+  {
+   "id": 462702776,
+   "user": "jamorham",
+   "created_at": "2019-02-12T10:22:38Z",
+   "body": "I have received a unihertz atom phone to test with. It is early days, but my initial findings are that the problems are due to the manufacturers power saving additions to android which shut down xDrip.\r\n\r\n`PowerSaveService: forceStopThirdApp processName: com.eveningoutpost.dexdrip  pid: 6814, packageName:com.eveningoutpost.dexdrip`\r\n\r\nThis happens even though the custom setting for the app \"`Background activity`\" is enabled for xDrip and that xDrip is already supposed to be excluded from battery optimization via its standard android runtime permission for the same. \r\n\r\nThe MTK setting for `Intelligent power saving standby` is also disabled as well as `battery saver` in the general battery settings.\r\n\r\nxDrip is running a foreground service and does not target oreo sdk (targets sdk 23)\r\n\r\nThis is running on an atom with build number `20181130`\r\n\r\nAs far as I can tell the custom setting for whether `Background activity` is allowed for a specific app either is not implemented or doesn't work within the framework. I could be wrong but that is exactly how it looks from my initial testing."
+  },
+  {
+   "id": 463007623,
+   "user": "roco5",
+   "created_at": "2019-02-13T00:52:22Z",
+   "body": "Could someone from Unihertz please comment on what can be done to get this\nfixed, so that we can use the phones and watches effectively with Bluetooth\nCGM softwares?\n\nOn Tue, Feb 12, 2019, 5:22 AM JamOrHam <notifications@github.com> wrote:\n\n> I have received a unihertz atom phone to test with. It is early days, but\n> my initial findings are that the problems are due to the manufacturers\n> power saving additions to android which shut down xDrip.\n>\n> PowerSaveService: forceStopThirdApp processName:\n> com.eveningoutpost.dexdrip pid: 6814, packageName:com.eveningoutpost.dexdrip\n>\n> This happens even though the custom setting for the app \"Background\n> activity\" is enabled for xDrip and that xDrip is already supposed to be\n> excluded from battery optimization via its standard android runtime\n> permission for the same.\n>\n> The MTK setting for Intelligent power saving standby is also disabled as\n> well as battery saver in the general battery settings.\n>\n> xDrip is running a foreground service and does not target oreo sdk\n> (targets sdk 23)\n>\n> This is running on an atom with build number 20181130\n>\n> As far as I can tell the custom setting for whether Background activity\n> is allowed for a specific app either is not implemented or doesn't work\n> within the framework. I could be wrong but that is exactly how it looks\n> from my initial testing.\n>\n> —\n> You are receiving this because you authored the thread.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/734#issuecomment-462702776>,\n> or mute the thread\n> <https://github.com/notifications/unsubscribe-auth/AGoAaDFEYkQPCrNbCFEEKj0UTdWmLq_Jks5vMpX0gaJpZM4ZySTM>\n> .\n>\n"
+  },
+  {
+   "id": 463128661,
+   "user": "jamorham",
+   "created_at": "2019-02-13T09:40:32Z",
+   "body": "Okay, I think I have found where this is actually controlled:\r\n\r\nGo in to `Android Settings` -> `Smart Assist` -> `Power Save Manager` -> Tick xDrip on in the whitelist"
+  },
+  {
+   "id": 463178937,
+   "user": "jamorham",
+   "created_at": "2019-02-13T12:19:27Z",
+   "body": "100% capture rate so far on G5 with that setting applied. Using 10th Feb nightly."
+  },
+  {
+   "id": 463183917,
+   "user": "roco5",
+   "created_at": "2019-02-13T12:37:25Z",
+   "body": "Yes we have tried it with that setting and it works!\n\nBut....the biggest issue we are having now is if we try to use a Bluetooth\nwatch with the phone it seems to break the Bluetooth stack on the phone.\n\nOn Wed, Feb 13, 2019, 7:19 AM JamOrHam <notifications@github.com> wrote:\n\n> 100% capture rate so far on G5 with that setting applied.\n>\n> —\n> You are receiving this because you authored the thread.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/734#issuecomment-463178937>,\n> or mute the thread\n> <https://github.com/notifications/unsubscribe-auth/AGoAaLZUDF3UOaCty38XIkLOGS7GHZh-ks5vNALRgaJpZM4ZySTM>\n> .\n>\n"
+  },
+  {
+   "id": 463460078,
+   "user": "tech-support-unihertz",
+   "created_at": "2019-02-14T02:24:08Z",
+   "body": "Dear Sir,\r\n    Sorry for the late reply.\r\n    The attached file will guide to keep the apps not be cleaned up by the background.\r\n\r\n\r\n\r\nRegards,\r\n\r\nTechnical Support\r\n\r\n  +86-21-62207593 Ext 8007\r\n  www.unihertz.com \r\n\r\n \r\nFrom: JamOrHam\r\nDate: 2019-02-13 17:40\r\nTo: NightscoutFoundation/xDrip\r\nCC: tech-support-unihertz; Mention\r\nSubject: Re: [NightscoutFoundation/xDrip] Unihertz Atom Bluetooth Connection Lost Dexcom G6 and Fitbit Versa (#734)\r\nOkay, I think I have found where this is actually controlled:\r\nGo in to Android Settings -> Smart Assist -> Power Save Manager -> Tick xDrip on in the whitelist\r\n—\r\nYou are receiving this because you were mentioned.\r\nReply to this email directly, view it on GitHub, or mute the thread.\r\n"
+  },
+  {
+   "id": 463466366,
+   "user": "roco5",
+   "created_at": "2019-02-14T02:53:13Z",
+   "body": "I assume you have a patch file or something?  It was not linked to or attached to your last message...."
+  },
+  {
+   "id": 528838315,
+   "user": "Bommyt",
+   "created_at": "2019-09-06T12:39:23Z",
+   "body": "@libxmike\r\nPlease see\r\nhttps://github.com/NightscoutFoundation/xDrip/issues/734#issuecomment-485772603"
+  },
+  {
+   "id": 528843078,
+   "user": "libxmike",
+   "created_at": "2019-09-06T12:54:47Z",
+   "body": "@thomasmenges \r\nthanks, that's what I have right now, does not work as expected despite the fact that all the battery saving option are disabled."
+  },
+  {
+   "id": 532346921,
+   "user": "evalisapphire",
+   "created_at": "2019-09-17T18:35:05Z",
+   "body": "> @thomasmenges We have released another new temporary version of atom. Can you help verify it? Thanks!\r\n> https://drive.google.com/file/d/1AcogqYGzaZ4gUq2ktJSDgNRl90LBJHjO/view?usp=sharing\r\n> [How to get Bluetooth mtklog for Atom.pdf](https://github.com/NightscoutFoundation/xDrip/files/3107371/How.to.get.Bluetooth.mtklog.for.Atom.pdf)\r\n> \r\n> The attachment will guide you how to catch the log file.(BTW: Click the menu Open Bluetooth log Tool-> More Settings -> Firmware Test Situation: -> choose debug)\r\n\r\nHi there, I can't get this to work, multiple tools tell me it's an 'Invalid Scatter File'...."
+  },
+  {
+   "id": 540954432,
+   "user": "Pallesauka",
+   "created_at": "2019-10-11T07:45:00Z",
+   "body": "This seems to be a very tedious issue.  @tech-support-unihertz is this anywhere close to being resolved or what? By the frequency of responses in this issue lately, ppl seem to give up."
+  },
+  {
+   "id": 545242399,
+   "user": "tech-support-unihertz",
+   "created_at": "2019-10-23T02:58:12Z",
+   "body": "@evalisapphire  \r\nBluetooth-2019042316_g35v63c2k_dfl-ota.zip (https://drive.google.com/file/d/1AcogqYGzaZ4gUq2ktJSDgNRl90LBJHjO/view?usp=sharing)： Cannot be upgraded with multiple  tools, only for T card upgrades.\r\n\r\nIf you want to downgrade the version to 8.1, the only way is to flash a rom.\r\nWhether you have a computer with Windows OS?\r\n\r\nHere is the rom of 8.1: https://drive.google.com/file/d/1MPk6-68wbBIN7Yf8VTh9Wf-fc5Jn8yqE/view?usp=sharing\r\nHere is the guide: https://drive.google.com/file/d/1qVlaYucvE44ZJqF1RCHGknEBQWy_Z65m/view\r\n\r\nPlease follow the instruction document for operation.\r\nIf you have any other question of the flash,please feel free to contact us."
+  },
+  {
+   "id": 545243458,
+   "user": "tech-support-unihertz",
+   "created_at": "2019-10-23T03:02:51Z",
+   "body": "@Pallesauka \r\nIs there any problem now?"
+  },
+  {
+   "id": 569215105,
+   "user": "rgcstats",
+   "created_at": "2019-12-27T07:56:49Z",
+   "body": "The bluetooth problem with dexcom is still there with android 9 on the atom. How about solving this unihertz?"
+  },
+  {
+   "id": 569375525,
+   "user": "rgcstats",
+   "created_at": "2019-12-28T02:00:41Z",
+   "body": "> @evalisapphire\r\n> Bluetooth-2019042316_g35v63c2k_dfl-ota.zip ([https://drive.google.com/file/d/1AcogqYGzaZ4gUq2ktJSDgNRl90LBJHjO/view?usp=sharing)：](https://drive.google.com/file/d/1AcogqYGzaZ4gUq2ktJSDgNRl90LBJHjO/view?usp=sharing)%EF%BC%9A) Cannot be upgraded with multiple tools, only for T card upgrades.\r\n> \r\n> If you want to downgrade the version to 8.1, the only way is to flash a rom.\r\n> Whether you have a computer with Windows OS?\r\n> \r\n> Here is the rom of 8.1: https://drive.google.com/file/d/1MPk6-68wbBIN7Yf8VTh9Wf-fc5Jn8yqE/view?usp=sharing\r\n> Here is the guide: https://drive.google.com/file/d/1qVlaYucvE44ZJqF1RCHGknEBQWy_Z65m/view\r\n> \r\n> Please follow the instruction document for operation.\r\n> If you have any other question of the flash,please feel free to contact us.\r\n\r\nI downloaded Bluetooth-2019042316_g35v63c2k_dfl-ota.zip and followed the instructions to flash a rom, but I got the same problem as @evalisapphire : the SP-Multidownload app says that the scatter file (scatter.txt) is invalid."
+  },
+  {
+   "id": 569561210,
+   "user": "tech-support-unihertz",
+   "created_at": "2019-12-30T01:39:06Z",
+   "body": "@rgcstats \r\n\"2019030120_g35v63c2k_dfl.zip\" is the correct ROM, please download it from the following URL, thank you!\r\nHere is the rom of 8.1: https://drive.google.com/file/d/1MPk6-68wbBIN7Yf8VTh9Wf-fc5Jn8yqE/view?usp=sharing"
+  },
+  {
+   "id": 569585119,
+   "user": "rgcstats",
+   "created_at": "2019-12-30T05:07:16Z",
+   "body": "Thanks for this, but I already found a work-around, which seems to be doing\nthe job. I flashed the stock ROM for 8.1 (not the build with the bluetooth\nfix) following your instructions - the scatter file was fine for stock 8.1.\nThen I did a local install of the 20190423 build (with the BT fix) - this\nway 20190423 was installed without needing to use the dodgy scatter file.\nI've now been running 20190423 for 24 hours and it's definitely better\nthough still not perfect - I'm getting some BT dropouts but this may be\nbecause I'm still tweaking the battery optimisation options.\n\n\n\n\nOn Mon, Dec 30, 2019 at 12:39 PM tech-support-unihertz <\nnotifications@github.com> wrote:\n\n> @rgcstats <https://github.com/rgcstats>\n> \"2019030120_g35v63c2k_dfl.zip\" is the correct ROM, please download it from\n> the following URL, thank you!\n> Here is the rom of 8.1:\n> https://drive.google.com/file/d/1MPk6-68wbBIN7Yf8VTh9Wf-fc5Jn8yqE/view?usp=sharing\n>\n> —\n> You are receiving this because you were mentioned.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/734?email_source=notifications&email_token=AD4MEFVH4YNCSB3FUKWQBL3Q3FGLXA5CNFSM4GOJETGKYY3PNVWWK3TUL52HS4DFVREXG43VMVBW63LNMVXHJKTDN5WW2ZLOORPWSZGOEHZNA6Q#issuecomment-569561210>,\n> or unsubscribe\n> <https://github.com/notifications/unsubscribe-auth/AD4MEFSLMQ3Z2XAB4BZAYMLQ3FGLXANCNFSM4GOJETGA>\n> .\n>\n"
+  },
+  {
+   "id": 571868209,
+   "user": "tech-support-unihertz",
+   "created_at": "2020-01-08T02:50:39Z",
+   "body": "@rgcstats \r\nThis document provides methods to allow third-party applications to run in the background at all times.\r\nhttps://github.com/NightscoutFoundation/xDrip/files/2863094/How.to.ensure.App.will.not.be.cleaned.up.pdf"
+  },
+  {
+   "id": 660557609,
+   "user": "roco5",
+   "created_at": "2020-07-18T23:32:24Z",
+   "body": "> @roco5 We have released a new temporary version of atom, which add the latest Bluetooth fw. Thanks!\r\n> https://drive.google.com/file/d/1VI_Edt0ckhAsnRL4bQKqixeexq0jcdzH/view?usp=sharing\r\n\r\n![Image 16](https://user-images.githubusercontent.com/6946920/87863791-482f6b80-c92d-11ea-8d97-f241d3de33a0.jpg)\r\n\r\nThe firmware on a new replacement atom phone you sent (v.20190722) does not seem to\r\nstay connected to our dexcom for more than 30 mins, and I am guessing it doesn't have the bluetooth fix that\r\nyou made for 20190322? - WHICH WAS WORKING PERFECTLY\r\n\r\nQuestion:  At this point, what are my options and what is working for everyone?\r\n\r\nOTA Update or Flash the ROM back to 20190322 ?\r\nAndroid 9.0 - Did this fix the bluetooth issue ?\r\nOther?"
+  },
+  {
+   "id": 680478129,
+   "user": "Thebigedge82",
+   "created_at": "2020-08-26T03:12:59Z",
+   "body": "Hi @tech-support-unihertz ,\r\nI'm having trouble with xdrip connect to atom:\r\nAndroid 9.0\r\n Build Number: 20191114\r\n\r\nI will attempt to flash to Android 8.1 as per your document.\r\nAs per your document 'check the model of your device and get the correct ROM!'- will the document supplied in this thread work with this device?\r\n"
+  },
+  {
+   "id": 680693908,
+   "user": "tech-support-unihertz",
+   "created_at": "2020-08-26T06:49:38Z",
+   "body": "Hello，\r\nDo you want to upgrade back to Android8.1?\r\nHere is the rom of android 8.1 and operation instructions: https://drive.google.com/drive/folders/1RYcxHLfp3huxY79C3fAGtoe-hnLVdWpX  \r\n\r\nIf you have any question,please feel free to contact us.\r\n\r\n\r\n\r\n\r\nRegards,\r\n\r\nTechnical Support\r\n\r\n  +86-21-62207593 Ext 8007\r\n  www.unihertz.com \r\n\r\n-------------------------------------------------------------------------------------\r\n\r\n            \r\n\r\n \r\nFrom: Thebigedge82\r\nDate: 2020-08-26 11:13\r\nTo: NightscoutFoundation/xDrip\r\nCC: tech-support-unihertz; Mention\r\nSubject: Re: [NightscoutFoundation/xDrip] Unihertz Atom Bluetooth Connection Lost Dexcom G6 (#734)\r\nHi @tech-support-unihertz ,\r\nI'm having trouble with xdrip connect to atom:\r\nAndroid 9.0\r\nBuild Number: 20191114\r\nI will attempt to flash to Android 8.1 as per your document.\r\nAs per your document 'check the model of your device and get the correct ROM!'- will the document supplied in this thread work with this device?\r\n—\r\nYou are receiving this because you were mentioned.\r\nReply to this email directly, view it on GitHub, or unsubscribe.\r\n"
+  },
+  {
+   "id": 680696947,
+   "user": "tech-support-unihertz",
+   "created_at": "2020-08-26T06:57:01Z",
+   "body": "\nHi,\n\nPlease refer to the attached guidance document, download and copy the. Zip file from Google driver to your mobile phone for ota package upgrade. \n\nAfter the new version is upgraded, has the Bluetooth problem been solved?\n\nota package:\nhttps://drive.google.com/file/d/1hMLsE52PN5gmM9JcZ0yv_tD_NJONLnqV/view?usp=sharing\n\nBest Regards!\n---------------------------------------------------------------------- \n\n\n\n------------------------------------------------------------------\n发件人：Thebigedge82 <notifications@github.com>\n发送时间：2020年8月26日(星期三) 11:13\n收件人：NightscoutFoundation/xDrip <xDrip@noreply.github.com>\n抄　送：tech-support-unihertz <tech-support@unihertz.com>; Mention <mention@noreply.github.com>\n主　题：Re: [NightscoutFoundation/xDrip] Unihertz Atom Bluetooth Connection Lost Dexcom G6 (#734)\n\nHi @tech-support-unihertz ,\n I'm having trouble with xdrip connect to atom:\n Android 9.0\n Build Number: 20191114\nI will attempt to flash to Android 8.1 as per your document.\n As per your document 'check the model of your device and get the correct ROM!'- will the document supplied in this thread work with this device?\n—\nYou are receiving this because you were mentioned.\nReply to this email directly, view it on GitHub, or unsubscribe.\n\n"
+  },
+  {
+   "id": 687062593,
+   "user": "rgcstats",
+   "created_at": "2020-09-04T10:25:44Z",
+   "body": "Anyone tried the new atom xl to see if the bluetooth stack works better?"
+  },
+  {
+   "id": 690162974,
+   "user": "mountrcg",
+   "created_at": "2020-09-10T11:10:52Z",
+   "body": "@rgcstats I have an Atom XL running with AAPS & xdrip+. Everything is very smooth if you have the battery optimization cleaned up. Very good battery time (2 days) and 100% capture rate in xdrip+. I use an omnipod so also this AAPS branch with RileyLink via bluetooth works fine.\r\nThere is 2 tweaks you can do in skinClassic.kt in order to get maximum use of your screen for the first graph and put 2 additional graphs down for scrolling down one page:\r\n`override val mainGraphHeight: Int get() = 290`\r\n`override val secondaryGraphHeight: Int get() = 210`\r\n\r\n![Screenshot_20200910-130710](https://user-images.githubusercontent.com/539276/92721820-f6bcbf00-f366-11ea-9b76-5c9530a3815e.png)\r\n![Screenshot_20200910-130715](https://user-images.githubusercontent.com/539276/92721833-fae8dc80-f366-11ea-8df1-9e0c6194e3cd.png)\r\n\r\n\r\n"
+  },
+  {
+   "id": 690181473,
+   "user": "mountrcg",
+   "created_at": "2020-09-10T11:20:55Z",
+   "body": "If screen property is a bigger issue one can also replace the funny icons for IOB COB TBR and Sens with text. 2 of these icons (COB & TBR) have display functions depending on status, so you will lose these if you only do text.\r\n\r\n[Text_instead_of_Icons_on_Info-Fragment_and_Large_Skin_adjusted.patch.zip](https://github.com/NightscoutFoundation/xDrip/files/5201233/Text_instead_of_Icons_on_Info-Fragment_and_Large_Skin_adjusted.patch.zip)\r\n\r\nThis patch also includes an adjustment to the Large Skin, to extend the first graph fully on a Huawei P20 Pro.\r\n\r\n"
+  },
+  {
+   "id": 692446942,
+   "user": "Thebigedge82",
+   "created_at": "2020-09-15T03:53:26Z",
+   "body": "Hi Robert, this is great. I'm not particularly literate when it comes to\napp building: would you mind sharing a walkthrough of how to enable the\nskinclassic.kt tweaks?\n\nOn Thu, Sep 10, 2020 at 9:11 PM Robert <notifications@github.com> wrote:\n\n> I have an Atom XL running with AAPS & xdrip+. Everything is very smooth if\n> you have the battery optimization cleaned up. Very good battery time (2\n> days) and 100% capture rate in xdrip+. I use an omnipod so the also this\n> AAPS branch with RileyLink via bluetooth works fine.\n> There is 2 tweaks you can do in skinClassic.kt in order to get maximum use\n> of your screen for the first graph and put 2 further graphs down for\n> scrolling down one page:\n> override val mainGraphHeight: Int get() = 290\n> override val secondaryGraphHeight: Int get() = 210\n>\n> [image: Screenshot_20200910-130710]\n> <https://user-images.githubusercontent.com/539276/92721820-f6bcbf00-f366-11ea-9b76-5c9530a3815e.png>\n> [image: Screenshot_20200910-130715]\n> <https://user-images.githubusercontent.com/539276/92721833-fae8dc80-f366-11ea-8df1-9e0c6194e3cd.png>\n>\n> —\n> You are receiving this because you commented.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/734#issuecomment-690162974>,\n> or unsubscribe\n> <https://github.com/notifications/unsubscribe-auth/AQXQ6HJFTFKAOUBF35BU3HDSFCX47ANCNFSM4GOJETGA>\n> .\n>\n"
+  },
+  {
+   "id": 693291626,
+   "user": "mountrcg",
+   "created_at": "2020-09-16T09:35:14Z",
+   "body": "@Thebigedge82 it is pretty straight forward in Android Studio:\r\n<img width=\"739\" alt=\"Bildschirmfoto 2020-09-16 um 11 29 19\" src=\"https://user-images.githubusercontent.com/539276/93319784-93bca380-f810-11ea-9187-be1731e8f2ba.png\">\r\nand\r\n<img width=\"805\" alt=\"Bildschirmfoto 2020-09-16 um 11 32 11\" src=\"https://user-images.githubusercontent.com/539276/93319806-9d460b80-f810-11ea-83eb-d6d97c367328.png\">\r\n\r\n"
+  },
+  {
+   "id": 695768331,
+   "user": "rgcstats",
+   "created_at": "2020-09-20T10:01:02Z",
+   "body": "Thanks very much @mountrcg, I might get myself the atom L for Christmas in that case. Can you give a few tips about getting the battery optimisation right? It seems like there are battery-related settings in multiple places, and I was never sure with the atom that I'd turned them all off.\r\n\r\n"
+  },
+  {
+   "id": 695795087,
+   "user": "mountrcg",
+   "created_at": "2020-09-20T14:42:46Z",
+   "body": "@rgcstats\r\n(1) There is the gerneral battery settings under Settings > Battery where the Battery Saver is set to off\r\n(2) the app specific battery otimization settings under Settings > Apps & Notifications > Advanced > Special app access > Battery Optimization where AAPS and xDrip need to be set to \"not optimized\"\r\n(3) the Atom specific part under Settings > Smart Assistent > App Blocker where you untoggle Start Blocker, Background Blocker and Background Cleanup for both xDrip and AAPS"
+  },
+  {
+   "id": 696361874,
+   "user": "tolot27",
+   "created_at": "2020-09-21T20:39:23Z",
+   "body": "It looks to me that the problem is caused by the Unihertz BT stack and not by xDrip. Or is it solved, meanwhile?\r\n\r\n@mountrcg Thank you for your screen size adaption. Please can you create a separate feature request to not further mix up this issue?"
+  },
+  {
+   "id": 700642815,
+   "user": "Mackwe",
+   "created_at": "2020-09-29T11:31:26Z",
+   "body": "@tech-support-unihertz : Downloaded the 2020072319_g35v63c2k_dfl_bt-ota.zip onto an Atom. Installed 8.1 very nicely and I configured everything for this use. The collection seems to work well, but for some reason my IMEIs are set to 11111111111111 and 22222222222222 respectively, so I can't use any SIM card functionality (it will not register onto any network). \r\n\r\nIs there another version I can try?"
+  },
+  {
+   "id": 700657433,
+   "user": "tolot27",
+   "created_at": "2020-09-29T12:04:12Z",
+   "body": "@Mackwe Please can you contact Unihertz directly? The IMEI issue is not related to xDrip.\r\n\r\nIt looks like the original issue is solved now. Hence, I close this issue. @mountrcg will create a new issue with its feature request, hopefully."
+  }
+ ]
+}

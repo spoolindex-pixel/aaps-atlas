@@ -1,0 +1,99 @@
+{
+ "id": 1079174870,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1069,
+ "title": "Pixel Pro 6 Android 12 no longer connects to Dash",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1069",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-12-14T00:34:04Z",
+ "closed_at": "2021-12-16T22:40:27Z",
+ "comment_count": 14,
+ "body": "Starts at 16:53:48.880\r\n\r\nBT connection permission issue.\r\n\r\n[AndroidAPS_LOG_1639432456805.log.zip](https://github.com/nightscout/AndroidAPS/files/7707741/AndroidAPS_LOG_1639432456805.log.zip)\r\n\r\nAndroidAPS 2.8.2.17-dev\r\nBuild: c21b4beeb-2021.12.13-13:54\r\nRemote: https://github.com/nightscout/AndroidAPS.git\r\nFlavor: fullrelease\r\nNightscout version: UNKNOWN\r\nEngineering mode enabled \r\n\r\n",
+ "comments": [
+  {
+   "id": 993352986,
+   "user": "MilosKozak",
+   "created_at": "2021-12-14T09:39:30Z",
+   "body": "did you try to activate dash with 2.8.2.17 or only continue session?"
+  },
+  {
+   "id": 993500943,
+   "user": "tswire",
+   "created_at": "2021-12-14T12:41:20Z",
+   "body": "Continue a session only. I will be changing pods today so can try to activate a new one? "
+  },
+  {
+   "id": 993618689,
+   "user": "mick711",
+   "created_at": "2021-12-14T14:48:27Z",
+   "body": "Yes you can like i say on discord chanel, update doesn't work but clean install and activate new pod work "
+  },
+  {
+   "id": 993618915,
+   "user": "MilosKozak",
+   "created_at": "2021-12-14T14:48:41Z",
+   "body": "yes, permission is asked during pod activation"
+  },
+  {
+   "id": 993631436,
+   "user": "tswire",
+   "created_at": "2021-12-14T15:01:51Z",
+   "body": "> yes, permission is asked during pod activation\r\n\r\nIs this something you are going to try and fix for in session update?  I can try to test it today before starting a new pod??"
+  },
+  {
+   "id": 993679874,
+   "user": "MilosKozak",
+   "created_at": "2021-12-14T15:51:24Z",
+   "body": "i don't have android 12 phone. Unable to test it"
+  },
+  {
+   "id": 993684303,
+   "user": "tswire",
+   "created_at": "2021-12-14T15:55:47Z",
+   "body": "Ok, I will switch pods today on .17 and activate and go from there.  I wonder if subsequent dev updates will behave the same?  Or is this something we think dev 17 only requires a new pod activation to grant permission then it will behave like before (in session dev updates will be ok??)\r\n"
+  },
+  {
+   "id": 993944519,
+   "user": "parapenT1sta",
+   "created_at": "2021-12-14T20:15:05Z",
+   "body": "Just a note, I remember when I start testing Android S (12 beta version) and xDrip didn't work at all with Dexcom but was able to work with MiaoMiao and Bubble, first try to fix was adding the permission request on xDrip https://github.com/NightscoutFoundation/xDrip/pull/1734 but didn't work. The only solution that worked was this one https://github.com/NightscoutFoundation/xDrip/pull/1723.\r\n\r\nThis cannot be related at all to this issue but just to leave my experience with Android 12 at the beginning."
+  },
+  {
+   "id": 994815673,
+   "user": "tswire",
+   "created_at": "2021-12-15T13:57:19Z",
+   "body": "Adding to this, Dev 18 is unable to be tested as it crashes on Pixel Pro 6.  Both in place and fresh install crashes and must go back to Dev 14 and MUST reinstall fresh Dev 14 to get BT connection back.  "
+  },
+  {
+   "id": 994817417,
+   "user": "mick711",
+   "created_at": "2021-12-15T13:59:25Z",
+   "body": "parapenT1sta i use xDrip with G6 on my Zenfone 8 to Android 12 and it work fine but i use last Nightly .\r\nFor the moment i use with my Dash Pod v17 Built c21b4beeb... i can't be update AAPS but start a new pod . i don't update for the moment to v18 tomorow i need to change pod so i try to update before ."
+  },
+  {
+   "id": 994819256,
+   "user": "tswire",
+   "created_at": "2021-12-15T14:01:34Z",
+   "body": "> parapenT1sta i use xDrip with G6 on my Zenfone 8 to Android 12 and it work fine but i use last Nightly . For the moment i use with my Dash Pod v17 Built [c21b4be](https://github.com/nightscout/AndroidAPS/commit/c21b4beeba4c53b083e6e05f1e2c03abc5400457)... i can't be update AAPS but start a new pod . i don't update for the moment to v18 tomorow i need to change pod so i try to update before .\r\n\r\nPlease let us know if Dev 18 works.  It crashes for me on both in place and fresh install.  I do not have a copy of Dev 17 so must stay on Dev 14 for everything to work.  I hope @MilosKozak can either delay Dev 14 expiry (tomorrow) or help test new Dev 19 that works "
+  },
+  {
+   "id": 995202125,
+   "user": "tswire",
+   "created_at": "2021-12-15T20:48:55Z",
+   "body": "It seems most recent commits for Dev 18 has fixed this.  not sure if each new version will prompt a new BT permission but it forced me to request that permission and then connected to Dash pod.  Good to close this?\r\n"
+  },
+  {
+   "id": 996147652,
+   "user": "erobinson",
+   "created_at": "2021-12-16T19:53:02Z",
+   "body": "FYI - I updated to dev 18 yesterday and it asked for additional permissions but the connections were totally fine to dash and I had no issues.\r\n\r\nPixel 6 Pro - Android 12 - Dash - Dexcom BOYDA"
+  },
+  {
+   "id": 996212828,
+   "user": "mick711",
+   "created_at": "2021-12-16T21:36:58Z",
+   "body": "Update to dev 18 today built 35ded... work fine no additional request for me but I update 17 c21... Yes I think issue can be closed"
+  }
+ ]
+}

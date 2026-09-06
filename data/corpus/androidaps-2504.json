@@ -1,0 +1,51 @@
+{
+ "id": 1669550037,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2504,
+ "title": "Dangerous DANA i Bug - wrong IOB after Bolus delivery (could lead to overdosing)",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2504",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-04-15T19:49:43Z",
+ "closed_at": "2023-04-16T14:43:37Z",
+ "comment_count": 6,
+ "body": "AAPS 3.1.0.3 - Dana i - Motorola g9 Play Android 11\r\n\r\nAfter i initiated a bolus of 5 iE the delivery went through. Sometimes i get an error message like shown in the picture below. But afterwards the IOB in the frontpage of AAPS was still at the same level as before the bolus. As if they have not been delivered. And it stays there until you deliver another bolus.\r\nAfter i started the delivery i turned the screen off. (maybe that plays a role?)\r\nIt happens quite often and as i have heard am i not the only one having this possibly dangerous issue.\r\n\r\nI will attach the log files and en extra Txt file where i copied out the relevant lines from the log file so you dont have to search so much and you see the time stamp right away.\r\n\r\n[AndroidAPS_LOG_1681584644647_log.zip](https://github.com/nightscout/AndroidAPS/files/11240497/AndroidAPS_LOG_1681584644647_log.zip)\r\n![IMG_6BDE4F761387-1](https://user-images.githubusercontent.com/25514844/232280719-8e03121b-d2b3-470e-95d5-fa4f6d8822af.jpeg)\r\n\r\nThx for your awesome work!!! :)\r\n\r\n\r\n\r\nReporting bugs\r\n--------------\r\n- **Note the precise time the problem occurred** and describe the circumstances and steps that caused\r\n  the problem\r\n- Note the Build version (found in the About dialog in the app, when pressing the three dots in the\r\n  upper-right corner).\r\n- Obtain the app's log files, which can be found on the phone in\r\n  _/storage/emulated/0/Android/data/info.nightscout.androidaps/_\r\n  See https://androidaps.readthedocs.io/en/latest/Usage/Accessing-logfiles.html\r\n- Open an issue at https://github.com/nightscout/AndroidAPS/issues/new\r\n",
+ "comments": [
+  {
+   "id": 1510403227,
+   "user": "MilosKozak",
+   "created_at": "2023-04-16T14:43:37Z",
+   "body": "well, did you read the message on screen? you must MANUALLY check real delivered amount because if the phone lost the connection to the pump there is no way to get the information about issued bolus. Ususally it's enough to force new connection to the pump and the history is read"
+  },
+  {
+   "id": 1511274156,
+   "user": "Meinosaurus",
+   "created_at": "2023-04-17T12:47:40Z",
+   "body": "Well yes, i treid that and in the Pump itself i can see the bolus. I went into the DANA Tab and clicked on \"Pump History\" and chose \"boli\"…The History was read and still it did not get the bolus i just delivered. AAPS still assumes an IOB right know of -0.02 even though i just did a manual bolus of 15 iE. Am i overseeing something? One more Time a step by step explanation of what i did.\r\n\r\n1. Initialised a bolus of 15 iE via the \"Insulin\" Button on the fronpage.\r\n2. Got the above shown error Message (Which on the other hand is not allways the case. Sometimes there is no error message at all and the IOB stays unchanged after a bolus which is much more dangerous)\r\n3. checked Pump manually and there i see the 15 iE in the History\r\n4. went back to AAPS and into the Dana Tab and checked the „boli histroy“ and clicked on \"Reload\" \"Neu Laden\"\r\n5. It took some time but it went through\r\n6. No Change in the IOB as if i had never given a bolus. \r\n7. After AAPS read the history it seems that the phone totally lost the connection to the pump (all the Pump related Buttons in the frontpage were gone. Only \"Calibration\" showed up, no insulin and no wizzard, no carbs.\r\n8. went back to the Dana Tap and did another BOLI History reload\r\n9. Connection was established but still no change in IOB and \"Insulin\" and \"Wizzard\" wont show up in the \"Home\" Tab\r\n\r\nI Will attach the Log file. The Time Stamp where i initiated the bolus ist this one: 14:13:46.763\r\n\r\nFrom there on you should be able to see all i did and explained above.\r\n\r\nNow after Waiting 30 Minutes the IOB was correct again…somehow the connection was established again and it seems like the history was read the right way now..\r\n\r\nI am not the only one having these problems on a regular basis. \r\nSo i thought it would make sense to open an Issue and to maybe pay a little more attention to it. \r\nBecause it can possibly lead to dangerous situations. especially for unexperienced users when after a large bolus the IOB shows old values.\r\n"
+  },
+  {
+   "id": 1512114170,
+   "user": "MilosKozak",
+   "created_at": "2023-04-17T21:34:35Z",
+   "body": "the history loadable from dana tab is not used for bolus data. \r\nyou must press BT icon to force new connection to dana pump"
+  },
+  {
+   "id": 1512757845,
+   "user": "Meinosaurus",
+   "created_at": "2023-04-18T09:33:52Z",
+   "body": "OK, will try that the next time this happens Thx. Though i think i have tried this before without any success…Anyway, i think there seems to be some kind of problem with the Dana Bluetooth Integration and it would be cool if that is taken seriously. Like i said, i am not the only person having these kind of issues. Dont you think so? Or do you think its only happening to me?\r\nI know you are all doing this awesome work in your free time and i really appreciate that a lot! I just wanted to help and point out that there seems to be this problem that some people have, which might lead to dangerous situations…"
+  },
+  {
+   "id": 1514346023,
+   "user": "MilosKozak",
+   "created_at": "2023-04-19T08:34:28Z",
+   "body": "BLE Dana is most stable pump from connectivity point of view. Issues are always caused by phone. And it's rare"
+  },
+  {
+   "id": 1514404585,
+   "user": "Meinosaurus",
+   "created_at": "2023-04-19T09:17:20Z",
+   "body": "Ok THx, then it must be Problem of the moto g9 play i guess. "
+  }
+ ]
+}

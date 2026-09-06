@@ -1,0 +1,51 @@
+{
+ "id": 1091866217,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1116,
+ "title": "APS 2.8.2.18 Sprit distance timestamp error in the timer",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1116",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-01-01T18:20:40Z",
+ "closed_at": "2022-01-02T13:59:18Z",
+ "comment_count": 6,
+ "body": "There is a periodic error in the timer when bolusing meals via the bolus suggestion calculator with a syringe interval. Carbohydrates were triggered with an interval of 10 minutes, in the timer these 10 minutes were not set but only 1 minute. In the APS main screen and treatment tab everything was booked and set correctly. Only affects the timer for the carbohydrate intake.\r\n\r\nIf I can trace it correctly, this error occurred for the first time with the build: aee036e2 from 29.12.2021.\r\n\r\nEnclosed are the corresponding screnshots and log file.\r\n\r\nWith the request to check, and best thanks Thomas\r\n\r\n![Bild1](https://user-images.githubusercontent.com/59526802/147857440-01f9f307-6a0e-40da-9e57-cdd76a13bafe.jpg)\r\n\r\n![Bild2](https://user-images.githubusercontent.com/59526802/147857450-df5359f3-7693-435b-af85-fe979a3029c5.jpg)\r\n\r\n![Bild3](https://user-images.githubusercontent.com/59526802/147857457-9164f6cd-0b18-470c-b8f4-af8d5bb83ed5.jpg)\r\n\r\n![Bild4](https://user-images.githubusercontent.com/59526802/147857460-8a7d9df0-1c1c-4902-8a6c-23ecfb58cfd6.jpg)\r\n\r\n[AndroidAPS._2022-01-01_12-29-10_.10.zip](https://github.com/nightscout/AndroidAPS/files/7798058/AndroidAPS._2022-01-01_12-29-10_.10.zip)\r\n\r\n",
+ "comments": [
+  {
+   "id": 1003713709,
+   "user": "AdrianLxM",
+   "created_at": "2022-01-02T13:09:19Z",
+   "body": "Thanks for reporting.\r\nI guess the issue is with having a`Long` passed as time instead of an `Int`.\r\nI'll PR a possible fix in the course of the day."
+  },
+  {
+   "id": 1003714999,
+   "user": "Thomas-Wolff",
+   "created_at": "2022-01-02T13:19:29Z",
+   "body": "Thanks for the information, I had already suspected something like that.\r\n\r\n"
+  },
+  {
+   "id": 1003716993,
+   "user": "AdrianLxM",
+   "created_at": "2022-01-02T13:32:59Z",
+   "body": "To be fair, I didn't even get the timer to start on my phone with `Long` as datatype.\r\nThis PR fixes it for me: https://github.com/nightscout/AndroidAPS/pull/1119\r\n\r\n@Thomas-Wolff would you mind testing if it solves the issue you are experiencing as well? Thanks!"
+  },
+  {
+   "id": 1003719110,
+   "user": "Thomas-Wolff",
+   "created_at": "2022-01-02T13:48:31Z",
+   "body": "Hi Adrian, I have already installed the Build 31458fb2b. Today at supper I will test it and send an info.\r\n\r\nThank you very much and have a nice Sunday\r\nGreetings Thomas"
+  },
+  {
+   "id": 1003720546,
+   "user": "MilosKozak",
+   "created_at": "2022-01-02T13:59:18Z",
+   "body": "fixed by https://github.com/nightscout/AndroidAPS/commit/faca82f6e853dff5ab27425292dc542691d42245"
+  },
+  {
+   "id": 1003721241,
+   "user": "Thomas-Wolff",
+   "created_at": "2022-01-02T14:04:07Z",
+   "body": "Milos I will update right away and test it at the next bolus.\r\n\r\nThanks for your effort, Greetings Thomas\r\n\r\n"
+  }
+ ]
+}

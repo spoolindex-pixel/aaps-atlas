@@ -1,0 +1,33 @@
+{
+ "id": 456577506,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 912,
+ "title": "xdrip shows the same bolus twice.",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/912",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2019-06-15T21:28:24Z",
+ "closed_at": "2021-03-06T18:51:11Z",
+ "comment_count": 3,
+ "body": "Using openaps, with two raspberry pis.\r\nSon enters 15 carbs using medtronic pump. Xdrip shows them twice.\r\nHere are the relevant lines from the xdrip db:\r\n\r\n_id\tcarbs\tcreated_at\tenteredBy\teventType\tinsulin\tnotes\ttimestamp\tuuid\r\n1264\t15.0\t2019-06-15T09:40:40Z\topenaps://medtronic/754 via Nightscout\t<none>\t1.8\tNormal bolus with wizard.\r\nCalculated IOB: 1.459\r\nProgrammed bolus 1.8\r\nDelivered bolus 1.8\r\nPercent delivered:  100%\r\nFood estimate 1.8\r\nCorrection estimate 0\r\nBolus estimate 1.8\r\nTarget low 110\r\nTarget high 111\r\nHypothetical glucose delta -216\t1560591640000\t5d04bdf841a775d45fbfe012\r\n\r\n\r\n\r\n_id\tcarbs\tcreated_at\tenteredBy\teventType\tinsulin\tnotes\ttimestamp\tuuid\r\n1265\t15.0\t2019-06-15T09:40:38Z\topenaps://medtronic/754 via Nightscout\t<none>\t0.0\tFood estimate 1.8\r\nCorrection estimate 0\r\nBolus estimate 1.8\r\nTarget low 110\r\nTarget high 111\r\nHypothetical glucose delta 0\t1560591638000\t5d04bdf841a775d45fbfe014\r\n\r\nNightscout shows the data correctly. (that is one bolus).\r\nHere is the data on mongo db:\r\n\r\n{\r\n    \"_id\": {\r\n        \"$oid\": \"5d04bdf841a775d45fbfe012\"\r\n    },\r\n    \"duration\": 0,\r\n    \"bolus\": {\r\n        \"timestamp\": \"2019-06-15T12:40:40+03:00\",\r\n        \"_type\": \"Bolus\",\r\n        \"id\": \"AQBIAEgALgBoqEwPEw==\",\r\n        \"amount\": 1.8,\r\n        \"programmed\": 1.8,\r\n        \"unabsorbed\": 1.15,\r\n        \"duration\": 0\r\n    },\r\n    \"timestamp\": \"2019-06-15T12:40:40+03:00\",\r\n    \"created_at\": \"2019-06-15T12:40:40+03:00\",\r\n    \"carbs\": 15,\r\n    \"ratio\": \"8.3\",\r\n    \"wizard\": {\r\n        \"timestamp\": \"2019-06-15T12:40:40+03:00\",\r\n        \"_type\": \"BolusWizard\",\r\n        \"id\": \"WwBoqAwPEw9QAFN4bgAASAAAAABIbw==\",\r\n        \"carb_input\": 15,\r\n        \"carb_ratio\": 8.3,\r\n        \"correction_estimate\": 0,\r\n        \"food_estimate\": 1.8,\r\n        \"unabsorbed_insulin_total\": 0,\r\n        \"bolus_estimate\": 1.8,\r\n        \"bg\": 0,\r\n        \"bg_target_low\": 110,\r\n        \"bg_target_high\": 111,\r\n        \"sensitivity\": 120,\r\n        \"units\": \"mgdl\"\r\n    },\r\n    \"eventType\": \"Meal Bolus\",\r\n    \"insulin\": 1.8,\r\n    \"notes\": \"Normal bolus with wizard.\\nCalculated IOB: 1.459\\nProgrammed bolus 1.8\\nDelivered bolus 1.8\\nPercent delivered:  100%\\nFood estimate 1.8\\nCorrection estimate 0\\nBolus estimate 1.8\\nTarget low 110\\nTarget high 111\\nHypothetical glucose delta -216\",\r\n    \"medtronic\": \"mm://openaps/mm-format-ns-treatments/Meal Bolus\",\r\n    \"enteredBy\": \"openaps://medtronic/754\"\r\n}\r\n\r\n\r\n\r\n{\r\n    \"_id\": {\r\n        \"$oid\": \"5d04bdf841a775d45fbfe014\"\r\n    },\r\n    \"carbs\": 15,\r\n    \"ratio\": \"8.3\",\r\n    \"wizard\": {\r\n        \"timestamp\": \"2019-06-15T12:40:38+03:00\",\r\n        \"_type\": \"BolusWizard\",\r\n        \"id\": \"WwBmqAwPEw9QAFN4bgAASAAAAABIbw==\",\r\n        \"carb_input\": 15,\r\n        \"carb_ratio\": 8.3,\r\n        \"correction_estimate\": 0,\r\n        \"food_estimate\": 1.8,\r\n        \"unabsorbed_insulin_total\": 0,\r\n        \"bolus_estimate\": 1.8,\r\n        \"bg\": 0,\r\n        \"bg_target_low\": 110,\r\n        \"bg_target_high\": 111,\r\n        \"sensitivity\": 120,\r\n        \"units\": \"mgdl\"\r\n    },\r\n    \"timestamp\": \"2019-06-15T12:40:38+03:00\",\r\n    \"created_at\": \"2019-06-15T12:40:38+03:00\",\r\n    \"eventType\": \"Carb Correction\",\r\n    \"notes\": \"Food estimate 1.8\\nCorrection estimate 0\\nBolus estimate 1.8\\nTarget low 110\\nTarget high 111\\nHypothetical glucose delta 0\",\r\n    \"medtronic\": \"mm://openaps/mm-format-ns-treatments/Carb Correction\",\r\n    \"enteredBy\": \"openaps://medtronic/754\"\r\n}\r\n\r\nI need to understand how nightscout knows how to filter this data and only show one entry.",
+ "comments": [
+  {
+   "id": 509036943,
+   "user": "tzachi-dar",
+   "created_at": "2019-07-07T22:50:23Z",
+   "body": "Seems like similar thing has happened.\r\nIssue is probably with openaps, not xdrip.\r\nSeems that there are two pills in nightscout as well. They are just covering each other.\r\nIt seems to be caused by going over the wizard once, but without actually bolusing.\r\nStill carbs are being counted twice...\r\n\r\n![image](https://user-images.githubusercontent.com/7942372/60774824-9c9cea00-a122-11e9-9b54-0ff7da8980d8.png)\r\n![image](https://user-images.githubusercontent.com/7942372/60774829-bccca900-a122-11e9-9e2b-32b1c50b2710.png)\r\n"
+  },
+  {
+   "id": 786885666,
+   "user": "Navid200",
+   "created_at": "2021-02-26T20:47:25Z",
+   "body": "@tzachi-dar What is the current status of this issue?\r\nThanks"
+  },
+  {
+   "id": 792020874,
+   "user": "Navid200",
+   "created_at": "2021-03-06T18:51:11Z",
+   "body": "Closing due to inactivity\r\nOf course, you know you can reopen this.  It would be great to have an update."
+  }
+ ]
+}

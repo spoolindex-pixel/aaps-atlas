@@ -1,0 +1,41 @@
+{
+ "id": 1763875303,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2594,
+ "title": "Missing \"pumpEnactResult.apply\" in ComboV2 driver, leading to misleading feedback on SMS bolus",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2594",
+ "state": "closed",
+ "labels": [
+  "combo"
+ ],
+ "created_at": "2023-06-19T16:47:02Z",
+ "closed_at": "2023-08-04T08:30:01Z",
+ "comment_count": 4,
+ "body": "See https://github.com/nightscout/AndroidAPS/blob/a69fbf0635fa6cbfe9635d7949b761cefa282dbc/pump/combov2/src/main/kotlin/info/nightscout/pump/combov2/ComboV2Plugin.kt#L1071\r\nit is missing\r\n`\r\n                pumpEnactResult.apply {\r\n                    bolusDelivered = detailedBolusInfo.insulin\r\n                }\r\n`\r\n\r\nwithout this, AAPS always reports back 0.0 units delivered when issuing a bolus command via SMS.",
+ "comments": [
+  {
+   "id": 1601652009,
+   "user": "savek-cc",
+   "created_at": "2023-06-21T20:48:16Z",
+   "body": "Should probably be added after line 1110 and report the actually delivered value."
+  },
+  {
+   "id": 1620252276,
+   "user": "dv1",
+   "created_at": "2023-07-04T13:26:40Z",
+   "body": "True. Thanks for that. Will look at this."
+  },
+  {
+   "id": 1663821851,
+   "user": "MilosKozak",
+   "created_at": "2023-08-03T11:34:37Z",
+   "body": "@dv1 ?"
+  },
+  {
+   "id": 1663943271,
+   "user": "dv1",
+   "created_at": "2023-08-03T13:00:25Z",
+   "body": "Done."
+  }
+ ]
+}

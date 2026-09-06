@@ -1,0 +1,57 @@
+{
+ "id": 2774958804,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3719,
+ "title": "[3.3.1.0] DynISF calculates values outside of limit",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3719",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-01-08T10:14:31Z",
+ "closed_at": "2025-01-10T17:54:01Z",
+ "comment_count": 7,
+ "body": "I'm having an issue with DynISF after upgrading to 3.3.1.0 from 3.2.0.4.\r\nWhen I turn on DynISF and the loop runs, I get an error message saying \"Profile sensitivity value is outside of hard limit. INSANE VALUE limited to 1000,00\".\r\nI looked at the logs and found a huge amount of lines like this:\r\n`09:00:21.022 [DefaultDispatcher-worker-2] D/APS: [OpenAPSSMBPlugin.getAverageIsfMgdl():167]: getAverageIsfMgdl() null from 0 values 07-01-2025 03:45:00 iobCobOref1Worker.`\r\n\r\nWhen I turn off DynISF everything runs fine.\r\n\r\n[AndroidAPS.log](https://github.com/user-attachments/files/18345544/AndroidAPS.log)\r\n\r\nBuild version: `2ac634c908-2025.01.07`\r\nTime of occurrence in the logfile: `09:35:39.486`\r\n\r\nNote that I tried turning DynISF on and off a couple of times this morning. First time of occurrence was `09:00:18.622`.\r\n\r\nWhat I have tried (but unfortunately didn't fix it):\r\n- Leave AAPS running overnight (with DynISF) disabled and try turning DynISF on again in the morning.\r\n- Erase APS results from maintenance menu and restart AAPS\r\n\r\n![Screenshot_20250108-093708](https://github.com/user-attachments/assets/bbbfffc8-d73a-4d9a-9101-462a92844092)",
+ "comments": [
+  {
+   "id": 2577388236,
+   "user": "MilosKozak",
+   "created_at": "2025-01-08T10:59:15Z",
+   "body": "Send me printscreen of TDD from statistics page and then try to reset it there and restart AAPS"
+  },
+  {
+   "id": 2577475173,
+   "user": "KeesV",
+   "created_at": "2025-01-08T11:45:58Z",
+   "body": "OK, steps I took:\r\n- Take screenshot of TDD statistics (see below)\r\n- Recalculate TDD statistics by pressing the button \"Herberekenen\"\r\n- Als pressed the \"Reset\" button at the bottom of the page, just to be sure\r\n- TDD statistics were recalculated by AAPS. Numbers were exactly the same as in the screenshot\r\n- Restarted AAPS\r\n- Enabled DynISF (I had it off before because of this issue)\r\n- Result: Same error is shown...\r\n\r\n![Screenshot_20250108-122235](https://github.com/user-attachments/assets/aa96d129-6ab8-491d-8ce7-3bee75768c6a)\r\n"
+  },
+  {
+   "id": 2577901853,
+   "user": "MilosKozak",
+   "created_at": "2025-01-08T15:06:39Z",
+   "body": "are you able to build dev branches?"
+  },
+  {
+   "id": 2577928741,
+   "user": "KeesV",
+   "created_at": "2025-01-08T15:17:08Z",
+   "body": "I should be able to. I don't have a separate phone to test however, so as long as I can safely switch back to main it should be good"
+  },
+  {
+   "id": 2578740940,
+   "user": "MilosKozak",
+   "created_at": "2025-01-08T21:55:00Z",
+   "body": "i'll prepare more logging version"
+  },
+  {
+   "id": 2581294212,
+   "user": "MilosKozak",
+   "created_at": "2025-01-09T21:38:14Z",
+   "body": "use dev branch a put new log here once this issue appears again"
+  },
+  {
+   "id": 2581952043,
+   "user": "KeesV",
+   "created_at": "2025-01-10T07:24:08Z",
+   "body": "Thanks @MilosKozak ! The issue is solved 👍 \r\n\r\nThe problem was that my DynISF adjustment factor was set to 0. I found this by digging through the log from the dev branch and through the code. I saw that `tdd=0.0` and when looking at how that was calculated I saw that it includes \r\n```* preferences.get(IntKey.ApsDynIsfAdjustmentFactor)```\r\nso I checked that and it was set to 0.\r\n\r\nSetting my DynISF adjustment factor to 100 made the issue go away and all is running smoothly again.\r\n\r\nHowever, I don't understand how it got to 0. The UI doesn't let me enter 0 as a value. That might be worth looking into.\r\n\r\nAttaching the log that led me to the solution here.\r\n[AndroidAPS.log](https://github.com/user-attachments/files/18372109/AndroidAPS.log)\r\n"
+  }
+ ]
+}

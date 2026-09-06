@@ -1,0 +1,57 @@
+{
+ "id": 1047216888,
+ "repo": "nightscout/AndroidAPS",
+ "number": 874,
+ "title": "[last dev] Crash during Carbs entries Calculator or Carbs button",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/874",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-11-08T09:32:21Z",
+ "closed_at": "2021-11-08T12:37:37Z",
+ "comment_count": 7,
+ "body": "I don't know if it's a side effect of https://github.com/nightscout/AndroidAPS/commit/dcf3c9cc57b0a2b63af9ee418dafee82fefef95b but this morning my carbs entered in CALCULATOR was not recorded in database (see screenshot and log) (First time I see missing carbs in database)\r\n[AndroidAPS._2021-11-08_08-41-23_.0.zip](https://github.com/nightscout/AndroidAPS/files/7495715/AndroidAPS._2021-11-08_08-41-23_.0.zip)\r\n\r\n![image](https://user-images.githubusercontent.com/52934600/140717535-7d4bacdc-6d46-4993-bbc3-0d83af81fcaa.png)\r\n\r\n\r\n",
+ "comments": [
+  {
+   "id": 962981899,
+   "user": "MilosKozak",
+   "created_at": "2021-11-08T09:51:35Z",
+   "body": "there was a crash at 08:41:25.913"
+  },
+  {
+   "id": 962990430,
+   "user": "Philoul",
+   "created_at": "2021-11-08T10:02:34Z",
+   "body": "Very strange in log file the line before crash is:\r\n```\r\n08:41:25.862 [main] D/PUMP: [OmnipodDashPodStateManagerImpl.load():665]: Creating new Pod state\r\n```\r\nCould it be the reason of the crash ? (How can I have this line `Creating new Pod state` from Dash driver with Insight driver selected...)"
+  },
+  {
+   "id": 963013209,
+   "user": "Philoul",
+   "created_at": "2021-11-08T10:28:10Z",
+   "body": "Got a crash when I tried to manually enter Carbs from Carbs button with the same strange OmnipodDash line before"
+  },
+  {
+   "id": 963071469,
+   "user": "Alamo04",
+   "created_at": "2021-11-08T11:45:17Z",
+   "body": "Confirmed, with dev from 00:12 AM\r\nIf I try to enter carbs, AAPS crashed, restarted and Carbs are not entered. Tryed again with same result.\r\nSystem:\r\nPixel 5  phone, Combo pump, AAPS 2.8.2.9 created and installed at 00:12 AM.\r\n\r\nThis happened in any case that you use for enter carbs, (wizard with insulin and carbs, manual).\r\nIf you use the wizard to enter insulin and carbs, then insulin was delivered and entered, then AAPS crashed without enter the cabs too.\r\n\r\nThe dev before this version was fine."
+  },
+  {
+   "id": 963072840,
+   "user": "robertrub",
+   "created_at": "2021-11-08T11:47:16Z",
+   "body": "I confirm the missing carbs too @MilosKozak.\r\nLatest dev built this morning\r\n\r\n![Screenshot_20211108-093312_AndroidAPS](https://user-images.githubusercontent.com/76626474/140736283-1a3f6ddc-cbb2-416d-b731-5cee0f7c25d1.jpg)\r\n \r\nAt noon I use the wizard to calculate and inject my bolus. The insulin and the calc line are in treatments but not the carbs. I saw that something was wrong when my 2nd graph showed onlt IOB and no COB. I didn't have a crash.\r\n\r\n![Screenshot_20211108-124006_AndroidAPS](https://user-images.githubusercontent.com/76626474/140736593-1f04d8a2-d12a-4523-a437-0d7f59b4a0f4.jpg)\r\n\r\n![Screenshot_20211108-124036_AndroidAPS](https://user-images.githubusercontent.com/76626474/140736659-20fa61b0-b32a-4e31-a69b-21103abd9860.jpg)\r\n\r\nThen, I manually entered the carbs and had the crash.\r\n\r\nMeal at 12:19 (missing carbs), manual carbs added ar 12:49 resulting in the crash.\r\n[AndroidAPS_LOG_1636372202286.log.zip](https://github.com/nightscout/AndroidAPS/files/7496710/AndroidAPS_LOG_1636372202286.log.zip)\r\n"
+  },
+  {
+   "id": 963109810,
+   "user": "MilosKozak",
+   "created_at": "2021-11-08T12:37:37Z",
+   "body": "fixed by https://github.com/nightscout/AndroidAPS/commit/2a2bb4edc63df8fdb3cd05a17b1967c56babd604"
+  },
+  {
+   "id": 1584849630,
+   "user": "naromero77",
+   "created_at": "2023-06-09T16:31:12Z",
+   "body": "I had something like this happen today except it was with DASH pod and the 3.2.0-beta1. I will try to get logs and screen snapshots next time. I have been testing AAPS on and off for over a month for my son. First time such a thing happened."
+  }
+ ]
+}

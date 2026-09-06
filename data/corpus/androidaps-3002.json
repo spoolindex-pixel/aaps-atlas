@@ -1,0 +1,69 @@
+{
+ "id": 1966905718,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3002,
+ "title": "[EOPATCH2] AAPS deactivates the time change loop",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3002",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-10-29T09:05:24Z",
+ "closed_at": "2023-10-30T13:04:53Z",
+ "comment_count": 9,
+ "body": "Hello,\r\n\r\nIn Spain, the time has changed this morning (from 3:00 to 2:00).\r\n\r\nUsers of the EOPATCH2 pump have received a notification stating: \"Daylight saving time change less than 3 hours ago - Closed loop disabled\".\r\n\r\nFor 2 hours, we have been with the loop disabled, only receiving the programmed temporary basals.\r\n\r\nThis has happened to users with master version 3.2.0.1 as well as dev users.\r\n[AndroidAPS._2023-10-29_02-00-00_.0.zip](https://github.com/nightscout/AndroidAPS/files/13197623/AndroidAPS._2023-10-29_02-00-00_.0.zip)\r\n\r\nLater, everything started to work normally.\r\n\r\nHere is an extract from the log, where you can see when the message appears:\r\n\r\n03:02:42.273 [DefaultDispatcher-worker-5] D/APS: [LoopPlugin.invoke():229]: invoke from Calculation for app.aaps.core.interfaces.iob.InMemoryGlucoseValue@396971f\r\n03:02:42.280 [RxCachedThreadScheduler-26] D/NOTIFICATION: [NotificationStore.add():61]: Notification received: Cambio al horario de verano hace menos de 3 horas - Lazo cerrado deshabilitado\r\n03:02:42.280 [DefaultDispatcher-worker-5] D/CONSTRAINTS: [ConstraintObject.set():28]: Setting value true -> false (DST in last 3 hours.)[DstHelper]\r\n03:02:42.282 [DefaultDispatcher-worker-5] D/CONSTRAINTS: [ConstraintObject.getReasons():89]: Limiting original value: true to false. Reason: DstHelper: DST in last 3 hours.\r\n03:02:42.283 [DefaultDispatcher-worker-5] D/APS: [LoopPlugin.invoke():236]: LAZO DESACTIVADO POR RESTRICCIONES\r\nDstHelper: DST in last 3 hours.\r\n03:02:42.284 [RxCachedThreadScheduler-94] D/XDRIP: [XdripPlugin$onStart$3.accept():122]: UPL Start\r\n03:02:42.284 [DefaultDispatcher-worker-5] D/APS: [LoopPlugin.invoke():456]: invoke end\r\n\r\n\r\n03:17:02.808 [DefaultDispatcher-worker-7] D/WORKER: [LoggingWorker$doWork$2.invokeSuspend():27]: Worker result SUCCESS for class app.aaps.workflow.PrepareIobAutosensGraphDataWorker\r\n03:17:02.852 [DefaultDispatcher-worker-7] D/WORKER: [LoggingWorker$doWork$2.invokeSuspend():27]: Worker result SUCCESS for class app.aaps.workflow.UpdateGraphWorker\r\n03:17:02.893 [DefaultDispatcher-worker-7] D/APS: [LoopPlugin.invoke():229]: invoke from Calculation for app.aaps.core.interfaces.iob.InMemoryGlucoseValue@aeb738b\r\n03:17:02.898 [DefaultDispatcher-worker-7] D/CONSTRAINTS: [ConstraintObject.set():28]: Setting value true -> false (DST in last 3 hours.)[DstHelper]\r\n03:17:02.898 [RxCachedThreadScheduler-26] D/NOTIFICATION: [NotificationStore.add():61]: Notification received: Cambio al horario de verano hace menos de 3 horas - Lazo cerrado deshabilitado\r\n03:17:02.900 [DefaultDispatcher-worker-7] D/CONSTRAINTS: [ConstraintObject.getReasons():89]: Limiting original value: true to false. Reason: DstHelper: DST in last 3 hours.\r\n03:17:02.901 [DefaultDispatcher-worker-7] D/APS: [LoopPlugin.invoke():236]: LAZO DESACTIVADO POR RESTRICCIONES\r\nDstHelper: DST in last 3 hours.\r\n03:17:02.902 [DefaultDispatcher-worker-7] D/APS: [LoopPlugin.invoke():456]: invoke end\r\n03:17:02.902 [DefaultDispatcher-worker-7] D/WORKER: [LoggingWorker$doWork$2.invokeSuspend():27]: Worker result SUCCESS for class app.aaps.workflow.InvokeLoopWorker\r\n03:17:02.940 [DefaultDispatcher-worker-7] D/WORKER: [LoggingWorker$doWork$2.invokeSuspend():27]: Worker result SUCCESS for class app.aaps.workflow.UpdateWidgetWorker\r\n\r\nImage of the period where the loop was disabled (I muted the notification).\r\n\r\n![image](https://github.com/nightscout/AndroidAPS/assets/67511778/0084b5d8-8c35-4e30-8155-31d592a67162)\r\n\r\n![image](https://github.com/nightscout/AndroidAPS/assets/67511778/fbe74052-8195-4454-84c2-c3f24b10e39a)\r\n\r\nThanks!\r\n\r\n",
+ "comments": [
+  {
+   "id": 1784050709,
+   "user": "Dorayaki-84",
+   "created_at": "2023-10-29T09:48:03Z",
+   "body": "Hi,\r\nI attach screenshots of 2 more users.\r\nWhere we can see that due to the time change the closed loop stopped working for 2 hours.\r\n![photo_2023-10-29_10-36-20](https://github.com/nightscout/AndroidAPS/assets/64844117/b92cfa35-ca33-4777-ae22-59cbbfeff505)\r\n![photo_2023-10-29_08-13-11](https://github.com/nightscout/AndroidAPS/assets/64844117/53336e7a-d48e-4391-9c32-22bcd7e6325e)\r\n"
+  },
+  {
+   "id": 1784109381,
+   "user": "parapenT1sta",
+   "created_at": "2023-10-29T13:23:14Z",
+   "body": "Check in Other Pumps. Is working as expected. No bug.\r\n\r\nhttps://androidaps.readthedocs.io/en/latest/Usage/Timezone-traveling.html#time-adjustment-daylight-savings-time-dst"
+  },
+  {
+   "id": 1784176218,
+   "user": "fjpezuela",
+   "created_at": "2023-10-29T17:28:53Z",
+   "body": "> Check in Other Pumps. Is working as expected. No bug.\r\n> \r\n> https://androidaps.readthedocs.io/en/latest/Usage/Timezone-traveling.html#time-adjustment-daylight-savings-time-dst\r\n\r\nThank you. I had read that, but I thought it was referring to older pumps, as the other pumps do set the time correctly. So, does the Omnipod Dash do the same thing? There is no specific mention of these pumps.\r\n\r\nRegards, Fran."
+  },
+  {
+   "id": 1784181691,
+   "user": "parapenT1sta",
+   "created_at": "2023-10-29T17:52:00Z",
+   "body": "Other is different from older. :) Dash has also the same behavior.\r\n\r\nhttps://github.com/nightscout/AndroidAPS/issues/3001"
+  },
+  {
+   "id": 1784215545,
+   "user": "vanelsberg",
+   "created_at": "2023-10-29T20:22:13Z",
+   "body": "Confirming: By design, no bug."
+  },
+  {
+   "id": 1784221550,
+   "user": "robertrub",
+   "created_at": "2023-10-29T20:51:15Z",
+   "body": "Well, the design is not good then :)\n\nI can understand 1 hour without loop (especially when time goes back with double entries for BGs etc) but not 3 hours.\n\nEven the 1h should be treated internally and stay on closed loop (as with some other pumps) when DST changes."
+  },
+  {
+   "id": 1784224064,
+   "user": "MilosKozak",
+   "created_at": "2023-10-29T21:02:13Z",
+   "body": "write better code ;)"
+  },
+  {
+   "id": 1784225467,
+   "user": "robertrub",
+   "created_at": "2023-10-29T21:08:05Z",
+   "body": "Before starting to write code (which I don't know how to), I need to think over the logic of how to threat the double entries or the 1h \"blank\" in the data. Will think about it.\n\nWe have 6 months to find a nice solution ;)\n\nCan't understand why some pumps don't need open loop for 3h..."
+  },
+  {
+   "id": 1784250128,
+   "user": "MilosKozak",
+   "created_at": "2023-10-29T22:35:37Z",
+   "body": "the only pump with history which handles DST properly is Dana-i\r\nFor pumps without history it's only SW thing"
+  }
+ ]
+}

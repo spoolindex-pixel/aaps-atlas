@@ -1,0 +1,39 @@
+{
+ "id": 1147132954,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1361,
+ "title": "If battery dies during bolus delivery you get full bolus anyway but AAPS does record only part of it",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1361",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-02-22T16:39:49Z",
+ "closed_at": "2022-02-25T15:57:15Z",
+ "comment_count": 4,
+ "body": "CASE:\r\n\r\nI hit bolus shortcut for breakfast that should give me 8,7 U.\r\nDuring bolus delivery I get error message in AAPS that only 1,1 U was delivered.\r\nI looked at the pump display that shows me the battery needs to be replaced.\r\nI was sure that I get more than 1,1 U of insulin because insulin delivery took a long time (definitely longer than 1,1 U).\r\nI replaced the battery.\r\nI synced pump with AAPS by hitting Bluetooth logo in AAPS.\r\nBut AAPS still shows that only 1,1 U was delivered.\r\nSo I looked to pump bolus history and there was a record of 8,7 U delivery.\r\nSo pump knows that it delivered full bolus, but AAPS doesn't.\r\n\r\nSo the DANGEROUS problem is that if battery dies during bolus delivery you get full bolus anyway but AAPS does record only part of it. If you did not notice it, you can overdose and end up in hypo.\r\n\r\n--------------\r\nPUMP: Dana R v2, Model: 03, Protocol: 02, Code: B1\r\nAPP: Android APS 2.8.2\r\n\r\n![Screenshot_20220222-082307_AndroidAPS](https://user-images.githubusercontent.com/42749712/155177481-6c920d9b-bd24-444b-9142-1c1955aba0a6.jpg)\r\n![Screenshot_20220222-082319_AndroidAPS](https://user-images.githubusercontent.com/42749712/155177503-711c15f9-028f-4c3e-bc82-476c09ea1f54.jpg)\r\n![20220222_082737](https://user-images.githubusercontent.com/42749712/155177529-d5d63266-fdbc-4d8e-b58c-9d23429f0b9f.jpg)",
+ "comments": [
+  {
+   "id": 1048070873,
+   "user": "MilosKozak",
+   "created_at": "2022-02-22T18:06:12Z",
+   "body": "do you have log files?"
+  },
+  {
+   "id": 1048104469,
+   "user": "PetrMlejnek",
+   "created_at": "2022-02-22T18:46:39Z",
+   "body": "It happened this morning at 8:21.\r\n[AndroidAPS._2022-02-22_00-00-03_.1.txt](https://github.com/nightscout/AndroidAPS/files/8119353/AndroidAPS._2022-02-22_00-00-03_.1.txt)"
+  },
+  {
+   "id": 1050976126,
+   "user": "MilosKozak",
+   "created_at": "2022-02-25T15:57:15Z",
+   "body": "now i see it's 2.8\r\nlogging was not so good to be able find anything.\r\nand you are not using v2 driver anyway. main R driver doesn't use history and any problem with connectivity leads to wrong data almost everytime"
+  },
+  {
+   "id": 1057909650,
+   "user": "PetrMlejnek",
+   "created_at": "2022-03-03T10:39:10Z",
+   "body": "Omg, I don't know how that happened. Thank you!"
+  }
+ ]
+}

@@ -1,0 +1,83 @@
+{
+ "id": 2280285095,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3321,
+ "title": "Pump doesn't automatically reconnect like it used to",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3321",
+ "state": "closed",
+ "labels": [
+  "insight"
+ ],
+ "created_at": "2024-05-06T08:00:17Z",
+ "closed_at": "2025-11-23T22:42:42Z",
+ "comment_count": 11,
+ "body": "Eversince I updated to v3.2.0.4 every time I change my cartridge or battery, AAPS does not automatically reestablish connection. It used to do that, but now I have to go to my pump tab and click \"refresh\" in order for it to link up again and continue working. If I don't, it just doesn't engage and it has caused my BGs to go out of wack because the closed loop is not engaged. \r\n\r\nIt happens every time when I change the battery of my pump or put a new cartridge in. \r\n\r\nPump: Accu-chek Insight\r\nAAPS version: 3.2.0.4\r\n\r\nI don't know if this has been an intentional change or that it's a bug, but I'd love to have it reconnect automatically.\r\n",
+ "comments": [
+  {
+   "id": 2124797637,
+   "user": "parapenT1sta",
+   "created_at": "2024-05-22T13:26:42Z",
+   "body": "@dv1 ?"
+  },
+  {
+   "id": 2473549415,
+   "user": "MilosKozak",
+   "created_at": "2024-11-13T12:58:06Z",
+   "body": "@Philoul "
+  },
+  {
+   "id": 2475667193,
+   "user": "Philoul",
+   "created_at": "2024-11-14T08:05:07Z",
+   "body": "Very strange, AFAIK there were no change within Insight driver in current master compare to previous versions.\n\nThe only recent update of Pump driver has been made in latest dev to migrate code to kotlin, and during development I checked the automatic reconnection after cartridge change, and it still work as expected in dev (will check again next time...).\n\nThe only reason that could explain this behaviour is if you forget to restart the pump after cartridge change, then AAPS cannot reconnect to the pump, but if you confirm pump was restarted manually, then I have no ideas... 🤔"
+  },
+  {
+   "id": 2475674018,
+   "user": "GoudekettingRM",
+   "created_at": "2024-11-14T08:08:40Z",
+   "body": "Interesting. What do you mean with restart? The pump always reinits itself with a full test, but restarting by turning it on and off was never required before.."
+  },
+  {
+   "id": 2475739787,
+   "user": "Philoul",
+   "created_at": "2024-11-14T08:44:35Z",
+   "body": "When cartridge is empty or when battery is off, pump stop to inject insulin.\nSo you have to start the pump from pump menu after cartridge (or battery) change to \"re-start\" insulin delivery.\nPump driver can connect to the pump only when pump is \"started\", so it cannot start a pump remotely, this must be done from pump.\n\nOn cartridge change, pump UI ask you first if you want to fill tube (generally we should accept), then if you want to fill canula (here you can accept if you synchronize site change and cartridge change, or refuse if site and cartridge is not synchro), and finally ask you if you want to restart pump... Here you should accept (mandatory to start insulin delivery and allow pump connection to the pump...)."
+  },
+  {
+   "id": 2475743471,
+   "user": "GoudekettingRM",
+   "created_at": "2024-11-14T08:46:29Z",
+   "body": "ohh, that's what you mean. Yeah, of course, that's part of the cartridge change in my eyes haha."
+  },
+  {
+   "id": 2475813803,
+   "user": "Philoul",
+   "created_at": "2024-11-14T09:19:42Z",
+   "body": "> but restarting by turning it on and off was never required before..\n\nYes it was, this can't be done remotly.\n\nBut the pump synchro within Insight plugin (or automatically on next pump connection request) can only connect to the pump if pump is started."
+  },
+  {
+   "id": 2476016794,
+   "user": "GoudekettingRM",
+   "created_at": "2024-11-14T10:47:55Z",
+   "body": "Yeah, but the pump is started (i.e. I can bolus through the pump itself), but AAPS does not connect. I have to manually go to the status tab and click refresh for it to connect again.\r\n\r\nEdit; the restart was just a miscommunication between us, the 'restart' of the pump is part of the cartridge change in my mind, so I put in a new cartridge, fill the tube, fill the canula, make sure the insulin is pumping again, and _then_ I still have to press refresh in AAPS for it to connect again. "
+  },
+  {
+   "id": 2498605982,
+   "user": "Philoul",
+   "created_at": "2024-11-25T17:20:24Z",
+   "body": "I can't reproduce your issue (but i'm in latest dev so not exactly the same config than yours...)\r\nDuring the last 2 weeks, I managed the reservoir change each time it's 100% empty (so most of the time it's when pump is trying to inject a Bolus, a SMB, or during a TBR).\r\n- I confirm the alert on phone\r\n- I changed reservoir, managed prime / fill of tube and cannula\r\n- Restart my Pump\r\n\r\nDuring all these steps I could see in the bottom of AAPS Overview, the connection message trial... \r\nThen after pump restart and screen is black again on pump (pump cannot communicate with BT when pump screen is on), then pump connection is again established and current pending action is finished\r\n\r\nOnce I wait too long between the alert and the change (you only have 15 min if you want current pending command is resumed), then pump reconnected automatically but without the \"Resume\" so previous bolus was partially injected (but an alert on pump UI)\r\n\r\nSo according to me everything worked as expected (major update between current master and dev is migration of code from java to kotlin), but this migration is neutral concerning communication between Pump and phone...)\r\nCould you provide log files during reservoir change and at least 1 hour or more after the end.\r\n\r\nOther possibility, do you wait enough time after reservoir change (if alert and reservoir is changed without any pending bolus or SMB command, it's possible AAPS wait until a new command should be sent to the pump, so it can be several \"loop run\" later...)\r\n"
+  },
+  {
+   "id": 2498625980,
+   "user": "Philoul",
+   "created_at": "2024-11-25T17:29:27Z",
+   "body": "I talked about this message in the bottom \"Connecting for xxx s\".\nHere loop was running. but during reservoir change, you should have this message all the time in parallel of red loop icon, until AAPS is able to communicate again with the pump...\n\n![Screenshot_20241125-181354_AAPS.jpg](https://github.com/user-attachments/assets/47c3a220-6b6b-4c96-8d0a-2fc754b5b425)\n\n"
+  },
+  {
+   "id": 2952457551,
+   "user": "Philoul",
+   "created_at": "2025-06-07T12:58:41Z",
+   "body": "Do you still have this issue with latest release?\nI'm using Insight pump with hundred of cartridge changes, battery changes and never was able to reproduce it.\nCommunication needs at least to have a black screen on the pump, so immediatly after battery/cartridge change or after any user action on pump, you will have to wait until pump screen turn black (about 1 min according to user timeout).\nThen nothing else to do, on the next loop run with a required update on pump, communication is automatic without any additional manual action from user..."
+  }
+ ]
+}

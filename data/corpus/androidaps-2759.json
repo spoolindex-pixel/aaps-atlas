@@ -1,0 +1,39 @@
+{
+ "id": 1889203791,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2759,
+ "title": "RC1 and Dev-J AAPS will not update profiles from NS unless new DB record is created or cloned - updating existing record in latest DB will not work",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2759",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-09-10T16:18:14Z",
+ "closed_at": "2023-09-10T16:53:49Z",
+ "comment_count": 4,
+ "body": "When using remote profiles on NS, if you edit an existing DB's profile the changes will not push to NS unless you recreate the existing DB and save it. After which you can either wait for the next update in a few minutes or pause NSclientV3 and unpause moments later and it will pull the latest profile data. \r\n\r\nRequirements;\r\nNS v15\r\nAAPS or AAPSclient dev-j\r\nAAPS set to Receive Profile store\r\n\r\nIn previous master you could update on AAPS and the existing DB would be used to updated the stored profiles in NS\r\n\r\nIn RC1 and Dev-J if you update the AAPS app a new DB will be created\r\n\r\nIf you update the existing DB's stored profile in NS it will not flow to AAPS or AAPSClient\r\n\r\nIf you change the existing profile store, save it, then clone the DB record to create a new timestamp on the DB and save it,  it will then flow to AAPS and AAPSClient\r\n\r\n** as a side note on the nsclient area under advanced on both RC1 and dev-J when looking under preferences (top right 3 dots) it will show the tidepool info. When checking from the config builder the advanced area reflects nsclientv3 data\r\n\r\nReporting bugs\r\n--------------\r\n- **Note the precise time the problem occurred** and describe the circumstances and steps that caused\r\n  the problem\r\n- Note the Build version (found in the About dialog in the app, when pressing the three dots in the\r\n  upper-right corner).\r\n- Obtain the app's log files, which can be found on the phone in\r\n  _/storage/emulated/0/Android/data/info.nightscout.androidaps/_\r\n  See https://androidaps.readthedocs.io/en/latest/Usage/Accessing-logfiles.html\r\n- Open an issue at https://github.com/nightscout/AndroidAPS/issues/new\r\n",
+ "comments": [
+  {
+   "id": 1712871893,
+   "user": "MilosKozak",
+   "created_at": "2023-09-10T16:53:49Z",
+   "body": "https://androidaps.readthedocs.io/en/latest/Configuration/Config-Builder.html#change-profile-in-nighscout-profile-editor"
+  },
+  {
+   "id": 1712877272,
+   "user": "ohjay73",
+   "created_at": "2023-09-10T17:07:28Z",
+   "body": "\r\n@MilosKozak \r\nFair enough.. but in Master.. and I may have to revert back to test this, but i literally did this every 2-3 days in the past.. after you clone the original DB you no longer have to do so and any changes you make in the new sync'd db will reflect when you make further adjustments without having to do another clone. In this case any adjustment requires a brand new db. "
+  },
+  {
+   "id": 1712944754,
+   "user": "ohjay73",
+   "created_at": "2023-09-10T21:32:15Z",
+   "body": "@MilosKozak I confirmed that in the existing master 3.1.0.3 with NS 14.2.6 That you don't need a new DB every time you make a profile on NS for it to sync with AAPS nearly immediately. But with RC1 and Dev-J you have to use a whole new DB in NS for profile changes. Should I be putting this in as a feature request as it wasn't allowed as a bug? "
+  },
+  {
+   "id": 1713636179,
+   "user": "MilosKozak",
+   "created_at": "2023-09-11T10:48:19Z",
+   "body": "The problem is on NS side. NS is not timestamping changes in profile. That's the reason why you need to create new record."
+  }
+ ]
+}

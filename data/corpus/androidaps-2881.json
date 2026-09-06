@@ -1,0 +1,75 @@
+{
+ "id": 1931340253,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2881,
+ "title": "Medtrum pump driver default setting and concerns ",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2881",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-10-07T12:49:51Z",
+ "closed_at": "2023-10-16T15:04:48Z",
+ "comment_count": 10,
+ "body": "I have been testing the Medtrum Nano pump with 3.2 and have a couple of observations with its use.\r\n\r\n1. The driver should default to the pump standard settings, ie, terminate after three days and 8 hours grace period. It has a 90° steel cannula, so exceeding this limit should be a decision that is made during set up not as a default, due to the trauma that can occur.\r\n\r\n2. The driver doesn't yet seem to support the pump low reservoir and empty alerts. This can cause issues both overnight (which I experienced) and when someone goes out for the day, and probably should be addressed before it goes live in a master version. ",
+ "comments": [
+  {
+   "id": 1751793809,
+   "user": "jbr7rr",
+   "created_at": "2023-10-07T18:52:35Z",
+   "body": "Thanks for your feedback\r\n\r\n1. In AAPS tubed pumps also don't have an alarm on canula age. and this has been discussed already in https://github.com/nightscout/AndroidAPS/issues/2404 I can ofcourse change the default making it more inline with default PDM/Medtrum app behavior and will do that\r\n\r\n2. A bit same as above. Also behavior of the medtrum app is a bit spotty at this.In AAPS if you leave the default behavior (pump alarm on beep) the patch will beep below 20Units this is default behavior from the pump and cannot be changed, Also it will show up in the alarm list on the Medtrum tab and this warning cannot be reset. I can add an additional notification on this warning in AAPS. But then do you want sound with this and be able to turn the sound off? This will complicate some things though as preferably I don't want to add (too much) settings and have sane default behavior. So I prefer a normal or no notification on this.\r\n\r\nEdit: On reservoir empty you should get an alarm in AAPS. But it will only receive the alarm on the next connect. Also pump will beep (depending on your patch alarm settings. See wiki, when alarms are silent it will beep after some time)\r\n\r\nAlso low reservoir warning on pump itself is fixed at 20 units and cannot be changed"
+  },
+  {
+   "id": 1752043176,
+   "user": "jbr7rr",
+   "created_at": "2023-10-08T14:34:47Z",
+   "body": "https://github.com/nightscout/AndroidAPS/pull/2885\r\n\r\n- Patch expiration enabled by default\r\n- Option to show non critical pump alerts (enabled by default) including low reservoir warning at 20units.\r\n\r\nStill in draft for testing, feel free to test\r\n\r\nTo reiterate: In current dev and RC1 you will get an alert from AAPS if pump is stopped due to empty reservoir (or any other error reason). If this is not the case please add logs.\r\n\r\nAlso note, there are patch faults in which the pump completely stops working and will not communicate the error with connected device, there is nothing in driver we can do about that (other then the no communication alarm). This can happen for example when water leaks between the pump contacts and shorting the battery"
+  },
+  {
+   "id": 1752157559,
+   "user": "tim2000s",
+   "created_at": "2023-10-08T20:44:47Z",
+   "body": "> #2885\r\n> \r\n> * Patch expiration enabled by default\r\n> * Option to show non critical pump alerts (enabled by default) including low reservoir warning at 20units.\r\n> \r\n> Still in draft for testing, feel free to test\r\n> \r\n> To reiterate: In current dev and RC1 you will get an alert from AAPS if pump is stopped due to empty reservoir (or any other error reason). If this is not the case please add logs.\r\n> \r\n> Also note, there are patch faults in which the pump completely stops working and will not communicate the error with connected device, there is nothing in driver we can do about that (other then the no communication alarm). This can happen for example when water leaks between the pump contacts and shorting the battery\r\n\r\nLast point I haven't seen so far, but I assume it's the same for the app. Will test the rest. "
+  },
+  {
+   "id": 1752424338,
+   "user": "tim2000s",
+   "created_at": "2023-10-09T06:42:21Z",
+   "body": "> #2885\r\n> \r\n> * Patch expiration enabled by default\r\n> * Option to show non critical pump alerts (enabled by default) including low reservoir warning at 20units.\r\n> \r\n> Still in draft for testing, feel free to test\r\n> \r\n> To reiterate: In current dev and RC1 you will get an alert from AAPS if pump is stopped due to empty reservoir (or any other error reason). If this is not the case please add logs.\r\n> \r\n> Also note, there are patch faults in which the pump completely stops working and will not communicate the error with connected device, there is nothing in driver we can do about that (other then the no communication alarm). This can happen for example when water leaks between the pump contacts and shorting the battery\r\n\r\nSpoke too soon. Overnight last night I suffered the pump stopping working completely, for no apparent reason. \r\n\r\nI wonder whether it might be worth ensuring that people are informed to set high alarms and loss of connection alarms when using the Medtrum pumps, given the inherent instability in the pump unit itself. "
+  },
+  {
+   "id": 1752433112,
+   "user": "jbr7rr",
+   "created_at": "2023-10-09T06:51:42Z",
+   "body": "> \r\n> Spoke too soon. Overnight last night I suffered the pump stopping working completely, for no apparent reason.\r\n> \r\n> I wonder whether it might be worth ensuring that people are informed to set high alarms and loss of connection alarms when using the Medtrum pumps, given the inherent instability in the pump unit itself.\r\n\r\nMight be that your pumpbase is defective, I only had this error once and that was with a proper cause; Exceeding the water tightness limitations. Is it ok I send you PB on discord for further information/discussion?"
+  },
+  {
+   "id": 1752439827,
+   "user": "tim2000s",
+   "created_at": "2023-10-09T06:58:25Z",
+   "body": "Sure. "
+  },
+  {
+   "id": 1752462245,
+   "user": "jbr7rr",
+   "created_at": "2023-10-09T07:18:42Z",
+   "body": "> I wonder whether it might be worth ensuring that people are informed to set high alarms and loss of connection alarms when using the Medtrum pumps, given the inherent instability in the pump unit itself.\r\n\r\n@MilosKozak Any opinion on forcing the no connection alarm to enabled and 30 minutes for medtrum driver. during init or when it's first activated ? "
+  },
+  {
+   "id": 1752857716,
+   "user": "MilosKozak",
+   "created_at": "2023-10-09T11:47:32Z",
+   "body": "if you think it's important do in plugin's  `onStart`\r\n```\r\nsp.putInt(app.aaps.core.utils.R.string.key_pump_unreachable_threshold_minutes, 30)\r\nsp.putBoolean(app.aaps.core.utils.R.string.key_enable_pump_unreachable_alert, true)\r\n```"
+  },
+  {
+   "id": 1757117985,
+   "user": "jbr7rr",
+   "created_at": "2023-10-11T08:28:33Z",
+   "body": "All things discussed in this ticket are addressed and merged into dev, Imo this can be closed."
+  },
+  {
+   "id": 1764172558,
+   "user": "tim2000s",
+   "created_at": "2023-10-16T10:25:18Z",
+   "body": "> All things discussed in this ticket are addressed and merged into dev, Imo this can be closed.\r\n\r\nAgree"
+  }
+ ]
+}

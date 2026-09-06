@@ -1,0 +1,69 @@
+{
+ "id": 857589209,
+ "repo": "nightscout/AndroidAPS",
+ "number": 476,
+ "title": "AAPS 2.8.2: Medtronic history crash - Suspends entries: Value 60 for secondOfMinute must be in the range [0,59]",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/476",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-04-14T07:04:35Z",
+ "closed_at": "2021-04-14T22:04:07Z",
+ "comment_count": 9,
+ "body": "while pulling Medtronic history AAPS 2.8.2 crashes and restarts.\r\n\r\nI have following logs that I think is causing crash:\r\n```\r\n07:37:19.231 [Thread-23] D/PUMP: [MedtronicHistoryData.processNewHistoryData():511]: ProcessHistoryData: 'Delivery Suspend' Processed [count=[2, [{},{}]], items={}]\r\n07:37:19.236 [Thread-23] E/CORE: [MedtronicHistoryData.processNewHistoryData():518]: ProcessHistoryData: Error processing Suspends entries: Value 60 for secondOfMinute must be in the range [0,59]\r\norg.joda.time.IllegalFieldValueException: Value 60 for secondOfMinute must be in the range [0,59]\r\n\tat org.joda.time.field.FieldUtils.verifyValueBounds(FieldUtils.java:277) ~[na:0.0]\r\n\tat org.joda.time.chrono.BasicChronology.getDateTimeMillis(BasicChronology.java:176) ~[na:0.0]\r\n\tat org.joda.time.chrono.GregorianChronology.getDateTimeMillis(GregorianChronology.java:44) ~[na:0.0]\r\n\tat org.joda.time.chrono.AssembledChronology.getDateTimeMillis(AssembledChronology.java:133) ~[na:0.0]\r\n\tat org.joda.time.LocalDateTime.<init>(LocalDateTime.java:511) ~[na:0.0]\r\n\tat org.joda.time.LocalDateTime.<init>(LocalDateTime.java:457) ~[na:0.0]\r\n\tat info.nightscout.androidaps.plugins.pump.common.utils.DateTimeUtil.toLocalDateTime(DateTimeUtil.java:43) ~[na:0.0]\r\n\tat info.nightscout.androidaps.plugins.pump.common.utils.DateTimeUtil.getATechDateDiferenceAsMinutes(DateTimeUtil.java:249) ~[na:0.0]\r\n\tat info.nightscout.androidaps.plugins.pump.medtronic.data.dto.TempBasalProcessDTO.getDuration(TempBasalProcessDTO.java:18) ~[na:0.0]\r\n\tat info.nightscout.androidaps.plugins.pump.medtronic.data.MedtronicHistoryData.processSuspends(MedtronicHistoryData.java:1119) ~[na:0.0]\r\n\tat info.nightscout.androidaps.plugins.pump.medtronic.data.MedtronicHistoryData.processNewHistoryData(MedtronicHistoryData.java:516) ~[na:0.0]\r\n\tat info.nightscout.androidaps.plugins.pump.medtronic.MedtronicPumpPlugin.readPumpHistory(MedtronicPumpPlugin.java:1136) ~[na:0.0]\r\n\tat info.nightscout.androidaps.plugins.pump.medtronic.MedtronicPumpPlugin.initializePump(MedtronicPumpPlugin.java:599) ~[na:0.0]\r\n\tat info.nightscout.androidaps.plugins.pump.medtronic.MedtronicPumpPlugin.getPumpStatus(MedtronicPumpPlugin.java:427) ~[na:0.0]\r\n\tat info.nightscout.androidaps.queue.commands.CommandReadStatus.execute(CommandReadStatus.kt:22) ~[na:0.0]\r\n\tat info.nightscout.androidaps.queue.QueueThread.run(QueueThread.java:139) ~[na:0.0]\r\n07:37:19.237 [Thread-23] D/PUMPQUEUE: [QueueThread.run():168]: thread end\r\n```",
+ "comments": [
+  {
+   "id": 819303070,
+   "user": "duzy78",
+   "created_at": "2021-04-14T07:40:02Z",
+   "body": "I was thinking that my medtronic 715 has some problems when sending history logs but it looks I am not the only one experiencing problem with parsing history. I am using RileyLink but recently my AAPS usually at least once a week has problem with parsing some history. \r\nToday AAPS was thinking that pump is suspended when in reality it was not.\r\n\r\nI was not making new bugs beside one https://github.com/nightscout/AndroidAPS/issues/423 because I was thinking it is something with my pump and started looking for replacement. But this bug seems totally like my latest experience with AAPS + Medtronic."
+  },
+  {
+   "id": 819308504,
+   "user": "OpossumGit",
+   "created_at": "2021-04-14T07:48:37Z",
+   "body": "yes, seems the same (you had DayOfMonth, I have secondOfMinute)...\r\n\r\nand after such crash I am experiencing troubles with OrangeLink reconnection (#474). So AAPS is currently totaly unusable.\r\n\r\nDo you know whether we can turn history parsing off (until bug fix is released)?\r\nOr even which lines of code to edit to make my own build that can survive this.\r\nOr maybe factory resetting pump (should remve history entry) is the soution?\r\n"
+  },
+  {
+   "id": 819317102,
+   "user": "duzy78",
+   "created_at": "2021-04-14T08:01:35Z",
+   "body": "It can be turned off (by hacking code) but I believe it is a safety feature that makes AAPS aware of the history. If you can \"fix\" it yourself you can do it but I believe no one will risk giving you the quick patch which strips the safety net from AAPS. I do not understand the code and its dependencies enough to believe my quick fix is safe.\r\n\r\nTry to connect with pump a day after or so. In my case the history corruption is only temporal and do not lasts long. I change AAPS version often as I am also testing fixes from dev branches."
+  },
+  {
+   "id": 819452302,
+   "user": "andyrozman",
+   "created_at": "2021-04-14T11:39:48Z",
+   "body": "Which branch are you using? There are 2 fixes for history in /dev branch at the moment, so maybe one of those will fix your problems. I will look at this over weekend and see what is wrong... "
+  },
+  {
+   "id": 819472283,
+   "user": "OpossumGit",
+   "created_at": "2021-04-14T12:16:02Z",
+   "body": "> Which branch are you using? There are 2 fixes for history in /dev branch at the moment, so maybe one of those will fix your problems. I will look at this over weekend and see what is wrong...\r\n\r\nmaster branch"
+  },
+  {
+   "id": 819594926,
+   "user": "OpossumGit",
+   "created_at": "2021-04-14T15:10:34Z",
+   "body": "I got to part of logs that show what is troubling me...\r\none entry is `\"DT\":\"00.05.2047 01:00:48\",\"atechDateTime\":20470500010048`\r\nother entry is `\"DT\":\"30.00.2060 00:20:60\",\"atechDateTime\":20600030002060`\r\n[data.txt](https://github.com/nightscout/AndroidAPS/files/6311791/data.txt)\r\n"
+  },
+  {
+   "id": 819759046,
+   "user": "andyrozman",
+   "created_at": "2021-04-14T19:00:53Z",
+   "body": "Found the problem and fixed. Pull request is opened: https://github.com/nightscout/AndroidAPS/pull/477"
+  },
+  {
+   "id": 819774093,
+   "user": "OpossumGit",
+   "created_at": "2021-04-14T19:26:20Z",
+   "body": "Much obliged. \n\n"
+  },
+  {
+   "id": 819880659,
+   "user": "andyrozman",
+   "created_at": "2021-04-14T22:09:14Z",
+   "body": "@OpossumGit I have created special hotix branch that is based on master and contains all 3 medtronic fixes: https://github.com/andyrozman/AndroidAPS/tree/hotfix_mdt_2_8_2"
+  }
+ ]
+}

@@ -1,0 +1,107 @@
+{
+ "id": 744225258,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1511,
+ "title": "Wear OS Watch Collects, but does not update phone BG (SW3 / SWR50 / Huawei Watch 1)",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1511",
+ "state": "closed",
+ "labels": [
+  "device-wear"
+ ],
+ "created_at": "2020-11-16T22:02:07Z",
+ "closed_at": "2021-06-16T20:09:12Z",
+ "comment_count": 15,
+ "body": "I got a new phone Galaxy Note 20, Android 10 with October security patch. Usually I happily collect from my Sony Smart Watch 3\r\n\r\nMy old phone was S8 on Android 9, and the phone itself collected as well as the SW3.\r\n\r\nNow on a new setup, I'm having issues. I experience this on the current xDrip Alpha, but also on tonight's Nov patched nightly (with and without Android 10 workaround). So not related to this change I don't think.\r\n\r\n- Phone collected (direct) fine for 24hrs... though hard to say with backfill. But I didn't notice any issue.\r\n- Then started missing 3 out of 4 readings (may log a separate issue for the phone drop outs - this is mostly about the watch)\r\n- Making my SW3 collector, and I get similarly odd results. Sometimes it also misses readings. But sometimes I get a good run on the watch, but BG is not synced back to the phone.\r\n- Phone status tells me \"watch received glucose\", so not sure why BG doesn't sync.\r\n- Treatments on watch DO sync to phone\r\n\r\nAnyone know why the phone couldn't get BG from the Watch? Might have to factory reset it.\r\n\r\nEdit: Factory reset watch, side loaded Google Play Services, same issue. Watch collects, but phone doesn't get data, but does get Status updates.\r\n\r\n![Screenshot_20201116-220239_xDrip-](https://user-images.githubusercontent.com/25760491/99313130-e7587580-28c3-11eb-9518-c06cf7ec0f18.jpg)\r\n\r\nWith Wear logs enabled...\r\n\r\n![Screenshot_20201116-224405_xDrip-](https://user-images.githubusercontent.com/25760491/99313232-0e16ac00-28c4-11eb-8f8c-28400ab1302d.jpg)\r\n\r\nWith extra Nano logs enabled...\r\n\r\n![Screenshot_20201116-232611_xDrip+](https://user-images.githubusercontent.com/25760491/99313293-2686c680-28c4-11eb-8518-70291a925c51.jpg)\r\n\r\n\r\n",
+ "comments": [
+  {
+   "id": 729580265,
+   "user": "tolot27",
+   "created_at": "2020-11-18T10:18:24Z",
+   "body": "@janvitos [reported](https://gitter.im/jamorham/xDrip-plus?at=5fa7134bb86f6407043935e2) the same error message but with Miaomiao. The [solution was](https://gitter.im/jamorham/xDrip-plus?at=5fa71ae8f2fd4f60fc5d80cc) to delete the xDrip app data and resinstalling the app. Afterwards, the connection worked again.\r\nPlease can you make a backup of you current database and try the same? Afterwards, we can try to figure out what is the cause of the problem. Looking at the source code alone, I cannot find an indication for the error."
+  },
+  {
+   "id": 730608873,
+   "user": "old-square-eyes",
+   "created_at": "2020-11-19T20:09:49Z",
+   "body": "Hi @tolot27 thanks for the reply. I tried exporting DB, uninstalling, reinstalling, importing settings and DB. Phone collects. Switch to Wear, enable location services on Wear and watch collects. But still no BG sync to phone.\r\n\r\nI tried the above again, this time clearing cache and data beforehand. Same result. Here are some new logs from the second attempt with Wear taking over...\r\n\r\n![Screenshot_20201120-090806_xDrip+](https://user-images.githubusercontent.com/25760491/99718683-1ebb6200-2b10-11eb-81bd-99a1a139607b.jpg)\r\n"
+  },
+  {
+   "id": 730647115,
+   "user": "old-square-eyes",
+   "created_at": "2020-11-19T21:27:23Z",
+   "body": "I'm actually in a bad way now. My phone is dropping BG a lot too."
+  },
+  {
+   "id": 730798176,
+   "user": "old-square-eyes",
+   "created_at": "2020-11-20T02:04:43Z",
+   "body": "Phone went dark on collection. Had to switch back to watch (with no phone sync) while I re-setup my old Galaxy S8. Will have to format watch and pair it back to that.\r\n\r\nEdit: Moved back to S8 + Watch. S8 collecting, switched to watch. Same thing. This has never happened before. Wear got  glucose. No BG sync to phone.\r\n\r\nEdit2: I flashed Play Services again, starting with v 9.8.41 rebooted, then v20.15.16 rebooted... and it's working and syncing again on my S8! Will leave it at that for the weekend and try my new phone next week.\r\n"
+  },
+  {
+   "id": 732696163,
+   "user": "old-square-eyes",
+   "created_at": "2020-11-24T07:00:04Z",
+   "body": "Back on a new phone (exchanged my Note 20 for a S20+ for a different reason) and I tried the approach of the two step GPS upgrade. Same issue. Will reset Wear again and try again but wait a bit longer between them this time. Might clear GPS data this time first too."
+  },
+  {
+   "id": 732964261,
+   "user": "tolot27",
+   "created_at": "2020-11-24T13:11:28Z",
+   "body": "@old-square-eyes Please can you provide the xDrip version you are using? In your first post you mentioned \"current xDrip Alpha\", but you did not provide a version number. We need at least a version tag, like 2020.11.15 for the [Nightly build 15th Nov 2020](https://github.com/NightscoutFoundation/xDrip/releases/tag/2020.11.15)."
+  },
+  {
+   "id": 733187542,
+   "user": "old-square-eyes",
+   "created_at": "2020-11-24T19:31:18Z",
+   "body": "@tolot27 sorry, my point was that it was both on an older alpha and the latest 2020.11.15. So It must be something to do with moving from Android 9 to Android 10 (perhaps the process of migrating data with SmartSwitch), or at least new hardware. FWIW the version I am on currently is 2020.10.01.\r\n\r\nThough, I have cleared xDrip data, reinstalled xDrip, cleared Google Play Services (GPS) data - which unfortunately unpairs and factory resets the watch. I have flashed GPS multiple times on Wear, taking care to do it properly... I only succeeded when I went back to my S8.\r\n\r\nOn Android 10... the watch collects fine, the phone updates this in status (e.g. Watch got glucose), but seems stuck in its ability to sync BG. Logs seem to show the phone going through it's watchdog processes of restarting collector etc, when it doesn't need to.\r\n\r\nI'll post some updated screen shots. Will also try to get your SWR50 in the mail today :)\r\n\r\nNote: reading through my notes above I'm reminded that I initially got the symptoms back on Android 9 / S8... and only after factory resetting Wear a few times did I get back to normal.\r\n\r\nOther observations:\r\n\"Reset Wear DB\" and \"Resend glucose to watch\" from three dot menu updates Wear to match phone and its missed signal status. But the watch gets a BG reading after, and continues to collect without syncing back to the phone.\r\n\r\n\r\n"
+  },
+  {
+   "id": 733217064,
+   "user": "old-square-eyes",
+   "created_at": "2020-11-24T20:30:58Z",
+   "body": "![20201125_092427](https://user-images.githubusercontent.com/25760491/100148065-1c3a7d00-2f01-11eb-83d3-9baef0179769.jpg)\r\n"
+  },
+  {
+   "id": 734018337,
+   "user": "old-square-eyes",
+   "created_at": "2020-11-26T01:16:16Z",
+   "body": "Seems to have resolved itself after days of factory resets, playing with GPS versions through ADB. I lost xDrip prefs off the device and got it back on by installing an older Android Wear version - which was immediately followed by an OTA of GPS which versioned up from ~8 to ~11. Then for the following 24hrs reset Wear data, reinstalled xDrip, and finally saw this popup after I forced collection on and off a few times throughout today testing...\r\n\r\n![](https://files.gitter.im/56a24fd4e610378809bdae01/RUT1/20201126_114702.jpg)\r\n\r\nOnce accepted I could collect from Wear and sync to phone. I'd love to know what removes that permission, and also what triggers the request for it (since banging my head against the wall doing the same stuff didn't get a prompt in the previous two weeks). Can it be manually triggered?\r\n"
+  },
+  {
+   "id": 761995552,
+   "user": "daclaw2k",
+   "created_at": "2021-01-18T05:42:46Z",
+   "body": "Hi, I'm having similar issues, I get BSL updates on my SW3 watch but it doesn't send them through to my phone unless both devices are manually reset - my phone is a google pixel 3XL.\r\nHave tried deleting xdrip+ and unpairing / formatting my watch, the only thing I've found to help is an older Google Play services - however i'm now getting BSL dropouts on my watch.\r\nDoes anyone have a SW3 with a high capture rate who can let me know what Google Play Services version they are running?\r\n\r\nThanks!"
+  },
+  {
+   "id": 762522834,
+   "user": "daclaw2k",
+   "created_at": "2021-01-19T00:08:17Z",
+   "body": "> Hi, I'm having similar issues, I get BSL updates on my SW3 watch but it doesn't send them through to my phone unless both devices are manually reset - my phone is a google pixel 3XL.\r\n> Have tried deleting xdrip+ and unpairing / formatting my watch, the only thing I've found to help is an older Google Play services - however i'm now getting BSL dropouts on my watch.\r\n> Does anyone have a SW3 with a high capture rate who can let me know what Google Play Services version they are running?\r\n> \r\n> Thanks!\r\n\r\nOk - after hours and hours of trial and error - I seem to have found a solution for this.\r\n\r\nOn my Google Pixel 3XL in the Settings under Security -> Trust agents -> Turning OFF Smart Lock seems to have fixed the problems between watch and phone for me.\r\nTrust agent allows the phone to bypass security checks (no pin/fingerprint etc required) under certain circumstances ie. when the phone is in a certain location / connected via bluetooth to a specific device.\r\nThere must be some sort of glitch with bluetooth when the trust agents are enabled, has been running fine for the last 8 hours with a high capture rate, also automatically reconnecting after either device has been out of range."
+  },
+  {
+   "id": 762524231,
+   "user": "old-square-eyes",
+   "created_at": "2021-01-19T00:14:15Z",
+   "body": "@daclaw2k nice one. And that's very interesting in the context of ongoing BT glitches too. I don't use trust agents, but Smart Lock IS enabled. I can't test as my issue resolved per the post above. But it's certainly another weapon in the arsenal when troubleshooting BT, and not something I had ever played with."
+  },
+  {
+   "id": 768745821,
+   "user": "old-square-eyes",
+   "created_at": "2021-01-28T02:11:21Z",
+   "body": "This has happened for me on Huawei Watch 1"
+  },
+  {
+   "id": 768768627,
+   "user": "old-square-eyes",
+   "created_at": "2021-01-28T03:15:39Z",
+   "body": "Reinstalled xDrip prefs from watch and got the location request (again), and it's collecting and syncing to the phone now. Nice one. Two BG in a row too. Though I don't thinkn this process is available on Wear 1.5 (SWR50). Resync apps might work from the Wear OS phone app."
+  },
+  {
+   "id": 862345874,
+   "user": "Navid200",
+   "created_at": "2021-06-16T12:40:44Z",
+   "body": "@old-square-eyes Looks like there is a solution.  Can we close this issue then please?"
+  }
+ ]
+}

@@ -1,0 +1,33 @@
+{
+ "id": 1139689974,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1327,
+ "title": "AAPS 3.0.0.0.1 OpenHumans Upload doesn't work anymore",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1327",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-02-16T08:30:28Z",
+ "closed_at": "2022-05-27T19:01:47Z",
+ "comment_count": 3,
+ "body": "Setup: Galaxy Z Flip, AAPS 3.0.0.0.1, Omnipod Dash\r\nI did remark this as my OpenHumans Data where no longer uploaded to OH  and did look into the Logs:\r\n07:40:10.651 [DefaultDispatcher-worker-1] I/OHUPLOADER: [OpenHumansWorker.doWork():28]: Starting upload\r\n07:40:10.806 [DefaultDispatcher-worker-1] E/OHUPLOADER: [OpenHumansWorker.doWork():34]: OH Uploader failed\r\njava.lang.UnsupportedOperationException: Tried to obtain display from a Context not associated with  one. Only visual Contexts (such as Activity or one created with Context#createWindowContext) or ones created with Context#createDisplayContext are associated with displays. Other types of Contexts are typically related to background entities and may return an arbitrary display.\r\n\tat android.app.ContextImpl.getDisplay(ContextImpl.java:2602) ~[na:0.0]\r\n\tat android.content.ContextWrapper.getDisplay(ContextWrapper.java:1022) ~[na:0.0]\r\n\tat info.nightscout.androidaps.plugin.general.openhumans.OpenHumansUploader.uploadDataPaged(OpenHumansUploader.kt:237) ~[na:0.0]\r\n\tat info.nightscout.androidaps.plugin.general.openhumans.OpenHumansUploader.access$uploadDataPaged(OpenHumansUploader.kt:47) ~[na:0.0]\r\n\tat info.nightscout.androidaps.plugin.general.openhumans.OpenHumansUploader$uploadDataPaged$1.invokeSuspend(Unknown Source:19) ~[na:0.0]\r\n\tat kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33) ~[na:0.0]\r\n\tat kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:106) ~[na:0.0]\r\n\tat kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:571) ~[na:0.0]\r\n\tat kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:738) ~[na:0.0]\r\n\tat kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:678) ~[na:0.0]\r\n\tat kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:665) ~[na:0.0]\r\n\r\nI now use a Workaround: In the OpenHumansUploader.kt class on 236 I did comment out the if statement:\r\n   val displayMetrics = DisplayMetrics()\r\n        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R)\r\n            context.display?.getRealMetrics(displayMetrics)\r\n        else\r\n            @Suppress(\"DEPRECATION\") (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay.getMetrics(displayMetrics)\r\n\r\n\r\nI found some explanations here: https://stackoverflow.com/questions/69150674/android-11-displaymetrics \r\n\r\nbut I'm even not sure if this is only a problem related to my phone and OS.\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
+ "comments": [
+  {
+   "id": 1046297015,
+   "user": "MilosKozak",
+   "created_at": "2022-02-20T18:40:19Z",
+   "body": "create PR pls"
+  },
+  {
+   "id": 1061586041,
+   "user": "Andries-Smit",
+   "created_at": "2022-03-08T09:40:26Z",
+   "body": "Duplicate of https://github.com/nightscout/AndroidAPS/issues/974"
+  },
+  {
+   "id": 1139949397,
+   "user": "MilosKozak",
+   "created_at": "2022-05-27T19:01:47Z",
+   "body": "fixed by https://github.com/nightscout/AndroidAPS/commit/60f5115ce63d91ee2330dfc0dac0eb6fd301b538"
+  }
+ ]
+}

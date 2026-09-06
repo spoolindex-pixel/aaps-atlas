@@ -1,0 +1,21 @@
+{
+ "id": 2161353797,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3244,
+ "title": "Fault by syncing the pump history medtrum nano patch MD0201",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3244",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-02-29T14:07:46Z",
+ "closed_at": "2024-03-03T09:05:44Z",
+ "comment_count": 1,
+ "body": "\r\n[Aaps logfiles.zip](https://github.com/nightscout/AndroidAPS/files/14449056/Aaps.logfiles.zip)\r\n\r\nReceived an error message in AAPS 3.2.0.2 when medtrum nano patch pump MD0201 was active for almost 20 hours. \r\n\r\nFault by syncing the history of the pump: one record has been skipped. \r\nCheck the treatment tab of the bolus is correctly synced. Delay the alarm and replace the patch or pump base when the error keeps coming back.\r\n\r\nWhen I refreshed the pump from the pump tab the error still was reoccurring. However I was still able to perform bolus in AAPS and getting SMB's from AAPS. pump was functionally accordingly. I have used the patch with the error for the full day. Error was started around 04:00A.M. at 28th of February and I replaced the patch at the end of the day at 7:30 P.M.\r\nReplaced the patch at the end of the day and the error disappeared. \r\n\r\n\r\n",
+ "comments": [
+  {
+   "id": 1971232493,
+   "user": "jbr7rr",
+   "created_at": "2024-02-29T14:13:45Z",
+   "body": "Issue is cause by wrong data in notification packet:\r\n```\r\n04:04:01.161 [Binder:30353_5] D/PUMPBTCOMM: [BLEComm$mGattCallback$1.onCharacteristicChanged():248]: onCharacteristicChanged data: [32, 34, 17, -128, 4, -2, 20, -1, -89, 5, 6, 0, 18, 64, 35, 0, -54] UUID: 669a9120-0008-968f-e311-6050405558b3\r\n04:04:01.162 [Binder:30353_5] D/PUMPCOMM: [MedtrumService.onNotification():782]: <<<<< onNotification[32, 34, 17, -128, 4, -2, 20, -1, -89, 5, 6, 0, 18, 64, 35, 0, -54]\r\n04:04:01.163 [Binder:30353_5] D/PUMPCOMM: [NotificationPacket.handleNotification():109]: Notification state: ACTIVE, current state: ACTIVE\r\n04:04:01.164 [Binder:30353_5] D/PUMPCOMM: [NotificationPacket.handleMaskedMessage():134]: Message field mask: 4386\r\n04:04:01.165 [Binder:30353_5] D/PUMPCOMM: [NotificationPacket.handleNormalBolus():184]: Normal bolus notification received\r\n04:04:01.167 [Binder:30353_5] D/PUMPCOMM: [NotificationPacket.handleNormalBolus():189]: Bolus type: 0, bolusData: 128 bolus completed: true, bolus delivered: 3251.4\r\n04:04:01.168 [Binder:30353_5] D/PUMP: [MedtrumPump.handleBolusStatusUpdate():396]: handleBolusStatusUpdate: bolusType: 0 bolusCompleted: true amountDelivered: 3251.4\r\n04:04:01.169 [Binder:30353_5] D/PUMPCOMM: [NotificationPacket.handleReservoir():228]: Reservoir notification received\r\n04:04:01.169 [DefaultDispatcher-worker-21] D/PUMP: [MedtrumOverviewViewModel$3$1.emit():130]: MedtrumViewModel bolusAmountDeliveredFlow: 3251.4\r\n04:04:01.170 [Binder:30353_5] D/PUMPCOMM: [NotificationPacket.handleReservoir():230]: Reservoir: 3265.0\r\n04:04:01.171 [Binder:30353_5] D/PUMPCOMM: [NotificationPacket.handleStorage():256]: Storage notification received\r\n04:04:01.172 [Binder:30353_5] W/PUMPCOMM: [NotificationPacket.handleStorage():263]: handleMaskedMessage: We got wrong patch id!\r\n04:04:01.174 [Binder:30353_5] D/PUMPCOMM: [NotificationPacket.handleStorage():270]: Last known sequence number: 1447, patch id: 6\r\n04:04:01.176 [Binder:30353_5] D/PUMPCOMM: [NotificationPacket.handleUnu"
+  }
+ ]
+}

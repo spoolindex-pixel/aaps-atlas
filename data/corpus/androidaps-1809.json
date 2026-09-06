@@ -1,0 +1,21 @@
+{
+ "id": 1261042199,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1809,
+ "title": "Can't load/create profile when migrating from TidePool Loop to AndroidAPS",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1809",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-06-05T12:52:09Z",
+ "closed_at": "2022-06-06T07:48:53Z",
+ "comment_count": 1,
+ "body": "Use case\r\n* I am using TidePool Loop by default. TidePool Loop uploads `Default` profile to Nightscout\r\n* Trying to get AndroidAPS, working with MDT 754/OrangeLink/DexcomG6/NS Client\r\n* AndroidAPS fails with `Ongeldig profiel Default niet geaccepteerd door NS`\r\n* The extended error message does not show any \"reasons\" of why the Profile is invalid\r\n* I didn't manage to be a able to create a \"LocalProfile\" in AndroidAPS, so AndroidAPS is stuck because  \"Geen profile ingesteld\" (`noprofileset`)\r\n\r\nExpected result: \r\n* Being able to use Loop `Default` profile, or being able to create a new `LocalProfile1`\r\n\r\nVersions used:\r\n* Nightscout version 14.2.6 (`dev` branch)\r\n* TidePool Loop (`dev` branch)\r\n* AndroidAPS: Version: 3.0.0.2-pumpcontrol (BuildVersion: 219bdba215-2022.05.02-18:08)\r\n* Dutch (NL) language is set.\r\n\r\nRelevant logfile:\r\n```\r\n12:49:12.104 [RxCachedThreadScheduler-26] D/NSCLIENT: [NSClientPlugin.onStart$lambda-5():124]: AUTH Authenticated (RWT)\r\n12:49:12.106 [RxCachedThreadScheduler-26] D/NSCLIENT: [NSClientPlugin.onStart$lambda-5():124]: PROFILE profile received\r\n12:49:12.137 [RxCachedThreadScheduler-26] D/NSCLIENT: [NSClientPlugin.onStart$lambda-5():124]: DATA received 537 treatments\r\n12:49:12.147 [RxCachedThreadScheduler-26] D/NSCLIENT: [NSClientPlugin.onStart$lambda-5():124]: DATA received 10 device statuses\r\n12:49:12.148 [NSClientServiceHandler] D/NSCLIENT: [NSDeviceStatus.handleNewData():89]: Got NS deviceStatus: $deviceStatuses\r\n12:49:12.215 [RxCachedThreadScheduler-26] D/NSCLIENT: [NSClientPlugin.onStart$lambda-5():124]: DATA received 5 foods\r\n12:49:12.218 [RxCachedThreadScheduler-26] D/NSCLIENT: [NSClientPlugin.onStart$lambda-5():124]: DATA received 1 mbgs\r\n12:49:12.221 [RxCachedThreadScheduler-26] D/NSCLIENT: [NSClientPlugin.onStart$lambda-5():124]: DATA received 750 sgvs\r\n12:49:12.225 [RxCachedThreadScheduler-26] D/NSCLIENT: [NSClientPlugin.onStart$lambda-5():124]: LAST \r\n12:49:12.295 [pool-14-thread-1] D/PROFILE: [LocalProfilePlugin$NSProfileWorker.doWork():476]: Received profileStore: createdAt: 1654326148000 Local last modification: 0\r\n12:49:12.307 [pool-14-thread-1] D/PROFILE: [LocalProfilePlugin.loadFromStore():286]: ProfileStore not accepted\r\n12:49:12.307 [RxCachedThreadScheduler-9] D/NOTIFICATION: [NotificationStore.add():60]: Notification received: Ongeldig profiel Default niet geaccepteerd door NS\r\n12:49:12.308 [pool-14-thread-1] D/PROFILE: [LocalProfilePlugin$NSProfileWorker.doWork():480]: Received profileStore: {\"_id\":\"xxx\",\"enteredBy\":\"Loop\"...\r\n```\r\n\r\nI will dig deeper to see if I can find a cause in either Nightscout / Loop or AndroidAPS. ",
+ "comments": [
+  {
+   "id": 1147152746,
+   "user": "MilosKozak",
+   "created_at": "2022-06-06T07:48:53Z",
+   "body": "NS profiles are accepted only if they pass check.\r\nthis message means DIA, IC, ISF or Target have values of out accepted range\r\ni believe nobody tested importing Loop profiles and nobody will"
+  }
+ ]
+}

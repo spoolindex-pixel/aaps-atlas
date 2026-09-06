@@ -1,0 +1,81 @@
+{
+ "id": 410267621,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 780,
+ "title": "Android 9.0 Pie (ZTE Axon 9 Pro) blocking wakeups from Doze",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/780",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2019-02-14T12:03:22Z",
+ "closed_at": "2019-04-12T07:54:55Z",
+ "comment_count": 11,
+ "body": "My ZTE Axon 9 Pro updated to Pie a few days ago, causing XDrip to start failing - specifically whenever phone is on battery and screen is off (that is dozed), XDrip doesn't receive any data, with screen on or on connected power, it works perfectly.\r\n\r\nBeing a developer (with very limited Java experience though) I tried to debug the situation:\r\n- Disabled \"Adaptive Battery\" feature, verified that Xdrip is not optimized automatically and is \"allowed to run in background, even if it drains battery fast\". No change, XDrip is still not being waken up\r\n- found that there is already a workaround in place for buggy Samsung phones, using `setAlarmClock` call instead of `setExactAndAllowWhileIdle`, so I hard enabled it, deployed, but still no changes, no waking up... (although there is now a clock icon visible in notification line...)\r\n\r\nSo my question is, is there anything more that I can do/try to debug?\r\nAny other Android setting that I've missed and could be relevant?\r\nAny other possible workaround?\r\n\r\nThanks, Blaž",
+ "comments": [
+  {
+   "id": 463717109,
+   "user": "gregorybel",
+   "created_at": "2019-02-14T17:31:00Z",
+   "body": "you could look here: \r\nhttps://github.com/NightscoutFoundation/xDrip/issues/780"
+  },
+  {
+   "id": 463720759,
+   "user": "MasterPlexus",
+   "created_at": "2019-02-14T17:41:47Z",
+   "body": "I'm pretty sure, you want to use a other issue, as 780 is this issue itself ;)"
+  },
+  {
+   "id": 463772912,
+   "user": "gregorybel",
+   "created_at": "2019-02-14T20:04:11Z",
+   "body": "might be :smile: thank you\r\nI try again:\r\nhttps://github.com/NightscoutFoundation/xDrip/issues/663\r\n"
+  },
+  {
+   "id": 464357516,
+   "user": "miiihi",
+   "created_at": "2019-02-16T15:50:47Z",
+   "body": "Thanks @gregorybel  for the reference. It certainly looks like the same (or very similar) issue as with Samsung Pie update, although none of the fixes/workarounds work for me... Not even using old G5 collector - simply no way at the moment to get values when the phone is dozed... Moving back to old phone at the moment and will continue to debug the issue on new phone...\r\n\r\n"
+  },
+  {
+   "id": 465669333,
+   "user": "dave1812",
+   "created_at": "2019-02-20T17:09:34Z",
+   "body": "Sounds like I won't be able to use xDrip on the S10, eh?    Dang, isn't there a way for xdrip developers to sell this thing to a large company so it can be developed to the point where it WORKS??   This is getting beyond ridiculous how many problems there are.  Only older versions of xDrip and older Android versions appear to work pretty well.  I can't even go past the 7/15/18 version of xDrip if I want it to work with my Gear 2 watch. (I'm using an S7 phone with that)."
+  },
+  {
+   "id": 465684420,
+   "user": "MasterPlexus",
+   "created_at": "2019-02-20T17:49:09Z",
+   "body": "@dave1812 , just some comments:\r\n- nothing could be sell to a big company, as no company will produce a software like this. It is too complex, to many Sensor-Typen under one hood, and a company will be reliable in a medical device manner... \r\n- if you want to use company apps, just do it. They are available (Librelink, Dexcom apps, Eversense and so on). But then you have to live with what a company will provide. Very much less functionalities, and no loop possible and so on... Just do it.\r\n- as you say there are many problems: the most of them are not in xdrip based, but in several smartphone providers made their non standard and closed firmware thing.\r\n- all here is opensource, and all devs do it for free. \r\n- if a Dev have not the problematic device, it will be not easy (or maybe impossible) to identify the problem.\r\n- time is not an endless source, and devs have several topics where are be working on. And unfortunately for you, other topics are more important at the moment.\r\n- as it is opensource, and the source is available, and you own the problematic device: just join the Community, and check the source where it is wrong.\r\n- last but not least: if you think a Dev will be happy to support you because you pollute several issue entrys, you are wrong. Every topic will be handled by the possibilitys. \r\n"
+  },
+  {
+   "id": 465702091,
+   "user": "dave1812",
+   "created_at": "2019-02-20T18:38:01Z",
+   "body": "\"    * Every topic will be handled by the possibilitys.\"   what does that even mean?\r\nif you are developing for a non-standard/closed firmware thing, are you saying the devs can't handle this?  that's VERY DISAPPOINTING TO PEOPLE who are buying phones with certain OS's on them, and watches, TO RUN CGM software on them.   \r\nOf COURSE I can use Dexcom s/w but that doesn't work on my Gear 2.\r\n\r\nYOU GUYS HAVE FAILED to keep YOUR CODE working with Android Notifications  since right after the 7/15/18 version.    Who's fault is that?  Mine?   PARDON ME FOR COMPLAINING!!!   I'm and end-user yet you bitch at me for complaining when YOU GUYS BROKE THE CODE in July of last year.  It wasn't because Samsung did something to you.   It was YOUR CODE that became broken.  You can't blame that issue on Samsung."
+  },
+  {
+   "id": 465703796,
+   "user": "dave1812",
+   "created_at": "2019-02-20T18:42:55Z",
+   "body": "   \" * nothing could be sell to a big company, as no company will produce a software like this. It is too complex, to many Sensor-Typen under one hood, and a company will be reliable in a medical device manner...\"\r\n\r\nah, \"too complex\" for a large company, but it's just fine and dandy for unpaid volunteers to struggle to keep up with Android issues?   That's not really too logical, is it??  You claim that your band of unpaid volunteers are more capable than a large company would be.   \r\n\r\n\"Pollute\"?    Well, thanks for the kind words because I've been trying without success for the devs to fix something that was BROKEN way back in July of last year.   Having CGM data on my watch is a HUGE benefit to me, as it would be to any Type1.  I think you have NO IDEA of the issues we Type 1's face.   **Thanks for being so understanding--NOT!!**"
+  },
+  {
+   "id": 465709116,
+   "user": "MasterPlexus",
+   "created_at": "2019-02-20T18:57:17Z",
+   "body": "@dave1812 , I've tried to explain it to you, but it looks like you are not willng to understand. You throw arguments mixed, and did not read what I write.\r\nAs I have tried it several times, and I'm now upset, you will hear clearly nothing additional from my side. There are explained ways, which are not ok for you. Thats it. I wish you the best.\r\n\r\n@miiihi , sorry for that whithin your Issue-Entry."
+  },
+  {
+   "id": 482149866,
+   "user": "RaabenF",
+   "created_at": "2019-04-11T14:57:55Z",
+   "body": "Hi,\r\ngreat that you have such an amasing discussion! @dave1812 you seem to have a point, but, im just curious: did they break it completely? i thoguht it never worked at all.\r\nanyway thanks a lot, i recently thouhgt abaout buying an android 9 phone, but if it isnt working at all of course i wont.\r\n@dave1812 where did you try to fix it? cant see any pulls/commits on your fork...\r\n\r\ni was alway interested because, MasterPlexus is right, big firms arent willing to maintain such a nasty project. because companies couldnt benefit in any way.\r\n\r\nim happy to have a solution, where i dont have to rely on any companys software ore worse, cloud connection.\r\n\r\nin germany you have the right to remain unconnected with your healthdata. which i prefere.\r\nand im also happy to say: then stay away from samsung if they cant commit to bluetooth standard (i think their wifi direct, didnt really work, too) cause thats customer retention in my oppinion. is it the same on googlephones now?\r\n"
+  },
+  {
+   "id": 482476994,
+   "user": "miiihi",
+   "created_at": "2019-04-12T07:54:55Z",
+   "body": "first update of Android Pie on my ZTE Axon 9 Pro (to build number ZTE_A2019G_ProV2.1.0B03) fixed dozing issue... XDrip is now working!!! (with all battery optimizations disabled, of course).\r\n\r\n"
+  }
+ ]
+}

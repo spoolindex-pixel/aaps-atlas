@@ -1,0 +1,57 @@
+{
+ "id": 1058236795,
+ "repo": "nightscout/AndroidAPS",
+ "number": 953,
+ "title": "Dev / BYODA v1.9 : Calibration in BYODA give double readings in AAPS",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/953",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-11-19T07:39:13Z",
+ "closed_at": "2021-11-21T17:01:49Z",
+ "comment_count": 7,
+ "body": "![Screenshot_20211116-213207_AndroidAPS](https://user-images.githubusercontent.com/76626474/142583593-10c6d5bf-ceae-4562-8bfa-bf4c1c93d86d.jpg)\r\n\r\nI have installed the new version 1.9 of BYODA. All was working OK till I got the red triangle when I calibrated this morning. I saw that in the Dexcom tab, there were 2 same readings at the time of the calibration\r\n\r\n![Screenshot_20211119-074210_AndroidAPS](https://user-images.githubusercontent.com/76626474/142583813-4580eb04-49ec-4d39-98ef-48d26e1dbe6b.jpg)\r\n\r\n![20211119_075028](https://user-images.githubusercontent.com/76626474/142583841-f35469f2-9555-4fce-b6b0-2455ddd2e75e.jpg)\r\n \r\nDeleting of the readings cancelled the red triangle\r\n\r\n[AndroidAPS_LOG_1637304353677.log.zip](https://github.com/nightscout/AndroidAPS/files/7568517/AndroidAPS_LOG_1637304353677.log.zip)\r\n. ",
+ "comments": [
+  {
+   "id": 973891109,
+   "user": "MilosKozak",
+   "created_at": "2021-11-19T09:13:10Z",
+   "body": "2nd timestamp is not visible . do you still have it?"
+  },
+  {
+   "id": 974173525,
+   "user": "swissalpine",
+   "created_at": "2021-11-19T15:33:57Z",
+   "body": "Could AAPS delete double entries when they come in (condition for example: same bg, same delta, timestamp < 60 sec)?"
+  },
+  {
+   "id": 974227328,
+   "user": "MilosKozak",
+   "created_at": "2021-11-19T16:38:19Z",
+   "body": "there is a wide range of CGM producing different data. so far i'm trying to find setup which doesn't produce duplicates instead of cheating/filtering on AAPS side (which may work for one CGM but not for others. or filter out valid readings)"
+  },
+  {
+   "id": 974642787,
+   "user": "robertrub",
+   "created_at": "2021-11-20T12:26:40Z",
+   "body": "> 2nd timestamp is not visible . do you still have it?\r\n\r\nSorry, nope. I hadn't realized that the text was longer than the windows. \r\n\r\nIt could be better f the text was shorter and more explicit.... ;)"
+  },
+  {
+   "id": 974711942,
+   "user": "vanelsberg",
+   "created_at": "2021-11-20T21:11:45Z",
+   "body": "I can see how upgrading BYODA could result in duplicates:\r\nThe new version does not have any history of it predecessor: it just read the memory of the transmitter containing several hours of BG data and dump all to APPS?\r\n\r\n@robertrub I assume you did you upgrade on a new sensor?\r\n"
+  },
+  {
+   "id": 974775959,
+   "user": "robertrub",
+   "created_at": "2021-11-21T08:35:43Z",
+   "body": "@vanelsberg The duplicate issue I opened was for _calibration_, not for general use.\r\n\r\nTo answer your question: i changed from 1.7 to 1.9 towards the end of the 2h wait period (no BGs for 2h) of a sensor restart and I didn't have any duplicates."
+  },
+  {
+   "id": 985991535,
+   "user": "robertrub",
+   "created_at": "2021-12-04T08:34:27Z",
+   "body": "@MilosKozak  More testing on BYODA calibration (v1.9) : I did the same things at +3 min after last BG reading at at +4 min after last reading and the first did NOT give a double BG value and the 2nd did give a double value. Several messages on Discord gives the same impression of this bug being time related to the last BG reading.\r\n\r\nOpen BYODA by its own icon, calibrate in BYODA and see what happens in AAPS. The attached log with double BGs in AAPS. Look around 8:47. The BGs in BYODA (and AAPS of course) were higher than the real blood tests.\r\n\r\n![Screenshot_20211204-084837_AndroidAPS](https://user-images.githubusercontent.com/76626474/144703079-8ab0de6a-cfe2-4863-9ba2-0f5b9f2f5326.jpg)\r\n\r\n\r\n[AndroidAPS_LOG_1638604271854.log.zip](https://github.com/nightscout/AndroidAPS/files/7653603/AndroidAPS_LOG_1638604271854.log.zip)\r\n\r\n"
+  }
+ ]
+}

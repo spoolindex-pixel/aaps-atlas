@@ -1,0 +1,63 @@
+{
+ "id": 1162927396,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1421,
+ "title": "AAPS treatements has a strange date in the future",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1421",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-03-08T17:27:48Z",
+ "closed_at": "2022-03-16T11:00:27Z",
+ "comment_count": 8,
+ "body": "EDIT : This is NOT an NS problem as I started issuing. It is about a strange date in AAPS treatments. You can skip the first messages...\r\n\r\nI use BYODA and G6 sensor. I _Stop sensor_ and then _Start new sensor_ in BYODA. This information arrives and is treated correctly in AAPS. I can see sensor age in AAPS.\r\n\r\nThe bug is (maybe) in the way this information (new sensor insertion/start) is sent to NS by AAPS. The sensor inserted message is on the treatments tab of NS but NS doesn't show SAGE data.\r\n\r\n![sage_no_age.png](https://user-images.githubusercontent.com/76626474/157291930-be422b0f-7b07-4fda-9fc0-d49c0be2dbc0.png)\r\n\r\nPeople seem to have the SAGE working in NS if they note the sensor change **in AAPS**. In my case, the sensor change information arrives from BYODA to AAPS.\r\n\r\n![Screenshot_20220308-072215_Discord.jpg](https://user-images.githubusercontent.com/76626474/157292321-782ccae4-536a-4122-9f85-9ec0c54b8c5c.jpg)\r\n",
+ "comments": [
+  {
+   "id": 1062086667,
+   "user": "robertrub",
+   "created_at": "2022-03-08T18:39:00Z",
+   "body": "I might have found the culprit. This had happened before. The CGM change date is totally wrong in treatments in AAPS...\n\n![Screenshot_20220308-191519_AndroidAPS.jpg](https://user-images.githubusercontent.com/76626474/157303352-973513d8-c04a-45a3-b971-6b25a719065e.jpg)\n\nAnd here is the real sensor change date from BYODA.\n\n![Screenshot_20220308-193802_Dexcom G6.jpg](https://user-images.githubusercontent.com/76626474/157303546-14474633-5e77-4707-99db-b22fdec798b2.jpg)\n\nSorry, no logs :("
+  },
+  {
+   "id": 1062090165,
+   "user": "robertrub",
+   "created_at": "2022-03-08T18:43:32Z",
+   "body": "It is becoming more and more strange...\n\n![Screenshot_20220308-194004_AndroidAPS.jpg](https://user-images.githubusercontent.com/76626474/157303997-103c3065-1fff-4608-93fa-39f3271b091a.jpg)\n\nAAPS has the real insertion date too. I don't know from when the 2106 entry dates...\n\nI can't delete the 2106 entry, it says _invalid_ after I tried to delete it..."
+  },
+  {
+   "id": 1062147567,
+   "user": "CaptainBalou",
+   "created_at": "2022-03-08T19:55:24Z",
+   "body": "Same entry for the same date here... I can't see the year but because it is on the top of the list I assume it is in the future and so it would be the same.\r\n\r\n![Screenshot_2022-03-08-20-43-35-90_3eaa31bb2c2a38a1c605d9dc918cf694](https://user-images.githubusercontent.com/17015872/157314449-cb718b28-4aed-4e2d-b9a5-4778ac911ad3.jpg)\r\n![Screenshot_2022-03-08-20-44-13-99_3eaa31bb2c2a38a1c605d9dc918cf694](https://user-images.githubusercontent.com/17015872/157314466-28330cfa-ea91-4748-97fb-81a7123f0342.jpg)\r\n\r\n"
+  },
+  {
+   "id": 1062207778,
+   "user": "robertrub",
+   "created_at": "2022-03-08T21:05:12Z",
+   "body": "@CaptainBalou Funny, it is the same exact date as mine... Even the same time stamp !\nIt is not something that came from BYODA most probably but where did AAPS get this entry is a mystery..."
+  },
+  {
+   "id": 1062272018,
+   "user": "CaptainBalou",
+   "created_at": "2022-03-08T22:14:55Z",
+   "body": "@robertrub Yes, just because it is a full match I decided to write that comment. :-) I also use BYODA. Unfortunately I have no suggestions what the issue could be. Just wante to tell that you're not alone with this. ;-)"
+  },
+  {
+   "id": 1062341439,
+   "user": "Alamo04",
+   "created_at": "2022-03-08T23:08:34Z",
+   "body": "Had the same in the past, deleted this entry in AAPS and it comes back, again deleted and also deleted all future treatments in NightScout. \r\nThis issue didn't come back since that."
+  },
+  {
+   "id": 1063995130,
+   "user": "kristinsmotz",
+   "created_at": "2022-03-10T12:18:58Z",
+   "body": "I have seen this as well a few weeks ago, definitely year 2106, don't remember exact date. Also resolved it by deleting future treatments in Nightscout Admin tools. "
+  },
+  {
+   "id": 1065874403,
+   "user": "happygirlnyc70",
+   "created_at": "2022-03-12T12:24:11Z",
+   "body": "I also had the future entry.  I removed it from the treatment tab.  Nightscout resolved itself at my next sensor change. Using dev-e."
+  }
+ ]
+}

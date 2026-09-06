@@ -1,0 +1,45 @@
+{
+ "id": 2517896301,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3430,
+ "title": "[Bug] [Dev/Master] Temp Profile switch on AAPSClient with duration, reduced % and Activity TT doesn't activate properly on AAPS (Only NSClientV1)",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3430",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-09-10T21:31:47Z",
+ "closed_at": "2024-11-04T19:26:40Z",
+ "comment_count": 5,
+ "body": "AAPS 3.3.0-dev-b / AAPSClient 3.3.0-dev-b / master 3.1.0.4\r\nBuild: 18887e78ed-2024.09.09\r\nNightscout version: 15.0.2\r\n\r\nLogs from dev:\r\nAAPS: [AndroidAPS_LOG_1726002964538.log.zip](https://github.com/user-attachments/files/16955082/AndroidAPS_LOG_1726002964538.log.zip)\r\nAAPSClient: [AndroidAPS_LOG_1726003014356.log.zip](https://github.com/user-attachments/files/16955090/AndroidAPS_LOG_1726003014356.log.zip)\r\n\r\n**Step by step**\r\n1) Use NSClientV1 sync in AAPS/AAPSClient\r\n2) Select profile switch on AAPSClient phone.\r\n3) Select e.g. 30 min duration, 80% strength, Activity TT and click ok.\r\n\r\n**Result (dev):** TT is set on AAPS and AAPSClient, but temp profile switch isn't carried out on AAPS.\r\n**Result (master):** TT is NOT set on AAPS, but is set on AAPSClient, temp profile switch is successfully set on AAPS\r\n\r\n**Expected result** is that TT, profile% and duration is set correctly on AAPS and AAPSClient.\r\n\r\n**Side note**: In master/dev this works fine with NSClientV3. Since behaviour is not the same in master and dev, it's probably best to fix the problem as it stands in dev if it cant be adressed in both environments some how.\r\n\r\nSome screens from dev:\r\nAAPSClient:\r\n![image](https://github.com/user-attachments/assets/c0d705a8-0fe8-4329-90c7-53d5a3eb8fed)\r\n![image](https://github.com/user-attachments/assets/b69a597d-29cd-48b2-b5e3-f5e18f6c01e3)\r\n![image](https://github.com/user-attachments/assets/9224fbcf-10f3-46c5-848c-bec287235f47)\r\n\r\nAAPS:\r\n![image](https://github.com/user-attachments/assets/1c13b1e7-4575-46a3-9424-e42a582da465)\r\n\r\n",
+ "comments": [
+  {
+   "id": 2451670000,
+   "user": "MilosKozak",
+   "created_at": "2024-11-01T10:39:13Z",
+   "body": "hopefully resolved by https://github.com/nightscout/AndroidAPS/commit/0ee8b101370d16b58b594aa4794cdfde47e7e7b7"
+  },
+  {
+   "id": 2452012728,
+   "user": "olorinmaia",
+   "created_at": "2024-11-01T14:55:21Z",
+   "body": "Unfortunately it still doesn't work in NSClientV1. It works if I first do a temp profile switch then TT afterwards.\r\nWhen I combine the two actions in one operation the profile switch fails. It still works in NSClientV3 after https://github.com/nightscout/AndroidAPS/commit/0ee8b101370d16b58b594aa4794cdfde47e7e7b7"
+  },
+  {
+   "id": 2453506549,
+   "user": "MilosKozak",
+   "created_at": "2024-11-03T17:36:33Z",
+   "body": "Hmmm NS deduping was still blocking records\r\nnow it works for me well https://github.com/nightscout/AndroidAPS/commit/11da18ea85579cf3626d8f5539d6d02d4410cfaf"
+  },
+  {
+   "id": 2453619635,
+   "user": "olorinmaia",
+   "created_at": "2024-11-03T23:32:45Z",
+   "body": "Thanks for looking into this Milos. It works when you do it from AAPS. But not when from AAPSClient. I tried with both Dash and Virtual pump. After the two latest commits regarding this, I notice nothing happens when I try to cancel Activity TT on AAPSClient after it is set in the same operation as temp profile switch. I have to cancel it one more time for TT to get cancelled in AAPSClient/AAPS.\r\n\r\nThis is a screenshot of an example I execute on my AAPSClient phone, that doesn't sync profile switch to AAPS.\r\n![image](https://github.com/user-attachments/assets/84faf8c1-b0fc-418d-a62d-1a5b207fd4f3)\r\n"
+  },
+  {
+   "id": 2455526701,
+   "user": "MilosKozak",
+   "created_at": "2024-11-04T19:26:34Z",
+   "body": "increased to 10s\r\nnow working from AAPS client (at least for me)"
+  }
+ ]
+}

@@ -1,0 +1,171 @@
+{
+ "id": 401445948,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 751,
+ "title": "Feature Request: Smart Band integration for Xiaomi Mi Band 3",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/751",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2019-01-21T17:16:52Z",
+ "closed_at": "2021-03-20T17:51:31Z",
+ "comment_count": 26,
+ "body": "Good morning,\r\nI'm writing this to ask if it is possible to integrate some sort of notification into the smart band Xiaomi Mi Band 3.. For notification I mean not only when there's a value which fires the high/low alert.. But a 'continuous notification' (every 5 minutes for example, or every other 10 min if there's this interval between freestyle/dexcom surveys) which would then display the latest glucose level and the trend (this one with a simple arrow)..\r\n\r\nThe communication protocols should be pretty described thanks to Gadgetbridge (or the other apps that support this band).\r\n\r\nUnfortunately I'm not a programmer so I can't help out on that side.. But I could give away one or two bands (I need to buy them myself, so not too many :P ) if that's needed!\r\n\r\nThanks a lot and cheers <3\r\nP.S.: Hooping this to be the right place to request it",
+ "comments": [
+  {
+   "id": 456882391,
+   "user": "Liknus",
+   "created_at": "2019-01-23T17:00:11Z",
+   "body": "Somebody did try (Mi Band 2), in a different way, to add notifications (even if from a different app which I don't wanna use).. But that's not really what I was aiming to! [See it here](https://crazyinfo.de/2017/07/29/how-to-glukosealarm-auf-dem-mi-band-2/)! (It's in german.. Sorry for that!)\r\n\r\nHave you got any suggestion of how this coul be implemented?    "
+  },
+  {
+   "id": 461151333,
+   "user": "Liknus",
+   "created_at": "2019-02-06T19:18:51Z",
+   "body": ":sleepy: Anybody?"
+  },
+  {
+   "id": 470894486,
+   "user": "xannasavin",
+   "created_at": "2019-03-08T11:15:45Z",
+   "body": "I tried to get an integration running between xDrip <> Tasker <> MiBandTools but no success so far since tasker seems not to know the Blood Glucose Level nor the alarms...\r\nHowever, if you have a MiBand you should really think about purchasing this MiBandTools app - it's really a great app which offers a lot of more advanced options for the notifications on the MiBand (such as e.g. settings a time a day you want to get notified for normal calls (8-22pm) and high prio contacts that can also call in the nigh, giving Messenger notifications only for a certain contact and so on)."
+  },
+  {
+   "id": 470894558,
+   "user": "xannasavin",
+   "created_at": "2019-03-08T11:16:01Z",
+   "body": "Thanks for your link btw, looks promissing"
+  },
+  {
+   "id": 471220165,
+   "user": "Klaus3d3",
+   "created_at": "2019-03-09T20:41:48Z",
+   "body": "> \r\n> \r\n> I tried to get an integration running between xDrip <> Tasker <> MiBandTools but no success so far since tasker seems not to know the Blood Glucose Level nor the alarms...\r\n> However, if you have a MiBand you should really think about purchasing this MiBandTools app - it's really a great app which offers a lot of more advanced options for the notifications on the MiBand (such as e.g. settings a time a day you want to get notified for normal calls (8-22pm) and high prio contacts that can also call in the nigh, giving Messenger notifications only for a certain contact and so on).\r\n\r\nYou can grab xdrips persistent notification with tasker and get the value from the notification text."
+  },
+  {
+   "id": 471318302,
+   "user": "xannasavin",
+   "created_at": "2019-03-10T15:55:42Z",
+   "body": "already doing this via the MiBandTools but the extraction of the glucose level via regex is not super reliable... That's why I was hoping there could be a direct post of the level from xDrip to Tasker since Tasker allows for Notifications via MiBandTools through a direct integration - which would result in the same but (hopefully) more reliable :)"
+  },
+  {
+   "id": 474542492,
+   "user": "Liknus",
+   "created_at": "2019-03-19T19:30:32Z",
+   "body": "@xannasavin What's missing, as of today, in order to do so?"
+  },
+  {
+   "id": 474544790,
+   "user": "xannasavin",
+   "created_at": "2019-03-19T19:35:05Z",
+   "body": "Taskers integration of xDrip only allows for Snoozing or so. \r\nSomeone also recommended to use xDrips local webserver to get the last values via javascriplet - but to be honest my skills are not that high and I couldn't figure out how to do it >< \r\nSo a direct \"channel\" to get the blood glucose values from xDrip in Tasker would be great, so I can write them directly into a Tasker variable and process them."
+  },
+  {
+   "id": 483334863,
+   "user": "Liknus",
+   "created_at": "2019-04-15T16:59:58Z",
+   "body": "There's actually a sort of integration for what's defined as a LeFun Smartband.. But I haven't been able to find any videos or photos of it running xdrip+ follower ...![](https://i.imgur.com/1WI0wei.jpg) \n\nIt also seems that there's no an hardware band brand such as LeFun.. But only an app called LeFun Health which seems to be working on a generic 'M3 smart bracelet'..\nUnfortunately the reviews on this app aren't that great.. But if there's already an integration in xdrip+ for a smartband it shouldn't be that difficult to implement it with the Xiaomi Smart Band 3!"
+  },
+  {
+   "id": 541339112,
+   "user": "kabachello",
+   "created_at": "2019-10-12T16:14:48Z",
+   "body": "I send notifications to a Mi Band 4 via Mi Band Tools and it works great. I can even see the trend arow, etc. I did not need to use any regular expressions. Detailed instructions can be found [here](https://a.kabachnik.info/blood-sugar-on-a-xiaomi-mi-band.html). It should work with MI Band 2 and 3 too. \r\n\r\nI could even configure a swipe gesture on the band to show the last notification (last BG). The only issue is that the band vibrates with every new reading (every 5 minutes in my case). Could not solve that till now. And, of course, the swipe-gesture shows the last notification regardless of it's type, so it only works as \"show BG\" if you don't have many other notifications.\r\n\r\nBut all-in-all that's a really cool addition to xDrip and far less expensive, that a smart watch. "
+  },
+  {
+   "id": 563255755,
+   "user": "bigdigital",
+   "created_at": "2019-12-09T14:12:16Z",
+   "body": "Hi guys, i've recently made a miband integration into the xdrip. If anyone interested to test it, you can follow instructions by the following link https://bigdigital.home.blog/2019/11/21/xdrip-miband/ (will try to complete it on this week) "
+  },
+  {
+   "id": 569052031,
+   "user": "Skyiriz",
+   "created_at": "2019-12-26T12:41:03Z",
+   "body": "> Hi guys, i've recently made a miband integration into the xdrip. If anyone interested to test it, you can follow instructions by the following link https://bigdigital.home.blog/2019/11/21/xdrip-miband/ (will try to complete it on this week)\r\n\r\nHi, your integration is amazing! Except that I use another unit of measurement for glucose mg/dl (you use mmol/l) could you create an integration in mg/dl?"
+  },
+  {
+   "id": 569078426,
+   "user": "bigdigital",
+   "created_at": "2019-12-26T15:43:26Z",
+   "body": " I guess it possible to implement mg/dl glucose units,  but with limitation. Due to the date limitation, which is used to interpreter the glucose value on the band, the maximum possible mg/dl value would be 319 mg/dl . Everything that would be greater than this value would be displayed as 319. But i think this glucose value would be enough to understand that you should take attention to your glucose value and check the actual glucose value on the phone. "
+  },
+  {
+   "id": 569078707,
+   "user": "Skyiriz",
+   "created_at": "2019-12-26T15:45:38Z",
+   "body": "Of course, how can I change the unit of measurement?"
+  },
+  {
+   "id": 569080802,
+   "user": "bigdigital",
+   "created_at": "2019-12-26T15:59:43Z",
+   "body": "For now, there no such option, it is required to rebuild watchface structure and implement required date conversions in the xdrip code. If i have enough free time on these holidays, i will add mg/dl into my xdip fork .  "
+  },
+  {
+   "id": 569081054,
+   "user": "Skyiriz",
+   "created_at": "2019-12-26T16:01:17Z",
+   "body": "OK thank you very much"
+  },
+  {
+   "id": 571715531,
+   "user": "steve8x8",
+   "created_at": "2020-01-07T18:38:33Z",
+   "body": "Did you submit a MR? I'd like to see this merged into master...\r\n\r\nBTW, would this also work with a MiBand 2? I somehow skipped the 3, and cannot sacrifice the 4 I gave to my SO..."
+  },
+  {
+   "id": 573604871,
+   "user": "bigdigital",
+   "created_at": "2020-01-13T10:49:39Z",
+   "body": "Unlike MiBand 4, the MiBand 2 and 3 should work fine. They do not require any additional actions and will work fine with MiFit if use \"bg reading as notifications \"option. \r\nAs for the merge request, i haven't submitted a merge request yet. Want to test it better."
+  },
+  {
+   "id": 573636183,
+   "user": "steve8x8",
+   "created_at": "2020-01-13T12:17:26Z",
+   "body": "Now if I only could find a way that doesn't require MiFit (or MiBandTools) - as I'm using Gadgetbridge instead... Any suggestions how to achieve that?"
+  },
+  {
+   "id": 578833364,
+   "user": "steve8x8",
+   "created_at": "2020-01-27T16:33:34Z",
+   "body": "@bigdigital now that there's #1189 for the MiBand4, any estimate for the MR?\r\nEdit: Just found that there's a planned rewrite - and I'm afraid that one would ignore the pre-4 bands :/"
+  },
+  {
+   "id": 579731227,
+   "user": "bigdigital",
+   "created_at": "2020-01-29T12:20:56Z",
+   "body": "Today i've released a new version https://bigdigital.home.blog/2020/01/23/future-of-the-xdrip-miband-project/ which should work better for mibandv4 . The v2 and v3 would work as before .  If this version would be stable, i’ll create a pull request for the  Xdrip master record.  So i would be grateful if someone can help to test it on different miband versions. "
+  },
+  {
+   "id": 580155875,
+   "user": "Liknus",
+   "created_at": "2020-01-30T09:12:22Z",
+   "body": "> Today i've released a new version https://bigdigital.home.blog/2020/01/23/future-of-the-xdrip-miband-project/ which should work better for mibandv4 . The v2 and v3 would work as before . If this version would be stable, i’ll create a pull request for the Xdrip master record. So i would be grateful if someone can help to test it on different miband versions.\r\n\r\n\r\nFirst of all thanks for the work!\r\nI have the v3 and, so far, it seems to be working well: notification are sent to the Mi Band 3 with glucose level and trend arrow.. \r\nI'm not using any other companion app for the band as off now (I just wanted to test glucose notifications).. but it would be nice to have the chance to either set how many minutes between one notification and another (like sending a notification every 7 or 8 minutes, this will help saving battery), and night time (so that I don't have notification during the night/when I'm sleeping.. again for battery saving purposes).\r\n\r\nThanks again and cheers!"
+  },
+  {
+   "id": 580322822,
+   "user": "steve8x8",
+   "created_at": "2020-01-30T16:02:03Z",
+   "body": "Isn't the update interval defined by the xDrip core?"
+  },
+  {
+   "id": 588211061,
+   "user": "Liknus",
+   "created_at": "2020-02-19T12:50:18Z",
+   "body": "If it's a setting of Xdrip+ I haven't been able to find it out where it is!\n\nOne thing that I've noticed is that the band is asking more times per day to get associated with xdrip (simply by touching the band button).. so the connection is not that stable I think.. do somebody else noticed the sake behaviour? ( OnePlus 6 and Mi band 3 here)\nI'm looking forward to get the Mi band 4 to test all the features! ;)\n\nEDIT\nPlus.. even if there is the option to send call notification (in xdrip-settings-smart watch-mi band option) to the band.. no call is notified to the band for me (I don't have, as of now, any other app installed)."
+  },
+  {
+   "id": 786864736,
+   "user": "Navid200",
+   "created_at": "2021-02-26T20:01:47Z",
+   "body": "@Liknus Would you please close this issue if the original issue has been resolved?\r\nThanks"
+  },
+  {
+   "id": 803434175,
+   "user": "Navid200",
+   "created_at": "2021-03-20T17:51:31Z",
+   "body": "Closing due to inactivity"
+  }
+ ]
+}

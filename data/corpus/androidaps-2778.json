@@ -1,0 +1,27 @@
+{
+ "id": 1896530855,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2778,
+ "title": "[DEV] AAPS/AAPSClient suffer slow sync in V3+WS=on compared to V1 API",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2778",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-09-14T13:01:54Z",
+ "closed_at": "2023-09-14T18:19:58Z",
+ "comment_count": 2,
+ "body": "AAPSClient / AAPS 3.2.0-dev-l\r\nBuild: d379b769d3-2023.09.13\r\nNightscout: 15 (latest dev)\r\nPump AAPS/AAPSClient: Virtual pump (Dash)\r\n\r\nI have done some testing (attached picture of spreadsheet)  with dev-l d379b769d3-2023.09.13. Both with v1 API and v3 API + websockets on to see how sync performs.\r\n\r\nFrom a parents perspective we are using NSClient/AAPSClient alot, and key for us is fast and reliable sync. It seems to me that v3 API with websockets ON are way slower on some operations than v1 API. \r\n\r\nMy expectation is that v3 API WS=on is as fast as V1 API. As you can see of spreadsheet V1 API works well similar to what of master version now.\r\n\r\nI'll list the different actions that after my view has slow sync.\r\n\r\n**AAPS:**\r\n* Enact Temp profile\r\n* Edit/create/delete profile\r\n\r\nLog from slow temp profile change, time 14:44:\r\n[AndroidAPS_LOG_1694696140096.log.zip](https://github.com/nightscout/AndroidAPS/files/12608992/AndroidAPS_LOG_1694696140096.log.zip)\r\n\r\n\r\n**AAPSClient:**\r\n* Set TT\r\n* Cancel TT\r\n* Enact Temp profile\r\n* Edit/create/delete profile \r\n\r\nLog from slow \"Set TT\", time 14:56:\r\n[AndroidAPS_LOG_1694696426834.log.zip](https://github.com/nightscout/AndroidAPS/files/12609015/AndroidAPS_LOG_1694696426834.log.zip)\r\n\r\n**Results of testing V3 API with Websockets = ON**\r\n![image](https://github.com/nightscout/AndroidAPS/assets/114103483/46569c60-9f8a-4f76-86e4-573bb88c94f0)\r\n\r\n**Results of testing V1 API:**\r\n![image](https://github.com/nightscout/AndroidAPS/assets/114103483/7ea26afd-bbc0-4b7c-ad92-27eca49b48ee)\r\n\r\n![image](https://github.com/nightscout/AndroidAPS/assets/114103483/04001f18-43e5-4dbd-b2cc-5979f48d9e28)\r\n\r\n",
+ "comments": [
+  {
+   "id": 1719914989,
+   "user": "MilosKozak",
+   "created_at": "2023-09-14T18:08:13Z",
+   "body": "improved by https://github.com/nightscout/AndroidAPS/commit/d2247dc9bcf37b6ddf65a6018e10f63346e764e4"
+  },
+  {
+   "id": 1719931361,
+   "user": "MilosKozak",
+   "created_at": "2023-09-14T18:19:58Z",
+   "body": "and https://github.com/nightscout/AndroidAPS/commit/471ed28a04ccd93afb6d2f33d1c7fad3c11ef640"
+  }
+ ]
+}

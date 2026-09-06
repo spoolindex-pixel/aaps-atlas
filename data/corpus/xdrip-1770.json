@@ -1,0 +1,101 @@
+{
+ "id": 932748846,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1770,
+ "title": "Backfilled data incompletely fetched from Nightscout",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1770",
+ "state": "closed",
+ "labels": [
+  "sync-nightscout"
+ ],
+ "created_at": "2021-06-29T14:24:32Z",
+ "closed_at": "2024-03-21T22:36:55Z",
+ "comment_count": 14,
+ "body": "XDrip does not fetch all backfilled data from Nightscout:\r\n\r\n<img width=\"300\" src=\"https://user-images.githubusercontent.com/1370732/123812909-c265bf80-d8f4-11eb-8bf6-5d49047675e9.jpg\"/><img width=\"300\" src=\"https://user-images.githubusercontent.com/1370732/123815197-92b7b700-d8f6-11eb-9d6f-95f4d9b1b872.jpg\"/>\r\n\r\nIn the xDrip screenshot you can see a second gap between 10:07 and 10:52 and a third gap between 13:07 and 13:37.\r\n\r\nThe log shows the following entries:\r\n```\r\nBgReading\r\n15:43 Cannot inject display glucose value as time difference too great: 2021-06-29 14:43:07 vs 2021-06-29 13:42:47\r\n11:37 Cannot inject display glucose value as time difference too great: 2021-06-29 10:42:49 vs 2021-06-29 08:27:49\r\n11:32 Cannot inject display glucose value as time difference too great: 2021-06-29 10:42:49 vs 2021-06-29 08:32:49\r\n11:27 Cannot inject display glucose value as time difference too great: 2021-06-29 10:42:49 vs 2021-06-29 08:37:49\r\n11:22 Cannot inject display glucose value as time difference too great: 2021-06-29 10:42:49 vs 2021-06-29 08:42:49\r\n11:17 Cannot inject display glucose value as time difference too great: 2021-06-29 10:42:49 vs 2021-06-29 08:47:49\r\n```\r\n\r\nNone of the timestamps correlate with the gaps except 2021-06-29 13:42:47 wich is the end of the second gap (first BG value).\r\n\r\n### Your environment\r\n\r\n- both share and follower has running xDrip \"Nightly build 19th Jun 2021\"\r\n- Android 7 on the follower\r\n- Android 10 at the share\r\n\r\nThis issue is different to #795 because all data was sent to Nightscout. ",
+ "comments": [
+  {
+   "id": 870697377,
+   "user": "Navid200",
+   "created_at": "2021-06-29T15:26:08Z",
+   "body": "Please correct if anything is wrong in the following sequence: \r\n\r\n1- When a master disconnects from the transmitter, a gap is formed in the readings.  The gap will also exist on Nightscout at the time.\r\n\r\n2- The follower reads from Nightscout and so, ends up with the same gap.\r\n\r\n3- The master reestablished connectivity with the transmitter.  Since the transmitter sends data covering past 3 hours all the time, if the gap is within the past three hours, the gap is filled on the master.\r\nThe master then sends the backfilled readings to Nightscout.  So, the gap disappears on Nightscout as well.  \r\n\r\n4- The only way for the follower to fill the gap now is if it could download past data from Nightscout.\r\nUnfortunately, xDrip/Nightscout does not offer this capability (https://github.com/NightscoutFoundation/xDrip/issues/403).  \r\n\r\nThat's why after buying a new phone, one cannot just download the past readings from Nightscout.\r\nWe can perhaps open a feature request for adding the capability to download past readings from Nightscout."
+  },
+  {
+   "id": 870743241,
+   "user": "Navid200",
+   "created_at": "2021-06-29T16:26:52Z",
+   "body": "I wasn't able to recreate the problem.\r\nThe follower was able to get the missed readings and fill the gap.  So, my description is not correct.  At least, it's not complete.\r\n\r\nIs it possible that the gap can be filled if it is not too far back in time?"
+  },
+  {
+   "id": 870827925,
+   "user": "tolot27",
+   "created_at": "2021-06-29T18:41:20Z",
+   "body": "There is a graph option to show backfilled values. Unfortunately, it does not work with in my setup. It is activated all the time but never shows backfilled data differently at the collector/share. I tried creating a screenshot to show that some backfilled data are fetched from Nightscout. "
+  },
+  {
+   "id": 870834048,
+   "user": "Navid200",
+   "created_at": "2021-06-29T18:51:12Z",
+   "body": "Sorry if you have already looked at this and are aware:\r\nhttps://github.com/NightscoutFoundation/xDrip/blob/14c806e9d69b71c4b6fcb62efdc673e378c0bb13/app/src/main/java/com/eveningoutpost/dexdrip/Models/BgReading.java#L243-L244\r\n\r\nThis is what triggers the logs you have.\r\nI am still trying to recreate this.  I think I may be able to if I delay the recovery on the follower by 2 hours based on those logs.  So, I am trying that right now."
+  },
+  {
+   "id": 870858820,
+   "user": "tolot27",
+   "created_at": "2021-06-29T19:31:34Z",
+   "body": "Nightscout follower is indeed able to fetch the data. The following screenshot is from my dev phone which is also configured as NS follower but was offline some days. Switching it on, immediately fetched the data including backfills:\r\n<img width=\"300\" src=\"https://user-images.githubusercontent.com/1370732/123856221-1e463d80-d921-11eb-8250-69e4c01820f5.png\"/>\r\n"
+  },
+  {
+   "id": 870860886,
+   "user": "Navid200",
+   "created_at": "2021-06-29T19:35:00Z",
+   "body": "Something caused the ratelimit in the if statement to become true.  If we find that, we find what triggers the issue."
+  },
+  {
+   "id": 870905295,
+   "user": "tolot27",
+   "created_at": "2021-06-29T20:46:30Z",
+   "body": "I've extracted the relevant BG values from the database and highlighted the gaps. Looks like gaps are filled only the last 35 to 40 minutes.\r\n![Backfillgap](https://user-images.githubusercontent.com/1370732/123864832-7d10b480-d92b-11eb-9d80-e23365b54234.png)\r\n\r\nInterestingly, there is no gap between 08:17:49 and 09:27:49. "
+  },
+  {
+   "id": 870911138,
+   "user": "tolot27",
+   "created_at": "2021-06-29T20:56:14Z",
+   "body": "> Sorry if you have already looked at this and are aware:\r\n>https://github.com/NightscoutFoundation/xDrip/blob/14c806e9d69b71c4b6fcb62efdc673e378c0bb13/app/src/main/java/com/eveningoutpost/dexdrip/Models/BgReading.java#L243-L244\r\n\r\nI don't think this is related to this issue because the if BG values at that time are fetched from NS."
+  },
+  {
+   "id": 870946443,
+   "user": "Navid200",
+   "created_at": "2021-06-29T21:58:05Z",
+   "body": "That is interesting.    If the follower can download past readings from Nightscout, the master should be able to do it too.  But, it cannot.  I'd like to know why.  But, that is not related to this issue."
+  },
+  {
+   "id": 1107710093,
+   "user": "adamecker",
+   "created_at": "2022-04-24T04:58:27Z",
+   "body": "I've seen this issue happen a few times recently. Usually when collector goes offline, then comes back on and uploads to nightscout. Follower only gets new data from that point on even though nightscout is backfilled from the collector"
+  },
+  {
+   "id": 1107805505,
+   "user": "tolot27",
+   "created_at": "2022-04-24T09:50:36Z",
+   "body": "> I've seen this issue happen a few times recently. Usually when collector goes offline, then comes back on and uploads to nightscout. Follower only gets new data from that point on even though nightscout is backfilled from the collector\r\n\r\nCan you reproduce the problem 100%? Do you discover something like a backfill window of certain minutes like I did above or is there no backfill data at all?"
+  },
+  {
+   "id": 1107880339,
+   "user": "tzachi-dar",
+   "created_at": "2022-04-24T17:07:21Z",
+   "body": "Here is my 2 cents regarding this issue. (all from the top of my head without checking in the code.)\r\n\r\n1) xDrip remembers the last time that it was doing the last read. (In other words, if xDrip is reading now, and the last read is from 10:00:00, than xDrip will read again asking for data from 10:00:00 and after it).\r\n\r\n2) In some cases writers to nightscout don't write in the \"correct\" order. That is, if there was a GAP xDrip might write the data of 10:00 followed by the data of 9:40, 9:45. 9:50, 9:55.\r\n\r\nFrom 1,2 if there is a gap, and the writer has just written the data of 08:00 - 9:40 and 10:00, the reader can get the data with the gap. Since the reader has the last reading set to 10:00 it will not ask for data before it. Now the writer will close the gap, but this will not help the reader.\r\n\r\nThis explains why the problem only rarely happens.\r\nHTH and hope I remember it right."
+  },
+  {
+   "id": 1107882061,
+   "user": "adamecker",
+   "created_at": "2022-04-24T17:17:49Z",
+   "body": "@tzachi-dar I believe you are correct. This happens when my collector is broken for reasons that's aren't worth explaining here. Then when it's fixed it uploads the most recent data to nightscout first. The follower gets that point and then the collector back fiils the data but the follower never looks before it's most recent data point "
+  },
+  {
+   "id": 2013970941,
+   "user": "Navid200",
+   "created_at": "2024-03-21T22:36:55Z",
+   "body": "I'm not sure if we need to fix this.\r\n\r\nI use Nightscout as a repository of all the readings.  To access that, for example to create a report, I use a browser to access Nightscout.\r\n\r\nUsing Nightscout to follow allows one to get alerts if something is wrong.  As long as the follower can do that, I don't see why the follower needs a backfill of all past readings.\r\n\r\nPlease let me know if there is a reason you need the follower to get a backfill for all past readings and we can reopen."
+  }
+ ]
+}

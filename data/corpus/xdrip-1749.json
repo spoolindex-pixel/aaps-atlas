@@ -1,0 +1,83 @@
+{
+ "id": 916716146,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1749,
+ "title": "Indexes are not used efficiently",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1749",
+ "state": "closed",
+ "labels": [
+  "database"
+ ],
+ "created_at": "2021-06-09T22:21:50Z",
+ "closed_at": "2025-07-16T18:30:04Z",
+ "comment_count": 11,
+ "body": "xDrip is using [ActiveAndroid](http://www.activeandroid.com) to handle it's data (accessed via content provider).\r\nThe API of ActiveAndroid does not allow xDrip to pass the index to the query.\r\nAdding that would make queries execute much faster.\r\n\r\nWe probably need to create our own version of ActiveAndroid and add that ability. \r\n\r\n",
+ "comments": [
+  {
+   "id": 858338536,
+   "user": "tolot27",
+   "created_at": "2021-06-10T06:13:19Z",
+   "body": "@tzachi-dar Do you mean indices instead of keys? Please can you elaborate which keys/indices are used wrongly?\r\n\r\nAs far as I know it is the responsibility of the underlying database [query planer/optimizer](https://www.sqlite.org/optoverview.html) to use the appropriate indices. But this requires good index statistics. Maybe your database has crown and your index stats are outdated. In such case [ANALYZE](https://www.sqlite.org/lang_analyze.html) could help which should be set up to run automatically before closing a database connection."
+  },
+  {
+   "id": 858357838,
+   "user": "tzachi-dar",
+   "created_at": "2021-06-10T06:44:50Z",
+   "body": "I have changed the bug title to indexes.\r\nAs far as I can tell, we never run the ANALYZE command, so maybe running it is a good thing. A grep in the activeandroid code shows that ANALYZE is never used there.\r\nI thought of passing the index as part of the query.\r\n\r\nI have seen this on the libre blocks db, but I have seen many times that as DB gets bigger, xDrip works more slowly, which is a good sign of not using the correct index. I'll try to do more measurements if/when I'll have time."
+  },
+  {
+   "id": 858379653,
+   "user": "tolot27",
+   "created_at": "2021-06-10T07:21:29Z",
+   "body": "> I thought of passing the index as part of the query.\r\n\r\nThat's not the correct way because an application usually does not know the index statistics.\r\n\r\n> I have seen this on the libre blocks db, but I have seen many times that as DB gets bigger, xDrip works more slowly, which is a good sign of not using the correct index. I'll try to do more measurements if/when I'll have time.\r\n\r\nWe should also revise the ORM layer and the queries we are using. Maybe we have not the correct indices created. We should also avoid overindexing. I've also noticed that xDrip gets slower over time and it is reported here #626 as well."
+  },
+  {
+   "id": 858420181,
+   "user": "tzachi-dar",
+   "created_at": "2021-06-10T08:23:32Z",
+   "body": "Using a new CRM might be a good idea, but is probably a big change in code, and in testing matrix.\r\nRight now, most of our queries are timed based (that is give me data from date a to date b).\r\nThe sqllite3 does not understand our model because we never call ANALYZE.\r\nSo, our options are either call analyze or pass the index. I think that the second is simpler, although I might look at the first one as well, and see if this is possible.\r\n\r\nPractically speaking, do you think that you will have time to look at a new CRM?"
+  },
+  {
+   "id": 858443175,
+   "user": "tolot27",
+   "created_at": "2021-06-10T08:55:49Z",
+   "body": "Using `ANALYZE` is the simplest thing to implement. I can also have a look at query/index optimization in general but need a big database for tests. Maybe, I can concatenate my backups.\r\n\r\nMaybe, implementing a new Object–relational mapping (ORM) is not necessary at all. I'll have a look at the database schema."
+  },
+  {
+   "id": 858483515,
+   "user": "tolot27",
+   "created_at": "2021-06-10T09:54:27Z",
+   "body": "You should also think about storing the UUIDs of `LibreBlock` as a blob rather than a text. This is much more efficient in terms of space (much smaller field size and smaller clustered index) and query speed is about the same."
+  },
+  {
+   "id": 858490818,
+   "user": "tzachi-dar",
+   "created_at": "2021-06-10T10:04:30Z",
+   "body": "I must say, that I don't see how UUIDs are used at all in libreblock at all.\r\nI believe that they have been added to match what we have in all other tables. But this is probably another issue."
+  },
+  {
+   "id": 858583343,
+   "user": "tolot27",
+   "created_at": "2021-06-10T12:35:42Z",
+   "body": "Many things are commented at https://github.com/NightscoutFoundation/xDrip/pull/1743#discussion_r649013574. I still believe that the indices are used as they were defined. Improving this avoids looking for another ORM or change of ActiveAndroid. But we should enable `ANALYZE` on db connection close, anyway."
+  },
+  {
+   "id": 1072366528,
+   "user": "tzachi-dar",
+   "created_at": "2022-03-18T12:31:18Z",
+   "body": "More info and a solution is at: https://github.com/NightscoutFoundation/xDrip/pull/2052"
+  },
+  {
+   "id": 2013963505,
+   "user": "Navid200",
+   "created_at": "2024-03-21T22:30:20Z",
+   "body": "What is the status of this?"
+  },
+  {
+   "id": 3079809432,
+   "user": "Navid200",
+   "created_at": "2025-07-16T18:30:04Z",
+   "body": "It's not a good idea to have a large xDrip database considering some have experienced a failure where they have lost their database.  \n\nIt is best for all users to upload their data to Nightscout or something similar, which can then be considered their repository.\nThen, the xDrip database should ideally be set to automatically clear after getting to a set limit, fort example, 365 days.  \n\nIf anyone has time to improve the database, please do that.\n\nI hope you don't mind me closing this issue.  We can reopen if needed."
+  }
+ ]
+}

@@ -1,0 +1,61 @@
+{
+ "id": 900217097,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1740,
+ "title": "Please move infrequently used settings to engineering mode",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1740",
+ "state": "closed",
+ "labels": [
+  "enhancement",
+  "ui",
+  "settings"
+ ],
+ "created_at": "2021-05-25T03:16:19Z",
+ "closed_at": "2022-01-06T18:56:13Z",
+ "comment_count": 7,
+ "body": "**Problem**\r\nWhen a beginner runs into trouble using xDrip, they can easily change a lot of settings they should not touch.\r\n\r\nThere are documents that describe the recommended settings.  Yet, everyday, someone posts, in facebook, asking how they can get xDrip going again.\r\n<br/>\r\n\r\n**Suggested Solution**\r\nIt would be better if only settings were available to the user, out of engineering mode, that would be related to user preferences, not settings that are supposed to be always set or always disabled.\r\n<br/>\r\n<br/>\r\nIs any of the following settings needed to be different than shown for your device or for any reason other than testing?  Can we move them to engineering mode with the shown settings as default? \r\n<br/>\r\n \r\n| **Bluetooth Settings** | |\r\n|--------------------------|-|\r\n| Turn Bluetooth on | ☑️  |\r\n| Bluetooth Watchdog | ☑️ |\r\n| Use Background Scans | ☑️  |\r\n| Constantly reset Bluetooth | :white_large_square: |\r\n| Transmitter (PL) support | :white_large_square: |\r\n| RFduino support | :white_large_square: |\r\n| xBridge+ Polling Mode | :white_large_square: |\r\n\r\n\r\n\r\n| **Other misc. options**        |                                 |\r\n|--------------------------------|-----------------------|\r\n| Run Collector in foreground | ☑️ |\r\n| Battery Optimization prompt | :white_large_square: |\r\n| Samsung Workarounds | ☑️ |\r\n\r\n\r\n| **G5/G6 Debug Settings** | |\r\n|------------------------------|-|\r\n| Use OB1 Collector |  ☑️ |\r\n| Fallback to xDrip | :white_large_square: |\r\n| Allow OB1 initiate bonding | ☑️ |\r\n| Authenticate G5 before each read | ☑️ |\r\n| Unbond G5 before each read | :white_large_square: |  \r\n\r\n| **Less common settings** | |\r\n|-----------------------------|-|\r\n| Aggressive service restarts |  ☑️ |",
+ "comments": [
+  {
+   "id": 847594929,
+   "user": "tolot27",
+   "created_at": "2021-05-25T06:51:48Z",
+   "body": "Beside showing extended settings only in engineering mode a lot of settings should not be visible if the data source/sync agent is not active. This will reduce the number of visible settings significantly. I'm unsure whether we should treat this as a separate issue. At least the PRs should address this independently."
+  },
+  {
+   "id": 859723228,
+   "user": "jamorham",
+   "created_at": "2021-06-11T17:10:05Z",
+   "body": "If we put too much behind engineering mode then it will end up getting enabled too frequently. Some of the options above yes engineering mode is appropriate as we really don't expect users to need to modify the defaults, but for some others we could have an `advanced mode` and add that as a dependency to the setting and then iterate the settings and automatically hide those when that mode is not enabled. "
+  },
+  {
+   "id": 859725633,
+   "user": "Navid200",
+   "created_at": "2021-06-11T17:14:52Z",
+   "body": "@jamorham I hope I understand correctly:\r\nI will create a new setting deep under other misc options.  I will call it something like \"Advanced\" for English.\r\nThen, I will make the settings I have identified here to be accessible only if the new advanced setting is enabled.   If the new advanced setting is disabled, the identified settings automatically go back to their default settings. "
+  },
+  {
+   "id": 859781825,
+   "user": "jamorham",
+   "created_at": "2021-06-11T19:03:08Z",
+   "body": "I think they will always default to their set defaults unless the user has changed them but I think within `Preferences.java` and if advanced mode is disabled then the settings will not be changeable if they  are set to have that as a dependency. But to hide them I think we want something in `Preferences.java` to iterate them, look for the advanced dependency and auto-hide those options. I believe that will work."
+  },
+  {
+   "id": 863653778,
+   "user": "Navid200",
+   "created_at": "2021-06-18T00:54:30Z",
+   "body": "@jamorham When you say \"hide them\", do you mean to make it impossible to change them, or do you mean literally hide them so that they are not visible?"
+  },
+  {
+   "id": 864139933,
+   "user": "tzachi-dar",
+   "created_at": "2021-06-18T16:06:07Z",
+   "body": "2 comments:\r\n1) I would not move them, but rather have them being disabled/hidden based on the advanced option.\r\n2) Some of the settings can be disabled, for example Transmitter (PL) support or RFduino support. Many of them are things that users have to change. For example, use scanning. Although I realy don't like the current situation. Currently, there is a huge chance that any user will have to change that. And if he does not have to change it right now, there will be a phone update that will make him use that. So, these settings have to be visible.\r\nWe might want to have them in a different color, but currently, people have to change things like: \"Authenticate G5 before each read\". (You are not an experience user if you are touching this, but rather you are a novice user that things don't work for you).\r\n"
+  },
+  {
+   "id": 864180671,
+   "user": "Navid200",
+   "created_at": "2021-06-18T17:27:32Z",
+   "body": "@tzachi-dar I can see the following as the thinking behind this.  But, please let me know if you disagree.\r\n\r\nIf there are settings that almost no one ever needs but for testing or for extremely unusual situations, we move them to the engineering mode.  Meaning the user will only be able to change them in engineering mode.  One example is using a Dexcom G6 in non-native mode.  There are cases when someone will need that.  But, it is very rare.  \r\n\r\nIf there are settings that are only needed to be different than the default for a small percentage of the population under normal circumstances, we cannot move those to the engineering mode because then, too many people will need to have engineering mode active all the time, which would defeat the point of the engineering mode.\r\nFor settings that fall in that category, we are going to create this new setting.  It is similar to putting xDrip in engineering mode except you won't need a voice command to enable it.  It is called Advanced.\r\nPeople who need to change such settings need to activate the Advanced setting.  But, not engineering mode.\r\n\r\nIf there are settings that 10% or more of the population need to change from default, we just leave those alone.  Such settings can be changed with no need to activate either engineering mode or Advanced mode.\r\n\r\nAll the settings I have identified above need to be used exactly in default by all Dexcom users.\r\n\r\n1- Are any of those settings needed to be different for a Libre-user?\r\n\r\n2- If you can think of any Libre-specific settings that fit the described Advanced case, please let me know if you like me to include them in the new Advanced category."
+  }
+ ]
+}

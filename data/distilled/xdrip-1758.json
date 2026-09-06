@@ -1,0 +1,23 @@
+{
+ "issue_id": 1758,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/1758",
+ "title": "After NFC Scan of Libre 2 no BG readings appear in xDrip",
+ "symptom": "After updating xDrip to build 11 June 2021, NFC scan of FSL2 sensor running via OOPAlgorithm2 causes BT connection to sensor to be disabled and needs re-establishing. Also, after a BT loss of about 15 minutes, an NFC scan does not fill in missing records, which the May 21 version did. Other users report similar issues with Libre 1 and Libre 2, including NFC scan doing nothing when there are missing data points, and error messages like 'sensor clock didn't advance'.",
+ "cause": "Two issues were identified: 1) Not always using only the first 0x158 bytes of the data. 2) In the case of Libre2, not allowing flags == 0 as a legal packet.",
+ "fix": "A fix was provided in a test APK that ensures only the first 0x158 bytes of data are used and allows flags == 0 as a legal packet for Libre2. Users were instructed to download the APK, remove the .zip extension, backup settings and db, uninstall the current version, and install the new one.",
+ "settings_changed": [],
+ "devices": [
+  "Libre 2",
+  "Libre 1"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "OOPAlgorithm2",
+  "OOP2",
+  "NFC scan",
+  "Bluetooth"
+ ],
+ "confidence": "high",
+ "evidence_quote": "There have been two issues here: 1) Make sure we always use only the first 0x158 bytes of the data. 2) In the case of libre2, also allow flags == 0 as a legal packet. The following link should solve both."
+}

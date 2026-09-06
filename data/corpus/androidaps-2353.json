@@ -1,0 +1,51 @@
+{
+ "id": 1536921125,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2353,
+ "title": "[dev-g] NSClient / NSClientV3 preferences",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2353",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-01-17T19:25:22Z",
+ "closed_at": "2023-01-21T10:29:02Z",
+ "comment_count": 6,
+ "body": "Minor issue concerning both NSClient and NSCLient V3 in the shared preference management:\r\n\r\nI you open the preference from NSClient, you have the NS API Secret parameter, this parameter is replaced by NS Access Token if you open the preferences of NSClient v3.\r\n\r\nBut if you open one of the sub menus (synchronization for example) and then go back to main preferences, then you get both parameters (NS API Secret AND NS Access Token) at the same time (it's a bit confusing...)\r\n\r\n![image](https://user-images.githubusercontent.com/52934600/212992867-7ba3c6b2-b0bf-4a26-a556-499f4acb147a.png)\r\n",
+ "comments": [
+  {
+   "id": 1387115213,
+   "user": "vanelsberg",
+   "created_at": "2023-01-18T13:57:20Z",
+   "body": "Confirming..."
+  },
+  {
+   "id": 1387371111,
+   "user": "databoy2k",
+   "created_at": "2023-01-18T16:43:28Z",
+   "body": "It might be linked to a bug in the Preferences menu that results in all of the preferences \"categories\" being expanded. \r\n\r\nTo reproduce:\r\n1. Go into your preferences menu - note that all categories are \"minimized\" or have down-arrows\r\n2. Expand, e.g. \"Overview\" and note that none of the other categories expand.\r\n3. Expand a category whose entries change depend on your configuration, e.g. \"OpenAPS SMB\" and then choose an entry that takes you to another menu (e.g. \"Advanced Settings\"\r\n4. Press the \"back\" button on your phone or use the back gesture to return to Preferences.\r\n\r\nYou'll see that everything is now expanded, not just the category that you went into.\r\n\r\nMy guess is that the menus all have conditions in them that choose which entries are shown based on config, but those conditions aren't always checked when the menu is loaded a second time via a \"back\". That would explain both this bug and the fact that the menus don't stay collapsed."
+  },
+  {
+   "id": 1387428895,
+   "user": "robertrub",
+   "created_at": "2023-01-18T17:10:25Z",
+   "body": "Confirming\n\n![Screenshot_20230118_175801_AAPS.jpg](https://user-images.githubusercontent.com/76626474/213248227-2d8623b6-2b8b-484d-89e8-30731a7660bf.jpg)\n\n![Screenshot_20230118_175822_AAPS.jpg](https://user-images.githubusercontent.com/76626474/213248352-8900fdbe-c52a-4057-871f-739d04769e32.jpg)"
+  },
+  {
+   "id": 1387714227,
+   "user": "Philoul",
+   "created_at": "2023-01-18T20:11:17Z",
+   "body": "@databoy2k I don't think the group / ungroup preferences in 3 dot menu is the same issue (it could be a constraint or a parameter of standard library that manage the preferences...)\nBut when all preferences are ungrouped in 3 dot menu after navigation, the NSClient is also unfiltered and shows both parameters (NS API Secret and NS token)."
+  },
+  {
+   "id": 1397666529,
+   "user": "Alamo04",
+   "created_at": "2023-01-19T22:01:12Z",
+   "body": "Also confirmed "
+  },
+  {
+   "id": 1399219106,
+   "user": "MilosKozak",
+   "created_at": "2023-01-21T09:52:16Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/f877bb5fb9492f42fc885133e5bb859ffdc0ffa1"
+  }
+ ]
+}

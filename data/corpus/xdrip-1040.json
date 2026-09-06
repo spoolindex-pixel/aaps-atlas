@@ -1,0 +1,75 @@
+{
+ "id": 501331866,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1040,
+ "title": "Miaomiao + Libre Checksum Failed, sensor works with LibreLink",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1040",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2019-10-02T07:49:10Z",
+ "closed_at": "2021-02-18T21:58:43Z",
+ "comment_count": 10,
+ "body": "After replacing sensor 2 days ago, I've managed to get only a few readings after restarting everything, then I just get \"Error: Checksum Failed\". I can scan with LibreLink normally and it shows a normal graph and is in normal range of fingertip tests.\r\n\r\nTomato app shows a history like 6.4 6.4 0.0 -2.0 0.0 6.4 0.0 0.0 (MMOL/L) and also stops working after the first impossible value like 0.0 with \"read below normal value, sensor may be broken\".\r\n\r\nWondering if my sensor is mostly working but sometimes sends these impossible values, and LibreLink can overcome this by skipping them?\r\n\r\nCould use-at-your-own-risk-options be added for ignoring impossible values and skipping checksum tests?\r\n\r\nAlso, would the \"allow testing with dead sensor\" option already do that? I cannot enable it even though I have enabled Engineering Mode. The checkbox is still grayed out. How to try it out?\r\n\r\nStill 12 days left of sensor and I'm sure I can't get a warranty replacement as it works with the official app so a work-around would be great!",
+ "comments": [
+  {
+   "id": 537384973,
+   "user": "tzachi-dar",
+   "created_at": "2019-10-02T08:08:14Z",
+   "body": "Are you in the us?\n\nבתאריך יום ד׳, 2 באוק׳ 2019, 10:49, מאת Toni ‏<notifications@github.com>:\n\n> After replacing sensor 2 days ago, I've managed to get only a few readings\n> after restarting everything, then I just get \"Error: Checksum Failed\". I\n> can scan with LibreLink normally and it shows a normal graph and is in\n> normal range of fingertip tests.\n>\n> Tomato app shows a history like 6.4 6.4 0.0 -2.0 0.0 6.4 0.0 0.0 (MMOL/L)\n> and also stops working after the first impossible value like 0.0 with \"read\n> below normal value, sensor may be broken\".\n>\n> Wondering if my sensor is mostly working but sometimes sends these\n> impossible values, and LibreLink can overcome this by skipping them?\n>\n> Could use-at-your-own-risk-options be added for ignoring impossible values\n> and skipping checksum tests?\n>\n> Also, would the \"allow testing with dead sensor\" option already do that? I\n> cannot enable it even though I have enabled Engineering Mode. The checkbox\n> is still grayed out. How to try it out?\n>\n> Still 12 days left of sensor and I'm sure I can't get a warranty\n> replacement as it works with the official app so a work-around would be\n> great!\n>\n> —\n> You are receiving this because you are subscribed to this thread.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/1040?email_source=notifications&email_token=AB4TBZEXYAUTW3FF3LG6U6LQMRG7RA5CNFSM4I4S7JLKYY3PNVWWK3TUL52HS4DFUVEXG43VMWVGG33NNVSW45C7NFSM4HPBW6NA>,\n> or mute the thread\n> <https://github.com/notifications/unsubscribe-auth/AB4TBZDXJA2FD7VD6J5GEOLQMRG7RANCNFSM4I4S7JLA>\n> .\n>\n"
+  },
+  {
+   "id": 537406180,
+   "user": "SpeedoPasanen",
+   "created_at": "2019-10-02T09:08:17Z",
+   "body": "@tzachi-dar no sorry forgot to mention. EU 14 day Libre1"
+  },
+  {
+   "id": 538125579,
+   "user": "SpeedoPasanen",
+   "created_at": "2019-10-03T20:57:51Z",
+   "body": "Got a Miaomiao 2 today and problems disappeared. Maybe it's more fault-tolerant than mm1 or maybe I broke the mm1 while charging it on monday, which would be weird. Will have to test the mm1 one more time with the next sensor."
+  },
+  {
+   "id": 773869425,
+   "user": "androckz",
+   "created_at": "2021-02-05T08:09:28Z",
+   "body": "Hi all.\r\nI'm experiencing the same issue depicted by @SpeedoPasanen.\r\n\r\nMy setup is:\r\n- Freestyle Libre 1 sensor (Italy, not US)\r\n- MiaoMiao 1 (firmare v. 36, then updated to v. 39)\r\n- xdrip (last nightly, but it happens also with v. 2020.07.13)\r\n- Honor View 10 phone (Android 10)\r\n- Fossil Gen 5 smartwatch (Wear OS 2). Watch is collector only when phone is out of range.\r\n\r\nHere a detailed list of what I did, step by step:\r\n- put new sensor on my arm\r\n- started it 24h later, first with Libre reader, then with LibreLink app\r\n- after 1h, LibreLink app said 4-5 times that \"Reading not available, retry after 10 minutes\" (or something similar, don't remember the exact words). This error message happens again couple of times a day (quite strange, because usually I notice it only the first couple of hours)\r\n- xdrip: stop sensor\r\n- put MiaoMiao in charge, wait until green led light, put MiaoMiao over sensor\r\n- in the meanwhile LibreLink app started scanning via NFC with no problems\r\n- xdrip: start sensor. Waited a lot of time for the initial calibration, so I took a look to bluetooth collector status and logs: a lot of \"**Checksum failed - retrying**\" errors\r\n- xdrip connection status: \"Connected\"\r\n- tried to move MiaoMiao over sensor, to find a better placement: same checkum errors\r\n- MiaoMiao reset (physical button): same checkum errors\r\n- **sometimes (10 times a day more or less) there is a correct reading coming to xdrip from MiaoMiao with no checksum errors**\r\n- no errors scanning with xdrip via NFC, so I was able to perform the initial calibration\r\n- tried to clear bluetooth cache several times: same checkum errors\r\n- tried to forget device, associate xdrip to different bluetooth device and then back to MiaoMiao: same checkum errors\r\n- upgraded MiaoMiao firmware to v. 39: same checkum errors\r\n- performed a fresh xdrip install on a Samsung Galaxy Tab A7 (Android 10): **same checkum errors**\r\n- smartwatch: same checksum errors if forced as collector\r\n- **[glimp app](htt"
+  },
+  {
+   "id": 773931081,
+   "user": "tzachi-dar",
+   "created_at": "2021-02-05T10:03:53Z",
+   "body": "@MoNsTeR\nIt seems to me that your problem is in the miaomiao and not a software\nissue.\n\nThe libre reading changes every minute. So, this should give you\nenough time to do the following:\n\nHave the miaomiao read something and in the same time have xDrip read the\nsame data and compare if you are getting the same data.\n\nYou might have to read it a few times to make sure that you have a reading\nfor the same minute.\n\nI believe that you will see the readings are different.\n\nAnd last thing. Running without checksum is very dangerous, you might get\ninvalid readings.\nDon't think of doing that in real life.\n\nThanks\nTzachi\n\nOn Fri, 5 Feb 2021 at 10:09, MoNsTeR <notifications@github.com> wrote:\n\n> Hi all.\n> I'm experiencing the same issue depicted by @SpeedoPasanen\n> <https://github.com/SpeedoPasanen>.\n>\n> My setup is:\n>\n>    - Freestyle Libre 1 sensor (Italy, not US)\n>    - MiaoMiao 1 (firmare v. 36, then updated to v. 39)\n>    - xdrip (last nightly, but it happens also with v. 2020.07.13)\n>    - Honor View 10 phone (Android 10)\n>    - Fossil Gen 5 smartwatch (Wear OS 2). Watch is collector only when\n>    phone is out of range.\n>\n> Here a detailed list of what I did, step by step:\n>\n>    - put new sensor on my arm\n>    - started it 24h later, first with Libre reader, then with LibreLink\n>    app\n>    - after 1h, LibreLink app said 4-5 times that \"Reading not available,\n>    retry after 10 minutes\" (or something similar, don't remember the exact\n>    words). This error message happens again couple of times a day (quite\n>    strange, because usually I notice it only the first couple of hours)\n>    - xdrip: stop sensor\n>    - put MiaoMiao in charge, wait until green led light, put MiaoMiao\n>    over sensor\n>    - in the meanwhile LibreLink app started scanning via NFC with no\n>    problems\n>    - xdrip: start sensor. Waited a lot of time for the initial\n>    calibration, so I took a look to bluetooth collector status and logs: a lot\n>    of \"*Checksum failed - retrying*\" errors\n> "
+  },
+  {
+   "id": 773943274,
+   "user": "tzachi-dar",
+   "created_at": "2021-02-05T10:25:17Z",
+   "body": "One last thing, I would start by taking down the miaomiao, resetting it and\ntrying again.\n\nOn Fri, 5 Feb 2021 at 12:03, Tzachi Dar <tzachi.dar@gmail.com> wrote:\n\n> @MoNsTeR\n> It seems to me that your problem is in the miaomiao and not a software\n> issue.\n>\n> The libre reading changes every minute. So, this should give you\n> enough time to do the following:\n>\n> Have the miaomiao read something and in the same time have xDrip read the\n> same data and compare if you are getting the same data.\n>\n> You might have to read it a few times to make sure that you have a reading\n> for the same minute.\n>\n> I believe that you will see the readings are different.\n>\n> And last thing. Running without checksum is very dangerous, you might get\n> invalid readings.\n> Don't think of doing that in real life.\n>\n> Thanks\n> Tzachi\n>\n> On Fri, 5 Feb 2021 at 10:09, MoNsTeR <notifications@github.com> wrote:\n>\n>> Hi all.\n>> I'm experiencing the same issue depicted by @SpeedoPasanen\n>> <https://github.com/SpeedoPasanen>.\n>>\n>> My setup is:\n>>\n>>    - Freestyle Libre 1 sensor (Italy, not US)\n>>    - MiaoMiao 1 (firmare v. 36, then updated to v. 39)\n>>    - xdrip (last nightly, but it happens also with v. 2020.07.13)\n>>    - Honor View 10 phone (Android 10)\n>>    - Fossil Gen 5 smartwatch (Wear OS 2). Watch is collector only when\n>>    phone is out of range.\n>>\n>> Here a detailed list of what I did, step by step:\n>>\n>>    - put new sensor on my arm\n>>    - started it 24h later, first with Libre reader, then with LibreLink\n>>    app\n>>    - after 1h, LibreLink app said 4-5 times that \"Reading not available,\n>>    retry after 10 minutes\" (or something similar, don't remember the exact\n>>    words). This error message happens again couple of times a day (quite\n>>    strange, because usually I notice it only the first couple of hours)\n>>    - xdrip: stop sensor\n>>    - put MiaoMiao in charge, wait until green led light, put MiaoMiao\n>>    over sensor\n>>    - in the meanwhile LibreLink app started scann"
+  },
+  {
+   "id": 773982095,
+   "user": "androckz",
+   "created_at": "2021-02-05T11:41:33Z",
+   "body": "> @monster It seems to me that your problem is in the miaomiao and not a software issue. The libre reading changes every minute. So, this should give you enough time to do the following: Have the miaomiao read something and in the same time have xDrip read the same data and compare if you are getting the same data. You might have to read it a few times to make sure that you have a reading for the same minute. I believe that you will see the readings are different. \r\n\r\nThanks a lot for the answer. Perhaps you're right. It could be that MiaoMiao NFC is \"weak\" and this sensor is somehow different from others. The strange thing is that Glimp app receives data from MiaoMiao without errors. But Glimp is not open source (I suppose) so we don't know how checksum errors are managed (and IF they are managed). \r\nAs you suggested, I will try to compare the readings and give some feedback.\r\n\r\n> And last thing. Running without checksum is very dangerous, you might get invalid readings. Don't think of doing that in real life. Thanks Tzachi\r\n\r\nSure! Only for scientific research :)\r\n\r\n"
+  },
+  {
+   "id": 773982524,
+   "user": "androckz",
+   "created_at": "2021-02-05T11:42:30Z",
+   "body": "> One last thing, I would start by taking down the miaomiao, resetting it and trying again.\r\n\r\nAlready tried, but forgot to mention in my post. I just updated it, thank you."
+  },
+  {
+   "id": 781614172,
+   "user": "Navid200",
+   "created_at": "2021-02-18T20:26:45Z",
+   "body": "@SpeedoPasanen Would you please close this issue if it has been resolved?\r\nThanks"
+  },
+  {
+   "id": 781661838,
+   "user": "SpeedoPasanen",
+   "created_at": "2021-02-18T21:58:43Z",
+   "body": "Partly still a mystery but may it remain as such. Closing. 😘"
+  }
+ ]
+}

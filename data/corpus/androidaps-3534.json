@@ -1,0 +1,27 @@
+{
+ "id": 2662860773,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3534,
+ "title": "[Dev 3.3.0-d] URGENT - DynISF variable sesitivity used in bolus calculator",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3534",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-11-15T18:55:03Z",
+ "closed_at": "2024-11-18T08:35:33Z",
+ "comment_count": 2,
+ "body": "In dev version 3.3.0-d with DynISF on, variable sesitivity is used instead of profile ISF in the bolus calculator. This may be very problematic and potentially dangerous for some people. If profile ISF worked good for me thus far in the calculator, why enforce this change?\r\nIf bug, please fix ASAP.\r\nIf feature, please make optional (like e.g. dynISF-based target change).",
+ "comments": [
+  {
+   "id": 2480695564,
+   "user": "olorinmaia",
+   "created_at": "2024-11-16T18:11:50Z",
+   "body": "I don't think it's a bug, I think it is intended that dynamic sensitivity is being used in COB calculations and now Bolus Calc also. But I find the ISF value used confusing, because it is not the same as the DynISF value being used in SMB calculations. I agree that this should be an option linked with Dynamic sensitivity.\r\n\r\nAlso see https://github.com/nightscout/AndroidAPS/issues/3512"
+  },
+  {
+   "id": 2482274642,
+   "user": "MilosKozak",
+   "created_at": "2024-11-18T08:35:33Z",
+   "body": "Primary reason for this is eliminating profile ISF at all (replaced by DynISF strengness)\r\nIn latest dev AAPS calculates average DynISF and this is used in BolusWizard. Around this value should be your profile ISF anyway."
+  }
+ ]
+}

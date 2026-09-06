@@ -1,0 +1,36 @@
+{
+ "id": 816467840,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1658,
+ "title": "Don't delay ascending volume alerts by 3 minutes",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1658",
+ "state": "closed",
+ "labels": [
+  "enhancement",
+  "ux-alarm"
+ ],
+ "created_at": "2021-02-25T14:05:07Z",
+ "closed_at": "2021-12-01T15:28:56Z",
+ "comment_count": 3,
+ "body": "There have already been complaints about not being able to control the alarm volume:\r\nhttps://github.com/NightscoutFoundation/xDrip/issues/813\r\n\r\nIn response to \"please add a low profile as well\", the suggested solution has been to use the ascending volume profile.\r\nBut, that profile starts the volume at \"silent\".  So, if you want to get an alarm when your glucose crosses a threshold, you will have to add the time it takes for the volume to rise from silent to the next level to know when you will really hear the alarm.  But, by then, your glucose may be at a different level.  \r\n\r\nWould you please change the profile so that it would start from very low volume instead of starting from silent?\r\n",
+ "comments": [
+  {
+   "id": 799336028,
+   "user": "samhedgerows",
+   "created_at": "2021-03-15T11:14:34Z",
+   "body": "Personally I like that the ascending volume starts silently - with the \"vibrate on alerts\" option enabled it starts with vibration only before starting to make a noise. I find the vibration loud enough most of the time, but if I miss it it then starts to make a noise. So I'd definitely not want this functionality to completely disappear.\r\n\r\nHowever with vibrations off the alarm doesn't make any noise for a few minutes - which isn't great as you say. A temporary work-around would be to enable vibrations, if possible."
+  },
+  {
+   "id": 799373266,
+   "user": "Navid200",
+   "created_at": "2021-03-15T12:16:48Z",
+   "body": "One consequence of the alarm starting silent is that if you tap on test alarm, it makes no sound!  Many think there is an error and stop giving the ascending volume a chance.\r\n\r\nAre you saying if you have the vibration as you like to set it and also have the minimum volume, instead of silent, it will be too loud for you?  The vibration is actually much louder than minimum volume, isn't it?\r\n\r\nI'm not asking for the ability to enable vibration to be removed.  Only for the sound volume for the selected sound file to start from an extremely low volume instead of completely silent.  Would that be a problem?"
+  },
+  {
+   "id": 802425826,
+   "user": "Navid200",
+   "created_at": "2021-03-19T00:55:42Z",
+   "body": "@tzachi-dar @jamorham  @AdrianLxM \r\n\r\nLooking at the AlertPlayer.java file (from the March 8, 2021 release), I see this:\r\n![1 (2)](https://user-images.githubusercontent.com/51497406/111714975-3b9b4400-8829-11eb-9043-8d9adcbfbb34.png)\r\n\r\nThe _if_ statement on line 530 keeps the alert (for ascending profile only) silent for 3 minutes.  Only the vibrate option will function in that period.  But, if the user does not choose to enable the vibrate option, the 3-minute delay remains.   Then, the user receives no alert in any form for 3 minutes.\r\nHowever, if they choose a medium or high volume profile, they will not experience that delay.\r\nIs there a logic behind this discrepancy?\r\n\r\nI am happy to create a pull request to make the medium, high and ascending volume profiles neither to have a delay.\r\nBut, would you please tell me if there is a reason for this and therefore, such a pull request will never be accepted?"
+  }
+ ]
+}

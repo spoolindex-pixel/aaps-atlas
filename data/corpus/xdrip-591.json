@@ -1,0 +1,45 @@
+{
+ "id": 362834113,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 591,
+ "title": "JSON exception when receving historical values from 600SeriesAndroidUploder",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/591",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2018-09-22T07:21:34Z",
+ "closed_at": "2018-10-01T21:00:18Z",
+ "comment_count": 5,
+ "body": "Using Medtronic 640G pump and 600SeriesAndroidUploder as collecting app. Xdrip runs on same android device as collector.\r\nNormal behaviour in previous releases was that when pump is back in range, all historical values are read and broadcasted to Xdrip on reading device.\r\nIn latest release, only current value appears in Xdrip, history values do not appear.\r\nLog shows - Got JSON exception org.json.JSONException: No value for direction\r\n\r\n600SeriesAndroidUploader did not change and only change was upgrade of Xdrip on collecting device. I assume something changed in interface Xdrip is expecting to get.",
+ "comments": [
+  {
+   "id": 423728994,
+   "user": "ekazum",
+   "created_at": "2018-09-22T09:02:13Z",
+   "body": "After additional tests -\r\nProblem does not occur on build from 2/7/18\r\nProblem starts to happen on build from 4/7 onwards\r\nFurther code review show - changes were done on 4/7 at file \r\nat file: app/src/main/java/com/eveningoutpost/dexdrip/NSEmulatorReceiver.java\r\nin function: bgReadingInsertFromData\r\nslope parameter was added, reading it from direction parameter in JSON\r\n\r\nI believe this addition does not comply with 600SeriesAndroidUploader"
+  },
+  {
+   "id": 425680471,
+   "user": "jamorham",
+   "created_at": "2018-09-29T22:49:02Z",
+   "body": "Please try the Sept 29th nightly and see if this resolves the problem. Thanks"
+  },
+  {
+   "id": 425715230,
+   "user": "Cindbar",
+   "created_at": "2018-09-30T11:49:40Z",
+   "body": "I am using the Sept 29th nightly. xDrip is collecting old values, from time of connecting the Contour-Next-Link back. But xDrip is stopping at first old value found in the xDrip collection. Older values, back to 90 days ago are not fetched, if some values are already saved in between.\r\n\r\nHow to force xDrip to fill the gaps? "
+  },
+  {
+   "id": 425826038,
+   "user": "ekazum",
+   "created_at": "2018-10-01T08:22:02Z",
+   "body": "Just installed latest version and it works, no exception an history is uploaded, Thanks ! @jamorham "
+  },
+  {
+   "id": 426061167,
+   "user": "jamorham",
+   "created_at": "2018-10-01T21:00:15Z",
+   "body": "Marking as resolved."
+  }
+ ]
+}

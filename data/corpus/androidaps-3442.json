@@ -1,0 +1,51 @@
+{
+ "id": 2551422494,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3442,
+ "title": "[NSV1] Profile switch with Dash sets 4800 min TBR 0 + suspend that doesn't sync well with AAPSClient ",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3442",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-09-26T19:53:33Z",
+ "closed_at": "2026-07-08T18:44:52Z",
+ "comment_count": 6,
+ "body": "AAPSClient / AAPS 3.2.0.4\r\nNSCLIENTV1\r\nBuild: 036071563a-2024.09.13\r\nNightscout-versjon: 15.0.2\r\n\r\n@MilosKozak  @avereha \r\nReproduced problem several Dash-users are having getting wrong IOB in AAPSClient because of sync issues. Creating issue to see if we can find a solution. One of the issues reported at facebook: https://www.facebook.com/groups/AndroidAPSUsers/posts/3917923875095667/\r\n\r\nLogs AAPS: [AndroidAPS_LOG_1727295509569.log.zip](https://github.com/user-attachments/files/17155205/AndroidAPS_LOG_1727295509569.log.zip)\r\nLogs AAPSClient: [AndroidAPS_LOG_1727295563688.log.zip](https://github.com/user-attachments/files/17155204/AndroidAPS_LOG_1727295563688.log.zip)\r\n\r\nWhen AAPS performs a profile switch (or temp profile switch) Dash / AAPS sets a 0 TBR suspend for 4800 mins (80 hours aka Pod max lifetime), then immediately after set profile basal rate. I think the duration or perhaps how quickly this happens may be the culprit some how to the iob sync issues. AAPSClient doesn't sync this correctly always. Max tbr duration for dash is 720 min if you set a manual tbr.\r\nI wonder why the duration is set so long. And if it really is needed if this is queued? \r\n\r\nUnless a new TBR is sent after Profile Switch AAPSClient will run with 0 TBR while AAPS continues with regular basal rate, this accumulates wrong IOB in AAPSClient. This problem is most noticeable in open loop or LGS mode.\r\n\r\nProfile switch I reproduced the error with:\r\n![image](https://github.com/user-attachments/assets/3e12f889-e6a3-4898-96c3-e14c90a6e05e)\r\n\r\nAAPS:\r\n\r\n| AAPS | AAPSClient |\r\n|--------|--------|\r\n| ![image](https://github.com/user-attachments/assets/b066b72f-be8a-428b-9740-b3ba9c8a00fb) | ![image](https://github.com/user-attachments/assets/fa96f7ae-2665-4c42-9da5-3b6f21a5bb72) |\r\n| AAPS | AAPSClient |\r\n| ![image](https://github.com/user-attachments/assets/b7520e3b-9bb4-4ee9-8bb7-00fe6ee8796b) | ![image](https://github.com/user-attachments/assets/48160b81-8cd7-4dfc-931e-c66706b5c997) |",
+ "comments": [
+  {
+   "id": 2380896102,
+   "user": "vanelsberg",
+   "created_at": "2024-09-28T21:11:33Z",
+   "body": "I think 🤔  the logic is that on profile switch a 0 TBR is set indefinitely (\"4800 - max Pod live\"). It assumes the new TBR will be set once/if the new profile becomes active and on 0Ref calculations are executed on the next BG received. I cannot see any problems in that?\r\n\r\nSo afaikt most likely this is a sync problem with NS, AAPSclient or both?"
+  },
+  {
+   "id": 2455827374,
+   "user": "olorinmaia",
+   "created_at": "2024-11-04T22:25:10Z",
+   "body": "Steps to reproduce: (Easiest in Open loop or LGS, but also happens in closed loop, but on next loop run if TBR is set new TBR is synced to AAPSClient)\r\n* Set 5 min temp profile switch of 120%\r\n* Let it run the duration and let it automatically switch over to normal profile.\r\n* When AAPS reverts to normal profile 0 tbr 4800 min is set then regular basal rate. The regular basal rate doesn't get synced to AAPSClient, but the next TBR does. When it does it doesn't update the wrong 0 tbr that has ran since profile switch causing wrong IOB in AAPSClient compared to AAPS."
+  },
+  {
+   "id": 2517578381,
+   "user": "MilosKozak",
+   "created_at": "2024-12-04T14:21:03Z",
+   "body": "is this valid for v3 too?"
+  },
+  {
+   "id": 2517702730,
+   "user": "olorinmaia",
+   "created_at": "2024-12-04T15:06:49Z",
+   "body": "My best guess this is not happening on v3 but can test it when I come home from business trip end of week if needed. "
+  },
+  {
+   "id": 2529875930,
+   "user": "olorinmaia",
+   "created_at": "2024-12-10T00:03:59Z",
+   "body": "This doesn't happen with v3. But confirming it still happen with v1. \r\n\r\nWhen AAPS performs a profile switch (or temp profile switch) Dash / AAPS sets a 0 TBR suspend for 4800 mins (80 hours aka Pod max lifetime), then immediately after set profile basal rate. I think the duration or perhaps how quickly this happens may be the culprit some how to the iob sync issues. \r\n\r\nCould a possible fix be to delay the time of setting basal rate after the 4800 min 0 tbr suspend? Something similar to what was done here? https://github.com/nightscout/AndroidAPS/issues/3430"
+  },
+  {
+   "id": 4918147512,
+   "user": "olorinmaia",
+   "created_at": "2026-07-08T18:44:52Z",
+   "body": "Closing as NSClientv1 is removed in AAPS 4.0.0 "
+  }
+ ]
+}

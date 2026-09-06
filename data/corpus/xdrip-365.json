@@ -1,0 +1,79 @@
+{
+ "id": 308076173,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 365,
+ "title": "Feature request: Add \"bgTargetTop\",\"bgTargetBottom\" to status.json API endpoint.",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/365",
+ "state": "closed",
+ "labels": [
+  "enhancement",
+  "sync-local",
+  "status-postponed"
+ ],
+ "created_at": "2018-03-23T15:32:49Z",
+ "closed_at": "2022-12-13T16:07:26Z",
+ "comment_count": 10,
+ "body": "Currently bgHigh and bgLow represent the \"turn all alarms on\" values while bgTargetTop/Bottom are the values the user sets for \"I want to run within these boundaries\" and are useful for setting notice alarms and coloring values on watch faces.",
+ "comments": [
+  {
+   "id": 385841529,
+   "user": "PedanticAvenger",
+   "created_at": "2018-05-02T01:49:56Z",
+   "body": "@jamorham been wandering through the code looking to add this myself and submit a PR but it's taking forever to get up to speed on this codebase.  The request is so I can get my fitbit watchface launched which pulls the settings from nightscout or xDrip+ to keep things sync'd."
+  },
+  {
+   "id": 386720531,
+   "user": "PedanticAvenger",
+   "created_at": "2018-05-04T20:13:41Z",
+   "body": "To be more clear.\r\nIf you look at the status.json response from nightscout, particularly the thresholds you see the following on my nightscout site:\r\n\"thresholds\":{\"bgHigh\":260,\"bgTargetTop\":180,\"bgTargetBottom\":80,\"bgLow\":55} \r\n\r\nNow bgHigh and bgLow are the \"red-line\" values.  in this case above 14.4mmol/L and below 3.0 mmol.  On a watch face I would use these to set off agressive alerts.\r\n\r\nWhat I'm looking at are the bgTargetTop and bgTargetBottom which are \"where I want to be between\" in this case 10mmol/L and 4.4mmol/L\r\n\r\nIn xDrip+ I have these configured via the General Settings as High Value and Low Value (11.1 and 4.4 in my xDrip) which are clearly stored differently than the 200/79 that xDrip web services returns as bgHigh/bgLow.\r\n\r\nI would use these in a watch face to set the visual lines on the graphing page as well as moderate alerts for action."
+  },
+  {
+   "id": 783609209,
+   "user": "Navid200",
+   "created_at": "2021-02-22T19:16:46Z",
+   "body": "I have read the three posts in this thread.  I still don't understand what the request is.\r\n\r\nLet's say the request is implemented and you enable it.  \r\nHow will your CGM now behave differently than it did before?"
+  },
+  {
+   "id": 783656625,
+   "user": "PedanticAvenger",
+   "created_at": "2021-02-22T20:33:37Z",
+   "body": "It won't behave any differently, however for developers of things like fitbit watchfaces which use the web server API to get the CGM data they can use the information to display configured target levels on said watchface without requiring additional configuration in the watchface and will reflect any changes a person may make.\r\nNamely I'm just asking for status.json on xdrip+ to match more closely with what it is emulating in nightscout."
+  },
+  {
+   "id": 784486323,
+   "user": "Navid200",
+   "created_at": "2021-02-23T20:24:04Z",
+   "body": "If the only person who has the knowledge to understand what you need is not looking at this, you will never get what you need.\r\nI would like to label this.  But, I have no idea what this is.\r\nCan you explain this to someone who doesn't know anything?\r\n\r\nAs an example, you can say I would like two additional parameters to be uploaded to Nightscout.  Those two parameters are BG_Target_High and BG_Target_Low.\r\n\r\nAfter a developer shows interest and starts asking questions, you can go into detail and write several paragraphs.  But, right now, I cannot label this as is."
+  },
+  {
+   "id": 785157404,
+   "user": "PedanticAvenger",
+   "created_at": "2021-02-24T15:29:19Z",
+   "body": "The best summary is \"I want status.json on XDrip+ to more closely match status.json on nightscout in what it presents.\"  status.json on xdrip+ was created to replicate the functionality available on nightscout but locally to the phone.  However it is incomplete (as it must be of course) but more incomplete than it should be in the data that it presents to other applications on the phone accessing the API interface.  The two fields I have identified are already configured values within xdrip+ but they are not included yet in the API data.  They should be included to match functionality.\r\nThis functionality is used heavily in situations such as offline mode where a person may be away from cellular (or at least data) services but still wishes to keep watch data integration working."
+  },
+  {
+   "id": 785433193,
+   "user": "tolot27",
+   "created_at": "2021-02-24T22:42:43Z",
+   "body": "@PedanticAvenger Can you create a PR to address this FR?"
+  },
+  {
+   "id": 785558950,
+   "user": "PedanticAvenger",
+   "created_at": "2021-02-25T03:58:45Z",
+   "body": "I had started looking at it but got lost in where the variables for those values were stored.\r\nI haven't been in the code enough to understand the standards being used yet and I'm not the strongest in this language. ;)"
+  },
+  {
+   "id": 786161980,
+   "user": "PedanticAvenger",
+   "created_at": "2021-02-25T19:57:21Z",
+   "body": "I do know it is in xDrip/app/src/main/java/com/eveningoutpost/dexdrip/webservices/WebServiceStatus.java and the change starts at line 34.  The comment even mentions the whole response I want but the code only puts two of the four together and outputs them.\r\n"
+  },
+  {
+   "id": 1348900755,
+   "user": "Navid200",
+   "created_at": "2022-12-13T16:07:26Z",
+   "body": "The only high and low level variables available in xDrip are the ones you can set in settings under \"Glucose Units\".\r\n\r\nIf you want to change the in-range defining limits for the xDrip statistics, you will have to use those same variables, High Value and Low Value.  As a result, you will be also modifying your alerts, which use those same variables.\r\n\r\nThis is a limitation xDrip currently has.  I have added these placeholders not long ago:  https://github.com/NightscoutFoundation/xDrip/blob/5ea552c6f702078e832b443ef1ea20f3ccee6ab2/app/src/main/java/com/eveningoutpost/dexdrip/stats/FirstPageFragment.java#L92-L93\r\n\r\nThose are currently using the same Low Value and High Value variables.\r\n\r\nThis is my view:  If we proceed with enhancing xDrip's capability to independently create reports, we need to introduce those two variables as independent variables.  This is my personal wish.\r\nOn the other hand, if the majority of the developers are happy with the status quo of encouraging users to use other apps and utilities (Nightscout, Tidepool, ...) for creating reports, there is no reason to create yet two more variables.\r\n\r\nAs long as such variables do not exist in xDrip, I see no way, and no reason, of adding them to json.\r\n\r\nThat said, I am postponing this feature request.  \r\nIf I have misunderstood, we can always recategorize."
+  }
+ ]
+}

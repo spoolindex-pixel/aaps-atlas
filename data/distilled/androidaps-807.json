@@ -1,0 +1,20 @@
+{
+ "issue_id": 807,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/807",
+ "title": "[AAPS3.0_beta2] NSClient - io.socket.engineio.client.EngineIOException:xhr poll error - Seems to have also broken Nightscout",
+ "symptom": "After installing NSClient 3.0 beta2, the user sees io.socket.engineio.client.EngineIOException:xhr poll error in logs, and the Nightscout site goes down. Reinstalling NSClient and manually entering credentials allows syncing but eventually crashes the NS site again; data appears in history viewer but not on the main graph.",
+ "cause": "The thread speculates that the NS API is overwhelmed by NSClient's sync/upload load, possibly because the free Heroku dyno cannot keep up; developer MilosKozak added an option to slow down NS upload, implying upload rate is a factor.",
+ "fix": "Users report downgrading to NSClient 2.8 resolves the issue; developer added an option to slow down NS upload (commit ae399f0bf5b40d81905dac979aba1153baede364).",
+ "settings_changed": [],
+ "devices": [
+  "S20"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "nsclient",
+  "nightscout"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "i added option to slow down NS upload"
+}

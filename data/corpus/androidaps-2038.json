@@ -1,0 +1,27 @@
+{
+ "id": 1347470463,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2038,
+ "title": "Processing a big Nightscout client queue limits loop function",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2038",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-08-23T07:29:15Z",
+ "closed_at": "2022-12-04T17:03:07Z",
+ "comment_count": 2,
+ "body": "My NS client was paused for a month. This caused a big queue which took a day or more to process; during that time, the battery was draining. In my experience, the loop functioned not as expected. And the app did not respond well.\r\n\r\nA similar issue was reported on Facebook:\r\n> While it is uploading, my closed loop seems to be paused. Not talking about the chart updating the current values, but indeed I'm ? just running with my preset basal and not having any reaction from the system: neither tbr nor smb - so BG rose high.\r\n\r\nhttps://www.facebook.com/groups/AndroidAPSUsers/posts/3350627715158622/\r\n\r\n- Should there be a Nightscout client API for batch upload?\r\n- Should an option in the menu to clear the queue?\r\n\r\n\r\n",
+ "comments": [
+  {
+   "id": 1228141806,
+   "user": "Philoul",
+   "created_at": "2022-08-26T07:17:22Z",
+   "body": "I confirm there are some issues during NS synchro:\nI limited during about 1 days Sync settings to save battery, and yesterday morning I enabled again the NS synchro (about 1300 item in queue).\n- During synchro loop was not working (more than 1 hour duration for the whole synchro).\n- I got a fake Profile switch in graph (the profile switch done by autotune at 4 AM, was synchronized in NS later, and the white star is also visible in graph for the NS sync5 hours later.\n- the number of items in queue during sync was strange (it starts to decrease, I saw about 700 item about 10min after sync start, then it increase up to more than 1600 items in queue, and finally drop down to 0).\n\n![Screenshot_20220825-094329_AndroidAPS.jpg](https://user-images.githubusercontent.com/52934600/186844841-5da378e6-1837-4097-8cc2-ac93f662fe2a.jpg)![Screenshot_20220825-101808_AndroidAPS.jpg](https://user-images.githubusercontent.com/52934600/186845320-30e33332-7603-4ebc-b585-1e6e19480153.jpg)"
+  },
+  {
+   "id": 1292015590,
+   "user": "robertrub",
+   "created_at": "2022-10-26T13:13:20Z",
+   "body": "In dev-c, I \"cleaned\" (deleted older than 3 months data) in AAPS. It creates (a bug) the re-syncs of all the data (cue of 55000)...\n\nAfter 3 something hours, all the data was sent to NS. The loop was working correctly while the upload was going on.\n\nMaybe your bug was solved or maybe a fast phone/internet/??? lets enough CPU time to calculate the loop."
+  }
+ ]
+}

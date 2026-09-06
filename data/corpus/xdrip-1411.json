@@ -1,0 +1,134 @@
+{
+ "id": 681561353,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1411,
+ "title": "xDrip lost connection to sensor and forgot any past values",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1411",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "duplicate",
+  "database",
+  "breaking"
+ ],
+ "created_at": "2020-08-19T05:38:37Z",
+ "closed_at": "2020-11-06T20:40:01Z",
+ "comment_count": 19,
+ "body": "xDrip was running fine for a very long time. Suddenly it lost the connection to the G6 in the middle of the night. A simple \"restart collector\" fixed the issue. But it also forgot the whole history. I thought it might be an issue with MongoDB as the size is almost at the 512 Mb limit. Nightscout has no problems showing the complete history.\r\nUnfortunately even the xDrip logs prior to the event are unavailable.\r\n\r\nAny thoughts?\r\n\r\n![Screenshot_20200819-073351](https://user-images.githubusercontent.com/39347827/90596433-31f82200-e1ef-11ea-9ca6-ab7f45d11d4e.png)",
+ "comments": [
+  {
+   "id": 675874397,
+   "user": "tolot27",
+   "created_at": "2020-08-19T06:14:06Z",
+   "body": "Do you have 'Save Database Daily' and/or 'Glucose Retention' enabled in 'Less common settings'?"
+  },
+  {
+   "id": 675875561,
+   "user": "nsghub",
+   "created_at": "2020-08-19T06:17:24Z",
+   "body": "\"Save daily\" is enabled and retention was set to 0. I changed retention to 99 days now. Is there a simple cleanup command for MongoDB?"
+  },
+  {
+   "id": 675904127,
+   "user": "tolot27",
+   "created_at": "2020-08-19T07:31:07Z",
+   "body": "> \"Save daily\" is enabled and retention was set to 0. \r\n\r\nThen you can restore the database from the last backup and maybe merge the new values manually.\r\n\r\n> Is there a simple cleanup command for MongoDB?\r\n\r\nI don't know. But it is not a MongoDB, it is a SQLite DB."
+  },
+  {
+   "id": 676308030,
+   "user": "nsghub",
+   "created_at": "2020-08-19T12:54:58Z",
+   "body": "With MongoDB I meant the acutal MongoDB at mlab.com ;)\r\nI thought this might have been the issue, but it is still running fine.\r\n\r\nI imported the xDrip backup file and only lost some values on the phone. There are no gaps in Nightscout. I still don't know what happend last night but I hope that was a one time thing."
+  },
+  {
+   "id": 676324866,
+   "user": "tolot27",
+   "created_at": "2020-08-19T13:06:12Z",
+   "body": "How much space is left on your device?"
+  },
+  {
+   "id": 676351597,
+   "user": "nsghub",
+   "created_at": "2020-08-19T13:24:08Z",
+   "body": "About 4 GB. One zip file is about 7,5 MB in size. That shouldn't be a problem."
+  },
+  {
+   "id": 677243975,
+   "user": "nsghub",
+   "created_at": "2020-08-20T06:07:29Z",
+   "body": "Happened again.\r\nI installed the nightly 200713 now (was 200725)."
+  },
+  {
+   "id": 677265432,
+   "user": "tolot27",
+   "created_at": "2020-08-20T06:20:52Z",
+   "body": "Did it happen at about the same time? Do you have any services running which scan/clean the apps/phone?\r\n\r\nAre you experienced with [logcat](https://developer.android.com/studio/command-line/logcat)? If yes, please can you write the Android logs to a file (`adb logcat -f logcat.txt`) and attach the relevant entries (time of potential db corruption) to this issue?"
+  },
+  {
+   "id": 677361620,
+   "user": "nsghub",
+   "created_at": "2020-08-20T06:52:43Z",
+   "body": "I didn't take a screenshot from the logs, but the first item was the \"xdrip-daily\". I assume this runs always at the same time. There are no clean-up apps/services running. It is a Pixel 3a with the official google firmware.\r\n\r\nI don't see any interesting entries in logcat:\r\n\r\n_08-20 04:27:14.966  1367  1455 I chatty  : uid=1000(system) android.bg expire 3 lines\r\n08-20 04:27:20.423  1367  1457 I chatty  : uid=1000(system) ActivityManager expire 14 lines\r\n08-20 04:27:57.526  1367  1705 I chatty  : uid=1000(system) AlarmManager expire 1 line\r\n08-20 04:28:04.553  1801 14007 D PowerUI : can't show warning due to - plugged: true status unknown: false\r\n08-20 04:29:04.554  1801  2506 D PowerUI : can't show warning due to - plugged: true status unknown: false\r\n08-20 04:30:04.562  1801  2961 D PowerUI : can't show warning due to - plugged: true status unknown: false\r\n08-20 04:31:04.560  1801  9012 D PowerUI : can't show warning due to - plugged: true status unknown: false\r\n08-20 04:31:09.556  1367  3974 I chatty  : uid=1000(system) Binder:1367_1B expire 2 lines\r\n08-20 04:31:10.198  1367 28292 I chatty  : uid=1000 system_server expire 2 lines\r\n08-20 04:32:04.563  1801 13493 D PowerUI : can't show warning due to - plugged: true status unknown: false\r\n08-20 04:32:20.297  1367  1457 I chatty  : uid=1000(system) ActivityManager expire 20 lines\r\n08-20 04:32:20.361  1367  3814 I chatty  : uid=1000(system) Binder:1367_13 expire 1 line\r\n08-20 04:33:04.556  1801 13656 D PowerUI : can't show warning due to - plugged: true status unknown: false\r\n08-20 04:33:08.427  1367  1367 I chatty  : uid=1000 system_server expire 8 lines\r\n08-20 04:34:04.581  1801 13983 D PowerUI : can't show warning due to - plugged: true status unknown: false\r\n08-20 04:35:04.557  1801 13999 D PowerUI : can't show warning due to - plugged: true status unknown: false\r\n08-20 04:36:04.558  1801 14007 D PowerUI : can't show warning due to - plugged: true status unknown: false\r\n08-20 04:36:08.642  1367  1972 I chatty  : "
+  },
+  {
+   "id": 677427199,
+   "user": "tolot27",
+   "created_at": "2020-08-20T07:34:50Z",
+   "body": "This issue is related to #1280 and #1341.\r\n\r\nPlease can you also enable verbose logging in settings >less common settings > extra tags for logging and then add there: `DailyIntentService:v,DatabaseUtil:v,UserError:v,BgReading:v`."
+  },
+  {
+   "id": 677433419,
+   "user": "nsghub",
+   "created_at": "2020-08-20T07:44:50Z",
+   "body": "Yes, seems like the same issue.\r\nExtra tags for logging are added and log storage is enabled."
+  },
+  {
+   "id": 678272452,
+   "user": "nsghub",
+   "created_at": "2020-08-21T12:47:57Z",
+   "body": "The problem occured again last night. I don't see anything interesting in the logs.\r\nThe event log starts at 02:01. Where do I find the saved xdrip logs?\r\n\r\nlogcat:\r\n\r\n_08-21 01:57:37.169  1801  9012 D PowerUI : can't show warning due to - plugged: true status unknown: false\r\n08-21 01:58:37.168  1801 13493 D PowerUI : can't show warning due to - plugged: true status unknown: false\r\n08-21 01:59:37.169  1801 13656 D PowerUI : can't show warning due to - plugged: true status unknown: false\r\n08-21 02:00:37.170  1801 13983 D PowerUI : can't show warning due to - plugged: true status unknown: false\r\n08-21 02:01:06.725  1367 18501 I chatty  : uid=1000 system_server expire 1 line\r\n08-21 02:01:07.544 18593 18593 D ActivityThread: Loading provider contacts;com.android.contacts: com.android.providers.contacts.ContactsProvider2\r\n08-21 02:01:09.043  1367  1714 I chatty  : uid=1000(system) NetworkWatchlis expire 4 lines\r\n08-21 02:01:09.053  1367  1367 I chatty  : uid=1000 system_server expire 19 lines\r\n08-21 02:01:09.111 16350 18787 D DownloadManager: Removed 0 stale downloads\r\n08-21 02:01:09.231 16350 18787 D DownloadManager: Found 7 files in database\r\n08-21 02:01:09.231 16350 18787 D DownloadManager: Found 0 files on disk\r\n08-21 02:01:09.324  1367  1458 I chatty  : uid=1000(system) ActivityManager expire 14 lines\r\n08-21 02:01:09.626  1367  1730 I chatty  : uid=1000(system) ConnectivitySer expire 11 lines\r\n08-21 02:01:13.223  1367 19029 I chatty  : uid=1000(system) Binder:19010_2 expire 2 lines\r\n08-21 02:01:14.468  1367  4023 I chatty  : uid=1000(system) Binder:1367_1F expire 14 lines\r\n08-21 02:01:14.472  1367  4025 I chatty  : uid=1000(system) Binder:1367_20 expire 14 lines\r\n08-21 02:01:37.160  1801 14007 D PowerUI : can't show warning due to - plugged: true status unknown: false\r\n08-21 02:02:23.313  1367  1457 I chatty  : uid=1000(system) ActivityManager expire 17 lines\r\n08-21 02:02:37.170  1801 13999 D PowerUI : can't show warning due to - plugged: true status unknown: false\r"
+  },
+  {
+   "id": 678280867,
+   "user": "tolot27",
+   "created_at": "2020-08-21T13:07:23Z",
+   "body": "The extra tags for logging are only relevant for the xDrip logging, not for system log accessed by logcat. Please can you post a screenshot of the xdrip log? "
+  },
+  {
+   "id": 678535107,
+   "user": "nsghub",
+   "created_at": "2020-08-21T22:02:57Z",
+   "body": "I know ;) That's why I thought that xdrip stores a text file somewhere.\r\n\r\n![Screenshot_20200822-000037](https://user-images.githubusercontent.com/39347827/90939005-d0140400-e40a-11ea-97c2-dafabd32ef94.png)\r\n"
+  },
+  {
+   "id": 678746104,
+   "user": "nsghub",
+   "created_at": "2020-08-23T08:32:36Z",
+   "body": "The last two nights xdrip was running as expected without issues.\r\n"
+  },
+  {
+   "id": 678763268,
+   "user": "tolot27",
+   "created_at": "2020-08-23T11:36:53Z",
+   "body": "> I know ;) That's why I thought that xdrip stores a text file somewhere.\r\n> \r\n> ![Screenshot_20200822-000037](https://user-images.githubusercontent.com/39347827/90939005-d0140400-e40a-11ea-97c2-dafabd32ef94.png)\r\n\r\nPlease can yo go back in the log and send a new screenshot? The problem occours before 02:01."
+  },
+  {
+   "id": 678765988,
+   "user": "nsghub",
+   "created_at": "2020-08-23T12:05:36Z",
+   "body": "Unfortunately not. That is the bottom of the log.\r\nIs there really no log file on the disk? Or is it stored in the sqlite DB?"
+  },
+  {
+   "id": 723288504,
+   "user": "tolot27",
+   "created_at": "2020-11-06T20:36:41Z",
+   "body": "> Is there really no log file on the disk? Or is it stored in the sqlite DB?\r\n\r\nNo log file on the disk, only the table `UserErrors` in the exported SQLite DB.\r\n\r\nDid the error occured again?"
+  },
+  {
+   "id": 723289769,
+   "user": "tolot27",
+   "created_at": "2020-11-06T20:40:01Z",
+   "body": "Closing it in favour of #1280. Please continue there."
+  }
+ ]
+}

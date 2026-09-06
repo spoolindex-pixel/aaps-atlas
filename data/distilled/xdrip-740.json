@@ -1,0 +1,21 @@
+{
+ "issue_id": 740,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/740",
+ "title": "When phone in Airport mode with bluetooth enabled miaomiao connectivity is very unstable",
+ "symptom": "When the phone is in airplane mode with Bluetooth enabled, xDrip+ consistently fails to read the miaomiao. It will only work if you refresh via Bluetooth scan and leave the app in the foreground. Disabling airplane mode resolves the connectivity problem.",
+ "cause": "xDrip+ has built-in logic that checks if airplane mode is enabled and may not operate properly when airplane mode is on, even if Bluetooth is manually enabled.",
+ "fix": "Use an ADB command to change the airplane_mode_radios setting so that airplane mode does not affect Bluetooth. The suggested command is: settings put global airplane_mode_radios cell,wimax. Additionally, ensure that after a reboot, you are not in airplane mode initially; enter airplane mode after being on cell, with Bluetooth still enabled.",
+ "settings_changed": [
+  "airplane_mode_radios → cell,wimax"
+ ],
+ "devices": [
+  "miaomiao"
+ ],
+ "android_versions": [
+  "Android 8"
+ ],
+ "driver_tags": [],
+ "confidence": "medium",
+ "evidence_quote": "on my device I did an ADB session and used a couple of commands to make it so airplane mode doesn't affect bluetooth or wifi. This makes it so xdrip+ runs just fine while in airplane mode."
+}

@@ -1,0 +1,69 @@
+{
+ "id": 2864303577,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3840,
+ "title": "Move 3.3.1.3-dev version display from overview",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3840",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-02-19T20:09:37Z",
+ "closed_at": "2025-02-23T14:04:03Z",
+ "comment_count": 9,
+ "body": "**AndroidAPS 3.3.1.3-dev**\n**Commit**: [e89704e](https://github.com/nightscout/AndroidAPS/commit/e89704eb7e54745fdce219d78fbdc1063217f2d6)\n\nShowing version on overview only clutters the already busy screen.\nOverview is about AAPS state (dynamic), version is static and already (in more detail) available on the About screen.\n\nI vote for undoing [Commit e89704e](https://github.com/nightscout/AndroidAPS/commit/e89704eb7e54745fdce219d78fbdc1063217f2d6)\nand look for alternative ways?\n\n**Proposed alternative solution:**\nI get the intension of the original commit was to make version viewable on screenshots for better user support.\nThis could be done by moving \"About\" to an additional \"About\" button at the upper right-top of overview. Half the size, to the right of the \"Temp target\" button? It can show current version as the buttons label and make \"about\" more accessible.\n\n![Image](https://github.com/user-attachments/assets/63fdc33d-5d42-44b3-b633-5523bc360adf)\n\n",
+ "comments": [
+  {
+   "id": 2670118567,
+   "user": "vanelsberg",
+   "created_at": "2025-02-20T00:54:35Z",
+   "body": "(Open for discussion)"
+  },
+  {
+   "id": 2672944048,
+   "user": "olorinmaia",
+   "created_at": "2025-02-20T23:31:38Z",
+   "body": "I think it should only show, if app version is not the latest master version. It would then encourage users to update to latest master, and it will be easier for us giving support to know what version they are on. If we don't see a version there, we will know it's the latest master.\n\nFor older versions than 3.3 it's easy to distinguish as the overview graph buttons have changed.\n\nElse I'd vote to revert it as well. I can't think of a place this should be showing all of the time in overview."
+  },
+  {
+   "id": 2673886236,
+   "user": "robertrub",
+   "created_at": "2025-02-21T08:23:58Z",
+   "body": "Yes, _show only if old_ is a very good idea. It would be nice to tap on the version information in order to get the latest available.\n\nie a text _v3.2.0.4_ on graph (or button...) you tap on it and a window opens with\n```\nYour version : 3.2.0.4\nAvailable version : 3.3.1.3\n```"
+  },
+  {
+   "id": 2674710750,
+   "user": "vanelsberg",
+   "created_at": "2025-02-21T14:33:23Z",
+   "body": "@olorinmaia @robertrub \n\nYes, agree.\nWould favor showing only if old.\n"
+  },
+  {
+   "id": 2675549171,
+   "user": "olorinmaia",
+   "created_at": "2025-02-21T21:10:52Z",
+   "body": "See 86c56831 - Big improvement in my eyes\n\nFrom my test-rig:\n\n![Image](https://github.com/user-attachments/assets/5d14b5af-a89b-4aba-8343-0333cff9dfd0)"
+  },
+  {
+   "id": 2675862027,
+   "user": "vanelsberg",
+   "created_at": "2025-02-22T00:17:10Z",
+   "body": "@MilosKozak [86c56831](https://github.com/nightscout/AndroidAPS/commit/86c56831f85c239acdc09cc239981bea48ad973a) is a lot better. For me, solution accepted!\n"
+  },
+  {
+   "id": 2676362017,
+   "user": "robertrub",
+   "created_at": "2025-02-22T19:26:26Z",
+   "body": "@MilosKozak I find the new position ok but the color is way too agressive.  Why red, the alert color ? It is the last dev, so I'm not \"late\".\n\nIt should be either gray or green (as long as I have a recent version).\n\n![Screenshot_20250222_202058_AAPS.jpg](https://github.com/user-attachments/assets/cb27b586-af38-4d0d-be2a-c45ba190d387)\n\n"
+  },
+  {
+   "id": 2676367482,
+   "user": "MilosKozak",
+   "created_at": "2025-02-22T19:43:26Z",
+   "body": "Red is only with uncommitted changes"
+  },
+  {
+   "id": 2676399075,
+   "user": "robertrub",
+   "created_at": "2025-02-22T21:12:31Z",
+   "body": "Ok. I had changed the profile % limits to 30% and 150% for the automations. That's probably the reason for the \"uncommitted\" code.\nI'll try to reset them back to \"normal\" as I don't use them anymore (testing AutoISF for the moment)."
+  }
+ ]
+}

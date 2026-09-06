@@ -19,6 +19,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 DOCS = ROOT / "data" / "docs"
 THREADS = ROOT / "data" / "threads"
+DISTILLED = ROOT / "data" / "distilled"
 SITE = ROOT / "site"
 MIN_DOCS = 6
 MIN_THREADS = 45
@@ -63,6 +64,34 @@ def parse_thread(path: Path) -> dict:
             "comment_count": data.get("comment_count", len(comments)),
             "comments": [{"user": c.get("user", ""), "created_at": c.get("created_at", ""),
                           "body": c.get("body", "")} for c in comments],
+            "text": text}
+
+
+def parse_distilled(path: Path) -> dict:
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        raise ValueError(f"corrupt distilled json {path.name}: {exc}") from exc
+    assert data.get("url"), f"distilled {path.name} missing url"
+    assert data.get("issue_id"), f"distilled {path.name} missing issue_id"
+    tags = list(data.get("devices") or []) + list(data.get("android_versions") or [])
+    text = " ".join([str(data.get("title", "")),
+                     str(data.get("symptom", "") or ""),
+                     str(data.get("cause", "") or ""),
+                     str(data.get("fix", "") or ""),
+                     " ".join(tags),
+                     " ".join(data.get("driver_tags") or []),
+                     str(data.get("evidence_quote", "") or "")])
+    return {"id": f"distilled:{path.stem}", "type": "distilled",
+            "issue_id": data.get("issue_id"),
+            "repo": data.get("repo", ""), "number": data.get("issue_id"),
+            "title": data.get("title", ""), "html_url": data.get("url", ""),
+            "url": data.get("url", ""), "confidence": data.get("confidence", ""),
+            "symptom": data.get("symptom"), "cause": data.get("cause"),
+            "fix": data.get("fix"), "settings_changed": data.get("settings_changed") or [],
+            "devices": data.get("devices") or [], "android_versions": data.get("android_versions") or [],
+            "driver_tags": data.get("driver_tags") or [],
+            "evidence_quote": data.get("evidence_quote", ""),
             "text": text}
 
 
@@ -150,6 +179,9 @@ def main() -> int:
     thread_recs = sorted(
         (parse_thread(p) for p in THREADS.glob("*.json") if p.name != "manifest.json"),
         key=lambda t: t["id"])
+    distilled_recs = sorted(
+        (parse_distilled(p) for p in DISTILLED.glob("*.json") if p.name != "state.json"),
+        key=lambda d: d["id"])
     for rec in doc_recs:
         assert rec["source_url"], f"doc {rec['id']} missing source URL (first line)"
     for rec in thread_recs:
@@ -159,8 +191,9 @@ def main() -> int:
         print(f"WARN empty thread records: {missing}")
 
     payload = {"meta": {"generated": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-                        "counts": {"docs": len(doc_recs), "threads": len(thread_recs)}},
-               "docs": doc_recs, "threads": thread_recs}
+                        "counts": {"docs": len(doc_recs), "threads": len(thread_recs),
+                                   "distilled": len(distilled_recs)}},
+               "docs": doc_recs, "threads": thread_recs, "distilled": distilled_recs}
     SITE.mkdir(exist_ok=True)
     (SITE / "search-index.json").write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
     js = f"window.__AAPS_INDEX__ = {json.dumps(payload, ensure_ascii=False)};\n"
@@ -171,7 +204,7 @@ def main() -> int:
 
     size = (SITE / "search-index.json").stat().st_size
     ok = len(doc_recs) >= MIN_DOCS and len(thread_recs) >= MIN_THREADS
-    print(f"docs={len(doc_recs)} threads={len(thread_recs)} "
+    print(f"docs={len(doc_recs)} threads={len(thread_recs)} distilled={len(distilled_recs)} "
           f"index={size / 1024:.0f}KiB -> site/search-index.json {'OK' if ok else 'TOO SMALL'}")
     if not ok:
         print(f"need >= {MIN_DOCS} docs and >= {MIN_THREADS} threads")

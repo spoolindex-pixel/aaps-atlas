@@ -1,0 +1,54 @@
+{
+ "id": 944774789,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1781,
+ "title": "RuntimeException: Cannot find preference screen within search result",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1781",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "settings"
+ ],
+ "created_at": "2021-07-14T20:31:48Z",
+ "closed_at": "2022-05-11T15:14:23Z",
+ "comment_count": 6,
+ "body": "Searching the settings for \"back-fill\" and clicking on the top-most hit \"Back-fill data Tap to send historical data to Nightscout\" (if English is the UI language) results in a `java.lang.RuntimeException: Cannot find preference screen within search result`.\r\n\r\nThe log shows:\r\n```\r\njamorham PREFS\r\nGot error trying to highlight search results:\r\njava.lang.RuntimeException: Cannot find preference screen\r\nwithin search result\r\n```\r\n\r\nAny version of xDrip is affected.",
+ "comments": [
+  {
+   "id": 880222781,
+   "user": "tolot27",
+   "created_at": "2021-07-14T21:28:51Z",
+   "body": "I've traced the bug down to the library `search-preference.aar`. This library is self-compiled from repository [ByteHamster/SearchPreference](https://github.com/ByteHamster/SearchPreference) and there are many never versions available. Unfortunately, non of these versions work with xDrip. It looks like `search-preference.aar` was cloned and modified around version [v1.2.6](https://github.com/ByteHamster/SearchPreference/releases/tag/v1.2.6).\r\n\r\n@jamorham Do you know who modified the original library?"
+  },
+  {
+   "id": 880233391,
+   "user": "tolot27",
+   "created_at": "2021-07-14T21:50:14Z",
+   "body": "I've found [Adapted for using in PreferenceActivity Context](https://github.com/CrazyXacker/SearchPreference/commit/d8f0558b68a23b14f81d97971a09b5fd3a7347f9) but this commit introduces some other changes and it will not introduce `SearchConfiguration.getKeysList()`."
+  },
+  {
+   "id": 1122267376,
+   "user": "jamorham",
+   "created_at": "2022-05-10T11:29:52Z",
+   "body": "This is easy to resolve see: https://github.com/NightscoutFoundation/xDrip/commit/87ac6fc1f57ac40d89f79fa77a6daa13e8379074"
+  },
+  {
+   "id": 1122747429,
+   "user": "Lupum1001",
+   "created_at": "2022-05-10T18:48:45Z",
+   "body": "Opened another pull request with more fixes.\r\nhttps://github.com/NightscoutFoundation/xDrip/pull/2114\r\n\r\nIs there a way to screen for this issue automatically, either by linting the xml or writing unit tests?"
+  },
+  {
+   "id": 1122859175,
+   "user": "Lupum1001",
+   "created_at": "2022-05-10T21:05:38Z",
+   "body": "https://github.com/NightscoutFoundation/xDrip/pull/2114#issuecomment-1122833173\r\nhttps://github.com/NightscoutFoundation/xDrip/pull/2114#issuecomment-1122837054\r\nSorry about the relocation @tolot27; I just have a preference for discussing further fixes in the context of the issue instead of the individual pull request if that's ok.\r\n\r\n> This will also find root nodes of `PreferenceScreen`. I don't know whether they need an `android:key` attribute or not.\r\n\r\nTo my knowledge anything of the type Preference, or its subclasses will need the `android:key` defined. There's at least one exception which is **PreferenceCategory**, but PreferenceGroup may be another.\r\nhttps://developer.android.com/reference/android/preference/Preference"
+  },
+  {
+   "id": 1123197602,
+   "user": "tolot27",
+   "created_at": "2022-05-11T05:20:28Z",
+   "body": "> Sorry about the relocation @tolot27; I just have a preference for discussing further fixes in the context of the issue instead of the individual pull request if that's ok.\r\n\r\nI try to keep the developer related discussions separated from the user-relevant discussions to not \"pollute\" the issues. But this issue is more like a dev issue. Hence, I'm fine with it.\r\n\r\n> > This will also find root nodes of `PreferenceScreen`. I don't know whether they need an `android:key` attribute or not.\r\n\r\n> To my knowledge anything of the type Preference, or its subclasses will need the android:key defined.\r\n\r\nThe docs do not state that the `android:key` attribute is required. If it is really required, we have to add it to the root nodes, too.\r\n\r\n[Android Developers > Docs > Reference](https://developer.android.com/reference) states: \r\n\r\n\"This class contains a key that will be used as the key into the [SharedPreferences](https://developer.android.com/reference/android/content/SharedPreferences). It is up to the subclass to decide how to store the value.\"\r\n\r\nWe have to verify if the addition of the missing `android:key` attribute changes the storage of the preferences and introduces incompatibilities during import."
+  }
+ ]
+}

@@ -1,0 +1,115 @@
+{
+ "id": 748071777,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1519,
+ "title": "FEATURE: Multiple Carbs profiles and other food ingredients",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1519",
+ "state": "closed",
+ "labels": [
+  "enhancement",
+  "algorithmics",
+  "carbs"
+ ],
+ "created_at": "2020-11-21T18:19:17Z",
+ "closed_at": "2023-08-14T22:02:07Z",
+ "comment_count": 16,
+ "body": "as follow up discussion point from #1388 i will start implementing a feature to register multiple types of carbs, fats and protein (based on the food database available on a nightscout server).\r\nStarting with carbs and their GI / GL and continuative with fats and protein a prediction on their influence on BG will get possible and even more precise than before. @ANDREAPIPPI provided a very comprehensive collection of food ingredients.\r\n\r\nBUT a general condition is the usage of the food entries to be defined in nightscout server. The main reason for that is, i need a food database, nightscout server still has a feature like this and it is easily usable for me. In future times we can also try to use other databases like tidepool. So i will try to create a nightscout-independent data model with reusable interfaces for integrations to come",
+ "comments": [
+  {
+   "id": 731639707,
+   "user": "tolot27",
+   "created_at": "2020-11-21T21:30:58Z",
+   "body": "Looks quite useful.\r\nBut do we really need a food database? IMHO, the carbs/fats and proteins of the food intake can be binned into *n* categories with respect to GI/GL. It is maybe enough for the user to choose one of the GI/GL categories to get better prediction values.\r\nAll users I know of don't have time to or just don't select their food from a database during input. They just enter the amount of carbs they eat. Hence, it would be a great improvement to just enhance the existing input with GI/GL categories and the amount of fat/proteins. For experts, an enhanced model w/o a database could be provided."
+  },
+  {
+   "id": 731663091,
+   "user": "gapolv",
+   "created_at": "2020-11-22T01:36:15Z",
+   "body": "Hi gruoner,\r\n\r\nThanks for your attention on this topic.\r\nI can tell you a little bit from personal experience, and then some links with graphic illustration of it.\r\nIn case of proten, I normally count from 40% to 60% (higher % if not counting fats) of it \"as CHO\", the glucose spike occurs between 2h-3h after eating.\r\nFor fats, from 30% to 0% of it \"as CHO\", if fat amount is higher than 30g in the meal, then 30% of it will be considered \"as CHO\", the glucose spike will happen 4h-6h after meal (higher amounts of fat will generate longer glucose impacts).\r\n\r\nHere you go with some material:\r\n\r\nText discussion: https://www.waltzingthedragon.ca/diabetes/nutrition-exercise/how-fat-and-protein-affect-blood-glucose/\r\nGood graphic, it says insulin, but it's a good representation (fat glucose impact seems high in T1D though): https://www.virtahealth.com/blog/top-keto-mistakes\r\nAnother visual representation: https://www.tandemdiabetes.com/blog/post/general/2018/01/04/carb-counting-1-food-and-blood-glucose\r\nhttps://wa.kaiserpermanente.org/healthAndWellness/index.jhtml?item=%2Fcommon%2FhealthAndWellness%2Fconditions%2Fdiabetes%2FfoodRates.html\r\nhttps://www.diabetes-support.org.uk/info/?page_id=438\r\nPlease let me know if can I support this discussion/development in any other way, I would be glad to participate.\r\n\r\nAdditionally, also agree with @tolot27 comments.\r\n\r\nThanks again,\r\nGabriel"
+  },
+  {
+   "id": 731787149,
+   "user": "gruoner",
+   "created_at": "2020-11-22T18:05:44Z",
+   "body": "Hi tolot27, Gabriel\r\n\"food database\" is a very heavy word. When i though about multiple carbs initially, i had a model like yours in mind.\r\nThis model would be quite enough to predict carbs influence on BG. But i had a test and this more precise estimation on carbs activity doesn't even gave me reasons for heavy BG changes 4 till 8 hour after meal. After a discussion with our diabetologist we had to accept we need to model fats and protein as well to meet our goals......\r\n\r\nSo we analyzed our meals and realized most of our food follows just a few pattern; variance is just a matter of scaling or slightly different composition. So we will need two kinds of interfaces for registering meals - one for \"quick and imprecise\" and one for \"comprehensive and precise\". The first one seems to be something you had in mind and it will be a copy of multi insulin just for carbs. The other one will be something i have in mind, leading us to a \"food database\".\r\n\r\nMy first step will be the extension of the current carbs registration dialog with three different GI/GL (as definable by nightscout server). The second step will be a dedicated food registration dialog with download of food entries from nightscout.....\r\n\r\ncheers"
+  },
+  {
+   "id": 731855027,
+   "user": "tolot27",
+   "created_at": "2020-11-22T22:08:58Z",
+   "body": "@gruoner Okay, great. Go ahead! 😄"
+  },
+  {
+   "id": 734791371,
+   "user": "simonpickering",
+   "created_at": "2020-11-27T11:33:36Z",
+   "body": "I'm for this, it would be interesting to record the data and see if it produces better predictions (I have a my own system of recording data electronically, which I've been doing for years, so I plan to throw that + my exported XDrip data together and see what I can pull out of the murk!)\r\n\r\nSo are you suggesting feeding data into XDrip from Nightscout (and elsewhere) by updating the web API? That seems to be a useful thing to add, as it would also let people develop their own food entry systems, menu planning, etc., and to have them interact with XDrip (and equally some of the big players might also add an export option if we're lucky).\r\n\r\nMy feeling is that avoiding integrating the food database system in XDrip would make life easier. If this is hosted in an external app which can send data to XDrip that would provide lots of options for customisation and reduce the internal changes needed for XDrip. I realise at least a minor change would be needed for the XDrip input system to specify the GI/GL of directly entered foods (or carb:protein:fat mix).\r\n\r\nThe other change is to the \"business logic\" and whether it bins GI/GL and has specific absorption data for each of those (which I think is what you were saying above with 3 bins available in Nightscout - I've never used it I'm afraid?), or whether it uses the GI/GL (and/or carb:fat:protein ratios) directly to calculate an absorption rate curve. It would be nice to let the end user select from a list of \"business logic\" options would give people options to experiment with new algorithms and hopefully avoid arguments about what should and shouldn't be supported :)"
+  },
+  {
+   "id": 894662915,
+   "user": "Navid200",
+   "created_at": "2021-08-07T14:37:48Z",
+   "body": "We need to be careful how much we customize (complicate) xDrip.\r\nxDrip is a CGM.  But, over the years, it has become a lot more, simulator, heart beat monitor, driver assistant, smartwatch driver ....\r\n\r\nI personally take vitamin D.  It affects my blood glucose.  Should I add that to xDrip also?\r\nI hike in wilderness and continuously use a GPS on my phone to find my way and xDrip to keep my glucose under control.  I would love to have the ability to see my glucose inside the GPS app.  But, the GPS app is not on github; xDrip is.  Should I modify xDrip to include a GPS function?  It would serve me really well.\r\n\r\nOf course, those are hypothetical questions.  I don't believe xDrip should become a GPS.  There are apps that do that job.\r\n\r\nI suggest we solve xDrip bugs and add capabilities that are required for xDrip to be a competitive CGM.  Nothing more, nothing less."
+  },
+  {
+   "id": 894694878,
+   "user": "simonpickering",
+   "created_at": "2021-08-07T19:07:20Z",
+   "body": "I completely agree. It would therefore make quite a lot of sense to split out the prediction and graphing capabilities of XDrip+ into a separate app which communicates with the now solely CGM part via e.g. the webserver. This would let people replace the prediction and display part of the app with their own version if they see fit (or ideally extend).\r\n\r\nMy feeling is that the prediction side of things should be (able to be) combined with 3rd party meal planning apps and the like (so you can see what happened last time you ate this with similar conditions, etc. and/or can play with how different food constituents affect predictions. \r\n\r\nI guess the best bet there (in order to avoid monolithic apps) is to host the prediction capabilities in their own app/service, which can be extended to try out different models and called by meal planner apps as well as direct prediction apps (which may be provided by XDrip+ still).\r\n\r\nAll talk from me for the time being I'm afraid, but will attempt to get the ball rolling over the holidays as the above suits my requirements at least (but lots of code to write! :))\r\n"
+  },
+  {
+   "id": 894706983,
+   "user": "gruoner",
+   "created_at": "2021-08-07T21:06:44Z",
+   "body": "@Navid200 & @simonpickering \r\ni must completely disagree. From my point of view, xdrip+ is a kind of frontend for nightscout (and of course some other diab (eco)systems). for me its a diabetic diary, where all therapy-related actions, measurements, events,.... are registered - so even eaten food, heart rates, (maybe GPS positions), sporting lectures and \"brain lectures\",.....\r\nmy diabetic system consists of a xdrip+ (as frontend for CGM, food-registry, heartbeat, GPS-positions), a nightscout server (as backend), nightscout-reporter (to get PDF-reports for the doctor) and a big neural net (to adopt lots of variables for improving prediction) - AND just prediction is what is all about. The main reason for registering all those events and actions, measurements,... is PREDICTION. When u \"know\" how u'r body (in the end u'r BG) reacts on an injection or a piece of food at a given time (and the most influencing factors are also \"known\"), u \"know\" the action to get u'r BG in target range (inject a dose, eat some snacks or just relax in the sun)....\r\nBUT most of the users don't run a dedicated nightscout server and all the other stuff to source all functionality away from \"frontend-services\" - they want their prediction, injection suggestions for basal and bolus and even injection calculation when used in a closed-loop scenario \"onside\". Most of them want a simple app to get \"all\" their needs reflected.\r\nSo whenever u want to fragment nightscout/xdrip+/reporting-engines (like nightscout-reporter) into other pieces, u must keep the big picture in mind - but there isn't any written - and u have to keep interfaces simple and their amount small.\r\n\r\nIn the end, we will need @jamorham here..... **we have to listen to the system architect of xdrip+** and the big question is:\r\nwhat's the purpose / aim of xdrip+ in a nightscout ecosystem? Keep in mind, there are also other \"frontend apps\" e.g. spike for ios and nightscout webapp and they also need a place in this ecosystem......\r\n"
+  },
+  {
+   "id": 894710945,
+   "user": "Navid200",
+   "created_at": "2021-08-07T21:56:30Z",
+   "body": "I agree that since we are in jamorham's repository, at the end, what happens here is his decision.\r\n\r\nAnything I have said, and do say, is only my opinion.  \r\nxDrip users are many.  There is a large group of xDrip users who use it just because its alerts are customizable, and it runs on their handset compared to the official app that has very limited alert capabilities and only runs on a small number of devices. This group are parents of kids who have been diagnosed and need the easiest way to do the best they can to control the kid's diabetes while putting bread on the table and trying to survive the remaining challenges life throws at them.  They are not looking for anything that is too complicated.\r\nThey are struggling to keep the A1C below 7, while you and I are below 5.5.  Kids don't have that luxury.  Their bodies change on a regular basis.  \r\n\r\nEveryday, there is a post on facebook asking why the sensor is not starting.  I look at the details and see that either the xDrip settings are wrong or the transmitter has run the number of days or the battery is too low, ...\r\nThis group is not interested in making xDrip any more complicated than it already is.  They already struggle with xDrip as is.\r\nI am doing my best to help them.  https://github.com/Navid200/xDrip/wiki\r\n\r\nThere is no end to how sophisticated you can make xDrip.  And I have no doubt many will support that.\r\nFortunately, so far, jamorham has picked a very nice balance.  To this day, xDrip has remained competitive yet useful to regular users.  \r\nAs long as he maintains that balance, I will happily support him.\r\n\r\nI'm all for development.  But, there has to be a balance."
+  },
+  {
+   "id": 894715376,
+   "user": "ANDREAPIPPI",
+   "created_at": "2021-08-07T22:53:31Z",
+   "body": "Hi.\r\nI agree with both of you, and I'll explain you why, obviously.\r\nNavid200 is right when he says that many people are just satisfied with a minimal use of xDrip+ as actually is, because other possibilities are too  time-consuming or difficult/complicated to be used by them.\r\nGruoner on his side tells that he uses xDrip  at its maximum level, and moreover he would like to rise this even more, and many people think in the same way, may be 30-70?\r\nSo why to compell this 30% of xDrip users to miss things that could be improved and brought to a higher level of usedfullness?\r\nI'm not a programmer, but I know that this matter is very complicated and easily brings to mistakes, but if there is any technical possibility to do it, there for usre is a way to solve this real duality of users .\r\nE.g., there are procedures and parameters that are under the Voice \"experimental\", so what would be the problem to add there the variations we are requesting? \r\nSomething not easily accessible, and chearly labeled as \"just if you want to try it, on your risk and danger\", and allow people like Gruoner (and me, BTW) to experiment higher levels of diabetes control?\r\nJust a thought, obviously. Andrea"
+  },
+  {
+   "id": 894780315,
+   "user": "simonpickering",
+   "created_at": "2021-08-08T11:04:04Z",
+   "body": "It's interesting that there are a range of different usecases, and I agree that one shouldn't foist unwanted complexity on those who are happy, nor turn the app into a proverbial swiss army knife and that it's @jamorham's app so s/he has the deciding vote. \r\n\r\nI still feel there is something that could be done for those who want to play with different prediction models though (whether you want to track vitamin D, or protein and fat and throw exercise into the mix) and I think it would be worth some discussion to understand what usecases people have and how to best make this work (e.g. perhaps by accepting prediction curves from outside the app). \r\n\r\nI'm certainly interested to learn about your neural net @gruoner (and indeed other people's usecases and desires) - I've started messing about with models in MATLAB, mainly as my insulin sensitivity changes quite drastically depending on how long it's been since I had a big bike ride (and in the post-ride phase) as well as due to fat/protein. I'd like the prediction curve to work acceptably/better, as currently it's not even close to where I'll end up even taking exercise out of the mix (I generally don't need the momentum part to be in there, except when I do sometimes, like on lazy Sundays!).\r\n\r\nThis is probably not the best place to discuss either, perhaps @Navid200's Discussion thread would be a better location to save cluttering up the Issues register here? "
+  },
+  {
+   "id": 895012882,
+   "user": "szantos",
+   "created_at": "2021-08-09T07:33:55Z",
+   "body": "The aprroach of AndroidAPS - with its config builder - is quite good. Advanced features can be turned on, if you need them, they all have their own tabs and settings.\r\n\r\nI totally agree, that advanced considerations (food,sensitivity,etc.) should be implemented in the diabetes management ecosystem, but not necessarily in xDrip - the developers should decide."
+  },
+  {
+   "id": 895127114,
+   "user": "Navid200",
+   "created_at": "2021-08-09T10:53:33Z",
+   "body": ">This is probably not the best place to discuss either, perhaps @Navid200's Discussion thread would be a better location to save cluttering up the Issues register here?\r\n\r\nI am trying to get that (discussions) indexed by Google.  It is not right now.  Because of that shortcoming, I am not promoting the discussions too much.  Otherwise, it would have been perfect for this and many other discussions."
+  },
+  {
+   "id": 1375012171,
+   "user": "Navid200",
+   "created_at": "2023-01-09T01:51:42Z",
+   "body": "Discussions are now open and are also indexed by Google.  \r\nUnless there are any objections, I would like to convert this to a discussion.\r\nPlease let me know if you object."
+  },
+  {
+   "id": 1375886938,
+   "user": "ANDREAPIPPI",
+   "created_at": "2023-01-09T16:13:32Z",
+   "body": "I agree with Navid200's proposed discussion, and hope that this will finally lead us to a satisfactory solution for all xDrip+ users.  "
+  },
+  {
+   "id": 1678136023,
+   "user": "Navid200",
+   "created_at": "2023-08-14T22:01:54Z",
+   "body": "I'm converting this to a discussion."
+  }
+ ]
+}

@@ -1,0 +1,213 @@
+{
+ "id": 2052763955,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 3250,
+ "title": "Invalid G7 start time sent to AAPS",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/3250",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-12-21T16:50:49Z",
+ "closed_at": "2024-04-19T14:18:14Z",
+ "comment_count": 34,
+ "body": "### Discussed in https://github.com/NightscoutFoundation/xDrip/discussions/3249\r\n\r\n<div type='discussions-op-text'>\r\n\r\n<sup>Originally posted by **jgslade** December 21, 2023</sup>\r\nThe Classic Status Page is showing the start date of my previous sensor but the  G5/G6/G7 status page and the home screen are showing the correct sensor age.\r\n\r\n![image](https://github.com/NightscoutFoundation/xDrip/assets/29897815/4e3be447-e37f-4c3e-b756-2a80dc44eb05)\r\n\r\n![image](https://github.com/NightscoutFoundation/xDrip/assets/29897815/713bf680-d20f-42a6-8b51-9cc781a3bb9e)\r\n\r\n![image](https://github.com/NightscoutFoundation/xDrip/assets/29897815/38ebcc52-03bc-418e-b39c-74afed068881)\r\n</div>",
+ "comments": [
+  {
+   "id": 1868276662,
+   "user": "jamorham",
+   "created_at": "2023-12-23T11:45:42Z",
+   "body": "So I believe that the cause of this would be if xDrip doesn't register the sensor stopping for your previous sensor session. Do you think that could have happened? I think that when xDrip gets the last reading from your old sensor it will mark the sensor session as stopped and that will reset that timer. We might be able to put some failsafes in for this but I'm wondering if you can share whether you think that could be what happened here?"
+  },
+  {
+   "id": 1868294858,
+   "user": "Navid200",
+   "created_at": "2023-12-23T13:27:23Z",
+   "body": "@jamorham \r\nI am looking at my classic status page and see the start time is shown to have been on November 27, almost a month ago.\r\nBut, I switched to a new device 5 days ago.\r\n\r\nI waited for my previous device to stop working.  But, I never tapped on stop sensor and I don't want to do that even if it is still running.  \r\nAt that point, I changed the transmitter ID."
+  },
+  {
+   "id": 1868302659,
+   "user": "jgslade",
+   "created_at": "2023-12-23T14:12:13Z",
+   "body": "@jamorham that is likely I often don't wait till the very end of the sensor\r\nto switch to the new one. I presoak the new one for a few hours and then\r\nswitch when it's most convenient for me.\r\n\r\nOn Sat, Dec 23, 2023, 6:27 AM Navid ***@***.***> wrote:\r\n\r\n> @jamorham <https://github.com/jamorham>\r\n> I am looking at my classic status page and see the start time is shown to\r\n> have been on November 27, almost a month ago.\r\n> But, I switched to a new device 5 days ago.\r\n>\r\n> I waited for my previous device to stop working. But, I never tapped on\r\n> stop sensor and I don't want to do that even if it is still running.\r\n> At that point, I changed the transmitter ID.\r\n>\r\n> —\r\n> Reply to this email directly, view it on GitHub\r\n> <https://github.com/NightscoutFoundation/xDrip/issues/3250#issuecomment-1868294858>,\r\n> or unsubscribe\r\n> <https://github.com/notifications/unsubscribe-auth/AHEDIVYDZ2CNYGYNDRA7OHTYK3L4NAVCNFSM6AAAAABA6VVH4KVHI2DSMVQWIX3LMV43OSLTON2WKQ3PNVWWK3TUHMYTQNRYGI4TIOBVHA>\r\n> .\r\n> You are receiving this because you authored the thread.Message ID:\r\n> ***@***.***>\r\n>\r\n"
+  },
+  {
+   "id": 1870785725,
+   "user": "Navid200",
+   "created_at": "2023-12-28T03:19:43Z",
+   "body": "My sensor just reached 10.5 days and stopped working.\r\nThe status page showed sensor expired, not stopped.\r\nThe classic status page still showed a few days ago when I installed xDrip last.\r\n\r\nI then changed the transmitter ID to that of the new device that had been running for 12 hours.\r\nxDrip has connected to the new device and is showing readings from the new device.\r\nThe classic status page still shows the time from a few days ago when I reinstalled xDrip."
+  },
+  {
+   "id": 1871266398,
+   "user": "Navid200",
+   "created_at": "2023-12-28T15:17:52Z",
+   "body": "xDrip shows 3 start times for G6.  \r\n\r\n1- Transmitter activation time on G5/G6/G7 status page as \"Transmitter Days\" reported by the transmitter\r\n2- Session start time on G5/G6/G7 status page as \"Sensor Status\" reported by transmitter\r\n3- xDrip sensor start time on Classic status page as \"Sensor Start\" maintained by xDrip and not coming from the transmitter\r\n\r\n2 and 3 are not necessarily the same for G6 for example if you start the sensor with your receiver or a t:slim pump.\r\nThere have been requests to make the two match.  I'd rather we remove something than to make it redundant.  But, let's not talk about G6 anymore.\r\n\r\nWhen you use a G7, there is only one start time and that is the moment you use the applicator to insert the device.\r\n\r\nWe don't reinvent the wheel every time a new device is added to xDrip.  We use the existing code as much as possible and we gradually tweak it to cleanup any discrepancies for the new device.\r\nWe have already made changes to xDrip to make G7 notes more relevant and valid.  There are more open PRs that continue in that path that are waiting to be reviewed and hopefully merged soon.\r\n\r\nLet's see what's the best way to update the classic status page with respect to the sensor start time.\r\n\r\nIn my opinion, there is no value in maintaining the time xDrip first becomes aware of a new G7 device.  There is no way we can use a G7 in non-native mode.  So, I suggest we remove sensor start from the classic status page.\r\n\r\nThis brings me  to my question, how this relate to AAPS.\r\n\r\n@jgslade \r\nCan you show us what you see in AAPS that is the problem? "
+  },
+  {
+   "id": 1871331409,
+   "user": "jgslade",
+   "created_at": "2023-12-28T16:40:33Z",
+   "body": "The sensor age in AAPS matches the sensor age on the classic page.\r\n\r\n![Screenshot_20231228-092550](https://github.com/NightscoutFoundation/xDrip/assets/29897815/8af0b4af-732b-410d-9241-e23fc9c4677f)\r\n![Screenshot_20231228-093957](https://github.com/NightscoutFoundation/xDrip/assets/29897815/859319d4-1353-4a64-8b43-77509b0c1ef7)\r\n"
+  },
+  {
+   "id": 1871502585,
+   "user": "Navid200",
+   "created_at": "2023-12-28T21:32:28Z",
+   "body": "@jgslade \r\nWould you please use the xDrip release of November 29 and see if the same thing happens or not?\r\nThanks\r\n\r\nhttps://github.com/NightscoutFoundation/xDrip/releases/tag/2023.11.29"
+  },
+  {
+   "id": 1871515597,
+   "user": "jgslade",
+   "created_at": "2023-12-28T22:00:34Z",
+   "body": "I've installed that release, so changes yet, bit I'll be replacing my\r\nsensor tomorrow. So I'll post back what info is sent to AAPS with the new\r\nsensor.\r\n\r\nI'll be changing the sensor about 5 hours before it naturally ends.\r\n\r\nOn Thu, Dec 28, 2023, 2:32 PM Navid ***@***.***> wrote:\r\n\r\n> @jgslade <https://github.com/jgslade>\r\n> Would you please use the xDrip release of November 29 and see if the same\r\n> thing happens or not?\r\n> Thanks\r\n>\r\n> https://github.com/NightscoutFoundation/xDrip/releases/tag/2023.11.29\r\n>\r\n> —\r\n> Reply to this email directly, view it on GitHub\r\n> <https://github.com/NightscoutFoundation/xDrip/issues/3250#issuecomment-1871502585>,\r\n> or unsubscribe\r\n> <https://github.com/notifications/unsubscribe-auth/AHEDIVZST3DTUOUDK2S2Q2TYLXQPPAVCNFSM6AAAAABA6VVH4KVHI2DSMVQWIX3LMV43OSLTON2WKQ3PNVWWK3TUHMYTQNZRGUYDENJYGU>\r\n> .\r\n> You are receiving this because you were mentioned.Message ID:\r\n> ***@***.***>\r\n>\r\n"
+  },
+  {
+   "id": 1871661016,
+   "user": "Navid200",
+   "created_at": "2023-12-29T01:24:14Z",
+   "body": "No, please don't worry about that.  You can install whatever release you like. "
+  },
+  {
+   "id": 1871727411,
+   "user": "Navid200",
+   "created_at": "2023-12-29T04:53:16Z",
+   "body": "I have been told that actually version December 5 is required for this relatively new feature to work for G6.\r\nSo, I think I may be able to open a PR to fix this based on that for G7."
+  },
+  {
+   "id": 1871990200,
+   "user": "jgslade",
+   "created_at": "2023-12-29T11:52:55Z",
+   "body": "Look forward to testing\r\n\r\nOn Thu, Dec 28, 2023, 9:53 PM Navid ***@***.***> wrote:\r\n\r\n> I have been told that actually version December 5 is required for this\r\n> relatively new feature to work for G6.\r\n> So, I think I may be able to open a PR to fix this based on that for G7.\r\n>\r\n> —\r\n> Reply to this email directly, view it on GitHub\r\n> <https://github.com/NightscoutFoundation/xDrip/issues/3250#issuecomment-1871727411>,\r\n> or unsubscribe\r\n> <https://github.com/notifications/unsubscribe-auth/AHEDIV4NRGPSUA4EDUI53CLYLZEEPAVCNFSM6AAAAABA6VVH4KVHI2DSMVQWIX3LMV43OSLTON2WKQ3PNVWWK3TUHMYTQNZRG4ZDONBRGE>\r\n> .\r\n> You are receiving this because you were mentioned.Message ID:\r\n> ***@***.***>\r\n>\r\n"
+  },
+  {
+   "id": 1872607815,
+   "user": "Navid200",
+   "created_at": "2023-12-30T21:09:35Z",
+   "body": "This PR should fix the broadcast.  \r\nhttps://github.com/NightscoutFoundation/xDrip/pull/3262\r\n\r\nSo, AAPS should show the correct sensor remaining time.\r\nBut, I cannot test it because I was not able to compile AAPS."
+  },
+  {
+   "id": 1872631528,
+   "user": "jgslade",
+   "created_at": "2023-12-31T00:10:13Z",
+   "body": "When I get a chance to get to my computer I'll try and build with that PR to see if it works."
+  },
+  {
+   "id": 1872659071,
+   "user": "jgslade",
+   "created_at": "2023-12-31T03:24:17Z",
+   "body": "I've not built xDrip before and my first attempt didn't go well. I might be able to work on this a bit more tomorrow.\r\n\r\n```\r\n* Exception is:\r\norg.gradle.api.ProjectConfigurationException: A problem occurred configuring root project 'xDrip'.\r\n\tat org.gradle.configuration.project.LifecycleProjectEvaluator.wrapException(LifecycleProjectEvaluator.java:84)\r\n\tat org.gradle.configuration.project.LifecycleProjectEvaluator.addConfigurationFailure(LifecycleProjectEvaluator.java:77)\r\n\tat org.gradle.configuration.project.LifecycleProjectEvaluator.access$400(LifecycleProjectEvaluator.java:55)\r\n\tat org.gradle.configuration.project.LifecycleProjectEvaluator$EvaluateProject.lambda$run$0(LifecycleProjectEvaluator.java:111)\r\n\tat org.gradle.api.internal.project.DefaultProjectStateRegistry$ProjectStateImpl.lambda$applyToMutableState$0(DefaultProjectStateRegistry.java:351)\r\n\tat org.gradle.api.internal.project.DefaultProjectStateRegistry$ProjectStateImpl.lambda$fromMutableState$1(DefaultProjectStateRegistry.java:374)\r\n\tat org.gradle.internal.work.DefaultWorkerLeaseService.withReplacedLocks(DefaultWorkerLeaseService.java:345)\r\n\tat org.gradle.api.internal.project.DefaultProjectStateRegistry$ProjectStateImpl.fromMutableState(DefaultProjectStateRegistry.java:374)\r\n\tat org.gradle.api.internal.project.DefaultProjectStateRegistry$ProjectStateImpl.applyToMutableState(DefaultProjectStateRegistry.java:350)\r\n\tat org.gradle.configuration.project.LifecycleProjectEvaluator$EvaluateProject.run(LifecycleProjectEvaluator.java:100)\r\n\tat org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:29)\r\n\tat org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:26)\r\n\tat org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)\r\n\tat org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)\r\n\tat org.gradle.internal.operations.D"
+  },
+  {
+   "id": 1872660642,
+   "user": "Navid200",
+   "created_at": "2023-12-31T03:36:32Z",
+   "body": "https://github.com/NightscoutFoundation/xDrip/blob/master/Documentation/Quick_Start.md"
+  },
+  {
+   "id": 1873416341,
+   "user": "jgslade",
+   "created_at": "2024-01-01T17:46:27Z",
+   "body": "> https://github.com/NightscoutFoundation/xDrip/blob/master/Documentation/Quick_Start.md\r\n\r\nAndroid Studio is on hedgehog on my system, and I'm not finding a download for giraffe."
+  },
+  {
+   "id": 1873417415,
+   "user": "Navid200",
+   "created_at": "2024-01-01T17:49:55Z",
+   "body": "I have another PR, which I believe is a better solution:\r\nhttps://github.com/NightscoutFoundation/xDrip/pull/3263\r\n\r\nFor Android Studio, see: https://developer.android.com/studio/archive"
+  },
+  {
+   "id": 1873419827,
+   "user": "jgslade",
+   "created_at": "2024-01-01T17:57:47Z",
+   "body": "Installing Giraffe now"
+  },
+  {
+   "id": 1873422834,
+   "user": "jgslade",
+   "created_at": "2024-01-01T18:06:27Z",
+   "body": "Which build option should I use? For AAPS I use the generate signed Bundle/APK, do I do the same thing with xDrip?"
+  },
+  {
+   "id": 1873423606,
+   "user": "Navid200",
+   "created_at": "2024-01-01T18:08:40Z",
+   "body": "That's what I do.  But, please note that you will not be able to install it over the official release.  You will either need to use a test phone, or uninstall before installing.  If you uninstall, you will lose all your xDrip history and settings.  So, please plan this carefully."
+  },
+  {
+   "id": 1873426777,
+   "user": "jgslade",
+   "created_at": "2024-01-01T18:18:30Z",
+   "body": "Can I save the settings to a settings file then load from the settings file?\r\n\r\nIt looks like it successfully built."
+  },
+  {
+   "id": 1873428120,
+   "user": "Navid200",
+   "created_at": "2024-01-01T18:22:56Z",
+   "body": "If you are currently using the official xDrip, you can create a backup on Google Drive.  it backs up both database and settings.  https://navid200.github.io/xDrip/docs/GoogleDriveBackup.html\r\n\r\nAfter you are done with the test, you can install the official release again and restore the backup.\r\n\r\nIf you want your settings for the test, save the settings in a file and you will be able to restore after installing your version.\r\nhttps://navid200.github.io/xDrip/docs/CopySettings.html"
+  },
+  {
+   "id": 1873433613,
+   "user": "jgslade",
+   "created_at": "2024-01-01T18:39:51Z",
+   "body": "I want to go out on a limb and say it worked. I used patch 3263.\r\n\r\n![image](https://github.com/NightscoutFoundation/xDrip/assets/29897815/ba3f3bbc-8465-4100-b353-66bb92a8f4f2)\r\n"
+  },
+  {
+   "id": 1873434155,
+   "user": "Navid200",
+   "created_at": "2024-01-01T18:41:35Z",
+   "body": "If you used 3263, the start time shown on the classic status page would be correct also.\r\n\r\nThanks for testing"
+  },
+  {
+   "id": 1873434831,
+   "user": "jgslade",
+   "created_at": "2024-01-01T18:43:47Z",
+   "body": "Yep.\r\n\r\n![image](https://github.com/NightscoutFoundation/xDrip/assets/29897815/b740a4ed-4977-4279-ba9a-7b419301147c)\r\n\r\nYou're welcome."
+  },
+  {
+   "id": 1976047993,
+   "user": "Der-Schubi",
+   "created_at": "2024-03-04T08:57:11Z",
+   "body": "@Navid200 \r\nI'm on a recent xDrip build and the start time on classic status page is currently @14 days, as I never started the new sensor but only changed the G7 tx-id. System status (second page) says OK, 4 days, which is correct.\r\nAlso AAPS got no \"sensor changed\" entry.\r\n"
+  },
+  {
+   "id": 1976548375,
+   "user": "Navid200",
+   "created_at": "2024-03-04T13:09:32Z",
+   "body": "@Der-Schubi Yes, I know.\r\nThis PR should fix it: https://github.com/NightscoutFoundation/xDrip/pull/3263"
+  },
+  {
+   "id": 1976581558,
+   "user": "Der-Schubi",
+   "created_at": "2024-03-04T13:27:36Z",
+   "body": "> @Der-Schubi Yes, I know. This PR should fix it: #3263\r\n\r\nYes, that's apparently the one I did not merge. Will try in six days."
+  },
+  {
+   "id": 1976597076,
+   "user": "Navid200",
+   "created_at": "2024-03-04T13:35:39Z",
+   "body": "You can try it now.  That PR stops caring about when you start the xDrip session.  It looks at the transmitter and updates the classic status page and what is sends to AAPS from it.  So, it will correct it even if you update to it now."
+  },
+  {
+   "id": 1976620503,
+   "user": "Der-Schubi",
+   "created_at": "2024-03-04T13:48:02Z",
+   "body": "> You can try it now.\r\n\r\nWorks, thanks!\r\n\r\n"
+  },
+  {
+   "id": 1976641096,
+   "user": "Navid200",
+   "created_at": "2024-03-04T13:58:46Z",
+   "body": "> Works, thanks!\r\n\r\nHow about AAPS?"
+  },
+  {
+   "id": 1976646080,
+   "user": "Der-Schubi",
+   "created_at": "2024-03-04T14:01:17Z",
+   "body": "> How about AAPS?\r\n\r\nHad it already right there, but the Treatments menu shows a User entry with CGM Sensor Insert.\r\nSo works as well."
+  },
+  {
+   "id": 1976650740,
+   "user": "Navid200",
+   "created_at": "2024-03-04T14:02:58Z",
+   "body": "> > How about AAPS?\r\n> \r\n> Had it already right there, but the Treatments menu shows a User entry with CGM Sensor Insert. So works as well.\r\n\r\nPlease post in the PR to mention that you have tested it with your results.   Thanks"
+  }
+ ]
+}

@@ -1,0 +1,71 @@
+{
+ "id": 831605391,
+ "repo": "nightscout/AndroidAPS",
+ "number": 418,
+ "title": "AndroidAPS restarts on bad blob of historical data from Medtronic pump",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/418",
+ "state": "closed",
+ "labels": [
+  "bug"
+ ],
+ "created_at": "2021-03-15T09:20:27Z",
+ "closed_at": "2021-03-20T14:06:48Z",
+ "comment_count": 9,
+ "body": "I am having an issue with AAPS restarting every 7-9 minutes. Judging by logs it is related to historical data incorrect date value. I've attached the log file. Issue could be found by looking up Exception.\r\n\r\n[AndroidAPS._2021-03-04_15-24-25.log.zip](https://github.com/nightscout/AndroidAPS/files/6140163/AndroidAPS._2021-03-04_15-24-25.log.zip)\r\n\r\n",
+ "comments": [
+  {
+   "id": 799257795,
+   "user": "Amunhateb",
+   "created_at": "2021-03-15T09:21:01Z",
+   "body": "@andyrozman here you go, thx for finding out the cause"
+  },
+  {
+   "id": 800912618,
+   "user": "MilosKozak",
+   "created_at": "2021-03-17T08:56:42Z",
+   "body": "https://console.firebase.google.com/project/androidaps-c34f8/crashlytics/app/android:info.nightscout.androidaps/issues/297f1f2deabd18e680a04b3f5cf33672?versions=2.8.2%20(1500)&time=last-twenty-four-hours&sessionEventKey=60517F110369000151DE4ED6E5E43AEB_1518914798545604254\r\n"
+  },
+  {
+   "id": 801078036,
+   "user": "andyrozman",
+   "created_at": "2021-03-17T13:25:53Z",
+   "body": "@Amunhateb Fix is now done in this branch, please install and test if this fixes everything... I have run it through my history decoded and all entries seem to be correct now. Please write here so that I can then do PR so that it can get released in next version. \r\nhttps://github.com/andyrozman/AndroidAPS/tree/bug418_historyFix_BolusWizardRecordProblem"
+  },
+  {
+   "id": 801483265,
+   "user": "Amunhateb",
+   "created_at": "2021-03-17T22:28:27Z",
+   "body": "@andyrozman I've tested it. Everything is good, thx."
+  },
+  {
+   "id": 801852434,
+   "user": "duzy78",
+   "created_at": "2021-03-18T11:42:22Z",
+   "body": "I am experiencing similar problem but it looks that different field is problematic (dayOfMonth)\r\n\r\n[AndroidAPS_2.8.2.1-dev-build.log](https://github.com/nightscout/AndroidAPS/files/6163704/AndroidAPS_2.8.2.1-dev-build.log)\r\n\r\nShould I log in as a separate problem or should it be fixed along with this one?\r\nThe log is from the branch with potential fix for problems with parsing historical data.\r\nIf you need more data please let me know.\r\n\r\nBelow I attached log from official build 2.8.2\r\n[AndroidAPS_2.8.2-build.log](https://github.com/nightscout/AndroidAPS/files/6163732/AndroidAPS_2.8.2-build.log)\r\n"
+  },
+  {
+   "id": 801858240,
+   "user": "andyrozman",
+   "created_at": "2021-03-18T11:47:00Z",
+   "body": "@duzy78 Create separate ticket please... While the end result seems to be the same (that date can't be parsed), this doesn't mean that there is a same base problem... \r\n\r\nAnd I need full log, not just where the end error happens... I need to see the history blob, so that I can try to decode this.. "
+  },
+  {
+   "id": 803354075,
+   "user": "andyrozman",
+   "created_at": "2021-03-20T14:06:48Z",
+   "body": "PR was opened: https://github.com/nightscout/AndroidAPS/pull/430 and merged into dev. Closing this issue."
+  },
+  {
+   "id": 803530228,
+   "user": "Amunhateb",
+   "created_at": "2021-03-21T08:13:39Z",
+   "body": "> PR was opened: #430 and merged into dev. Closing this issue.\r\n\r\nhttps://github.com/nightscout/AndroidAPS/pull/422 is the correct PR. Thanks for fixing it!"
+  },
+  {
+   "id": 819894117,
+   "user": "andyrozman",
+   "created_at": "2021-04-14T22:37:14Z",
+   "body": "@Amunhateb I have created special hotix branch that is based on master and contains all 3 medtronic fixes: https://github.com/andyrozman/AndroidAPS/tree/hotfix_mdt_2_8_2"
+  }
+ ]
+}

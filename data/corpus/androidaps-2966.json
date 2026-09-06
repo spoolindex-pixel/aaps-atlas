@@ -1,0 +1,99 @@
+{
+ "id": 1955962815,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2966,
+ "title": "[RC2] NSClientV3 FullSync only gets 2 days of TDD.",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2966",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-10-22T16:21:15Z",
+ "closed_at": "2023-10-30T12:22:57Z",
+ "comment_count": 14,
+ "body": "Fresh install of AAPS 3.2, NSClientV3, all checkboxes to 'download data from NS', made Full sync. Loaded BG data, treatments, etc, but statistics shows only 2 days of TDD. So DynISF does not work correctly right from start and needs another 5 days to fill the required tdd7 data. While it exists in NS and simply must be downloaded on full sync.\r\nHistory browser shows BG values, TT changes, notes and sensor change/cannula replacement events for these days, but not bolus/carbs treatments.\r\n\r\n![telegram-cloud-photo-size-2-5307618162767942449-y](https://github.com/nightscout/AndroidAPS/assets/4157587/88d29bc5-7bb3-4109-befe-9b290dd39df4)\r\n",
+ "comments": [
+  {
+   "id": 1775052356,
+   "user": "MilosKozak",
+   "created_at": "2023-10-23T12:09:42Z",
+   "body": "I cannot replicate this issue. I did v3 setup - clear database - restart app and after v3 finished sync, TDD data was available"
+  },
+  {
+   "id": 1775155220,
+   "user": "justmara",
+   "created_at": "2023-10-23T13:08:27Z",
+   "body": "\r\nrepeated it right now in aapsclient (didnt want to reinstall full aaps for test now, but it exactly the same when I've tested it before opening the issue)"
+  },
+  {
+   "id": 1775157041,
+   "user": "justmara",
+   "created_at": "2023-10-23T13:09:30Z",
+   "body": "hmm, where did all the screenshots go?\r\n![Screenshot_20231023_160545_AAPSClient](https://github.com/nightscout/AndroidAPS/assets/4157587/c18ed3e1-c81d-41b8-9f11-66d12171f437)\r\n![Screenshot_20231023_160514_AAPSClient](https://github.com/nightscout/AndroidAPS/assets/4157587/94118eae-1364-448e-b8a0-7ae650523023)\r\n![Screenshot_20231023_160430_AAPSClient](https://github.com/nightscout/AndroidAPS/assets/4157587/b874ba66-fd85-442f-9b10-6631c22882ad)\r\n![Screenshot_20231023_160425_AAPSClient](https://github.com/nightscout/AndroidAPS/assets/4157587/3b77e1be-3215-4933-a70a-ee36990f69d0)\r\n![Screenshot_20231023_160417_AAPSClient](https://github.com/nightscout/AndroidAPS/assets/4157587/a144db21-e429-40ab-9c39-a7976a95a224)\r\n"
+  },
+  {
+   "id": 1775162508,
+   "user": "MilosKozak",
+   "created_at": "2023-10-23T13:11:56Z",
+   "body": "what happen when you reset statistics?"
+  },
+  {
+   "id": 1775164467,
+   "user": "justmara",
+   "created_at": "2023-10-23T13:12:58Z",
+   "body": "But this time it has loaded 3 days of boluses. And only last portion of boluses from 19.10\r\n<img width=\"1208\" alt=\"image\" src=\"https://github.com/nightscout/AndroidAPS/assets/4157587/e9b0bb2a-a391-4cf0-9497-0182c765664e\">\r\n"
+  },
+  {
+   "id": 1775166147,
+   "user": "justmara",
+   "created_at": "2023-10-23T13:13:41Z",
+   "body": "> what happen when you reset statistics?\r\n\r\nexactly same values recalculated"
+  },
+  {
+   "id": 1775186136,
+   "user": "justmara",
+   "created_at": "2023-10-23T13:23:02Z",
+   "body": "I see only this fail in log, dunno if it is related\r\n```\r\n16:02:49.404 [RxCachedThreadScheduler-245] D/NSCLIENT: [NSClientV3Plugin$onStart$7.accept():229]: ◄ INSERT TherapyEvent 145\r\n16:02:49.559 [pool-12-thread-1] D/WORKER: [CalculationWorkflowImpl.stopCalculation():111]: Stopping calculation thread: onEventNewHistoryData\r\n16:02:49.576 [DefaultDispatcher-worker-3] D/WORKER: [LoggingWorker$doWork$2.invokeSuspend():27]: Worker result FAILURE for class app.aaps.workflow.iob.IobCobOref1Worker\r\n16:02:49.580 [pool-12-thread-1] D/WORKER: [CalculationWorkflowImpl.stopCalculation():116]: Calculation thread stopped: onEventNewHistoryData\r\n```"
+  },
+  {
+   "id": 1775204842,
+   "user": "justmara",
+   "created_at": "2023-10-23T13:31:53Z",
+   "body": "these are last events from that evening. only last two `0.5` boluses were synced.\r\n<img width=\"1195\" alt=\"image\" src=\"https://github.com/nightscout/AndroidAPS/assets/4157587/3493816e-a3d3-41ab-a663-2633727c2baf\">\r\n"
+  },
+  {
+   "id": 1775287065,
+   "user": "justmara",
+   "created_at": "2023-10-23T14:07:20Z",
+   "body": "just made absolutely clean build from RC2 branch in emulator, ran full sync. two days of statistics again.\r\nsubsequent syncs does not add anything to this.\r\nstill dont understand how did it load 3 days on my phone, but refuses to do the same in emulator (from same NS).\r\n<img width=\"509\" alt=\"image\" src=\"https://github.com/nightscout/AndroidAPS/assets/4157587/a8ad946b-2737-4f86-8880-5981e6038d36\">\r\n"
+  },
+  {
+   "id": 1781776882,
+   "user": "hartlijn",
+   "created_at": "2023-10-26T19:30:37Z",
+   "body": "I have the same. Insulin data seems to get stuck during sync. sometimes (after reset database) it gets a little more data than the other time, but more than 2 days completely doesnt work."
+  },
+  {
+   "id": 1782599532,
+   "user": "hartlijn",
+   "created_at": "2023-10-27T09:30:55Z",
+   "body": "tried it another time and again max 2 days of Insulin bolus is imported. Even the 2 days of insulin is not completely loaded. The sync finished also very quick, within 1, max 2 minutes it was done."
+  },
+  {
+   "id": 1783872824,
+   "user": "justmara",
+   "created_at": "2023-10-28T17:08:17Z",
+   "body": "@MilosKozak these issues can be related https://github.com/nightscout/cgm-remote-monitor/issues/8149 and https://github.com/nightscout/cgm-remote-monitor/issues/8151\r\nI see many HTTP500 errors during Full sync because NSClientv3 calls treatments/history without `limit` argument"
+  },
+  {
+   "id": 1783891242,
+   "user": "justmara",
+   "created_at": "2023-10-28T18:26:11Z",
+   "body": "Seems that I've found the reason.\r\nThis request returns ONLY TempBasals and TempTargets\r\napi/v3/treatments?sort=date&**created_at**$gt=2023-10-21T04:28:26.411Z&limit=500\r\n\r\nThis requests returns Boluses\r\napi/v3/treatments?sort=date&**date**$gt=2023-10-21T04:28:26.411Z&limit=500\r\n\r\nSeems to be related to how treatments are sent to NS."
+  },
+  {
+   "id": 1785072530,
+   "user": "MilosKozak",
+   "created_at": "2023-10-30T12:22:57Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/9b4d9b788b1715c7fc662596ceade69e2862ef8a"
+  }
+ ]
+}

@@ -1,0 +1,75 @@
+{
+ "id": 2770292595,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3706,
+ "title": "[3.3] AAPSClient displays several OpenAps statuses",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3706",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-01-06T09:58:54Z",
+ "closed_at": "2025-01-06T19:05:01Z",
+ "comment_count": 11,
+ "body": "Related to #3571 and #3620, opening a new issue for clarity.\r\n\r\nThe bug : AAPSClient displays several data coming from deviceStatus.\r\n\r\n![Screenshot_20250106-104712](https://github.com/user-attachments/assets/b327ac9a-7e0a-4984-bf4c-564b05d76a6c)\r\n\r\nContent of device status collection : \r\n\r\n![2025-01-06 10_51_20-AndroidAPSdocs-emilisev](https://github.com/user-attachments/assets/1970ffa1-8408-4b92-8670-9d45c4c3c7e8)\r\n\r\nSo, my guess is that it displays the last entry + last entry which had the openaps.enacted field.\r\n\r\nAttached AAPS log, timestamps are `09:41:20` and `09:21:24`\r\n[AndroidAPS.log](https://github.com/user-attachments/files/18317848/AndroidAPS.log)\r\n",
+ "comments": [
+  {
+   "id": 2572832297,
+   "user": "MilosKozak",
+   "created_at": "2025-01-06T10:36:43Z",
+   "body": "That's perfectly OK.\r\nFirst is last enacted, second is last sugested"
+  },
+  {
+   "id": 2572834516,
+   "user": "emilisev",
+   "created_at": "2025-01-06T10:38:01Z",
+   "body": "The double display is not ok, though ?!... And never happened before 3.3..."
+  },
+  {
+   "id": 2572843666,
+   "user": "MilosKozak",
+   "created_at": "2025-01-06T10:43:27Z",
+   "body": "It was always so.\r\nSuggested is genereated on every APS run\r\nEnacted only when change is applied by pump \r\nThere can be both records of the same time (if there is was a change requested and and change was enacted by pump)\r\nor different time (if last APS run was not resulting in change in TBR/SMB or enacting failed)\r\n"
+  },
+  {
+   "id": 2572885608,
+   "user": "emilisev",
+   "created_at": "2025-01-06T11:08:04Z",
+   "body": "I have checked display with 3.2 and confirm that with my current data, I have the same duplicate display.\r\nThen I checked my logs and deviceStatus collection from 3.2 and I have NO entry with enacted field, explaining why I never saw this before... \r\nI'm trying to make sense of what you say, but it doesn't, for me. The result on AAPSClient side is that we display both current and outdated data, with no difference whatsover in the display. If the \"enacted\" entry was displayed differently to show what changed, I could understand, but here it's just the same display and no explanation. Even if the display was adapted for enacted entry, is there really a good reason to show that here ? I mean, all things enacted by the pump are already present in the main graph. What other relevant info is there to show ?\r\n"
+  },
+  {
+   "id": 2572952613,
+   "user": "MilosKozak",
+   "created_at": "2025-01-06T11:50:39Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/930ac1783ad02155f022590a141a6c8626beb1fe"
+  },
+  {
+   "id": 2572955073,
+   "user": "MilosKozak",
+   "created_at": "2025-01-06T11:52:14Z",
+   "body": "Suggested is important to see that APS is running and what is the result\r\nEnacted what really happened and when\r\nboth is important"
+  },
+  {
+   "id": 2573044461,
+   "user": "emilisev",
+   "created_at": "2025-01-06T12:47:53Z",
+   "body": "Thanks for the added text. AAPSClient doesn't display line feeds though. Also, I have enacted entry although nothing happened regarding the pump. If I follow your explanation, shouldn't the enacted part always show SMB or TBR ?\r\n\r\n![Screenshot_20250106-134551](https://github.com/user-attachments/assets/efc293c0-4d6f-427c-9289-5f8b74b0b4f1)\r\n"
+  },
+  {
+   "id": 2573518886,
+   "user": "emilisev",
+   "created_at": "2025-01-06T16:58:03Z",
+   "body": "Sample of how \"enacted\" does not seem to match any real action related to the pump : Enacted is 35m ago and does not show any change, whereas latest data sends a SMB. Also there were SMBs each 5mn for the last 20mn...\r\n![Screenshot_20250106-175406](https://github.com/user-attachments/assets/b8aeda46-7319-4c73-9d88-90d80a7a8abb)\r\n"
+  },
+  {
+   "id": 2573709932,
+   "user": "olorinmaia",
+   "created_at": "2025-01-06T18:49:57Z",
+   "body": "Yes there is definitely room for improvement here. It would be nice to only see latest valid OpenAPS log here. Maybe some filter could be added? "
+  },
+  {
+   "id": 2573734082,
+   "user": "MilosKozak",
+   "created_at": "2025-01-06T19:05:01Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/a696a5ecb9a0e9550c40f3983403fb2589b6683c"
+  }
+ ]
+}

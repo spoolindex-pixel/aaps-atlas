@@ -1,0 +1,75 @@
+{
+ "id": 3573821126,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4270,
+ "title": "Nano : continous pump unreachable alert",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4270",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-10-31T08:13:27Z",
+ "closed_at": "2025-11-06T17:02:50Z",
+ "comment_count": 12,
+ "body": "Since yesterday, I started getting Nano pump unreachable alerts, all the time. As I was testing PR4265, I thought that they were related. But, now, I'm on latest dev-d and keep getting the same alerts.\n\nLast logs\n\n![AndroidAPS_LOG_1761897546195.log.zip](https://github.com/user-attachments/files/23255065/AndroidAPS_LOG_1761897546195.log.zip)\n\nWhen it started (1) is AAPS update, (2) first alert, (3) first of the pump unreachable alerts.\n\n![Screenshot_20251031_090550_AAPS.jpg](https://github.com/user-attachments/assets/f36365d5-d96c-4dcb-9302-72f6e58a61fd)\n\nThe latest pump unreachable liste (to give timestamps for the logs)\n\n![Screenshot_20251031_090006_AAPS.jpg](https://github.com/user-attachments/assets/fce4ca82-8572-416a-bc56-de1bc1befccc)\n\nI started with Dev-d yesterday night (around 22:03) and at the moment dev-d +1 commit\n\n![Screenshot_20251031_085142_AAPS.jpg](https://github.com/user-attachments/assets/07943154-6335-4bea-b5d5-30494a2a8ad4)\n\nLoop works normally (except the errors).\n",
+ "comments": [
+  {
+   "id": 3472782317,
+   "user": "robertrub",
+   "created_at": "2025-10-31T12:03:47Z",
+   "body": "@MilosKozak  I confirm. Downgrading to this version (dev-c 27/10) \"solves\" the problem. No more \"pump unreachable\" alert\n\n![Screenshot_20251031_094031_AAPS.jpg](https://github.com/user-attachments/assets/ea930ea8-92a0-4510-9aa3-4dfbdf690357)\n\nWild guess: Something broke around the Pumps: NS JSON... or Pumps unify..."
+  },
+  {
+   "id": 3472796327,
+   "user": "swissalpine",
+   "created_at": "2025-10-31T12:07:51Z",
+   "body": "Same here.\nPerhaps it's because there is no value for “Last Connection”?\n--> 12:28:45.686 (Excerpt of my log)\n\n```\n12:28:45.613 [DefaultDispatcher-worker-1] D/CORE: [KeepAliveWorker.doWorkAndLog():99]: KeepAlive received from: KeepAlive_5 Thread count: 156\n12:28:45.685 [DefaultDispatcher-worker-1] D/PUMP: [MedtrumPump.getHourlyBasalFromMedtrumProfileArray():396]: getHourlyBasalFromMedtrumProfileArray: basal: 0.75\n12:28:45.686 [DefaultDispatcher-worker-1] D/CORE: [KeepAliveWorker.checkPump():194]: Last connection: \n12:28:45.696 [DefaultDispatcher-worker-1] D/CORE: [LocalAlertUtilsImpl.checkPumpUnreachableAlarm():70]: Generating pump unreachable alarm. lastConnection:  isStatusOutdated: true\n12:28:45.699 [RxCachedThreadScheduler-36] D/NOTIFICATION: [NotificationStore.add():63]: Notification received: Pump unreachable\n12:28:45.712 [DefaultDispatcher-worker-1] D/PUMP: [MedtrumPump.buildMedtrumProfileArray():363]: buildMedtrumProfileArray: value: 0.6 time: 0, converted: 12, 0\n12:28:45.715 [DefaultDispatcher-worker-1] D/PUMP: [MedtrumPump.buildMedtrumProfileArray():363]: buildMedtrumProfileArray: value: 0.65 time: 14400, converted: 13, 240\n12:28:45.719 [DefaultDispatcher-worker-1] D/PUMP: [MedtrumPump.buildMedtrumProfileArray():363]: buildMedtrumProfileArray: value: 0.7 time: 18000, converted: 14, 300\n12:28:45.720 [DefaultDispatcher-worker-1] D/PUMP: [MedtrumPump.buildMedtrumProfileArray():363]: buildMedtrumProfileArray: value: 0.8 time: 21600, converted: 16, 360\n12:28:45.721 [DefaultDispatcher-worker-1] D/PUMP: [MedtrumPump.buildMedtrumProfileArray():363]: buildMedtrumProfileArray: value: 0.9 time: 25200, converted: 18, 420\n12:28:45.722 [DefaultDispatcher-worker-1] D/PUMP: [MedtrumPump.buildMedtrumProfileArray():363]: buildMedtrumProfileArray: value: 0.85 time: 32400, converted: 17, 540\n12:28:45.722 [DefaultDispatcher-worker-1] D/PUMP: [MedtrumPump.buildMedtrumProfileArray():363]: buildMedtrumProfileArray: value: 0.8 time: 36000, converted: 16, 600\n12:28:45.723 [DefaultD"
+  },
+  {
+   "id": 3474134761,
+   "user": "vanelsberg",
+   "created_at": "2025-10-31T17:34:33Z",
+   "body": "> ...Downgrading to this version (dev-c 27/10) \"solves\" the problem. No more \"pump unreachable\" alert\n\nYour screenshot shown a commit that is not in dev.\nAccording to GitHub this is some local merge commit on your local fork? How did you build, AAPS-CI or AS?\n\n"
+  },
+  {
+   "id": 3474564239,
+   "user": "robertrub",
+   "created_at": "2025-10-31T19:12:41Z",
+   "body": "\n> Your screenshot shown a commit that is not in dev.\n> According to GitHub this is some local merge commit on your local fork? How did you build, AAPS-CI or AS?\n> \n> \n\nI forked the dev AAPS to my GH. I change 1 file to change profile % limits. Then, regularly, I update my fork with the new commits. And browser build from there.\n\nThe problem is not related to my builds. Was working ok before."
+  },
+  {
+   "id": 3475944858,
+   "user": "vanelsberg",
+   "created_at": "2025-11-01T08:19:52Z",
+   "body": "@robertrub @MilosKozak **Nano Testresults so far:**\n\nConfirming, pump unreachable alerts on latest dev. AAPS/Loop is not affected.\n\n**740812ba** (FullRelease) : OK\n**81e0e1b0** (FullDebug)  : OK\n**e8ddd705** (FullDebug)  : Pump unreachable alerts!\n**ffda40c3** (FullDebug)    : Pump unreachable alerts!\n**98be85c2** (FullRelease) : Pump unreachable alerts!\n\nTesting above only for a few hours - so needs more testing?\n\n_Edit/remark: can't see why **commit#e8ddd705** would introduce this issue....\n\n"
+  },
+  {
+   "id": 3481049541,
+   "user": "vanelsberg",
+   "created_at": "2025-11-03T15:13:27Z",
+   "body": "Hmmm.....\nNoticed latest on dev commits relative long periods of non-activity on treatments Temp Basal tab? I have seen times up-to 90 minutes? Do not see this behavior for DASH.\n@MilosKozak Any idea on if/why this could have changed?\n\nFor Medtrum, AAPS local alert for pump unreachable threshold suggest user to use the minimum threshold of 30 minutes. Maybe this is somehow triggering the alerts?\n\n_Screenshots_:\n\n- **Medtrum:**\n\n![Image](https://github.com/user-attachments/assets/520fcf3c-d914-4da5-b203-14a472ce652e)\n\n- **Example for DASH on previous commits: **\n\n![Image](https://github.com/user-attachments/assets/65837189-1150-4b02-9a53-df0e87344722)\n\n"
+  },
+  {
+   "id": 3489897011,
+   "user": "robertrub",
+   "created_at": "2025-11-05T08:23:18Z",
+   "body": "Latest dev-d still has the same _pump unreachable_ alert.\n\n![Screenshot_20251105_091235_AAPS.jpg](https://github.com/user-attachments/assets/9ee47e53-4bfb-49fb-adfa-a02d2482c441)\n\nI don't know if they are related but I can't turn OFF the pump unreachable alert in the settings (1). I can change the duration (2) but can not stop them. Never tried to turn it off before, so can't say if it's new or old...\n\n![Screenshot_20251105_091742_AAPS.jpg](https://github.com/user-attachments/assets/68c67848-32af-428b-be0e-a46a1f5df17d)\n\nTesting @Philoul 's fix for another Medtrum bug\n\n![Screenshot_20251105_090450_AAPS.jpg](https://github.com/user-attachments/assets/31f488b9-a404-4a10-9abc-07508a6e7395)\n\n\n"
+  },
+  {
+   "id": 3498382406,
+   "user": "MilosKozak",
+   "created_at": "2025-11-06T17:02:50Z",
+   "body": "fixed by https://github.com/nightscout/AndroidAPS/commit/5be253f4c18f95d7fff1db5782bbaa4a6dea494b"
+  },
+  {
+   "id": 3498444800,
+   "user": "vanelsberg",
+   "created_at": "2025-11-06T17:15:59Z",
+   "body": "> fixed by [5be253f](https://github.com/nightscout/AndroidAPS/commit/5be253f4c18f95d7fff1db5782bbaa4a6dea494b)\n\nWil test a.s.a.p. :-)"
+  },
+  {
+   "id": 3498518086,
+   "user": "robertrub",
+   "created_at": "2025-11-06T17:31:58Z",
+   "body": "Built already, copying and installing now... "
+  }
+ ]
+}

@@ -1,0 +1,45 @@
+{
+ "id": 929888973,
+ "repo": "nightscout/AndroidAPS",
+ "number": 582,
+ "title": "[2.8.2.2-Dev] Insulin boluses and carbohydrates not syncing with xDrip +",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/582",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-06-25T06:54:53Z",
+ "closed_at": "2021-10-08T20:13:35Z",
+ "comment_count": 5,
+ "body": "Reporting bugs\r\n--------------\r\nWhen you add a treatment from the calculator, the data is synced correctly in Nightscout, however it is not synced with xDrip +.  No carbohydrate or bolus treatment is displayed in xDrip +.\r\n![Screenshot_20210625-085127](https://user-images.githubusercontent.com/67511778/123382809-a976aa80-d592-11eb-845b-5a5877a1980c.jpg)\r\n![Screenshot_20210625-085135](https://user-images.githubusercontent.com/67511778/123382816-aa0f4100-d592-11eb-9106-a3ecada9d498.jpg)\r\n![Screenshot_20210625-085147](https://user-images.githubusercontent.com/67511778/123382818-aaa7d780-d592-11eb-9bcc-5c547af38143.jpg)\r\n\r\nVersion: 2.8.2.2-Dev Build 33047e478\r\n\r\n",
+ "comments": [
+  {
+   "id": 868293961,
+   "user": "fjpezuela",
+   "created_at": "2021-06-25T07:42:45Z",
+   "body": "SMBs are also not displayed in xDrip +.  All this with version 2.8.2 worked without any problem"
+  },
+  {
+   "id": 869140885,
+   "user": "MilosKozak",
+   "created_at": "2021-06-27T10:44:58Z",
+   "body": "hopefully fixed by https://github.com/nightscout/AndroidAPS/commit/272cdbbb0010a1acd9043de3629ce8131ef2d44b\r\nremember it's still broadcasting only NSClient data ie only what is comming from NS"
+  },
+  {
+   "id": 873232514,
+   "user": "hartlijn",
+   "created_at": "2021-07-02T20:07:17Z",
+   "body": "not fixed unfortunately (in todays dev version). \r\nxDrip always received treatments (smb, bolus, carb and even notes if I'not mistaken) directly from AAPS.\r\n\r\nnot sure what you @MilosKozak mean with 'only what is coming **from** NS'. I have both xDrip and AAPS configured to only uploadto  (and not dowload from) NS. To be able to have my system running not require an internet connection.\r\n\r\n"
+  },
+  {
+   "id": 873248125,
+   "user": "fjpezuela",
+   "created_at": "2021-07-02T20:45:13Z",
+   "body": "It doesn't work for me either after recompiling the app"
+  },
+  {
+   "id": 939091124,
+   "user": "MilosKozak",
+   "created_at": "2021-10-08T20:13:35Z",
+   "body": "sorry i was wrong. there was never direct AAPS -> xDrip broadcast. up to version 2.8.2 NSClient did broadcast data comming from NS. With new NSClient this functionality was removed"
+  }
+ ]
+}

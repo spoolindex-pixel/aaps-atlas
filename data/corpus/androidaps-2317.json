@@ -1,0 +1,69 @@
+{
+ "id": 1515067926,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2317,
+ "title": "xDrip BG not up to date in AAPS",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2317",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-12-31T08:55:22Z",
+ "closed_at": "2023-01-10T11:37:32Z",
+ "comment_count": 9,
+ "body": "I think that this was signalled before but couldn't find the issue.\n\nBGs coming from xDrip. The BGs are correctly shown in the xDrip tab in AAPS but the main UI shows older BG.\n\n![Screenshot_20221231_005957_AAPS.jpg](https://user-images.githubusercontent.com/76626474/210131071-450724eb-8b50-4961-9863-649446f5bb01.jpg)\n\n![Screenshot_20221231_010023_AAPS.jpg](https://user-images.githubusercontent.com/76626474/210131077-4ec20b60-70eb-49df-892b-a01b5202f197.jpg)\n\nMight be important : BG was provided by BYODA a couple of days ago.",
+ "comments": [
+  {
+   "id": 1368192836,
+   "user": "jbr7rr",
+   "created_at": "2022-12-31T09:48:12Z",
+   "body": "Which build? Logs?\r\nA similar issue was fixed a few days ago"
+  },
+  {
+   "id": 1368196169,
+   "user": "robertrub",
+   "created_at": "2022-12-31T10:22:13Z",
+   "body": "![Screenshot_20221226_161907_AAPS.jpg](https://user-images.githubusercontent.com/76626474/210133225-0c925e95-efa0-41ae-9729-831da2c72152.jpg)"
+  },
+  {
+   "id": 1368198731,
+   "user": "MilosKozak",
+   "created_at": "2022-12-31T10:46:57Z",
+   "body": "scroll down on BG tab, there is probably irregularity in last 2 days"
+  },
+  {
+   "id": 1368201199,
+   "user": "robertrub",
+   "created_at": "2022-12-31T11:07:32Z",
+   "body": "@MilosKozak I changed transmitters"
+  },
+  {
+   "id": 1368209869,
+   "user": "jbr7rr",
+   "created_at": "2022-12-31T12:30:22Z",
+   "body": "Yes after transmitter change, the data is not in 5 minute interval and gets recalculated, that causes the delay. However after your build, changes has been made in dev to make this delay happen less frequent , so try to update to latest Dev and see if that fixes it\r\n\r\nSee  https://github.com/nightscout/AndroidAPS/issues/2302\r\n\r\n"
+  },
+  {
+   "id": 1368213157,
+   "user": "robertrub",
+   "created_at": "2022-12-31T13:03:34Z",
+   "body": "I've just built the last dev now. But the problem happens ONLY if using xDrip. Using BYODA, everything is in sync.\n\nI'll see in 10 days for the next sensor change (I'll switch to xDrip and 2nd transmitter)\n\nThanks for the #2302 link. That's the one I wanted to add my message to ;)"
+  },
+  {
+   "id": 1368434580,
+   "user": "idalioreis",
+   "created_at": "2023-01-01T12:41:03Z",
+   "body": "what i detect is the trend at xdrip are not the same at AAPS, so i cant guide by AAPS trend, i have to go always  to xdrip.\r\n"
+  },
+  {
+   "id": 1368440628,
+   "user": "robertrub",
+   "created_at": "2023-01-01T13:08:12Z",
+   "body": "@idalioreis The different trends in xDrip and AAPS is \"normal\" as xDrip shows the arrow based on the last 2 BGs while AAPS uses a longer delta (or the one produced by Dexcom, can't recall exactly)"
+  },
+  {
+   "id": 1377125129,
+   "user": "MilosKozak",
+   "created_at": "2023-01-10T11:37:32Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/4b6eab6aa405b6906d7eb15fa1458759ab9dc3df"
+  }
+ ]
+}

@@ -1,0 +1,120 @@
+{
+ "id": 1041087463,
+ "repo": "nightscout/AndroidAPS",
+ "number": 830,
+ "title": "[2.8.2] AndroidAPS forgets it just bolussed/issues double bolus",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/830",
+ "state": "closed",
+ "labels": [
+  "combo",
+  "medtronic"
+ ],
+ "created_at": "2021-11-01T11:50:50Z",
+ "closed_at": "2023-08-17T14:53:34Z",
+ "comment_count": 17,
+ "body": "AndroidAPS sometimes forgets it just bolussed (SMB) and also sometimes issues a double bolus (SMB) within a minute which might be a connected issue. When re-reading pump history, AndroidAPS doesn't know those bolusses were SMBs but thinks the user entered them on the pump.\r\n\r\nI kind of hope this happens due to a corrupted database and uninstalling and re-installing would fix it but to make sure this isn't a serious bug I thought I should report the behaviour here.\r\n\r\nIt seems to me that quite often something triggers a re-run of the algorithm not just after a new bg value was received while AndroidAPS was already communicating with the pump and AndroidAPS then wants to send a different command to the pump. Maybe something is being screwed in those cases and a bolus occurs that isn't being recorded.\r\n\r\nThis has now happened about four times that I know of.\r\n\r\nLet's give you some screenshots first:\r\n![Screenshot_20211028-190935_AndroidAPS](https://user-images.githubusercontent.com/6848629/139663987-c0b7c997-3a8f-4d0d-9daa-b5c3f51c922a.jpg)\r\n![Screenshot_20211028-191047_AndroidAPS](https://user-images.githubusercontent.com/6848629/139663990-e619ddc3-b1d0-42de-8cc1-bb518894c46b.png)\r\n![Screenshot_20211028-191108_AndroidAPS](https://user-images.githubusercontent.com/6848629/139663993-63f98e30-1485-45a7-9876-db18db909143.jpg)\r\n![Screenshot_20211028-191315_AndroidAPS](https://user-images.githubusercontent.com/6848629/139663994-6d59d7cc-d56b-41d5-9e2e-e5939109cacc.jpg)\r\n\r\nHere's also a video of the pump history:\r\n\r\nhttps://user-images.githubusercontent.com/6848629/139664309-fa4bf1e4-e8dc-4ad0-a0c2-b088323f3b69.mp4\r\n\r\nHere are the logs:\r\n[Log - double bolus.zip](https://github.com/nightscout/AndroidAPS/files/7452833/Log.-.double.bolus.zip)\r\n\r\nSystem:\r\nAndroidAPS 2.8.2 194549adc\r\nOneplus 3T Android 11 (LineageOS)\r\nMedtronic 554/523 (happens on both)\r\nRileyLink\r\nDexcom G6 over xdrip\r\n",
+ "comments": [
+  {
+   "id": 961361676,
+   "user": "andyrozman",
+   "created_at": "2021-11-04T19:43:24Z",
+   "body": "That driver thinks SMB is Corr (after history is read) will be fixed with https://github.com/nightscout/AndroidAPS/issues/798, we can look at double bolus issue then... But this is really weird... Unless we receive 2 boluses we wouldn't issue 2 of them, but what might happen is that first bolus needs longer to be issued (pump communication)... I will take a look at logs later, to try to determine what was problem... \r\n\r\nIs double bolus reproducible? Does it happen when certain steps are executed. "
+  },
+  {
+   "id": 961374197,
+   "user": "ArthurusDent",
+   "created_at": "2021-11-04T20:01:53Z",
+   "body": "Ok, good to know the first problem is already being worked on!\r\n\r\nWhat just came to my mind is that I noticed this behaviour with the double bolus fairly recent. I've been using 2.8.2 beginning with January but only witnessed the first double bolus in August and since then it happened three or four times. \r\n\r\nIt is not reproducible and seems completely random to me.\r\n\r\nI have just reinstalled and reset the database today to hopefully fix the double bolus issue. If need be, I might be able to restore from a backup I created before reinstalling so I could provide some further data. The logs have been saved spearately, if you need another example of this happening."
+  },
+  {
+   "id": 965687819,
+   "user": "RalfCGM",
+   "created_at": "2021-11-10T19:49:23Z",
+   "body": "Don't understand the technicals, but I also saw similar behaviour with Combo on 3.0 dev 4. Noticed a duplicate smb right after an other one was issued. Noticed after that that there seems some recalculation done, as described here. Don't know / understand if this could be the same issue, but looks similar to me.\r\n\r\nhttps://www.facebook.com/groups/AndroidAPSUsers/posts/3132853100269419/"
+  },
+  {
+   "id": 968361996,
+   "user": "andyrozman",
+   "created_at": "2021-11-14T20:57:22Z",
+   "body": "Mhm. So this might not be a driver problem itself... "
+  },
+  {
+   "id": 971715483,
+   "user": "ArthurusDent",
+   "created_at": "2021-11-17T15:55:32Z",
+   "body": "Ok, I have something else to report that might be connected. Keep in mind that this is a fresh install of AndroidAPS 2.8.2. For some reason the Open Humans uploader doesn't work but that might be a different problem.\r\n\r\nHere's what happened and what I have witnessed quite often:\r\nThe algorithm runs at 16:25 because I have just stopped my TT and want to return to the standard target that is set in my profile.\r\nThe algorithm says it wants to send the max basal rate and an SMB with 0,20 IE. \r\nI think the max basal rate actually got set.\r\nNo idea if that is the problem, but the SMB cannot be issued right away because the pump history is being read.\r\nLooking at the screen a minute later (16:26) the SMB never has been delivered and isn't queued but the algorithm recalculated with the sam bg and said there was nothing to do.\r\nAt 16:28 the algorithm runs again because a new bg was entered and this time it delivers the SMB as calculated.\r\n\r\nDoes the algorithm at 16:26 think it just delivered an SMB (less than 2 minutes ago) although it didn't?\r\nBut why would the algorithm run again at 16:26 when there is no new bg?\r\n\r\n[AndroidAPS recalculation no SMB.zip](https://github.com/nightscout/AndroidAPS/files/7556047/AndroidAPS.recalculation.no.SMB.zip)\r\n\r\n\r\n"
+  },
+  {
+   "id": 972134372,
+   "user": "savek-cc",
+   "created_at": "2021-11-17T22:12:16Z",
+   "body": "For me it's that (almost?) all SMB get displayed as regular bolus after an app restart - so the screen is full of 0.1ie readings on the graph even though all of these were the small blue triangles for SMB before (Combo on latest dev).\r\nSo force stop app, start it again, no more triangles, only standard bolus.\r\nEdit: Just re-read that the ticket is for 2.8.2 - will remove comment here if it's completely unrelated to this issue."
+  },
+  {
+   "id": 972166073,
+   "user": "MilosKozak",
+   "created_at": "2021-11-17T22:32:57Z",
+   "body": "with transition 2.8 -> 3.0 more than 50% od code was rewritten. Looking for bugs in 2.8.2 is wasting of time (mostly) because the code is probably changed in 3.0\r\nplease test 3.0"
+  },
+  {
+   "id": 973242660,
+   "user": "savek-cc",
+   "created_at": "2021-11-18T20:38:35Z",
+   "body": "My issue is with 3.0 beta - will open another issue - see https://github.com/nightscout/AndroidAPS/issues/951"
+  },
+  {
+   "id": 996610963,
+   "user": "RalfCGM",
+   "created_at": "2021-12-17T10:30:43Z",
+   "body": "I think i notice the same behavior sometimes. Notice it through a vibrating combo. Combo vibrates on tbr. I would suspect combo maximum vibrates only  once every 5 minutes but i noticed just now on 3.0 beta 9: tbr - bolus - tbr - tbr. It looks like some loop is happening. Ill provide Logs in a minute.\r\n[AndroidAPS_LOG_1637510212828.log_113205.zip](https://github.com/nightscout/AndroidAPS/files/7734413/AndroidAPS_LOG_1637510212828.log_113205.zip)\r\n"
+  },
+  {
+   "id": 1087982826,
+   "user": "ArthurusDent",
+   "created_at": "2022-04-04T20:28:04Z",
+   "body": "It's still happening.\r\n\r\nI documented two cases but they might not be the same.\r\n\r\nIf I remember correctly in the first case I was disabling the pump, but AndroidAPS threw an error (couldn't set basal) and instead I heard a second beep from my pump and saw that it had just given me a double bolus.\r\n\r\nThe second case seems to be similar to the first post in this issue.\r\n\r\n### First case\r\n\r\n![InkedScreenshot_20220401-223543_AndroidAPS_LI](https://user-images.githubusercontent.com/6848629/161625528-288ddd69-8522-4824-8d87-e90ec161725c.jpg)\r\n![InkedScreenshot_20220401-223600_AndroidAPS_LI](https://user-images.githubusercontent.com/6848629/161625541-3a1e08ab-294d-4b3b-a2af-834235218066.jpg)\r\n![Screenshot_20220401-223440_AndroidAPS](https://user-images.githubusercontent.com/6848629/161625555-a03f1194-a60a-4f36-a2b1-4330bf79ffa5.png)\r\n![Screenshot_20220401-223510_AndroidAPS](https://user-images.githubusercontent.com/6848629/161625556-13e5730a-c139-4651-964d-bc593bf72d04.png)\r\n![Screenshot_20220401-223516_AndroidAPS](https://user-images.githubusercontent.com/6848629/161625560-f5d30624-02a1-4f84-8bb9-ec3659916e9e.png)\r\n[AndroidAPS._2022-04-01_13-30-39_.4.zip](https://github.com/nightscout/AndroidAPS/files/8412945/AndroidAPS._2022-04-01_13-30-39_.4.zip)\r\n\r\n\r\n### Second case\r\n![InkedScreenshot_20220404-214218_AndroidAPS_LI](https://user-images.githubusercontent.com/6848629/161625986-dc5e5c65-9df0-4fe1-9a8c-ecc821e3fde5.jpg)\r\n![InkedScreenshot_20220404-214229_AndroidAPS_LI](https://user-images.githubusercontent.com/6848629/161626002-f1f97898-50f0-4a36-a773-5800d221cf81.jpg)\r\n![Screenshot_20220404-214209_AndroidAPS](https://user-images.githubusercontent.com/6848629/161626008-6f34b20c-c5f0-4a42-b770-161d0db39d0d.png)\r\n![Screenshot_20220404-214249_AndroidAPS](https://user-images.githubusercontent.com/6848629/161626012-576bc8eb-4c6b-4af1-8255-a85581f34dc2.png)\r\n[AndroidAPS - 04.04.22.zip](https://github.com/nightscout/AndroidAPS/files/8412962/AndroidAPS.-.04.04.22.zip)\r\n\r\n\r\n### Sys"
+  },
+  {
+   "id": 1152987151,
+   "user": "parapenT1sta",
+   "created_at": "2022-06-11T19:38:40Z",
+   "body": "This seems not be related to Medtronic only, since I have Accu Check and Combo and I am facing the same issue but in threatments, I can see the duplicated is coming from NightScout, I'm going to disable all the \"receive\" from NSClient options menu (AndroidAPS) and check if it fixes. I also have xDrip synching with NS and that might be the issue.\r\n\r\n[AndroidAPS_LOG_1654975994191.log.zip](https://github.com/nightscout/AndroidAPS/files/8884632/AndroidAPS_LOG_1654975994191.log.zip)\r\n\r\n![Screenshot_20220611-203151](https://user-images.githubusercontent.com/608650/173202439-8909d7bf-aada-4e9a-8fef-3ca86b974142.png)\r\n\r\n"
+  },
+  {
+   "id": 1152987700,
+   "user": "ArthurusDent",
+   "created_at": "2022-06-11T19:43:37Z",
+   "body": "Did your pumps actually issue two boli? On Medtronic I can see two boli in pump history (in AndroidAPS and directly on the pump)."
+  },
+  {
+   "id": 1152988102,
+   "user": "parapenT1sta",
+   "created_at": "2022-06-11T19:47:02Z",
+   "body": "> \r\n\r\nNo, not at all. The only thing is that the calculator is showing me that I need carbs, in this last example, because it doubled the IOB info, is telling me that I need more 60carbs., is only affecting the calculations nothing more. "
+  },
+  {
+   "id": 1152988695,
+   "user": "parapenT1sta",
+   "created_at": "2022-06-11T19:52:06Z",
+   "body": "> \r\n\r\nDo you have \"Receive\" options enabled in AndroidAPS NSClient? did you try to disabled all of them?"
+  },
+  {
+   "id": 1152989184,
+   "user": "ArthurusDent",
+   "created_at": "2022-06-11T19:56:28Z",
+   "body": "No, I have not and I don't think this issue is connected to Nightscout. \r\n\r\nIt looks like you are seeing a different bug. Have you seen this one https://github.com/nightscout/AndroidAPS/issues/1768 ?"
+  },
+  {
+   "id": 1152989543,
+   "user": "parapenT1sta",
+   "created_at": "2022-06-11T19:59:01Z",
+   "body": "> No, I have not and I don't think this issue is connected to Nightscout.\r\n> \r\n> It looks like you are seeing a different bug. Have you seen this one #1768 ?\r\n\r\nSorry! you're right. :( "
+  },
+  {
+   "id": 1682429090,
+   "user": "MilosKozak",
+   "created_at": "2023-08-17T14:53:34Z",
+   "body": "Closed for inactivity. Create new issue is if you still see the problem on latest branch"
+  }
+ ]
+}

@@ -1,0 +1,33 @@
+{
+ "id": 2766001528,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3679,
+ "title": "WatchFace (APPS Large) not right rendered after upgrade from AAPS 3.2.0.4 to AAPS 3.3.0",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3679",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-01-02T13:05:03Z",
+ "closed_at": "2025-01-04T08:48:29Z",
+ "comment_count": 3,
+ "body": "After upgrade from 3.2.0.4 to 3.3.0 the Custom WatchFace AAPS(Large) is not properly rendered.\r\n\r\nIn particulary the white row (\"MatchDivider\")  in the middle of the screen is not visibile, and also the value inside the MatchDivider.\r\n\r\nThanks to @Philoul I receive a workaroud to  show the matchdiveder again:\r\n\r\nWorkaround is to switch on then switch off each parameter of AAPS(Large) to get correct visibility of watchface...\r\nSo for the background and white bar:\r\nSet Dark parameter enabled, then disabled (or opposite)\r\nSet matchdivider to enabled, then disable (or opposite)...\r\nThis should let you have again the divider bar visible...\r\n\r\nIn case of overlapping is necessary to change manually the value of: \"min ago\", \"Uploader Battery\" and \"Status information\"\r\n\r\n",
+ "comments": [
+  {
+   "id": 2567762157,
+   "user": "Philoul",
+   "created_at": "2025-01-02T13:17:39Z",
+   "body": "This issue is not dedicated to AAPS(Large) Custom watchface, but due to a fresh install of Wear apk, then the default values shown within watch for each parameter, and the value read within CWF can be inconsistant.\n\nI will have to deep dive within preference management to fix it 😉 (Hope it will be limited to Custom Watchface only, but currently not 100% sure)..\n\nThanks for this catch 👍"
+  },
+  {
+   "id": 2567851488,
+   "user": "Philoul",
+   "created_at": "2025-01-02T14:22:54Z",
+   "body": "After a quick review of Custom WF code, I found (I think) the root cause...\nThe good news is it should be limited to CWF...\nWill be able to provide a fix soon 😉."
+  },
+  {
+   "id": 2569933784,
+   "user": "Philoul",
+   "created_at": "2025-01-03T23:34:12Z",
+   "body": "Fixed by 79edafef19110b7dfc00f39da7663303142140e1"
+  }
+ ]
+}

@@ -1,0 +1,51 @@
+{
+ "id": 2235418148,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3301,
+ "title": "3.3.0-dev Build failure:  items queued for execution but none of them can be started",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3301",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-04-10T11:55:40Z",
+ "closed_at": "2024-04-29T09:22:47Z",
+ "comment_count": 6,
+ "body": "Android Studio \"Menu - > Rebuild project\" fails to execute\r\n\r\n**AndroidAPS 3.3.0-dev-b**\r\n**Build**: 3bb0705a\r\n**Flavor**: Fullrelease\r\n\r\n**Problem description:**\r\nProblem in build definitions _(or is this a local problem?)_\r\n\r\nThe following actions can be executed successfully:\r\n- Build -> Make Project\r\n- Build -> Generate signed bundle / APK\r\n- Build -> Clean\r\n\r\nHowever, menu action Build -> Rebuild project (Debug) fails to execute, erroring out at the final phase of the build:\r\n*Unable to make progress running work. There are items queued for execution but none of them can be started*\r\n\r\nTried setting op nieuw build environment by cleraing .gradle cache and recloning the project at a different location.\r\nThis did not solve the problem.\r\n\r\n**Additional info**\r\n*AS About:*\r\nAndroid Studio Iguana | 2023.2.1 Patch 1\r\nBuild #AI-232.10300.40.2321.11567975, built on March 13, 2024\r\nRuntime version: 17.0.9+0--11185874 amd64\r\n\r\n**Logs**\r\n\r\n(see details attached)\r\n\r\n      - Scheduling events:\r\n          - node added to plan: destroyer locations for task group 0, when: scheduled, state: SHOULD_RUN, dependencies: 1, is ready node? false\r\n          - node added to plan: destroyer locations for task group 1, when: scheduled, state: SHOULD_RUN, dependencies: 1, is ready node? false\r\n      - Ordinal groups:\r\n          - group 0 entry nodes: [:buildSrc:clean (SHOULD_RUN)]\r\n          - group 1 entry nodes: [:buildSrc:assemble (EXECUTED)]\r\n          - group 2 entry nodes: [:buildSrc:testClasses (SHOULD_RUN)]\r\n      - Workers waiting for work: 9\r\n      - Stopped workers: 1\r\n\r\nFAILURE: Build failed with an exception.\r\n\r\n* What went wrong:\r\nUnable to make progress running work. There are items queued for execution but none of them can be started\r\n\r\n[aserr_build.txt](https://github.com/nightscout/AndroidAPS/files/14931718/aserr_build.txt)\r\n\r\n\r\n",
+ "comments": [
+  {
+   "id": 2047799047,
+   "user": "vanelsberg",
+   "created_at": "2024-04-10T15:02:14Z",
+   "body": "Others reporting no problem so likely a local problem. But seeing community ports on similar problems.\r\n@MilosKozak  So will go investigating and report back."
+  },
+  {
+   "id": 2048489042,
+   "user": "vanelsberg",
+   "created_at": "2024-04-10T21:45:46Z",
+   "body": "This is much like: https://issuetracker.google.com/issues/328871352\r\n\r\nSuggested work around does work:\r\nLooks like the problem is at building the TestClasses. On adding the following line to build.gradle.kts Build->Rebuild project is executed without failures:\r\n\r\n    `gradle.startParameter.excludedTaskNames.addAll(listOf(\":buildSrc:testClasses\"))`\r\n    \r\nNow what is wrong with my AS Lguana setup? \r\n  \r\n[build.gradle.kts..zip](https://github.com/nightscout/AndroidAPS/files/14938894/build.gradle.kts.zip)\r\n"
+  },
+  {
+   "id": 2048653946,
+   "user": "vanelsberg",
+   "created_at": "2024-04-11T00:40:23Z",
+   "body": "Checked building from master: same problem :-|"
+  },
+  {
+   "id": 2082248200,
+   "user": "MilosKozak",
+   "created_at": "2024-04-29T09:22:48Z",
+   "body": "It's you local studio installation. I caanot help here"
+  },
+  {
+   "id": 2082522354,
+   "user": "vanelsberg",
+   "created_at": "2024-04-29T11:51:51Z",
+   "body": "> It's you local studio installation. I caanot help here\r\n\r\nYes, looks like it.\r\n\r\nStill no idea what the problem is, other then that \"\"rebuild\" has problems with some of the unit testing.\r\nWill report back if I find anything of interest."
+  },
+  {
+   "id": 2093042639,
+   "user": "vanelsberg",
+   "created_at": "2024-05-03T13:38:25Z",
+   "body": "@MilosKozak Upgrading to Android Studio Jellyfish | 2023.3.1 (Build #AI-233.14808.21.2331.11709847, built on April 12, 2024)\r\nSolved my problem.\r\n\r\nUpgraded by uninstalling while keeping current settings)"
+  }
+ ]
+}

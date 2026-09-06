@@ -1,0 +1,53 @@
+{
+ "id": 1062252697,
+ "repo": "nightscout/AndroidAPS",
+ "number": 983,
+ "title": "[3.0-beta6] Initiating bolus when connection counter is already running causes time-out",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/983",
+ "state": "closed",
+ "labels": [
+  "omnipod dash"
+ ],
+ "created_at": "2021-11-24T10:30:13Z",
+ "closed_at": "2021-12-30T22:17:19Z",
+ "comment_count": 6,
+ "body": "Issue happened using the Dash pod.\r\nSometimes the bluetooth connection timer is already running when issuing a bolus command.\r\nWhen that happens, the system cannot connect any more to the Dash pod and you have to wait until time-out before the system responds again. So it looks neither the origingal task nor the bolus is executed until after the time-out and a new retry.\r\nI have attached the relevant log files.\r\nThe time the problem happens is 13:49:32:610\r\n[AndroidAPS._2021-11-20_00-00-04_.1.zip](https://github.com/nightscout/AndroidAPS/files/7594855/AndroidAPS._2021-11-20_00-00-04_.1.zip)\r\n.",
+ "comments": [
+  {
+   "id": 978214627,
+   "user": "avereha",
+   "created_at": "2021-11-24T20:57:46Z",
+   "body": "I don't understand what is the bug here.\r\nAfter reading the logs, it looks like a bolus command timed out on connect. \r\nConnections can fail from time to time, if this happens often mark your phone model as 'not supported'."
+  },
+  {
+   "id": 979079878,
+   "user": "regiorunner",
+   "created_at": "2021-11-25T10:39:52Z",
+   "body": "It is indeed no serieus problem. It happens only very occasionally. What puzzles me in the persistant impossibility to connect. Usually when I see a connection problem bringing the phone close to the Dash pod solves the problem, but when this happens it really refuses to connect and runs to time-out.\r\nIt does not seem phone related, I experienced this behavior with three different phones, roughly once per one or two Dash pods.\r\nSo, in practice not a problem, but puzzling. "
+  },
+  {
+   "id": 979430746,
+   "user": "avereha",
+   "created_at": "2021-11-25T19:12:39Z",
+   "body": "Yes, I also don't know why this happens sometimes. "
+  },
+  {
+   "id": 997226110,
+   "user": "avereha",
+   "created_at": "2021-12-18T16:24:22Z",
+   "body": "I don't think this is a bug.\r\nThe fact that you initiate a bolus where there is a pending connection it doesn't make the connection to timeout.\r\nIt would timeout anyway."
+  },
+  {
+   "id": 998227782,
+   "user": "regiorunner",
+   "created_at": "2021-12-20T19:59:21Z",
+   "body": "As said, it is not a problem in practice. But maybe good to consider to have a message in the final version when this happens, else the user does not understand why it is not connecting. Or will the connection counter remain visible, also in the non-developer versions? (I personally like this additional info to understand what is happening)."
+  },
+  {
+   "id": 1002661400,
+   "user": "avereha",
+   "created_at": "2021-12-29T15:55:31Z",
+   "body": "Yes, the connection counter will remain visible."
+  }
+ ]
+}

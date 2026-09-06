@@ -1,0 +1,45 @@
+{
+ "id": 1037132856,
+ "repo": "nightscout/AndroidAPS",
+ "number": 788,
+ "title": "[3.0-beta1] Incorrect COB",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/788",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-10-27T08:35:50Z",
+ "closed_at": "2021-10-30T12:42:47Z",
+ "comment_count": 5,
+ "body": "## Condition / Lead up\r\nAAPS Version: v3.0-beta1 build 24a277bf1\r\nNightscout: 14.2.2\r\nPump: DanaRS (v3, Model: 05, Protocol: 11, Code: F0)\r\nCGM: DexcomG6 (Patched App)\r\n\r\n10/27/2021 08:35 - Food (35g) & Bolus 3.37U\r\n10/27/2021 09:15 - Checked Overview & noticed 60g COB\r\n\r\nCross checked COB in Treatments & Loop. All showing as 60g.\r\nSuspect that original 35g was somehow doubled, NS issue?\r\n\r\n## Observations\r\n\r\nNo issues with CGM or Pump comms\r\n\r\n## Attachments\r\n\r\n- Treatments\r\n- Overview\r\n- Loop\r\n- Preferences/NSClient\r\n- Logs\r\n\r\n![Screenshot_20211027_091518_info nightscout androidaps](https://user-images.githubusercontent.com/38948885/139029823-743f47b4-1059-46c8-ba07-1c1f57361782.jpg)\r\n![Screenshot_20211027_091524_info nightscout androidaps](https://user-images.githubusercontent.com/38948885/139029828-c2e8ff23-5523-4b2d-9793-a40d66add1a5.jpg)\r\n![Screenshot_20211027_091540_info nightscout androidaps](https://user-images.githubusercontent.com/38948885/139029832-ed5742d2-e5b9-45fd-abf2-3b38cb35e3f1.jpg)\r\n![Screenshot_20211027_092602_info nightscout androidaps](https://user-images.githubusercontent.com/38948885/139029804-247d5d64-4d89-4bac-b685-007105d53449.jpg)\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/7424511/AndroidAPS.log)\r\n",
+ "comments": [
+  {
+   "id": 953096087,
+   "user": "Philoul",
+   "created_at": "2021-10-27T16:27:27Z",
+   "body": "@AndyS117 Can you please take a screenshot of User Entries for this period?\r\n(select the green icon on the right of Treatments)"
+  },
+  {
+   "id": 953101101,
+   "user": "AndyS117",
+   "created_at": "2021-10-27T16:33:36Z",
+   "body": "No problem. Shows same data:\r\n\r\n```\r\n10/27/2021 08:35:00AM BOLUS+CARBS\r\n  Bolus Wizard 3.75U 35g\r\n```\r\n\r\n![Screenshot_20211027_172917_info nightscout androidaps](https://user-images.githubusercontent.com/38948885/139108094-4133c48f-c476-4240-8332-7c92579b6c53.jpg)\r\n\r\n"
+  },
+  {
+   "id": 953132737,
+   "user": "hartlijn",
+   "created_at": "2021-10-27T17:09:30Z",
+   "body": "Sounds like same I had. https://github.com/nightscout/AndroidAPS/issues/614\r\nI will keep an eye open and try to collect more info as well.\r\n\r\nIn both your and mine screenshot you can see the orange carb graph being doubled. Maybe that's a clue, @Philoul "
+  },
+  {
+   "id": 955197376,
+   "user": "Philoul",
+   "created_at": "2021-10-30T11:55:59Z",
+   "body": "I got same issue today...\r\n![image](https://user-images.githubusercontent.com/52934600/139531536-c639de3e-41cb-47f7-971c-ec20ebcc6c05.png)\r\n"
+  },
+  {
+   "id": 955203507,
+   "user": "MilosKozak",
+   "created_at": "2021-10-30T12:42:47Z",
+   "body": "fixed by https://github.com/nightscout/AndroidAPS/commit/345a57da09453c4528a470f669e192d048fddc18\r\nthanks to all"
+  }
+ ]
+}

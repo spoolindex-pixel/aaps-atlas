@@ -1,0 +1,33 @@
+{
+ "id": 1287499988,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1862,
+ "title": "Wear - eCarbs start time recorded in hours instead of minutes",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1862",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-06-28T15:11:14Z",
+ "closed_at": "2022-06-29T07:25:46Z",
+ "comment_count": 3,
+ "body": "Here I am trying to start the eCarbs in 15 minutes.\r\n![photo_2022-06-28_09-00-30](https://user-images.githubusercontent.com/29897815/176212919-c317be93-e515-4db3-936c-2542d8ebd14c.jpg)\r\n\r\nHere it's telling me that it'll start at 11:53PM.\r\n![photo_2022-06-28_09-00-24](https://user-images.githubusercontent.com/29897815/176212958-8bc6ae77-20d2-42da-9f92-6eea4264b820.jpg)\r\n\r\nBut it's on 8:53AM at the time, so it should be saying it'll start at 9:08AM.\r\n![photo_2022-06-28_09-00-34](https://user-images.githubusercontent.com/29897815/176212981-a9a0484b-405c-40df-9bff-035210fcd7d8.jpg)\r\n\r\n\r\nI am currently on dev-n\r\n![photo_2022-06-28_09-05-33](https://user-images.githubusercontent.com/29897815/176213971-c712b903-3be9-4944-8a97-38bb9753c15a.jpg)\r\n\r\nDon't have any logs because I never committed the transaction.",
+ "comments": [
+  {
+   "id": 1168911233,
+   "user": "jgslade",
+   "created_at": "2022-06-28T16:01:22Z",
+   "body": "I suspect that the issue is from DataHandlerMobile.kt\r\n\r\n```\r\n private fun handleECarbsPreCheck(command: EventData.ActionECarbsPreCheck) {\r\n        val startTimeStamp = System.currentTimeMillis() + T.hours(command.carbsTimeShift.toLong()).msecs()\r\n```\r\n\r\nShould be\r\n\r\n```\r\n private fun handleECarbsPreCheck(command: EventData.ActionECarbsPreCheck) {\r\n        val startTimeStamp = System.currentTimeMillis() + T.mins(command.carbsTimeShift.toLong()).msecs()\r\n```\r\n\r\nAndroidStudio won't let me build right now, the git menu is missing and when I click on the other menus nothing is showing up... so I can't test it right now.\r\n\r\nGot AndroidStudio working properly, but I can't build AAPS I'm getting this error:\r\ne: /home/sam/StudioProjects/AndroidAPS-fork/app/src/main/java/info/nightscout/androidaps/plugins/general/nsclient/NSClientFragment.kt: (20, 35): Unresolved reference: NSAndroidClient"
+  },
+  {
+   "id": 1169338574,
+   "user": "jgslade",
+   "created_at": "2022-06-28T22:17:26Z",
+   "body": "I was able to build dev-n with my fix and it is working\r\n![photo_2022-06-28_16-15-50](https://user-images.githubusercontent.com/29897815/176311848-b93c438e-b376-4a1e-a444-a03f38e94d2c.jpg)\r\n![photo_2022-06-28_16-15-55](https://user-images.githubusercontent.com/29897815/176311952-4aeaf3d2-7a6e-45b4-aca0-67b667127532.jpg)\r\n![photo_2022-06-28_16-15-59](https://user-images.githubusercontent.com/29897815/176311995-7ceb952d-96b8-4345-bf16-296c4ede361a.jpg)\r\n\r\n\r\n"
+  },
+  {
+   "id": 1169628885,
+   "user": "MilosKozak",
+   "created_at": "2022-06-29T07:25:46Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/9b6477381bc96f073b874b209f342b0e815a3a3f\r\nthanks!"
+  }
+ ]
+}

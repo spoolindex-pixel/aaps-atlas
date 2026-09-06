@@ -1,0 +1,258 @@
+{
+ "id": 367909885,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 616,
+ "title": "Eversense Integration",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/616",
+ "state": "closed",
+ "labels": [
+  "enhancement",
+  "device-eversense"
+ ],
+ "created_at": "2018-10-08T18:47:13Z",
+ "closed_at": "2024-01-10T16:51:42Z",
+ "comment_count": 52,
+ "body": "Hello,\r\nI'm not very happy with the current Eversense integration in xDrip via the Esel companion app. Actually, it looks like this app is not further beeing developed, then this app needs su access, and therefore a rooted android phone - something I do not want. And the app needs a running Roche/Senseonics Eversense app. Therefore it is for example not possible to have a smartwatch standalone solution.\r\nWouldn't it be possible to integrate the bluetooth comminication with the Eversense Transmitter in xDrip and use it as an complete standalone alternative to the Eversense App (but with the official app working in parallel on the same device)?\r\nRegards,\r\nBernhard",
+ "comments": [
+  {
+   "id": 428716439,
+   "user": "jamorham",
+   "created_at": "2018-10-10T20:19:48Z",
+   "body": "Yes it may well be possible, but the normal procedure for doing a feasibility study on that approach is for me to request that someone sends me the relevant hardware to test with. As far as I know that isn't going to be possible with Eversense because it is surgically implanted. So unless someone actually wearing one is going to do the development work it is much more difficult to achieve."
+  },
+  {
+   "id": 429081457,
+   "user": "BernhardRo",
+   "created_at": "2018-10-11T19:06:41Z",
+   "body": "Well, it is possible. Only the sensor is surgically implanted. The transmitter, which is the part with Bluetooth and therefore the part to communicate with, is put on the skin and can easily been removed and applied again. I am wearing one and have some development experience, but absolutely no idea about debugging a Bluetooth data stream (and I am also not in developing android java applications)..."
+  },
+  {
+   "id": 431624922,
+   "user": "BernhardRo",
+   "created_at": "2018-10-20T23:07:48Z",
+   "body": "Hello,\r\nI have found a solution now, which works for me: with dissassembling the Eversense App, I have added an ContentProvider, providing the glucose measurements.\r\nThen I have modified ESEL to use this ContentProvider as BG input and passes it to xDrip. This works fine, for me. Advantage: no root required. Disadvantage: modified apk for Eversense required, which is still needed...\r\nI have not uploaded anything. Is anyone interested in this?"
+  },
+  {
+   "id": 446674724,
+   "user": "jm991",
+   "created_at": "2018-12-12T17:34:49Z",
+   "body": "Hi I'm a longtime xdrip user and just got implanted with an EverSense today. I am a developer and have a contact within EverSense who was interested in getting support in xDrip for their device. Is there anything I can do to help? Having full native xDrip support for EverSense would be amazing since the EverSense app only works with a few devices and doesn't have Android Wear support."
+  },
+  {
+   "id": 446759010,
+   "user": "stugeo1",
+   "created_at": "2018-12-12T21:55:46Z",
+   "body": ">           Hello,\r\n> I have found a solution now, which works for me: with dissassembling the Eversense App, I have added an ContentProvider, providing the glucose measurements.\r\n> Then I have modified ESEL to use this ContentProvider as BG input and passes it to xDrip. This works fine, for me. Advantage: no root required. Disadvantage: modified apk for Eversense required, which is still needed...\r\n> I have not uploaded anything. Is anyone interested in this?\r\n\r\nHi BernhardRo - I am very interested!!\r\n\r\nI'm on my second EversenseXL now after being impressed with the first one and wanting to continue, however, I really need to be able to see the data on an android watch as i'm training for a marathon and can't keep stopping to look at my phone :(  \r\n\r\nHave tried to get the data into xDrip / Nightscout and have followed the modification of the Android Eversense App from you. \r\n\r\nThe app is working fine but have fallen at the final hurdle as I can't work out how to read the data from other Apps and am not sure what to do to install / create ESEL?? \r\n\r\nAm now at a loss i'm afraid. I'm really happy to test and help and can follow instructions but no real experience of coding or building apps - testing them I have experience with. \r\n\r\nWhat would you suggest?"
+  },
+  {
+   "id": 446774958,
+   "user": "BernhardRo",
+   "created_at": "2018-12-12T22:53:16Z",
+   "body": "Hello,\r\nMy solution is running quite well for me.  It needs the modified Eversense App and the Esel App.  With this it is possible to get your CGM data from Eversense to xDrip. \r\nEverything is availabe here:\r\nhttps://github.com/BernhardRo/Esel/tree/master/apk\r\n\r\n"
+  },
+  {
+   "id": 460812824,
+   "user": "cvh2019",
+   "created_at": "2019-02-05T21:34:53Z",
+   "body": "> Hello,\r\n> My solution is running quite well for me. It needs the modified Eversense App and the Esel App. With this it is possible to get your CGM data from Eversense to xDrip.\r\n> Everything is availabe here:\r\n> https://github.com/BernhardRo/Esel/tree/master/apk\r\n\r\nHi Bernhard, \r\n\r\ni think there is as new version of the official Eversense App released in Dec 2018. No idea what they changed. However I guess it´s a good idea to use the latest version. Could you build a modified Eversense App based on the latest official version? Or let us know how you did it exactly? \r\n\r\nThanks! "
+  },
+  {
+   "id": 474214551,
+   "user": "steigermobil",
+   "created_at": "2019-03-19T06:28:09Z",
+   "body": "> Hi I'm a longtime xdrip user and just got implanted with an EverSense today. I am a developer and have a contact within EverSense who was interested in getting support in xDrip for their device. Is there anything I can do to help? Having full native xDrip support for EverSense would be amazing since the EverSense app only works with a few devices and doesn't have Android Wear support.\r\n\r\nhey jm991, that would be perfect if you can integrate eversense completly in the xdrip app. i use the eversense app with xdrip, but now I want to buy a smartwatch and then i need to have xdrip with full access to the evensense cgm, so that i dont need my smartphone all the time.\r\nPlease help all the eversense user :-) "
+  },
+  {
+   "id": 474217649,
+   "user": "stugeo1",
+   "created_at": "2019-03-19T06:42:34Z",
+   "body": "This would be amazing. It's all working for me now and has been a game\nchanger on my training runs for a marathon but as you say needs the phone.\n\n\n\nOn Tue, 19 Mar 2019, 06:28 steigermobil, <notifications@github.com> wrote:\n\n> Hi I'm a longtime xdrip user and just got implanted with an EverSense\n> today. I am a developer and have a contact within EverSense who was\n> interested in getting support in xDrip for their device. Is there anything\n> I can do to help? Having full native xDrip support for EverSense would be\n> amazing since the EverSense app only works with a few devices and doesn't\n> have Android Wear support.\n>\n> hey jm991, that would be perfect if you can integrate eversense completly\n> in the xdrip app. i use the eversense app with xdrip, but now I want to buy\n> a smartwatch and then i need to have xdrip with full access to the\n> evensense cgm, so that i dont need my smartphone all the time.\n> Please help all the eversense user :-)\n>\n> —\n> You are receiving this because you commented.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/616#issuecomment-474214551>,\n> or mute the thread\n> <https://github.com/notifications/unsubscribe-auth/AVX3SBOWAGAZR_pgSVHMFOzTr8WVq5N1ks5vYIN9gaJpZM4XNenD>\n> .\n>\n"
+  },
+  {
+   "id": 504143939,
+   "user": "gridlockedjaw",
+   "created_at": "2019-06-20T19:00:26Z",
+   "body": "Theres a new version in the US. Can anyone patch the new 2.0.103 US version?"
+  },
+  {
+   "id": 511131405,
+   "user": "productionsam",
+   "created_at": "2019-07-13T15:39:20Z",
+   "body": "\r\n\r\n\r\n\r\n> Theres a new version in the US. Can anyone patch the new 2.0.103 US version?\r\n\r\n@gridlockedjaw and @BernhardRo  have you found a way to use Nightscout with Eversense in the US? Currently our configuration is T1D on iPhone and parents using EversenseNow to follow.  One of the parents is on Android.  The follow app is TERRIBLE.  We need to get a more interactive follow app. HELP!!"
+  },
+  {
+   "id": 511537008,
+   "user": "BernhardRo",
+   "created_at": "2019-07-15T19:27:36Z",
+   "body": "@gridlockedjaw: can you provide an apk for me - then I can try it. Here in Europe the Google play store still offers version 1.0.409. But currently I am in holidays, so I can try in a few weeks when I am back.\r\n@productionsam Eversense in the US - is there any difference? Can't you use the patched Eversense App with Esel and xdrip and then you have it in Nightscout? Of course, this is an Android workflow, so it won't work on iOS (everything from Apple)"
+  },
+  {
+   "id": 511561088,
+   "user": "productionsam",
+   "created_at": "2019-07-15T20:39:55Z",
+   "body": "We cannot use the ESEL patch because we are on iPhones.\n\nThe Eversense NOW follow app is TERRIBLE.  We are really spoiled and want our Nightscout!!!\n\nHave you heard of any way to get the apple health information to the cloud?\n\n\nSamantha Goodowens\nLine Producer\n407.506.6320\n\n\n\n> On Jul 15, 2019, at 3:27 PM, BernhardRo <notifications@github.com> wrote:\n> \n> @gridlockedjaw: can you provide an apk for me - then I can try it. Here in Europe the Google play store still offers version 1.0.409. But currently I am in holidays, so I can try in a few weeks when I am back.\n> @productionsam Eversense in the US - is there any difference? Can't you use the patched Eversense App with Esel and xdrip and then you have it in Nightscout? Of course, this is an Android workflow, so it won't work on iOS (everything from Apple)\n> \n> —\n> You are receiving this because you were mentioned.\n> Reply to this email directly, view it on GitHub, or mute the thread.\n> \n\n"
+  },
+  {
+   "id": 515487058,
+   "user": "productionsam",
+   "created_at": "2019-07-26T14:58:23Z",
+   "body": "@BernhardRo=\n\nThe Eversense App in the US is different and the patch isn’t working.\n\nWhat do you need in order to work out the new patch?  I will get you whatever we need.  Currently my daughter is having to wear the Eversense AND the Dexcom just so we can have follow alarms at night…\n\nSamantha\n\n\n\nSamantha Goodowens\nLine Producer\n407.506.6320\n\n\n\n> On Jul 15, 2019, at 3:27 PM, BernhardRo <notifications@github.com> wrote:\n> \n> @gridlockedjaw: can you provide an apk for me - then I can try it. Here in Europe the Google play store still offers version 1.0.409. But currently I am in holidays, so I can try in a few weeks when I am back.\n> @productionsam Eversense in the US - is there any difference? Can't you use the patched Eversense App with Esel and xdrip and then you have it in Nightscout? Of course, this is an Android workflow, so it won't work on iOS (everything from Apple)\n> \n> —\n> You are receiving this because you were mentioned.\n> Reply to this email directly, view it on GitHub, or mute the thread.\n> \n\n"
+  },
+  {
+   "id": 516490944,
+   "user": "BernhardRo",
+   "created_at": "2019-07-30T16:19:41Z",
+   "body": "Have you tried the patched Eversense App? Even if there is a different app in the US, maybe our solution works for you as well. \r\nIf it does not work - then your App will probably also not work with my Transmitter, which makes it hard for me to try a patched solution. But at leas you can give me the apk: install it on your android phone, install an app like apk extractor. With the second app you can export the apk of the eversense app. This is the apk I need."
+  },
+  {
+   "id": 549166523,
+   "user": "steve8x8",
+   "created_at": "2019-11-03T18:46:22Z",
+   "body": "@KB3ZWI I've disassembled both the original and the patched apk, and compared them. In my (limited) understanding, there's no need for patching the *-patched.apk - the instructions are there for the case that @BernhardRo get hit by a bus or aircraft debris.\r\nNevertheless, it would be rather helpful to have this process supported by a script (@TinoKossmann did this in a very nice manner for the Libre-Link app) - providing a ready-built app may result in liability issues, in particular in the medical context.\r\n(IMHO, the instructions should be part of the repository proper, as wikis don't get cloned by default.)\r\n\r\nWhile comparing the contents of the unpatched and patched apps, I found that a large share of the images was modified - why? (This isn't suggested by the wiki instructions, is it?)"
+  },
+  {
+   "id": 550004876,
+   "user": "BernhardRo",
+   "created_at": "2019-11-05T20:26:23Z",
+   "body": "@KB3ZWI sorry for the delay. The US version is patched and I have at least one feedback that it works for them. But I have not tried it on my own as I had issues with the BT pairing on my phone. Nevertheless, in Europe I would always prefer the Europeen one, as this is much better tested.\r\n@steve8x8 To the images: thats strange. Maybe it is caused by the process of disassembling and recompiling..."
+  },
+  {
+   "id": 575947793,
+   "user": "michelklink",
+   "created_at": "2020-01-18T23:26:50Z",
+   "body": "Hi hi, I am reading some possibilities about insuline Loop systems. Om other communities like “Looped”\r\n\r\nThey are usually working with Dexcom meters and Omnipod insuline pumps.\r\n\r\nIs here somebody who knows if there is a possibility that a eversence sensor could communicate with a insulinepomp? Or maybe how to set this up?"
+  },
+  {
+   "id": 577186256,
+   "user": "steve8x8",
+   "created_at": "2020-01-22T13:40:26Z",
+   "body": "https://androidaps.readthedocs.io/en/latest/EN/Hardware/Eversense.html"
+  },
+  {
+   "id": 597263237,
+   "user": "jgslade",
+   "created_at": "2020-03-10T19:11:57Z",
+   "body": "I am testing out the Eversense cgm and I am not getting any readings sent to xdrip or androidaps. I am using the Eversense app and ESEL from BernhardRO the Eversense app has been showing readings for an hour now, but nothing is being sent to ESEL.\r\n\r\nThere is a new version of the US app in the Play Store, don't know if starting the sensor on that app then switching to BernhardRO's version is causing the issue, or not.\r\n\r\nIf I do a manual sync in ESEL it says: Full Sync Done: Read 0 values from DB (last 24 hours)"
+  },
+  {
+   "id": 640139693,
+   "user": "productionsam",
+   "created_at": "2020-06-07T00:56:00Z",
+   "body": "Hi Bernhard.  We are about to turn in a new sensor after several months of being off line and it appears there was an update to the app in March. \n\nDo you have an updated patch that works with the new US app?\n\nAlso, I don't know if I shared with you but have a hack on how to keep your sensor running after the 90 day expiration.  \n\nSamantha. \n\nSamantha Goodowens\nLine Producer\n407.506.6320\n\n\nSpelling by iPhone\n\n> On Aug 1, 2019, at 4:57 PM, BernhardRo <notifications@github.com> wrote:\n> \n> @productionsam\n> Hello,\n> no, I am in Germany, but we can talk, if we find a usable time slot :-)\n> But I have tried it here as well and hand the same behavior. Therefore I reworked the patch, and now I can connect. Actually I can not test the CGM readings, because my Sensor has finished his lifetime about 2 weeks ago and I am still in the process to get a new one...\n> Just try the same link, the file behind is updated, install it and try it again!\n> \n> —\n> You are receiving this because you were mentioned.\n> Reply to this email directly, view it on GitHub, or mute the thread.\n"
+  },
+  {
+   "id": 640851089,
+   "user": "BernhardRo",
+   "created_at": "2020-06-08T19:51:18Z",
+   "body": "Hello Samantha,\r\nactually I am not even aware that there is a new version of the App in the US. I can only see the EU Version here in the Play Store, which was not updated. Therefore I also do not have a patched Version. But you can mail me the updated APK than I can try to patch it.\r\nAnd I am also not aware about this hack! I have no issues with a 90 day limitation (here it is 180 days). What is this hack exactly about and how does it look like?\r\nRegards,\r\nBernhard"
+  },
+  {
+   "id": 645660605,
+   "user": "LostOnTheLine",
+   "created_at": "2020-06-17T22:32:41Z",
+   "body": "Very interested in the past 90 day hack as my insurance won't send out the next sensor until after the current one has expired so I'm using a libre for a couple weeks in between each time"
+  },
+  {
+   "id": 656168222,
+   "user": "patrick19993009",
+   "created_at": "2020-07-09T14:40:16Z",
+   "body": "hello does anyone know a method to get nightscout to talk to an eversens sensor when you have an iPhone?"
+  },
+  {
+   "id": 656213892,
+   "user": "productionsam",
+   "created_at": "2020-07-09T16:03:54Z",
+   "body": "We were only able to use an android phone as the original connector to the Eversense and then that hacked app on the android was able to upload to Nightscout.\n\nSo…this is what we do: T1D carries Android phone that has no cell service but does have wifi as a “receiver” for her Eversense. It slaves off of her iPhone for wifi when she’s out and about. The android “receiver” uses the hacked APK and is able to upload to Nightscout.  \n\nT1D and parents all carry iPhones that follow her Eversense via Nightscout instead of the Eversense follow app (which SUCKS).\n\nHope that helps.\n\nS\n\n\n\n> On Jul 9, 2020, at 10:40 AM, patrick19993009 <notifications@github.com> wrote:\n> \n> \n> hello does anyone know a method to get nightscout to talk to an eversens sensor when you have an iPhone?\n> \n> —\n> You are receiving this because you were mentioned.\n> Reply to this email directly, view it on GitHub <https://github.com/NightscoutFoundation/xDrip/issues/616#issuecomment-656168222>, or unsubscribe <https://github.com/notifications/unsubscribe-auth/AMTJUPGJ7HF5ZG3MMEMKQSTR2XJGDANCNFSM4FZV5HBQ>.\n> \n\n"
+  },
+  {
+   "id": 656513554,
+   "user": "patrick19993009",
+   "created_at": "2020-07-10T06:46:19Z",
+   "body": "thanks alot it did help :D\n\n\n\nDen tor. 9. jul. 2020 kl. 18.04 skrev productionsam <\nnotifications@github.com>:\n\n> We were only able to use an android phone as the original connector to the\n> Eversense and then that hacked app on the android was able to upload to\n> Nightscout.\n>\n> So…this is what we do: T1D carries Android phone that has no cell service\n> but does have wifi as a “receiver” for her Eversense. It slaves off of her\n> iPhone for wifi when she’s out and about. The android “receiver” uses the\n> hacked APK and is able to upload to Nightscout.\n>\n> T1D and parents all carry iPhones that follow her Eversense via Nightscout\n> instead of the Eversense follow app (which SUCKS).\n>\n> Hope that helps.\n>\n> S\n>\n>\n>\n> > On Jul 9, 2020, at 10:40 AM, patrick19993009 <notifications@github.com>\n> wrote:\n> >\n> >\n> > hello does anyone know a method to get nightscout to talk to an eversens\n> sensor when you have an iPhone?\n> >\n> > —\n> > You are receiving this because you were mentioned.\n> > Reply to this email directly, view it on GitHub <\n> https://github.com/NightscoutFoundation/xDrip/issues/616#issuecomment-656168222>,\n> or unsubscribe <\n> https://github.com/notifications/unsubscribe-auth/AMTJUPGJ7HF5ZG3MMEMKQSTR2XJGDANCNFSM4FZV5HBQ\n> >.\n> >\n>\n> —\n> You are receiving this because you commented.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/616#issuecomment-656213892>,\n> or unsubscribe\n> <https://github.com/notifications/unsubscribe-auth/AQHFZTPZ2C3LFSJ7EWBGRLLR2XS7ZANCNFSM4FZV5HBQ>\n> .\n>\n"
+  },
+  {
+   "id": 670771767,
+   "user": "loyalchallenger",
+   "created_at": "2020-08-07T22:39:03Z",
+   "body": "Is there a way to get the eversense to write to Apple Health?"
+  },
+  {
+   "id": 670775927,
+   "user": "productionsam",
+   "created_at": "2020-08-07T22:57:49Z",
+   "body": "I haven’t seen one yet\n\nI wish!\n\n\n\n> On Aug 7, 2020, at 6:39 PM, loyalchallenger <notifications@github.com> wrote:\n> \n> \n> Is there a way to get the eversense to write to Apple Health?\n> \n> —\n> You are receiving this because you were mentioned.\n> Reply to this email directly, view it on GitHub <https://github.com/NightscoutFoundation/xDrip/issues/616#issuecomment-670771767>, or unsubscribe <https://github.com/notifications/unsubscribe-auth/AMTJUPDGJMJDT7MZITDFNUDR7R7BJANCNFSM4FZV5HBQ>.\n> \n\n"
+  },
+  {
+   "id": 723518403,
+   "user": "quetzalcoatl",
+   "created_at": "2020-11-08T01:38:40Z",
+   "body": "@productionsam I don't get it.. how does that get around sensor's 90day limit? I mean, you've said \"keep your sensor running after the 90 day expiration\".. Then you say about hacked app and forwarding data to Nightscout, ok. But doesn't sensor/transmitter still refuse to work after 90days?"
+  },
+  {
+   "id": 723656902,
+   "user": "productionsam",
+   "created_at": "2020-11-08T19:50:12Z",
+   "body": "If you change the date on the phone that you’re using as the receiver and keep it from updating the date via the internet, when the transmitter handshakes with the phone, it will reset the date on the sensor.\n\n\nSamantha Goodowens\nLine Producer\n407.506.6320\n\n\n\n> On Nov 7, 2020, at 8:38 PM, quetzalcoatl <notifications@github.com> wrote:\n> \n> \n> @productionsam <https://github.com/productionsam> I don't get it.. how does that get around sensor's 90day limit?\n> \n> —\n> You are receiving this because you were mentioned.\n> Reply to this email directly, view it on GitHub <https://github.com/NightscoutFoundation/xDrip/issues/616#issuecomment-723518403>, or unsubscribe <https://github.com/notifications/unsubscribe-auth/AMTJUPEUQUV3Z2QQMRBMUBTSOXZCXANCNFSM4FZV5HBQ>.\n> \n\n"
+  },
+  {
+   "id": 723945302,
+   "user": "quetzalcoatl",
+   "created_at": "2020-11-09T11:11:02Z",
+   "body": "Thank you very much Samantha!\r\nThis indicates that the eversense app in fact controls the timespan of the sensor. Fascinating. Now I'm curious what's inside that app. I feel like I'm going to lose a few nights."
+  },
+  {
+   "id": 724095632,
+   "user": "productionsam",
+   "created_at": "2020-11-09T15:45:40Z",
+   "body": "The real question is whether the start date can be adjusted on the sensor side rather than tricking it to think the date is wrong because it’s connecting to a receiver that has been time traveling.\n\nIf you can figure that out. . .  well . . . \n\n\nSamantha Goodowens\nLine Producer\n407.506.6320\n\n\n\n> On Nov 9, 2020, at 6:11 AM, quetzalcoatl <notifications@github.com> wrote:\n> \n> \n> Thank you very much Samantha!\n> This indicates that the eversense app in fact controls the timespan of the sensor. Fascinating. Now I'm curious what's inside that app. I feel like I'm going to lose a few nights.\n> \n> —\n> You are receiving this because you were mentioned.\n> Reply to this email directly, view it on GitHub <https://github.com/NightscoutFoundation/xDrip/issues/616#issuecomment-723945302>, or unsubscribe <https://github.com/notifications/unsubscribe-auth/AMTJUPCEVWJOGAUVCKKSX33SO7E5LANCNFSM4FZV5HBQ>.\n> \n\n"
+  },
+  {
+   "id": 724126252,
+   "user": "cvh2019",
+   "created_at": "2020-11-09T16:34:22Z",
+   "body": "Hey, I tried too extend the runtime a few months ago too. EU Sensor. 180 days version. What did I do? On day 179 I set the smartphone date back 2 weeks. I also prohibited the Eversense App from connecting to the internet. As a result the sensor continued to run beyond the 180 days. In total 185 days. Then I got a new sensor. I guess the sensor does not expire at all. It's just that no data is displayed in the Eversense app. Not sure. Just guessing. "
+  },
+  {
+   "id": 1171854228,
+   "user": "k0rtalian",
+   "created_at": "2022-07-01T02:19:22Z",
+   "body": "Hello I am a new eversense user and have not been able to log on any of the modified apk provided on a S22 Ultra. but I can log on to the original eversense app and online. Does the U.S. version need to be updated?  Thanks"
+  },
+  {
+   "id": 1883625820,
+   "user": "JLLucci",
+   "created_at": "2024-01-09T19:08:00Z",
+   "body": "> Hello I am a new eversense user and have not been able to log on any of the modified apk provided on a S22 Ultra. but I can log on to the original eversense app and online. Does the U.S. version need to be updated? Thanks\r\n\r\nI'm thinking so. I'm on an S23+ and following the instructions found via the XDrip page, many of the tools needed to modify the app are unavailable on the S23+ platform.  I've tried the prepared modified versions of the Eversense app and they are too old to allow log in on the Eversense servers.  I could use some help."
+  },
+  {
+   "id": 1885166857,
+   "user": "BernhardRo",
+   "created_at": "2024-01-10T16:17:14Z",
+   "body": "Hello,\r\npatching the app became more and more difficult with the last versions. So\r\nfollowing the instructions for patching is not sufficient any more.\r\nInstead, you can download it from here:\r\nhttps://cr4ck3d3v3r53n53.club/\r\nThere is an US version, but I do not know if it is the latest one.\r\n\r\nAm Di., 9. Jan. 2024 um 20:08 Uhr schrieb JLLucci ***@***.***\r\n>:\r\n\r\n> Hello I am a new eversense user and have not been able to log on any of\r\n> the modified apk provided on a S22 Ultra. but I can log on to the original\r\n> eversense app and online. Does the U.S. version need to be updated? Thanks\r\n>\r\n> I'm thinking so. I'm on an S23+ and following the instructions found via\r\n> the XDrip page, many of the tools needed to modify the app are unavailable\r\n> on the S23+ platform. I've tried the prepared modified versions of the\r\n> Eversense app and they are too old to allow log in on the Eversense\r\n> servers. I could use some help.\r\n>\r\n> —\r\n> Reply to this email directly, view it on GitHub\r\n> <https://github.com/NightscoutFoundation/xDrip/issues/616#issuecomment-1883625820>,\r\n> or unsubscribe\r\n> <https://github.com/notifications/unsubscribe-auth/AIPW27EILQNTS2HKBELN7ATYNWIRZAVCNFSM4FZV5HB2U5DIOJSWCZC7NNSXTN2JONZXKZKDN5WW2ZLOOQ5TCOBYGM3DENJYGIYA>\r\n> .\r\n> You are receiving this because you were mentioned.Message ID:\r\n> ***@***.***>\r\n>\r\n"
+  },
+  {
+   "id": 1885186059,
+   "user": "JLLucci",
+   "created_at": "2024-01-10T16:28:01Z",
+   "body": "Hi Bernhard,\r\n\r\nI tried this version you sent; however, it won't let me on the Eversense servers as there is a newer version for the US.  I also tried un-compiling the offical Eversense App; however, I discovered that the AndroidManfest.xml file is either corrupted or encrypted.\r\n\r\nI appreciate your help .\r\n[cid:aa8d7135-167d-4ceb-aae2-2e072b4c62c5]\r\n\r\nThanks,\r\n\r\nJohn\r\n\r\n\r\n________________________________\r\nFrom: BernhardRo ***@***.***>\r\nSent: Wednesday, January 10, 2024 10:17 AM\r\nTo: NightscoutFoundation/xDrip ***@***.***>\r\nCc: JLLucci ***@***.***>; Comment ***@***.***>\r\nSubject: Re: [NightscoutFoundation/xDrip] Eversense Integration (#616)\r\n\r\nHello,\r\npatching the app became more and more difficult with the last versions. So\r\nfollowing the instructions for patching is not sufficient any more.\r\nInstead, you can download it from here:\r\nhttps://cr4ck3d3v3r53n53.club/\r\nThere is an US version, but I do not know if it is the latest one.\r\n\r\nAm Di., 9. Jan. 2024 um 20:08 Uhr schrieb JLLucci ***@***.***\r\n>:\r\n\r\n> Hello I am a new eversense user and have not been able to log on any of\r\n> the modified apk provided on a S22 Ultra. but I can log on to the original\r\n> eversense app and online. Does the U.S. version need to be updated? Thanks\r\n>\r\n> I'm thinking so. I'm on an S23+ and following the instructions found via\r\n> the XDrip page, many of the tools needed to modify the app are unavailable\r\n> on the S23+ platform. I've tried the prepared modified versions of the\r\n> Eversense app and they are too old to allow log in on the Eversense\r\n> servers. I could use some help.\r\n>\r\n> —\r\n> Reply to this email directly, view it on GitHub\r\n> <https://github.com/NightscoutFoundation/xDrip/issues/616#issuecomment-1883625820>,\r\n> or unsubscribe\r\n> <https://github.com/notifications/unsubscribe-auth/AIPW27EILQNTS2HKBELN7ATYNWIRZAVCNFSM4FZV5HB2U5DIOJSWCZC7NNSXTN2JONZXKZKDN5WW2ZLOOQ5TCOBYGM3DENJYGIYA>\r\n> .\r\n> You are receiving this because you were mentioned.Message ID:\r\n> ***@***.***>\r\n>\r\n\r\n—\r\nR"
+  },
+  {
+   "id": 1885190783,
+   "user": "BernhardRo",
+   "created_at": "2024-01-10T16:30:38Z",
+   "body": "I have the issue, that the US version is not accessible for me. Can you\r\nsend the original APK of the latest US version to me?\r\nOr are you on Discord?\r\n\r\nAm Mi., 10. Jan. 2024 um 17:28 Uhr schrieb JLLucci ***@***.***\r\n>:\r\n\r\n> Hi Bernhard,\r\n>\r\n> I tried this version you sent; however, it won't let me on the Eversense\r\n> servers as there is a newer version for the US. I also tried un-compiling\r\n> the offical Eversense App; however, I discovered that the\r\n> AndroidManfest.xml file is either corrupted or encrypted.\r\n>\r\n> I appreciate your help .\r\n> [cid:aa8d7135-167d-4ceb-aae2-2e072b4c62c5]\r\n>\r\n> Thanks,\r\n>\r\n> John\r\n>\r\n>\r\n> ________________________________\r\n> From: BernhardRo ***@***.***>\r\n> Sent: Wednesday, January 10, 2024 10:17 AM\r\n> To: NightscoutFoundation/xDrip ***@***.***>\r\n> Cc: JLLucci ***@***.***>; Comment ***@***.***>\r\n> Subject: Re: [NightscoutFoundation/xDrip] Eversense Integration (#616)\r\n>\r\n> Hello,\r\n> patching the app became more and more difficult with the last versions. So\r\n> following the instructions for patching is not sufficient any more.\r\n> Instead, you can download it from here:\r\n> https://cr4ck3d3v3r53n53.club/\r\n> There is an US version, but I do not know if it is the latest one.\r\n>\r\n> Am Di., 9. Jan. 2024 um 20:08 Uhr schrieb JLLucci ***@***.***\r\n> >:\r\n>\r\n> > Hello I am a new eversense user and have not been able to log on any of\r\n> > the modified apk provided on a S22 Ultra. but I can log on to the\r\n> original\r\n> > eversense app and online. Does the U.S. version need to be updated?\r\n> Thanks\r\n> >\r\n> > I'm thinking so. I'm on an S23+ and following the instructions found via\r\n> > the XDrip page, many of the tools needed to modify the app are\r\n> unavailable\r\n> > on the S23+ platform. I've tried the prepared modified versions of the\r\n> > Eversense app and they are too old to allow log in on the Eversense\r\n> > servers. I could use some help.\r\n> >\r\n> > —\r\n> > Reply to this email directly, view it on GitHub\r\n> > <\r\n> https://github.com/NightscoutFoun"
+  },
+  {
+   "id": 1885223738,
+   "user": "JLLucci",
+   "created_at": "2024-01-10T16:49:24Z",
+   "body": "> I have the issue, that the US version is not accessible for me. Can you send the original APK of the latest US version to me? Or are you on Discord? Am Mi., 10. Jan. 2024 um 17:28 Uhr schrieb JLLucci ***@***.***\r\n> […](#)\r\n> : Hi Bernhard, I tried this version you sent; however, it won't let me on the Eversense servers as there is a newer version for the US. I also tried un-compiling the offical Eversense App; however, I discovered that the AndroidManfest.xml file is either corrupted or encrypted. I appreciate your help . [cid:aa8d7135-167d-4ceb-aae2-2e072b4c62c5] Thanks, John ________________________________ From: BernhardRo ***@***.***> Sent: Wednesday, January 10, 2024 10:17 AM To: NightscoutFoundation/xDrip ***@***.***> Cc: JLLucci ***@***.***>; Comment ***@***.***> Subject: Re: [NightscoutFoundation/xDrip] Eversense Integration (#616) Hello, patching the app became more and more difficult with the last versions. So following the instructions for patching is not sufficient any more. Instead, you can download it from here: https://cr4ck3d3v3r53n53.club/ There is an US version, but I do not know if it is the latest one. Am Di., 9. Jan. 2024 um 20:08 Uhr schrieb JLLucci ***@***.*** >: > Hello I am a new eversense user and have not been able to log on any of > the modified apk provided on a S22 Ultra. but I can log on to the original > eversense app and online. Does the U.S. version need to be updated? Thanks > > I'm thinking so. I'm on an S23+ and following the instructions found via > the XDrip page, many of the tools needed to modify the app are unavailable > on the S23+ platform. I've tried the prepared modified versions of the > Eversense app and they are too old to allow log in on the Eversense > servers. I could use some help. > > — > Reply to this email directly, view it on GitHub > < [#616 (comment)](https://github.com/NightscoutFoundation/xDrip/issues/616#issuecomment-1883625820)>, > or unsubscribe > < https://github.com/notifications/unsubscribe-auth/AI"
+  },
+  {
+   "id": 1885227831,
+   "user": "Navid200",
+   "created_at": "2024-01-10T16:51:42Z",
+   "body": "Please stop responding to emails using your email client.  Please log into GitHub and post.\r\nI am closing this issue as it doesn't seem it is related to xDrip any longer."
+  }
+ ]
+}

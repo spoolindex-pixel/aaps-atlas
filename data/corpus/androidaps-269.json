@@ -1,0 +1,35 @@
+{
+ "id": 794611442,
+ "repo": "nightscout/AndroidAPS",
+ "number": 269,
+ "title": "[Improvement] Insulin management",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/269",
+ "state": "closed",
+ "labels": [
+  "enhancement"
+ ],
+ "created_at": "2021-01-26T22:36:47Z",
+ "closed_at": "2026-05-10T20:53:10Z",
+ "comment_count": 3,
+ "body": "Just to open the discussion, because I know that the impact of this proposal can be significant for the data structure, the interface and even for NS data exchanges).\r\n=> Note: I can work on it (not alone), but only if you think it's a good idea (or tell me and close it if you think it's too complicated...)\r\n\r\nI have always found strange to manage insulin settings in 2 different places:\r\n- Peak in several insulin plugins (depending on the type of insulin)\r\n- DIA inside the profile\r\nAnd when we change the type of insulin, I don't think the “insulin switches” are memorized in history.\r\n\r\nI think it might be better if we manage insulin within a single plugin (like for example the profile plugin which can handle multiple profiles or automation with several rules), and consider the current insulin plugins as templates for creating insulin used (with default name, Peak and DIA values ​​which could be adjusted within certain limits):\r\nIf I want to use a new Lyumjev insulin, I open Insulin plugin and I create the new insulin from the Lyumjev template and I can keep default name and slightly adjust if necessary peak and dia)\r\nJust for example, templates could be (defaults values and limits)\r\n- Lyumjev: Peak 45min (+/- 5min) and DIA 5h (5h-7h or 4h-6h)\r\n- Fiasp: Peak 55min (+/- 5min) and DIA 7h (6h-8h)\r\n- Rapid-Acting: Peak 75min (+/- 10min) and DIA 6h (5h-7h)\r\n- Free peak for a full custom insulin: peak 65min (35min-120min) DIA 6h (5h-8h)\r\n- Mix of 2 insulins: x% insulin 1 (pic1 dia1) and (100-x)% insulin2 (pic2 dia2)\r\n\r\n=> we could define in this Insulin plugin all the different insulins we want to use (for example a Mix lyumjev / rapid-Acting 70% / 30% for my pump and pens with rapid-acting insulin in case of emergency ...)\r\n\r\nThen in each Profile, instead of selecting DIA value, we select among the available insulin (s), the “insulin used in the pump” (= default insulin attached in all treatments given by AAPS with the pump).\r\n\r\nAnd finally, I think the right place to record insulin is attached inside each treatment for the IOB/Activity calculation, (if I change insulin, I just need to set the new insulin in the insulin plugin and update my profile with the new \"default\" insulin), but that way each given treatment keep information of insulin used (of course recorded in NS if possible).\r\n\r\nIn the Insulin layout (in overview), we could add an insulin selector but only when we check \"Do not bolus, record only\", to be able to select another insulin if it is delivered externally, for example by a pen.",
+ "comments": [
+  {
+   "id": 768206150,
+   "user": "MilosKozak",
+   "created_at": "2021-01-27T10:58:52Z",
+   "body": "that is the plan. insulin, peak and DIA will be part of ProfileSwitch and of Treatment (to cover boluses with other kind of insulin). \r\nbut not is this database ..... we can work on this once we move to Room"
+  },
+  {
+   "id": 768580565,
+   "user": "Philoul",
+   "created_at": "2021-01-27T21:12:45Z",
+   "body": "Cool\r\nDo you have a dedicated branch or when do you plan to work on it ?"
+  },
+  {
+   "id": 4416320678,
+   "user": "Philoul",
+   "created_at": "2026-05-10T20:52:54Z",
+   "body": "I propose to close this issue about 5 years old...\n- most of the proposed topics are now included in dev v4 👍"
+  }
+ ]
+}

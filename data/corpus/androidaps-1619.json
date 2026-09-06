@@ -1,0 +1,45 @@
+{
+ "id": 1204488104,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1619,
+ "title": "[DEV] Combo: Cancelled TBR alarms",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1619",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-04-14T12:48:29Z",
+ "closed_at": "2022-05-03T10:30:42Z",
+ "comment_count": 5,
+ "body": "I'm on dev branch and as I already mentioned in Discord, I'm getting frequent cancelled TBR alarms on my Combo.\r\nAAPS 3.0 doesn't have this problem.\r\nThese alarms are occurring in the middle of pump communication and I have to confirm them manually on the pump.\r\nThere are sometimes two alarms a day, sometimes five in only one hour, but I get them constantly.\r\n\r\nI tracked the problem down to commit [Combo: cleanup code](https://github.com/nightscout/AndroidAPS/commit/ad8c2297a01a9165f1e9babc29f63bb9bf46e8f4), with this commit reverted, I'm running without any cancelled TBR alarms for 10 days now.\r\nThis commit doesn't change much but introducing the logging.AAPSLogger and switching some bits from Java to Kotlin.\r\nThe logs seem to point to timeouts reported by Ruffy: [AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/8489246/AndroidAPS.log)\r\nAny Idea what could cause this?",
+ "comments": [
+  {
+   "id": 1105644489,
+   "user": "cominixo",
+   "created_at": "2022-04-21T19:01:42Z",
+   "body": "Can confirm this, reverting the commit also works.\r\nWas also experiencing more frequent disconnects from the pump (probably due to the cancelled TBR alarms)"
+  },
+  {
+   "id": 1114926194,
+   "user": "Der-Schubi",
+   "created_at": "2022-05-02T14:09:16Z",
+   "body": "The reason for the alarms might be a timing issue within RuffyScripter. AAPSLogger seems to be slower than the old slf4j logger.\r\nRemoving all aapsLogger.debug lines (\"Ruffy says ...\") in RuffyScripter.java solves the problem.\r\nWhat could be a possible solution? Ignoring? Disabling debug logging in RuffyScripter??\r\nOr is there a simple way to disable debug logging for dev builds?"
+  },
+  {
+   "id": 1115811485,
+   "user": "MilosKozak",
+   "created_at": "2022-05-03T07:27:45Z",
+   "body": "@jotomo could be Ruffy so sensitive?"
+  },
+  {
+   "id": 1115948218,
+   "user": "jotomo",
+   "created_at": "2022-05-03T10:26:55Z",
+   "body": "@Der-Schubi Nice job bisecting the issue, much appreciated! :+1: \r\n@cominixo Thanks for confirming!\r\n\r\nThe change causing the issue is that previously the \"ruffy says\" logging was using the _trace_ level, which was not active by default. Since AAPSLogger has no _trace_ level, the refactoring changed it to _debug_, thereby enabling rather verbose logging. The amount of added logging then apparently causes the issue. I've opened PR #1688, which simply removes  those logging calls, which aren't useful to be enabled all the time. This then resolves the issue as demonstrated by @Der-Schubi "
+  },
+  {
+   "id": 1115951223,
+   "user": "Der-Schubi",
+   "created_at": "2022-05-03T10:30:42Z",
+   "body": "Thanks a lot @jotomo \r\nDidn't notice the change of log level.\r\nClosed :)"
+  }
+ ]
+}

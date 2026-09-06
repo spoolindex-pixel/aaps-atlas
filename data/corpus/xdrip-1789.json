@@ -1,0 +1,127 @@
+{
+ "id": 951883424,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1789,
+ "title": "xDrip+ stop pairing, won't send pair request, when using Fitbit versa lite",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1789",
+ "state": "closed",
+ "labels": [
+  "device-dexcom",
+  "bluetooth",
+  "device-wear"
+ ],
+ "created_at": "2021-07-23T20:40:50Z",
+ "closed_at": "2023-01-09T19:57:52Z",
+ "comment_count": 18,
+ "body": "### Subject of the issue\r\nNavid asked me to submit this bug report. First time using github, so please let me know if you need other/ more/ different information.\r\nIssue: xDrip+ will stop un-pair from my transmitter. I suspect the issue is caused by my fitbit watch, as when I delete fitbit app from my phone, the xdrip issues resolve. \r\n\r\n### Your environment\r\n- What version of xDrip: 2103312148, 2021.03.31\r\n- What type of hardware data source and how do you get your data there: dexcom G6\r\n- Is your issue specific to a device like and Android phone or a smartwatch? Moto G Power (2020) running Android 11 and Fitbit Versa Lita \r\n- All settings related to the issue, e.g. activated auto calibration. I am not sure what is relevant here...? All settings have been verified by Navid while troubleshooting.\r\n\r\n### Expected behavior\r\nI would like to be able to run my fitbit versa lite watch and xdrip concurrently. I have been using them both without issue for over a year. This problem has been happening off and on for the last 4 months.\r\n\r\n### Actual behavior\r\nWhen I restart phone, restart collector via xDrip, the log says pair request sent, but I never receive a request via xdrip on my phone. The only thing that seems to resolve this is uninstalling my fitbit application from my phone (paired via bluetooth with Versa Lite, using glance to see xdrip status and receive xdrip alerts). I stopped using fibit for weeks with no issue with xDrip. 4-5 days after re-stalling fitbit/ connecting my watch, the issue returned, and was solved again by removing the fitbit app from my phone.\r\n\r\n### Steps to reproduce the behavior:\r\n1. xDrip transmitter drops connection\r\n2. restart collector\r\n3. wait 5 minutes... nothing happens\r\n4. check events log: see \"prompting user to notice pairing request with sound..\" but no pairing request was sent via xdrip/android notifications\r\n5. try steps 2-4 several times\r\n6. un-install fitbit from phone\r\n7. restart xdrip collector\r\n8. wait 5 minutes\r\n9. pairing request notification received. Accept pair. xDrip works normally.\r\n<img width=\"350\" src=\"https://user-images.githubusercontent.com/87878432/126839187-cee66454-0502-4337-a847-995c902b2e10.png\" /> <img width=\"350\" src=\"https://user-images.githubusercontent.com/87878432/126839195-3353d7ba-7a57-41e5-89b9-9c36fdcf9fb8.png\" /> <img width=\"350\" src=\"https://user-images.githubusercontent.com/87878432/126839198-7a8020f5-1256-4496-820f-b4f684bf63bc.png\" /> <img width=\"350\" src=\"https://user-images.githubusercontent.com/87878432/126839202-c539e870-31ba-47ae-bbe7-19d4bc0036af.png\" />",
+ "comments": [
+  {
+   "id": 886079926,
+   "user": "parapenT1sta",
+   "created_at": "2021-07-24T16:57:05Z",
+   "body": "Did you try to use the latest xDrip Nightly version?"
+  },
+  {
+   "id": 890569541,
+   "user": "k10xdrip",
+   "created_at": "2021-08-01T19:01:21Z",
+   "body": "@parapenT1sta We just tried the 8.1.21 version and it wouldn't work at all (no BG readings), so then we tried the 7.17.21 version. I will install fitbit now and see if/when it causes the issue. Will report back. It usually takes 3-5 days.\r\n<img width=\"350\" src=\"https://user-images.githubusercontent.com/87878432/127782372-83a204f9-3f8f-4829-8b70-0038a31160be.png\" /> <img width=\"350\" src=\"https://user-images.githubusercontent.com/87878432/127782373-8248e4fb-2b4c-4be4-aaf0-ede3aea06ce0.png\" />\r\n"
+  },
+  {
+   "id": 891012499,
+   "user": "Navid200",
+   "created_at": "2021-08-02T13:09:01Z",
+   "body": "@k10xdrip Please don't use the August 1, 2021 release.\r\nhttps://www.facebook.com/groups/xDripG5/posts/5803321493074631/\r\n![Screenshot 2021-08-02 090653](https://user-images.githubusercontent.com/51497406/127866876-f28f9c3e-ef37-4584-b8d4-b1c2b9635ade.png)\r\n\r\nWhen you like to upload an image, please reduce the size of the image as much as you can, before uploading, just to leave enough detail visible, to make reading easier."
+  },
+  {
+   "id": 891152788,
+   "user": "DjinnGallagher",
+   "created_at": "2021-08-02T16:14:49Z",
+   "body": "Subject of the issue\r\nI have a similar issue with my Fossil Sport watch (I've used k10xdrip's report as a template!). \r\n\r\nIssue: xDrip unpairs from my Dexcom G6 transmitter. I suspect the issue is caused by my Fossil watch, as when I unpaired my watch, xdrip reconnected immediately\r\n\r\nYour environment\r\nWhat version of xDrip: 2103081944, 2021.03.08\r\nWhat type of hardware data source and how do you get your data there: Dexcom G6\r\nIs your issue specific to a device like an Android phone or a smartwatch? Samsung Galaxy S10e running Android 11, and Fossil Sport\r\nAll settings related to the issue, e.g. activated auto calibration. All settings have been verified by Navid while troubleshooting.\r\nExpected behavior\r\nI would like to be able to run my Fossil watch and xdrip concurrently. I had them both for 18 months on my Samsung S8, using Android 9 without any problems. I bought a Samsung S10e with Android 11 three weeks ago and now have this ongoing problem\r\n\r\nActual behavior\r\nMy new phone loses Bluetooth connection with xdrip three or four times every day. I press \"restart collector\" but it doesn't connect. It recovers when I delete the xdrip cache and \"forget device\", then xdrip sends me a \"pair request\", at which point it begins to work again. Sometimes this doesn't work until I go through the sequence several times. Navid suggested disabling the \r\n -> Allow OB1 unbonding in my Settings, but it's still happening. I'm looping with AAPS so losing the xdrip connection is problematic. The last time it happened, Navid encouraged me to unpair my watch, and xdrip found the connection with my Dexcom immediately. "
+  },
+  {
+   "id": 892909252,
+   "user": "k10xdrip",
+   "created_at": "2021-08-04T19:18:06Z",
+   "body": "@parapenT1sta @Navid200 After switching to 7.17.21, tried with the fitbit and it only lasted about 36 hours. Unpaired fitbit via bluetooth, had to restart my phone and then xdrip+ starting working again. Dexcom branded receiver was getting readings the whole time. See screenshots. ETA that when the log says it prompted via noise/ alert, it did not.\r\n<img width=\"400\" src=\"https://user-images.githubusercontent.com/87878432/128241540-73c2f970-ebad-4851-9578-73dcf7e2816b.png\" /><img width=\"400\" src=\"https://user-images.githubusercontent.com/87878432/128241560-fa527c83-7f0f-4c87-970f-6e0fd20a9465.png\" /><img width=\"400\" src=\"https://user-images.githubusercontent.com/87878432/128241575-f8a9f934-a01f-42ac-8e2d-21d21ceef466.png\" /><img width=\"400\" src=\"https://user-images.githubusercontent.com/87878432/128241579-69057208-b7b7-465b-9e6c-9f597b30116e.png\" />\r\n"
+  },
+  {
+   "id": 897590818,
+   "user": "bionictom",
+   "created_at": "2021-08-12T12:16:59Z",
+   "body": "I also had this problem with my G5.\r\n\r\nTried to start a new sensor, but xdrip was stuck at \"Receiving Data from DexcomG5 Collector\". With \"No Data received\".\r\n\r\nI tried rebooting the phone and toggling bluetooth but nothing helped. I also have prompting user to notice pairing request with sound..\" \r\n\r\nNavid suggested I disable the smartwatch (Ticwatch pro) which I did, then rebootet the phone, toggled bluetooth and then I got the pairing request, now everything is working. I'm leaving the watch turned off for now.\r\n\r\nXdrip Version: 210702815\r\nSmartwatch: Ticwatch Pro\r\nMy xdrip settings are according to this guide: https://github.com/Navid200/xDrip/wiki/G5-Recommended-Settings\r\n\r\n\r\n![grafik](https://user-images.githubusercontent.com/28786121/129194862-1b63fe49-ae7c-47c7-a719-76e9e33843b6.png)\r\n\r\n"
+  },
+  {
+   "id": 898199858,
+   "user": "tolot27",
+   "created_at": "2021-08-13T05:24:13Z",
+   "body": "A few questions:\r\n1. Does it work with some previous version of xDrip while Fitbit is connected / Fitbit app is installed?\r\n2. Does it work with the Dexcom App (xDrip completely disabled)?"
+  },
+  {
+   "id": 898873055,
+   "user": "jamorham",
+   "created_at": "2021-08-14T09:53:18Z",
+   "body": "This sounds like an issue in the Fitbit app. There used to be things that could be done regarding intercepting pairing which then got broken by google changing how the pairing works on many versions of android with a security update. Its possible that the fitbit app still does this and doesn't correctly pass on the intercepted pairing request if it isn't for it. That's just a hunch but if someone links the exact app I can take a look and see if it looks likely that is what is happening. "
+  },
+  {
+   "id": 898879273,
+   "user": "bionictom",
+   "created_at": "2021-08-14T10:57:31Z",
+   "body": "The problem I had might be similar to the Op, but I don't use Fitbit, I use a To watch pro with Android wear, no dedicated app on my phone"
+  },
+  {
+   "id": 901606528,
+   "user": "k10xdrip",
+   "created_at": "2021-08-19T04:47:35Z",
+   "body": "@tolot27 Hi, to answer your questions: 1. It did work fine for awhile, maybe a year or so. Then this issue started up, but that also coincided with having to replace my phone. 2. my phone is not compatible with the dexcom app, so I don't know. I do use the dexcom receiver sometimes and that has no issues working when I use it, even when xdrip seems to be failing. \r\n\r\nThe biggest issue is that now I don't even get the alert/ notification/ prompt to re-pair the transmitter. Before I at least used to get the re-pair prompt immediately (over and over and over, which is a different issue). But now, I have to keep re-starting my phone/ restart collector 2-10x to get a prompt to pair. It's very time consuming. Also, I have noticed this issue persists even without the fitbit app on my phone, so I don't think it's related to the fitbit app. I have stopped using the fitbit app completely and I have still experienced the no prompt to pair issue, although luckily now that I stop trying to make the fitbit work, I don't need to re-pair very often.\r\n\r\nSo I guess there are two issues. 1. something about the fitbit app causes xdrip to unpair 2. when xdrip does get un-paired, I don't automatically get the prompt to re-pair without trying many times to force it. \r\n\r\nSide-note: I assume there is no way to easily re-pair the transmitter without getting the prompt/ notification?"
+  },
+  {
+   "id": 932666497,
+   "user": "k10xdrip",
+   "created_at": "2021-10-02T02:24:20Z",
+   "body": "update: so I have not paired fitbit with my phone in several months now. I do have xdrip unpairing from my dexcom transmitter daily, or almost daily now. Restarting my phone usually fixes it. Is there a newer nightly build I should try now that it's been a few months or is the July 17 one still the best one? "
+  },
+  {
+   "id": 932669337,
+   "user": "Navid200",
+   "created_at": "2021-10-02T02:50:16Z",
+   "body": "@k10xdrip You are already using a Nightly version.  You have nothing to lose by switching to another, more recent.    \r\n\r\nIs adaptive battery disabled on your Moto G?\r\nIt's under Settings -> Battery"
+  },
+  {
+   "id": 938346010,
+   "user": "k10xdrip",
+   "created_at": "2021-10-08T05:03:33Z",
+   "body": "@Navid200 I thought you said earlier not to use a later version than that July version, but I can try it out if you think it's worth it. The adaptive battery is disabled on my Moto G. "
+  },
+  {
+   "id": 1151324540,
+   "user": "Navid200",
+   "created_at": "2022-06-09T16:03:23Z",
+   "body": "Please try the latest Nightly: https://github.com/NightscoutFoundation/xDrip/releases/tag/2022.06.09"
+  },
+  {
+   "id": 1152805314,
+   "user": "k10xdrip",
+   "created_at": "2022-06-10T23:50:58Z",
+   "body": "Thanks. I just updated. I'll let you know how things go.\n\nOn Thu, Jun 9, 2022, 9:03 AM Navid ***@***.***> wrote:\n\n> Please try the latest Nightly:\n> https://github.com/NightscoutFoundation/xDrip/releases/tag/2022.06.09\n>\n> —\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/1789#issuecomment-1151324540>,\n> or unsubscribe\n> <https://github.com/notifications/unsubscribe-auth/AU6OWIEJYGT7XTNC4T2HATDVOIIVRANCNFSM5A4VFNSQ>\n> .\n> You are receiving this because you were mentioned.Message ID:\n> ***@***.***>\n>\n"
+  },
+  {
+   "id": 1375028113,
+   "user": "Navid200",
+   "created_at": "2023-01-09T02:16:15Z",
+   "body": "@k10xdrip What is the status?"
+  },
+  {
+   "id": 1376194300,
+   "user": "k10xdrip",
+   "created_at": "2023-01-09T19:50:50Z",
+   "body": "xdrip still does disconnect occasionally, but not hourly/daily like it was\nbefore. Now I'd say it's 1-2x weekly. I stopped trying to use it with my\nfitbit since I was pregnant and needed reliable dexcom service, but can try\nagain now since baby is out!\n\nOn Sun, Jan 8, 2023 at 6:16 PM Navid ***@***.***> wrote:\n\n> @k10xdrip <https://github.com/k10xdrip> What is the status?\n>\n> —\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/1789#issuecomment-1375028113>,\n> or unsubscribe\n> <https://github.com/notifications/unsubscribe-auth/AU6OWIHC3G5QYTKCJQMA7MTWRNYHVANCNFSM5A4VFNSQ>\n> .\n> You are receiving this because you were mentioned.Message ID:\n> ***@***.***>\n>\n"
+  },
+  {
+   "id": 1376212562,
+   "user": "Navid200",
+   "created_at": "2023-01-09T19:57:52Z",
+   "body": "We need to keep updating xDrip to keep it operational for most phones as new phones come to market and as Android gets updated.\r\nThis is an ongoing process.\r\n\r\nThis issue was rather about the interference caused by fitbit.  And it looks like that is something to do with the fitbit app and not xDrip.\r\n\r\nI am going to close this issue.  Not because xDrip is perfect.  But, because I don't think we can change anything in xDrip to address any misbehavior caused by fitbit.\r\nAnd we can reopen this issue if needed.\r\n\r\nAs far as the intermittent connectivity of xDrip itself with a G6 transmitter goes, please use the discussions (https://github.com/NightscoutFoundation/xDrip/discussions) if you need help.\r\n\r\nThanks"
+  }
+ ]
+}

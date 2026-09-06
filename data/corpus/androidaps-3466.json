@@ -1,0 +1,51 @@
+{
+ "id": 2585883920,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3466,
+ "title": "Regression with BG type ??",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3466",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-10-14T12:22:20Z",
+ "closed_at": "2024-10-16T15:34:32Z",
+ "comment_count": 6,
+ "body": "I have problems with updating from a 2 weeks old dev to the last dev version. Seems like something went bad in a commit....\n\nBuild is ok, update is ok. AAPS craches systematically when starting. Clearing cache doesn't help\n\nThis is the logcat when the upgraded AAPS tries to start.\n\n![crach logcat.png](https://github.com/user-attachments/assets/c96c8a2e-82fb-4e00-937a-1d87fc16cccd)\n\n",
+ "comments": [
+  {
+   "id": 2411669934,
+   "user": "vanelsberg",
+   "created_at": "2024-10-14T16:00:30Z",
+   "body": "@MilosKozak \r\n\r\nI think the problem might be related to merge of **PR3411**:\r\nIt changes some contant values  (crashlogs complaining about not seeing the pre-PR values) So might only hit when running latest dev build with DexCom/xDrip?\r\n\r\nCould database reset help out here?"
+  },
+  {
+   "id": 2412230459,
+   "user": "Philoul",
+   "created_at": "2024-10-14T20:35:57Z",
+   "body": "@vanelsberg I think we can't request to all users of current master with xdrip + G6 to reset database before updating to 3.3...\nMaybe we could keep key in sourceSensor enum class to avoid crash (probably easiest solution), or adapt converter, manage a database convertion on update..."
+  },
+  {
+   "id": 2412908555,
+   "user": "plummer86",
+   "created_at": "2024-10-15T05:06:18Z",
+   "body": "I was thinking it could be handled by returning an unknown sensor enum if the sourcesensor is not found."
+  },
+  {
+   "id": 2413089379,
+   "user": "Philoul",
+   "created_at": "2024-10-15T07:20:26Z",
+   "body": "Probably not managed te same way when you use enum to store an information in database, and when you get an information from database...\nBut you are right, we should probably improve code to be more robust even when a database record doesn't match a key..."
+  },
+  {
+   "id": 2413138470,
+   "user": "robertrub",
+   "created_at": "2024-10-15T07:46:31Z",
+   "body": "If db structure/names should be changed, then the code should read both entries but only write in the new format. That will clear the \"old\" format from the db in 6-9 months.\n\nIf not, a _db transformer code_ should change the db structure (always a risky business...) activated once, when it detects the old format. "
+  },
+  {
+   "id": 2417193382,
+   "user": "robertrub",
+   "created_at": "2024-10-16T15:34:24Z",
+   "body": "Solved with the latest commit by @plummer86 \nClosing this issue."
+  }
+ ]
+}

@@ -1,0 +1,42 @@
+{
+ "id": 499980205,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1037,
+ "title": "feature: how to build xDrip APK from multiple pull requests and with custom updater",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1037",
+ "state": "closed",
+ "labels": [
+  "enhancement",
+  "code:quality"
+ ],
+ "created_at": "2019-09-29T22:19:38Z",
+ "closed_at": "2021-08-11T15:01:57Z",
+ "comment_count": 4,
+ "body": "**Motivation:** We are xDrip+Libre2 and 2 followers. I am capable to do some minor improvements to xDrip and work also on translation. I like work that is done in some pull requests which are not merged to master and for sure need some testing. I know other families that could also be interested in testing, but don't have the knowledge to build own xDrip version.\r\n\r\n**Idea for solution:**\r\n- have a build script that uses latest Nightly maintained by @jamorham as base and mixes other branches into it\r\n- sign APK with custom certificate so it is installable in same way as Nightly\r\n- have custom updater to automaticaly distribute new versions of this custom xDrip build to people who trust it\r\n\r\n**Solution implementation:**\r\n- [x] add configurable updater to xDrip code base\r\n- [x] disable the current xDrip updater if custom updater is included\r\n- [x] improve generated version number to work with multiple builds in the same day\r\n- [x] create example updater configuration\r\n- [x] create example build script\r\n- [x] add option to build APK based on nightly instead from master\r\n- [x] update the build script to build release APK from command like (with `gradlew`)\r\n- [ ] create script to deploy release APK and to update the updater configuration\r\n- [ ] find out how to use Github hooks to build this release APK when any of the included pull requests receive new commit\r\n- [ ] allow to customize where to send the crash reports\r\n- [x] publish own APK with features I am interested in as proof of concept\r\n",
+ "comments": [
+  {
+   "id": 536348073,
+   "user": "k2s",
+   "created_at": "2019-09-29T22:28:38Z",
+   "body": "Current state of implementation:\r\n\r\n* custom updater - #1038, builds on https://github.com/javiersantos/AppUpdater\r\n* version number change - #1038, change from `yyyy.MM.dd` to `yy.MMdd.HHmmss`\r\n* update configuration for my APK - https://gist.github.com/k2s/aa7928197d8ea508135bc20bb9bdd664\r\n* example build script - https://gist.github.com/k2s/2feac7fb5ca8319a8bd198a731015a81\r\n* my personal APK build for testing of new features - http://bit.do/xdrip-k2s\r\n\r\nCurrent show stoppers:\r\n\r\n* build with latest Gradle doesn't work - #1012, I have to build APK manually in Android Studio\r\n* what is @jamorham opinion on this"
+  },
+  {
+   "id": 571472071,
+   "user": "k2s",
+   "created_at": "2020-01-07T07:36:25Z",
+   "body": "#1160 build APK signed with data in `signing.properties` by calling `./gradlew :xdripupdater:assembleRelease` so no manual Android Studio invokation is neede"
+  },
+  {
+   "id": 744731793,
+   "user": "tolot27",
+   "created_at": "2020-12-14T21:48:43Z",
+   "body": "I'm not really sure whether we should include this into the public version. IMHO, a good documentation of the basic command chain should be enough."
+  },
+  {
+   "id": 896903236,
+   "user": "Navid200",
+   "created_at": "2021-08-11T15:01:57Z",
+   "body": "This is not an xDrip bug or feature request.  It seems to be documentation, which an xDrip developer may benefit from.  I don't even think a regular xDrip user would need this info.  I don't mean there is no value.  But, I would like it to be were it belongs.\r\nI am closing this and we can have it added to documentation."
+  }
+ ]
+}

@@ -1,0 +1,33 @@
+{
+ "id": 254826004,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 167,
+ "title": "Wear-Crash on settings change",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/167",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2017-09-02T17:46:48Z",
+ "closed_at": "2017-09-14T17:46:30Z",
+ "comment_count": 3,
+ "body": "```\r\n09-01 18:22:47.817 25782-25782/? E/AndroidRuntime: FATAL EXCEPTION: main\r\n                                                   Process: com.eveningoutpost.dexdrip, PID: 25782\r\n                                                   java.lang.IllegalStateException: await must not be called on the UI thread when time is greater than zero.\r\n                                                       at com.google.android.gms.common.internal.zzab.zza(Unknown Source)\r\n                                                       at com.google.android.gms.internal.zzpo.await(Unknown Source)\r\n                                                       at com.eveningoutpost.dexdrip.ListenerService.setLocalNodeName(ListenerService.java:2452)\r\n                                                       at com.eveningoutpost.dexdrip.ListenerService.sendPrefSettings(ListenerService.java:668)\r\n                                                       at com.eveningoutpost.dexdrip.ListenerService.access$2400(ListenerService.java:90)\r\n                                                       at com.eveningoutpost.dexdrip.ListenerService$1.onSharedPreferenceChanged(ListenerService.java:850)\r\n                                                       at android.app.SharedPreferencesImpl$EditorImpl.notifyListeners(SharedPreferencesImpl.java:479)\r\n                                                       at android.app.SharedPreferencesImpl$EditorImpl.-wrap0(SharedPreferencesImpl.java)\r\n                                                       at android.app.SharedPreferencesImpl$EditorImpl$3.run(SharedPreferencesImpl.java:487)\r\n                                                       at android.os.Handler.handleCallback(Handler.java:739)\r\n                                                       at android.os.Handler.dispatchMessage(Handler.java:95)\r\n                                                       at android.os.Looper.loop(Looper.java:148)\r\n                                                       at android.app.ActivityThread.main(ActivityThread.java:5422)\r\n                                                       at java.lang.reflect.Method.invoke(Native Method)\r\n                                                       at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:726)\r\n                                                       at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:616)\r\n```\r\n\r\nThe commit introducing the issue seems to be this one:\r\nhttps://github.com/NightscoutFoundation/xDrip/commit/93e9d3be2b74ab8099d42e6f4ebae1a6def38c95#diff-2fe96e74ad12748a3a7c51ce3bf38ccf\r\n\r\nIt does not like waiting on an UI-Thread:\r\n`NodeApi.GetLocalNodeResult localnodes = Wearable.NodeApi.getLocalNode(googleApiClient).await(60, TimeUnit.SECONDS);`\r\n\r\nI'm not sure if I enabled \"force wear\" from the phone or the watch.",
+ "comments": [
+  {
+   "id": 327050174,
+   "user": "kskandispersonal",
+   "created_at": "2017-09-05T01:44:26Z",
+   "body": "I made the fix to `setLocalNodeName` and it is working correctly.  Here's a snippet from the log...\r\n```"
+  },
+  {
+   "id": 327050317,
+   "user": "kskandispersonal",
+   "created_at": "2017-09-05T01:45:29Z",
+   "body": "```09-04 19:48:21.867 3857-3857/? D/jamorham listener: DataRequester DataRequester: /nightscout_watch_data_resend lastRequest:1969-12-31 19:00:00\r\n09-04 19:48:21.879 3857-3913/? D/jamorham listener: doInBackground enter enable_wearG5=true force_wearG5=false node_wearG5=SmartWatch 3 B22E|8fdbed4e\r\n09-04 19:48:21.900 3857-3857/? D/jamorham listener: getLocalNode Status=: SUCCESS\r\n09-04 19:48:21.900 3857-3857/? D/jamorham listener: setLocalNodeName.  localnode=SmartWatch 3 2D74|a5d3f973\r\n09-04 19:48:21.918 3857-3913/? D/jamorham listener: doInBackground connected.  CapabilityApi.GetCapabilityResult mPhoneNodeID=38b544c3 count=1 localnode=SmartWatch 3 2D74|a5d3f973\r\n09-04 19:48:21.919 3857-3913/? D/jamorham listener: stopService call stopService\r\n```\r\n"
+  },
+  {
+   "id": 328302570,
+   "user": "jamorham",
+   "created_at": "2017-09-09T20:48:12Z",
+   "body": "For reference this should be corrected in the Sept 8th nightly"
+  }
+ ]
+}

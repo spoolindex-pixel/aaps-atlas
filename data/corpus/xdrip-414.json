@@ -1,0 +1,107 @@
+{
+ "id": 319590357,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 414,
+ "title": "Different Trend Arrow in AAPS then in xDrip ",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/414",
+ "state": "closed",
+ "labels": [
+  "type-discussion"
+ ],
+ "created_at": "2018-05-02T15:01:09Z",
+ "closed_at": "2025-07-07T14:28:22Z",
+ "comment_count": 15,
+ "body": "I had several reading reported to AAPS with a different Trend Arrow then shown in XDrip. This is rather Strange, even though most probably explainable. There any way to get this \"In Sync\"?",
+ "comments": [
+  {
+   "id": 387364909,
+   "user": "jamorham",
+   "created_at": "2018-05-08T10:56:45Z",
+   "body": "Are you using G5 native mode? If so the trend arrow in xDrip is the one reported by the G5 which is not based on the last 5 minutes delta."
+  },
+  {
+   "id": 387511169,
+   "user": "triplem",
+   "created_at": "2018-05-08T19:13:20Z",
+   "body": "Well, my issue was not that the trend arrow is not as expected from the delta, but there is a different trend transferred to AAPS then shown in xdrip. Yes, I do use the native mode (even though, I expect that it is not working correctly, since the sensor shows, that it is stopped), but this does/should not make a difference on the transferred value, shouldn't it?\r\n"
+  },
+  {
+   "id": 387548376,
+   "user": "triplem",
+   "created_at": "2018-05-08T21:29:21Z",
+   "body": "There seem to be a difference between the transferred and the shown value.\r\n\r\n![screenshot_20180508-231618](https://user-images.githubusercontent.com/160079/39784096-8f706c08-5317-11e8-98b3-9fc9fcc94a3e.png)\r\n"
+  },
+  {
+   "id": 387548594,
+   "user": "triplem",
+   "created_at": "2018-05-08T21:30:10Z",
+   "body": "Could be a rounding issue????"
+  },
+  {
+   "id": 406820377,
+   "user": "quizzmaster",
+   "created_at": "2018-07-21T20:04:02Z",
+   "body": "I'm experiencing the same with the Libre. The difference never was bigger than 1 so it is most likely the rounding."
+  },
+  {
+   "id": 561891419,
+   "user": "Cagier",
+   "created_at": "2019-12-04T23:33:57Z",
+   "body": "I see a difference between xDrip and AAPS trend arrow as well.  I think this is probably related to https://github.com/NightscoutFoundation/xDrip/issues/681 and https://github.com/NightscoutFoundation/xDrip/issues/800\r\n\r\nAs @jamorham mentions above that the expected behaviour is for the trend arrow in xDrip to be the same one that is reported by the G5 (and presumably G6) in Native Mode then the issue seems to be that this is not the case as the arrow in xDrip can be very different to what I see on my G6 receiver.  However, what I see in my G6 receiver tends to match what I see in AAPS.\r\n\r\nThe natural fix would seem to be to also \"correctly\" display the G5/G6 reported/Native arrow on xDrip as expected and then everything would be consistent.  However, personally I find the one reported by the G5/G6 to be a lot less accurate than the one displayed in xDrip so I would prefer to see that arrow used in AAPS (and NightScout, etc.) - even in Native Mode."
+  },
+  {
+   "id": 1007002012,
+   "user": "tolot27",
+   "created_at": "2022-01-06T23:09:37Z",
+   "body": "Looks like the webservice provides a different trend arrow, too (#1165)."
+  },
+  {
+   "id": 1007003428,
+   "user": "tolot27",
+   "created_at": "2022-01-06T23:12:36Z",
+   "body": "> I would prefer to see that arrow used in AAPS (and NightScout, etc.) - even in Native Mode.\r\n\r\nThat can only be done by AAPS and Nightscout developers. But I assume they won't do that. What about a preference setting allowing to switch between the two trend arrow computation models?"
+  },
+  {
+   "id": 1348986427,
+   "user": "Navid200",
+   "created_at": "2022-12-13T16:25:45Z",
+   "body": "> What about a preference setting allowing to switch between the two trend arrow computation models?\r\n\r\nPlease, no new settings in xDrip to address inconsistencies caused by other apps."
+  },
+  {
+   "id": 1959557849,
+   "user": "Navid200",
+   "created_at": "2024-02-22T14:24:10Z",
+   "body": "@olorinmaia Do you see this issue?  Any ideas?"
+  },
+  {
+   "id": 1962138726,
+   "user": "olorinmaia",
+   "created_at": "2024-02-23T23:38:44Z",
+   "body": "@Navid200 I've seen some other variant of this issue myself, double arrows down in AAPS, I can see if I can get logs for both AAPS and xDrip+ next time. It seem to occur when G6 has some bad readings, maybe a comp low or similar drops, and then the double arrows appear when sensor is getting back on track. It doesn't happen so often, but especially when it comes to double arrows down it can make caregivers abit trigger happy with carbs to \"prevent\" low ;)\r\n\r\nSee these two issues reported in AAPS, one is closed, one is open:\r\nhttps://github.com/nightscout/AndroidAPS/issues/2726\r\nhttps://github.com/nightscout/AndroidAPS/issues/2581"
+  },
+  {
+   "id": 1962146262,
+   "user": "olorinmaia",
+   "created_at": "2024-02-23T23:52:01Z",
+   "body": "@MilosKozak is trend arrow in AAPS supposed to reflect what type of arrow thats sent from BG-source or is it \"recalculated\" within AAPS if smoothing-algo is enabled? "
+  },
+  {
+   "id": 2155740131,
+   "user": "Navid200",
+   "created_at": "2024-06-08T01:15:23Z",
+   "body": "Based on what I am seeing as the behavior of xDrip and everything I have read in all the issues in this repository, I can make the following conclusions:  \r\n  \r\n- xDrip submits to Nightscout/AAPS/webservice the exact same values it receives from G6 or G7 as the value of delta and as the trend arrow slope.\r\n\r\n- xDrip calculates the delta between its current reading and its previous reading and uses that as the delta and trend arow slope that it shows on the xDrip main screen.\r\n  \r\nTherefore, there is no discrepancy between what you would get from Dexcom app or Dexcom receiver and what xDrip submits to Nightscout or AAPS or webservice.  \r\n  \r\nThe only discrepancy is between what G6 or G7 reports as delta or trend arrow and what xDrip shows on its home screen.  \r\n  \r\nIf you disagree with any of that, please let me know.  \r\n  \r\n---  \r\n  \r\nIf anyone likes to open a PR to add a setting to set xDrip to show the same trend arrow and delta as G6 or G7, please go ahead.  \r\nPlease add the setting to the home shelf as that is where all the settings related to the trend arrow are.  \r\n  \r\nThis is not a bug.  This is the behavior of xDrip.  \r\nI don't think we ever had to perfectly match the trend arrow and delta of an app that performs smoothing and as a result adds delay.  \r\nYet, I understand if someone does not like the trend arrow to fluctuate so much.  So, a new setting could address this.  "
+  },
+  {
+   "id": 2155745434,
+   "user": "Navid200",
+   "created_at": "2024-06-08T01:30:38Z",
+   "body": "When I said please go ahead and open a PR, I never meant that it will be approved.  I am not the one who has to approve it.  All I mean is that I personally see no problem with it."
+  },
+  {
+   "id": 3045425077,
+   "user": "Navid200",
+   "created_at": "2025-07-07T14:28:22Z",
+   "body": "I'm closing this issue because there is no reason for the trend arrow in xDrip to match the one in AAPS.\nThe trend arrow that xDrip broadcasts to AAPS is the one it receives from Dexcom.\nBut, xDrip does not show the trend arrow it receives from Dexcom on the xDrip main screen.  xDrip shows a calculated trend arrow reflecting the current and previous readings."
+  }
+ ]
+}

@@ -1,0 +1,57 @@
+{
+ "id": 1524481476,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2330,
+ "title": "Dev F - tdd calculation doesnt work anymore ",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2330",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-01-08T12:06:23Z",
+ "closed_at": "2023-01-19T19:27:40Z",
+ "comment_count": 7,
+ "body": "Always tdd calculation was slow, but came up eventually. \r\n\r\nNow tdd calculations dont Come up anymore. Only \"calculution is being executed\". \r\n\r\nWould love to give additional information to provide usefull input. Because of checking profile settings, ive disabled loop almost all the time lately. Could that interfere? \r\n\r\nIve already pushed reset from the statistics screen. That didnt help. \r\n\r\nTdd calculation from dana-i screen still work. ",
+ "comments": [
+  {
+   "id": 1374866360,
+   "user": "MilosKozak",
+   "created_at": "2023-01-08T15:47:42Z",
+   "body": "it works well for me. more info needed"
+  },
+  {
+   "id": 1374961992,
+   "user": "RalfCGM",
+   "created_at": "2023-01-08T23:43:54Z",
+   "body": "Since im testing a lot with adjust basals, cr and isf,  a lot of profile changes and now about 6 days with running loop disabled is actually the only thing different from when loop was still running and providing proper tdd data. Looks to me that something with the database has gone wrong somehow. Or maybe that loop need to be running to provide the proper data? \r\n\r\nWriting this, ill ensble loop for a while and see whether this Will provide data in the statistics tab. \r\n\r\nFor what it matters. History browser has never worked properly. Really slow or Just hsnging, not providing any data. Dont know whether this could be related to the database being corrupted maybe? \r\n\r\nWhich info do you need to be able to investigste? I think the logs might not provide enough data? "
+  },
+  {
+   "id": 1374991834,
+   "user": "RalfCGM",
+   "created_at": "2023-01-09T01:10:52Z",
+   "body": "Ive Just ran lgs mode for a while an tdd data was available again. So there must be a relation between the tdd calculation and stopping of some processes when loop is stopped.\r\n\r\nKnowing this, this might not be the worst issue. Or does this still indicate an error for you?"
+  },
+  {
+   "id": 1375303354,
+   "user": "MilosKozak",
+   "created_at": "2023-01-09T09:10:00Z",
+   "body": "calculating tdd is based only on data in DB. there is no relation to loop"
+  },
+  {
+   "id": 1376374166,
+   "user": "RalfCGM",
+   "created_at": "2023-01-09T21:48:37Z",
+   "body": "Then there must be some other connection between running loop and tdd calculation. Im pretty sure that: loop disabled - - > after a couple of hours/days tdd wont calculate anymore. Enable loop - - > tdd calculation works again. Or are there other possible dependecies for tdd not to run?\r\n\r\nAt first i thought that i found a major issue, but since it looks like enabling loop resolves the issue, most People wont run into this. Because almost nobody Will stop loop as long as i did.\r\n\r\nUnless you think there might be some deeper technical issue, we can maybe close this issue to be able to focus more on more relevant issues. "
+  },
+  {
+   "id": 1377126861,
+   "user": "MilosKozak",
+   "created_at": "2023-01-10T11:39:08Z",
+   "body": "run it and if it does not appear send recent log"
+  },
+  {
+   "id": 1377969051,
+   "user": "vanelsberg",
+   "created_at": "2023-01-10T22:18:54Z",
+   "body": "Was seeing the same in in recent builds of dev-f.\r\nAfter updating to commit#4b6eab6a (8/1/2023) it started working again.\r\n"
+  }
+ ]
+}

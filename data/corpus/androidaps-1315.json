@@ -1,0 +1,57 @@
+{
+ "id": 1134597619,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1315,
+ "title": "SMB hijacks programmed bolus progress popup and prevents cancellation of the programmed bolus",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1315",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-02-12T20:55:24Z",
+ "closed_at": "2022-06-21T16:53:19Z",
+ "comment_count": 7,
+ "body": "Reporting bugs\r\n--------------\r\n- **Note the precise time the problem occurred** and describe the circumstances and steps that caused\r\n  the problem:\r\n  I programmed a bolus through the bolus wizard. \r\n  I confirmed the bolus.\r\n  Immediately a popup was shown that showed the bolus progress and listed the correct bolus amount\r\n  But it was actually the progress of an ongoing SMB since it completed 0.3 units instead of the programmed 3.3.\r\n\r\n  This happens when you program a bolus and an SMB is being or about to be given. The progress popup then shows the SMB \r\n  progress instead of the programmed bolus progress. This is an issue because the bolus wizard calculated the bolus based on an IOB \r\n  that was calculated prior to the SMB, resulting in a slight overdose of insulin potentially.\r\n\r\n- **Note the Build version**: 3.0.0.1 but it should be noted that I also saw this issue in earlier version 2.8.x\r\n- **Obtain the app's log files**:\r\n\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/8054513/AndroidAPS.log)\r\n\r\n",
+ "comments": [
+  {
+   "id": 1037487170,
+   "user": "vanelsberg",
+   "created_at": "2022-02-12T21:18:06Z",
+   "body": "See also:\r\nhttps://github.com/nightscout/AndroidAPS/issues/836 Progress pop-up windows for manual bolus immediately closed while bolus still progressing"
+  },
+  {
+   "id": 1060750884,
+   "user": "antoinekh",
+   "created_at": "2022-03-07T14:32:17Z",
+   "body": "Same issue. Even with the last dev version\r\n![1646663479719](https://user-images.githubusercontent.com/52744345/157053746-588c04a5-3895-4d2e-a8ab-c3348146e01e.jpeg)\r\n"
+  },
+  {
+   "id": 1060753766,
+   "user": "antoinekh",
+   "created_at": "2022-03-07T14:35:03Z",
+   "body": "I sent a manual bolus and the SMB started just before I sent the bolus.\r\nThe SMB and the bolus were injected but I did not get the pop up of the bolus injection and impossible to cancel"
+  },
+  {
+   "id": 1061582989,
+   "user": "Andries-Smit",
+   "created_at": "2022-03-08T09:36:58Z",
+   "body": "Might be related to https://github.com/nightscout/AndroidAPS/issues/1239 "
+  },
+  {
+   "id": 1065145817,
+   "user": "antoinekh",
+   "created_at": "2022-03-11T14:08:12Z",
+   "body": "Ok I know how to reproduce it.\r\nIf you send a bolus during an SMB, the pop up disappears every time.\r\nI'll take a video to share with everyone."
+  },
+  {
+   "id": 1065174186,
+   "user": "antoinekh",
+   "created_at": "2022-03-11T14:40:05Z",
+   "body": "Video of the SMB hijack bolus progress:\r\nhttps://drive.google.com/file/d/18VaIM4L8jrf17H7ar1oX41G8Fq4lxtm9/view?usp=sharing"
+  },
+  {
+   "id": 1162010911,
+   "user": "MilosKozak",
+   "created_at": "2022-06-21T16:53:19Z",
+   "body": "fixed by https://github.com/nightscout/AndroidAPS/commit/bbcbf3f90535c719fb70bbcb41c486cc7bf475ad"
+  }
+ ]
+}

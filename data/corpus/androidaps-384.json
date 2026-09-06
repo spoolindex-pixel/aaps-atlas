@@ -1,0 +1,51 @@
+{
+ "id": 818294559,
+ "repo": "nightscout/AndroidAPS",
+ "number": 384,
+ "title": "Pod fault 049 when AAPS tries set a zero temp basal and a time change event has just occured",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/384",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-02-28T19:57:04Z",
+ "closed_at": "2021-10-12T09:42:14Z",
+ "comment_count": 6,
+ "body": "AndroidAPS 2.8.2\r\nBuild version: c07465b\r\nDate and time of the error: 28 February 2021 14:16:17\r\n\r\nThe phone used is a Samsung Galaxy S20 SM-G980F\r\n\r\nNothing done with the phone at the time. It just suddenly starts to scream and reports pod fault \"A Pod fault (049 INSULIN_DELIVERY_COMMAND_ERROR) has been detected. Please deactivate your Pod and activate a new one\".\r\n\r\nWhen looking in the loggs it looks like this is the same error as I reported in https://github.com/AAPS-Omnipod/AndroidAPS/issues/40, which was corrected in the 2.8.0 release.\r\n\r\nAPPS sets a long zero temp basal, and during this period a time change event occures. When the zero temp basal expires AAPS tries to set a new temp basal, but this fails with a pod fault 49 error and the pod is lost. \r\n\r\nThe 2.8.0 release worked fine, no lost pods, as long as the 'DST/Time zone detect' was enabled.\r\n\r\n[AndroidAPS_LOG_1614518290876.log.zip](https://github.com/nightscout/AndroidAPS/files/6057811/AndroidAPS_LOG_1614518290876.log.zip)\r\n\r\nA \"Time, Date and/or TimeZone changed\" event happens at 13:23:33 in the log.\r\n\r\n![Screenshot_20210228-150324_AndroidAPS](https://user-images.githubusercontent.com/60792760/109431077-eaa3e700-7a04-11eb-991d-38dcf3feb4e5.jpg)\r\n\r\n\r\n\r\n",
+ "comments": [
+  {
+   "id": 827048058,
+   "user": "fredrik-ljung",
+   "created_at": "2021-04-26T18:17:40Z",
+   "body": "I removed the code that prevents the time in the pod from beeing updated when a time change event is received and the time change is not a DST change or a time zone change. This means that the time on the pod is now allways updated when the time on the phone is updated.\r\n\r\n[always_update_podtime.patch.zip](https://github.com/nightscout/AndroidAPS/files/6379204/always_update_podtime.patch.zip)\r\n\r\nMy girlfrend has now been using an AAPS 2.8.2 with this change for 6 weeks and has not lost a single pod during that period.\r\n\r\nThis change seams to solve the reported problem, however it is probably not a good solution for everyone since it generates a time zone change event in AAPS almost every time my girlfriend leavs the apartment.\r\n\r\n"
+  },
+  {
+   "id": 934110037,
+   "user": "samspycher",
+   "created_at": "2021-10-05T06:35:37Z",
+   "body": "@fredrik-ljung has this re-occured since your  patch?"
+  },
+  {
+   "id": 934169173,
+   "user": "fredrik-ljung",
+   "created_at": "2021-10-05T08:08:05Z",
+   "body": "The patch has worked fine. Only one screamer with pod fault 49 has occurred since the patch was applied 7 months ago.  "
+  },
+  {
+   "id": 939798447,
+   "user": "MilosKozak",
+   "created_at": "2021-10-11T08:18:37Z",
+   "body": "@samspycher is the patch in dev now?"
+  },
+  {
+   "id": 940032159,
+   "user": "samspycher",
+   "created_at": "2021-10-11T13:26:54Z",
+   "body": "@MilosKozak I am not sure why that code was put their in the first place, and would appreciate understanding that a bit better before doing that. \r\n\r\n@bartsopers do you remember why you chose to ignore certain time change events in this [function](https://github.com/nightscout/AndroidAPS/blob/65b0c5ccda53e2533c6b987254c0dcc6d27a7661/omnipod/src/main/java/info/nightscout/androidaps/plugins/pump/omnipod/OmnipodPumpPlugin.java#L963)?\r\n\r\n```\r\npublic void timezoneOrDSTChanged(TimeChangeType timeChangeType) {\r\n        aapsLogger.info(LTag.PUMP, \"Time, Date and/or TimeZone changed. [changeType=\" + timeChangeType.name() + \", eventHandlingEnabled=\" + aapsOmnipodManager.isTimeChangeEventEnabled() + \"]\");\r\n\r\n        if (timeChangeType == TimeChangeType.TimeChanged) {\r\n            aapsLogger.info(LTag.PUMP, \"Ignoring time change because it is not a DST or TZ change\");\r\n            return;\r\n        } else if (!podStateManager.isPodRunning()) {\r\n            aapsLogger.info(LTag.PUMP, \"Ignoring time change because no Pod is active\");\r\n            return;\r\n        }\r\n\r\n        aapsLogger.info(LTag.PUMP, \"DST and/or TimeZone changed event will be consumed by driver\");\r\n        hasTimeDateOrTimeZoneChanged = true;\r\n    }\r\n```\r\n\r\nEdit: since it prevents non-DST or TZ time correction from happening, I would suggest removing."
+  },
+  {
+   "id": 940195799,
+   "user": "samspycher",
+   "created_at": "2021-10-11T16:56:29Z",
+   "body": "@MilosKozak The removed code was implemented for the reasons mentioned in https://github.com/nightscout/AndroidAPS/pull/192\r\n\r\n~I have a WIP PR  https://github.com/nightscout/AndroidAPS/pull/726 which currently just removes the offending code as in the patch, but I am thinking about how to lower the frequency without preventing them altogether.~\r\n\r\nPR https://github.com/nightscout/AndroidAPS/pull/726 only updates time on the pod if the last event was more than 24 hours ago."
+  }
+ ]
+}

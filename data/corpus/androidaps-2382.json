@@ -1,0 +1,45 @@
+{
+ "id": 1563437234,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2382,
+ "title": "[3.1.0.3-dev-g] [ComboV2] User Entry Log",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2382",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-01-31T00:48:45Z",
+ "closed_at": "2023-04-05T15:50:45Z",
+ "comment_count": 5,
+ "body": "ComboV2 driver automatically recognises insulin cartridge change && (if newLevel > currentLevel)\r\n\r\nEntry automatically made in the Careportal log and User entry log recording the change.\r\n\r\n**The Careportal log entry shows** \r\n1. the time \"hh:mm\"\r\n2. the title \"Insulin Cartridge Change\"\r\n3. a note that the \"Insulin reservoir change inserted automatically by combov2 driver\".\r\n\r\nAll okay here\r\n\r\n\r\n**The User Entry log shows** \r\n1. the time \"hh:mm:ss\"\r\n2. the title \"CAREPORTAL\"\r\n3. The combo icon\r\n4. the date and time MM-DD-YY HH:MI:SS and the title \"Insulin Cartridge Change\"\r\n5. the note \"Insulin reservoir change inserted automatically by combov2 driver\" is right aligned to the same width as the combo icon\r\n\r\n**Issues:** \r\n1. the date time duplication.  In the entry I have their is a 1 second difference between the two entries, is this why it appears twice.  Does their need to be an increase in tolerance for timedelta between phone and pump?\r\n2. The title on 3.1.0.3 for combov1 is 'Reservoir Change' rather than CAREPORTAL\r\n3. Will removing the date time duplication give enough space to the note.\r\n\r\nI can see that pumps like the DanaRS to not use the note parameter in its pumpSync.insertTherapyEventIfNewWithTimestamp record, however I see it's value in careportal, particularly as users switch over from old combo to new.\r\n\r\n![careportal   user entry](https://user-images.githubusercontent.com/217953/215629826-34c2a872-6b53-4852-ac5e-6e8b55bfbce0.jpg)\r\n\r\n@dv1",
+ "comments": [
+  {
+   "id": 1409952699,
+   "user": "dv1",
+   "created_at": "2023-01-31T08:26:44Z",
+   "body": "> The title on 3.1.0.3 for combov1 is 'Reservoir Change' rather than CAREPORTAL\r\n\r\nI am confused. Where does the combov1 (I assume you mean the old Ruffy based driver) use this? It does not enter any treatment."
+  },
+  {
+   "id": 1410063570,
+   "user": "markvader",
+   "created_at": "2023-01-31T09:53:50Z",
+   "body": "agreed, the ruffy driver is all user entry. \r\n![combo-careportal](https://user-images.githubusercontent.com/217953/215717980-45b78e88-72a4-464a-874a-ff373c266363.jpg)\r\n\r\nI got someone to send me the danaRS screens, which has automatic cartridge change recognition (time: 22.21).  This user has also manually recorded the change (time: 22.24) (hence two different entries)\r\n![danaRS](https://user-images.githubusercontent.com/217953/215725620-7d1b3c39-eb39-4582-921f-5839d0a02517.jpg)\r\n"
+  },
+  {
+   "id": 1445150082,
+   "user": "dv1",
+   "created_at": "2023-02-25T16:09:46Z",
+   "body": "Can you try to cherry-pick https://github.com/dv1/AndroidAPS/commit/1ff34633d07b4a8205d7591b9bae142884c19319 and see if this fixes the issue for you?"
+  },
+  {
+   "id": 1449065341,
+   "user": "markvader",
+   "created_at": "2023-02-28T23:07:18Z",
+   "body": "![Screenshot_2023-02-26-22-14-08-14_3eaa31bb2c2a38a1c605d9dc918cf694 (1)](https://user-images.githubusercontent.com/217953/222002715-0c9236f6-9881-49c2-b2a6-a59461a1bc5d.jpg)\r\n\r\nThe user entry for the automatic cartridge change remains the same with the long message squeezed to the right side of the screen. "
+  },
+  {
+   "id": 1488044481,
+   "user": "dv1",
+   "created_at": "2023-03-29T06:58:55Z",
+   "body": "@markvader Can you confirm that the issue is fixed now in latest dev?"
+  }
+ ]
+}

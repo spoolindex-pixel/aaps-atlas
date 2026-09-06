@@ -1,0 +1,235 @@
+{
+ "id": 864656399,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1705,
+ "title": "Importing data didn't display data and wiped settings",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1705",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "database",
+  "android11+"
+ ],
+ "created_at": "2021-04-22T07:54:32Z",
+ "closed_at": "2023-01-18T16:36:37Z",
+ "comment_count": 37,
+ "body": "I recently wiped the phone app data and cache in order to fix battery drain on my smartwatch SW3, usually this would involve saving all settings to SD card and exporting my database prior to this so that I can restore both. \r\n\r\nHowever once the app storage was cleared, after restoring settings via the popup message I was prompted with the import database prompt which I accepted. Despite the import data success message, nothing was imported also the settings that were recently restored were wiped. I attempted to import the database again, but again the screen remained blank and no data points were restored - also my settings were once again cleared. \r\n\r\nI'm using the latest stable release, 17cbcf0-2021.03.08.\r\n\r\nI'm using Libre > MiaoMiao 1 > Galaxy Note 10+ running the latest Android 11 release.\r\n\r\nLooking in the log files for all of the recent data points I can see a lot of errors;\r\n\r\n\"Bg data was not calculated, working on raw data\" followed by\r\n\"Error getting data from getLatestBgForXMinutes. Returning\", \"libreBlock exists but no matching bg record exists\"\r\n\r\nThis might be impacting the import as the data is not in the right format to display?\r\n\r\nSteps to reproduce;\r\n\r\n1) Save settings to SD card\r\n2) Export database \r\n3) Wipe app data\r\n4) Restore settings, either manually via Load settings from SD Card, or from the popup message\r\n5) Import database either manually via import database or from the popup message\r\n\r\n\r\n",
+ "comments": [
+  {
+   "id": 824783244,
+   "user": "Navid200",
+   "created_at": "2021-04-22T12:09:19Z",
+   "body": "@SimonPhilpott Would you please describe the issue you are experiencing in the following open issue?\r\nhttps://github.com/NightscoutFoundation/xDrip/issues/1045"
+  },
+  {
+   "id": 824819069,
+   "user": "SimonPhilpott",
+   "created_at": "2021-04-22T12:59:07Z",
+   "body": "@Navid200 No worries, done.\r\n\r\nThat being said, it looks like they had issues with an aggressive overwrite of existing data, whereas this issue is that nothing whatsoever was imported. Is that a duplicate, how so?"
+  },
+  {
+   "id": 832808565,
+   "user": "pcastelo",
+   "created_at": "2021-05-05T15:55:07Z",
+   "body": "Hi guys , i have the same issue with android 11, i test same version xdrip with older android (10) and work without any problem. \r\ni have meesage the import was success but i dont have data\r\n\r\nAndroid 11\r\n![b4d83703-aad5-4c44-b4be-c41240cf0764](https://user-images.githubusercontent.com/10425803/117170750-aa643a80-ada0-11eb-9ff6-22e11272b2bf.jpg)\r\n![c2042e97-7b6b-449d-9f44-9f1fff543ae4](https://user-images.githubusercontent.com/10425803/117170765-ad5f2b00-ada0-11eb-90fd-8970b586180c.jpg)\r\n\r\nAndroid 10: \r\n\r\n![a4a73ecc-c67b-4af3-ad85-84b2c715bee9](https://user-images.githubusercontent.com/10425803/117171189-09c24a80-ada1-11eb-9f99-6cd6563cf41d.jpg)\r\n![9ed62320-e1e6-410d-8539-5da02cc7ca25](https://user-images.githubusercontent.com/10425803/117171197-0b8c0e00-ada1-11eb-8a2b-a4be1a0db1f9.jpg)\r\n\r\n\r\n i use same import  in both phone as you can see in 11 only i see new ones after config again "
+  },
+  {
+   "id": 832982977,
+   "user": "tolot27",
+   "created_at": "2021-05-05T20:24:29Z",
+   "body": "Does xDrip has storage permission before importing the database?"
+  },
+  {
+   "id": 833080268,
+   "user": "pcastelo",
+   "created_at": "2021-05-05T22:10:00Z",
+   "body": "> Does xDrip has storage permission before importing the database?\r\n\r\nyes , i try severals times , in one i delete all folder  , create new  one (export) only to generate folder and copy to xdrip folder the original export and do import only for check permisons and the error persist\r\n\r\n![WhatsApp Image 2021-05-05 at 19 01 57](https://user-images.githubusercontent.com/10425803/117215634-df8a8000-add4-11eb-86fd-3752f850aa78.jpeg) \r\n"
+  },
+  {
+   "id": 833478709,
+   "user": "pcastelo",
+   "created_at": "2021-05-06T12:21:24Z",
+   "body": "some more info , i was trying to debug with Samsung  Remote Test Lab (emulating Galaxy S10 with Android 11)\r\nI see the following error in phone logs: \r\n\r\n\r\n```\r\nERROR|05-05 23:16:30.128|1168|1432||WindowManager|win=Window{9d8798b u0 com.eveningoutpost.dexdrip/com.eveningoutpost.dexdrip.ImportDatabaseActivity EXITING} destroySurfaces: appStopped=false win.mWindowRemovalAllowed=true win.mRemoveOnExit=true win.mViewVisibility=0 caller=com.android.server.wm.ActivityRecord.destroySurfaces:5227 com.android.server.wm.ActivityRecord.destroySurfaces:5208 com.android.server.wm.WindowState.onExitAnimationDone:5616 com.android.server.wm.WindowStateAnimator.onAnimationFinished:332 com.android.server.wm.WindowState.onAnimationFinished:6081 com.android.server.wm.-$$Lambda$dwJG8BAnLlvKNGuDY9U3-haNY4M.onAnimationFinished:2 com.android.server.wm.SurfaceAnimator.lambda$getFinishedCallback$0$SurfaceAnimator:112 \r\n\r\nERROR|05-05 23:16:30.128|1168|1432||WindowManager|win=Window{9d8798b u0 com.eveningoutpost.dexdrip/com.eveningoutpost.dexdrip.ImportDatabaseActivity EXITING} destroySurfaces: appStopped=false win.mWindowRemovalAllowed=true win.mRemoveOnExit=true win.mViewVisibility=0 caller=com.android.server.wm.ActivityRecord.destroySurfaces:5227 com.android.server.wm.ActivityRecord.destroySurfaces:5208 com.android.server.wm.WindowState.onExitAnimationDone:5616 com.android.server.wm.WindowStateAnimator.onAnimationFinished:332 com.android.server.wm.WindowState.onAnimationFinished:6081 com.android.server.wm.-$$Lambda$dwJG8BAnLlvKNGuDY9U3-haNY4M.onAnimationFinished:2 com.android.server.wm.SurfaceAnimator.lambda$getFinishedCallback$0$SurfaceAnimator:112 \r\n\r\n\r\nERROR|05-05 23:16:30.164|9520|30418||SQLiteLog|(1) Stat of /data/user/0/com.eveningoutpost.dexdrip/databases/DexDrip.db : st_mode (100600) st_uid (10318) st_gid (10318) st_ino(1180777) st_size(11894784)\r\nWARNING|05-05 23:16:30.164|9520|30418||SQLiteLog|(28) file unlinked while open: /data/user/0/com.eveningoutpost.dexdrip/databases/DexDrip"
+  },
+  {
+   "id": 834016874,
+   "user": "Navid200",
+   "created_at": "2021-05-07T02:38:28Z",
+   "body": "I see the same issue in Android Studio virtual device set up as Galaxy Nexus Android 11.\r\nBut, not in the same set up as Pixel 4 Android 11."
+  },
+  {
+   "id": 838525003,
+   "user": "pcastelo",
+   "created_at": "2021-05-11T13:59:36Z",
+   "body": "@SimonPhilpott could you try to import the same databese multiple times (3 or 4 times ),   in my case if  in my case if I import 3 times in a row. I after this can see the data. And please confirm the results , to i can try to work in a fix\r\n"
+  },
+  {
+   "id": 839252708,
+   "user": "Navid200",
+   "created_at": "2021-05-11T22:47:31Z",
+   "body": "@SimonPhilpott ?"
+  },
+  {
+   "id": 843319094,
+   "user": "pcastelo",
+   "created_at": "2021-05-18T16:20:08Z",
+   "body": "i can replicate with de import of @SimonPhilpott too , i am trying to solve the issue "
+  },
+  {
+   "id": 844467127,
+   "user": "SimonPhilpott",
+   "created_at": "2021-05-19T20:57:05Z",
+   "body": "@Navid200 sorry had some family things come up. I'll see if I can find a time that's convenient to wipe data and calibrations in order to do some more testing. I've got an endio appointment so I'd like some data there at least to run a report with. "
+  },
+  {
+   "id": 844472077,
+   "user": "Navid200",
+   "created_at": "2021-05-19T21:04:34Z",
+   "body": "@SimonPhilpott \r\n\r\nPlease don't do anything that could compromise your diabetes control in order to perform any xDrip tests."
+  },
+  {
+   "id": 851063168,
+   "user": "Navid200",
+   "created_at": "2021-05-30T21:21:37Z",
+   "body": "@pcastelo Another user has confirmed that importing the file three times worked for them.\r\nThanks"
+  },
+  {
+   "id": 855409530,
+   "user": "pcastelo",
+   "created_at": "2021-06-06T14:36:43Z",
+   "body": "ty @Navid200 , i have some problem the last week , i will try to solve this  on the next days :D "
+  },
+  {
+   "id": 865688053,
+   "user": "SimonPhilpott",
+   "created_at": "2021-06-22T07:56:29Z",
+   "body": "@Navid200 So I had to flush my data today which gave me the opportunity to test out the import database X3, it didn't work but I did just update to the latest nightly which I'll try again to test import at anbother time soon. \r\n"
+  },
+  {
+   "id": 868929098,
+   "user": "Navid200",
+   "created_at": "2021-06-26T02:15:50Z",
+   "body": "I just tried the virtual device in Android Studio.  I set up an Android 11 Pixel 4 XL device.\r\nI attempted to import a database I had exported from xDrip on an Android 9 device.\r\nIt shows that everything imported properly.  However, there were no readings.  I imported the same file a second time.  Again, it reported that the import had succeeded.  Yet, there were no readings.\r\nI imported the same file a third time.  All readings showed up.  \r\n\r\nSo, I can confirm what @pcastelo has suggested.  But, I don't know what causes this behavior.\r\nAnd I am not sure why it does not work for @SimonPhilpott."
+  },
+  {
+   "id": 907532541,
+   "user": "Navid200",
+   "created_at": "2021-08-28T00:06:47Z",
+   "body": "I finally have an Android 11 device.\r\nI experienced the exact same problem.\r\nThanks so much @pcastelo for finding out that importing 3 times solves it.\r\n\r\nI wonder why though.\r\nWhat should we do to xDrip to resolve this so that it would work the first time?"
+  },
+  {
+   "id": 942273548,
+   "user": "pcastelo",
+   "created_at": "2021-10-13T12:52:43Z",
+   "body": "i dont have much time atm , but in fews week i will try to solve this again  , but i dont have any idea how to solve "
+  },
+  {
+   "id": 963765595,
+   "user": "thedewi",
+   "created_at": "2021-11-09T02:51:27Z",
+   "body": "I have also found \"restore\" produces an empty database the first 2 times I run it.\r\n\r\nBut I have found a solution: after xDrip+ asks for file permission, I \"force stop\" the app. Then I open it again, restore backup, and it works. Maybe the permission takes some time to be granted, and this is causing the problem?\r\n\r\nThe restore routine should probably check for this condition, and report the problem instead of assuming success."
+  },
+  {
+   "id": 968346631,
+   "user": "taisatk",
+   "created_at": "2021-11-14T19:07:41Z",
+   "body": "Hi all! I followed @thedewi instructions and it worked fine! I'm on Android 11 - Moto G60 Latin America (XT-2135-1) and I was struggling to get the database restore done before finding this thread.\r\nIn addition, I noticed that right after granting file access permission (on that system dialog), xDrip still displays a toast informing I need to grant file permission. \r\n<img width=\"350\" src=\"https://user-images.githubusercontent.com/23559272/141695959-958bef88-5dd1-4993-9982-4c244844efb5.png\" />\r\n"
+  },
+  {
+   "id": 1191598459,
+   "user": "capsuleman",
+   "created_at": "2022-07-21T15:05:08Z",
+   "body": "Thanks for the workaround! :-)\r\nI had the same issue, and I had to first restore my database and the restore my settings. Else, it wasn't working."
+  },
+  {
+   "id": 1196658064,
+   "user": "yosepito",
+   "created_at": "2022-07-27T12:22:03Z",
+   "body": "Yesterday I had to perform a backup to clean the app store (it occupied 3 GB and every time I turned on internet/data/wifi a message warning Xdrip stopped appeared). I saved settings and export database, and cleaned the store. After that , Xdrip detected settings and backup and asked for restoring. I did, several times (more than 3 times) and everytime I restored data, I could see the data for some seconds and after that it asked for connecting a device and data dissapeared. Fortunately, I had uploaded previously to NS site, so nothing is lossen. But the backup (import) section requires a review. I think it could be useful to select the date since one wants to backup data.\r\nMy setting: only 30 days of retention of data, android 9, Xdrip version e557cba-2022.05.19, working with a libre-2 direct connection BT.\r\n\r\nBackup files are fine, the issue is that restoring data does not work (whereas restoring settings works fine). I tried to restore data before settings but it reproduced the problem of disseparing restored data. Now working with a fresh Xdrip with only 50MB of store space used."
+  },
+  {
+   "id": 1196681183,
+   "user": "Navid200",
+   "created_at": "2022-07-27T12:45:14Z",
+   "body": "@yosepito The message you get that xDrip has found a backup is about the settings, not the database.\r\n\r\nTo restore the database, you need to restore the database manually.\r\nhttps://navid200.github.io/xDrip/docs/Restore-Database.html"
+  },
+  {
+   "id": 1241377239,
+   "user": "Navid200",
+   "created_at": "2022-09-09T00:50:20Z",
+   "body": "A new backup mechanism has been added to xDrip.  Please try it when you get a chance and let us know if its restore has the same issue on Android 11 (and 12?) or not.\r\nhttps://github.com/NightscoutFoundation/xDrip/discussions/2314"
+  },
+  {
+   "id": 1241393093,
+   "user": "pcastelo",
+   "created_at": "2022-09-09T01:17:06Z",
+   "body": "tomorow on morning i wil try  this and let you know "
+  },
+  {
+   "id": 1247574708,
+   "user": "nhatier",
+   "created_at": "2022-09-15T04:41:38Z",
+   "body": "The 3-4 imports trick doesn't work for me on Android 12. I just replaced my old Android 9 phone and have been unable to restore my old data on the \"new\" one (S20).\r\n\r\nI tried the Cloud backup, I was hoping to restore my old backup by hacking my way around it but since it uses CipherOutputStream it's probably hopeless from my end.\r\n\r\nIs there any hope for me to get my history back on my new phone? Manually merging an old database with a new one is not a problem for me, I did it a few times in the past. But if I can't import, and if cloud backups are encrypted, this skill is useless."
+  },
+  {
+   "id": 1248041709,
+   "user": "Navid200",
+   "created_at": "2022-09-15T12:34:47Z",
+   "body": "@nhatier Are you sure the backup you have created is valid?  I mean have you tried restoring it onto a test phone that is also Android 9 or older?  Does it work there?\r\n\r\nCan you explain why backup to Google Cloud is not working for you in more detail?  That is supposed to be the eventual solution for all.  So, if something is wrong with that solution, please let's hear it."
+  },
+  {
+   "id": 1248193519,
+   "user": "nhatier",
+   "created_at": "2022-09-15T14:36:18Z",
+   "body": "Yes, I'm sure the backup is valid. I had several of them, and I even tried with the automatic b4import backup to restore one day worth of data and everything stayed blank, even the alarms list got wiped. I tested my backup on my old phone before wiping it.\r\n\r\nGoogle Cloud backup is likely doing its job properly, I didn't try to restore from it yet. However the fact the database is encrypted prevents me from copying my old database to google drive and restoring it on my phone using that method, or using a modified (merged or cleaned up) database as I could before with the standard zip import. Don't get me wrong, I do not request any additional feature for the cloud backup as it seems to work well for its intended purposes. \r\n\r\nBut it would really help if the standard backup restore method was working. And meanwhile, if it can't work, maybe block it on affected devices so people don't completely lose all their data.\r\n\r\nI may try reinstalling xdrip on my old phone, import a merged database, save to cloud, and import on my new phone, but that seems a lot of work for my busy days right now.\r\n"
+  },
+  {
+   "id": 1248210123,
+   "user": "Navid200",
+   "created_at": "2022-09-15T14:49:25Z",
+   "body": "The Google Drive backup was never meant to be able to restore backups created with the previous method.\r\n\r\nWe have been aware of the original database restore issues, on some Android 11 phones and now Android 12.  But, it has not been fixed because no one could come up with a solution.  If you have a solution, please open a PR.\r\n\r\nThe solution is to switch to the new backup methodology to Google Drive.\r\nThat means when you buy a new phone, backup the database from the old phone using the new backup methodology, Google Drive Backup.\r\nThen, restore it on the new phone using the Google Drive Backup methodology.\r\nIf you do that and it doesn't work, please let us know."
+  },
+  {
+   "id": 1248314269,
+   "user": "nhatier",
+   "created_at": "2022-09-15T16:12:06Z",
+   "body": "I remembered I have a very old Android 5.5 tablet, but I got all sorts of issues with the cloud backup - full app crash, a \"Backup failed\" error with \"Output IO Error java.io.IOException: write failed: EBADF (Bad file number)\" in the logs, file on Drive appearing OK though being corrupted and wiping everything when attempting to restore. Just so you know, maybe the Cloud Backup could be disabled on older Android versions so it don't cause issues in the future.\r\n\r\nSo I took the long route of reinstalling my Android 8 phone, restored the zip backup containing a merged database, uploaded to cloud, and finally restored on my Android 11 phone, and yes, it did work. I have all my data back, thank you!\r\n\r\nTrust me, I really would like to help with xDrip, but Java is not one of the many languages I can write, I can only read java code, and Android is not a platform I know enough to debug such an intricate issue."
+  },
+  {
+   "id": 1248330769,
+   "user": "jamorham",
+   "created_at": "2022-09-15T16:24:02Z",
+   "body": "It may be possible to improve the existing data import to make it more stable based on what I've learned doing the cloud backup work."
+  },
+  {
+   "id": 1279660443,
+   "user": "jwoglom",
+   "created_at": "2022-10-15T04:58:16Z",
+   "body": "I have also experienced this for a long time whenever i reimport my large xDrip database (see #1405) and I tracked down a potential solution in https://github.com/NightscoutFoundation/xDrip/pull/2381. @jamorham PTAL."
+  },
+  {
+   "id": 1287861830,
+   "user": "air-ship",
+   "created_at": "2022-10-22T17:30:13Z",
+   "body": "I can confirm that attempting the following on a Galaxy S10e / A12 is not working:\r\n\r\n1. Cloud backup appears to stall with no data written to Google My Drive > xDrip-Backups.\r\n2. The export database > restore database from a local file will not restore the database. I tried the suggested x3 / x4 import method with no success.\r\n\r\nThought I would feed this back because my old Sony Xperia is on its last legs so I have to replace it imminently."
+  },
+  {
+   "id": 1288088614,
+   "user": "air-ship",
+   "created_at": "2022-10-23T11:13:37Z",
+   "body": "Update:\r\n\r\n- I managed to get my Sony Xperia L3 to make a Google Drive cloud backup. It just took a long time even thought he database is only 104Mb.\r\n- Then I tried to import the cloud backup (using the Cloud Backup option) into xDrip+ on my Galaxy S10e running Android 12. No joy. xDrip+ can't locate the backup.\r\n- Tried the import database zip file again but x8 times. No joy. No data imported."
+  },
+  {
+   "id": 1288105823,
+   "user": "air-ship",
+   "created_at": "2022-10-23T12:50:56Z",
+   "body": "> The Google Drive backup was never meant to be able to restore backups created with the previous method.\r\n> \r\n> We have been aware of the original database restore issues, on some Android 11 phones and now Android 12. But, it has not been fixed because no one could come up with a solution. If you have a solution, please open a PR.\r\n> \r\n> The solution is to switch to the new backup methodology to Google Drive. That means when you buy a new phone, backup the database from the old phone using the new backup methodology, Google Drive Backup. Then, restore it on the new phone using the Google Drive Backup methodology. If you do that and it doesn't work, please let us know.\r\n\r\nSo I'm pretty persistent, especially when it comes to my diabetes. I've posted notes on how I got the cloud backup from my old phone to import into my new phone. I hope this is useful for others when trying to export / import the database. Thanks for everyones help here."
+  },
+  {
+   "id": 1288126882,
+   "user": "air-ship",
+   "created_at": "2022-10-23T14:33:17Z",
+   "body": "Another update with a successful outcome...\r\n\r\nPhones: Old phone > Sony Xperia L3 / Android 8.1. New Phone > Samsung Galaxy S10e / Android 12\r\nVersion: xDrip+ nightly build 8th September 2022 / xDrip-plus-20220908-4aeee42.apk\r\n\r\nHere's how I managed to restore a cloud backup. Not quite the way I thought it would work. I suggest you read through the steps and comments to get an overview of the process.\r\n\r\n1. On my old phone I made a cloud backup in xDrip+ > There dots menu > Import / Export features > Cloud Backup. I tried it with my primary Google account and couldn't get a backup to complete. No idea why so I can't advise on troubleshooting this. I then tried another Google account and managed to successfully create a backup: xDrip-Backups/xdrip-backup-I3312-Xperia-L3.xdrip\r\n2. On the new phone I tried the standard cloud backup restore but this didn't work because xDrip+ writes an empty file with the name of the new phone (xdrip-backup-SM-G970U1-Rees's-S10e.xdrip). The xdrip-backup-I3312-Xperia-L3.xdrip is never found by xDrip+. No idea why even though the file exists. Read on.\r\n3. So I downloaded the backup file > xdrip-backup-I3312-Xperia-L3.xdrip. Next I There dots menu > Import / Export features > Cloud Backup > SELECT BACKUP LOCATION grey button. I had uploaded xdrip-backup-I3312-Xperia-L3.xdrip to my S10e's Download directory (could be whatever directory you want). Next, in SELECT BACKUP LOCATION I chose USE ALTERNATE FILE. Navigated to my S10e's Download directory and chose the file xdrip-backup-I3312-Xperia-L3.xdrip.\r\n4. Once I completed step 4 xDrip+ then recognised the backup and listed in the info about the backup above the three grey buttons in Cloud Backup. At this stage you know you have your backup selected for restore. Now tap the RESTORE FROM BACKUP grey button. Choose \"YES\" in the \"Backup Source Confirm\", \"Are you really sure?\" > YES. The restore now runs and in my case it was successful. xDrip+ restarts and (hopefully) your data is imported.\r\n5. "
+  }
+ ]
+}

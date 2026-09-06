@@ -1,0 +1,45 @@
+{
+ "id": 509669348,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1064,
+ "title": "connect to both 670g and libre",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1064",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2019-10-20T23:33:40Z",
+ "closed_at": "2021-03-06T19:11:18Z",
+ "comment_count": 5,
+ "body": "hi,\r\n\r\nim hoping to get a 670g pump \"pump only\" soon and was wondering if xdrip could connect to both the libre and the pump? possibly sending the pump my libre readings?\r\n\r\nthanks :)",
+ "comments": [
+  {
+   "id": 554381368,
+   "user": "steve8x8",
+   "created_at": "2019-11-15T14:32:50Z",
+   "body": "As long as there's no data multiplexer in xDrip, I'm afraid you've got to use two individual devices (smartphones) - one talking to the pump via the CNL stick, the other one running LibreLink, each one with their own xDrip.\r\nOr - this is a rather wild guess - perhaps tasker (or one of it's friends) could be used to activate both apps in turn, but they'd have to switch xDrip's data source each time. If xDrip got another intent interface to switch data sources from outside, that might become feasible (and a nightmare to maintain)."
+  },
+  {
+   "id": 554383240,
+   "user": "Mr-Enigma",
+   "created_at": "2019-11-15T14:37:58Z",
+   "body": "> As long as there's no data multiplexer in xDrip, I'm afraid you've got to use two individual devices (smartphones) - one talking to the pump via the CNL stick, the other one running LibreLink, each one with their own xDrip.\r\n> Or - this is a rather wild guess - perhaps tasker (or one of it's friends) could be used to activate both apps in turn, but they'd have to switch xDrip's data source each time. If xDrip got another intent interface to switch data sources from outside, that might become feasible (and a nightmare to maintain).\r\n\r\nthats a shame, was actually hoping the functionality was already in xdrip to do this.\r\n\r\ni know the 670g has the ability to read its own sensor and adjust insulin based on readings eliminating alot of low and high spikes bit as im getting the pump only hoped libre could act as that sensor in some way. or xdrip adjusting as it could see the libre values and connect to the 670g to adjust"
+  },
+  {
+   "id": 554625212,
+   "user": "steve8x8",
+   "created_at": "2019-11-16T10:36:03Z",
+   "body": "Just another thought (although untested).\r\n\r\nThe 600SeriesUploader can upload directly to Nightscout, without xDrip being involved (in this direction of data flow).\r\nOn the other hand, xDrip can retrieve data from Nightscout, and accept data from one local source directly.\r\nSo it should be possible (I may be wrong, but it's worth a try) to\r\n\r\n- let the uploader upload from the CNL2.4 attached via OTG (\"Send to Nightscout\" checked, \"Send to xDrip+\" unchecked)\r\n- let xDrip listen to the patched Libre app (Hardware Data Source\" set to \"Libre2 (patched)\") which itself listens to the sensor paired on BT, and sync data up to NS (REST API Enabled) - while syncing pump data down the same line (\"Download data\" on)\r\n\r\nall in the same smartphone.\r\n\r\nI cannot test this setup right away, but would be interested in whether it's possible (or if not, what exactly are the pitfalls).\r\n"
+  },
+  {
+   "id": 786946314,
+   "user": "Navid200",
+   "created_at": "2021-02-26T23:21:35Z",
+   "body": "@Mr-Enigma Would you please close this issue if it has been resolved?\r\nYou can get a lot of info from the support channels.\r\nhttps://www.facebook.com/groups/xDripG5\r\nhttps://gitter.im/jamorham/xDrip-plus\r\nYou may find out how others are using the same devices you are considering.\r\nThanks"
+  },
+  {
+   "id": 792029015,
+   "user": "Navid200",
+   "created_at": "2021-03-06T19:11:18Z",
+   "body": "Closing due to inactivity"
+  }
+ ]
+}

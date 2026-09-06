@@ -1,0 +1,21 @@
+{
+ "id": 4047142924,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4593,
+ "title": "AAPS 3.4.1.0 Omnipod Dash didn't set the Profile on Pod Activation",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4593",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2026-03-09T18:15:11Z",
+ "closed_at": "2026-03-30T16:46:29Z",
+ "comment_count": 1,
+ "body": "Hello,\nI updated AAPS to version `3.4.1.0` yesterday (08.03.2026).\nThis morning I activated a new Omnipod Dash Pod (after 6:45 on 09.03.2026).\nI didn't notice anything unusual, but when I tried to administer a bolus an hour later (around 07:40 on 09.03.2026), it didn't work and showed me an error that \"Profile is not set\".\n\nI tried to apply the profile manually - it didn't help. After a few attempts, the pod started to scream. I reverted to an old version (`3.4.0.0`) and then successfully activated a new pod.\n\nUnfortunately, I am not sure if a new version caused an issue. Something like that happened for me only once in the last 4 years, and that was not after an activation of the pod, but after a day or two of usage (the pod also started screaming and stopped working).\n\nSorry if that is just a bad coinsidence.\n\n[AndroidAPS.log](https://github.com/user-attachments/files/25850101/AndroidAPS.log)",
+ "comments": [
+  {
+   "id": 4156517523,
+   "user": "MilosKozak",
+   "created_at": "2026-03-30T16:46:01Z",
+   "body": "## Log Analysis\n\nAnalyzed the attached log file. Here's the timeline:\n\n| Time | Event |\n|------|-------|\n| 06:55:33 | Pod activation part 1 completed |\n| 06:57:03 | Pod activation part 2 completed |\n| 06:57:06 | Temp basal set (1.35 U/hr) — **pod working normally** |\n| 07:21:56 | Temp basal set (1.35 U/hr) — **still working** |\n| 07:31:13 | Temp basal set (2.7 U/hr) — **still working** |\n| 07:34:53 | Temp basal set (3.3 U/hr) — **still working** |\n| 07:37:18 | User requests bolus (1.0U) |\n| 07:37:21 | `TREATMENT Pump UNKNOWN` — command result uncertain |\n| 07:37:27 | `SUSPEND Loop` — pod entered error state |\n| 07:38:04 | `IllegalStateException: Pod is in an incorrect state` |\n| 07:38:04+ | All subsequent commands fail (bolus, profile switch attempts) |\n\n### What happened\n\nThe pod worked correctly for **38 minutes** after activation. Then during a bolus attempt at 07:37, the pod entered hardware **ALARM** state. After that, `observePodRunning` correctly blocks all commands because `PodStatus.ALARM.isRunning() == false`.\n\nThe \"Profile is not set\" error the user saw is AAPS's response to the pod being in alarm — it cannot program anything on a pod that is no longer running.\n\n### Not a code regression\n\n- `OmnipodDashManagerImpl.kt` (where the check lives) is **identical** between `dev` and `compose` branches — no logic changes\n- Recent Dash commits in `dev` are only BLE driver refactoring (PR #4604), not activation/running logic changes\n- The pod functioned normally for 38 minutes before the alarm\n- The `TREATMENT Pump UNKNOWN` at 07:37:21 suggests a communication failure during bolus — likely an occlusion or other hardware pod alarm\n\nThis appears to be a **pod hardware failure** (occlusion alarm, etc.) rather than a software regression. The user's own assessment (\"Sorry if that is just a bad coincidence\") seems correct."
+  }
+ ]
+}

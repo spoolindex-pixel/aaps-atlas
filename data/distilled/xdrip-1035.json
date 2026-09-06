@@ -1,0 +1,21 @@
+{
+ "issue_id": 1035,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/1035",
+ "title": "Nightscout URL should support tokens",
+ "symptom": "xDrip supports Nightscout uploading and following using a URL of the form https://API_SECRET@my.nightscout.place/api/v1, where the username is used as the auth token. The API_SECRET is too secret and hard to revoke, so the user attempted to use a token as the username instead, but it was rejected by cgm-remote-monitor. The user requests that URLs support token access.",
+ "cause": "The thread does not identify a single root cause. It suggests that Nightscout's cgm-remote-monitor rejected the token when used as a username in the URL, and that HTTP basic auth is not supported. Later, a user found that setting the environment variable AUTH_DEFAULT_ROLES to \"denied\" allowed token-based access.",
+ "fix": "The thread reports that setting the Nightscout environment variable AUTH_DEFAULT_ROLES to \"denied\" allows token-based access. Additionally, a user confirmed that using a custom Access Token (created from the Admin Tools menu) before the @ symbol in the REST API URL works in xDrip+.",
+ "settings_changed": [
+  "AUTH_DEFAULT_ROLES → denied"
+ ],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [
+  "nightscout",
+  "token",
+  "api secret"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "Ha, found a solution by surprise: I have to set the env var AUTH_DEFAULT_ROLES to \"denied\". I really went through the possible vars but just didn't recognize it. My bad."
+}

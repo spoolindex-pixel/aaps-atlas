@@ -1,0 +1,29 @@
+{
+ "issue_id": 2222,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/2222",
+ "title": "[Bug] [Combov2] [Latest dev] Preferences tab craches on Android 12",
+ "symptom": "The preferences tab crashes on Android 12 (Samsung Galaxy Flip 4) and the user cannot pair a combo. Other preference screens on other tabs work fine. The problem also occurs on Android 10 and Android 13, but not on Android 11 with the same build.",
+ "cause": "The crash is caused by a ClassCastException where a String cannot be cast to Integer in SharedPreferences, likely due to a wrong value type stored in preferences. The issue appears when settings are imported, as a clean installation without imported data does not crash.",
+ "fix": "The fix is to ignore wrong values in preferences, implemented in commit 57c96770b06aceb6d7868a923bc7e30d6032d88f. Users can also work around by doing a clean installation without importing settings.",
+ "settings_changed": [],
+ "devices": [
+  "Samsung Galaxy Flip 4",
+  "Jelly 2",
+  "Samsung Galaxy S9"
+ ],
+ "android_versions": [
+  "Android 12",
+  "Android 11",
+  "Android 10",
+  "Android 13"
+ ],
+ "driver_tags": [
+  "Combov2",
+  "Combo v2",
+  "openAPS SMB",
+  "Overview"
+ ],
+ "confidence": "high",
+ "evidence_quote": "fixed by https://github.com/nightscout/AndroidAPS/commit/57c96770b06aceb6d7868a923bc7e30d6032d88f (only ignore wrong value in preferences)"
+}

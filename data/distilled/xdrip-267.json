@@ -1,0 +1,22 @@
+{
+ "issue_id": 267,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/267",
+ "title": "How to track/monitor more than one persons with one one smartphone (xDrip+ app)?",
+ "symptom": "The user wants to follow more than one person (two Dexcom G4) with one phone, for example one xDrip Parakeet for person 1 and another xDrip Bluetooth or Parakeet feed for person 2. They ask if multiple instances of xDrip can be installed or if there is another way to monitor two people while carrying only one smartphone.",
+ "cause": "A phone can run two xDrip instances, but the second one must be a specially built 'variant' because a normal second install of the same app is not possible under the same Android application identity/signing key. If someone else builds that variant, you will not have the original signing key and therefore cannot later build/install that exact same variant yourself.",
+ "fix": "Run two xDrip instances on one phone: keep one as a normal xDrip Bluetooth installation and install the second one as an xDrip variant that can be an xDrip follower or read from a parakeet. To create the variant yourself, change the applicationId/package name (including in /wear/build.gradle for release builds); otherwise use the variant nightly builds supplied by jamorham from the shared Google Drive folder. Official and variant builds can coexist on the same phone.",
+ "settings_changed": [],
+ "devices": [
+  "dexcom G4"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "parakeet",
+  "bluetooth",
+  "follower",
+  "collector"
+ ],
+ "confidence": "high",
+ "evidence_quote": "One phone can run two instances of xDrip.\nOne can be a normal xDrip installation using BT.\nThe second one can read data from another xDrip (that is be an xDrip follower) or read data from a parakeet.\nIn order to install the second application you need to make a small change when building xDrip."
+}

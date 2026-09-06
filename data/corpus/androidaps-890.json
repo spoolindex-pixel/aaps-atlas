@@ -1,0 +1,107 @@
+{
+ "id": 1049138658,
+ "repo": "nightscout/AndroidAPS",
+ "number": 890,
+ "title": "[3.0 beta5] Issue with TBR value -Dash",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/890",
+ "state": "closed",
+ "labels": [
+  "omnipod dash"
+ ],
+ "created_at": "2021-11-09T21:28:47Z",
+ "closed_at": "2021-11-24T21:51:34Z",
+ "comment_count": 15,
+ "body": "AAPS 3.0-beta5\r\nRemote: https://github.com/nightscout/AndroidAPS\r\nBuild: 917de7261-2021.11.09-18:49\r\nFlavor: AAPS\r\nNightscout version: 14.0.7\r\nOmnipod Dash\r\n\r\nWhen there is no overwritten TBR, and basal rate is according to profil. In Overview screen of AAPS it is shown as TBR 0U/H. When it is such situation, it is not possible to use CANCEL TBR in ACTIONS tab.\r\nIn Dash Tab, there is no value in TBR, In NS basal rate is visible as normal rate, acording profile setings\r\n\r\n![image](https://user-images.githubusercontent.com/60583387/141007525-5c5526b4-8d91-4fa2-be8a-7861b4ce9493.png)\r\n\r\n\r\nWhen TBR is different it is working ok, and it can be cancelled, but cancelation provides to TBR 0 U/H, not possible to set own TBR value.\r\n\r\n[AndroidAPS (3).log](https://github.com/nightscout/AndroidAPS/files/7508064/AndroidAPS.3.log)\r\n\r\n",
+ "comments": [
+  {
+   "id": 964574264,
+   "user": "avereha",
+   "created_at": "2021-11-09T21:44:11Z",
+   "body": "I will need logs from the last >3 days. \r\nDid you switch between Dash and Eros(or other pumps)  after activating a pod?\r\nWhen this error happens, the only way to fix is to wait for max ~3 days for the fake TBR to \"expire\". :(\r\nI'm trying to understand how it ended in this state.\r\nAre you in the discord testing channel?"
+  },
+  {
+   "id": 964616259,
+   "user": "betees82",
+   "created_at": "2021-11-09T22:49:08Z",
+   "body": "Ok i'll attach long log, but now pod is just activated today so i need to wait few more days.\r\nYes, we use both Eros and Dash. Currently we're on Dash.\r\nWe are now on 2nd dash. And this issue we faced when we started DASH. so 3 beta 4. Now updated to beta 5 and same issue.\r\nLet me know direction what is needed? Best would be whloe POD (3 days) history? I'll also send more screenshots.\r\n"
+  },
+  {
+   "id": 964623144,
+   "user": "betees82",
+   "created_at": "2021-11-09T23:02:08Z",
+   "body": "Here is situation with vale different than 0 U/h and different that set in profile.\r\n\r\n![image](https://user-images.githubusercontent.com/60583387/141019311-ed434189-ae18-4723-a22f-d561defd7466.png)\r\n"
+  },
+  {
+   "id": 964634084,
+   "user": "avereha",
+   "created_at": "2021-11-09T23:22:06Z",
+   "body": "This buggy TBR was set sometime in the last 3 days. If you still have them, please attach the logs for the last 3/4 days(since the 6th of November).\r\n\r\nWhen did you start with Dash? After activating a Dash pod, did you switch back to Eros?\r\n\r\nThe only solution that I know for this problem to go away is to wait 3 days(drop the pod and wait). Changing the AAPS version will not help.\r\n\r\nI'm also interested in the pod history screenshots if you can share them. If there are errors, please scroll down to the first line that doesn't have an error. If all lines have errors, please share the first line in history."
+  },
+  {
+   "id": 964636825,
+   "user": "avereha",
+   "created_at": "2021-11-09T23:27:42Z",
+   "body": "It's also possible that this issue is a duplicate of https://github.com/nightscout/AndroidAPS/issues/861\r\nAs I mentioned before, unfortunately for this case, updating the AAPS version will not fix it. You have to wait for the \"bad\" TBR to expire(~3 days)."
+  },
+  {
+   "id": 964655137,
+   "user": "betees82",
+   "created_at": "2021-11-10T00:04:42Z",
+   "body": "Well yes, this issue #861 was also mine, but it was closed, and Milos mentioned, that it will be solved with new build. Situation is that I still have this issue with beta 5.\r\n\r\nWhat do you mean by Bad TBR? TBR I can change in any time. I can also change Basic BR in profile setting. Issue is only when AAPS decide to stop TBR and use basic basal value. In such case it is showen in OVERVIEW tab as TBR 0 U/h with this icon:\r\n\r\n![image](https://user-images.githubusercontent.com/60583387/141023917-3494edc0-0243-4569-8016-5451c92018e2.png)\r\n\r\nand should be:\r\n\r\n![image](https://user-images.githubusercontent.com/60583387/141024009-56f18151-3c75-4124-91f9-995ecfa2e6b5.png)\r\n\r\nQuestion is also what is then value taken to IOB calculation.\r\n\r\nIn Dash tab it is ok. There is nothing in TBR, and Basic Basal Rate is correct. I guess it is just matter of display in Overview screen. In NS basal ratio is correct - Basic Basal Rate.\r\n\r\n![image](https://user-images.githubusercontent.com/60583387/141025415-9f50e3d9-648f-487c-8a55-0721352a7a68.png)\r\n\r\n\r\nTake a log on attached log.\r\n\r\n\r\n[AndroidAPS (5).log](https://github.com/nightscout/AndroidAPS/files/7508730/AndroidAPS.5.log)\r\n\r\nAcording AAPS Overiev screen Basal was 0 U\\h since more or less 00:30 CET.\r\n\r\n![image](https://user-images.githubusercontent.com/60583387/141024746-8ba8aef2-3dcb-4c16-be73-66c1154ca5c2.png)\r\n\r\nBut in log you can see that it was set to 0.25 U/h like in Profile setting.\r\n\r\nI also have Logs from 6th of Nov, but I don't know if there is a reason to send it.\r\n\r\nToday we started 2nd Dash, so it's 4th day now. Before we used Eros on Beta 3. TBR was working OK for Eros\r\n\r\nThank you"
+  },
+  {
+   "id": 964669761,
+   "user": "betees82",
+   "created_at": "2021-11-10T00:33:51Z",
+   "body": "Ok, this buggy TBR your mean this from SMS? It looks like 3 more hours to go. We will see\r\n![IMG_20211110_013217](https://user-images.githubusercontent.com/60583387/141027764-03bcd33a-6941-465b-b16a-d0e748969c2b.jpg)\r\n"
+  },
+  {
+   "id": 964926186,
+   "user": "avereha",
+   "created_at": "2021-11-10T09:14:05Z",
+   "body": "Yes, this is the TBR I mentioned!\r\nIf you still have them, please attach the logs for the last 3/4 days(since the 6th of November). This was the date when this TBR was set.\r\nI'm also interested in the pod history screenshots if you can share them. If there are errors, please scroll down to the first line that doesn't have an error. If all lines have errors, please share the first line in history."
+  },
+  {
+   "id": 965012611,
+   "user": "betees82",
+   "created_at": "2021-11-10T10:51:16Z",
+   "body": "YES! Problem despaired after this wired TBR 4800 minutes ended. Do you still need logs mentioned above?\r\n\r\n"
+  },
+  {
+   "id": 965067574,
+   "user": "betees82",
+   "created_at": "2021-11-10T12:05:51Z",
+   "body": "[drive-download-20211110T120347Z-001.zip](https://github.com/nightscout/AndroidAPS/files/7512473/drive-download-20211110T120347Z-001.zip)\r\nall Logs"
+  },
+  {
+   "id": 965105667,
+   "user": "avereha",
+   "created_at": "2021-11-10T12:56:10Z",
+   "body": "Do you have earlier logs?\r\nI see that this TBR was set on 6th at ` @20:43`\r\nThe logs start at `21:09` :("
+  },
+  {
+   "id": 965257868,
+   "user": "betees82",
+   "created_at": "2021-11-10T14:23:02Z",
+   "body": "No, I think I installed new Beta that day, and older logs disappeared. But i can share NS history. It was first time Dash after previous Eros at 21:09\r\n\r\n![image](https://user-images.githubusercontent.com/60583387/141130344-810772f6-4331-4a16-945a-75ad88ec2abb.png)\r\n"
+  },
+  {
+   "id": 966675269,
+   "user": "kristinsmotz",
+   "created_at": "2021-11-11T22:38:26Z",
+   "body": "After conferring with @avereha over in Discord, I will add to this issue rather than creating my own. \r\nHistory:\r\nJust switched pod and decided to try an Eros pod with beta5. First had to \"deactivate\" old pod for some reason, even though I deactivated dash pod before AND deactivation of the last Eros pod we had in 2.8.2 was successful 3 weeks ago before we started the beta testing. Then had several instances of system message AAPS is not responding, wait or wait, during the new pod activation. I started screen recording after the first one. Two or three restarts later pod was activating, but the on-screen guidance got stuck. I.e I hit next to insert cannula, confirmed the \"are you sure\" pop-up, pod started the insertion process, phone stayed in the \"hit next to insert cannula\" screen, then after cannula inserted I pressed next again, then circle for a fraction of a second, then checkmark pod inserted.\r\nScreen recordings from pod change:\r\nhttps://user-images.githubusercontent.com/71758682/141377990-ea5c40e6-1415-4c6a-9f95-7f04dba607dd.mp4\r\n\r\nhttps://user-images.githubusercontent.com/71758682/141378003-afa7906a-9a8b-4f17-9afc-4973f1d7171c.mp4\r\n\r\nAfter the pod change I had to bolus for her evening meal, serve it. After that I noticed a 0 basal still running, and on a whim went into pod history. It had a bunch of records for \"cancel fake temporary basal created because pod was suspended\". \r\n\r\n![255467952_1520942808270719_2448607461877888030_n](https://user-images.githubusercontent.com/71758682/141378083-51b27469-77db-44be-b0fe-050fb7086bf4.jpg)\r\n\r\n![255433575_861889191161878_816669084281339418_n](https://user-images.githubusercontent.com/71758682/141378089-e2088fe5-e6de-44db-8d06-928e4da9db7e.jpg)\r\n\r\nI've since tried canceling the 0 basal several times, but it seems the message isn't coming through to the pod or isn't accepted by pod. I have tried exiting AAPS, suspending and resuming delivery, shutting down phone and restarting. But it keeps apparently not being able t"
+  },
+  {
+   "id": 967064702,
+   "user": "avereha",
+   "created_at": "2021-11-12T12:11:48Z",
+   "body": "Should be fixed with: https://github.com/nightscout/AndroidAPS/commit/85178ee19ff628dfe4422409973c6f8ae7b511b5"
+  },
+  {
+   "id": 978220922,
+   "user": "avereha",
+   "created_at": "2021-11-24T21:09:20Z",
+   "body": "This issue can be closed"
+  }
+ ]
+}

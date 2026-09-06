@@ -1,0 +1,51 @@
+{
+ "id": 3630832651,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4315,
+ "title": "Selecting duration of no announcements for carbs required does not work correctly",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4315",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-11-16T17:11:30Z",
+ "closed_at": "2025-12-08T10:54:18Z",
+ "comment_count": 6,
+ "body": "No matter which duration I select (i.e. one of 5, 15 or 30 minutes) the result is always 30 minutes. It appears that all 3 possibilities get added to **intent** but the set for 15 minutes overwrites the preceding 5 minute set and then finally the 30 minute set overwrites that again. Changing that sequence in the code confirmed my suspicion that it is always the last option which gets activated.",
+ "comments": [
+  {
+   "id": 3555154869,
+   "user": "olorinmaia",
+   "created_at": "2025-11-20T00:11:54Z",
+   "body": "I'm not sure I understand what option/feature you are talking about? Could you provide location of this setting or screenshot? :)"
+  },
+  {
+   "id": 3555221351,
+   "user": "ga-zelle",
+   "created_at": "2025-11-20T00:36:23Z",
+   "body": "For context see docs https://androidaps.readthedocs.io/en/latest/DailyLifeWithAaps/KeyAapsFeatures.html#minimal-carbs-required-for-suggestion\nI'll take  a screen shot of the related notification when it appears again."
+  },
+  {
+   "id": 3559119200,
+   "user": "olorinmaia",
+   "created_at": "2025-11-20T17:03:52Z",
+   "body": "> For context see docs https://androidaps.readthedocs.io/en/latest/DailyLifeWithAaps/KeyAapsFeatures.html#minimal-carbs-required-for-suggestion I'll take a screen shot of the related notification when it appears again.\n\nYou don't need to for my part, now I understand what you mean. I'll have a look also when I get some spare time if I see any solution."
+  },
+  {
+   "id": 3568397009,
+   "user": "MilosKozak",
+   "created_at": "2025-11-23T22:19:45Z",
+   "body": "I added logging here https://github.com/nightscout/AndroidAPS/commit/1bfa05ee56b3690edfc8661ae27758195fe693b5\nSearch logcat for CarbSuggestion"
+  },
+  {
+   "id": 3570799674,
+   "user": "ga-zelle",
+   "created_at": "2025-11-24T13:29:01Z",
+   "body": "Yes, that's how I started: Added logging of the duration for use elsewhere. That way  I found out that duration is always returned as 30m no matter which of the 3 options I picked."
+  },
+  {
+   "id": 3626316266,
+   "user": "MilosKozak",
+   "created_at": "2025-12-08T10:54:18Z",
+   "body": "fixed by https://github.com/nightscout/AndroidAPS/commit/147c9f27f5fe9cf1f23de4ef0d4b5bc125432e3b"
+  }
+ ]
+}

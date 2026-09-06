@@ -1,0 +1,21 @@
+{
+ "issue_id": 808,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/808",
+ "title": "Nightscout follower - 5 min. delay",
+ "symptom": "While following Nightscout page, data is between 5 and 10 minutes old. xDrip+ appears to pull data with a delay or not frequently enough, and it never catches up to the current time, always being about 5 minutes behind.",
+ "cause": "The issue is with the Dexcom servers, as stated by a commenter. Additionally, the Nightscout Follow logic in xDrip+ may not be polling frequently enough.",
+ "fix": "Decrease the Dexcom Share polling interval by setting BRIDGE_INTERVAL to 15000 (15 seconds) in Nightwatch settings, which almost completely eliminated the lag. Alternatively, changing the grace value in NightscoutFollowService.java to something bigger than 10 seconds (e.g., Constants.SECOND_IN_MS * 30) might fix the problem, but this was not tested.",
+ "settings_changed": [
+  "BRIDGE_INTERVAL → 15000"
+ ],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [
+  "nightscout follower",
+  "dexcom share",
+  "bridge_interval"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "In the Nightwatch settings I've decreased the Dexcom Share polling interval to 15 seconds: `BRIDGE_INTERVAL = 15000` This almost completely eliminated the lag."
+}

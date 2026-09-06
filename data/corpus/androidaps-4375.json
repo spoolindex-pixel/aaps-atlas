@@ -1,0 +1,39 @@
+{
+ "id": 3682552995,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4375,
+ "title": "Bug: time picker error",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4375",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-12-01T19:35:40Z",
+ "closed_at": "2025-12-03T17:38:28Z",
+ "comment_count": 4,
+ "body": "I'm not sure the time picker error is solved (I had seen a commit on it)\n\n![Screenshot_20251126_065632_AAPS.jpg](https://github.com/user-attachments/assets/848a0517-43b8-4f0a-b6cd-9a5ff0861105)\n\nScreen capture\n\nhttps://drive.google.com/file/d/198t5bZz9EauQ-TI0vwyRQt9rRU6kku8_/view?usp=drivesdk",
+ "comments": [
+  {
+   "id": 3607398746,
+   "user": "MilosKozak",
+   "created_at": "2025-12-03T15:25:49Z",
+   "body": "I analyzed it and it can be 1 min different because of rounding during recalculation time offset. Is it your issue? ie max change to entered value is 1 min?"
+  },
+  {
+   "id": 3607477873,
+   "user": "robertrub",
+   "created_at": "2025-12-03T15:42:33Z",
+   "body": "Yes, I wanted carbs entered at _x hours and 30 min_ but entering 30 ended showing 31 and I had to enter 29 in order to get 30."
+  },
+  {
+   "id": 3607499679,
+   "user": "robertrub",
+   "created_at": "2025-12-03T15:46:13Z",
+   "body": "I tested some more. At first it worked OK. Entered 00 and got 00, entered 30 and got 30 but then entered 00 and got 01, entered 30 and got 31... Seems like the \"bug\" depends on the actual time (in seconds) and, as you said, rounding up created the bug."
+  },
+  {
+   "id": 3608022567,
+   "user": "MilosKozak",
+   "created_at": "2025-12-03T17:38:28Z",
+   "body": "it's not a bug. Maybe not perfect but .... it's because time offiset is primary source and during conversion between offset and time rouding occur"
+  }
+ ]
+}

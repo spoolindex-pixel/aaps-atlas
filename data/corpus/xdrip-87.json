@@ -1,0 +1,39 @@
+{
+ "id": 215710833,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 87,
+ "title": "How is the calibration algorithm working?",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/87",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2017-03-21T11:45:54Z",
+ "closed_at": "2017-03-27T20:01:56Z",
+ "comment_count": 4,
+ "body": "Hello,\r\n\r\ncan anyone explain the mathematical process of the calibration algorithm to me?",
+ "comments": [
+  {
+   "id": 288144720,
+   "user": "tzachi-dar",
+   "created_at": "2017-03-21T16:55:54Z",
+   "body": "At a very high level, for each calibration there is a bg and raw value. We try to find the parameters of a straight line that will be as close as possible to this points.\r\n\r\nIn a little bit more details, each point gets a weight that is based on a few factors, such as how high it is, or how fast bg was changing."
+  },
+  {
+   "id": 288153195,
+   "user": "TebbeUbben",
+   "created_at": "2017-03-21T17:21:11Z",
+   "body": "I would like to know exactly how a calibration is calculated. I'm pretty young, so I'm curious about such things. Would be pretty nice if you could answer my question :)"
+  },
+  {
+   "id": 288245613,
+   "user": "tzachi-dar",
+   "created_at": "2017-03-21T22:59:17Z",
+   "body": "Here is how slope and intercept are being calculated:\r\n    private static void calculate_w_l_s(boolean extended) {\r\n        if (Sensor.isActive()) {\r\n            double l = 0;\r\n            double m = 0;\r\n            double n = 0;\r\n            double p = 0;\r\n            double q = 0;\r\n            double w;\r\n\r\n            final SlopeParameters sParams = getSlopeParameters();\r\n\r\n            List<Calibration> calibrations = allForSensorInLastFourDays(); //5 days was a bit much, dropped this to 4\r\n\r\n            if (calibrations == null) {\r\n                Log.e(TAG, \"Somehow ended up with null calibration list!\");\r\n                Home.toaststatic(\"Somehow ended up with null calibration list!\");\r\n                return;\r\n            }\r\n\r\n            // less than 5 calibrations in last 4 days? cast the net wider if in extended mode\r\n            final int ccount = calibrations.size();\r\n            if ((ccount < 5) && extended) {\r\n                calibrations = allForSensorLimited(5);\r\n                if (calibrations.size() > ccount) {\r\n                    Home.toaststaticnext(\"Calibrated using data beyond last 4 days\");\r\n                }\r\n            }\r\n\r\n            if (calibrations.size() <= 1) {\r\n                Calibration calibration = Calibration.last();\r\n                calibration.slope = 1;\r\n                calibration.intercept = calibration.bg - (calibration.raw_value * calibration.slope);\r\n                calibration.save();\r\n                CalibrationRequest.createOffset(calibration.bg, 25);\r\n                newFingerStickData();\r\n            } else {\r\n                for (Calibration calibration : calibrations) {\r\n                    w = calibration.calculateWeight();\r\n                    l += (w);\r\n                    m += (w * calibration.estimate_raw_at_time_of_calibration);\r\n                    n += (w * calibration.estimate_raw_at_time_of_calibration * calibration.estimate_raw_at_time_of_calibration);\r\n                    p += (w * calibration.bg);\r\n "
+  },
+  {
+   "id": 288328531,
+   "user": "TebbeUbben",
+   "created_at": "2017-03-22T08:22:04Z",
+   "body": "Okay, and what's the meaning and purpose of the variables you mentioned above?"
+  }
+ ]
+}

@@ -1,0 +1,39 @@
+{
+ "id": 733271343,
+ "repo": "nightscout/AndroidAPS",
+ "number": 58,
+ "title": "Import Settings: Android system notification to allow file access not visible when requested on import, need to hit back to see it on previous screen ",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/58",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2020-10-30T15:21:14Z",
+ "closed_at": "2020-11-12T14:28:57Z",
+ "comment_count": 4,
+ "body": "**Version:** 2.7.0\r\n**Android Version:** 8.1\r\n**Phone:** Samsung Galaxy S7 Edge\r\n\r\n**NOTE:** I reported this issue in the AAPS-Omni branch, however Bart Sopers closed the issue as he said it is a core AAPS issue and not the AAPS-Omni branch specific, so I am reporting it here.\r\n\r\n**Time:**  Issue is not dependent on time and an error does not appear in the logs.  UX issue.\r\n\r\n**ISSUE:**  Upon a new installation of AndroidAPS, when importing backed up settings the first time an Android system notification is needed to allow access to the file system to retrieve a scan of any saved preferences files on the system.   The problem is that upon clicking \"Import settings\" under the maintenance tab you are taken to a new screen titled \"Select file to import\".  However there are not any buttons or items to execute on this screen.  Only upon using the system \"back\" button on the phone does AndroidAPS take you to the previous screen where the Android system notification for file access finally appears.  Clicking \"allow\" and then \"Import Settings\" again allows AndroidAPS to successfully scan the filesystem for preferences files and the user can choose one to continue with the import procedure.\r\n\r\n**Steps to Reproduce:**\r\n\r\n1. Backup existing AAPS preferences using 2.7.0 version of AAPS using a master password.\r\n2. Uninstall existing version of AAPS\r\n3. Install new version of AAPS\r\n4. After installation, AAPS will immediately open.  Exit settings Wizard and force close the app.\r\n5. Copy engineering_mode file to AAPS installation directory\r\n6. Manually open AAPS\r\n7. Go to 3 button menu -> Preferences -> General and set a Master Password.\r\n8. Go to Hamburger menu -> Maintenance\r\n9. Click Import Settings\r\n10. You are taken to the Select file to import screen, however no options are available\r\n![image](https://user-images.githubusercontent.com/7156327/97605903-800b7c00-1a0f-11eb-95a3-a791b27edc69.png)\r\n\r\n11. Click the back button on your phone or the back arrow in the upper left corner.\r\n12. On the previous Maintenance screen you will see the Android system notification asking for system file access.\r\n![image](https://user-images.githubusercontent.com/7156327/97605969-8ef22e80-1a0f-11eb-810a-d6617139814c.png)\r\n\r\n13. Click allow\r\n14. Click Import Settings again\r\n15. You should now see all preferences files on your system, click one\r\n![image](https://user-images.githubusercontent.com/7156327/97606146-c06afa00-1a0f-11eb-953c-9fc692f1365f.png)\r\n\r\n16. On the Import Settings dialog ensure the filename you clicked matches what is shown in the dialog, if so, click OK.\r\n![image](https://user-images.githubusercontent.com/7156327/97606240-d973ab00-1a0f-11eb-9853-85acef4f1ce1.png)\r\n\r\n17. Enter your master password and click OK.\r\n![image](https://user-images.githubusercontent.com/7156327/97606273-e395a980-1a0f-11eb-923a-6d1cc6be0c2a.png)\r\n\r\n18. If your password is correct the Import settings dialog will show a summary of your preferences import.  Click Import to complete the process.\r\n![image](https://user-images.githubusercontent.com/7156327/97606346-f8723d00-1a0f-11eb-914e-b456be5799c9.png)\r\n\r\n19.  Click OK on the successful settings imported dialog to restart AAPS.\r\n![image](https://user-images.githubusercontent.com/7156327/97606375-02943b80-1a10-11eb-9909-dd3a1add749c.png)\r\n\r\n\r\n",
+ "comments": [
+  {
+   "id": 723482277,
+   "user": "MilosKozak",
+   "created_at": "2020-11-07T19:03:07Z",
+   "body": "does the problem appear when go through wizard?"
+  },
+  {
+   "id": 726112122,
+   "user": "MilosKozak",
+   "created_at": "2020-11-12T14:28:57Z",
+   "body": "fixed by https://github.com/nightscout/AndroidAPS/commit/d1009e53218e90aac17639ff876b13467057ef4a"
+  },
+  {
+   "id": 726284785,
+   "user": "teleriddler",
+   "created_at": "2020-11-12T19:17:59Z",
+   "body": "Yes, both through the wizard and without the wizard.\r\n\r\nI just tried with the latest commit and the problem has been resolved.  Thank you."
+  },
+  {
+   "id": 4470193576,
+   "user": "PieterGit",
+   "created_at": "2026-05-17T09:45:22Z",
+   "body": "I also had a look at this issue because I had similar problem with AndroidAPS 3.4.x. Turned out to be my own error. I found that the exported settings file was not named with a `.json` extension after copying it via Android Studio Device Explorer on Windows 11; on Windows it appeared without an extension / as a generic binary file `.bin`. Because of that, AAPS did not recognise it in the import flow. After renaming the file to end in `.json` on the device, AAPS recognised it correctly. So it is worth checking the file extension if import fails on the mobile phone in the file explorer app."
+  }
+ ]
+}

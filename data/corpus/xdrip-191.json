@@ -1,0 +1,45 @@
+{
+ "id": 262542285,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 191,
+ "title": "Feature request: G5 - Report high-noise readings as raw instead of SGV",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/191",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2017-10-03T18:44:29Z",
+ "closed_at": "2018-01-06T23:28:17Z",
+ "comment_count": 5,
+ "body": "Currently, entries uploaded to Nightscout do not take noise levels into account when using the Dexcom G5. The noise level is available locally, but the MongoDB entries all contain `\"noise\": 1` and report BG values as SGV. Many people use XDrip as BG source for their artificial pancreas systems. The current behavior makes it impossible for loop systems to recognize unreliable BG data.\r\n\r\nThis led to a potentially critical incident for us while using OpenAPS. A sensor failed and all of a sudden reported BG values of >300 with noise levels of 1000 while true BG was around 90 (day 6, transmitter with original batteries, sensor super-reliable until then, no acetaminophen involved, no visible damage to the wire). This caused OpenAPS to give insulin. As this was during the day, we noticed the error immediately and no harm was caused.\r\n\r\nIncidents like this could easily be avoided if XDrip only reported low-noise values as \"SGV\" and high-noise values as \"raw\". This would still allow XDrip to almost always display BG values, but AP systems could simply decide to trust only \"SGV\" values. \r\n\r\n![high bg high noise cropped](https://user-images.githubusercontent.com/29184757/31142739-75651ae4-a87b-11e7-8cc8-54724590182e.png)\r\n(The current low BG is caused by the sensor being removed, the values did not come down before removal)\r\n",
+ "comments": [
+  {
+   "id": 334059112,
+   "user": "sulkaharo",
+   "created_at": "2017-10-04T06:11:23Z",
+   "body": "Nightscout expects the following values to be encoded into the CGM entry objects:\r\n\r\n```\r\n  rawbg.noiseCodeToDisplay = function noiseCodeToDisplay(mgdl, noise) {\r\n    var display;\r\n    switch (parseInt(noise)) {\r\n      case 0: display = '---'; break;\r\n      case 1: display = translate('Clean'); break;\r\n      case 2: display = translate('Light'); break;\r\n      case 3: display = translate('Medium'); break;\r\n      case 4: display = translate('Heavy'); break;\r\n      default:\r\n        if (mgdl < 40) {\r\n          display = translate('Heavy');\r\n        } else {\r\n          display = '~~~';\r\n        }\r\n        break;\r\n    }\r\n    return display;\r\n  };\r\n```"
+  },
+  {
+   "id": 334175061,
+   "user": "jamorham",
+   "created_at": "2017-10-04T14:32:03Z",
+   "body": "I plan to add support to translate the calculated noise values within xDrip to ones to match the Nightscout noise scale.\r\n\r\nThis would equate the xDrip:\r\n  &gt; `NOISE_TRIGGER` threshold => `\"2\"`\r\n   &gt; `NOISE_TOO_HIGH_FOR_PREDICT` => `\"3\"`\r\n   &gt; `NOISE_HIGH` => `\"4\"`\r\n\r\nI will encode the value `\"0\"` to mean unknown noise or other error.\r\n\r\nFor looping I would say to disregard anything containing a noise value other than \"1\" and also be aware that at present the xDrip Nightscout uploader also does not include the noise smoothing overlay or calibration plugin overlay."
+  },
+  {
+   "id": 334308093,
+   "user": "jamorham",
+   "created_at": "2017-10-04T22:29:50Z",
+   "body": "I am hopeful that this commit will go some way to resolving this:\r\n\r\nhttps://github.com/NightscoutFoundation/xDrip/commit/b4b632fa993ccda71e45d2c2dc3b2794560275c5 \r\n\r\nThis change will be available in the Oct 4th xDrip Nightly.\r\n\r\nNot all data sources have a true \"raw\" value so I would prefer not to try to exclude sgv and provide just raw as a fallback as I think this could be misleading.\r\n"
+  },
+  {
+   "id": 340114383,
+   "user": "philipgo",
+   "created_at": "2017-10-27T22:44:04Z",
+   "body": "@jamorham Thank you for implementing this, it works great with the G5! I think this issue can be closed.\r\n\r\nWe are currently discussing how to make use of the noise data without breaking the way OpenAPS treats original Dexcom data. Maybe you have some useful input? https://github.com/openaps/oref0/pull/735"
+  },
+  {
+   "id": 355785991,
+   "user": "philipgo",
+   "created_at": "2018-01-06T23:28:17Z",
+   "body": "Thanks to @jamorham for reporting the noise values. They are now used by OpenAPS dev to be less aggressive with noisy CGM values."
+  }
+ ]
+}

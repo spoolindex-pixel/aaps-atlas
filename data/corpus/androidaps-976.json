@@ -1,0 +1,41 @@
+{
+ "id": 1060632666,
+ "repo": "nightscout/AndroidAPS",
+ "number": 976,
+ "title": "[Dash] Bolus registred under treatments but not delivered",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/976",
+ "state": "closed",
+ "labels": [
+  "omnipod dash"
+ ],
+ "created_at": "2021-11-22T22:00:18Z",
+ "closed_at": "2021-11-23T08:42:39Z",
+ "comment_count": 4,
+ "body": "We had a serious issue this morning; my daughter bolused 2.80u for breakfast, one hour later I got a call from the school nurse as her bg was unexpectedly raising. I checked on the  nightscout and there was the 2.8u registered, also checked on the treatment tab of his AAPS and the 2.8u was there but on the pod history strangely I was unable to find the breakfast bolus. \r\nAAPS version: 2.8.2.10-dev\r\nPump: Omnipod Dash \r\nCGM: Dexcom G6/xdrip+\r\nPFA to this issue the AAPS logs and some screenshots of the treatments tab and pod history:\r\n\r\n[AndroidAPS._2021-11-22_00-00-02_.2.zip](https://github.com/nightscout/AndroidAPS/files/7584613/AndroidAPS._2021-11-22_00-00-02_.2.zip)\r\n\r\n![Uploading 20211122_130636.jpg…]()\r\n![Uploading 20211122_130738.jpg…]()\r\n![Uploading 20211122_130834.jpg…]()\r\n",
+ "comments": [
+  {
+   "id": 975991276,
+   "user": "avereha",
+   "created_at": "2021-11-22T23:02:56Z",
+   "body": "Thank you for sending the logs!\r\n\r\nThis is **not** dash specific.\r\n\r\nIt is also not a bug, but maybe we can improve the 'Treatments' button.\r\n\r\nAfter reading the logs, it looks like the entry was added via the 'Treatments' button and the 'Do not bolus, record only' option was checked(see (value=Record)):\r\n```\r\n08:07:44.204 [RxCachedThreadScheduler-68] D/CORE: [UserEntryLogger$log$2.invoke():44]: USER ENTRY: TREATMENT TreatmentDialog Enregistrement [SimpleString(value=Record), Insu\r\nlin(value=2.8), Gram(value=28)]\r\n08:07:44.238 [RxCachedThreadScheduler-60] D/DATABASE: [TreatmentDialog.submit$lambda-13$lambda-12$lambda-5():160]: Inserted bolus Bolus(id=557, version=0, dateCreated=1637564864207, isValid=true, referenceId=null, interfaceIDs_backing=null, timestamp=1637564864192, utcOffset=3600000, amount=2.8, type=NORMAL, isBasalInsulin=false, insulinConfiguration=null)\r\n08:07:44.241 [RxCachedThreadScheduler-35] D/DATABASE: [TreatmentDialog.submit$lambda-13$lambda-12$lambda-8():166]: Inserted carbs Carbs(id=260, version=0, dateCreated=1637564864232, isValid=true, referenceId=null, interfaceIDs_backing=null, timestamp=1637564864192, utcOffset=3600000, duration=0, amount=28.0)\r\n\r\n```\r\n\r\nYou can see this if you open the last tab in 'Treatments'(the one with a human head in a round circle). It should say: 'Record' under that entry.\r\nOne suggestion for the future would be to watch for the 'delivery' dialogue after issuing a bolus."
+  },
+  {
+   "id": 976195097,
+   "user": "amdaini",
+   "created_at": "2021-11-23T06:21:15Z",
+   "body": "Thank you for your prompt answer!\r\n\r\nIn fact, it's marked as record on the Treatments tab\r\n![20211123_070945](https://user-images.githubusercontent.com/43968968/142978359-e056a020-00a0-4c69-8c32-4f40601b117a.jpg)\r\n\r\nIs it somehow possible to see it as record on the nsclient installed on parent's phone or ns website? (BTW the last nsclient version built from dev - \"2.8.2.10-dev\"  keeps crashing)\r\n\r\nThank you again for the amazing work you are doing for this community.\r\n"
+  },
+  {
+   "id": 976287582,
+   "user": "MilosKozak",
+   "created_at": "2021-11-23T08:42:39Z",
+   "body": "current version is 2.8.2.13-dev or beta7\r\nthe fact it has been marked as \"Record only\" is not visible in NS or NSClient because record in DB is the same (only not sent to the pump)"
+  },
+  {
+   "id": 980531967,
+   "user": "ToreBj",
+   "created_at": "2021-11-27T09:39:46Z",
+   "body": "> current version is 2.8.2.13-dev or beta7 the fact it has been marked as \"Record only\" is not visible in NS or NSClient because record in DB is the same (only not sent to the pump)\r\n\r\nSeems to me that this attribute \"Record only\" should be added in the DB then so it can be presented/maintained for further use and reports??"
+  }
+ ]
+}

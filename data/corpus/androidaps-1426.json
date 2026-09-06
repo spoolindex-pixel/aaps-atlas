@@ -1,0 +1,51 @@
+{
+ "id": 1164996217,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1426,
+ "title": "[3.0.0.1] Incorrect (future) timestamp in AAPS+ NightScout on Dex sensor change (BYODA)",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1426",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-03-10T09:52:45Z",
+ "closed_at": "2022-03-16T10:59:45Z",
+ "comment_count": 6,
+ "body": "Hi,\r\n\r\nI use BOYDA for managing my Dex G6 sensor and AAPS 3.0.0.1 as receiver. Sensor changes are kept automatically and sent to NightScout. \r\n\r\nSince I changed to AAPS 3.0.0.1 the timestamp for sensor change is not correct:\r\n![image](https://user-images.githubusercontent.com/49242886/157636483-833e9842-5038-4b8c-9629-e36f77b25770.png)\r\n\r\nsensor change happened` 2022-Mar-10 07:26 CET` - displayed in AAPS as well as sent timestamp to NightScout is `2106-02-07T06:28:1500Z` instead.\r\n![image](https://user-images.githubusercontent.com/49242886/157636303-a2c78c4d-e403-42f3-9ddd-fb70ffde897a.png)\r\n\r\nAAPS does not allow to delete this wrong data anymore, it is possible only flagging it as \"invalid\".\r\n\r\nPlease get that fixed as it spoils up NightScout data as well as AAPS. Thank you",
+ "comments": [
+  {
+   "id": 1064096295,
+   "user": "reijoahola-nightscout",
+   "created_at": "2022-03-10T14:02:37Z",
+   "body": "I had the same issue several weeks ago with AAPS 3.0-RC and surprisingly with the same (wrong) date. I am not sure was also the timestamp same. This problem has not occurred after that."
+  },
+  {
+   "id": 1064146981,
+   "user": "reijoahola-nightscout",
+   "created_at": "2022-03-10T14:52:54Z",
+   "body": "This seems to be about the same problem: https://github.com/nightscout/AndroidAPS/issues/1421"
+  },
+  {
+   "id": 1064923896,
+   "user": "tomacs",
+   "created_at": "2022-03-11T09:19:05Z",
+   "body": "Quick question, did you use the action button to let APS know that you changed the Sensor? I had the same problem, when using the action button that date appears in future. But after avoiding the button its working for me because it seems that BYODA notifies APS automatically about sensor change. Maybe this is the trouble maker that APS has 2 dates... but of course maybe I am wrong."
+  },
+  {
+   "id": 1065859594,
+   "user": "CaptainBalou",
+   "created_at": "2022-03-12T10:39:35Z",
+   "body": "@ideaweb I used xdrip for a while and there I used the action button to reset the time of the sensor. Since a few months I'm back on BYOD app and do not need this anymore because of the automatic notification as you mentioned."
+  },
+  {
+   "id": 1065872400,
+   "user": "AISMap",
+   "created_at": "2022-03-12T12:10:45Z",
+   "body": "Hi,\n\nNo - I haven't done anything manually. AAPS creates the change date automatically after having received the info from BYODA. I am running this setup quite a while and with 2.8.2 there was never an issue.\n\n/Arne\n\n11.03.2022 10:19:21 Tom ***@***.***>:\n\n> Quick question, did you use the action button to let APS know that you changed the Sensor? I had the same problem, when using the action button that date appears in future. But after avoiding the button its working for me because it seems that BYODA notifies APS automatically about sensor change. Maybe this is the trouble maker that APS has 2 dates... but of course maybe I am wrong.\n> \n> —\n> Reply to this email directly, view it on GitHub[https://github.com/nightscout/AndroidAPS/issues/1426#issuecomment-1064923896], or unsubscribe[https://github.com/notifications/unsubscribe-auth/ALXWGBSLPDWNJTSPUIAFUIDU7MFZLANCNFSM5QMDDUSA].\n> Triage notifications on the go with GitHub Mobile for iOS[https://apps.apple.com/app/apple-store/id1477376905?ct=notification-email&mt=8&pt=524675] or Android[https://play.google.com/store/apps/details?id=com.github.android&referrer=utm_campaign%3Dnotification-email%26utm_medium%3Demail%26utm_source%3Dgithub].\n> You are receiving this because you authored the thread.[Verfolgungsbild][https://github.com/notifications/beacon/ALXWGBSIPMEQTW5YLTNBMBDU7MFZLA5CNFSM5QMDDUSKYY3PNVWWK3TUL52HS4DFVREXG43VMVBW63LNMVXHJKTDN5WW2ZLOORPWSZGOH54XF6A.gif]\n> \n"
+  },
+  {
+   "id": 1068998114,
+   "user": "MilosKozak",
+   "created_at": "2022-03-16T10:59:45Z",
+   "body": "added validation https://github.com/nightscout/AndroidAPS/commit/58b49a05eaefd96a9273942b46217e0fe0fb71e1"
+  }
+ ]
+}

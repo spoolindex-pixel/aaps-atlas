@@ -1,0 +1,105 @@
+{
+ "id": 5036685442,
+ "repo": "nightscout/AndroidAPS",
+ "number": 5040,
+ "title": "Equil - connect timeout",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/5040",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2026-08-01T10:59:22Z",
+ "closed_at": "2026-08-02T10:37:56Z",
+ "comment_count": 15,
+ "body": "[AndroidAPS.log](https://github.com/user-attachments/files/30615742/AndroidAPS.log)\n\nIn version 3.2.4.5, when attempting to perform a bolus, even through the calculator, there is no connection. The timer counts down, but no insulin is delivered. The log is on. The same situation occurs when attempting to change the reservoir.",
+ "comments": [
+  {
+   "id": 5151396511,
+   "user": "MilosKozak",
+   "created_at": "2026-08-01T12:21:21Z",
+   "body": "I cannot reproduce this issue. It seems to be specific to your phone/android stack\nAnyway, I changed the scanning mode to try to address your specific issue\nBuild from dev3 branch, test and report here\n@mspiechowicz-oss "
+  },
+  {
+   "id": 5151433987,
+   "user": "mspiechowicz-oss",
+   "created_at": "2026-08-01T12:32:11Z",
+   "body": "> I cannot reproduce this issue. It seems to be specific to your phone/android stack Anyway, I changed the scanning mode to try to address your specific issue Build from dev3 branch, test and report here [@mspiechowicz-oss](https://github.com/mspiechowicz-oss)\n\nBuilding dev3. Everything works fine on version 3.2.4.2. Newer versions have this exact same issue. It's not just me, as many users on the Polish Equil Facebook group are having this problem."
+  },
+  {
+   "id": 5151527731,
+   "user": "mspiechowicz-oss",
+   "created_at": "2026-08-01T12:59:53Z",
+   "body": "@MilosKozak sadly same history on dev3\n\n[AndroidAPS.log](https://github.com/user-attachments/files/30617176/AndroidAPS.log)\n\n "
+  },
+  {
+   "id": 5152402024,
+   "user": "MilosKozak",
+   "created_at": "2026-08-01T16:49:10Z",
+   "body": "OK, one more improvement in dev3\nverify you build version 1dd66e0481\n@mspiechowicz-oss "
+  },
+  {
+   "id": 5152563234,
+   "user": "mspiechowicz-oss",
+   "created_at": "2026-08-01T17:30:45Z",
+   "body": "@MilosKozak The bolus is working properly. Changing the reservoir doesn't work. The plunger retracts, but then the reservoir can't be filled.\n\n[AndroidAPS.log](https://github.com/user-attachments/files/30620738/AndroidAPS.log)"
+  },
+  {
+   "id": 5153081247,
+   "user": "MilosKozak",
+   "created_at": "2026-08-01T19:36:39Z",
+   "body": "@mspiechowicz-oss Prime fixed too\n"
+  },
+  {
+   "id": 5155975333,
+   "user": "mspiechowicz-oss",
+   "created_at": "2026-08-02T06:39:29Z",
+   "body": "@MilosKozak nothing changed. Something that appeared between 3.4.2.2 and 3.4.2.3 is causing the problem.\n\n[AndroidAPS.log](https://github.com/user-attachments/files/30628133/AndroidAPS.log)"
+  },
+  {
+   "id": 5156692235,
+   "user": "MilosKozak",
+   "created_at": "2026-08-02T08:57:09Z",
+   "body": "seems to be old version. must be 03ea9f72f5ef45dc8e9d1fef9e5213df6180f9f8 @mspiechowicz-oss "
+  },
+  {
+   "id": 5156765978,
+   "user": "mspiechowicz-oss",
+   "created_at": "2026-08-02T09:10:37Z",
+   "body": "@MilosKozak Hmm, what am I missing? I've synced the branches in my fork, even deleted the branch and added it again, and I always get this dev3 version.\n\n<img width=\"1200\" height=\"2670\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/9928d7c1-cfa5-4f44-94ac-6cb95637e46d\" />"
+  },
+  {
+   "id": 5156806629,
+   "user": "MilosKozak",
+   "created_at": "2026-08-02T09:18:28Z",
+   "body": "go to dev3 branch on your github and press sync"
+  },
+  {
+   "id": 5156879387,
+   "user": "MilosKozak",
+   "created_at": "2026-08-02T09:33:04Z",
+   "body": "depends on how you build"
+  },
+  {
+   "id": 5156948888,
+   "user": "mspiechowicz-oss",
+   "created_at": "2026-08-02T09:46:15Z",
+   "body": "I think I got it. It seems to work on this version. \n\n<img width=\"1200\" height=\"2670\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/480a5ff4-d354-44cc-9fe3-9c4e0e17b7a6\" />\n\n[AndroidAPS.log](https://github.com/user-attachments/files/30630074/AndroidAPS.log)"
+  },
+  {
+   "id": 5157040895,
+   "user": "MilosKozak",
+   "created_at": "2026-08-02T10:03:06Z",
+   "body": "no issues anymore?\n"
+  },
+  {
+   "id": 5157050773,
+   "user": "mspiechowicz-oss",
+   "created_at": "2026-08-02T10:04:52Z",
+   "body": "@MilosKozak bolus works, changing the insulin reservoir works. You're the best ;) "
+  },
+  {
+   "id": 5157241005,
+   "user": "MilosKozak",
+   "created_at": "2026-08-02T10:37:56Z",
+   "body": "3.4.2.6 released"
+  }
+ ]
+}

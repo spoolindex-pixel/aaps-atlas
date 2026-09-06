@@ -1,0 +1,257 @@
+{
+ "id": 1199080174,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1597,
+ "title": "Overlapping Times in basal Tab leading to wrong iob? Dev-i",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1597",
+ "state": "closed",
+ "labels": [
+  "omnipod dash"
+ ],
+ "created_at": "2022-04-10T15:47:30Z",
+ "closed_at": "2022-05-10T18:40:30Z",
+ "comment_count": 59,
+ "body": "It seems tbrs have not been cancelled, Times are overlapping in basal tab\nPossibly aaps was out of reach of dash a couple of Times during the period from 14:53 to 16:53\n\n![IMG-20220410-WA0000.jpg](https://user-images.githubusercontent.com/88888180/162627614-4d46bc2e-aa0b-454b-a5bb-f0dc0b09acf4.jpg)\n\n![AndroidAPS_LOG_1649605049645.log.zip](https://github.com/nightscout/AndroidAPS/files/8459360/AndroidAPS_LOG_1649605049645.log.zip)",
+ "comments": [
+  {
+   "id": 1094705802,
+   "user": "Ede1975",
+   "created_at": "2022-04-11T08:30:36Z",
+   "body": "Update: i tested a couple of dev-i Versions i Compiled over the last days but did not use before, ran into the same issue. Installed Master and had no issue with that Version. Then i finally rebooted the Phone (didnt before), reinstalled latest dev-i afterwards and the issue did not occur again so far"
+  },
+  {
+   "id": 1097951701,
+   "user": "MilosKozak",
+   "created_at": "2022-04-13T11:42:28Z",
+   "body": "is it possible you changed pump meanwhile?"
+  },
+  {
+   "id": 1097968630,
+   "user": "Ede1975",
+   "created_at": "2022-04-13T12:01:23Z",
+   "body": "You mean from dash to some other pump or virtual pump? No, definately not. "
+  },
+  {
+   "id": 1098805495,
+   "user": "MilosKozak",
+   "created_at": "2022-04-14T07:41:56Z",
+   "body": "do you have logs prior this one?"
+  },
+  {
+   "id": 1098806101,
+   "user": "MilosKozak",
+   "created_at": "2022-04-14T07:42:39Z",
+   "body": "note: where is this from\r\n`17:02:30.229 [RxCachedThreadScheduler-53] D/DATABASE: [PumpSyncImplementation.syncTemporaryBasalWithPumpId():274]: Updated TemporaryBasal TemporaryBasal(id=28452, version=3, dateCreated=1649602950162, isValid=true, referenceId=null, interfaceIDs_backing=InterfaceIDs(nightscoutSystemId=null, nightscoutId=6251f4b9215b0200041e4d4c, pumpType=OMNIPOD_DASH, pumpSerial=4241, temporaryId=null, pumpId=-8976659072097442112, startId=null, endId=-7142919318749436032), timestamp=1649602949159, utcOffset=7200000, type=NORMAL, isAbsolute=true, rate=1.5, duration=1800000)\r\n`"
+  },
+  {
+   "id": 1098846587,
+   "user": "Ede1975",
+   "created_at": "2022-04-14T08:27:26Z",
+   "body": "> do you have logs prior this one?\n\nNo, unfortunately not. I am still on the same Version, did not happen again. In case it occurs again i will add new logs."
+  },
+  {
+   "id": 1103320168,
+   "user": "emmatovar27",
+   "created_at": "2022-04-20T01:06:20Z",
+   "body": "Hi There! I have the same issue. This happens every time the TBR is set for 30 min. The rest of TBR looks to work fine.\r\n![Screenshot_20220419-175209](https://user-images.githubusercontent.com/39507448/164126009-186010bd-c76c-4cb3-a94e-5c3c46640a10.png)\r\n[AndroidAPS_LOG_1650416536289log.zip](https://github.com/nightscout/AndroidAPS/files/8517378/AndroidAPS_LOG_1650416536289.log.zip)\r\n\r\n Let me know if there is any additional information is needed. \r\n\r\nI'm using the dev branch from Philoul to test Autotune. \r\n"
+  },
+  {
+   "id": 1108920423,
+   "user": "vanelsberg",
+   "created_at": "2022-04-25T18:50:16Z",
+   "body": "Could not confirm but now seeing similar, quite a lot of this overlapping TBR's at certain times.\r\nAm running DASH while building from Philoul's Autotune PR (merged with latest dev).\r\n\r\nWill switch back building form current dev to see if it reproduces with some helpfull logging\r\n@MilosKozak Any suggestions on how to \"debug\" this. Assuming at least logfiles - anything else to watch for?\r\n(Btw: Will add logs as soon as I can repro this on current dev branch)\r\n\r\n![xxScreenshot_20220425-203657_AndroidAPS](https://user-images.githubusercontent.com/45144129/165153471-25fade52-d314-419b-bf44-a47b36cb20a8.jpg)\r\n\r\n"
+  },
+  {
+   "id": 1109079699,
+   "user": "nicoleloop",
+   "created_at": "2022-04-25T21:56:10Z",
+   "body": "I am experiencing the same issues with my Dash Pods, as well as terrible bluetooth connections with the last 4 pods. In the range of the lowest, 51% to the highest being 63% connection quality."
+  },
+  {
+   "id": 1109521187,
+   "user": "MilosKozak",
+   "created_at": "2022-04-26T08:43:27Z",
+   "body": "@vanelsberg yes, try dev and provide logs"
+  },
+  {
+   "id": 1109655722,
+   "user": "robertrub",
+   "created_at": "2022-04-26T11:00:54Z",
+   "body": "I started looking and found that I have the same bug\n\n![Screenshot_20220426-125720_AndroidAPS.jpg](https://user-images.githubusercontent.com/76626474/165285949-6ec7f899-ccee-4af7-aa5b-7d99f0d81b99.jpg)\n\nThe logs\n\n![AndroidAPS_LOG_1650970654347.log.zip](https://github.com/nightscout/AndroidAPS/files/8562540/AndroidAPS_LOG_1650970654347.log.zip)\n\n![AndroidAPS._2022-04-26_00-00-17_.17.zip](https://github.com/nightscout/AndroidAPS/files/8562551/AndroidAPS._2022-04-26_00-00-17_.17.zip)\n\n![AndroidAPS._2022-04-26_00-00-17_.16.zip](https://github.com/nightscout/AndroidAPS/files/8562552/AndroidAPS._2022-04-26_00-00-17_.16.zip)\n\n![AndroidAPS._2022-04-26_00-00-17_.15.zip](https://github.com/nightscout/AndroidAPS/files/8562557/AndroidAPS._2022-04-26_00-00-17_.15.zip)\n\n![Screenshot_20220425-201747_AndroidAPS.jpg](https://user-images.githubusercontent.com/76626474/165286525-5e69c0b6-dfd5-44ea-9e36-4461684f551e.jpg)\n"
+  },
+  {
+   "id": 1110189075,
+   "user": "vanelsberg",
+   "created_at": "2022-04-26T19:52:30Z",
+   "body": "@MilosKozak Omipod DASH, now running latest dev builds from yesterday/today. Also seeing overlapping TBR.\r\n(Note that I am running an outdated version of NS - do not think this is relevant?)\r\n\r\nHave 2 sets of logging with additional screenshots\r\nAlso adding .zip for the complete AAPS logging for today:\r\n\r\n[1.zip](https://github.com/nightscout/AndroidAPS/files/8566414/1.zip)\r\n[2.zip](https://github.com/nightscout/AndroidAPS/files/8566415/2.zip)\r\n[morelog.zip](https://github.com/nightscout/AndroidAPS/files/8566416/morelog.zip)\r\n\r\n--------------------------------------------------\r\n**Latest dev:**\r\n![about](https://user-images.githubusercontent.com/45144129/165380685-8835c519-d5ed-402a-a264-6c1504d424f3.jpg)\r\n\r\n**Just one example:**\r\n![Screenshot_20220426-202029_AndroidAPS](https://user-images.githubusercontent.com/45144129/165382373-8020e634-03bb-4ac5-9d0b-fde2fbcfbf7e.jpg)\r\n\r\n\r\n\r\n"
+  },
+  {
+   "id": 1110191035,
+   "user": "vanelsberg",
+   "created_at": "2022-04-26T19:54:55Z",
+   "body": "Did not come to checking logs myself, maybe tomorrow...\r\n@MilosKozak If you need additional info or specific testing, no problem, let me know..."
+  },
+  {
+   "id": 1110342812,
+   "user": "robertrub",
+   "created_at": "2022-04-26T23:26:35Z",
+   "body": "It is a killer... I'm not sure going on using _dev_ \n\nOf course, if AAPS was NOT acting on negative IOB, I wouldn't be in a crashing hypo at the moment... One more proof that acting on on neg IOB is not good... ;)\n\n![Screenshot_20220427-012100_AndroidAPS.jpg](https://user-images.githubusercontent.com/76626474/165408535-3662ef2c-1b45-4085-98ff-3adfb0957d52.jpg)\n\n![AndroidAPS._2022-04-26_17-36-40_.11.zip](https://github.com/nightscout/AndroidAPS/files/8567468/AndroidAPS._2022-04-26_17-36-40_.11.zip)\n\n![AndroidAPS._2022-04-27_00-00-07_.0.zip](https://github.com/nightscout/AndroidAPS/files/8567476/AndroidAPS._2022-04-27_00-00-07_.0.zip)\n\n![AndroidAPS._2022-04-27_00-00-07_.1.zip](https://github.com/nightscout/AndroidAPS/files/8567478/AndroidAPS._2022-04-27_00-00-07_.1.zip)\n"
+  },
+  {
+   "id": 1110513995,
+   "user": "robertrub",
+   "created_at": "2022-04-27T04:05:40Z",
+   "body": "I went back to _Master_ 3.0.0.1 and overlapping TBRs stopped. "
+  },
+  {
+   "id": 1114052771,
+   "user": "emmatovar27",
+   "created_at": "2022-04-30T20:56:01Z",
+   "body": "> \r\n\r\nSame Here! :)\r\n\r\nTBR is not overlapping anymore! \r\n\r\nThanks @MilosKozak \r\n\r\n![TempBasalRates](https://user-images.githubusercontent.com/39507448/166122364-6af6dc19-b192-437b-a854-db1e265a085e.png)\r\n "
+  },
+  {
+   "id": 1114064829,
+   "user": "nicoleloop",
+   "created_at": "2022-04-30T22:34:16Z",
+   "body": "Wonderful! Thanks Milos! 😁\r\n\r\n\r\n\r\nSent from my T-Mobile 5G Device\r\n\r\n\r\n\r\n-------- Original message --------\r\nFrom: emmatovar27 ***@***.***>\r\nDate: 4/30/22 1:56 PM (GMT-08:00)\r\nTo: nightscout/AndroidAPS ***@***.***>\r\nCc: nicoleloop ***@***.***>, Comment ***@***.***>\r\nSubject: Re: [nightscout/AndroidAPS] Overlapping Times in basal Tab leading to wrong iob? Dev-i (Issue #1597)\r\n\r\n\r\nSame Here! :)\r\n\r\nTBR is not overlapping anymore!\r\n\r\nThanks @MilosKozak<https://nam12.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgithub.com%2FMilosKozak&data=05%7C01%7C%7Cc0ccc8eeb36340b31c7108da2aebdbf3%7C84df9e7fe9f640afb435aaaaaaaaaaaa%7C1%7C0%7C637869489736324622%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&sdata=LlkDL4ewME1wLOqNA2eXlT1x49GyJxP91xu%2Fmjvq%2B8o%3D&reserved=0>\r\n\r\n[TempBasalRates]<https://nam12.safelinks.protection.outlook.com/?url=https%3A%2F%2Fuser-images.githubusercontent.com%2F39507448%2F166122364-6af6dc19-b192-437b-a854-db1e265a085e.png&data=05%7C01%7C%7Cc0ccc8eeb36340b31c7108da2aebdbf3%7C84df9e7fe9f640afb435aaaaaaaaaaaa%7C1%7C0%7C637869489736324622%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&sdata=CQ%2F0wvcI6JSLnEp2WWSN17rr6Wk2YthdmmIs40a3YVI%3D&reserved=0>\r\n\r\n—\r\nReply to this email directly, view it on GitHub<https://nam12.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgithub.com%2Fnightscout%2FAndroidAPS%2Fissues%2F1597%23issuecomment-1114052771&data=05%7C01%7C%7Cc0ccc8eeb36340b31c7108da2aebdbf3%7C84df9e7fe9f640afb435aaaaaaaaaaaa%7C1%7C0%7C637869489736324622%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&sdata=bUWPFJPEYMVjKaWsjG247MhfXLbraeRyZR45JAdD%2FIs%3D&reserved=0>, or unsubscribe<https://nam12.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgithub.com%2Fnotifications%2Funsubscribe-auth%2FAIU7LKVSDD6C3FNVKN46IMTVHWM6ZANCNFSM5TA755MA&data=05%7C01%7C%7Cc0ccc8eeb363"
+  },
+  {
+   "id": 1114225219,
+   "user": "vanelsberg",
+   "created_at": "2022-05-01T12:36:37Z",
+   "body": "After 2 days, with new build and database reset, still not seeing anything on TBR overlapping.\r\nWondering if database could be a factor in causing this?"
+  },
+  {
+   "id": 1114253706,
+   "user": "ArthurusDent",
+   "created_at": "2022-05-01T14:31:51Z",
+   "body": "@vanelsberg If this is the same bug I saw, it might only happen when disabling the pump für 2 h. Didn't notice it with shorter periods but I might just not have noticed. Could you maybe test 2 h, too?: Disabling the pump for 2 h, waiting for the algorithm to run once and then re-enabling the pump again?"
+  },
+  {
+   "id": 1115401862,
+   "user": "MilosKozak",
+   "created_at": "2022-05-02T21:46:07Z",
+   "body": "i believe it was corrupted data"
+  },
+  {
+   "id": 1115765178,
+   "user": "vanelsberg",
+   "created_at": "2022-05-03T06:01:57Z",
+   "body": "> .. i believe it was corrupted data\r\n\r\n@MilosKozak Was thinking the same. Had been testing autotune on separate branch. Now on dev latest dev branch with databases reset, but still:\r\nOverlap again past night (see 20220503, 02:59h, 04:59h,)\r\nEspecially the 04:59h event was troublesome is it caused a lot of incorrect negative IOB buildup :-|\r\n\r\nCoincided with two G6 abnormalities where it started alerting low (while relatively on target) needing carbs (partly unregistered). \r\nNot sure if this could be related. See screen prints G6 and FSL I have additionally active for testing/comparence\r\n\r\n**All logging/info:**\r\n[20220503.zip](https://github.com/nightscout/AndroidAPS/files/8608440/20220503.zip)\r\n\r\n**Screenshots;**\r\n![Screenshot_20220503-062541_AndroidAPS](https://user-images.githubusercontent.com/45144129/166409870-e9fd7b3f-2d59-4f62-94ce-2c20e127da1f.jpg)\r\n![Screenshot_20220503-062448_AndroidAPS](https://user-images.githubusercontent.com/45144129/166409876-84ec58cb-3cd7-4a15-a36e-823e3117318e.jpg)\r\n\r\n"
+  },
+  {
+   "id": 1115847887,
+   "user": "MilosKozak",
+   "created_at": "2022-05-03T08:21:27Z",
+   "body": "if I see correctly the fixing commit is not included in autotune branch\r\nhttps://github.com/nightscout/AndroidAPS/commit/1684b88270b34d0205f3e10ad3109e2319802532"
+  },
+  {
+   "id": 1116049867,
+   "user": "tswire",
+   "created_at": "2022-05-03T12:36:34Z",
+   "body": "> if I see correctly the fixing commit is not included in autotune branch [1684b88](https://github.com/nightscout/AndroidAPS/commit/1684b88270b34d0205f3e10ad3109e2319802532)\r\n\r\nBut he said this overrlapping was from updated Dev (as of yesterday) and after resetting DB?  So that commit was 20 days ago and not sure how that fits in to this?"
+  },
+  {
+   "id": 1116085141,
+   "user": "jgslade",
+   "created_at": "2022-05-03T13:15:52Z",
+   "body": "I got some overlapping tbrs last night.  Using the issue with improved logging and reset the db after updating.\r\n\r\nThe 10:34-11:04 and 10:59-11:09 one is interesting because it's the same tbr value.  \r\n\r\n![Screenshot_20220503-070437_AndroidAPS](https://user-images.githubusercontent.com/29897815/166459114-ee179059-4679-49ca-b324-4b8a176f5b97.jpg)\r\n\r\n[AndroidAPS._2022-05-02_21-47-20_.1.zip](https://github.com/nightscout/AndroidAPS/files/8610629/AndroidAPS._2022-05-02_21-47-20_.1.zip)\r\n"
+  },
+  {
+   "id": 1116187363,
+   "user": "vanelsberg",
+   "created_at": "2022-05-03T14:46:53Z",
+   "body": "> if I see correctly the fixing commit is not included in autotune branch\r\n\r\n(@MilosKozak FYI: Not using autotune branch but latest \"dev\" #7d93a2ceef)\r\n\r\nMore overlap? Going to reset database again to see if it stops,...\r\nMay have to change back to release 3.0.0.1 because this getting problematic :-(\r\n\r\n**More logging & screen prints**\r\nSee:\r\n07:23h\r\n08:18h\r\n09:13h\r\n10:43h\r\n15:14h\r\n16:28h (??)\r\n....\r\n[20220503-2.zip](https://github.com/nightscout/AndroidAPS/files/8611424/20220503-2.zip)\r\n\r\n**About**\r\n![about](https://user-images.githubusercontent.com/45144129/166480515-eb0019d9-d18b-4ddf-950e-36c9d5af96d3.jpg)\r\n\r\n\r\n\r\n\r\n"
+  },
+  {
+   "id": 1116616518,
+   "user": "kristinsmotz",
+   "created_at": "2022-05-03T20:46:50Z",
+   "body": "yesterday found the first overlapping TBR's I have noticed. We're on Dash, and testing Dynamic ISF on the second latest version (Dynamic ISF beta 1.6.1). What was interesting to me was that it occurred in the same timeframe where I encountered the first re-occurance of my other issue (https://github.com/nightscout/AndroidAPS/issues/1667 where bolus doses (and SMB's) occasionally don't show up in the NSClient phone, only in AAPS phone and on our nightscout site), since I cleared out memory and cache related to NSClient on my phone a few days ago. Could these issues be related in any way? Since clearing database (or in my case clearing phone memory) appears to help for a period of time, could it have anything to database structure/save data file size? "
+  },
+  {
+   "id": 1116997236,
+   "user": "avereha",
+   "created_at": "2022-05-04T07:15:09Z",
+   "body": "Can you please to disable Nightscout sync and check if the issue is still there?"
+  },
+  {
+   "id": 1117721947,
+   "user": "vanelsberg",
+   "created_at": "2022-05-04T19:17:49Z",
+   "body": "> Can you please to disable Nightscout sync and check if the issue is still there?\r\n\r\nWould setting NSClient to \"Paused\" (checkbox) do?\r\n"
+  },
+  {
+   "id": 1117738237,
+   "user": "avereha",
+   "created_at": "2022-05-04T19:26:37Z",
+   "body": "yes"
+  },
+  {
+   "id": 1117974781,
+   "user": "vanelsberg",
+   "created_at": "2022-05-04T22:00:09Z",
+   "body": "(Quick first results. Will run this for some time trying to \"leave it alone\" and post new logs here once overlapping happens)\r\n\r\nDid update to new build for #1691 around 21:45h (?).\r\nNow seeing this. Not sure: why are these most recent TBRs suddenly with only a starting time?\r\n\r\nSee \"22:11-22:41 1.75U/h 30 mins\":\r\nIt was canceled (also on DASH history) but somehow this was not registered to AAPS?\r\n\r\n![Screenshot_20220504-234400_AndroidAPS](https://user-images.githubusercontent.com/45144129/166831365-ff1f96e3-1a6d-4a0f-ac5d-ad7376690d3b.jpg)\r\n\r\n** Log files + screenshot **\r\n[20220504.zip](https://github.com/nightscout/AndroidAPS/files/8627412/20220504.zip)\r\n\r\n"
+  },
+  {
+   "id": 1117999058,
+   "user": "jgslade",
+   "created_at": "2022-05-04T22:39:06Z",
+   "body": "I turned off nightscout syncing this morning,  checked this afternoon and I've still got overlapping basals.\r\n![Screenshot_20220504-163236_AndroidAPS](https://user-images.githubusercontent.com/29897815/166836657-5079f90d-9e49-4909-a132-dd0295947b9e.jpg)\r\n[AndroidAPS._2022-05-04_00-00-00_.2.zip](https://github.com/nightscout/AndroidAPS/files/8627781/AndroidAPS._2022-05-04_00-00-00_.2.zip)\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/8627782/AndroidAPS.log)\r\n"
+  },
+  {
+   "id": 1118225904,
+   "user": "vanelsberg",
+   "created_at": "2022-05-05T06:46:05Z",
+   "body": "@avereha Lots of TBR overlap (see 00:00 ... 03:00h)?\r\nWith #1691, NSClient paused.\r\n\r\n![Screenshot_20220505-083933_AndroidAPS](https://user-images.githubusercontent.com/45144129/166874267-22419778-c8db-4297-9062-3d9a1ffef231.jpg)\r\n\r\n** Logfiles & screenprint **\r\n[20220505-1.zip](https://github.com/nightscout/AndroidAPS/files/8629169/20220505-1.zip)\r\n"
+  },
+  {
+   "id": 1118587272,
+   "user": "MilosKozak",
+   "created_at": "2022-05-05T13:56:31Z",
+   "body": "looks like AAPS is updating old records.\r\ni added more logging to dev https://github.com/nightscout/AndroidAPS/commit/d131ceb4bd52e85d92650f6dff26692f73d822de\r\nplease again update and reset db + pause NSClient"
+  },
+  {
+   "id": 1118588765,
+   "user": "MilosKozak",
+   "created_at": "2022-05-05T13:57:42Z",
+   "body": "maybe remove old logs too and once this happen upload all available logs (if there are not too many)"
+  },
+  {
+   "id": 1118681762,
+   "user": "vanelsberg",
+   "created_at": "2022-05-05T15:15:33Z",
+   "body": "@MilosKozak Will do!\r\n"
+  },
+  {
+   "id": 1119547312,
+   "user": "NighthawkEvP",
+   "created_at": "2022-05-06T12:08:14Z",
+   "body": "I had been on **master 3.0.0.1** after realizing the overlapping TBR in dev-i and did reset my db twice, also stopped syncing with NS today.\r\nThis morning I notice overlapping in **master** for the first time, switched to dev-j after that and did a reset of db again. But I still have overlaps. They are not in the history of the DASH tab, but are still \"active\" in influencing the IOB. \r\nI noticed that AAPS often got frozen for a short time and did restart eventually.\r\nI therefor collected some screenshots and the log flies of today, hope that helps.\r\nThe most frightening thing is that the master_3.0.0.1 seem to be affected as well.\r\nSorry for not bringing better news...\r\n[Log-Daten_2022_05_06.zip](https://github.com/nightscout/AndroidAPS/files/8639811/Log-Daten_2022_05_06.zip)\r\n![Screenshot_20220506-135030](https://user-images.githubusercontent.com/85197262/167128214-31162e65-9a0b-43e2-a95a-4f2ca36a55d4.png)\r\n\r\n![Screenshot_20220506-132705](https://user-images.githubusercontent.com/85197262/167128274-73fcec32-7389-4af7-a31e-04425d624ea9.png)\r\n![Screenshot_20220506-132646](https://user-images.githubusercontent.com/85197262/167128286-e950644e-db7b-4488-91bd-9be4e4822533.png)\r\n\r\n![Screenshot_20220506-102854](https://user-images.githubusercontent.com/85197262/167128299-0ed950d5-d4a0-4239-8a08-3bb4d84c92ba.png)\r\n "
+  },
+  {
+   "id": 1120080159,
+   "user": "vanelsberg",
+   "created_at": "2022-05-06T23:49:14Z",
+   "body": "@MilosKozak @avereha \r\nHave been running commit #3d9b08e5c2 with NS paused for 24 hrs: no overlap.\r\nWith it, BG's are steady as rock again. Maybe to early to conclude NS is the problem. Wil wait for another 12 hrs. Then \"unpause\" NS to see what happens. Expect logging as soon as overlap happens again."
+  },
+  {
+   "id": 1120486392,
+   "user": "vanelsberg",
+   "created_at": "2022-05-08T21:01:48Z",
+   "body": "> Have been running commit #3d9b08e5c2 with NS paused for 24 hrs: no overlap.\r\n\r\nStill not seeing any overlap happening. Tried syncing NS by temporarily unpausing NS until synced (then pause again):  no overlap.\r\n\r\nSwitched to new phone yesterday evening (read started with new database).\r\nNow running for about 24 hours. Will enable NS syncing to see if this results in overlap occurring.\r\n\r\n"
+  },
+  {
+   "id": 1121461044,
+   "user": "vanelsberg",
+   "created_at": "2022-05-09T18:56:53Z",
+   "body": "@avereha @MilosKozak More logs.\r\n\r\nWas unable to reproduce TBR overlapping with NSClient paused. Temporary unpausing NSClient to catch up syncing (and then pausing again when don) did not give problems.\r\n\r\nSwitched to a new phone yesterday, so empty database, clean OS, clean install.\r\nToday, unpaused NSClient and TBR overlapping started occurring again. Looks like NS syncing introduces/relates to this problem?\r\n\r\nScreenshots and logging attached below. Please let me know when I can assist any further in finding the problem!\r\n\r\n[20220509.zip](https://github.com/nightscout/AndroidAPS/files/8654463/20220509.zip)\r\n\r\n\r\n"
+  },
+  {
+   "id": 1122740813,
+   "user": "MilosKozak",
+   "created_at": "2022-05-10T18:40:30Z",
+   "body": "hopefully fixed by #1715 \r\nopen new issue if the problem persists"
+  }
+ ]
+}

@@ -1,0 +1,21 @@
+{
+ "id": 3604800284,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4293,
+ "title": "Nightscout “OpenAPS Offline” entry not cleared after re-enabling loop via AAPS Client - AAPS Client 3.3.3.0-dev-d",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4293",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-11-09T10:56:03Z",
+ "closed_at": "2025-11-23T22:27:01Z",
+ "comment_count": 1,
+ "body": "**Title:** Nightscout “OpenAPS Offline” entry not cleared after re-enabling loop via AAPS Client\n\n---\n\n### Description\nToggling the loop via the **AAPS Client app** creates an `OTHER` treatment in Nightscout marking *OpenAPS Offline*, but no corresponding entry is created to set the Loop back to \"normal\"\nResult: the grey “OpenAPS Offline” bar persists indefinitely (sometimes showing extreme durations, e.g. **4,085.78 years**) until the entry is manually removed from the Nightscout database.\n\n---\n\n### Steps to Reproduce\n1. Use **AAPS 3.3.3.0-dev-d** .\n2. Deactivate loop via **AAPS Client app**.\n3. After a few minutes, re-enable the loop via Client.\n4. In **Nightscout**:\n   - An `OTHER` treatment “OpenAPS Offline”  with runtime is present.\n   - An OTHER` treatment “OpenAPS Offline” is present after reenabling the loop with not timestamp\n   - No other event is logged when the loop is re-enabled.\n   - The grey “Offline” bar persists with the initial (very long) duration.\n\n---\n\n### Expected Behavior\n- Log a “Loop re-enabled” / “OpenAPS Online” event; **or**\n- Close/override the previous *OpenAPS Offline* entry when the loop is re-enabled.\n\n---\n\n### Actual Behavior\n- two  single “OpenAPS Offline” (`OTHER`) treatments exists.\n- No “OpenAPS Online” event is created/sent.\n- The grey bar remains until the `OTHER` entry is manually deleted from the Nightscout DB.\n\n---\n\n### Workaround\nManually delete the `OTHER` treatment entry from the Nightscout database.\n\n<img width=\"1510\" height=\"252\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/acd82204-df21-43d9-8cb7-33832aff5d01\" />\n\n<img width=\"848\" height=\"475\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/13ab990c-f621-431d-b533-beeb2e31df01\" />\n\n\n### Suggested Fix\nWhen loop is re-enabled, AAPS should send a “Loop re-enabled” / “OpenAPS Online” event to Nightscout that closes or overrides the previous *OpenAPS Offline* entry.\n\n---\n\n/cc `@psonnera` `@timbo007up` `@MilosKozak`\n",
+ "comments": [
+  {
+   "id": 3568407082,
+   "user": "MilosKozak",
+   "created_at": "2025-11-23T22:27:01Z",
+   "body": "fixed by https://github.com/nightscout/AndroidAPS/commit/b7d7009333435a4bdfbb6519e5a892c6e195c740\nsome ns issues are not resolvable because AAPS has more features. but synch to AAPS Client should work fine"
+  }
+ ]
+}

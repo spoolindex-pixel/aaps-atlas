@@ -1,0 +1,30 @@
+{
+ "id": 4003350211,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4577,
+ "title": "ANR / UI Thread Deadlock when clicking OK to Resume Pump (`LoopPlugin.handleRunningModeChange`)",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4577",
+ "state": "closed",
+ "labels": [
+  "wontfix",
+  "minor"
+ ],
+ "created_at": "2026-02-27T23:59:25Z",
+ "closed_at": "2026-03-06T21:52:46Z",
+ "comment_count": 2,
+ "body": "**Describe the bug:**\nIn AAPS 3.4.0.0, the app experiences an immediate freeze and subsequent ANR (Application Not Responding) when attempting to resume a suspended pump. The moment the user clicks \"OK\" in the resume confirmation dialog, the UI thread blocks completely. \n\nAnalysis of the ANR trace shows a deadlock caused by a synchronous `Single.blockingGet()` call on the Main Thread inside `LoopPlugin.handleRunningModeChange`, which gets stuck waiting on database transactions (`CancelCurrentTemporaryRunningModeIfAnyTransaction`) that are starved for SQLite connections.\n\n**To Reproduce:**\n1. Setup AAPS 3.4.0.0 (Fresh install).\n2. Set to 'Open Loop' mode.\n3. Suspend the pump for 1 hour.\n4. Later, click to Resume the pump.\n5. Click 'OK' on the confirmation dialog.\n6. The app instantly freezes and crashes/disappears (~5 seconds later due to watchdog ANR). \n*(Note: Standard logcat is empty because the UI thread is completely locked before it can flush).*\n\n**Expected behavior:**\nThe confirmation dialog should dismiss, the running mode should revert to normal asynchronously, and the UI should remain responsive.\n\n**Environment details:**\n* **AAPS version:** 3.4.0.0\n* **Pump:** Virtual Pump (though trace indicates the bug is in the core Loop/RunningMode logic, likely affecting all pumps)\n* **Loop Mode:** Open Loop\n* **Android Version:** 14\n\n**Technical Root Cause / Trace Analysis:**\nThe ANR trace (`reason=6`) shows \"Input dispatching timed out\". \n\n**1. The Main Thread is blocked by a `blockingGet()` on line 297 of `LoopPlugin.kt`:**\n```text\n\"main\" prio=5 tid=1 Waiting\n  ...\n  at io.reactivex.rxjava3.internal.observers.BlockingMultiObserver.blockingGet(BlockingMultiObserver.java:86)\n  at io.reactivex.rxjava3.core.Single.blockingGet(Single.java:3645)\n  at app.aaps.plugins.aps.loop.LoopPlugin.handleRunningModeChange(LoopPlugin.kt:297)\n  at app.aaps.core.interfaces.aps.Loop.handleRunningModeChange$default(Loop.kt:68)\n  at app.aaps.ui.dialogs.LoopDialog.onClick(LoopDialog.kt:257)\n  ...\n  at app.aaps.core.ui.dialogs.OKDialog$$ExternalSyntheticLambda12.onClick(D8$$SyntheticClass:0)\n```\n\n**2. Background Rx/DB threads are deadlocked trying to resolve the Running Mode change:**\n`RxCachedThreadScheduler-40` is blocked trying to cancel the temporary running mode:\n```text\n  at io.reactivex.rxjava3.core.Maybe.blockingGet(Maybe.java:2862)\n  at app.aaps.database.transactions.CancelCurrentTemporaryRunningModeIfAnyTransaction.run$impl_fullRelease(CancelCurrentTemporaryRunningModeIfAnyTransaction.kt:12)\n  at app.aaps.database.AppRepository.runTransactionForResult$lambda$0$0(AppRepository.kt:71)\n```\n\nMeanwhile, `arch_disk_io_1` is stuck trying to acquire a database connection pool lock for `getTemporaryRunningModeActiveAt`:\n```text\n  at android.database.sqlite.SQLiteConnectionPool.waitForConnection(SQLiteConnectionPool.java:780)\n  at android.database.sqlite.SQLiteConnectionPool.acquireConnection(SQLiteConnectionPool.java:392)\n  ...\n  at app.aaps.database.daos.RunningModeDao_Impl.getTemporaryRunningModeActiveAt$lambda$0(RunningModeDao_Impl.kt:680)\n```\n\n**Attached Files:**\n\n[anr_2026-02-27-18-36-12-141.txt](https://github.com/user-attachments/files/25617035/anr_2026-02-27-18-36-12-141.txt)",
+ "comments": [
+  {
+   "id": 3987783306,
+   "user": "brianV",
+   "created_at": "2026-03-03T00:14:06Z",
+   "body": "**Update:**\n\nThe issue occured reliable on my son's Umidigi G9A phone.\n\nI then set up AAPS on a Google Pixel 8, and everything worked perfectly. I guess he has a Pixel 8 now. \n\nIt might just be something specific to Umidigi, that model, or just lower-spec / older phones."
+  },
+  {
+   "id": 4014355950,
+   "user": "MilosKozak",
+   "created_at": "2026-03-06T21:52:46Z",
+   "body": "AAPS 4 will be fresh new. solving this in 3.4 is not planned. just wait"
+  }
+ ]
+}

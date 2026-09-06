@@ -1,0 +1,65 @@
+{
+ "id": 782589240,
+ "repo": "nightscout/AndroidAPS",
+ "number": 205,
+ "title": "Wrong Pod State when Pod connection failure",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/205",
+ "state": "closed",
+ "labels": [
+  "rileylink"
+ ],
+ "created_at": "2021-01-09T11:36:26Z",
+ "closed_at": "2021-10-11T08:10:08Z",
+ "comment_count": 8,
+ "body": "With AndroidAPS 2.8.0 build on 2021/01/02, I got a connection failure with my Pod :\r\n\r\n![Screenshot_2021-01-09-11-44-50-608_info nightscout androidaps](https://user-images.githubusercontent.com/43886804/104090209-5bd0e480-5275-11eb-9260-de8e31a1d2be.jpg) ![Screenshot_2021-01-09-11-44-59-471_info nightscout androidaps](https://user-images.githubusercontent.com/43886804/104090211-60959880-5275-11eb-804d-e844e2b6e573.jpg)\r\n\r\nI was a little bit confused with the Pod State = \"Running\". \r\nPod State was instead: \"Connection failed\" or \"Not available\"\r\n\r\nIs it possible to improve this ?",
+ "comments": [
+  {
+   "id": 766428096,
+   "user": "AdrianLxM",
+   "created_at": "2021-01-24T20:40:03Z",
+   "body": "@philou78 I'm not clear what was the expected and what the actual behaviour.\r\n\r\nEven though the connection fails, the pod would still be running, wouldn't it?\r\nMaybe the label can be clearer?"
+  },
+  {
+   "id": 766977987,
+   "user": "philou78",
+   "created_at": "2021-01-25T17:25:13Z",
+   "body": "@AdrianLxM : Actually no, I had to replace it.\r\n\r\nOn the Pod screen, there was no problem except an uncertain TBR, but the real state was that my POD was no longer working.\r\n\r\nI reported this because it was an uncomfortable situation for me.\r\n\r\nWhen the connection RL<->POD fails, can we change Pod State with \" Pod Connection failed\" ?"
+  },
+  {
+   "id": 767010750,
+   "user": "AdrianLxM",
+   "created_at": "2021-01-25T18:12:05Z",
+   "body": "@bartsopers what's your opinion on this?"
+  },
+  {
+   "id": 767443856,
+   "user": "bartsopers",
+   "created_at": "2021-01-26T10:15:48Z",
+   "body": "Like @AdrianLxM said, this field reflects the Pod state. There is a separate RileyLink state field in the Pod overview.\r\n\r\nMy advice would be to configure the Pump Unreachable Alarm threshold to a value that you feel comfortable with. You will then get an alarm when the communication fails somewhere."
+  },
+  {
+   "id": 767841657,
+   "user": "philou78",
+   "created_at": "2021-01-26T21:32:56Z",
+   "body": "I certainly mis-described the situation and it will be easier to describe it with the attached logs:\r\nSuddenly, AAPS could no longer decode the responses from the POD.\r\nAll of my attempts to manually refresh its state resulted in \"MessageDecodingException\" exceptions.\r\nDespite this, the status of POD remained \"Running\".\r\n\r\nIn this (exceptional) case, the POD was no longer in the \"Running\" state. No ?\r\n\r\nPhilou\r\n\r\nPS : @bartsopers, thanks for the tip.\r\n\r\n[AndroidAPS._2021-01-09_10-42-50_.txt](https://github.com/nightscout/AndroidAPS/files/5876191/AndroidAPS._2021-01-09_10-42-50_.txt)"
+  },
+  {
+   "id": 772538432,
+   "user": "afreitag33",
+   "created_at": "2021-02-03T14:10:27Z",
+   "body": "Similar thing happened to me! Got a screamer, but AAPS said it was running. There were no error notifications, but in the pod history it said \"Communication failed: failed to decode message from Pod\". Logs attached, occurred at around 9:40ish pm. \r\nI've had loads of static issues, so it totally could have been that, but generally that gets an error notification or some recognition from AAPS, so this was different.\r\n\r\n[AndroidAPS_LOG_1612320583507.log.zip](https://github.com/nightscout/AndroidAPS/files/5918949/AndroidAPS_LOG_1612320583507.log.zip)\r\n"
+  },
+  {
+   "id": 939127281,
+   "user": "MilosKozak",
+   "created_at": "2021-10-08T21:31:55Z",
+   "body": "@bartsopers is this resolveable?"
+  },
+  {
+   "id": 939781906,
+   "user": "bartsopers",
+   "created_at": "2021-10-11T07:58:21Z",
+   "body": "@MilosKozak I don't think so. From the logs I can't see why the message blocks can't be decoded, but I don't see frequent reports of that so I don't think it's a common issue.\r\nAnyway,  the last known status is still 'Running' so that is correct imo "
+  }
+ ]
+}

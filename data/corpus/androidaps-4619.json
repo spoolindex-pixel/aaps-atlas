@@ -1,0 +1,77 @@
+{
+ "id": 4094618400,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4619,
+ "title": "FEATURE REQUEST : Complication for active 'Temporary Target' and the remaining time",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4619",
+ "state": "closed",
+ "labels": [
+  "enhancement"
+ ],
+ "created_at": "2026-03-18T11:50:06Z",
+ "closed_at": "2026-04-13T17:12:13Z",
+ "comment_count": 14,
+ "body": "Could someone pls create a Complication for active 'Temporary Target' and the remaining time? Like the picture?\nThat would be very helpful for my son, so he can see if automations have been triggered or how long a temporary target remains active.\n\n![Image](https://github.com/user-attachments/assets/acc134b4-d6ca-4115-82b4-c24debd39ddb)\n\nthx",
+ "comments": [
+  {
+   "id": 4105084408,
+   "user": "olorinmaia",
+   "created_at": "2026-03-22T01:32:49Z",
+   "body": "Perhaps display text with yellow \"TT\"-color when there is a TT active and regular text color when showing profile target value.?"
+  },
+  {
+   "id": 4105812053,
+   "user": "oddy1968",
+   "created_at": "2026-03-22T08:36:56Z",
+   "body": "Sounds good."
+  },
+  {
+   "id": 4159013946,
+   "user": "mcnelson",
+   "created_at": "2026-03-31T00:32:25Z",
+   "body": "I've been experimenting with this in an analog watch format. I've found basal + either profile target OR temporary target with minutes remaining has been a really useful combination.\n\n<img width=\"234\" height=\"227\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/393b18c1-dbc1-4a71-827f-7c9b4048dc1e\" />\n\n<img width=\"220\" height=\"224\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/0dddfe6f-1100-4f10-a586-17feb6899eac\" />"
+  },
+  {
+   "id": 4183929313,
+   "user": "oddy1968",
+   "created_at": "2026-04-03T15:23:17Z",
+   "body": "Hey mcnelson,\ncan you create a complication like the one described above, or is someone already working on it?\n\nthx"
+  },
+  {
+   "id": 4237948937,
+   "user": "olorinmaia",
+   "created_at": "2026-04-13T16:19:36Z",
+   "body": "Implemented in PR https://github.com/nightscout/AndroidAPS/pull/4717 - Feel free to check out. Awaiting merge."
+  },
+  {
+   "id": 4238128069,
+   "user": "olorinmaia",
+   "created_at": "2026-04-13T16:48:36Z",
+   "body": "New BR/TT complication merged to dev, for those who want to test or cherry pick to master: https://github.com/nightscout/AndroidAPS/pull/4717 (Both wear and phone app must be updated for it to work)\n\n@oddy1968 consider closing this issue. :)\n\nHere is a commit that merges cleanly with master 3.4.2.2 without any conflicts: https://github.com/olorinmaia/AndroidAPS/commit/e8e38bbcfde87d309dcf85d6e5a2109a40fa33fe"
+  },
+  {
+   "id": 4238261660,
+   "user": "oddy1968",
+   "created_at": "2026-04-13T17:12:05Z",
+   "body": "Hey olorinmaia,\nthank you so much. \nIs it possible to merge the PR with the dev3 branch as well?\nThat would make the complication available sooner.\nThe 4.x version will probably take even longer.\nI'll test it with the dev branch in the next few days."
+  },
+  {
+   "id": 4238318135,
+   "user": "olorinmaia",
+   "created_at": "2026-04-13T17:21:10Z",
+   "body": "> Hey olorinmaia, thank you so much. Is it possible to merge the PR with the dev3 branch as well? That would make the complication available sooner. The 4.x version will probably take even longer. I'll test it with the dev branch in the next few days.\n\nSee the commit / branch in my comment above. You should be able to cherry pick it without conflicts to master / dev 3.4"
+  },
+  {
+   "id": 4238944964,
+   "user": "oddy1968",
+   "created_at": "2026-04-13T19:09:22Z",
+   "body": "OK, I just quickly tested it with the dev version.\n\nI have two questions about it:\n- Is a short version like the one in my screenshot (first posting) not possible, or did I miss that? For me, the BR is unnecessary and takes up too much space on my watch face because I use mg/dl.\n- Is the color scheme uniformly white, or is there yellow and gray like in your suggestion?"
+  },
+  {
+   "id": 4239376710,
+   "user": "olorinmaia",
+   "created_at": "2026-04-13T20:21:50Z",
+   "body": "1) I think it's better to combine it with something else that is useful, because there is limited complication slots. You can also use this on the side of the watch. See screenshot: \n\n<img width=\"450\" height=\"450\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/449c4273-179a-4f00-918d-68d06dd2fcf9\" />\n\n2) I discovered watchface decides colors. Can't be forced by complication alone.\n\n@MilosKozak I'm not sure about adding a complication only for target / temp-target. If you'd think there will be some good use for it it's not a big job as most of the  code is ready now in the combined BR / TT complication."
+  }
+ ]
+}

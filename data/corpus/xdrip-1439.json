@@ -1,0 +1,55 @@
+{
+ "id": 704730151,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1439,
+ "title": "Bug Report: Inconsistent Arrows in Widget and Notification",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1439",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "good first issue",
+  "ui"
+ ],
+ "created_at": "2020-09-19T01:13:55Z",
+ "closed_at": "2020-12-16T09:09:37Z",
+ "comment_count": 6,
+ "body": "The trend arrows in the Widget and the Notification are inconsistent. It is dependent on the arrow direction. 45 degree up and down is different than all the other arrows. The screenshot shows two examples.\r\n\r\nTested on Samsung A40 & Samsung S9, Android 10, xDrip 2020.05.05 & 2020.09.04.\r\n\r\n![arrows](https://user-images.githubusercontent.com/65522328/93655803-10749b00-fa26-11ea-9327-17cd54049622.png)\r\n\r\nEdit: The \"Number Wall on Lock Screen\" is also affected.\r\n",
+ "comments": [
+  {
+   "id": 695159851,
+   "user": "AdrianLxM",
+   "created_at": "2020-09-19T03:56:49Z",
+   "body": "Back in early 2015 I also had a phone that replaced the arrow with the south-east-arrow emoji (:arrow_lower_right: ) and I actually liked that look on xDrip. "
+  },
+  {
+   "id": 695294578,
+   "user": "Otter3eso57",
+   "created_at": "2020-09-19T15:52:48Z",
+   "body": "I agree the arrows look nice. My key point is that they should have a consistent design.\r\n\r\nThanks to your input I found four place where I think it is defined in xDrip (Constants.java, Dex_Constants.java, 2x BgReading.java:  search for \\u2198 in the files ). After more research and copying utf8 emoji in emails to view on android. I found that it is possible to use a variant selector after the arrow to tell android to not use the emoji style arrow but the text style arrow. Could someone try to fix this by adding \\uFE0E to the constants.\r\n\r\nexample: DOWN_45(5,\"\\u2198\", \"FortyFiveDown\"), => DOWN_45(5,\"\\u2198\\uFE0E\", \"FortyFiveDown\")\r\n\r\n![arrows2](https://user-images.githubusercontent.com/65522328/93671141-c7adf800-faa0-11ea-9319-9445efbe676b.png)\r\n\r\n\r\nEdit: I just saw that on these four files the following people had some contribution:\r\nxDrip/wear/src/main/java/com/eveningoutpost/dexdrip/ImportedLibraries/dexcom/Constants.java @jamorham \r\nxDrip/wear/src/main/java/com/eveningoutpost/dexdrip/Models/BgReading.java @jamorham , @kskandis \r\nxDrip/app/src/main/java/com/eveningoutpost/dexdrip/ImportedLibraries/dexcom/Dex_Constants.java @jamorham \r\nxDrip/app/src/main/java/com/eveningoutpost/dexdrip/Models/BgReading.java @jamorham , @kskandis, @tolot27, @AdrianLxM "
+  },
+  {
+   "id": 696355004,
+   "user": "tolot27",
+   "created_at": "2020-09-21T20:27:02Z",
+   "body": "@Otto75so3e Thanks for suggesting a solution. Using the variation selector-16 (U+FE0F) is the correct approach. Maybe, we should refactor `BgReading.java` to use `TREND_ARROW_VALUES` from `Dex_Constants.java` and change/overload `TREND_ARROW_VALUES.Symbol()` to add the variation selector-16 per default."
+  },
+  {
+   "id": 714603504,
+   "user": "Amidamaru",
+   "created_at": "2020-10-22T16:16:43Z",
+   "body": "hi guys, any update on this? :) would love to have a consistent design of arrows on all my three parts (app, widget, lockscreen)\r\n\r\nPS: loving the app 👍  "
+  },
+  {
+   "id": 726686776,
+   "user": "technimatic",
+   "created_at": "2020-11-13T10:32:10Z",
+   "body": "Hi. I've noticed the same bug on my Samsung phone. It seems that some of the default text arrows are not present in default Samsung font set. That's why Xdrip replace missing symbols with their graphical equivalent. THE SOLUTION is to change the phone's system font. For instance, on Samsung phone, changing font from Default to SamsungOne fix the issue (in all places including widget). To change font on Samsung phone go to tap settings -> tap display -> tap font and screen zoom -> select your choice of font style."
+  },
+  {
+   "id": 728950140,
+   "user": "Amidamaru",
+   "created_at": "2020-11-17T14:05:48Z",
+   "body": "@technimatic  wow good finding! I tested it and I can confirm that the arrow is \"normal\" once I change from the default to SamsungOne font. But since I don't like the SamsungOne font :D, I hope there will be another solution for this in near future :)"
+  }
+ ]
+}

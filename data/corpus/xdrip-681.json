@@ -1,0 +1,71 @@
+{
+ "id": 379837065,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 681,
+ "title": "Displayed and uploaded trend arror differ",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/681",
+ "state": "closed",
+ "labels": [
+  "duplicate"
+ ],
+ "created_at": "2018-11-12T15:49:49Z",
+ "closed_at": "2021-08-06T13:58:08Z",
+ "comment_count": 9,
+ "body": "The trend arrow which gets uploaded to NS isn't the same as displayed. Sometimes the uploaded is the same as my G6, sometimes the shown is the same. Shouldn't both trend arrows match and with native mode be the same as the Dexcom receiver shows? ",
+ "comments": [
+  {
+   "id": 486457611,
+   "user": "quizzmaster",
+   "created_at": "2019-04-24T22:55:34Z",
+   "body": "I still experience this issue and so do others"
+  },
+  {
+   "id": 486463739,
+   "user": "quizzmaster",
+   "created_at": "2019-04-24T23:27:06Z",
+   "body": "In this example all the arrows should show the same direction (45down), but xDrip+ forwards a steady trend.\r\n\r\n**xDrip+:**  \r\n![photo5335033600443263858](https://user-images.githubusercontent.com/2745710/56700138-e74cbf80-66f8-11e9-8996-ee00b26fab82.jpg)\r\n\r\n**Nightscout:**  \r\n![photo5334657163739638489](https://user-images.githubusercontent.com/2745710/56700129-e156de80-66f8-11e9-90c9-2c7df8b42c0d.jpg)\r\n\r\n**AndroidAPS:**  \r\n![photo5335033600443263859](https://user-images.githubusercontent.com/2745710/56700142-ee73cd80-66f8-11e9-8746-a766da9a4248.jpg)\r\n"
+  },
+  {
+   "id": 533804330,
+   "user": "quizzmaster",
+   "created_at": "2019-09-21T14:56:47Z",
+   "body": "@jamorham 10 months without any comment? Is this behaviour intended or a bug?"
+  },
+  {
+   "id": 538795403,
+   "user": "quizzmaster",
+   "created_at": "2019-10-06T22:41:57Z",
+   "body": "Also the uploaded delta is different to the real delta.\r\ne.g. xDrip, AAPS and NS show delta -3, but the SGV entry taken from the API says delta -5"
+  },
+  {
+   "id": 561887134,
+   "user": "Cagier",
+   "created_at": "2019-12-04T23:21:56Z",
+   "body": "I am experiencing the same issue I think.  I think the problem is that although the xDrip is working out what the arrow should be, it is in fact sending the arrow that the G6 has derived instead. I've deduced this from the fact that we have a separate G6 receiver and the arrow direction on the NightScout always seem to match the Dexcom receiver and these are often different to the xDrip app.\r\n\r\nThis seems to related to the G6 but may relate to G5 in Native Mode also?\r\n\r\nI suggest that the xDrip app should transmit it's own arrow to remote systems rather than blindly sending on the arrow direction that Dexcom has worked out. It would be more consistent and less confusing (and more accurate!)\r\n\r\nI think this may be related to https://github.com/NightscoutFoundation/xDrip/issues/800\r\n\r\nIn Issue https://github.com/NightscoutFoundation/xDrip/issues/414 jamorham mentions that the expected behaviour is for the trend arrow in xDrip to be the same one that is reported by the G5 (and presumably G6) in Native Mode.  So the issue seems to be that this is not the case as the arrow in xDrip can be very different to what I see on my G6 receiver.  However, what I see in my G6 receiver tends to match what I see in NS.\r\n\r\nThe natural fix would seem to be to also \"correctly\" display the G5/G6 reported/Native arrow on xDrip as expected and then everything would be consistent.  However, personally I find the one reported by the G5/G6 to be a lot less accurate than the one displayed in xDrip so I would strongly prefer to see that arrow direction derived by xDrip always sent to NightScout instead - even in Native Mode."
+  },
+  {
+   "id": 776718203,
+   "user": "Navid200",
+   "created_at": "2021-02-10T13:50:26Z",
+   "body": "@quizzmaster If you look at your post of April 24 with the 3 images, you can see that all three are showing the same -7mg/dL.  So, the slope is valid regardless of the app.  \r\nThe arrow is a graphical representation of the slope.  \r\nThis can be considered a bug for the other 2 apps, no?\r\n\r\nIf you disagree, would you please respond?\r\nIf you agree, would you please close the issue?"
+  },
+  {
+   "id": 776720843,
+   "user": "Navid200",
+   "created_at": "2021-02-10T13:54:41Z",
+   "body": "OK, as soon as I typed that, I saw that it may be taken the wrong way.\r\n\r\nIf you want to represent a slop graphically, you will have to come up with a resolution because you cannot have an infinite number of different arrows.  So, you will have to associate a range of slopes to each one of your arrows.\r\nThere seems to be a difference between how each app has grouped the different ranges of slopes.  There is not necessarily anything wrong."
+  },
+  {
+   "id": 780834636,
+   "user": "quizzmaster",
+   "created_at": "2021-02-17T20:31:59Z",
+   "body": "@Navid200 The slope is correct, yes. Also that there are only a few different arrows (flat, 45 degrees, up, double up) is not the point.\r\n\r\nxDrip uploads the BG values with a device name, the delta, the arrow and other informations, e.g.:\r\n```\r\n{\"_id\":\"602d79d301181286acc396af\",\"device\":\"xDrip-DexcomG5 G5 Native\",\"date\":1613593041389,\"dateString\":\"2021-02-17T20:17:21.389Z\",\"sgv\":226,\"delta\":8,\"direction\":\"FortyFiveUp\",\"type\":\"sgv\",\"filtered\":0,\"unfiltered\":0,\"rssi\":100,\"noise\":1,\"sysTime\":\"2021-02-17T20:17:21.389Z\",\"utcOffset\":60,\"mills\":1613593041389}\r\n```\r\nAlso sometimes the uploaded delta isn't correct and doesn't represent the real delta to the previous uploaded value."
+  },
+  {
+   "id": 787080811,
+   "user": "Navid200",
+   "created_at": "2021-02-27T14:27:42Z",
+   "body": "Would you mind adding your voice to the issue that had been opened before this one?\r\nhttps://github.com/NightscoutFoundation/xDrip/issues/414\r\nI am identifying duplicate or similar issues and asking people to consolidate.  \r\nThanks"
+  }
+ ]
+}

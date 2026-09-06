@@ -1,0 +1,45 @@
+{
+ "id": 2708204618,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3568,
+ "title": "AverageDynISF for Bolus Calculator to follow Profile Switch % - strength ?",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3568",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-11-30T22:58:32Z",
+ "closed_at": "2024-12-01T11:58:52Z",
+ "comment_count": 5,
+ "body": "In 3.3 Average DynISF for the last 24hours will be introduced that will be used as ISF in Bolus Calculator instead of Profile ISF if Dynamic Sensitivity is enabled.\r\n\r\nIf you set a profile switch to 80% or 120% this average DynISF value is not modified like regular Profile ISF when Dynamic sensitivity is disabled. A concern is that ISF will be to weak or strong given the situation. Should we be able to weaken or strengthen this number with profile switch %-strength?\r\n\r\nFrom the code the way I read it the DynISF average value will be calculated from the last 24h.\r\n\r\n```\r\n    override fun getAverageIsfMgdl(timestamp: Long, caller: String): Double? {\r\n        var count = 0\r\n        var sum = 0.0\r\n        val start = timestamp - T.hours(24).msecs()\r\n        dynIsfCache.forEach { key, value ->\r\n            if (key in start..timestamp) {\r\n                count++\r\n                sum += value\r\n            }\r\n        }\r\n        val sensitivity = if (count == 0) null else sum / count\r\n        aapsLogger.debug(LTag.APS, \"getAverageIsfMgdl() $sensitivity from $count values ${dateUtil.dateAndTimeAndSecondsString(timestamp)} $caller\")\r\n        return sensitivity\r\n    }\r\n```\r\n\r\nSome pictures to illustrate:\r\n| Bolus calc | 100% Profile| 120% Profile  |\r\n|--------|--------|--------|\r\n| ![image](https://github.com/user-attachments/assets/7e0ddad6-be62-42bc-a099-cd09c09b8176)| ![image](https://github.com/user-attachments/assets/1fb75cfa-940f-4c22-be14-b6d64d54025e)| ![image](https://github.com/user-attachments/assets/1960f0b8-639a-449a-aa7b-8cd1a5680a7d)| \r\n",
+ "comments": [
+  {
+   "id": 2509481254,
+   "user": "koelewij",
+   "created_at": "2024-11-30T23:56:32Z",
+   "body": "This is a tough one in my opinion. Though I am not using DynISF anymore for a long time, the core of DynISF is that it ignores your profile ISF completely and relies solely upon its own calculated ISF based on TDD and BG. If your sensitivity changes and you change your profile % your TDD will change and so also your resulting ISF. So if the ISF used in the calculator is the value based on the ISF from the last 24hrs, I would say that value is correct then. \r\nI also wonder what you would like to use then. The same value compensated by profile %?  That might work in case you just that % but after 24hrs your ISF has already changed accordingly and then compensating it is too much in my opinion. Did you have issues with the current results? "
+  },
+  {
+   "id": 2509489219,
+   "user": "olorinmaia",
+   "created_at": "2024-12-01T00:18:41Z",
+   "body": "I dont use dev on \"Live\" so I can't really say for sure if this is going to be an issue, but i want input from others about what is the best way forward here. :)\r\n\r\nThe most common use case for us to strengthen profile is when kid is falling to sleep (to 130%) and when exercising reducing to 80%. This is kind of resistance/sensitivity that appears in an instant, and dynisf won't be able to adjust to that quickly enough. Bolus calc is only applied maybe once in these use cases before exercise and perhaps once after going to sleep to get a kickstart before growth hormons kick in :)"
+  },
+  {
+   "id": 2509718124,
+   "user": "MilosKozak",
+   "created_at": "2024-12-01T11:14:20Z",
+   "body": "If the profile stay on 130% for a longer time, ISF if already adapted to this profile and adding +30% to the profile would multiply the effect\r\n"
+  },
+  {
+   "id": 2509720992,
+   "user": "vanelsberg",
+   "created_at": "2024-12-01T11:22:16Z",
+   "body": "When ISF is calculated - so independent from profile value - to me it does not make sense to change it when profile changes - even if it is only by %?"
+  },
+  {
+   "id": 2509733715,
+   "user": "olorinmaia",
+   "created_at": "2024-12-01T11:58:52Z",
+   "body": "Thanks for input. I'm closing this now and I agree it's best to start like it is now. "
+  }
+ ]
+}

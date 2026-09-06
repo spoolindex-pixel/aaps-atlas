@@ -1,0 +1,83 @@
+{
+ "id": 3654696292,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4360,
+ "title": "Bug : Medtrum manual bolus progression window",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4360",
+ "state": "closed",
+ "labels": [
+  "medtrum"
+ ],
+ "created_at": "2025-11-22T13:42:13Z",
+ "closed_at": "2025-12-03T10:04:19Z",
+ "comment_count": 11,
+ "body": "Last dev but the bug arrived since the code change to make the  _bolus progression window_ always visible. Using Medtrum Nano pump (not tested with other pumps).\n\nIf I use the wizard (enter carbs and bolus accordingly), the bolus progression window works as expexted.\n\nThe bug happens with manual bolus. At first, the progression bar shows the amount injected with the last bolus/SMB then, 1 sec later, starts showing the actual bolus being delivered and some seconds later, the progression window disappears. Even taping the line at the bottom of the UI (SMB xU) doesn't bring the progression window back.\n\nWill add screenshot videos...",
+ "comments": [
+  {
+   "id": 3566859194,
+   "user": "robertrub",
+   "created_at": "2025-11-22T16:26:07Z",
+   "body": "How the last SMB is used on the progression bar at first\n\nhttps://drive.google.com/file/d/1uQv93C7F83kxPMpn3ZU51TMfCfhpQy_O/view?usp=drivesdk\n\nUse of old bolus at start of progression bar and disappearing of the window\n\nhttps://drive.google.com/file/d/1IwYfWcuREU1RSBVuNuYtFgR6PBIfsyw7/view?usp=drivesdk\n"
+  },
+  {
+   "id": 3566883261,
+   "user": "Angus-repo",
+   "created_at": "2025-11-22T16:54:14Z",
+   "body": "Since I don’t have a Medtrum pump, I only made changes to the areas that are likely related.\nPlease try testing #4364 . Thank you."
+  },
+  {
+   "id": 3566940816,
+   "user": "robertrub",
+   "created_at": "2025-11-22T18:14:58Z",
+   "body": "Built and installed. Waiting BG to raise or the meal to test it...\n\nTnx for trying to solve this bug 😀"
+  },
+  {
+   "id": 3566971690,
+   "user": "robertrub",
+   "created_at": "2025-11-22T19:02:16Z",
+   "body": "@Angus-repo Congratulations, you solved it 💪🏻\n\nLet me 1 more day to test and then you can free the PR."
+  },
+  {
+   "id": 3567081658,
+   "user": "vanelsberg",
+   "created_at": "2025-11-22T22:01:21Z",
+   "body": "Today, happend again:\n- Manual bolus\n- Pop-up showed briefly a full bar off what looked like most recent bolus\n- Then changed to starting bolus of 0.1U before disappearing immediately while bolus was still progressing\nBolus progress kept available on bar at the bottom of AAPS overview, and as usual on the Wear Watch Notification\n\n@Angus-repo Will try to test you PR as of tomorrow 👍"
+  },
+  {
+   "id": 3567194571,
+   "user": "Angus-repo",
+   "created_at": "2025-11-23T00:21:26Z",
+   "body": "The change in PR4364 resets the Medtrum bolus progress to zero when starting a bolus.\nHowever, in the actual command execution flow (CommandQueue), MilosKozak had already zeroed the BolusProgressData delivered value.\nBoth mechanisms are intended to achieve the same result, yet the modification in PR4364 is the one that takes effect.\n\nSo I’d like to clarify a bit more:\nDoes this issue occur every time you deliver a bolus, or only occasionally?\nhttps://drive.google.com/file/d/1uQv93C7F83kxPMpn3ZU51TMfCfhpQy_O/view?usp=drivesdk\n\nIf it only happens occasionally, were there any other actions performed between the two boluses?"
+  },
+  {
+   "id": 3567390059,
+   "user": "robertrub",
+   "created_at": "2025-11-23T02:17:36Z",
+   "body": "Till your PR, it happened _almost_ all the time. 100% of the time if you did a manual bolus after another bolus or SMB. \n\nI thought that if no bolus/SMB was delivered for some time, and/or after à day change (?), the first manual bolus went normally. The following ones were flawed. "
+  },
+  {
+   "id": 3567585126,
+   "user": "robertrub",
+   "created_at": "2025-11-23T07:38:15Z",
+   "body": "@Angus-repo Ok, I tried to force it to fault but it's solid and works. \n\nAFAIK, you can merge the PR.👍🏻"
+  },
+  {
+   "id": 3568162337,
+   "user": "MilosKozak",
+   "created_at": "2025-11-23T17:10:54Z",
+   "body": "@jbr7rr I analyzed the issue. It's metrum specific and it comes from:\n`NotificationPacket::handleNormalBolus` where at start of a new bolus as a first message is sent result of last bolus ie:\n`bolusCompleted = true`\n`bolusDelivered = size_of_last_bolus`\n\nthe solution should be different than https://github.com/nightscout/AndroidAPS/pull/4364/ which:\n* surprisingly work, but it's a hack because it's set after first `handleNormalBolus`\n* should be solved by correct logic in driver\n\nBefore calling `PumpPlugin::deliverTreatment` everything is initialized correctly"
+  },
+  {
+   "id": 3568248811,
+   "user": "jbr7rr",
+   "created_at": "2025-11-23T19:08:29Z",
+   "body": "> [@jbr7rr](https://github.com/jbr7rr) I analyzed the issue. It's metrum specific and it comes from: `NotificationPacket::handleNormalBolus` where at start of a new bolus as a first message is sent result of last bolus ie: `bolusCompleted = true` `bolusDelivered = size_of_last_bolus`\n> \n> the solution should be different than [#4364](https://github.com/nightscout/AndroidAPS/pull/4364) which:\n> \n>     * surprisingly work, but it's a hack because it's set after first `handleNormalBolus`\n> \n>     * should be solved by correct logic in driver\n> \n> \n> Before calling `PumpPlugin::deliverTreatment` everything is initialized correctly\n\nThx I'm checking for a proper solution, but I'm a bit afraid we might need a hacky workaround anyway"
+  },
+  {
+   "id": 3606036546,
+   "user": "MilosKozak",
+   "created_at": "2025-12-03T10:04:19Z",
+   "body": "@jbr7rr I'll merge @Angus-repo 's PR. If you find better way, create new PR pls"
+  }
+ ]
+}

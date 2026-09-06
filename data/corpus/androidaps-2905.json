@@ -1,0 +1,39 @@
+{
+ "id": 1940159165,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2905,
+ "title": "DEV-M AAPSC Client not receiving BG consistently with BYOD and NS15. ",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2905",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-10-12T14:45:41Z",
+ "closed_at": "2023-10-13T20:25:33Z",
+ "comment_count": 4,
+ "body": "When using AAPS Client and BYOD and NS15 all treatments appear except BG. BG will appear at start and sometimes for a short period but will eventually stop and the only way to restart BG is to pause NS client and restart it. All carb entries, SMB, temp targets will flow in both directions but BG has a problem somewhere. \r\nI am using latest dev as of 10/11 which includes the named commit to fix or improve this issue see pics and logs below. \r\n\r\nThere are no issues in AAPS as the BG and all entries are there 100% of the time. \r\n\r\n\r\n\r\nBattery optimizations are confirmed off..  \r\n[aapsclientrelease_LOG_1697120441615.log.zip](https://github.com/nightscout/AndroidAPS/files/12883802/aapsclientrelease_LOG_1697120441615.log.zip)\r\n[AndroidAPS_LOG_1697120525944.log.zip](https://github.com/nightscout/AndroidAPS/files/12883803/AndroidAPS_LOG_1697120525944.log.zip)\r\n![aps client bg missing ](https://github.com/nightscout/AndroidAPS/assets/51689492/f05291e1-a1a1-4d52-bbe5-02a78e19fbc9)\r\n![Screenshot_20231012_074924_AAPSClient](https://github.com/nightscout/AndroidAPS/assets/51689492/b8d3fa12-d3f3-40f5-8354-3abc8281f80a)\r\n![Screenshot_20231012-074741_AAPS](https://github.com/nightscout/AndroidAPS/assets/51689492/fb7dd857-7348-4e53-b825-f7fa8f8c6413)\r\n",
+ "comments": [
+  {
+   "id": 1760225275,
+   "user": "ohjay73",
+   "created_at": "2023-10-12T19:11:37Z",
+   "body": "I was using bridge in NS.. looks like there is a note as of 3.0.0 to disable bridge but i can't find any reasoning for it and its still an active option in any of the NS builds. \r\n\r\nI also tested the CONNECT_SOURCE feature and it uploads the same way as bridge with the same amount of data.\r\n\r\nMoving to AAPS upload there is a significant change in the data structure and amount when checking mongo. But it has also eliminated any delay in AAPS Client. \r\n\r\nSo.. @MilosKozak is this a bug? is so is it a AAPS or NS bug.. or does it just need clarification in the docs that the AAPS synchronization upload feature is the only one to be used in AAPS 3+?\r\n\r\nThere was no impact to data in AAPS when using connect, or bridge and when running any reports in NS I didn't see any issues either.. just seems to impact AAPS Client.. and didnt impact NSClient in the past. "
+  },
+  {
+   "id": 1761024195,
+   "user": "szantos",
+   "created_at": "2023-10-13T07:15:36Z",
+   "body": "Just an addition: last months I had similar issues (#2748, #2846) and in my setup mainly AAPS was the uploader of SGV.\r\n\r\nRegarding NSClient vs AAPSClient - only the name has changed, with ongoing develpoment of course."
+  },
+  {
+   "id": 1762156590,
+   "user": "MilosKozak",
+   "created_at": "2023-10-13T20:25:33Z",
+   "body": "https://androidaps.readthedocs.io/en/latest/Installing-AndroidAPS/Releasenotes.html\r\n* While using websockets in NS v3 plugin treatments entered through NS UI (plus button) and other applications using v1 API are not sent to AAPS. This will be fixed in future release of NS. Always use the same client (v1 or v3) in AAPS and AAPSClient until NS fully switch to v3 internaly. The same is valid for AAPS and AAPSClient itself.\r\n\r\nthat's the reason"
+  },
+  {
+   "id": 1762200168,
+   "user": "ohjay73",
+   "created_at": "2023-10-13T20:48:12Z",
+   "body": "@MilosKozak thats for adding entries isnt it?.. which worked in dev - m .. this was related to BG lag in updating aapsclient which would only work if using syncronization from aaps and not bridge or connect_source which worked in previous nsclient builds. "
+  }
+ ]
+}

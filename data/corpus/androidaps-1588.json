@@ -1,0 +1,89 @@
+{
+ "id": 1197183724,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1588,
+ "title": "BUG : stuck in temp basal",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1588",
+ "state": "closed",
+ "labels": [
+  "omnipod dash"
+ ],
+ "created_at": "2022-04-08T11:10:53Z",
+ "closed_at": "2022-06-20T20:38:55Z",
+ "comment_count": 12,
+ "body": "I stopped the loop. I thought that the basal would kick in. It did not. On rhe DASH tab, I see no temp basal but on the main page, I have 0U/h (this is NOT helping my neg IOB problem either...)\n\nI try to cancel temp basal in Actions and it doesnt work either.\n\n![Screenshot_20220407-155125_AndroidAPS.jpg](https://user-images.githubusercontent.com/76626474/162424177-05175f69-638e-4838-b678-03aa256efacb.jpg)\n\n![Screenshot_20220408-130310_AndroidAPS.jpg](https://user-images.githubusercontent.com/76626474/162424428-84f9d826-e4f7-4708-939f-5ee43c0821ac.jpg)\n\n![Screenshot_20220408-130240_AndroidAPS.jpg](https://user-images.githubusercontent.com/76626474/162424468-654d7f3c-fb83-4939-baba-78bf1752858f.jpg)\n\n![Screenshot_20220408-130407_AndroidAPS.jpg](https://user-images.githubusercontent.com/76626474/162424527-6f4a5956-2035-490a-aa63-a0e164b8f874.jpg)\n\n",
+ "comments": [
+  {
+   "id": 1092752185,
+   "user": "robertrub",
+   "created_at": "2022-04-08T11:14:32Z",
+   "body": "And the logs around 13h03\n\n![AndroidAPS_LOG_1649415857979.log.zip](https://github.com/nightscout/AndroidAPS/files/8451316/AndroidAPS_LOG_1649415857979.log.zip)\n"
+  },
+  {
+   "id": 1093085510,
+   "user": "robertrub",
+   "created_at": "2022-04-08T16:53:51Z",
+   "body": "Seems like a temp basal duration problem. It is aways 4800...\n\n![Screenshot_20220408-185140_AndroidAPS.jpg](https://user-images.githubusercontent.com/76626474/162487075-c095a14b-2a3c-40a2-9e5e-e0ec16d5c8b4.jpg)"
+  },
+  {
+   "id": 1093354505,
+   "user": "elgrupo123",
+   "created_at": "2022-04-08T20:52:40Z",
+   "body": "I had the same error."
+  },
+  {
+   "id": 1093758679,
+   "user": "robertrub",
+   "created_at": "2022-04-09T07:00:34Z",
+   "body": "Seems like activation of a new DASH \"solved\" the problem."
+  },
+  {
+   "id": 1098431134,
+   "user": "robertrub",
+   "created_at": "2022-04-13T19:59:11Z",
+   "body": "The bug might be related to AAPS restarting. My phone battery died and when I restated it, the duration was for 4800 minutes...\n\n![Screenshot_20220413-215353_AndroidAPS.jpg](https://user-images.githubusercontent.com/76626474/163259940-c691aa08-29f1-40e9-a786-a0ec9d2a4af8.jpg)\n\nLook at around 21:55\n\n![AndroidAPS_LOG_1649879810224.log.zip](https://github.com/nightscout/AndroidAPS/files/8484318/AndroidAPS_LOG_1649879810224.log.zip)"
+  },
+  {
+   "id": 1106063810,
+   "user": "danst1peak",
+   "created_at": "2022-04-22T06:39:51Z",
+   "body": "I have just had the same behaviour, disabled loop as fighting a low.\r\n\r\nLoop shows disabled but 0.0 temp basal set for 4800 mins and unable to cancel.\r\n\r\nI didn't take a picture of the Dash tab, but that was showing no temp basal, same as Robert's picture.\r\n\r\n![Screenshot_20220422-062838_AndroidAPS](https://user-images.githubusercontent.com/99126049/164617763-6b3486d4-a5ee-44f6-a49d-762cc79bfaba.jpg)\r\n![Screenshot_20220422-063134_AndroidAPS](https://user-images.githubusercontent.com/99126049/164617766-f9147fdb-3528-4501-8682-16e582e344c8.jpg)\r\n![Screenshot_20220422-073229_AndroidAPS](https://user-images.githubusercontent.com/99126049/164617771-5191f084-b069-4f6f-886f-a804a99f19de.jpg)\r\n\r\n"
+  },
+  {
+   "id": 1106064707,
+   "user": "danst1peak",
+   "created_at": "2022-04-22T06:41:24Z",
+   "body": "Logs:\r\n\r\n[AndroidAPS.zip](https://github.com/nightscout/AndroidAPS/files/8537568/AndroidAPS.zip)\r\n"
+  },
+  {
+   "id": 1106065942,
+   "user": "danst1peak",
+   "created_at": "2022-04-22T06:43:34Z",
+   "body": "I also tried changing profile to see if it reset, it didn't reset, but it did apply a different temp basal at 06:17 - even though loop was disabled."
+  },
+  {
+   "id": 1118986075,
+   "user": "MarkSum1",
+   "created_at": "2022-05-05T19:50:30Z",
+   "body": "Although changing profile doesn't always reset, if you repeat this a few times it does. "
+  },
+  {
+   "id": 1120229812,
+   "user": "robertrub",
+   "created_at": "2022-05-07T15:39:34Z",
+   "body": "![Screenshot_20220507-145600_AndroidAPS.jpg](https://user-images.githubusercontent.com/76626474/167260855-891b68d0-a8a4-4151-9ffb-3bc0b059e50f.jpg)\n\nThings seem to work but I have this 4800 min TBR which should not be there...\n\n![Screenshot_20220507-172318_AndroidAPS.jpg](https://user-images.githubusercontent.com/76626474/167261471-8980224b-5bce-4bc8-81d6-e4fa3d06c9d8.jpg)"
+  },
+  {
+   "id": 1159756799,
+   "user": "avereha",
+   "created_at": "2022-06-19T15:30:29Z",
+   "body": "I belive this bug was fixed with https://github.com/nightscout/AndroidAPS/pull/1715\r\nDid you still notice this issue in `dev`, after 10th of May?"
+  },
+  {
+   "id": 1159758563,
+   "user": "robertrub",
+   "created_at": "2022-06-19T15:38:00Z",
+   "body": "No, I have not but I don't even remember how it had triggered. You can close the issue. If it happens again, I'll open a new one ;)"
+  }
+ ]
+}

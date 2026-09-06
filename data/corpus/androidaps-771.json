@@ -1,0 +1,63 @@
+{
+ "id": 1032581410,
+ "repo": "nightscout/AndroidAPS",
+ "number": 771,
+ "title": "[3.0-beta1] New profile is not correctly shown after profile switch if the new profile has the same content as the old",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/771",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-10-21T14:37:59Z",
+ "closed_at": "2021-10-24T11:47:36Z",
+ "comment_count": 8,
+ "body": "I first noticed this with 3.0-beta1 but actually tested it also with yesterday dev-version and I believe that it still exists.\r\nI cloned earlier profile and edited a new name for it and then saved and activated it but the profile name did not change\r\nin the top of main ´display. The new profile is saved correctly and it also looks like the profile switch is also logged but the display of the profile name does not work. When the content is the same as in earlier profile it does not cause such problems but in the longer term this name-problem can be very confusing.\r\n\r\nAnd for a clarification: if the new profile has something different then there is no problem.\r\n\r\nCould somebody check is this a real problem or has I done some mistake.\r\n",
+ "comments": [
+  {
+   "id": 948907819,
+   "user": "Alamo04",
+   "created_at": "2021-10-21T18:50:35Z",
+   "body": "Think it is the same problem that I reported in this Issues:\r\nhttps://github.com/nightscout/AndroidAPS/issues/630\r\n"
+  },
+  {
+   "id": 950309625,
+   "user": "MilosKozak",
+   "created_at": "2021-10-24T11:47:36Z",
+   "body": "this is by design now. 3.0 distinguish between profile switch (PS) (something that user wants) and effective profile switch (EPS - setting loaded into pump and used for calculation). AAPS create new EPS if asked PS is different to current EPS and new profile takes into a count after confirmed from pump. Thus EPS will have different (later) timestramp.\r\nin case you only change name and do PS, no new EPS is created. You can follow it in treatments  - profiles activity\r\nprofile name displayed on overview is taken from current EPS\r\n\r\nthis is way different logic to previous version where AAPS assumed PS is loaded to pump immediately"
+  },
+  {
+   "id": 955699907,
+   "user": "Philoul",
+   "created_at": "2021-10-31T13:21:31Z",
+   "body": "One annoying side effect is for new users that switch from current master to new beta, they first have to activate a new profile to allow looping, but if they try to activate the same profile that the one recorded in pump (it's generally the case), they still have \"No profile set\" in overview after their profile switch (my advice is to do a PS with xx% and then another one with 100%, it works but it's a workaround difficult to understand by most users...)"
+  },
+  {
+   "id": 958752817,
+   "user": "reijoahola-nightscout",
+   "created_at": "2021-11-03T08:52:17Z",
+   "body": "Tested the same situation with 3.0-beta3: Active Profile copied into a new name and then activated. Now the new profile is shown in the top of the main view. Is the logic then changed ?"
+  },
+  {
+   "id": 958755374,
+   "user": "MilosKozak",
+   "created_at": "2021-11-03T08:56:22Z",
+   "body": "yes, i changed the behavior the way that change name is a reason for update too"
+  },
+  {
+   "id": 958896217,
+   "user": "markvader",
+   "created_at": "2021-11-03T10:49:15Z",
+   "body": "[3.0-beta3] I made a change to my profile, the only change i made was one of my ISF rates, then I activated it and completed a profile switch.\r\n\r\nThe profile shows as changed in the profile plugin and uploads to correct values to nightscout\r\n\r\nHowever the profile is not updated in the profile bar on the home screen, nor is the change taken into account for calculations, and no profile change is shown on the main graph as it normally would.\r\n\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/7466945/AndroidAPS.log)\r\n\r\nI have attached the log.  I set the ISF from 7am to 10pm as 9mmol  \r\n\r\nLine 38 shows the new rate\r\n`09:47:16.997 [main] D/PROFILE: [LocalProfilePlugin.storeSettings():211]: Storing settings: {\"defaultProfile\":\"LocalProfile\",\"startDate\":\"2021-11-03T09:47:16.9960000Z\",\"store\":{\"LocalProfile\":{\"dia\":6,\"carbratio\":[{\"time\":\"00:00\",\"timeAsSeconds\":0,\"value\":18},{\"time\":\"11:00\",\"timeAsSeconds\":39600,\"value\":14.5},{\"time\":\"16:00\",\"timeAsSeconds\":57600,\"value\":18}],\"sens\":[{\"time\":\"00:00\",\"timeAsSeconds\":0,\"value\":8},{\"time\":\"07:00\",\"timeAsSeconds\":25200,\"value\":9},{\"time\":\"22:00\",\"timeAsSeconds\":79200,\"value\":8}],\"basal\":[{\"time\":\"00:00\",\"timeAsSeconds\":0,\"value\":0.55},[other rates removed to reduce log],{\"time\":\"23:00\",\"timeAsSeconds\":82800,\"value\":0.66}],\"target_low\":[{\"time\":\"00:00\",\"timeAsSeconds\":0,\"value\":6},{\"time\":\"08:00\",\"timeAsSeconds\":28800,\"value\":5.6}],\"target_high\":[{\"time\":\"00:00\",\"timeAsSeconds\":0,\"value\":6},{\"time\":\"08:00\",\"timeAsSeconds\":28800,\"value\":5.6}],\"units\":\"mmol\",\"timezone\":\"Europe\\/London\"}}}\r\n`\r\nLine 135 shows the old rate of 153 (i.e. 8.5mmol):\r\n`09:50:36.524 [RxCachedThreadScheduler-4] D/APS: [DetermineBasalAdapterSMBJS.invoke():73]: Profile:        {\"max_iob\":7,\"type\":\"current\",\"max_daily_basal\":0.72,\"max_basal\":2.16,\"min_bg\":100.8,\"max_bg\":100.8,\"target_bg\":100.8,\"carb_ratio\":18,\"sens\":153,\"max_daily_safety_multiplier\":3,\"current_basal_safety_multiplier\":4,\"high_temptarget_raises_sensitivity\":false,\"low_temptarge"
+  },
+  {
+   "id": 962410871,
+   "user": "old-square-eyes",
+   "created_at": "2021-11-06T07:18:32Z",
+   "body": "I'm still having this issue per #808 I'm not sure why both issues are closed. I have spent hours trying to set a profile. It's not possible for me on any of the betas for NSClient (1, 2 or 3)."
+  },
+  {
+   "id": 962428079,
+   "user": "Alamo04",
+   "created_at": "2021-11-06T10:03:29Z",
+   "body": "One in our german looper group had the same issue with profile switch and that in the master version.\r\nhttps://de.loopercommunity.org/t/profilwechsel-schlaegt-fehl/8754\r\n\r\nThis guy was on AAPS 2.8.2 Master and Medtronic pump with OrangeLink Pro and on this $%#@ new firmware 3.2.\r\n\r\nI told him to downgrade the OL Pro to v1.0, the normal OL should be downgrade to version 2.5.\r\nAfter that, everything works fine again.\r\n\r\nSo, if you are using OL than be sure to not use Firmware 3.2\r\n"
+  }
+ ]
+}

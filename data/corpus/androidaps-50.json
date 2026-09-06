@@ -1,0 +1,57 @@
+{
+ "id": 728772296,
+ "repo": "nightscout/AndroidAPS",
+ "number": 50,
+ "title": "[AAPS 2.7.0] -> temp target finish: target stuck on selected value with green background",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/50",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2020-10-24T11:43:30Z",
+ "closed_at": "2020-10-26T08:59:50Z",
+ "comment_count": 7,
+ "body": "I had already several times the following issue:\r\n\r\nFor doing sports I change profile to 30-40 % for example 3 hours (2 hours before sports, 1 during activity). I also put an temp target at 160 for not getting SMB and having a higher level during acitvity.\r\n\r\nAfter sports, when I got home, i noticed that the profile changed successfully back and the temp target was also finished. But instead of going back to profile target (in my case 100) AAPS but remains on the target of the temp target before. Also it is green and not yellow anymore. \r\n\r\nI have the the new options for raising/lowering target regarding AS active, but 160 at AS 100 is way to high so I assume a bug.\r\nWhen I set a TT and cancel afterwards, the correct 100 (without background color) is reset.\r\n\r\nI use AAPS 2.7.0\r\nSony XZ2 Compact \r\nAndroid 9\r\nAccu Check Combo\r\nDexcom G6 (patched app)\r\n\r\n\r\n![image](https://user-images.githubusercontent.com/52837251/97080547-7abbc500-15fc-11eb-83c2-ffac49244868.png)\r\n\r\nsnip from log:\r\n18:33:40.504 [main] D/CORE: [TempTargetDialog$submit$$inlined$let$lambda$1.run():135]: USER ENTRY: TEMP TARGET 160.0 duration: 60\r\n19:33:31.923 [main] D/CORE: [OverviewFragment.updateGUI():661]: Adjusted target. Profile: 100.0 APS: 160.0\r\n\r\nI also attached the log for the relevant time\r\n\r\n[AndroidAPS._2020-10-20_00-00-13_.7.txt](https://github.com/nightscout/AndroidAPS/files/5432823/AndroidAPS._2020-10-20_00-00-13_.7.txt)\r\n",
+ "comments": [
+  {
+   "id": 716220658,
+   "user": "MilosKozak",
+   "created_at": "2020-10-25T22:12:10Z",
+   "body": "did you read this? \r\nhttps://androidaps.readthedocs.io/en/latest/EN/Getting-Started/Screenshots.html#visualization-of-dynamic-target-adjustment"
+  },
+  {
+   "id": 716223910,
+   "user": "ArthurusDent",
+   "created_at": "2020-10-25T22:36:59Z",
+   "body": "I've seen this, too, but the high temp target value on green ground is only shown for a few minutes at the end of the temp target duration. After that it switches back to the correct set target in the profile without the green background. I've only looked at this as a cosmetic bug."
+  },
+  {
+   "id": 716225512,
+   "user": "NickSills1",
+   "created_at": "2020-10-25T22:50:14Z",
+   "body": "@mtothearkus I've seen similar, but for me it is caused by communication lost with the DanaRS pump at the end of the temp target time. When this happens,  the temp target remains 'stuck', as in your screen shot, until communication with the pump is successful. \r\n\r\nI had to restart the phone last time this happened. \r\n\r\n![Screenshot_20201025-223333_AndroidAPS](https://user-images.githubusercontent.com/15063589/97121208-69fe7280-1714-11eb-9a14-a9afdf295e18.jpg)\r\n"
+  },
+  {
+   "id": 716306044,
+   "user": "mtothearkus",
+   "created_at": "2020-10-26T05:07:43Z",
+   "body": "> did you read this?\r\n> https://androidaps.readthedocs.io/en/latest/EN/Getting-Started/Screenshots.html#visualization-of-dynamic-target-adjustment\r\n\r\nYes and this works good - but as you can see in the screenshot AS is at 100 % (because of profile change before) and an adjustment of 160 for AS is way to high. \r\ne.g. with AS 90 % the target goes to 116 in my case. \r\n\r\nThis might be just a cosmetic (don’t wanna test it), but is different to 2.6.1"
+  },
+  {
+   "id": 716409318,
+   "user": "MilosKozak",
+   "created_at": "2020-10-26T08:59:50Z",
+   "body": "this is 2.7 feature"
+  },
+  {
+   "id": 716410091,
+   "user": "MilosKozak",
+   "created_at": "2020-10-26T09:01:14Z",
+   "body": "it stay green until new OAPS run (without TT adjustment)"
+  },
+  {
+   "id": 716459577,
+   "user": "NickSills1",
+   "created_at": "2020-10-26T10:34:15Z",
+   "body": "> it stay green until new OAPS run (without TT adjustment)\r\n\r\nSo, in the absence of another TT adjustment, the current TT finish time rounds up to the next OAPS 5 minutes run. As long as it's understood and doesn't cause any problems, then there's no change required.  I guess that changing the target midway through the OAPS cycle has no effect, but It's a stretch to call this a 'feature'."
+  }
+ ]
+}

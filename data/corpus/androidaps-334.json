@@ -1,0 +1,63 @@
+{
+ "id": 807945622,
+ "repo": "nightscout/AndroidAPS",
+ "number": 334,
+ "title": "DanaRS \"Wrong Pump Password\" despite correct password... limited functionality.",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/334",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-02-14T11:52:49Z",
+ "closed_at": "2021-02-14T13:02:00Z",
+ "comment_count": 8,
+ "body": "Hi, maybe this is a known issue but I didn't see anyone else post about it. I built the latest APK 2.8.2 and installed it successfully on the phone. It tries to connect to the pump (DanaRS), and shows BG value, but gives me error message \"Wrong Pump Password\", which leads to limited functionality. For example, \"Insulin\", \"Carbs\", and \"Calculator\" functions are not showing up at all (see image). The only thing showing up \"CGM\". I'm using modified Dexcom app. \r\n\r\nChecking the password in the pump (default 0000) and the password settings in AAPS, they match. Yet, no cigar. Help. \r\n\r\n![801e7525-afe2-4c3a-8feb-e00514e6b319](https://user-images.githubusercontent.com/54559440/107875954-4e85c600-6ec3-11eb-83df-3f4fc6dd4f0e.jpg)\r\n\r\n\r\n\r\n\r\n \r\n",
+ "comments": [
+  {
+   "id": 778767810,
+   "user": "MilosKozak",
+   "created_at": "2021-02-14T11:59:47Z",
+   "body": "https://androidaps.readthedocs.io/en/latest/Configuration/DanaRS-Insulin-Pump.html?highlight=DanaRS"
+  },
+  {
+   "id": 778767868,
+   "user": "AdrianLxM",
+   "created_at": "2021-02-14T12:00:15Z",
+   "body": "You can use the default password to set a proper one that can be used for communication.\nDepending on version on the firmware `0000` will not work directly."
+  },
+  {
+   "id": 778769176,
+   "user": "MilosKozak",
+   "created_at": "2021-02-14T12:12:39Z",
+   "body": "you probably upgraded from very old version.\r\ncheck release notes of all version between"
+  },
+  {
+   "id": 778770089,
+   "user": "BlockSpaceVictor",
+   "created_at": "2021-02-14T12:20:16Z",
+   "body": "I upgraded from 2.6.1, never had any issues. \r\n\r\nI'm not sure how to understand the posted link... even if I change pump password in both pump and AAPS settings, it does not work. \r\n\r\nI checked and the firmware of the DanaRS is version 1. Maybe that has something to do with it? "
+  },
+  {
+   "id": 778772635,
+   "user": "MilosKozak",
+   "created_at": "2021-02-14T12:43:11Z",
+   "body": "2.6.1 didn't verify RS password\r\njust change it on pump (to prove you know it) and put to AAPS"
+  },
+  {
+   "id": 778772773,
+   "user": "BlockSpaceVictor",
+   "created_at": "2021-02-14T12:44:30Z",
+   "body": "Yeah, I changed the password several times, from 0000, to 1234, to other numbers... but it never works. Of course, I also change it in the Dana settings on AAPS. But no luck. "
+  },
+  {
+   "id": 778773111,
+   "user": "MilosKozak",
+   "created_at": "2021-02-14T12:47:21Z",
+   "body": "in order to change RS pass you need to enter old pass to pump first.\r\nSo i'd assume you don't know it"
+  },
+  {
+   "id": 778774864,
+   "user": "BlockSpaceVictor",
+   "created_at": "2021-02-14T13:01:53Z",
+   "body": "ohhhhh. Ok now it works. The issue was that I thought I was changing the password in the pump, when in fact I just failed to correctly input the old password, because Dana gives no error message if you put in the wrong one. So it was just me being stupid. Thanks for the quick replies! :) "
+  }
+ ]
+}

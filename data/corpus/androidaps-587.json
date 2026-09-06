@@ -1,0 +1,27 @@
+{
+ "id": 931418536,
+ "repo": "nightscout/AndroidAPS",
+ "number": 587,
+ "title": "[2.8.2] SMS - 2 boluses delivered during 1 min. - limit ignored",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/587",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-06-28T10:26:54Z",
+ "closed_at": "2021-07-07T12:19:11Z",
+ "comment_count": 2,
+ "body": "**AndroidAPS 2.8.2 (build info in attached screenshot), engeneering mode enabled**\r\n_Note: it was not a test, just a coincidence_ \r\n\r\n\r\nLimit set to 15 min, 2 allowed phone number (XXXXXXXXX and YYYYYYYYY)\r\n1. bolus (number XXXXXXXXX): 1U\r\n2. bolus (number YYYYYYYYY): 0.5U\r\n\r\nboth buluses was delivered. \r\n_____________________________________________________________\r\nFiltered log:\r\n\r\n08:54:27.070 [IntentService[DataService]] D/SMS: [SmsCommunicatorPlugin.processSms():206]: SMS from +XXXXXXXXX: Bolus 1\r\n08:54:27.091 [IntentService[DataService]] D/SMS: [SmsCommunicatorPlugin.sendSMS():982]: Sending SMS to +XXXXXXXXX: K potvrzeni bolusu 1,00U odpovez SMS s kodem z aplikace Authenticator pro: Lukin nasledovano kodem PIN\r\n08:54:42.925 [IntentService[DataService]] D/SMS: [SmsCommunicatorPlugin.processSms():206]: SMS from +XXXXXXXX: 9360227643\r\n08:54:42.930 [IntentService[DataService]] D/SMS: [AuthRequest.action():55]: Processing confirmed SMS: Bolus 1\r\n\r\n08:55:02.679 [IntentService[DataService]] D/SMS: [SmsCommunicatorPlugin.processSms():206]: SMS from +YYYYYYYYY: Bolus 0.5\r\n08:55:02.682 [IntentService[DataService]] D/SMS: [SmsCommunicatorPlugin.sendSMS():982]: Sending SMS to +YYYYYYYYY: K potvrzeni bolusu 0,50U odpovez SMS s kodem z aplikace Authenticator pro: Lukin nasledovano kodem PIN\r\n08:55:16.855 [IntentService[DataService]] D/SMS: [SmsCommunicatorPlugin.processSms():206]: SMS from +YYYYYYYYY: 8258337643\r\n08:55:16.858 [IntentService[DataService]] D/SMS: [AuthRequest.action():55]: Processing confirmed SMS: Bolus 0.5\r\n\r\n08:55:17.209 [Thread-19215] D/SMS: [SmsCommunicatorPlugin.sendSMS():982]: Sending SMS to +YYYYYYYYY: Bolus 1,00 U aplikovan uspesne\r\n08:55:17.243 [Thread-19215] D/SMS: [SmsCommunicatorPlugin.sendSMS():982]: Sending SMS to +XXXXXXXXX: Bolus 1,00 U aplikovan uspesne\r\n08:55:23.594 [Thread-19215] D/SMS: [SmsCommunicatorPlugin.sendSMS():982]: Sending SMS to +420721747071: Bolus 0,50 U aplikovan uspesne\r\n08:55:23.631 [Thread-19215] D/SMS: [SmsCommunicatorPlugin.sendSMS():982]: Sending SMS to +XXXXXXXXX: Bolus 0,50 U aplikovan uspesne\r\n_____________________________________________________________\r\n\r\n**Build info**\r\n![Screenshot_20210628-112604](https://user-images.githubusercontent.com/33551056/123620732-d503ca00-d80a-11eb-9856-e59f971722ac.png)\r\n\r\n**incident log**\r\n[SMS_problem.txt](https://github.com/nightscout/AndroidAPS/files/6725406/SMS_problem.txt)",
+ "comments": [
+  {
+   "id": 869699065,
+   "user": "MilosKozak",
+   "created_at": "2021-06-28T13:46:18Z",
+   "body": "this should be already resolved in dev. can you test it too?"
+  },
+  {
+   "id": 875523202,
+   "user": "xmizi",
+   "created_at": "2021-07-07T11:23:53Z",
+   "body": "Thanks for reply Miloš. We will be careful next time. It was only one random case.\r\n2.8.2 works without any problem. If not necesarry, I'll no install dev version. "
+  }
+ ]
+}

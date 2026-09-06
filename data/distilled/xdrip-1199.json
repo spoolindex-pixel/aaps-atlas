@@ -1,0 +1,23 @@
+{
+ "issue_id": 1199,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/1199",
+ "title": "G6 sensor restarts on 81XXXX transmitter",
+ "symptom": "Preemptive sensor restarts for Dexcom G6 are failing: the sensor goes to 'sensor failed', then attempts restart and ends up in a 2-hour warmup loop, repeatedly failing and restarting. This behavior occurs with 81XXXX and 8H transmitters.",
+ "cause": "The problem is with the firmware on the 'firefly' transmitters (8H and some others). When Dexcom started using these new transmitters, restarts no longer worked on them. Preemptive restart only works if the firmware version is 1.6.5.25, which includes all 81XXXX and some 81XXXX.",
+ "fix": "For transmitters with firmware 1.6.5.25, preemptive restart works. For others, the only way to restart requires temporary removal of the transmitter from the sensor, shorting the sensor pins to skip the 30-minute wait, then reinserting and restarting with the original calibration code. Detailed instructions are available on Facebook or Gitter.",
+ "settings_changed": [],
+ "devices": [
+  "Dexcom G6",
+  "81XXXX transmitter",
+  "8H transmitter"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "preemptive restart",
+  "restart",
+  "firefly transmitter"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "You can only perform preemptive restart if the firmware version (shown on system status page) is 1.6.5.25. That include all 81XXXX and some of 81XXXX. If the serial number does not start with 80 or 81, the only way to restart requires temporary removal of the transmitter from the sensor."
+}

@@ -1,0 +1,66 @@
+{
+ "id": 2753858280,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3642,
+ "title": "Double arrows : logs",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3642",
+ "state": "closed",
+ "labels": [
+  "unresovable",
+  "xdrip"
+ ],
+ "created_at": "2024-12-21T09:17:27Z",
+ "closed_at": "2025-02-21T12:06:27Z",
+ "comment_count": 8,
+ "body": "@MilosKozak You had asked the logs when double arrows arrive in AAPS.\n\nI think they happen when there is a steep direction change in BGs. This night's examples : sensor compression, goes low, I turn or wake up with the alerts and BGs raise. I have the last dev and am using average smoothing. G6 and xDrip.\n\nArrows are OK in xDrip\n\n![Screenshot_20241221_032207_xDrip+.jpg](https://github.com/user-attachments/assets/f2f49f46-0598-4f38-b3ea-4be813ddd4f6)\n\n![Screenshot_20241221_032217_AAPS.jpg](https://github.com/user-attachments/assets/4bd01a54-b2cc-4e2a-958c-cc6c837a963a)\n\n![Screenshot_20241221_032230_AAPS.jpg](https://github.com/user-attachments/assets/384be197-a529-49bd-8c01-c6fc2db0abcd)\n\nThe logs during the double arrows (look around 03:17 \n\n![AndroidAPS_LOG_during.zip](https://github.com/user-attachments/files/18217983/AndroidAPS_LOG_during.zip)\n\nAnd a bit after the double arrows\n\n![AndroidAPS_LOG_after.zip](https://github.com/user-attachments/files/18217988/AndroidAPS_LOG_after.zip)\n\nAn automation kicks in in case of steep drop.",
+ "comments": [
+  {
+   "id": 2558150106,
+   "user": "robertrub",
+   "created_at": "2024-12-21T15:20:48Z",
+   "body": "Noisy sensor. Happened again\n\n![Screenshot_20241221_161641_xDrip+.jpg](https://github.com/user-attachments/assets/81ff6945-e7f6-49c5-9873-2d73146f452a)\n\n![20241221_161340.jpg](https://github.com/user-attachments/assets/5607b7ac-dea6-4590-8987-15d3d58357ab)\n\n![Screenshot_20241221_161740_AAPS.jpg](https://github.com/user-attachments/assets/564d1df6-8ed5-4b4c-8605-d1755dfe8c1e)\n\n![Screenshot_20241221_161756_AAPS.jpg](https://github.com/user-attachments/assets/5730e852-60ba-456d-833b-2429e7820b4c)\n\nThe logs\n\n![AndroidAPS_LOG_1734794294359.log.zip](https://github.com/user-attachments/files/18218944/AndroidAPS_LOG_1734794294359.log.zip)\n\n"
+  },
+  {
+   "id": 2558287130,
+   "user": "robertrub",
+   "created_at": "2024-12-22T01:01:47Z",
+   "body": "This shity sensor is very sensible to compression and wakes me up every night :( But I hope shows the reason to the double down arrows in the multiple logs ;)\n\n![AndroidAPS_LOG_1734829094180.log.zip](https://github.com/user-attachments/files/18220429/AndroidAPS_LOG_1734829094180.log.zip)\n\n![Screenshot_20241222_015739_xDrip+.jpg](https://github.com/user-attachments/assets/e990def3-bd66-441c-b05a-b45f6a888c47)\n\n![Screenshot_20241222_015758_AAPS.jpg](https://github.com/user-attachments/assets/fe0df927-4d33-4b2a-9a93-7731bdcf9bf3)\n\n"
+  },
+  {
+   "id": 2559074892,
+   "user": "robertrub",
+   "created_at": "2024-12-23T07:34:46Z",
+   "body": "Another case but with sensor errors. The sensor stopped sending BG for 30 min then started sending. Arrow normal on xDrip but double down in AAPS\n\n![Screenshot_20241223_075654_xDrip+.jpg](https://github.com/user-attachments/assets/726602f6-c436-4d88-81b5-1547886ed56b)\n\n![Screenshot_20241223_075702_AAPS.jpg](https://github.com/user-attachments/assets/558b0b6a-06a4-47e4-a93e-d2f653882761)\n\n![Screenshot_20241223_075713_AAPS.jpg](https://github.com/user-attachments/assets/4716268d-57be-4f0d-81ce-b89056e285f8)\n\nCame back to normal after 6 BG \n\n![Screenshot_20241223_083334_AAPS.jpg](https://github.com/user-attachments/assets/876b9afa-718b-4aee-b6d3-5852b679b78f)\n\nLogs after the first doublé arrow\n\n![AndroidAPS_LOG_1734937044695.log.zip](https://github.com/user-attachments/files/18226474/AndroidAPS_LOG_1734937044695.log.zip)\n\n"
+  },
+  {
+   "id": 2562005908,
+   "user": "MilosKozak",
+   "created_at": "2024-12-25T21:44:22Z",
+   "body": "03:17:14.302 [DefaultDispatcher-worker-3] D/BGSOURCE: [XdripSourcePlugin$XdripSourceWorker.doWorkAndLog():105]: Received xDrip data: Bundle[{com.eveningoutpost.dexdrip.Extras.NoiseBlockLevel=200, com.eveningoutpost.dexdrip.Extras.BgSlope=4.3345181016144415E-5, com.eveningoutpost.dexdrip.Extras.VersionInfo=2124101120 9f769df-2024.10.11, com.eveningoutpost.dexdrip.Extras.Raw=0.0, com.eveningoutpost.dexdrip.Extras.Display.Units=mg/dl, com.eveningoutpost.dexdrip.Extras.Time=1734747431118, com.eveningoutpost.dexdrip.Extras.CalibrationInfo=-1, com.eveningoutpost.dexdrip.Extras.NsNoiseLevel=null, com.eveningoutpost.dexdrip.Extras.SensorStartedAt=1733386202079, com.eveningoutpost.dexdrip.Extras.Noise=-9999.0, com.eveningoutpost.dexdrip.Extras.SensorBattery=-1, com.eveningoutpost.dexdrip.Extras.BgSlopeName=**DoubleDown**, com.eveningoutpost.dexdrip.Extras.BgEstimate=97.0, com.eveningoutpost.dexdrip.Extras.SourceDesc=G6 Native / G5 Native, com.eveningoutpost.dexdrip.Extras.SourceInfo=G6 Native, com.eveningoutpost.dexdrip.Extras.Collector.NanoStatus=  }]\r\n\r\nxdrip is sending DoubleDown. AAPS doesn't change the arrow if provided.\r\nReport to xDrip"
+  },
+  {
+   "id": 2562019356,
+   "user": "robertrub",
+   "created_at": "2024-12-25T23:06:52Z",
+   "body": "Ok, tnx. It's funny how they send double down arrows but show only one up...\n\nPlease leave this issue open. I'll link it to them. "
+  },
+  {
+   "id": 2562311592,
+   "user": "robertrub",
+   "created_at": "2024-12-26T08:31:57Z",
+   "body": "@MilosKozak This is the answer from Navid / xDrip. They say that xDrip transmits the arrows without treatment but calulate the arrow on their own UI.\n\nCan AAPS do the same ? We already have the delta, needs some code to determine the angle 😉\n\nhttps://github.com/NightscoutFoundation/xDrip/issues/414#issuecomment-2155740131\n\n"
+  },
+  {
+   "id": 2562346953,
+   "user": "MilosKozak",
+   "created_at": "2024-12-26T09:10:22Z",
+   "body": "i don't think we should have different behavior for diffrent BG sources.\r\nxDrip should decide what should be presented to AAPS"
+  },
+  {
+   "id": 2607865940,
+   "user": "robertrub",
+   "created_at": "2025-01-22T17:38:20Z",
+   "body": "Navid from xDrip isn't interrested in changing anything and thinks that the double arrows come from the transmitter itself. I don't use BYODA and I can’t check if it's the case."
+  }
+ ]
+}

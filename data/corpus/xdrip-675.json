@@ -1,0 +1,27 @@
+{
+ "id": 377914849,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 675,
+ "title": "G6 start requests calibration",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/675",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2018-11-06T16:01:52Z",
+ "closed_at": "2018-11-06T22:59:23Z",
+ "comment_count": 2,
+ "body": "I'm on the latest version of xDrip and I'm unable to get my sensor session to start, the errors that I'm getting are the following:\r\nOb1G5StateMachine\r\n```\r\nSession Start failed info: 1969-12-31 18:00:00 1969-12-31 18:00:00 1969-12-31 18:00:00\r\nSessionStart Failed: Clock not synchronized or other error\r\nStarting G6 sensor using calibration code 9159\r\n```\r\n\r\nRunning the 11/2 build on a Pixel 3 XL.  The session is now requesting that I calibrate, but I'm no the proper settings for the native algorithm to work appropriately",
+ "comments": [
+  {
+   "id": 436440503,
+   "user": "ddellspe",
+   "created_at": "2018-11-06T22:59:23Z",
+   "body": "Looks like this was an issue of the transmitter being expired, I guess it's another reason for the error that was being received by this specific error code (0x04) [here](https://github.com/NightscoutFoundation/xDrip/blob/7cb725783429de7a02342194f4fc68a1fc66c0c0/app/src/main/java/com/eveningoutpost/dexdrip/G5Model/SessionStartRxMessage.java#L81) and [here](https://github.com/NightscoutFoundation/xDrip/blob/7cb725783429de7a02342194f4fc68a1fc66c0c0/wear/src/main/java/com/eveningoutpost/dexdrip/G5Model/SessionStartRxMessage.java#L81)"
+  },
+  {
+   "id": 451061772,
+   "user": "adanvdo",
+   "created_at": "2019-01-03T06:05:07Z",
+   "body": "1. @ddellspe I ran into this problem tonight. I attempted to start a new sensor and transmitter at the same time.  I have been having issues getting the sensor to start correctly. Mine is a brand new transmitter, so im not sure why it's having problems."
+  }
+ ]
+}

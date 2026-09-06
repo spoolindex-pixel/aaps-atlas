@@ -1,0 +1,39 @@
+{
+ "id": 2356504258,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3368,
+ "title": "AAPS thinks it's outdated even though latest version is installed - closed loop disabled",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3368",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-06-17T06:33:47Z",
+ "closed_at": "2024-08-08T11:53:55Z",
+ "comment_count": 4,
+ "body": "**The issue:**\r\nWhen using AAPS for over 30 days, even after updating to the latest version on either master or dev branch (the issue has been reproduced on 3.3.0-dev-b as well as the latest master branch version), closed loop will be disabled and IOB will be limited to 0.0. When checking the logs one log reports \"Version Checker: old version\".\r\n\r\n**The cause:**\r\nOn dev branch, VersionCheckerUtilsImpl.kt this function is deifned:\r\n\r\n```\r\n\r\n    private fun checkVersion() =\r\n        if (isConnected()) {\r\n            Thread {\r\n                try {\r\n                    val definition: String = URL(\"https://raw.githubusercontent.com/nightscout/AndroidAPS/versions/definition.json\").readText()\r\n                    val version: String? = AllowedVersions().findByApi(definition, Build.VERSION.SDK_INT)?.optString(\"supported\")\r\n                    compareWithCurrentVersion(version, config.get().VERSION_NAME)\r\n\r\n                    // App expiration\r\n                    var endDate = sp.getLong(rh.gs(app.aaps.core.utils.R.string.key_app_expiration) + \"_\" + config.get().VERSION_NAME, 0)\r\n                    AllowedVersions().findByVersion(definition, config.get().VERSION_NAME)?.let { expirationJson ->\r\n                        AllowedVersions().endDateToMilliseconds(expirationJson.getString(\"endDate\"))?.let { ed ->\r\n                            endDate = ed + T.days(1).msecs()\r\n                            sp.putLong(rh.gs(app.aaps.core.utils.R.string.key_app_expiration) + \"_\" + config.get().VERSION_NAME, endDate)\r\n                        }\r\n                    }\r\n                    if (endDate != 0L) onExpireDateDetected(config.get().VERSION_NAME, dateUtil.dateString(endDate))\r\n\r\n                } catch (e: IOException) {\r\n                    aapsLogger.error(LTag.CORE, \"Github master version check error: $e\")\r\n                }\r\n            }.start()\r\n        } else\r\n            aapsLogger.debug(LTag.CORE, \"Github master version not checked. No connectivity\")\r\n```\r\n\r\nThe function isConnected() is defined as such:\r\n\r\n```\r\n    private fun isConnected(): Boolean = receiverStatusStore.isConnected\r\n```\r\n\r\nWhere the implementation of ReceiverStatusStore (ReceiverStatusStoreImpl.kt) defines isConnected as such:\r\n\r\n```\r\n    override val isConnected: Boolean\r\n        get() = lastNetworkEvent?.wifiConnected ?: false || lastNetworkEvent?.mobileConnected ?: false\r\n```\r\n\r\nHowever, when this function is called on app launch, there is no network event yet, so this getter returns false.\r\n\r\n**Potential solution**\r\nI solved the issue manually by triggering checkVersion() later, i.e. after 1.5 seconds, and it solved the problem, however a more permanent solution could be triggering checkVersion() whenever there is a network change or at least the first time the network changes to \"connected\" during the app's lifecycle.\r\n\r\n**Other details**\r\nRecreated on version 3.3.0-dev-b as well as the latest master branch version\r\nMy device is Galaxy S23 Ultra ",
+ "comments": [
+  {
+   "id": 2175143557,
+   "user": "Philoul",
+   "created_at": "2024-06-18T06:18:57Z",
+   "body": "How do you explain that it works for thousands of persons?\nDo you have a SIM card, within your phone, and/or wifi connection when you launch AAPS?"
+  },
+  {
+   "id": 2212457300,
+   "user": "vanelsberg",
+   "created_at": "2024-07-07T13:48:08Z",
+   "body": "Never experienced this problem (Galaxy S23 Ultra). Not even on a phone without SIM (WiFi connected only)"
+  },
+  {
+   "id": 2270092867,
+   "user": "aemad37",
+   "created_at": "2024-08-05T23:31:48Z",
+   "body": "Just for the record I have the same problem where it's reporting a version mismatch \r\nI'm on version 3.2.0.4 for both sides - ns15.0.2\r\nClients: s23 ultra and s21 ultra both are connected sim and wifi\r\nAaps: Xiaomi mi 11 only wifi no sim"
+  },
+  {
+   "id": 2275635087,
+   "user": "MilosKozak",
+   "created_at": "2024-08-08T11:53:55Z",
+   "body": "improved by https://github.com/nightscout/AndroidAPS/commit/b5823eeaa1a1044f71bdc90cc6f82107d0515461"
+  }
+ ]
+}

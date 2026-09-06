@@ -1,0 +1,57 @@
+{
+ "id": 1140090025,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1330,
+ "title": "Proposal: wizard remove on click icons handling",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1330",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-02-16T14:25:16Z",
+ "closed_at": "2022-02-22T12:52:03Z",
+ "comment_count": 7,
+ "body": "The Bolus Calculator wizard got a new option since version 3.0. There are icon indicators on the bottom section that shows what options are used in the calculation. \r\n![image](https://user-images.githubusercontent.com/6724749/154282334-4b2d4a92-1b17-4480-934e-5801315cc9ea.png)\r\nOn click of an item it toggles the setting, however, I see some risk with the implementation:\r\n* From a UX/UI perspective, users will not intuitive understand that it is actual checkboxes\r\n* They are close the cancel button and can be clicked accidentally\r\n* When toggled, the setting will be stored, and used in the next calculation too\r\n\r\nWe risk that the user will accidentally change the parameters and only will figure out after many wrong boluses.\r\n\r\nMy proposal is to remove the click interaction and only show the settings, so the settings can only be changed when the show checkbox is checked. \r\n\r\nPlease let me know what your perspective is?",
+ "comments": [
+  {
+   "id": 1041825235,
+   "user": "swissalpine",
+   "created_at": "2022-02-16T16:06:28Z",
+   "body": "You're right, you have to know that these are buttons - but that's also the case in other places.\r\nMore important fo me: I love the new \"buttons\"! They are really handy!\r\nHowever, I had to adjust the display for my small smartphone, so now there is no danger of clicking them by mistake (and I changed so that they no longer disappear when the calculation is shown) :\r\n![Screenshot_20220114-062916](https://user-images.githubusercontent.com/12517693/154305973-bb258249-a936-4c60-819b-09c01111ccee.png)\r\n\r\n"
+  },
+  {
+   "id": 1042179181,
+   "user": "Andries-Smit",
+   "created_at": "2022-02-16T20:22:00Z",
+   "body": "@swissalpine Your layout is nice, it has a bigger touch area and less change for accidental clicking"
+  },
+  {
+   "id": 1042320327,
+   "user": "Philoul",
+   "created_at": "2022-02-16T21:19:20Z",
+   "body": "I think it's a good idea to keep the click in these icons (that's why I made PR #1156 😉) and I identified the risk of too small icons not easy to click when I made this PR so I'm not surprised.\r\nI think it's a good idea to increase the size of Icons on a seperate line (there is enough place on all screen when detailled information is hidden)\r\n\r\nI think we can also improve the logic between IOB and COB icons/checkbox (it's another subject but linked because we don't see on Icons if a click is enable or not, checkbox is greyed when disabled...).\r\n- Currently IOB checkbox is checked and disabled when COB is checked (for icons, no action is done if you click on IOB icon while COB icon is \"colored\"). For safety it's dangerous to have cob checked and iob unchecked.\r\n- Currently when both are unchecked, if you check COB, then IOB is automatically checked and disabled (IOB icon automatically colored and no action available on click)\r\n\r\nMy proposal would be to always keep both icons (and checkboxes) enabled, check both when COB is checked, uncheck both when IOB is unchecked, and allow IOB checked alone if the user check IOB or uncheck COB...\r\n\r\nThat way we can always keep an action on all click on icons and keep security (forbid COB checked alone without IOB).\r\n\r\nNote for @Andries-Smit in the past this security logic between COB and IOB was not included in Wear, I don't know if it's still the case today (we should add it if missing)."
+  },
+  {
+   "id": 1042352801,
+   "user": "Philoul",
+   "created_at": "2022-02-16T22:01:07Z",
+   "body": "After verification, I think we have to update Wear settings (it's in aaps...)\r\n- we have to merge Bolus IOB and Basal IOB to be consistent with wizard\r\n- I think we should implement COB/IOB safety (as you can see in screenshot below we can enable COB without IOB for wizard calculation launched from Wear)\r\n- If we put icons in a seperate line, we can add an optional icon for TT (only visible if a TT is running)...\r\n![Screenshot_20220216-224849_AndroidAPS](https://user-images.githubusercontent.com/52934600/154363233-0f761daf-ed9b-47e6-a7cd-0eae7d93e4d7.jpg)\r\n"
+  },
+  {
+   "id": 1042378295,
+   "user": "MilosKozak",
+   "created_at": "2022-02-16T22:38:09Z",
+   "body": "initial idea was make a border around. but I failed to implement it so I ended up with changing alpha"
+  },
+  {
+   "id": 1042388647,
+   "user": "MilosKozak",
+   "created_at": "2022-02-16T22:55:39Z",
+   "body": "@swissalpine 's change is nice too.\r\nat the end it could be possible to remove checkboxes from calculations and use only icons.\r\nthere is lot of texts and not much space"
+  },
+  {
+   "id": 1047765909,
+   "user": "Andries-Smit",
+   "created_at": "2022-02-22T12:52:03Z",
+   "body": "With the proposed re-layout it would not be necessary to remove the click indicators.\r\nFor some users, this might still be an overload of the form. And I might open a PR to  show less information in the treatment popups (carbs, insulin, calculator)\r\n"
+  }
+ ]
+}

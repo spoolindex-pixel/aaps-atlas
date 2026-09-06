@@ -1,0 +1,33 @@
+{
+ "id": 1048848918,
+ "repo": "nightscout/AndroidAPS",
+ "number": 884,
+ "title": "Loop status indicator fails to update on Pump Connection Failures",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/884",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-11-09T16:55:02Z",
+ "closed_at": "2021-11-09T18:20:29Z",
+ "comment_count": 3,
+ "body": "If the RL connection has been lost\r\n--> Medtronic tab indicates that there's no connection to the Rileylink\r\n--> Loop icon still displays as Green!\r\n\r\nTested as follows:\r\n1 Removed phone away from RL and Pump\r\n--> RileyLink unreachable message appears after 5m on Medtronic tab but loop remains green\r\n--> This situation persisted even after 20 minutes -- it seems that as long as BG data was received, the loop was considered operational\r\n\r\nWhat would be expected is that once the connection between AAPS and either the pump/RL or CGM is lost, the loop's status icon should be updated--preferably with a Red icon communicating that the loop is broken, and an indicator within showing for how long. EDIT: Alternatively, it could take the same approach that of the BG indicator--indicate how long ago the loop was last completed, and switch the number to yellow after e.g. 5 minutes, and red after 10minutes (even as the color of the loop remains green, reflecting the configuration rather than the status).\r\n\r\nTested with: AAPS 3 Beta 5, Medtronic 554, RileyLink, Android 11 (Pixel Experience) on a Galaxy S7 ",
+ "comments": [
+  {
+   "id": 964413820,
+   "user": "MilosKozak",
+   "created_at": "2021-11-09T18:20:29Z",
+   "body": "there is no permanent connection between devices mostly. AAPS connects as needed.\r\nand there can be only temporary connection outage\r\nthus the only available alert is (and will be) pump unreachable after XX mnutes"
+  },
+  {
+   "id": 964513538,
+   "user": "rustymonkey",
+   "created_at": "2021-11-09T20:30:46Z",
+   "body": "Is the situation for Medtronic/Rileylink different than for other devices? With Medtronic/Rileylink, outages do occur periodically, and they're communicated on the Medtronic tab e.g.:\r\nRileylink Status: Problem connecting to pump\r\nLast connection: 57m ago\r\nOR\r\nRileylink Status: RileyLink unreachable\r\nLast connection: 1 hour ago\r\n\r\nAnd while this is occurring, the loop status indicator is Green (unexpected)! In contrast, when I rewind the pump to refill the reservoir for a couple of minutes, the loop status changes to 'Paused' (expected). So doesn't it make sense for the Loop indicator to similarly update to reflect the status if the last connection was > X minutes ago? **As it stands (because of #889 ), the only way to get an accurate understanding of the current connection status is to navigate to the Medtronic tab.**\r\n\r\nAside:\r\nThere are currently multiple different types of status/notifications that appear re. the status of the loop:\r\na) The Loop status icon\r\nb) Red notifications that appear at the top of the screen\r\nc) Failed to update basal notification dialogs\r\nUsing a red loop to convey connection problems could also yield the benefit of helping to standardize on a single method of communicating failed loop issues (i.e. always using a) as described in #885 rather than b) and c) ). e.g. upon a failed basal update, the Loop turns red and an alarm is generated. The user can then click the icon and observe the status/problem OR ignore the issue for 5 minutes and and if AAPS reconnects the status changes to green and there's no more problem of error messages persisting after the connectivity issues have resolved by themselves (as mentioned in #889 )."
+  },
+  {
+   "id": 968186430,
+   "user": "rustymonkey",
+   "created_at": "2021-11-14T01:29:25Z",
+   "body": "I wanted to summarize the benefits of fixing this, since in the course of testing #373 I came up against this issue again: \r\na) As already described, it would give users an accurate sense of whether the loop has failed (since as described at #889 warning dialogs are a reflection of the fact that a disconnection occurred at some point in time--regardless of whether the loop failure has subsequently been resolved).\r\nb) In addition, it lets the user know once the loop has resumed operating (e.g. if the user resets the RileyLink to solve the disconnection problem described at #373 ). \r\nIt's true that in both cases, the user can visit the Pump tab to see the actual status, but that's a step that the UI shouldn't force the user to take."
+  }
+ ]
+}

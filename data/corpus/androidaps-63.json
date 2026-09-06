@@ -1,0 +1,33 @@
+{
+ "id": 739726696,
+ "repo": "nightscout/AndroidAPS",
+ "number": 63,
+ "title": "Accu-chek Insight pump error M23 automatically stopped",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/63",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2020-11-10T09:10:19Z",
+ "closed_at": "2020-11-11T06:34:28Z",
+ "comment_count": 3,
+ "body": "**Version:** 2.7.0\r\n**Android Version:** 9.0\r\n**Phone:** OnePlus 6\r\n**Pump:** Accu-check Insight firmware version 2.0.1\r\n**FGM:** Freestyle libre 1 with MM2, using xDrip+\r\n\r\n**Time:** the error occurs exactly every hour\r\n\r\n**Background:** \r\nFirst time user of AndroidAPS and looping in general since last sunday, November 8th. Followed the documentation for installation and all settings. Using a local profile, not set up a nightscout site yet. Using open loop for now. \r\n\r\n**Issue:**\r\nAt random times the pump starts to make noise and it gives the error \"maintenance error M23 automatically pump stopped\". At that point the pump is stopped and needs to be started again. The AndroidAPS app does not give an alert or anything. When manually refreshing the pumps connection it does show the information in graph and careportal. It shows the \"automatically stopped\" and then \"pump started\".\r\nI'm not sure if this only happens when the open loop is changing the basal. \r\nBolus is working without problems. Changing the basal manually works without problems.\r\nIssue also occurs when looping is turned off!\r\nWhats also a bit weird is that we changed sound/volume settings in the pump(as recommended in docs) but the pump still makes sound.\r\n**Edit:** now I saw that the error occurs exactly ever hour (13:49 , 14:49, 15:49 etc)\r\n\r\n**What did I try:**\r\n- New battery and new battery cap\r\n- Repairing the pump with phone (using the AndroidAPS wizard), twice already. So removed the bluetooth connection in phone, in app and in pump. Restarted phone and pump, then repaired in app. Note: the pump does show up in bluetooth settings of the phone after this. \r\n- Disabled the firmware 3.x specific settings\r\n- Searched for information in the documentation, in the devices list, in githubs and on facebook groups. \r\n\r\n\r\nI hope this problem can be solved, because currently its almost unusable. \r\nIf more information is needed please let me know. \r\n",
+ "comments": [
+  {
+   "id": 725231691,
+   "user": "TebbeUbben",
+   "created_at": "2020-11-11T06:34:28Z",
+   "body": "It seems like you have enabled the pump's \"Automatic Off\" function. Please refer to section 8.4.1 of the manual to find out how to deactivate it: https://www.accu-chek.co.uk/download/file/fid/28316 "
+  },
+  {
+   "id": 725257703,
+   "user": "PimSPIE",
+   "created_at": "2020-11-11T07:31:07Z",
+   "body": "@TebbeUbben  yesterday I found out I was indeed searching on the wrong places. Found that manual yesterday and the function was indeed the cause of the problem. So its nice that its all solved now !\r\nQuestion: can the AndroidAPS app change the setting of that function ? \r\nWhy am I asking this: I never knew about this function before, never used it and never changed its setting. It started doing this after connecting with AndroidAPS. "
+  },
+  {
+   "id": 725290538,
+   "user": "TebbeUbben",
+   "created_at": "2020-11-11T08:48:12Z",
+   "body": "The corresponding packet structure has not been implemented, so it is very unlikely - if not impossible - that AndroidAPS has changed this setting."
+  }
+ ]
+}

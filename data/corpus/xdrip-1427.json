@@ -1,0 +1,102 @@
+{
+ "id": 690420539,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1427,
+ "title": "Miband 4 - Bug Report: Screen Brightness",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1427",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "device-miband"
+ ],
+ "created_at": "2020-09-01T20:20:28Z",
+ "closed_at": "2021-08-08T20:09:08Z",
+ "comment_count": 14,
+ "body": "My Miband shows this bug with the screen brightness. Night mode in xDrip is off , no other apps that accesses the Miband.\r\n\r\nThe screen goes dark for the watch face upload (as intended) but after that it stays dark for about 20s to 60s. It seems to switch back to day mode when the next full minute is reached.\r\n\r\nI use Samsung A40, xDrip 01.09.2020, Mi Smart Band 4 V1.0.9.48\r\n\r\nAre there people with the same problem, any idea what this could be @bigdigital?\r\n",
+ "comments": [
+  {
+   "id": 685147101,
+   "user": "ANDREAPIPPI",
+   "created_at": "2020-09-01T21:36:14Z",
+   "body": "Hi. \r\nI have the same problem on my Xiaomi Note 7, MIUI 11.0.1 (Androis 10), Xdrip 20200725 and Mi Smart Band 4 1.0.9.48.\r\nI see the same nehaviour, with brightness almost OFF for times differently long, but never longer than 1 minute.\r\nNot a big problem, but a bit annoying, anyway.\r\nBye\r\nAndrea    :-)"
+  },
+  {
+   "id": 685415404,
+   "user": "bigdigital",
+   "created_at": "2020-09-02T07:40:09Z",
+   "body": "> My Miband shows this bug with the screen brightness. Night mode in xDrip is off , no other apps that accesses the Miband.\r\n> \r\n> The screen goes dark for the watch face upload (as intended) but after that it stays dark for about 20s to 60s. It seems to switch back to day mode when the next full minute is reached.\r\n> \r\n> I use Samsung A40, xDrip 01.09.2020, Mi Smart Band 4 V1.0.9.48\r\n> \r\n> Are there people with the same problem, any idea what this could be @bigdigital?\r\n\r\nIs that possible that you had a weak Bluetooth connection when such problem happens? For example, the phone was far from the band or band was under the water? After the watchface uploading, the xdrip has a 7 seconds delay before restoring screen brightness. If your band lose  Bluetooth connection during this time, the brightness wouldn't be restored. In this case the screen brightness would be restored on the next wathface uploading sequence. Regarding the delay, this delay designed to mask watchface uploading process (The band firmware automatically switch on display after the watchface uploading) "
+  },
+  {
+   "id": 685990268,
+   "user": "Otter3eso57",
+   "created_at": "2020-09-02T20:50:08Z",
+   "body": "Unfortunately I think the connection quality is not the problem. The issue also appears when the devices are directly side by side. Is Xdrip writing some log files that could help you troubleshoot? "
+  },
+  {
+   "id": 686356799,
+   "user": "bigdigital",
+   "created_at": "2020-09-03T09:03:47Z",
+   "body": "Could you please try to install the following test  application and let me know if it would work better for you\r\nhttps://www.dropbox.com/s/ku44dkv42o5x4ji/xdrip_miband_0.3.1.3_test.apk?dl=0\r\n\r\nHere I also modified a feedback recipient address to my private server. So the log reports would be sent directly to me. To send xdrip logs, you would need to click to the \"upload logs'  button which is located in the events logs interface.\r\n\r\nIf this problem occurs, please send me a xdrip logs by using vents logs interface.  For this, please make sure you have added “MibandService:d” (without quotes) in xdrip Settings->Less common settings-> Extra logging -> Extra tags for loggings . After this go to “Less common settings” -> View recent error interface. Leave enabled only “Low” and \"High\" checkboxes And click to \"upload logs\" button. If possible, in the feedback description text specify the approximate time when this error happens. Thanks.\r\n"
+  },
+  {
+   "id": 686811892,
+   "user": "Otter3eso57",
+   "created_at": "2020-09-03T23:18:54Z",
+   "body": "Hi bigdigital,\r\nI found something. My observation is that it happens when the phone screen is off. I followed your instruction and uploaded the log.\r\n\r\nIt is OK when:\r\n- The phone is on the charger\r\n- The screen is on and xDrip is in the foreground\r\n- The screen is on and another app is in the foreground\r\n- The high or low glucose alarm triggers (screen off, but the alarm sounding)\r\n\r\nIt looks like during the 7-second wait xDrip is send to sleep and needs about 1 minute to wake back up. I have all battery optimization off  as far as possible. Global \"Energy Mode=optimized\" (best performance), xDrip \"Background Activity=allowed\", xDrip \"Energy Usage=not optimized\". When I wake up the phone it seems that the watch screen changes to normal in about a second.\r\n\r\nCan you use an alternative method to implement the 7 second delay? In case it uses more battery then only as a workaround option for those that have this problem."
+  },
+  {
+   "id": 686942165,
+   "user": "bigdigital",
+   "created_at": "2020-09-04T06:29:18Z",
+   "body": "Indeed, seems that your phone can't \"wakeup\" in time after the thread was sent to sleep.  I'll try to implement this delay in another way and share a test application again."
+  },
+  {
+   "id": 694504647,
+   "user": "tolot27",
+   "created_at": "2020-09-17T21:17:10Z",
+   "body": "@bigdigital Please can you setup a repository and your account for handling issues related to your Mi Band app? Many of them are not related to xDrip itself and cannot adressed by the developers of xDrip."
+  },
+  {
+   "id": 694748022,
+   "user": "bigdigital",
+   "created_at": "2020-09-18T09:00:41Z",
+   "body": "Hi, yes, it already exists https://github.com/bigdigital/xDrip/ "
+  },
+  {
+   "id": 694751020,
+   "user": "tolot27",
+   "created_at": "2020-09-18T09:06:37Z",
+   "body": ">Hi, yes, it already exists https://github.com/bigdigital/xDrip/\r\n\r\nGreat! But this is just a fork repository. It may confuse issue creators if they try to create an issue related to your Mi Band app. Do you have a repository four your app?"
+  },
+  {
+   "id": 694775676,
+   "user": "Otter3eso57",
+   "created_at": "2020-09-18T09:58:33Z",
+   "body": "You are right, I am confused. The Miband integration is not an additional app. It is part of xDrip like all the other watch integrations that are discussed here. Bigdigital is very active in developing it and addresses the issues posted here. In fact, he already provided me with a fix to test out. I plan to close this issue as soon as this fix is accepted as part of the xDrip nightly build.\r\nIf you don't accept certain types of issues here than you need directions in your contributing guidelines that guide users to a dedicated place for the sub modules of xDrip."
+  },
+  {
+   "id": 694793443,
+   "user": "tolot27",
+   "created_at": "2020-09-18T10:37:38Z",
+   "body": "@Otto75so3e and @bigdigital Sorry, I mixed something up. You are right regarding to the MiBand integration. It is part of xDrip. I was confused because of the separate download apk. Apologies!\r\n\r\nMaybe we should think about integrating CI for certain branches.\r\n\r\nBTW: The Samsung Tizen Integration G-Watch App is not part of xDrip."
+  },
+  {
+   "id": 862353161,
+   "user": "Navid200",
+   "created_at": "2021-06-16T12:51:37Z",
+   "body": "@Otter3eso57 \r\nIs this still an issue?"
+  },
+  {
+   "id": 865299572,
+   "user": "Otter3eso57",
+   "created_at": "2021-06-21T19:49:25Z",
+   "body": "@Navid200\r\nYes still open, since the solution is part of #1659 that is not merged yet."
+  },
+  {
+   "id": 894848792,
+   "user": "tolot27",
+   "created_at": "2021-08-08T20:09:08Z",
+   "body": "I'll close this issue because it is solved in the build available at https://bigdigital.home.blog. We are still waiting for @bigdigital to address the requested changes until we can merge #1659."
+  }
+ ]
+}

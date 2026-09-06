@@ -1,0 +1,63 @@
+{
+ "id": 2740197710,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3623,
+ "title": "[Dev] NSv1/v3 - All treatments doesn't sync between AAPS and AAPSClient when using bolus calc AND Virtual pump (dash)",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3623",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-12-15T00:11:42Z",
+ "closed_at": "2024-12-17T16:15:58Z",
+ "comment_count": 8,
+ "body": "AAPS 3.3.0-dev-f\r\nBuild: b9686af643-2024.12.14\r\nRemote: https://github.com/nightscout/AndroidAPS\r\nFlavor: fullrelease\r\nNightscout version: 15.0.2\r\nEngineering mode enabled\r\n\r\nWhen entering bolus calc in AAPS I've noticed it doesn't sync over to AAPSClient in all cases. See example below.\r\n\r\nLogs.\r\nAAPS\r\n[AndroidAPS_LOG_1734221096370.log.zip](https://github.com/user-attachments/files/18138253/AndroidAPS_LOG_1734221096370.log.zip)\r\n\r\nAAPSClient\r\n[AndroidAPS_LOG_1734221112371.log.zip](https://github.com/user-attachments/files/18138254/AndroidAPS_LOG_1734221112371.log.zip)\r\n\r\nScreenshot\r\nAAPS\r\n![Screenshot_20241215-010306](https://github.com/user-attachments/assets/81ec5934-53a8-4fde-ae95-5591c14e0199)\r\n![Screenshot_20241215_010225_AAPS](https://github.com/user-attachments/assets/bdb1db2c-7403-4d3f-9942-45cba39b3f33)\r\n\r\nAAPSClient\r\n![20241215_010404](https://github.com/user-attachments/assets/e1363e7c-430a-4d3b-920b-5115053916f2)\r\n![20241215_010210](https://github.com/user-attachments/assets/cb910056-c48f-495a-8a71-a1827be818b0)\r\n",
+ "comments": [
+  {
+   "id": 2545590744,
+   "user": "MilosKozak",
+   "created_at": "2024-12-16T13:08:27Z",
+   "body": "I keep it open but next step will be remove v1"
+  },
+  {
+   "id": 2545633027,
+   "user": "olorinmaia",
+   "created_at": "2024-12-16T13:27:23Z",
+   "body": "Do you plan on that for 3.3? I understand there is alot more complexity providing support / code compability for two different sync api for NS.\r\n\r\nMain problem many have with v3 is the basal rendering an inability to use NS to enter treatments. F.ex. parents got Iphones and can't use AAPSClient. All of this is known but it's not clear when it will be fixed or supported within NS.\r\n\r\nThis bug seem to be 100% reproduceable and does not occur in 3.2, so if NSv1 ships with 3.3 this will cause alot of wrong iob between main/client."
+  },
+  {
+   "id": 2545709181,
+   "user": "MilosKozak",
+   "created_at": "2024-12-16T14:00:58Z",
+   "body": "3.3 will have v1"
+  },
+  {
+   "id": 2548803247,
+   "user": "MilosKozak",
+   "created_at": "2024-12-17T15:43:34Z",
+   "body": "i did a few tries (bolus wizard) using virtual pump a everything is synced correctly to Client using v3"
+  },
+  {
+   "id": 2548913590,
+   "user": "olorinmaia",
+   "created_at": "2024-12-17T16:14:33Z",
+   "body": "Make sure to check NS if treatment is there. \r\n\r\nI've noticed small boluses get through more often than big. So test both small 0,1 bolus Calc and bigger >0,5.\r\n\r\nI think this can be closed since it sync between v3 regardless of uploading to ns. Virtual pump bolus calc isn't used much by us anyway. We bolus through AAPS dash driver and wear app which works 100% of the time.\r\n\r\nThis could lead to wrong iob in some edge cases with v1 but when it's so hard to reproduce we should probably just close it. And hope we can remove v1 for next release. "
+  },
+  {
+   "id": 2586325620,
+   "user": "rorybladen",
+   "created_at": "2025-01-13T06:49:58Z",
+   "body": "I think we may have just had this occur with v3. BG was syncing but a carb/bolus entered with the bolus calculator did not sync. The treatments were not in nightscout so Aaps client can likely be excluded from the issue.\n\nThe missed treatment sync was an issue because it wasn't spotted due to no break in BG value sync which suggested nightscout/mongo was operational and wasn't a cause for concern. Following that and before a full sync was attempted, the iob/cob in aaps clients was incorrect due to the missed treatment data.\n\nA full synchronization restored nightscout and Aaps client to match Aaps iob/cob.\n\nDuring troubleshooting 10 carbs were entered into an aaps client and synced across to the master aaps. The carbs were then removed on the master aaps using the treatments history screen. The removal synced back to the aaps clients correctly. However.. the 10 carb treatment was still visible in Nightscout. The carbs didn't count towards the iob displayed in nightscout so it appears as just an artifact - guessing deleted treatments are just tagged as deleted but remain in the database, so perhaps a bug with nightscout displaying deleted treatments even though they have no remaining effect on calcs.\nFull synchronization also failed to remove the 10 carbs from the nightscout display. The 10 carb treatment artifact was removed using the nightscout edit - drag - delete UI.\n\n\nAaps 3.2.0.4\nNightscout 15.0.2"
+  },
+  {
+   "id": 2586581237,
+   "user": "MilosKozak",
+   "created_at": "2025-01-13T09:21:29Z",
+   "body": "Nightscout doesn't support v3 protocol internaly. That's the reason why you cannot add entries though NS UI, it doesn't handle remove entries etc (while AAPS is using v3 protocol)"
+  },
+  {
+   "id": 2628692190,
+   "user": "rorybladen",
+   "created_at": "2025-02-01T02:12:06Z",
+   "body": "Thanks for the info regarding the v3 protocol.\nRegarding the original issue of the Bolus which did not upload to nightscout we will keep an eye out for it occurring again.\nThe concern is that AAPSClient showed an incorrect IOB/COB.  If AAPS master goes offline it will resync UP once back online. \nSo whilst it is possible there was an interruption during the sync directly following the treatment, something then also prevented this particular treatment resyncing on the subsequent uploads. \nThe missing treatment in AAPS is explained because the treatment wasn't present in Nightscout, however it doesn't explain the IOB/COB mismatch.\nDoes AAPSClient sync actual IOB/COB values or does it just sync treatments/BG and run its own loop in parallel? (this appears to be what happens?)  If so would it make sense to also sync the IOB/COB and check it against the AAPSClient loop derived values to highlight any discrepancy?\nThanks."
+  }
+ ]
+}

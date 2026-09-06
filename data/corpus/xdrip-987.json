@@ -1,0 +1,21 @@
+{
+ "id": 484236599,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 987,
+ "title": "BT Communication with \"ESP32\" version of LimiTTer ?",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/987",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2019-08-22T21:59:24Z",
+ "closed_at": "2019-08-30T17:06:03Z",
+ "comment_count": 1,
+ "body": "Hello,\r\n\r\nI'm trying to make an ESP32 version of LimiTTer freestyle reader, but I can't connect my ESP32 to Xdrip+ (when I scan BT devices on my phone I see my ESP32 (BT name = \"LimiTTer\") and pair it), but impossible to see my ESP from xdrip+ to received my freestyle raw data (the \"Scan Blustooth\" don't find any device...\r\n\r\nI think that my bluetooth configuration on my ESP32 is not ok but I don't know how to make it work... Can you help me please ?\r\n\r\nmy bluetooth configuration looks like \r\n\r\n```\r\nin header\r\n#include \"BluetoothSerial.h\" //Header File for Serial Bluetooth, will be added by default into Arduino\r\nBluetoothSerial ble_Serial; //Object for Bluetooth\r\n\r\nin setup\r\n    ble_Serial.begin(\"LimiTTer\"); //Name of your Bluetooth Signal\r\n    for (int i=0; ( (i < MAX_BLE_WAIT) && !(ble_Serial.hasClient()) ); i++)\r\n    {\r\n      delay(1000);\r\n      Serial.print(\"Waiting for BLE connection ...\");\r\n      Serial.println(\"\");\r\n    } \r\n\r\nin Send_Packet function\r\n      ble_Serial.print(packet);\r\n```\r\n\r\nIn setup, \"ble_Serial.hasClient()\" remains \"false\" (wrong use of it?)\r\n\r\nWhen I arrive on the \"ble_Serial.print(packet);\" instruction (with a \"correct xdrip packet\"), I have a crash and reboot of my ESP \r\nxDrip packet: 173647 216 100 17206\r\n\r\n\"Guru Meditation Error: Core  1 panic'ed (IllegalInstruction). Exception was unhandled.\"\r\n\r\nI am sure my bluetooth configuration on my ESP32 LimiTTer code is not good but I don't know how to solve it... \r\n\r\nCan someone help me please ?\r\n",
+ "comments": [
+  {
+   "id": 526612775,
+   "user": "Philoul",
+   "created_at": "2019-08-30T14:00:38Z",
+   "body": "Hello,\r\n\r\nI have found a solution:\r\n\r\nMy new Bluetooth configuration for ESP32 is : \r\n\r\nin Header\r\n\r\n```\r\n#include <BLEDevice.h>\r\n#include <BLEUtils.h>\r\n#include <BLEServer.h>\r\n#include <BLE2902.h>\r\n#define MAX_BLE_WAIT 60 // Maximum bluetooth re-connect time in seconds \r\n#define SERVICE_UART_UUID      \"6E400001-B5A3-F393-E0A9-E50E24DCCA9E\" // UART service UUID\r\n#define CHARACTERISTIC_UUID_RX \"6E400002-B5A3-F393-E0A9-E50E24DCCA9E\"\r\n#define CHARACTERISTIC_UUID_TX \"6E400003-B5A3-F393-E0A9-E50E24DCCA9E\"\r\nBLEServer* pServer = NULL;\r\nBLECharacteristic* pTxCharacteristic = NULL;\r\nBLECharacteristic* pRxCharacteristic = NULL;\r\nbool estConnecte = false;\r\nbool etaitConnecte = false;\r\n\r\n\r\nclass EtatServeur : public BLEServerCallbacks \r\n{\r\n    void onConnect(BLEServer* pServer) \r\n    {\r\n      estConnecte = true;\r\n    }\r\n\r\n    void onDisconnect(BLEServer* pServer) \r\n    {\r\n      estConnecte = false;\r\n    }\r\n};\r\n\r\nclass CharacteristicUART : public BLECharacteristicCallbacks \r\n{\r\n    void onWrite(BLECharacteristic *pCharacteristique) \r\n    {\r\n      std::string rxValue = pCharacteristique->getValue();\r\n      if (rxValue.length() > 0) \r\n      {\r\n        Serial.println(\"*********\");\r\n        Serial.print(\"Received Value: \");\r\n        for (int i = 0; i < rxValue.length(); i++)\r\n          Serial.print(rxValue[i]);\r\n        Serial.println();\r\n        Serial.println(\"*********\");\r\n      }\r\n    }\r\n};\r\n\r\n```\r\n\r\nThen in Setup : \r\n\r\n```\r\n  BLEDevice::init(\"LimiTTer\");\r\n  //BLEDevice::getAddress(); // Retrieve our own local BD BLEAddress\r\n  pServer = BLEDevice::createServer();\r\n  pServer->setCallbacks(new EtatServeur());\r\n  \r\n  BLEService *pServiceUART = pServer->createService(SERVICE_UART_UUID);\r\n  pTxCharacteristic = pServiceUART->createCharacteristic(CHARACTERISTIC_UUID_TX, BLECharacteristic::PROPERTY_NOTIFY);\r\n  // Create a BLE Descriptor : Client Characteristic Configuration (for indications/notifications)\r\n  pTxCharacteristic->addDescriptor(new BLE2902());\r\n  pRxCharacteristic = pServic"
+  }
+ ]
+}

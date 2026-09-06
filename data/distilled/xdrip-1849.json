@@ -1,0 +1,28 @@
+{
+ "issue_id": 1849,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/1849",
+ "title": "Dexcom Share: Ability to Specify Seconds Until Polling Retry or Allow Double Poll Retry",
+ "symptom": "When following a Dexcom G6 via Dexcom Share, the xDrip follower polls every 5 minutes; if the reading hasn't reached the Dexcom Share servers yet (often in low cellular signal areas), it waits a hard-coded 20 seconds, retries once, and if that still fails it waits another 5 minutes. This causes readings to be 5–10 minutes behind 30–40% of the time.",
+ "cause": "xDrip polls the Dexcom Share server at the expected reading time, but the reading is frequently not yet uploaded (especially with low cellular signal), and the single hard-coded 20-second retry is too short; when that fails xDrip gives up until the next 5-minute cycle. A contributor also suspected a bug in the shared anticipation code (`Anticipate.java`).",
+ "fix": "Workaround used by some participants: set the follower phone's system time 10–15 seconds behind real time. A maintainer implemented an optional delay for the Dexcom Share follower in PR #3663, but it was never merged and the issue/PR were closed.",
+ "settings_changed": [
+  "System time → 10-15 seconds behind real time"
+ ],
+ "devices": [
+  "Dexcom G6"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "dexcom share",
+  "dex share",
+  "dexcom share follow",
+  "dexcom share follower",
+  "nightscout follow",
+  "nightscout follower",
+  "byoda",
+  "xdrip sync"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "What has alleviated having to manually restart the collector 50+ times each day was to use @olorinmaia suggestion to set the parent follower phone's system time 10-15 seconds behind real time."
+}

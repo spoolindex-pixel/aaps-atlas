@@ -1,0 +1,125 @@
+{
+ "id": 4185458897,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4664,
+ "title": "AAPS 3.4.1.0 and 3.4.2.1 not sending Treatments to Nightscout",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4664",
+ "state": "closed",
+ "labels": [
+  "medtronic"
+ ],
+ "created_at": "2026-04-01T09:21:30Z",
+ "closed_at": "2026-04-10T19:14:15Z",
+ "comment_count": 18,
+ "body": "Yesterday I updated AAPS from DEV 3.4.0.0 to the latest DEV 3.4.2.1 (and I previously updated to from 3.4.0.0. to 3.4.1.0 (both dev and master)). The problem is that latest AAPS i installed doesn't send treatments to my Nightscout (on Northflank). It send devce statuses. The queue number in NSV3 tab is going up and if I do a full sync, it syncs OK and the queue number drops to 0. And after that it rises again. This happened yesterday March 31th between 22:00 - 23:00 hours then ver 3.4.2.1 was installed. In the NSClient tab the \"ADD Treatments\" simply does nopt appear. See also attached screenshots. After going back to 3.4.0.0. everything is back to normal.\n\n[AndroidAPS.log](https://github.com/user-attachments/files/26400953/AndroidAPS.log)\n\n![Image](https://github.com/user-attachments/assets/f492b58d-8bc2-4888-a75a-e53566af07c4)\n![Image](https://github.com/user-attachments/assets/66282cb1-2e58-4a00-be1c-dae277e6784c)\n\n<img width=\"949\" height=\"644\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/de87a49a-862c-48e2-b858-abb07ee057f0\" />",
+ "comments": [
+  {
+   "id": 4168747590,
+   "user": "MilosKozak",
+   "created_at": "2026-04-01T09:25:18Z",
+   "body": "are the screenshot and log from the same time and time when there were troubles?"
+  },
+  {
+   "id": 4169336647,
+   "user": "MarkoJ1974",
+   "created_at": "2026-04-01T11:16:05Z",
+   "body": "Its the last log.. I dont have the log from yesterday anymore.. \nI will install 3.4.2.1 again and then send a log file"
+  },
+  {
+   "id": 4169830410,
+   "user": "MarkoJ1974",
+   "created_at": "2026-04-01T12:42:19Z",
+   "body": "Here is are 3 log files from 13:19-14:15 with AAPS 3.4.2.1 dev where ist not sending treatments: Queue is 11, treatments not uploaded. Also a screen shot of NightScout\n\n[3-AndroidAPS.log](https://github.com/user-attachments/files/26405910/3-AndroidAPS.log)\n[2-AndroidAPS.log](https://github.com/user-attachments/files/26405911/2-AndroidAPS.log)\n[1-AndroidAPS.log](https://github.com/user-attachments/files/26405912/1-AndroidAPS.log)\n\n![Image](https://github.com/user-attachments/assets/06b591ea-47ce-4abd-b4be-0ba465d43d30)\n![Image](https://github.com/user-attachments/assets/d305aa44-0736-4855-8d57-8c179b6e2fda)\n![Image](https://github.com/user-attachments/assets/bbbe05ab-f3ff-452e-bcbc-84e634d8cc91)\n\n<img width=\"1722\" height=\"974\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/6a3f21fe-124e-41d4-a74d-9c766e8db9a0\" />\n"
+  },
+  {
+   "id": 4176237653,
+   "user": "MilosKozak",
+   "created_at": "2026-04-02T10:29:25Z",
+   "body": "when you restart NS. data is still missing?"
+  },
+  {
+   "id": 4176488615,
+   "user": "MarkoJ1974",
+   "created_at": "2026-04-02T10:59:57Z",
+   "body": "> when you restart NS. data is still missing?\n\nMostly yes, but a full sync brings the queue to 0.  Today I created a new service and updated NS from 15.04 DEV to 15.06 Master. Since I am on Northflank, AI said i scoudnt use the code.run domain do i added my own domain. It also said there is a problem with time offset so I added TZ=europe/zagreb in Environment variables.. Now I am waiting to see if Queue stays 1 or it will be going higher again\nPS: the queue just got to 0 👍 "
+  },
+  {
+   "id": 4177106335,
+   "user": "MarkoJ1974",
+   "created_at": "2026-04-02T11:51:42Z",
+   "body": "and the Queue is 10 again"
+  },
+  {
+   "id": 4177520533,
+   "user": "MilosKozak",
+   "created_at": "2026-04-02T12:28:19Z",
+   "body": "Issue is Medtronic driver @andyrozman "
+  },
+  {
+   "id": 4177712506,
+   "user": "MarkoJ1974",
+   "created_at": "2026-04-02T13:00:59Z",
+   "body": "> Issue is Medtronic driver [@andyrozman](https://github.com/andyrozman)\n\n@andyrozman Can you fix this?"
+  },
+  {
+   "id": 4177905036,
+   "user": "MarkoJ1974",
+   "created_at": "2026-04-02T13:32:58Z",
+   "body": "> Issue is Medtronic driver [@andyrozman](https://github.com/andyrozman)\n\n"
+  },
+  {
+   "id": 4178188348,
+   "user": "andyrozman",
+   "created_at": "2026-04-02T14:13:18Z",
+   "body": "@MarkoJ1974 Yes I can. I will do it next few days... "
+  },
+  {
+   "id": 4178368187,
+   "user": "MarkoJ1974",
+   "created_at": "2026-04-02T14:37:44Z",
+   "body": "> [@MarkoJ1974](https://github.com/MarkoJ1974) Yes I can. I will do it next few days...\n\n@andyrozman @MilosKozak Thanks guys "
+  },
+  {
+   "id": 4183515203,
+   "user": "karolkarol05",
+   "created_at": "2026-04-03T13:36:31Z",
+   "body": "I have a question because I have exact the same problem, but also I'm having trouble updating IOB.\n\n(https://github.com/nightscout/AndroidAPS/issues/4650#issuecomment-4182709798)\n\nI wanted to ask you, do you have the same problem as in my video?"
+  },
+  {
+   "id": 4183833463,
+   "user": "MarkoJ1974",
+   "created_at": "2026-04-03T14:59:37Z",
+   "body": "> I have a question because I have exact the same problem, but also I'm having trouble updating IOB.\n> \n> ([#4650 (comment)](https://github.com/nightscout/AndroidAPS/issues/4650#issuecomment-4182709798))\n> \n> I wanted to ask you, do you have the same problem as in my video?\n\n@karolkarol05 \nI have IOB in NS, but I see You are also using a Medtronic pump and in the video I see Yo also don't have the \"NS\" mark as in this picture. There are only SMB marks and no PH marks. In the mean time go back to 3.4.0.0, and we have to wait that @andyrozman fixes it :) \n\n\n<img width=\"298\" height=\"561\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/20fdb9d3-2ecb-409a-af27-760162cb8b3f\" />"
+  },
+  {
+   "id": 4189269995,
+   "user": "andyrozman",
+   "created_at": "2026-04-05T17:54:13Z",
+   "body": "@MarkoJ1974 Can you please try to build from this and see if this fixes your problem?  https://github.com/andyrozman/AndroidAPS/tree/issue_4664"
+  },
+  {
+   "id": 4189342183,
+   "user": "MarkoJ1974",
+   "created_at": "2026-04-05T18:46:03Z",
+   "body": "> [@MarkoJ1974](https://github.com/MarkoJ1974) Can you please try to build from this and see if this fixes your problem? https://github.com/andyrozman/AndroidAPS/tree/issue_4664\n\nThis is a BIG CHANGE!... Just installed it .. I'll let you know what is happening...\n"
+  },
+  {
+   "id": 4189432327,
+   "user": "MarkoJ1974",
+   "created_at": "2026-04-05T19:52:52Z",
+   "body": "> [@MarkoJ1974](https://github.com/MarkoJ1974) Can you please try to build from this and see if this fixes your problem? https://github.com/andyrozman/AndroidAPS/tree/issue_4664\n\n@andyrozman \nIt seems that the TR upload (and all other treatments are working well. The queue is 0, 1, 2... And then it falls to 0 again.\nHow do I update my AAPS from now on? Should I stay on this https://github.com/andyrozman/AndroidAPS/tree/issue_4664 or?\n\nThanks for the fix.\nNow I have the old and the new visualisation.. It there a way to have just one or is this temporarry and will switch to the new visualisation in the future?"
+  },
+  {
+   "id": 4189438327,
+   "user": "andyrozman",
+   "created_at": "2026-04-05T19:57:33Z",
+   "body": "> > [@MarkoJ1974](https://github.com/MarkoJ1974) Can you please try to build from this and see if this fixes your problem? https://github.com/andyrozman/AndroidAPS/tree/issue_4664\n> \n> This is a BIG CHANGE!... Just installed it .. I'll let you know what is happening...\n\nThis is based on current /dev which had a lot of changes added in last few days... My change is very small, but from functionality it enables refreshes, which include history reading, which is the heart of all functionality of what is added to AAPS Core/Db. \n\nIf you want to add changes to your current checkout just copy the method I added... But yes, new visualization is part of new version... but I think its still work in progress (it is a dev branch)... I am not sure if MDT driver was already changed fully..."
+  },
+  {
+   "id": 4189721857,
+   "user": "andyrozman",
+   "created_at": "2026-04-05T23:31:38Z",
+   "body": "So there is dev which is dev for 4.x version, so branch  https://github.com/andyrozman/AndroidAPS/tree/issue_4664 is tied to that.... There is also (at the moment) dev3, which is dev based on latest 3.x version, I have created branch also under that: https://github.com/andyrozman/AndroidAPS/tree/issue_4664_dev3  if you want to stay on old ui (for now)"
+  }
+ ]
+}

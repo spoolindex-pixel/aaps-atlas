@@ -1,0 +1,33 @@
+{
+ "id": 1167686590,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1441,
+ "title": "[3.0.0.1] Buttons disappear when pump is disconnected",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1441",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-03-13T20:36:15Z",
+ "closed_at": "2022-03-13T20:41:56Z",
+ "comment_count": 3,
+ "body": "Since 3.0.0.1 it's not possible to access Insulin Dialog and BolusWizard when the pump is disconnected.\r\n\r\nThis leads to the following problems:\r\n\r\n- it is not possible to tell if a bolus should be given when the pump is disconnected from the body (eg. when swimming)\r\n- \"Do no bolus, record only\" checkbox is more or less useless now\r\n(because the pump must be reconnected to enter that insulin -> SMB kick in at the moment of reconnection, before even having the chance to enter already injected insulin.)\r\n\r\nSince this is a major drawback compared to previous versions, my proposal would be reverting to the old behavior and if necessary, disable the \"OK\" buttons in BolusWizard and InsulinDialog when disconnected.",
+ "comments": [
+  {
+   "id": 1066178497,
+   "user": "MilosKozak",
+   "created_at": "2022-03-13T20:41:56Z",
+   "body": "this settings was in AAPS all the time. The reason is very simple. If pump is not initialized (not known to AAPS) it's not possible apply constrains from pump.\r\nSMB is not kicked on reconection but on next BG"
+  },
+  {
+   "id": 1066182131,
+   "user": "Rhabarbara745",
+   "created_at": "2022-03-13T21:06:36Z",
+   "body": "Thanks for your quick reply @MilosKozak \r\n\r\nI'm not sure if we're talking about the same thing. By \"disconnecting\" I meant pressing the disconnect buttons (15min, 30min, 1h, ...) in the loop dialog. (the pump is already known by aaps at this stage)\r\n\r\n<p float=\"left\">\r\n<img src=\"https://user-images.githubusercontent.com/57756367/158079097-1067ac57-3947-451e-b5f3-0fb691dc49e9.png\" width=\"400\">\r\n<img src=\"https://user-images.githubusercontent.com/57756367/158079018-88a545c5-d7cc-4dd8-822a-0701664083f8.png\" width=\"400\">\r\n</p>\r\n\r\n"
+  },
+  {
+   "id": 1066478470,
+   "user": "MilosKozak",
+   "created_at": "2022-03-14T07:55:44Z",
+   "body": "undestand now. but the answer is still the same. it can be confusing to see insulin dialog when pump is disconnected"
+  }
+ ]
+}

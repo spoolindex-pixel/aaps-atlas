@@ -1,0 +1,27 @@
+{
+ "issue_id": 120,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/120",
+ "title": "Adding onetouch verio flex?",
+ "symptom": "The OneTouch Verio Flex meter can pair and sync with its own app, but xDrip+ gets timeout errors when trying to sync (\"Timed out on : get new glucose records\"). Later reports describe intermittent auto-sync and missed connections after meter sync.",
+ "cause": "The meter does not comply with the standard Bluetooth glucose meter protocol that xDrip already supports, so it requires special code for its unique protocol. Later intermittent connection issues may be due to Android Bluetooth stacks flaking out.",
+ "fix": "Jamorham added support for the Verio Flex in the June 8th nightly build. For intermittent drops, turning the meter off/on and toggling the Bluetooth glucose meter setting off/on in xDrip can trigger a sync.",
+ "settings_changed": [
+  "auto calibrate → enabled"
+ ],
+ "devices": [
+  "Verio Flex"
+ ],
+ "android_versions": [
+  "Android 7.0",
+  "Android 6",
+  "Android 4.4"
+ ],
+ "driver_tags": [
+  "bluetooth",
+  "glucose meter",
+  "onetouch app"
+ ],
+ "confidence": "high",
+ "evidence_quote": "I have added support for the Verio Flex with about 500 lines of code in the June 8th nightly."
+}

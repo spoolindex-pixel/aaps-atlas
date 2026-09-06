@@ -1,0 +1,102 @@
+{
+ "id": 759690162,
+ "repo": "nightscout/AndroidAPS",
+ "number": 101,
+ "title": "Make \"INFO: Pump unreachable\" notification actionable?",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/101",
+ "state": "closed",
+ "labels": [
+  "enhancement",
+  "fixed in dev or pr"
+ ],
+ "created_at": "2020-12-08T18:48:36Z",
+ "closed_at": "2021-01-24T12:58:30Z",
+ "comment_count": 15,
+ "body": "As a user, I would like to be able to tap the \"INFO: Pump Unreachable\" notification that pops up and go directly to the \"Medtronic\" tab view.\r\n\r\nI can see the `PumpUnreachable` `MedtronicNotificationType` here: https://github.com/nightscout/AndroidAPS/blob/bc43a926f9fce29eb3f3c262b4b6e955da088962/medtronic/src/main/java/info/nightscout/androidaps/plugins/pump/medtronic/defs/MedtronicNotificationType.java#L12 is used here: https://github.com/nightscout/AndroidAPS/blob/bc43a926f9fce29eb3f3c262b4b6e955da088962/medtronic/src/main/java/info/nightscout/androidaps/plugins/pump/medtronic/MedtronicPumpPlugin.java#L475 and here: https://github.com/nightscout/AndroidAPS/blob/bc43a926f9fce29eb3f3c262b4b6e955da088962/medtronic/src/main/java/info/nightscout/androidaps/plugins/pump/medtronic/MedtronicPumpPlugin.java#L570, but not being an app developer, I'm not sure how to add an intent to the dismiss/tap action. Possibly a check in https://github.com/nightscout/AndroidAPS/blob/bc43a926f9fce29eb3f3c262b4b6e955da088962/medtronic/src/main/java/info/nightscout/androidaps/plugins/pump/medtronic/util/MedtronicUtil.java#L235-L237?",
+ "comments": [
+  {
+   "id": 749816443,
+   "user": "andyrozman",
+   "created_at": "2020-12-22T22:45:04Z",
+   "body": "Notifications are just that... Notifications. They give you information, and then you can go and do something. \r\n\r\nPump Unrechable notification is displayed when command can't be sent to pump.\r\n \r\nMost of commands, will be retried automatically in 5 minutes (when next CGMS data comes in)..."
+  },
+  {
+   "id": 749834115,
+   "user": "ArthurusDent",
+   "created_at": "2020-12-22T23:27:29Z",
+   "body": "I've also wondered why I cannot tap on the notification and get at least straight into AAPS. That kind of breaks the typical Android behaviour. Getting straight into the Medtronic tab would be even better. "
+  },
+  {
+   "id": 754273619,
+   "user": "StephenBrown2",
+   "created_at": "2021-01-04T22:59:43Z",
+   "body": "Related, perhaps the notification can also be automatically dismissed when the pump is reachable again, similar to how https://github.com/nightscout/AndroidAPS/pull/118 added automatic dismissal of some notifications."
+  },
+  {
+   "id": 755744023,
+   "user": "Alamo04",
+   "created_at": "2021-01-06T22:09:56Z",
+   "body": "@StephenBrown2 \r\nI want to know that there was a notification,  if I missed one."
+  },
+  {
+   "id": 755813573,
+   "user": "StephenBrown2",
+   "created_at": "2021-01-07T00:51:04Z",
+   "body": "So, funny enough, I've updated to 2.8 on dev, and now I'm not actually getting an Android notification, just the alarm sound and the in-app banner. Thankfully I know what that alarm sound means, but I could imagine a new user being completely baffled as to why their phone is making noise..."
+  },
+  {
+   "id": 759710021,
+   "user": "Harrypatz",
+   "created_at": "2021-01-13T20:08:06Z",
+   "body": "Is with me also so, was already at 2.7 and 2.8 and also at 2.8.1, that my phone starts to beep without what is displayed. Only by the sound I know that the pump can not be reached. Can I then only end in which I click in settings the app AAPS end force."
+  },
+  {
+   "id": 760019998,
+   "user": "MilosKozak",
+   "created_at": "2021-01-14T08:34:00Z",
+   "body": "attach logs with time when this happen again"
+  },
+  {
+   "id": 761019869,
+   "user": "StephenBrown2",
+   "created_at": "2021-01-15T15:47:56Z",
+   "body": "Logs sent via email"
+  },
+  {
+   "id": 761029149,
+   "user": "Harrypatz",
+   "created_at": "2021-01-15T16:03:52Z",
+   "body": "[AndroidAPS_LOG_1610726020244.log.zip](https://github.com/nightscout/AndroidAPS/files/5821588/AndroidAPS_LOG_1610726020244.log.zip)\r\n\r\n@MilosKozak 17:00\r\nThis time there was a red notification box but when I pressed quit the notification disappeared but the sound remained. And could only then be turned off by forcing the app to close in the phone settings."
+  },
+  {
+   "id": 765930235,
+   "user": "AdrianLxM",
+   "created_at": "2021-01-23T12:12:00Z",
+   "body": "> So, funny enough, I've updated to 2.8 on dev, and now I'm not actually getting an Android notification, just the alarm sound and the in-app banner. Thankfully I know what that alarm sound means, but I could imagine a new user being completely baffled as to why their phone is making noise...\r\n\r\nIf you dismiss a notification multiple times (3 times, I believe) Android now asks you if you want to disable this type of notifications. That's easy to click by chance/mistake. Can you please check in the App-Info if you have all notification channels for AAPS enabled?"
+  },
+  {
+   "id": 766088752,
+   "user": "Harrypatz",
+   "created_at": "2021-01-23T14:35:01Z",
+   "body": "@AdrianLxM \r\nHello, yes it is all on, sometimes a notification window comes up where I can click ok. It is sometimes so and sometimes so"
+  },
+  {
+   "id": 766181386,
+   "user": "AdrianLxM",
+   "created_at": "2021-01-23T21:23:15Z",
+   "body": "@Harrypatz I believe we are mixing two different issues here. If you have logs for the situation you describe happening with 2.8.2, could you please open a separate issue. Then it's easier to directly ask questions regarding that topic. Thanks"
+  },
+  {
+   "id": 766182957,
+   "user": "AdrianLxM",
+   "created_at": "2021-01-23T21:34:31Z",
+   "body": "Thanks @StephenBrown2 for the feature request. It was not much work and will bring a lot of value!\r\nhttps://github.com/nightscout/AndroidAPS/pull/258"
+  },
+  {
+   "id": 766184507,
+   "user": "StephenBrown2",
+   "created_at": "2021-01-23T21:45:40Z",
+   "body": "> > So, funny enough, I've updated to 2.8 on dev, and now I'm not actually getting an Android notification, just the alarm sound and the in-app banner. Thankfully I know what that alarm sound means, but I could imagine a new user being completely baffled as to why their phone is making noise...\n> \n> If you dismiss a notification multiple times (3 times, I believe) Android now asks you if you want to disable this type of notifications. That's easy to click by chance/mistake. Can you please check in the App-Info if you have all notification channels for AAPS enabled?\n\nYes, same thing, but Adrian says he fixed the original issue, so I'll update to latest dev and see if I get notifications again.\n![Screenshot_20210123-143755.png](https://user-images.githubusercontent.com/1148665/105614885-45be3a80-5dc4-11eb-9d8b-fed50d63ac00.png)"
+  }
+ ]
+}

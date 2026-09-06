@@ -1,0 +1,21 @@
+{
+ "id": 1088759615,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1099,
+ "title": "[2.8.2.18-dev] Problem with temporary basals exceeding safe limits",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1099",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-12-26T12:16:03Z",
+ "closed_at": "2021-12-27T18:25:00Z",
+ "comment_count": 1,
+ "body": "2.8.2.18-dev build 176d898d0a5c39e7636276f7d51e64cf30056d28\r\n\r\nOccasionally temporary basals are generated well above safe limits.\r\n\r\nI attach some screenshots and logs\r\n\r\n![image](https://user-images.githubusercontent.com/67511778/147407642-1301a3b1-14c4-495a-953e-0f26741eece0.png)\r\n![image](https://user-images.githubusercontent.com/67511778/147407647-42c3f53f-e52b-4c6d-8a96-6898f4441144.png)\r\n![image](https://user-images.githubusercontent.com/67511778/147407650-33a6c7af-4be7-497e-be95-c3316ec996a5.png)\r\n[AndroidAPS._2021-12-26_00-00-01_.1.zip](https://github.com/nightscout/AndroidAPS/files/7776956/AndroidAPS._2021-12-26_00-00-01_.1.zip)\r\n[AndroidAPS._2021-12-26_00-00-01_.0.zip](https://github.com/nightscout/AndroidAPS/files/7776957/AndroidAPS._2021-12-26_00-00-01_.0.zip)\r\n\r\n",
+ "comments": [
+  {
+   "id": 1001211615,
+   "user": "Philoul",
+   "created_at": "2021-12-26T16:49:03Z",
+   "body": "Huge value is due to non linear injection of square bolus and the very short duration (I don't think we can do anything to fix that...)\r\n\r\nIn log (I analysed first value only):\r\n00:02:41.308 Request of a TEMP BASAL 0.66 U/h for 30 min\r\n00:02:53.949 Record in Database of Extended Bolus of 0.23U for 30 min (so rate of 0.46U/h for only Ext Bolus + 0.20U/h in profile to match request) Timestamp of event 1640473371823\r\n00:03:09.365 Record in Database of End of previous Extended Bolus : duration = 7s, amount injected 0.02U, Same timestamp (1640473371823)\r\n\r\n=> With a real continuous injection by the pump, only 0.0009U should have been injected for 7 seconds of square bolus request (0.23U 30min) but you actually got 0.02U \r\n=> I suppose for a square bolus of this amount, you get 0.02U of insulin (minimum value for a bolus) every 3 minutes, but if AAPS decide to interrupt it just after injection, the calculated rate can be very high...)"
+  }
+ ]
+}

@@ -1,0 +1,26 @@
+{
+ "issue_id": 4027,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/4027",
+ "title": "No Pod activation possible since Android 16 Update",
+ "symptom": "After updating a Pixel phone to Android 16, deactivating an old Omnipod DASH pod works, but activating a new pod fails with 'Failed to connect to pod'. Manual bonding mode also does not work, while an already-active pod continues to work.",
+ "cause": "The Android 16 update exposes a compatibility bug in AAPS's DASH connection code that prevents activation of new pods, requiring a code hotfix.",
+ "fix": "Update to AAPS 3.3.2.1 (which contains the fix), or build the dev332 branch; alternatively apply the hotfix-a16-dash commits 6153bc4 and 39dd2e6 to master. A temporary workaround is to activate the pod on a backup phone and import the settings export into the main phone.",
+ "settings_changed": [],
+ "devices": [
+  "Dash",
+  "Pixel 7 Pro",
+  "Pixel 6",
+  "Pixel 7a",
+  "Pixel 8 Pro"
+ ],
+ "android_versions": [
+  "Android 16",
+  "Android 15"
+ ],
+ "driver_tags": [
+  "dash"
+ ],
+ "confidence": "high",
+ "evidence_quote": "Fix for android 16 is merged to master in 3.3.2.1 - based on multiple reports from A16 users I believe this issue can be closed @MilosKozak"
+}

@@ -1,0 +1,55 @@
+{
+ "id": 621327159,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1346,
+ "title": "Miband 4 - Bug Report: Color Artifacts in the BG Graph",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1346",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "device-miband",
+  "ui"
+ ],
+ "created_at": "2020-05-19T22:34:28Z",
+ "closed_at": "2021-12-24T04:22:11Z",
+ "comment_count": 6,
+ "body": "Hi @bigdigital,\r\nYour Miband 4 integration in xDrip+ works awesome. But I noticed today that there are color artifacts in the BG graph. Please see the attached pictures.\r\nThe artifact is between one point of color change were the curve intersects the limit line and the second color change. It looks like only one spline per color is used. But the spline needs to be cut between these points.\r\n\r\nCan you have a look at the graph generation?\r\n\r\nThank you very much.\r\n\r\nOtto\r\n![red_blue](https://user-images.githubusercontent.com/65522328/82384923-3581de80-9a31-11ea-9bfd-7850461c08d5.jpg)\r\n\r\n![blue_red](https://user-images.githubusercontent.com/65522328/82384946-416da080-9a31-11ea-8a9e-79439b015b4f.jpg)\r\n",
+ "comments": [
+  {
+   "id": 631982729,
+   "user": "bigdigital",
+   "created_at": "2020-05-21T09:23:45Z",
+   "body": "Hi.\r\nTo render graphs on miband, it was used the same library as for the entire xdrip application. This library draws lines as a collection of dots by specific coordinates. In some cases,  due to approximation in the coordinates calculations, the point coordinates can be shifted in one or another direction by one pixel which can lead to such artefacts.  Since this is a separate library bundled in the xdrip core i don't think i can change this behaviour.  \r\nRegards,\r\nArtem"
+  },
+  {
+   "id": 694779922,
+   "user": "Otter3eso57",
+   "created_at": "2020-09-18T10:07:36Z",
+   "body": "Hello @tolot27,\r\nCould you please help me find the developer that could address this issue in the xDrip \"graphics library\".\r\n"
+  },
+  {
+   "id": 694799083,
+   "user": "tolot27",
+   "created_at": "2020-09-18T10:51:26Z",
+   "body": "@Otto75so3e I've just started triaging the issues. Later on, we will prioritize them and start working on the most important issues."
+  },
+  {
+   "id": 985814492,
+   "user": "tolot27",
+   "created_at": "2021-12-03T20:41:58Z",
+   "body": "@Otter3eso57 @bigdigital Is this still an issue or is it fixed over time by some library upgrades?"
+  },
+  {
+   "id": 985883792,
+   "user": "bigdigital",
+   "created_at": "2021-12-03T22:25:28Z",
+   "body": "No, i think this issue still happening if use a connected lines for bg graph.  For now, I've switched the miband graph to the dots representation instead of the connected lines (like this done for xdrip graph in the application). This makes this bug not so noticeable. Actually, i not sure if this is a chart library issue, or there is something wrong with the chart coordinates filler in the xdrip. "
+  },
+  {
+   "id": 1000644857,
+   "user": "Navid200",
+   "created_at": "2021-12-24T04:22:11Z",
+   "body": "Closing this as currently the plan is to address Mi Band by a different app to be developed by bigdigital as explained here:  https://github.com/NightscoutFoundation/xDrip/pull/1659#issuecomment-979924823."
+  }
+ ]
+}

@@ -1,0 +1,81 @@
+{
+ "id": 1912773499,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2839,
+ "title": "[DEV] Crash on trying to enter minutes in TT window",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2839",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-09-26T06:26:38Z",
+ "closed_at": "2023-09-26T09:18:52Z",
+ "comment_count": 12,
+ "body": "Build: 92558e9d65-2023.09.25\r\nTime: 08:21\r\nLog: [AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/12723522/AndroidAPS.log)\r\n\r\nApp crash when trying to enter duration in temp target dialog\r\n\r\nHow to reproduce:\r\n\r\n- Open TT dialog\r\n- Press the minutes field, so keyboard will pop op\r\n- App will crash\r\n",
+ "comments": [
+  {
+   "id": 1734929244,
+   "user": "NighthawkEvP",
+   "created_at": "2023-09-26T06:48:48Z",
+   "body": "same here, app crashes by entering the first digit"
+  },
+  {
+   "id": 1735012042,
+   "user": "MilosKozak",
+   "created_at": "2023-09-26T07:50:16Z",
+   "body": "mine don't crash\r\nandroid version?"
+  },
+  {
+   "id": 1735057420,
+   "user": "hemmann",
+   "created_at": "2023-09-26T08:20:15Z",
+   "body": "here are the screenshots\r\n\r\n![Screenshot_2023-09-26-09-22-04-77_3eaa31bb2c2a38a1c605d9dc918cf694](https://github.com/nightscout/AndroidAPS/assets/72262044/d4e46134-6b33-4a6e-a077-6b77ff183d49)\r\n![Screenshot_2023-09-26-10-13-45-55_fc704e6b13c4fb26bf5e411f75da84f2](https://github.com/nightscout/AndroidAPS/assets/72262044/16a1f5d1-153e-4999-92c3-babf9003b3c3)\r\n![Screenshot_2023-09-26-09-22-17-28_3eaa31bb2c2a38a1c605d9dc918cf694](https://github.com/nightscout/AndroidAPS/assets/72262044/34ca1e06-e624-4ec6-9060-79b85e2f8ac9)\r\n"
+  },
+  {
+   "id": 1735062741,
+   "user": "parapenT1sta",
+   "created_at": "2023-09-26T08:23:38Z",
+   "body": "> mine don't crash android version?\r\n\r\nMine is also OK.\r\nI'm with Microsoft Swiftkey keyboard."
+  },
+  {
+   "id": 1735077114,
+   "user": "MilosKozak",
+   "created_at": "2023-09-26T08:32:43Z",
+   "body": "tested on \r\nAndroid 11 (analog clock appear - no keyboard)\r\nAndrod12 (digital clock appear - keyboard popup)\r\nno crash so far"
+  },
+  {
+   "id": 1735080538,
+   "user": "jbr7rr",
+   "created_at": "2023-09-26T08:34:45Z",
+   "body": "Pixel 6Pro android 13 > Crash\r\nRedmi Note with custom rom android 11 also crash.\r\n\r\nWill see if I can create stacktrace later today"
+  },
+  {
+   "id": 1735081208,
+   "user": "NighthawkEvP",
+   "created_at": "2023-09-26T08:35:12Z",
+   "body": "in my case it is on a Pixel 5 with Android 13 and it seems to be in every case where a numeric keyboard is used. I tried TT and bolus assistent and both did crash. I went back to the version from 15.09.2023. "
+  },
+  {
+   "id": 1735113238,
+   "user": "jbr7rr",
+   "created_at": "2023-09-26T08:54:47Z",
+   "body": "Stacktrace:\r\n```\r\n2023-09-26 10:53:47.766  6967-6967  AndroidRuntime          info.nightscout.androidaps           E  FATAL EXCEPTION: main\r\n                                                                                                    Process: info.nightscout.androidaps, PID: 6967\r\n                                                                                                    java.lang.NullPointerException\r\n                                                                                                    \tat app.aaps.core.ui.elements.DigitsKeyListenerWithComma.filter(DigitsKeyListenerWithComma.kt:44)\r\n                                                                                                    \tat android.text.SpannableStringBuilder.replace(SpannableStringBuilder.java:517)\r\n                                                                                                    \tat androidx.emoji2.text.SpannableBuilder.replace(SpannableBuilder.java:315)\r\n                                                                                                    \tat android.text.SpannableStringBuilder.replace(SpannableStringBuilder.java:507)\r\n                                                                                                    \tat androidx.emoji2.text.SpannableBuilder.replace(SpannableBuilder.java:305)\r\n                                                                                                    \tat androidx.emoji2.text.SpannableBuilder.replace(SpannableBuilder.java:49)\r\n                                                                                                    \tat android.text.method.NumberKeyListener.onKeyDown(NumberKeyListener.java:131)\r\n                                                                                                    \tat android.widget.TextView.doKeyDown(TextView.java:8483)\r\n                                                                                                    \tat android.widget.TextView.onKeyDown(TextV"
+  },
+  {
+   "id": 1735139195,
+   "user": "MilosKozak",
+   "created_at": "2023-09-26T09:10:14Z",
+   "body": "try to update\r\nAndrod java lib was not properly marked @Nullable"
+  },
+  {
+   "id": 1735153154,
+   "user": "jbr7rr",
+   "created_at": "2023-09-26T09:18:36Z",
+   "body": "Jup, works for me! Thx!"
+  },
+  {
+   "id": 1735153596,
+   "user": "MilosKozak",
+   "created_at": "2023-09-26T09:18:52Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/5e28d9465db1d1cb904115cfa08d514ed41c1303"
+  }
+ ]
+}

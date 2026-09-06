@@ -1,0 +1,21 @@
+{
+ "id": 3911235703,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4532,
+ "title": "cannot import settings",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4532",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2026-02-07T21:04:25Z",
+ "closed_at": "2026-02-10T19:26:11Z",
+ "comment_count": 1,
+ "body": "[AndroidAPS_LOG_1770497773915.log.zip](https://github.com/user-attachments/files/25155569/AndroidAPS_LOG_1770497773915.log.zip)\n\nI suddenly had a problem with the master password that didn't work,\nSo I reset the password back to 4241 and then changed it.\nBut now, I cannot export and import the settings even on the same device with the same passord it keeps saying that the password is not correct. I tried the 4241 and the new password, but it still didn't work. What else can I do? \nHow can I export and import the settings on another device?\nUsing latest build 796d, with android 12.\nThanks for your help.",
+ "comments": [
+  {
+   "id": 3880242715,
+   "user": "FalconEagleTest",
+   "created_at": "2026-02-10T19:26:08Z",
+   "body": "found the problem :-)\nI was seeing “wrong password” when importing settings right after exporting (even on the same phone). Clearing app cache and clearing the app DB via Maintenance did not help, and the exported JSON didn’t look corrupted.\n\nCause/workaround: This was due to Unattended Settings Export being enabled. With that enabled, AndroidAPS can reuse a cached export password stored in Android DataStore/Keystore, so the exported file may be encrypted with that cached password rather than the master password I was entering on import. Turning Unattended Settings Export OFF and re-exporting fixed the problem; the newly exported file imports fine with the master password.\n\nClosing as resolved (workaround: keep Unattended Settings Export off, or ensure export prompts/uses the intended password)"
+  }
+ ]
+}

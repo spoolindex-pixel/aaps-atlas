@@ -1,0 +1,39 @@
+{
+ "id": 1715952257,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2546,
+ "title": "\"Pump not initialized, profile not Set!\" error announcement every 4 minutes",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2546",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-05-18T16:52:20Z",
+ "closed_at": "2023-05-19T08:44:53Z",
+ "comment_count": 4,
+ "body": "I changed to a new Samsung telephone today.  I did a build and reinstalled Android apk and the latest version of  xdrip on it and transferred the settings form the old phone to the new phone.  \r\n\r\nAll seems to be working fine: BG is being reported, insulin and carbs are being reported, basal % is automatically changing,   Closed loop is working, infusion and pump control is working;   except the fact that the system is reporting a \"Pump not initialized, profile not set!\"  error every 5 minutes.\r\n\r\nI tried to change the pump to a different pump (accucheck insight,  or virtual pump) and reconnect to the pump I am using  (Accucheck Spirit Combo) using the config builder, but w/o any effect on resolving the problem. \r\n\r\nBuild:219bdba21-2023.0517-13:03\r\nFull release\r\nNightscout version 14.2.6\r\n\r\n\r\nHow can I solve the problem and stop receiving the error message?  I am not sure if the profile that I am sending to the pump is in fact really being implemented.\r\n\r\nThe latest log file:\r\n\r\n\r\n[AndroidAPS._2023-05-18_14-21-28_.0[1].zip](https://github.com/nightscout/AndroidAPS/files/11509750/AndroidAPS._2023-05-18_14-21-28_.0.1.zip)\r\n",
+ "comments": [
+  {
+   "id": 1553344581,
+   "user": "jcpeiro",
+   "created_at": "2023-05-18T16:57:46Z",
+   "body": "I also get a READSTATUS Pump driver changed message, but the other problem reporting Pump not initialized, profile not sent! continues appearing evry 4 minutes,"
+  },
+  {
+   "id": 1553358004,
+   "user": "jcpeiro",
+   "created_at": "2023-05-18T17:07:18Z",
+   "body": "I see that according to loop submenu, the  basal in the pump should be at 100% for 30 mins,  with a success true basal set correctly; however, in the pump I see that the basal rate is in fact set up at 90%. meaning that the 100% change was not implemented in fact at the pump.\r\n"
+  },
+  {
+   "id": 1553563589,
+   "user": "vanelsberg",
+   "created_at": "2023-05-18T19:48:00Z",
+   "body": "> Build:219bdba21-2023.0517-13:03\r\n\r\nAccording to the logs\r\n- You are running an outdated version of AAPS (3.0.0.2-219bdba21): suggest updating to latest release 3.1.0\r\n- AAPS was busy syncing with NS, receiving lots of \"_Pump not initialized, profile not set!_\" note events. Wait for NS sync is done then check your profile and reactivate.\r\n\r\n"
+  },
+  {
+   "id": 1554244791,
+   "user": "jcpeiro",
+   "created_at": "2023-05-19T08:44:53Z",
+   "body": "ok, thanks,  problem resolved.  I created the new version and also updated nightscout profile.  Now is working fine"
+  }
+ ]
+}

@@ -1,0 +1,20 @@
+{
+ "issue_id": 3343,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/3343",
+ "title": "Auto-increase CHO and not decrease problem",
+ "symptom": "CHO (carbs) inserted with calc or normally do not decrease with time, sometimes auto-increase, which is dangerous. For example, 189 CHO eaten at 18:25 remained 70 CHO the next morning and then increased to 80 CHO after 10 minutes without any action. Other users report slower than usual carb reduction.",
+ "cause": "The COB value is calculated using ISF. When ISF changes drastically (as with DynISF), COB changes accordingly, potentially causing increases or slower decay. The thread also explains that COB decay depends on deviation and ISF, and that a higher ISF can slow absorption.",
+ "fix": "Turn OFF DynISF to test if COB values return to normal. Additionally, COB decaying is improved in version 3.3.0-dev-e.",
+ "settings_changed": [
+  "DynISF → OFF"
+ ],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [
+  "OpenAPS SMB",
+  "DynISF"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "The COB value (residual CHO) is calculated using ISF. When your ISF changes drastically (as it happens with DynISF), your COB will change too. If you turn _OFF_ DynISF, you can check if COB values get back to normal."
+}

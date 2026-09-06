@@ -1,0 +1,45 @@
+{
+ "id": 2970260280,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3931,
+ "title": "DASH no longer shows the \"silence alert\" button to disable pod's alerting beeps",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3931",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-04-03T17:33:44Z",
+ "closed_at": "2025-04-10T07:24:08Z",
+ "comment_count": 5,
+ "body": "**AndroidAPS 3.3.3.0-dev**\n**Build**: 4d18c1a2\n**Flavor**: Fullrelease\n\nWhen the DASH pod is alerting (_expiration reminder, shutdown, low reservoir_) a button should appear on the DASH tab för user to \"silence\" the Pod beeps. This button is no longer enabled (made visible). See WiKi [Silencing Pod Alerts](https://wiki.aaps.app/en/latest/CompatiblePumps/OmnipodDASH.html#silencing-pod-alerts)\n\n**Problem description:**\nThe \"Silence Alerts\" button on DASH tab is not visible on when Pod is alerting (even after refreshing state).\nUser can not silence Pod beeping every X minutes.\n\n**Additional information**\nNoticed this problem also on [build commit 40068c81ffd5bff07c98763f84cee95f5cb78acc](https://github.com/nightscout/AndroidAPS/commits/dev/) but the problem may also be on earlier commits.\n\n[AndroidAPS_LOG_1743700440381.log.zip](https://github.com/user-attachments/files/19594719/AndroidAPS_LOG_1743700440381.log.zip)",
+ "comments": [
+  {
+   "id": 2781685914,
+   "user": "vanelsberg",
+   "created_at": "2025-04-06T21:40:14Z",
+   "body": "Update: after reopening AAPS and moving to the DASH tab, very briefly (less then 0.1 secs?) seeing a \"flash\" of the \"silence\" button. Looks like a button view problem were the button is initially enabled but then disabled again on screen refresh when selecting the DASH tab?\n\n@MilosKozak Could this be cause by one of the dev library updates done recently? Not sure where to look.... 🤔 "
+  },
+  {
+   "id": 2787636197,
+   "user": "Gohtraw",
+   "created_at": "2025-04-08T20:53:12Z",
+   "body": "Silence Alert reappears after going to \"POD MGMT\" and tapping \"Play Test Beep\"\nedit: Pixel 8, Android 15, AAPS 3.3.3.0-dev with AISF"
+  },
+  {
+   "id": 2787655872,
+   "user": "olorinmaia",
+   "created_at": "2025-04-08T21:02:28Z",
+   "body": "I don't experience this in android 12 and Samsung galaxy s10+.\n\nAt least tested this with low reservoar alert"
+  },
+  {
+   "id": 2788738793,
+   "user": "vanelsberg",
+   "created_at": "2025-04-09T08:15:00Z",
+   "body": "Interesting: will retry reproducing on my S22 (android 14)"
+  },
+  {
+   "id": 2790855851,
+   "user": "vanelsberg",
+   "created_at": "2025-04-09T19:59:38Z",
+   "body": "Think I found the problem. Working on a fix - soon."
+  }
+ ]
+}

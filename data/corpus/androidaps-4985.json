@@ -1,0 +1,57 @@
+{
+ "id": 4910503267,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4985,
+ "title": "ProfileFunctionImpl reads EPS.originalEnd directly for remaining-time display, producing garbage duration (e.g. \"32399999998h\")",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4985",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2026-07-17T10:35:15Z",
+ "closed_at": "2026-07-21T07:24:46Z",
+ "comment_count": 7,
+ "body": "# Widget / overview \"remaining time\" shows absurd duration (e.g. \"32399999998h\") for a running temporary ProfileSwitch\n\n## Where\n\n`implementation/src/main/kotlin/app/aaps/implementation/profile/ProfileFunctionImpl.kt`,\n`getProfileName()`:\n\n```kotlin\nif (showRemainingTime && profileSwitch.originalDuration != 0L) {\n    profileName += dateUtil.untilString(profileSwitch.originalEnd, rh)\n}\n```\n\nThis is used by both the home-screen widget (`Widget.kt` → `updateProfile()`) and the Overview\nribbon (`OverviewFragment.kt`) via `ProfileFunction.getProfileNameWithRemainingTime()`.\n\n## What happens\n\n`dateUtil.untilString(profileSwitch.originalEnd, rh)` treats `originalEnd` as an absolute epoch\ntimestamp and subtracts `now()` from it. When the stored `originalEnd` value on a given EPS record\ndoesn't actually match `timestamp + originalDuration`, the resulting delta is nonsensical and gets\nrendered as something like `(32399999998ч 11')` instead of a sane duration.\n\n## Why this happens\n\n`EPS.originalEnd` (`core/data/src/main/kotlin/app/aaps/core/data/model/EPS.kt`) and\n`EffectiveProfileSwitch.originalEnd` (`database/impl/.../entities/EffectiveProfileSwitch.kt`) are\nboth explicitly documented as:\n\n```kotlin\nvar originalEnd: Long, // not used (calculated from duration)\n```\n\nEvery other consumer of this field in the codebase already treats it as unreliable and derives the\nreal end time from `timestamp + originalDuration` instead:\n\n- `ProfileSwitchExpiryScheduler.kt` (doc comment): *\"the EffectiveProfileSwitch query selects the\n  latest EPS by timestamp and ignores `originalEnd`\"* — it schedules the revert-to-base event off\n  `timestamp + duration`, not off `originalEnd`.\n- `SceneExecutor.kt` (comment): *\"...and ignores originalEnd, so the base profile only resumes once\n  a NEW base-profile EPS exists.\"*\n\n`ProfileFunctionImpl.getProfileName()` is the one place left that still reads `originalEnd`\ndirectly for display purposes, contradicting the documented contract of the field.\n\n## How the stale value gets there\n\n`originalEnd` is only guaranteed correct at the moment of local creation\n(`CommandQueueImplementation.kt`: `originalEnd = it.end` where `PS.end = timestamp + duration`).\nOn an **AAPSCLIENT / follower** setup, the EPS record is never created locally — it's synced verbatim\nfrom Nightscout (`EffectiveProfileSwitchExtension.kt` / `NsIncomingDataProcessor.kt`), so whatever\n`originalEnd` value was serialized to NS at creation time is trusted as-is, with no re-derivation\nfrom `timestamp + duration` and no sanity bound. Any divergence between the two (stale historical\nNS record, a different NS-writing client with a different convention, clock skew at write time,\netc.) surfaces directly as garbage in the UI, since nothing downstream re-derives or clamps it.\n\n## Suggested fix\n\n```kotlin\nif (showRemainingTime && profileSwitch.originalDuration != 0L) {\n    profileName += dateUtil.untilString(profileSwitch.timestamp + profileSwitch.originalDuration, rh)\n}\n```\n\nThis makes the display consistent with how `ProfileSwitchExpiryScheduler` and `SceneExecutor`\nalready treat this field, and removes the dependency on a field the data model itself documents as\nunused.\n\n## Confirmed present on\n\n- `original/dev` @ `9df0b1bd4e` (\"fix ProfileHelper and EPS caching\")\n- `original/dev3` @ `ab1f6040cc` (\"Cleanup\")\n\n## Repro\n\nObserved on a fork build (AAPSCLIENT/follower widget) while a temporary ProfileSwitch (`120%`,\nfixed duration) was active: the widget's active-profile line showed\n`#26 <profile name> (120%)(32399999998ч 11')` instead of a plausible remaining duration.\n",
+ "comments": [
+  {
+   "id": 5002314407,
+   "user": "JetFoxy",
+   "created_at": "2026-07-17T10:43:27Z",
+   "body": "## Addendum: not AAPSCLIENT-specific\n\nDug a bit deeper into the sync path — this is **not limited to AAPSCLIENT/follower setups**. The\ndefective read in `ProfileFunctionImpl.getProfileName()` has no `config.AAPSCLIENT` guard at all, so\nit's the exact same code path on a regular master (pump-owning) install.\n\nThe reason it's *easier* to trigger on AAPSCLIENT is that a follower never creates EPS records\nlocally — `CommandQueueImplementation`'s `EventProfileSwitchChanged` handler (which is the only\nplace that sets `originalEnd = it.end`, i.e. correctly, at creation time) is short-circuited with\n`if (config.AAPSCLIENT) return@subscribe`. So 100% of a follower's EPS data comes from Nightscout\nverbatim, `originalEnd` included, with nothing re-deriving or sanity-checking it.\n\nA **master** install normally keeps its own EPS records self-consistent (locally created with a\ncorrect `originalEnd`), and the inbound-sync transaction\n(`SyncNsEffectiveProfileSwitchTransaction`) never overwrites an existing local record's fields —\non nsId match it only allows invalidation, on timestamp match without an nsId it only backfills the\nnsId. So master doesn't corrupt its *own* records via sync.\n\nHowever, master still **inserts brand-new EPS records sourced from Nightscout** (with whatever\n`originalEnd` NS provided, unvalidated) whenever:\n\n- `NsClientAcceptProfileSwitch` is enabled (`NsIncomingDataProcessor.kt`) — a commonly-enabled\n  setting for accepting profile switches made via other clients / the NS web UI, or\n- a full resync happens (`doFullSync`, e.g. after reinstall).\n\nIn either case, a mismatched/stale `originalEnd` on that inbound record (different uploading\nclient, historical NS data, clock skew at original write time, etc.) will render the same garbage\nduration on a *regular* AAPS install, not just on a follower.\n\nSo the fix (deriving the end time from `timestamp + originalDuration` instead of trusting the\nstored `originalEnd`) is warranted for master builds too, not just AAPSCL"
+  },
+  {
+   "id": 5007140532,
+   "user": "Philoul",
+   "created_at": "2026-07-17T20:17:47Z",
+   "body": "You did all the detailed analysis of the problem and have fix proposal...\n\nWhy don't you commit the modification on your side, test the fix and propose a Pull Request ?\n😉"
+  },
+  {
+   "id": 5014612453,
+   "user": "JetFoxy",
+   "created_at": "2026-07-19T05:52:32Z",
+   "body": "Full disclosure: the analysis above, and the fix in #4987 / #4988, were produced with AI assistance (Claude Code) — I described the symptom, and the code exploration, root-cause tracing, and patch were done by the assistant, which I then reviewed and had compile-checked before proposing.\n\nI only noticed after opening the PRs that `CONTRIBUTING.md` on `dev` explicitly says AI-generated PRs are not welcome. @Philoul had suggested opening a PR before I'd re-checked that, so I want to be upfront rather than let it stand unstated.\n\nHappy to follow whatever you'd prefer here:\n- close the PRs and leave this issue (with the analysis + suggested diff) for a maintainer to implement directly, or\n- keep them open if the disclosed AI involvement is acceptable for a change this small and already reviewed/compiled.\n\nSorry for the noise — wanted to flag this properly rather than let it slide.\n"
+  },
+  {
+   "id": 5014988804,
+   "user": "Philoul",
+   "created_at": "2026-07-19T08:13:27Z",
+   "body": "What is important with AI, is not use / not use, but trust / not trust.\n\nAnd concerning AI code, the rule is \"Never trust\" so it should always be reviewed by a human who understand what has been modified.\n\nIf you used AI to analyze a topic, provide a solution, and your development skills (even if you are a beginner) are enough to check, to understand the code modification. And if you agree with the modification, it's fine.\n\nIn your case it's one line modified and very easy to check...\n\nWe saw recently persons without any development skills, providing PRs with thousands of line created or modified by AI, and having a blind trust of everything!\n- we can't loose time to review these kind of PR (we spend more time to check something, including the hundred of un needed modifications, than doing a clean work directly)."
+  },
+  {
+   "id": 5020146498,
+   "user": "MilosKozak",
+   "created_at": "2026-07-20T08:17:57Z",
+   "body": "hopefully fixed by https://github.com/nightscout/AndroidAPS/commit/52056ebeb40d4854ee119827ace7717e69bae7a8\nI'm happy you reported the issue (thanks for it), but let AI create fix and PR without developer knowlegde is useless, because AI fixed exactly what you asked - consequence not the cause\neven 2 PRs are bad because it prevents merging. reason is the same - lack of developer knowledge\nthat's why the rules ....\ntest again"
+  },
+  {
+   "id": 5020400751,
+   "user": "JetFoxy",
+   "created_at": "2026-07-20T08:50:30Z",
+   "body": "Update: the display fallback in #4987 / #4988 (deriving the remaining-time text from `timestamp + originalDuration` instead of trusting `originalEnd`) did correct the rendering on the home-screen widget. But the Overview status-screen ribbon — which reads the exact same `ProfileFunction.getProfileNameWithRemainingTime()` — kept showing the same kind of nonsensical duration on a later, newly-created instance of the same recurring profile switch. That's because that record's `originalDuration` was itself already corrupted at the source; a display-layer fix can't repair data that's wrong going in.\n\nThanks @MilosKozak for finding and fixing the actual root cause directly (`52056ebeb4` / `6bdbf1498`, `ProfileSwitchExtension.kt`: `originalDuration` vs `duration` when parsing legacy NSClientV3 `ProfileSwitch` documents). That's a different, more specific bug than what I originally described here — it explains *why* the duration gets corrupted in the first place, not just how it renders once corrupted.\n\nI've ported that commit onto our branch alongside the display fallback and will test it today against the actual recurring automation rule that's been producing these corrupted switches, to confirm new occurrences parse correctly going forward.\n"
+  },
+  {
+   "id": 5030988948,
+   "user": "JetFoxy",
+   "created_at": "2026-07-21T06:50:26Z",
+   "body": "Confirmed fixed: after building and installing with @MilosKozak's fix (`52056ebeb4` / `6bdbf1498`), the recurring automation rule that was producing corrupted `ProfileSwitch` documents no longer triggers the nonsensical duration — new occurrences render correctly, on both the widget and the Overview status ribbon. Problem is gone. Thanks again for tracking down the actual root cause.\n"
+  }
+ ]
+}

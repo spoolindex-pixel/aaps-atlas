@@ -1,0 +1,27 @@
+{
+ "id": 351610442,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 552,
+ "title": "LibreOOPAlgorithm on pre-release multiple readings at same time in the graph",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/552",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2018-08-17T14:11:32Z",
+ "closed_at": "2021-02-16T16:22:37Z",
+ "comment_count": 2,
+ "body": "On August 9th I builded the last available version.\r\nWhen using the LibreOOPAlgorithm.apk in the graph it seems there are more readings for the same period of time and the app tell that readings are very noisy\r\n\r\n![screenshot_20180817-153544](https://user-images.githubusercontent.com/16019002/44269986-661e5e00-a236-11e8-9c7c-2055bb54941b.png)\r\n\r\nI tried both the \"original\" version of the algorithm where I see 5 readings on a single column and the \"modified\" version where I find three readings on a single column (which is the one used in the screenshot)\r\n\r\nIf I return to use the last releaase of May 30 (F20d8da9), with the same settings and LibreOOPAlgorithm.apk this does not happen.\r\nIf instead of the OOPAlgorithm the calibrations with the capillary are used, everything works correctly",
+ "comments": [
+  {
+   "id": 413912170,
+   "user": "tzachi-dar",
+   "created_at": "2018-08-17T16:03:24Z",
+   "body": "Hi,\r\n\r\nThis is kind of by design.\r\nxDrip has a fuzzer of 3 minutes, which means it has a resolution of 3 minutes.\r\nSince libre has a new reading every minute there are 3 points at every minutes.\r\n\r\nThere are two things that you can do:\r\n1) To turn this feature altogether: go to settings->xdrip display settings->show libre trend and disable it.\r\n2) On the right menu you can choose, show libre trend and then you will have a per minute graph.\r\n\r\n@jamorham should we change the fuzzer to one minute? Or, should I give one point of average for all points?\r\n\r\nTzachi"
+  },
+  {
+   "id": 779883973,
+   "user": "Navid200",
+   "created_at": "2021-02-16T14:47:49Z",
+   "body": "@andreascarsetto Can we close this issue?"
+  }
+ ]
+}

@@ -1,0 +1,33 @@
+{
+ "id": 2805674891,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3775,
+ "title": "[Minor Visual Bug] Automation Location - Lat & Long not correctly displayed",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3775",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-01-23T01:16:47Z",
+ "closed_at": "2025-02-25T20:15:37Z",
+ "comment_count": 3,
+ "body": "When configuring an automation based on location, the field is not wide enough to display the number, with the default number of 6 decimal places.\n\nThe first 1-2 digits of the integer value are obscured behind the [-] sign.\nThe last 1-2 digits of the decimal value are obscured behind the [+] sign.\n\nI would also argue that the default precision of display to 6 decimal places is far too accurate for any smartphone GPS.  You could, of course, just ignore the last digit (which represents a distance of only 0.11m - and yes, I absolutely had to look that up!).  But renders the + and - buttons a bit pointless, since they are only changing the value by 0.11m at a time, and you can't see the change occurring (not that I'd ever use the + or - buttons in this instance anyway!\n\nWhile I'm nit-picking little things on this screen (sorry!) I would also suggest:\n\nThe screen would make more sense (to me) and be more consistent with other automation screens, if the operator drop-down box (When you are inside the area... etc.) was near the top, between the Name: and Lat: fields.\n\nThe Lon: title would be better written as Long:\n\nThanks for considering.\nP.S. I love the automations now that I've finally made some time to start investigating them :-)  Great work!\n\n![Image](https://github.com/user-attachments/assets/49b695a5-c1ee-4459-b19c-44b18d2dc533)",
+ "comments": [
+  {
+   "id": 2621169484,
+   "user": "koelewij",
+   "created_at": "2025-01-29T09:56:03Z",
+   "body": "I agree that the +- buttons are not very useful if there is no visual (map) reference to see where you are going anyway. \nTo my opinion, people add a location with the \"Current Location\" button, or they copy paste values from elsewhere. \n\nIt would be great to have a map widget under it showing when the location is, and even better, you would be able to pick a location on a map, but considering the number of times you are using this, it might not justify the effort to do so. \n\nBut I would strongly advice to remove the +- buttons. \n"
+  },
+  {
+   "id": 2622938560,
+   "user": "pnharris02",
+   "created_at": "2025-01-29T21:51:24Z",
+   "body": "When I looked at the code, I found it easy enough to change the precision to only 5 decimals and the +/- step to 1.1m instead of 0.11m.\nBut it appears (to me, as a very inexperienced coder) that the same size and type of dialogue was used for every number field, so I could not find an easy way to widen the field.\nI agree that the +- buttons could be removed, and that would take away the need to widen the field. I'll see if I can work out how to do that.\nI also agree that the map might be useful, but would not be used enough to justify the effort."
+  },
+  {
+   "id": 2683186252,
+   "user": "MilosKozak",
+   "created_at": "2025-02-25T20:15:37Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/062324f6e14c934d4b11b1d46c7a1e3b6621ebe8"
+  }
+ ]
+}

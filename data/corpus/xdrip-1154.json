@@ -1,0 +1,111 @@
+{
+ "id": 545085022,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1154,
+ "title": "Contribution: PDF report generator",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1154",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2020-01-03T17:27:22Z",
+ "closed_at": "2021-03-01T21:31:16Z",
+ "comment_count": 16,
+ "body": "Hi,\r\nI'm addressing the issue that frequently, doctors would like to see reports that usually come from the proprietary software. I believe many users of xdrip+ are using this app also as they do not want their sensitive data being stored and evaluated in some corporation's cloud system without any control whatsoever.\r\nLong story short, I've written a PDF report generator for exactly this purpose. It parses the sqlite db directly and generates day plots as well as the daily pattern with percentiles that all doctors seem to love, plus carbs/bolus and ratio plots, Text stats and so on.\r\nStill alpha-ish and only tested with what I could find for testing, but the results look reasonable.\r\nI'd be happy to contribute and also continue development if there is a need for this.\r\nHowever, I'm not quite sure if this approach (PC based, python) is the way to go here or if this should rather be implemented directly as a function in the app.",
+ "comments": [
+  {
+   "id": 570713320,
+   "user": "gruoner",
+   "created_at": "2020-01-03T22:09:32Z",
+   "body": "@gfornax have you looked at nightscout-reporter (https://github.com/zreptil/nightscout-reporter)\r\nit is based on nightscout server (which can be deployed within own perimeters onPrem or in a trusted cloud) and a HTML/JS + PHP based nightscout-reporter.\r\nI'm also faced with such requests and i try to answer them this way......"
+  },
+  {
+   "id": 570790399,
+   "user": "gfornax",
+   "created_at": "2020-01-04T14:36:37Z",
+   "body": "Thanks for the hint! I did not know about this tool yet, seems to do the trick and has useful features for nightscout users (far more than my little script, of course).\r\nIt still seems to be a bit of an overkill to set up a locally hosted nightscout instance just to create reports if you have no other use for it -- also if the collector is not intended to be connected to the internet.\r\n\r\nFWIW, I just uploaded my project in its current status to https://github.com/gfornax/xdrip-report"
+  },
+  {
+   "id": 570824751,
+   "user": "gruoner",
+   "created_at": "2020-01-04T22:20:21Z",
+   "body": "u'r right - when u really just need it for reporting a complete nightscout nodeJS seems overkill. But we also use NS for follower synchronization (because our xdrip's running on lineage-ROM without any google apps and we also use IOS devices with can't follow xdrips that way), diabetes diary (and also as a backup for the diary) and even reporting.\r\nThe main reason for NS was:\r\n- we don't want a cloud solution; the backend-services have to be installed in our own premise\r\n- tidepool is much more complex when installing on own hardware"
+  },
+  {
+   "id": 636478842,
+   "user": "mikelperezalbeniz",
+   "created_at": "2020-05-31T14:29:16Z",
+   "body": "> @gfornax have you looked at nightscout-reporter (https://github.com/zreptil/nightscout-reporter)\r\n> it is based on nightscout server (which can be deployed within own perimeters onPrem or in a trusted cloud) and a HTML/JS + PHP based nightscout-reporter.\r\n> I'm also faced with such requests and i try to answer them this way......\r\n\r\nHi, I am using the solution you mention to create my reports but I am not beeing able to separate bolus insuline (novorapid in my case) from basal insusline (lantus) when importing data to nightScout and in consequence when generting reports. All insuline recorded in xdRip+ (even if recorded separately as bolus and basal) seems to be imported as bolus insuline into nightScout. So later in reports ratios between bolus and basal insulines are all wrong. \r\n\r\nIs there a way throug configuration to solve the issue?\r\n\r\nMany thanks and congrats fot the amazing software. It really helps."
+  },
+  {
+   "id": 636501075,
+   "user": "gruoner",
+   "created_at": "2020-05-31T17:21:26Z",
+   "body": "@mikelperezalbeniz yes there is.\r\nAfter applying the patch for xdrip+ (which sends the multi-insulin data as an extension to the treatment data structure to nightscout server) a started writing a multi insulin patch for nightscout-reporter (https://github.com/gruoner/nightscout-reporter/tree/Feature-MultipleInsulin) but it isn't finished yet. Some further features need to be implemented to finish the \"multiple insulin train\".\r\nBut u can check it out and use it on your own premise....."
+  },
+  {
+   "id": 636870113,
+   "user": "mikelperezalbeniz",
+   "created_at": "2020-06-01T13:46:22Z",
+   "body": "Hi, \r\n\r\nI have checked outr the version of the reporter you sent me but still seem to be adding all insulines (lantus and novorapid) as bolus insuline and without informing the type of insuline. In the log view for example, it will show a line like:\r\n\r\n07:26 94 <none> 6 U\r\n\r\nFor a bolus treatment. Same behaviour in the nightScout web page. All insulines imported from xdRip are shown as bolus insuline and without specifying what kind of insuline. Even if considered as bolus insuline if at least it would specify the name of the insuline it would be nice as I intend to use the reports to send to my doctor. Of course I would loose information like bolus/basal ratio but I guess this can be considered as secondary.\r\n\r\nThanks a lot for yor attention!!!!"
+  },
+  {
+   "id": 636905305,
+   "user": "gruoner",
+   "created_at": "2020-06-01T14:54:12Z",
+   "body": "Hi\r\nnightscout's webgui will not differentiate between the insulin profiles - just the treatments are containing a NEW field \"insulinInjections\" which is a composite array containing the insulin name and the injected dose.\r\nNightscout reporter (the one u deployed) can use this new field and respect it in some (not all) reports.\r\n\r\nTo keep nightscout itself intact, i put the sum of all injected dose at a time as injected insulin dose - thats why every \"not respecting reporting\" will use it as bolus (because basal is not registered in xdrip+ when in FIT)\r\n\r\nTo make clear - ALL reportings (those within xdrip+, nightscout webui & reporting, nightscout-reporter but even Spike and other frontend/backend...) have to be patched to fully support multiple insulin. \r\nAs i'm just using xdrip as frontend and nightscout-reporter for reporting and documenting i will patch nightscouts gui's as secondary precedence....."
+  },
+  {
+   "id": 637766275,
+   "user": "mikelperezalbeniz",
+   "created_at": "2020-06-02T19:43:15Z",
+   "body": "Hi, \r\nWould it be possible to send me a link where this fork from nightscout-reporter is deployed. I tryed the link in the gitHub page for the fork (link you sent me) but I am suspecting that this is the master app and not your version. I guess this is why I can`t see de multiple insuline feature on the reports generated.\r\nI tried deploying in Heroku but I couldn`t. \r\n\r\nThanks"
+  },
+  {
+   "id": 638995002,
+   "user": "gruoner",
+   "created_at": "2020-06-04T17:25:31Z",
+   "body": "Hi\r\n\r\nu can't access my deployment because its in my intranet.\r\nSo:\r\nyou deployed nightscout (https://github.com/nightscout/cgm-remote-monitor) on Heroku via the guide provided by nightscout foundation? U also got the multiple insulin version of xdrip+ running and configured your heroku deployment as cloud upload?\r\nWhere did u deploy the nightscout reporter from which github URL? U have to make sure, that all code is patched to match our deployment infrastructure. To do so, i use a \"base\" branch where my infrastructure-specific configurations are stored and i \"build\" the release to be deployed my merging feature-branches together before compiling and deploying - that's not that easy because nightscout reporter is not designed for multi-deployment as nightscout server is......"
+  },
+  {
+   "id": 639080109,
+   "user": "mikelperezalbeniz",
+   "created_at": "2020-06-04T19:51:47Z",
+   "body": "Hi,\r\n\r\n_u can't access my deployment because its in my intranet._\r\nof course\r\n\r\n_you deployed nightscout (https://github.com/nightscout/cgm-remote-monitor) on Heroku via the guide provided by nightscout foundation?_ \r\nexactly\r\n\r\n_U also got the multiple insulin version of xdrip+ running_\r\nI have a version where I can configurate up to three different type of insulines in the multiple insuline types meny. I can also establish wich insuline will be uses as basal insuline profile and wich one as bolus insuline profile.\r\n\r\n _and configured your heroku deployment as cloud upload?_\r\nNot sure what this is. I deployed nightScout directly from gitHub usint he Heroku button tried to deploy your nightscout reporter branch from heroku itself using the deploy branch option. Deployment method is gitHub\r\n\r\n_Where did u deploy the nightscout reporter from which github URL?_\r\nFrom this url: https://github.com/mikelperezalbeniz/nightscout-reporter wich is a fork of the repository you sent me the link.\r\n\r\nWhen trying to deploy in Heroku I get the following error:\r\n\r\n!     No default language could be detected for this app.\r\n\t\t\tHINT: This occurs when Heroku cannot detect the buildpack to use for this application automatically.\r\n\t\t\tSee https://devcenter.heroku.com/articles/buildpacks\r\n !     Push failed\r\n\r\nThanks."
+  },
+  {
+   "id": 639375748,
+   "user": "gruoner",
+   "created_at": "2020-06-05T09:48:05Z",
+   "body": "i was afraid of some kind of error like yours....\r\nDeploying nightscout reporter is a bit difficult (see https://github.com/zreptil/nightscout-reporter/issues/42).\r\nI'm not familiar with heroku - i use my own infrastructure with LXD containers. But when u have got a virtual machine with a \"normal\" webserver (nginx, apache) and PHP support and u have ssh access to that machine:\r\n- u can use my \"base.mine\" branch\r\n- merge it with the \"Feature-*\" branches u prefer\r\n- to our own repo (name it as you want; but please don't use \"master\")\r\n- clone your repo branch locally (where u can compile dart code) and\r\n- change the deploy.sh (i hope your machine is linux) to match our machine name, proxy (if u have one) and account name etc.\r\n- and run the deploy script (beforehand u should \"read\" the script to see and understand what it is doing)\r\n\r\nThis deploy.sh script does everything needed to deploy nightscout reporter to my env (i have 3 stages DEV, REF and PROD).\r\nI use nginx and php-fpm natively installed by ubuntu 18.04 with a very simple nginx config\r\n_location /NightScoutReporter {\r\n                root /home/myroot/Software;\r\n                location ~ \\.php$ {\r\n                        include snippets/fastcgi-php.conf;\r\n                        fastcgi_pass unix:/run/php/php7.2-fpm.sock;\r\n                }\r\n        }_\r\n\r\nIMPORTANT:\r\nwhen merging my branches together, start with the feature branches and merge \"base.mine\" at last...."
+  },
+  {
+   "id": 640943903,
+   "user": "mikelperezalbeniz",
+   "created_at": "2020-06-08T23:41:54Z",
+   "body": "Hi,\r\n\r\nI have set a Ubuntu VM with LEMP stack in it. I have merged the branches as you sugested and downloaded de repo. I have then executed de deploy.sh file and I have the web running locally. It all works fine except the generation of the pdf.  When a new window is openned to show de pdf, this new window throws an Unable to connect error. The url of the page is:\r\n\r\nhttps://ubuntuserver/NightScoutReporter/pdfmake/pdfmake.php\r\n\r\nthe main page loads with the following url:\r\n\r\nhttps://localhost\r\n\r\nI don`t know why it changes from localhost to ubuntuserver (which is the name of the ubuntu machine where is running and also the typeset TARGETHOST value in the deploy.sh) when popping the pdf page. I guess I am making some config mistake.\r\n\r\nThanks."
+  },
+  {
+   "id": 641964214,
+   "user": "gruoner",
+   "created_at": "2020-06-10T12:15:45Z",
+   "body": "OK; so one of the three following files seems not to contain the correct link - please check:\r\na. lib/app_component.dart (Lines 1223 & 1228)\r\nb. lib/src/globals.dart (Lines 533 & 534)\r\nc. settings.json\r\ndeploy.sh would replace these links with the following derived from the deploy.sh script"
+  },
+  {
+   "id": 643785407,
+   "user": "mikelperezalbeniz",
+   "created_at": "2020-06-14T15:53:26Z",
+   "body": "Hi,\n\nI finally managed to get your version working!!!! Had to solve some issues\nwith https redirecting when opening the pdf tab. I can see that in the\nanalysis and daily diagrams different types of insulins are specified which\nis great. Thanks a lot!!!!. However, is it considering the lantus as a\nbasal insulin? I mean for all the basal stuff that can be shown in the\nreport (which I disabled).\n\nThanks a lot for your help and patience.\n\nOn Wed, Jun 10, 2020 at 9:16 AM gruoner <notifications@github.com> wrote:\n\n> OK; so one of the three following files seems not to contain the correct\n> link - please check:\n> a. lib/app_component.dart (Lines 1223 & 1228)\n> b. lib/src/globals.dart (Lines 533 & 534)\n> c. settings.json\n> deploy.sh would replace these links with the following derived from the\n> deploy.sh script\n>\n> —\n> You are receiving this because you were mentioned.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/1154#issuecomment-641964214>,\n> or unsubscribe\n> <https://github.com/notifications/unsubscribe-auth/APYCWH6AXTKPIZQN463SL6TRV52QBANCNFSM4KCP4Q2A>\n> .\n>\n\n\n-- \nMikel Pérez de Albéniz Bergera\n"
+  },
+  {
+   "id": 787577372,
+   "user": "Navid200",
+   "created_at": "2021-03-01T01:39:35Z",
+   "body": "@gfornax Thanks for your contribution.\r\nWe are going through the open issues to organize and prioritize.\r\nWe are asking members to please use the support channels for sharing with and asking questions from the user community.\r\nhttps://www.facebook.com/groups/xDripG5\r\nhttps://gitter.im/jamorham/xDrip-plus\r\nI hope you will be OK with closing this issue.\r\nOr, let me know what you think.\r\nThanks"
+  },
+  {
+   "id": 788309425,
+   "user": "gfornax",
+   "created_at": "2021-03-01T21:31:14Z",
+   "body": "Can be closed, at is was merely an announcement."
+  }
+ ]
+}

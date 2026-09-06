@@ -1,0 +1,21 @@
+{
+ "id": 1515505502,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2318,
+ "title": "Bug: Danar R Bolus Pump History does not show records after new year",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2318",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-01-01T11:48:52Z",
+ "closed_at": "2023-01-21T13:49:20Z",
+ "comment_count": 1,
+ "body": "Reporting bugs\r\n--------------\r\n- **Note the precise time the problem occurred** and describe the circumstances and steps that caused\r\n  the problem\r\n  \r\n  My son gave a bolus but then the battery crashed in the middle.   We opened the pump history, and did a reload.  It did not show the bolus so I assumed he did not get it.\r\n  \r\n  We gave the insulin again, and we saw he was crashing, so I double checked the pump history directly on the pump itself.   The initial bolus was given, but not showing in the AAPS history.\r\n  \r\n  Upon further investigation, I know why:\r\n\r\n The pump history has weird dates *I believe due to new year*.\r\n\r\n2023-01-01 New Bolus given (which I gave after checking AAPS Danar R History) \r\n00/00/00 Extended Bolus\r\n00/00/00 Extended Bolus\r\n2023-01-01 Bolus My Son Gave (Initial) which AAPS Danar R is is not showing.\r\n\r\nThis is due to an exception in:\r\n\r\n    override fun handleMessage(bytes: ByteArray) {\r\n        val recordCode = intFromBuff(bytes, 0, 1).toByte()\r\n        val date = dateFromBuff(bytes, 1) // 3 bytes\r\n\r\n\r\n  \r\n  This is the method that fails with IllegalInstantException: \r\n  \r\n    fun dateFromBuff(buff: ByteArray, offset: Int): Long {\r\n            return DateTime(\r\n                2000 + intFromBuff(buff, offset, 1),\r\n                intFromBuff(buff, offset + 1, 1),\r\n                intFromBuff(buff, offset + 2, 1),\r\n                0,\r\n                0\r\n            ).millis\r\n\r\n    }\r\n  \r\nand the below fails with IllegalFieldValueException:\r\n\r\n\r\n    fun dateTimeFromBuff(buff: ByteArray, offset: Int): Long {\r\n        return DateTime(\r\n            2000 + intFromBuff(buff, offset, 1),\r\n            intFromBuff(buff, offset + 1, 1),\r\n            intFromBuff(buff, offset + 2, 1),\r\n            intFromBuff(buff, offset + 3, 1),\r\n            intFromBuff(buff, offset + 4, 1),\r\n            0\r\n        ).millis\r\n    }\r\n    \r\n    both cause problems:\r\n    \r\n    \r\n  For our code base, we are returning DateTime.now when faced with Exception, but I dont think that is a proper solution.  Probably ignoring such weird dates is best and allowing the Dana R Bolus history to be able to retrieve records that are in between/after/before such  00-00-00 dates rather than crash.\r\n\r\n- Note the Build version (found in the About dialog in the app, when pressing the three dots in the\r\n  upper-right corner).\r\n  \r\n  Latest master:  AndroidAPS 3.1.0.3   Build: b2b10e7654\r\n  \r\n  Console Log:  Attached.  It does not show both exceptions sorry about that.\r\n  \r\n[AndroidAPS Log.txt](https://github.com/nightscout/AndroidAPS/files/10328686/AndroidAPS.Log.txt)\r\n",
+ "comments": [
+  {
+   "id": 1399255202,
+   "user": "MilosKozak",
+   "created_at": "2023-01-21T13:49:20Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/c1fca211bffa79d19f3ed5c7dda605054f77b01f"
+  }
+ ]
+}

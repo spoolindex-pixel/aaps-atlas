@@ -1,0 +1,27 @@
+{
+ "id": 875915506,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1716,
+ "title": "Insulin, SMB, treatments and Carbs not received from AAPS",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1716",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-05-04T23:22:01Z",
+ "closed_at": "2021-05-07T16:22:17Z",
+ "comment_count": 2,
+ "body": "The SMB symbols and treatments are no longer transmitted from AAPS to xdrip+. This happened in the middle o the day of February the 20th 2021. It was working normally before for more than 2 months. The treatments are visible thought in AAPS. I had not changed the settings in either of the apps the day it  stopped transmitting treatments and insulin from AAPS to xdrip+. In xdrip+ interapp settings the local broadcast and accept treatments are enabled. \r\n\r\nI am using AAPS version 2.8.2 full release and 17cbcf0-2021.03.08 xdrip+ on Redmi note pro miui 12.0.2.0 android 10 QKQ1.191215.002. \r\n\r\nI tried many options and I have rebuild and reinstalled AAPS and xdrip but it did not help.\r\nUnfortunately the log before the issue occurred is now gone but I can provide the current log.\r\n\r\nAlso in nigtscout I can generate reports with treatments and insulin until the day it happened. After this day no insulin or carb are reported.",
+ "comments": [
+  {
+   "id": 833719768,
+   "user": "reijoahola-nightscout",
+   "created_at": "2021-05-06T17:37:21Z",
+   "body": "I have noticed that AAPS -> xDrip+ broadcast do not work when AAPS -> NS connection is not working. Do you have this problem in NS connection ? https://github.com/nightscout/AndroidAPS/issues/504"
+  },
+  {
+   "id": 834590511,
+   "user": "amosxo",
+   "created_at": "2021-05-07T16:22:17Z",
+   "body": "You are right. That was it! The NS client in AAPS was paused. The moment the data network is lost the NS client get paused. One needs to be aware about this and go in the NS client tab and reenable it. I have unpaused it now. The first time I reenabled it I was on WiFi and I had to restart the telephone several times to finally make it able to establish the connection. The second time this happened I was on LTE network and it was enough to establish the data network and then unpause it. Therefore it depends on the state in which the telephone is some times. Now I see the treatments in both NS and xdrip. When the connection is lost I get a warming in AAPS that the communication to the NS client is lost. \r\nIt is definitely the issue you found. The interapp connection should be independent from the NS client connection. Let's hope that this issue will be one day fixed. Since there is already an other ticket about this I will go on and close my ticket. Thank you.\r\nPS: I have sometimes observed that I do not receive BG data from G6 sensor in xdrip when I do not have internet connection. This might be related to this issue but the other way around. Xdrip->AAPS. it is not so annoying since I almost always have internet access and I get warnings in AAPS when I don't."
+  }
+ ]
+}

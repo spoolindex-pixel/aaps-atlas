@@ -1,0 +1,27 @@
+{
+ "id": 834818851,
+ "repo": "nightscout/AndroidAPS",
+ "number": 424,
+ "title": "Omnipod - AndroidAPS Does not respect \"disconnect for x time\" under certain circumstance and delivers basal",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/424",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-03-18T13:36:07Z",
+ "closed_at": "2021-10-03T17:09:10Z",
+ "comment_count": 2,
+ "body": "I've had this bug several times with AndroidAPS v2.8.2, and it can be reproduced every single time. \r\n\r\nIf you set a \"Disconnect pump for x time (any time)\", and within this time period a \"profile change\" happens for any reason (either manual, or a previous temporary profile had expired, or an automation event is executed) then once the profile is changed, the temp basal is not set again to 0 (as it should, since the disconnection time has not expired yet) and the pump starts delivering insulin in the normal basal rate of the new profile. Furthermore, since the disconnection time has not expired yet, the AndroidAPS loop is disabled, and will not attempt to fix this, only after the disconnection time has expired.\r\n\r\nThis is extremely dangerous, as the user believes that insulin is not being delivered all this time, and furthermore AndroidAPS is unable to react due to the disconnection event, even if the user is running low.\r\n\r\nIn my case, this happened 3 times during exercise, as i tend to run a temporary profile (50%) 30 minutes prior to the start of the exercise for 1 hour, and some times, if during exercise i feel like getting lower than expected, i might quickly set a 30 minutes disconnection to avoid extra insulin from being delivered. Then the previous temporary profile will expire and will be set back to 100%, delivering normal basal rate, when i believed that no insulin was being delivered.\r\n\r\nI use Omnipod Eros, with AndroidAPS 2.8.2 and Libre2 patched app for BG readings\r\n\r\nIn order to reproduce the issue, just set the pump to disconnect for 30 minutes, and then try to change the profile to 50%. The basal rate then will be switched from 0 to normal, and stay like that during the disconnection time.",
+ "comments": [
+  {
+   "id": 816216206,
+   "user": "Philoul",
+   "created_at": "2021-04-08T21:22:49Z",
+   "body": "I think it's not this bug that is dangerous but telling AAPS you disconnected a pump that remains connected... You should never do that!\r\n=> You have other ways to not have a bolus during exercise (hypo TT, high TT, ...)\r\nI couldn't reproduce this bug (neither in my dev phone with virtual pump nor on my loop phone with an Insight pump)..."
+  },
+  {
+   "id": 932990096,
+   "user": "MilosKozak",
+   "created_at": "2021-10-03T17:09:10Z",
+   "body": "resolved in dev"
+  }
+ ]
+}

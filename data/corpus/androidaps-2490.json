@@ -1,0 +1,51 @@
+{
+ "id": 1654517109,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2490,
+ "title": "AndroidAPS doesn't handle backdated profile switches correctly",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2490",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-04-04T20:14:01Z",
+ "closed_at": "2023-05-14T08:20:02Z",
+ "comment_count": 6,
+ "body": "AAPS 3.1.0.3.  The Profile Switch dialog has an Event Time field, and this is uploaded to Nightscout, but it appears to be totally ignored by AAPS itself; the profile switch event always shows up on the main graph at the time I entered it, and the different values in the profile aren't used when (re)calculating IOB, COB, etc.\r\n\r\nI need this because I need to use different sensitivities when I'm sitting quietly in a chair (or sleeping) vs on my feet.  I've also recently been ill and needed to take almost twice as much insulin, which I used a % profile switch for.  In cases like this, I may forget or be unable to enter the profile switch at the correct time.  Obviously it's impossible for AAPS to go back in time and change the decisions it already made, but I need it to re-do the calculations using the correct profile because otherwise my IOB and COB will continue to be wrong after I notice the wrong profile was used and fix it.\r\n\r\nThis behavior is surprising to me, because other, non-profile settings like min_5m_carbimpact cause a full recalculation, so AAPS obviously already has the logic to do this; it's just not using it for profile switches.  I assume it's clear enough what I'm saying the current behavior is and how I'd like it to change, and why, but I'd be happy to answer any questions.",
+ "comments": [
+  {
+   "id": 1497022592,
+   "user": "MilosKozak",
+   "created_at": "2023-04-05T07:10:24Z",
+   "body": "here is the answer\r\nhttps://androidaps.readthedocs.io/en/latest/Installing-AndroidAPS/Releasenotes.html#version-3-0-0"
+  },
+  {
+   "id": 1497403793,
+   "user": "Kenoubi",
+   "created_at": "2023-04-05T12:26:38Z",
+   "body": "I think you are talking about this?\r\n\r\n> Profile switch behavior change. Now is distinguished between Profile Switch (something that user wants) and Profile change (when change is executed by pump) @MilosKozak @Tebbe\r\n\r\nDistinguishing these events is necessary and desirable (to correctly determine what insulin was delivered during periods of no connectivity to the pump, for example), but the current behavior results in AAPS making dosing decisions that are unexpected and lead to worse BG control.  Again, I don't expect it to change history of what insulin was delivered, but my IOB and COB are a less accurate reflection of what is happening in my body when they are calculated with IC, ISF and \"normal\" basal (what basal would have been if AAPS hadn't been changing it) taken from the profile that was in effect on the pump, rather than the profile that I've told AAPS should have been used for that time period.\r\n\r\nTrue, if the pump didn't enact the profile change at the time of the profile switch, then any on-pump calculations of IOB and COB will unavoidably be wrong in that same way, but it seems to me anyone using AAPS can't be relying much on such on-pump calculations anyway.  (In practice I'm using Omnipod Dash pods, so the pump has no UI, so I can't even see any of this, and I don't think it has on-pump IOB / COB calculations anyway - the pod is basically just an insulin delivery device and the on-pod smarts are just so it does something closer to what I wanted during any periods it can't talk to the device controlling it.  I doubt the pod even stores IC or ISF values (why would it?), though it does store basal schedules.)"
+  },
+  {
+   "id": 1497783494,
+   "user": "Philoul",
+   "created_at": "2023-04-05T16:27:23Z",
+   "body": "In database you only have TBR records, so if you want to change the profile in the past, you will also have to re write all the history of tbr (create fake tbr for periods without tbr running if profile has changed, all percentage should be updated...).\nIt's I think too complicated, risks are too important, and it's not the history of your loop (decision made by the loop was done with real active profile and not a new expected profile ipdated later).\n\nWhen you update your profile. it should be little steps by little step, starting with a secure profile (probably very few hypo. but probably too many hyper at the beginning), and slowly increase aggressivity to increase TIR..."
+  },
+  {
+   "id": 1497852702,
+   "user": "Kenoubi",
+   "created_at": "2023-04-05T17:18:29Z",
+   "body": "I mean, it's already setting a TBR on the pump even when the value is unchanged (`skip_neutral_temps = false`).  (It doesn't do that when it can't talk to the pump, of course.)  I don't think it would be much of a stretch to just have a TBR record in the database for every time interval, indicating how much insulin was actually delivered.\r\n\r\nThe *outputs* of the algorithm are, of course, based on the current profile (along with other inputs), as you said.  However, some of the other *inputs* to the algorithm are precomputed based on the profiles that were in effect in the recent past, notably including COB (because this is decreased over time based on the deviations in BG between what the model expects under the assumption that carbs don't appear, and the actual observed BG) and IOB (because this is the net insulin delivered (discounted for how long ago it was delivered) *relative to normal basal for that period*).  It's these *inputs* being off that cause the algorithm to make decisions one would rather it didn't.  For example, if it thinks I have a ton of IOB, it may not deliver more insulin even if BG is high and increasing, because it expects BG to start dropping a lot very soon (even though it keeps being \"surprised\" when that doesn't actually happen).\r\n\r\nMy insulin sensitivity varies *extremely dramatically* by what activity I'm doing.  Depending on when I've eaten, it can be double just to go from sitting quietly in a chair to walking around, and running / carrying heavy things / etc.can sometimes make it look like magical BG freefall (but only if there's meaningful peaking insulin present).  Temp targets don't work, because even what would normally be a pretty small amount of insulin, starting from a pretty high BG, can make me hypo; zero temping is too slow to fix it at that point.  But if I just tripled all my sensitivities, my BG would be super high most of the time because any time it went up, AAPS would have an extremely exaggerated opinion of how much "
+  },
+  {
+   "id": 1498238305,
+   "user": "Kenoubi",
+   "created_at": "2023-04-05T22:28:55Z",
+   "body": "By the way, @MilosKozak, if this behavior is deliberate (I had assumed it wasn't, for the reasons I've already stated), is there a single or small number of places in the code where the decision of when to start applying the profile switch to historical calculations is made?  I'm perfectly comfortable maintaining a small patch against my own copy of AAPS.  I'm looking into this myself, but maybe it would be a lot easier for someone more familiar with the code to tell me where it would be controlled.\r\n\r\nThanks!  And thanks for your work on AAPS, it's still a massive accomplishment whether or not I like every detail of how it works.\r\n\r\nEdit: what the release notes call a \"profile change\" appears to be called [`EffectiveProfileSwitch`](https://github.com/nightscout/AndroidAPS/blob/master/database/src/main/java/info/nightscout/androidaps/database/entities/EffectiveProfileSwitch.kt) in the code.  Both `ProfileSwitch` and `EffectiveProfileSwitch` have `timestamp` fields; I assume (but have not verified) that the `ProfileSwitch` timestamp is the one entered in the dialog by the user, and the `EffectiveProfileSwitch` timestamp is when the switch has been delivered by AAPS to the pump.  Currently, I don't think the `ProfileSwitch` timestamp is used for anything other than pushing it to Nightscout.  To get the behavior I think is correct, it would instead need to use the `ProfileSwitch` timestamp for everything except calculating the basal insulin delivered during periods that have no TBR.  The calculation is managed by [`IobCobCalculatorPlugin`](https://github.com/nightscout/AndroidAPS/blob/master/app/src/main/java/info/nightscout/androidaps/plugins/iob/iobCobCalculator/IobCobCalculatorPlugin.kt).  I think I'd want to change that or something it uses, and not change the database at all so that I don't interfere unnecessarily with any other part of AAPS."
+  },
+  {
+   "id": 1546839221,
+   "user": "MilosKozak",
+   "created_at": "2023-05-14T08:20:02Z",
+   "body": "doing such things would make the code very complicated, behavior would not be easy to understand by common people and would add more possible points of wrong use of AAPS. if you need it add it to your private version. \r\ndo not forget to change version to something like 3.2.0-dev-custom"
+  }
+ ]
+}

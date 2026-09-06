@@ -1,0 +1,23 @@
+{
+ "id": 1083308400,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1084,
+ "title": "Feature request : calculate insulin used for meal carbs.",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1084",
+ "state": "closed",
+ "labels": [
+  "enhancement"
+ ],
+ "created_at": "2021-12-17T14:21:59Z",
+ "closed_at": "2022-07-25T19:11:43Z",
+ "comment_count": 1,
+ "body": "A feature request (if several are interested in it) about carbs and insulin needed to absorb them.\r\nIn AAPS, it is easy to see if basals are correct: without food, you look if you have positive or negative IOB and can decide if your basal settings are correct. \r\nMy question is about meals. I enter carbs and use the wizard to calculate the U needed and inject 80% of the calculated bolus and let the SMBs do their job to catch up. \r\nI can't find a way to see if my carbs/insulin index is correct. I need to add the bolus, the SMBs and the \"theoretical basals\" then subtract the \"not given basals\" in order to see if the quantity of insulin given was the quantity calculated...\r\nIt would be nice if, once the BGs are back on target (or after x hours after a meal), we could have the information of the bolus used (either in bolus or SMB form) to absorb the meal carbs (taking the basal off the calculations).\r\n\r\nLets try with a real life situation : BG at carb and bolus entry is 100 (which is also the target). Enter 50g and 5U needed, 4U injected ( = _meal start_ )\r\nWe can use the _duration of meal/carbs_ variable set in the AAPS parameters and/or when we reach target to set the end of test time ( = _meal end_ ).\r\nI'd see the calculation as :\r\nBolus at meal time + SMBs between meal start and meal end  - IOB at meal start - IOB at meal end - calculated basal from profile for the meal duration = units injected to absorb our 50g of meal carbs.\r\nWe can start the calculations at each meal or only \"on demand\".",
+ "comments": [
+  {
+   "id": 998764234,
+   "user": "szantos",
+   "created_at": "2021-12-21T13:07:38Z",
+   "body": "This would be a very useful feature!\r\n\r\n[ I've created a basic spreadsheet for this purpose, but it's not ideal, as I was not able to get historical IOBs through the APIs (maybe my bad). Then I've solved it based on the integral of the activity curve, which is not an elegant way. ]\r\n\r\nMy suggestions:\r\n- meal_start and meal_end time as input\r\n- in this time frame sum all the carbs and insulin which have taken effect\r\n- for carbs it is \"easier\" based on carb bolus and COB difference between end and start (but depends on carb absorption model)\r\n- for insulin it is trickier (as robertrub proposed)\r\n- think about profile switches, these should be ignored (calculation should be based on a profile at meal_start), also IOB=0 should be calculated based on the initial (basal)profile\r\n- the correction insulin (SGV at meal_start and meal_end differ) should be considered based on ISF\r\n\r\nNow to make AAPS devs happy:\r\nI'm not sure whether this should be done in AAPS. Maybe NS would be a better place, extending the features of loopalyzer, comparing meals of multiple days more easily, etc."
+  }
+ ]
+}

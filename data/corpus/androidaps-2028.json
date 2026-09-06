@@ -1,0 +1,69 @@
+{
+ "id": 1344024612,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2028,
+ "title": "[3.1.0.3-dev-a] Calibration in BYODA -> BG too close (red triangle) -> LGS (low glucose suspend)",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2028",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-08-19T06:54:27Z",
+ "closed_at": "2022-10-04T09:10:54Z",
+ "comment_count": 9,
+ "body": "When doing a calibration in BYODA a new BG will be sent to AAPS close to the last one (instead of updating the last one).\r\nThis causes a \"BG too close\" error with a red triangle and the loop falls back to LGS (low glucose suspend).\r\nThe error has been there before (3.0.0.x), too, but the fallback to LGS seems to be new for me (and is very annoying).\r\nCurrent workaround: manually deleting the duplicated BG from BYODA tab of AAPS\r\nProposal: detect calibration and update last BG or only yellow triangle",
+ "comments": [
+  {
+   "id": 1220590850,
+   "user": "robertrub",
+   "created_at": "2022-08-19T11:59:29Z",
+   "body": "Very strange as this bug was solved . At what **exact** time did you calibrate (x min before or after normal BG) and at what exact time did BYODA got the usual 5 min BG ?"
+  },
+  {
+   "id": 1221490815,
+   "user": "rICTx-T1D",
+   "created_at": "2022-08-21T07:40:31Z",
+   "body": "Hi folks,\r\nI can confirm this issue. I use last BYODA and calibrated it after 2min, they has sended last value. DexApp is calculating a value with avg of last and calibatrion value. This calculated value was send to aaps and deducted as early value with yellow triangle. \r\n\r\nWhy this function is necessary?"
+  },
+  {
+   "id": 1221492625,
+   "user": "robertrub",
+   "created_at": "2022-08-21T07:53:02Z",
+   "body": "The problem is not the yellow triangle (it is a security function) but BYODA sending readings not respecting the \"every 5 minutes\" rule.\r\nThis bug was solved but seems like a regression in the code."
+  },
+  {
+   "id": 1221901965,
+   "user": "szantos",
+   "created_at": "2022-08-22T06:27:27Z",
+   "body": "> Very strange as this bug was solved . At what **exact** time did you calibrate (x min before or after normal BG) and at what exact time did BYODA got the usual 5 min BG ?\r\n\r\nThank you for looking into it. Hope this helps:\r\n\r\n![Screenshot_20220820_082109_info nightscout androidaps_2](https://user-images.githubusercontent.com/64865503/185853362-08c3c773-e320-427a-80ac-79ca54ddfdaa.jpg)\r\n![Screenshot_20220820_082123_info nightscout androidaps_2](https://user-images.githubusercontent.com/64865503/185853364-fa0b1d1d-7d29-4f26-ab73-96c226962188.jpg)\r\n\r\n"
+  },
+  {
+   "id": 1236138884,
+   "user": "robertrub",
+   "created_at": "2022-09-03T15:04:31Z",
+   "body": "Sadly, I'm only looking AT it and not INTO it (not capable of coding)"
+  },
+  {
+   "id": 1266640147,
+   "user": "MilosKozak",
+   "created_at": "2022-10-04T09:10:54Z",
+   "body": "this is already resolved except very rare situations. resolving the rest would mean slowing down BG processing too much"
+  },
+  {
+   "id": 1266651141,
+   "user": "szantos",
+   "created_at": "2022-10-04T09:19:48Z",
+   "body": "@MilosKozak \r\nDoes the fallback really has to be LGS with red triangle?\r\n\r\nAny condition like:\r\n- if dupe BGs are within +/-10%\r\n- then only yellow triangle and loop can continue\r\npossible?"
+  },
+  {
+   "id": 1266683021,
+   "user": "MilosKozak",
+   "created_at": "2022-10-04T09:44:49Z",
+   "body": "the problem is that deltas are calculated wrong in this case which affects algorithm performace"
+  },
+  {
+   "id": 1266792586,
+   "user": "szantos",
+   "created_at": "2022-10-04T11:17:13Z",
+   "body": "If conditions are met, closed loop could go on, if not, LGS for 30-40 minutes only !? 🙂\r\n\r\nCurrent way user has to check loop status after every calibration (can be 1-3/day) to make sure it is operating properly. If missed, LGS can go on for hours."
+  }
+ ]
+}

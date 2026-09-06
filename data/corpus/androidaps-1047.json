@@ -1,0 +1,63 @@
+{
+ "id": 1073756748,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1047,
+ "title": "Upload BG values to Nightscout after switching from BYOD to xdrip",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1047",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-12-07T21:08:57Z",
+ "closed_at": "2021-12-09T14:20:47Z",
+ "comment_count": 8,
+ "body": "I was previously working with AndroidAPS dev branch and BYOD app for BG values. Upload was done via AndroidAPS and worked fine.\r\nThen I switches over to beta7 build to test the newest code. I have not taken a look onto the transferred BG values but locally all looked fine.\r\nBecause of testing something which was fixed in beta7 branch I switched to dev again. Because of issues with BYOD app I also switched to xdrip.\r\nAfter two weeks of working with dev and regularly updating it I realized that I don't have BG values in my Nightscout instance anymore. Therefore also some gadgets I use have no values to display.\r\n\r\nI did some tests:\r\n- Use a slightly older dev build. Result was no bg values in Nightscout.\r\n- Check if other uploads from AndroidAPS to Nightscout work. Result was 'yes' I have other things like SMBs and so on which are uploaded. But no BG values.\r\n- Deactivated AndroidAPS upload to Nightscout and used xdrip to upload data. Result 'yes' all was uploaded successfully including the bg values\r\n\r\nI'm currently unsure what to check to get this issue isolated. Can someone assist in deciding what to check? If logs are important I can turn back the configuration from xdrip to AndroidAPS and gather logs. Possible but takes time for me at the moment.",
+ "comments": [
+  {
+   "id": 988266312,
+   "user": "CaptainBalou",
+   "created_at": "2021-12-07T21:11:43Z",
+   "body": "But even if I see BG value on the top right of Nightscout the whole site looks not ok because I don't see a graph line. So something is wrong somewere. I hope someone can assist.\r\n\r\n<img width=\"1752\" alt=\"grafik\" src=\"https://user-images.githubusercontent.com/17015872/145106795-d584463a-6ed0-4290-b203-bf7afef26867.png\">\r\n"
+  },
+  {
+   "id": 988607163,
+   "user": "MilosKozak",
+   "created_at": "2021-12-08T08:39:17Z",
+   "body": "I'm not sure I understand it well.\r\nAAPS doesn't upload BG data to NS when xDrip bg source is selected\r\nAAPS can upload data for other BG sources"
+  },
+  {
+   "id": 988763720,
+   "user": "CaptainBalou",
+   "created_at": "2021-12-08T12:20:01Z",
+   "body": "Sorry,was a confusing summarization of all I saw.\r\n\r\nI cannot answer that question precisely. All I can say right now is that:\r\nIf I use xdrip to upload data to nightscout I see BG values.\r\nIf I use AndroidAPS to upload data to nightscout I see no BG values."
+  },
+  {
+   "id": 988767299,
+   "user": "CaptainBalou",
+   "created_at": "2021-12-08T12:25:09Z",
+   "body": "The greay dots came from xdrip which I used the past hours to upload bg values.\r\nThe bolus and SMB information came after I switched of xdrip and activated AndroidAPS upload.\r\nNow new current bg values are uploaded anymore and I just get \"---\" and not grey dots anymore.\r\n\r\n<img width=\"1580\" alt=\"grafik\" src=\"https://user-images.githubusercontent.com/17015872/145207752-6415f4dd-1b3e-4226-83a5-20a5650e2167.png\">\r\n\r\nI used this setup to centrally upload everything to Nightscout and it has never had any problems. \r\nBut I don't know when it stopped working. My fault."
+  },
+  {
+   "id": 989117906,
+   "user": "vanelsberg",
+   "created_at": "2021-12-08T19:11:27Z",
+   "body": "(Read again?)\r\n> _AAPS doesn't upload BG data to NS when xDrip bg source is selected_\r\n\r\nWhat is your BG source in AAPS?\r\n\r\nIf it is xDrip+ then AAPS does receive BG values from xDrip, but will _not_ upload them to NS.\r\nSo you'll need to configure xDrip to do the uploading of BG data..\r\n\r\n"
+  },
+  {
+   "id": 989198871,
+   "user": "CaptainBalou",
+   "created_at": "2021-12-08T21:11:06Z",
+   "body": "I am using Dexcom G6.\n\nI was using BYOD app, got the bg values in AAPS and these have been uploaded by AAPS.\n\nBecause of BYOD issues I now use xDrip and assumed it works the same. xDrip sends to AAPS and AAPS uploads it.\n\nThat doesn't work that way as I understand you? "
+  },
+  {
+   "id": 989279559,
+   "user": "vanelsberg",
+   "created_at": "2021-12-08T22:29:38Z",
+   "body": "What @MilosKozak was trying to tell you is that _xDrip sends to AAPS and AAPS **does not** upload BG value's_.\r\n\r\nRecommended configuration is:\r\n- BYODA as BG source for AndroidAPS which will then be the only  application sending BG values to NS.\r\nBYODA supports broadcasting to xDrip, so you can still use it *except* for uploading to NS (if you it will result in duplicate BG values causing current AAPS to block closed looping).\r\n\r\nBtw: If you haven't done already, Please join the #androidaps channel at Discord: [Invite](https://discord.gg/TbnTX4UF)\r\nfor latest updates. Lot of users there that are happy to help out..."
+  },
+  {
+   "id": 990369061,
+   "user": "CaptainBalou",
+   "created_at": "2021-12-09T22:45:34Z",
+   "body": "Hello @MilosKozak , hello @vanelsberg ,\r\n\r\noh @MilosKozak your [comment](https://github.com/nightscout/AndroidAPS/issues/1047#issuecomment-988607163) was no question?! Thanks for clarifying this @vanelsberg . I'll activate the xdrip upload as well. Thanks. I thought it is a bug.\r\n\r\nThe setup of using BYOD app was prefered by me for a very long time. But past month I decided to do an major release update of the BYOD app and since I'm using that it constantly crashes. :-( So I switched to xdrip quick and dirty to at least have bg values in AAPS. Long term I want to switch back but I've to identify the issue first.\r\n\r\nI'm on discord too. Thanks for reminding me. But I've had not a high answer rate and it's hard to follow conversations if you're not there all day. All those wonderfull developers in the community are so busy and I always feel it is easier to handle such things in an issue ticket. I'm possibly too much relying on ITIL schemes. So I decided to do so - I should start to separate business and private. ;-)\r\n\r\nThanks for your time and thanks for reading all that.\r\n\r\n\r\nRegards\r\nMarco"
+  }
+ ]
+}

@@ -1,0 +1,137 @@
+{
+ "id": 328235701,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 461,
+ "title": "local web service for pebble always returns 0 for iob",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/461",
+ "state": "closed",
+ "labels": [
+  "sync-local"
+ ],
+ "created_at": "2018-05-31T17:48:55Z",
+ "closed_at": "2023-07-21T03:11:52Z",
+ "comment_count": 20,
+ "body": "I'm using http://127.0.0.1:17580/pebble to get at iob data for my fitbit versa and it always returns 0.  If I use the corresponding nightscout URL (https://mynightscoutsite/pebble) , iob comes across properly.  Any chance this could be fixed for the local web service?  I'd use the nightscout url but am frequently without internet and would much rather use the local service rather than via an internet connection.",
+ "comments": [
+  {
+   "id": 401085871,
+   "user": "gitanO0",
+   "created_at": "2018-06-28T16:01:13Z",
+   "body": "I've looked into this and am not sure where to pull the iob data from to populate the json data.  I see @jamorham has it as a TODO but I'll be out of internet connection for a few weeks here soon and would love to get this working.  Can anyone help with this?"
+  },
+  {
+   "id": 401212863,
+   "user": "jstevensog",
+   "created_at": "2018-06-29T00:32:50Z",
+   "body": "When do you need this by?  I could add IoB to the Clay watchface pretty\nquickly.  It's the whole reason why I don't use connectivity with\nNightscout for my management.  I want the info up to date directly from the\nsource, in this case xDrip+.\n\nOn Fri, Jun 29, 2018 at 2:01 AM, gitanO0 <notifications@github.com> wrote:\n\n> I've looked into this and am not sure where to pull the iob data from to\n> populate the json data. I see @jamorham <https://github.com/jamorham> has\n> it as a TODO but I'll be out of internet connection for a few weeks here\n> soon and would love to get this working. Can anyone help with this?\n>\n> —\n> You are receiving this because you are subscribed to this thread.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/461#issuecomment-401085871>,\n> or mute the thread\n> <https://github.com/notifications/unsubscribe-auth/AIQs88gj6iGxU0ZlAMlTOMWcZAJ7Bfscks5uBP3KgaJpZM4UVd8f>\n> .\n>\n\n\n\n-- \nJohn Stevens\n\"You are how you live, not what you have.\"\n"
+  },
+  {
+   "id": 401217948,
+   "user": "roycesimpson",
+   "created_at": "2018-06-29T01:09:17Z",
+   "body": "Within the next week to two. \r\n\r\nAre referring to this local web service (http://127.0.0.1:17580/pebble) as part of your Clay watchface implementation?  If so then that should work just fine."
+  },
+  {
+   "id": 410026053,
+   "user": "gitanO0",
+   "created_at": "2018-08-02T18:35:47Z",
+   "body": "Any luck on this front?\r\n"
+  },
+  {
+   "id": 410545371,
+   "user": "jamorham",
+   "created_at": "2018-08-05T20:22:52Z",
+   "body": "xDrip only calculates its simulation IoB when the main graph is displayed as it is quite cpu intensive. Making it display on the watchface is therefore not trivial. There are other sources of IoB data such as pump output or AAPS status. Is it this or xDrip's treatment simulation IoB you are looking for?"
+  },
+  {
+   "id": 411924695,
+   "user": "gitanO0",
+   "created_at": "2018-08-09T23:00:53Z",
+   "body": "I believe it's xDrip's treatment simulation IoB... specifically I'm looking for it here:\r\nhttp://127.0.0.1:17580/pebble\r\n\r\nRight now that always reads \"0\"."
+  },
+  {
+   "id": 412214184,
+   "user": "gitanO0",
+   "created_at": "2018-08-10T21:42:12Z",
+   "body": "I'd like to use that local web service api to show iob on my fitbit versa.  I'm currently using the nightscount version of that URL (via internet connection) but I spend so much time backpacking and in the mountains without cell coverage that having direct access to xdrip via the local web service would be soooooooo nice. \r\n\r\nIn my case, the versa queries that url every 5 minutes and get the json response...  So, xdrip would only need to generate that number only once every 5 minute interval. "
+  },
+  {
+   "id": 417323232,
+   "user": "Rytiggy",
+   "created_at": "2018-08-30T13:40:51Z",
+   "body": "@gitano0 @jamorham\r\n\r\nI am also in need of iob and can't get the pebble endpoint to return it. \r\n\r\nAlso @gitano0 what endpoint for nightscout did you use to get iob? The only one I see is treatment and that just shows when you gave insulin. And doesn't reduce over time "
+  },
+  {
+   "id": 417347636,
+   "user": "gitanO0",
+   "created_at": "2018-08-30T14:51:00Z",
+   "body": "Hey @Rytiggy. See the OP.  Use your nightscout base URL but append \"/pebble\" at the end.   I think the idea was to make the \"pebble\" api look and behave the same via the local web service on xdrip+ as it is on Nightscout but I'm gathering that implementing IOB on the local service is a challenge.  I'm not sure why though.  The calculation would only need to be made when the api request is made... in my case with the Versa it's every 5 minutes.  Hopefully this will make it's way to a commit soon. "
+  },
+  {
+   "id": 417348979,
+   "user": "gitanO0",
+   "created_at": "2018-08-30T14:54:30Z",
+   "body": "Here's what the json response looks like from my nightscount pebble url request.  The local web service xdrip one is formatted exactly the same but IOB is hardcoded to \"0\":\r\n\r\n{\r\n  \"status\": [\r\n    {\r\n      \"now\": 1535640783658\r\n    }\r\n  ],\r\n  \"bgs\": [\r\n    {\r\n      \"sgv\": \"112\",\r\n      \"trend\": 4,\r\n      \"direction\": \"Flat\",\r\n      \"datetime\": 1535640741774,\r\n      \"filtered\": 112608,\r\n      \"unfiltered\": 114480,\r\n      \"noise\": 1,\r\n      \"bgdelta\": 0,\r\n      \"battery\": \"94\",\r\n      \"iob\": \"0.52\",\r\n      \"bwp\": \"-0.20\",\r\n      \"bwpo\": 60,\r\n      \"cob\": 2\r\n    }\r\n  ],\r\n  \"cals\": [\r\n    {\r\n      \"slope\": 1333.3333333333333,\r\n      \"intercept\": -35827.05619713912,\r\n      \"scale\": 1\r\n    }\r\n  ]\r\n}"
+  },
+  {
+   "id": 417349341,
+   "user": "gitanO0",
+   "created_at": "2018-08-30T14:55:26Z",
+   "body": "While we're at it... COB is implemented via the nightscount url as well.  Would love to see that in the local xdrip webservice.  Other efforts are being made regarding \"internet desert\" stuff... this \"pebble\" api url fits squarely in that category.   ;)"
+  },
+  {
+   "id": 417771841,
+   "user": "gitanO0",
+   "created_at": "2018-08-31T19:49:50Z",
+   "body": "This seems to be the offending culprit:  /app/src/main/java/com/eveningoutpost/dexdrip/webservices/WebServicePebble.java"
+  },
+  {
+   "id": 436987744,
+   "user": "Rytiggy",
+   "created_at": "2018-11-08T13:07:33Z",
+   "body": "I am bunpung this thread. I Can confirm that the location @gitanO0 referenced above is where it's being set to 0. \r\n\r\nI have more and more users request this every day. Any chance of it getting update to show the actually iob \r\n![screenshot_20181108-074136](https://user-images.githubusercontent.com/17414914/48200494-54c48980-e32d-11e8-878a-6bb10116515e.png)\r\n"
+  },
+  {
+   "id": 533269687,
+   "user": "gitanO0",
+   "created_at": "2019-09-19T19:14:20Z",
+   "body": "At the risk of being pesky, I'd like to bump this issue.  To have IOB data via the local web service and not via the internet based nightscout web service URL would be such a HUGE bonus.  Thanks again for considering having a look at this.  "
+  },
+  {
+   "id": 786171110,
+   "user": "Navid200",
+   "created_at": "2021-02-25T20:12:27Z",
+   "body": "@gitanO0 Do you believe this is still a good thing to have?\r\nIf yes, would you please address the post made by the developer on August 5, 2018?\r\n\r\nDo you believe that he has misunderstood your request?  Then, please explain that clearly.  Clarifying what your request is.\r\n\r\nIf you believe that he has understood your request; but, you have an alternative suggestion for implementing it, which will avoid the problem he has identified, please clearly state that.\r\n\r\nAlso, if there is a work-around that you can use to accomplish what you need, please consider closing this issue.\r\n\r\nWe can keep enhancing xDrip with no discretion.  The result will be an extremely complicated code that no single person can maintain or support."
+  },
+  {
+   "id": 786193267,
+   "user": "gitanO0",
+   "created_at": "2021-02-25T20:48:16Z",
+   "body": "@Navid200 , \r\nYes, I would still like this implemented as described in my OP.   I use the local pebble web service to populate my fitbit versa watchface. I'm not sure why the implementation would be too expensive.  My watch only retrieves data via the local web service every 5 minutes.  The xdrip+ app itself shows the IOB on the main graph interface so having that shuttled off to the web service doesn't seem too costly of a request.  The current workaround is to use the nightscout site api to retrieve the IOB value.  It's not a great workaround because that path requires internet access whereas the local pebble web service does not.  So, when I'm out of cell range, which I frequently am, the nightscout service goes belly up.  As well, I'm already using the local pebble service for all the other values that populate my watchface including 2 hour history of readings.  So, having my xdrip+ data go to nightscout only to be shunted back to my watchface seems overly expensive.  It's not ideal to have to resort to a second internet required service to get the IOB value when the pebble service already is stubbed out for it.  I've looked through the code in the past and honestly coudn't make heads nor tails of how the IOB is being generated let alone how to get that value over to the local pebble web service implementation.\r\n\r\nThanks for listening and considering this.\r\n-Royce"
+  },
+  {
+   "id": 1596481774,
+   "user": "bart2",
+   "created_at": "2023-06-19T04:38:31Z",
+   "body": "I also think IoB reporting in the /pebble endpoint would be valuable.\r\n\r\nI've submitted a PR that implements this functionality: https://github.com/NightscoutFoundation/xDrip/pull/2897"
+  },
+  {
+   "id": 1643042656,
+   "user": "Navid200",
+   "created_at": "2023-07-20T03:17:44Z",
+   "body": "@bart2 \r\nCan this issue be closed now?"
+  },
+  {
+   "id": 1644923324,
+   "user": "bart2",
+   "created_at": "2023-07-21T03:09:15Z",
+   "body": "@Navid200, yeah, https://github.com/NightscoutFoundation/xDrip/pull/2897 was merged, so that issue can be closed."
+  },
+  {
+   "id": 1644924895,
+   "user": "Navid200",
+   "created_at": "2023-07-21T03:11:52Z",
+   "body": "Thanks"
+  }
+ ]
+}

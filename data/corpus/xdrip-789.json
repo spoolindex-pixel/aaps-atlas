@@ -1,0 +1,57 @@
+{
+ "id": 413155913,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 789,
+ "title": "Automatic calibration process of G6 when G6 mg/dl and xDrip mmol not working?",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/789",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2019-02-21T22:35:02Z",
+ "closed_at": "2021-02-18T12:16:47Z",
+ "comment_count": 7,
+ "body": "My G6 is a US one that works with mg/dl, I however use mmol and have xDrip show results in mmol. \r\n\r\nI use an Accu-Chek Aviva Connect in mmol that syncs with xDrip.  xDrip seems a bit confused about how to handle calibrations in this scenario for the G6. I understand that the glucose levels are calculated by the G6, not xDrip (as I understand it was with the libre). \r\n\r\nUntil just now it looked like calibrations were not sent to the G6 as long as I had mmol in the settings (the red squares don't become round).\r\nIf I switch that to mg/dl. The squares do turn round and calibrations do seem to be sent.\r\nThe test I took now while in mmol however seems to have caused the sensor to be calibrated as it corrected down from 9.5 to 7.2. However, this calibration does not show up in the calibration table and graph and also the square did not turn round. The calibration table and graph only contain the calibrations sent while xDrip was in mg/dl mode. The log seems to indicate that calibrations are happening despite that not being visible on the graph, the calibration table, and the calibration graph:\r\nNativeCalibrationPipe: Queuing Clibration for transmitter: 5.5 mmol/l [timestamp]\r\nOb1G5StateMachine: Queuing Clibration for transmitter: 5.5 mmol/l [timestamp]\r\nBluetoothGlucoseMeter: New blood test data: 5.5 @ [timestamp] Bluetooth Glucose Meter: Roche [MAC Address]\r\nBluetoothGlucoseMeter: Prompting for calibration for: 5.5 mmol/l from: [timestamp]\r\nNo other messages after that related to the calibration.\r\nThe square glucose measurement on the graph does not turn round\r\n\r\nOn libre it would have the following messages as well:\r\nBloodTest: Opportunistic calibration for Blood Test at [timestamp] of 6.6 mmol/l matching sensor slope at [timestamp about 9min later] from souce Bluetooth Glucsoe Meter: Roche [MAC address]\r\njamorham: Home: Processing Finger stick Claibration with values: glucose: 6.6 timeoffset: [6-digit number] full auto: true\r\nAddCalibration: Creating auto calibration from: 6.6 requested: [timestamp] from source: processFingerStringCalibration\r\nNativeCalibrationPipe: Queuing Calibration for transmitter: 6.6 mmol/l [timestamp]\r\n\r\nThese kind of messages only appear if I switch to mg/dl and then manually click on the blood test and select calibrate in that prompt.\r\n\r\nSecondary comments:\r\nCompared to how the calibrations worked with the Libre (smooth), with the G6 it looks strange. It also doesn't adjust previous readings like it did with the Libre and I have multiple \"jumps\" in the graph.\r\n\r\nIs the calibration behavior a bug or do I have to change something in the settings? Let me know if you need more information.",
+ "comments": [
+  {
+   "id": 774752485,
+   "user": "Navid200",
+   "created_at": "2021-02-07T20:12:40Z",
+   "body": "@diagnoe4 I'm sorry about the long delay in responding to this.  By now, you may have moved to a Firefly.  Is this still a current question?"
+  },
+  {
+   "id": 780894284,
+   "user": "diagnoe4",
+   "created_at": "2021-02-17T22:23:35Z",
+   "body": "@Navid200 while most comments seem to still hold, auto-calibrations still work, so not really an issue.\r\n\r\nThe calibration table never contains values for me, but that does not bother me."
+  },
+  {
+   "id": 780929139,
+   "user": "Navid200",
+   "created_at": "2021-02-17T23:47:29Z",
+   "body": "unless the first two characters of the serial number are 80 or 81, the transmitter does not send raw values.  That may be why the calibration graph is empty.  \r\n\r\nYou will get answers, in a few hours not in a few years, if you ask in the support channels:\r\nhttps://www.facebook.com/groups/xDripG5\r\nhttps://gitter.im/jamorham/xDrip-plus"
+  },
+  {
+   "id": 781142033,
+   "user": "diagnoe4",
+   "created_at": "2021-02-18T08:16:03Z",
+   "body": "I have been using the gitter chat for immediate questions. The issues I reported were meant to be backlog items. If it were something more bothersome, I would have made myself heard.\r\n\r\nIf the calibration graph is meant to be empty for current transmitters, than this is a non-issue and we can close it."
+  },
+  {
+   "id": 781302973,
+   "user": "Navid200",
+   "created_at": "2021-02-18T12:16:47Z",
+   "body": "The horizontal axis of the calibration graph represents raw values.  The vertical axis represent what xDrip considers to be the corresponding blood glucose for each raw value defined by the line shown on the graph.\r\nNo G6 transmitter after 81XXXX sends raw values.  xDrip cannot show anything on the calibration graph because xDrip has no access to the raw values.  That's why such transmitters cannot use the non-native mode."
+  },
+  {
+   "id": 781322124,
+   "user": "tolot27",
+   "created_at": "2021-02-18T12:51:48Z",
+   "body": "@Navid200 your latest comment should be added to the docs."
+  },
+  {
+   "id": 781324093,
+   "user": "tolot27",
+   "created_at": "2021-02-18T12:55:28Z",
+   "body": "I've added it to the [FAQs](https://github.com/NightscoutFoundation/xDrip/wiki/Frequently-Asked-Questions-(FAQs)). Maybe, a short explanation could be shown on the calibration graph explaining this."
+  }
+ ]
+}

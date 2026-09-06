@@ -1,0 +1,259 @@
+{
+ "id": 602454653,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1310,
+ "title": "G6 / 8G: \"Cannot send calibration older than 1 hour to transmitter\"",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1310",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "device-dexcom",
+  "calibration"
+ ],
+ "created_at": "2020-04-18T12:57:41Z",
+ "closed_at": "2021-03-14T12:28:27Z",
+ "comment_count": 46,
+ "body": "- G6 8Gxxxx, Firmware 2.18.2.88 and running xDrip+ nightly 2020-03-25\r\n- Using G5/G6 settings OB1, Native, Allow OB1 unbonding and Allow OB1 initiate bonding; all remaining options are OFF.\r\n\r\nWhen calibrating using the **syringe icon** I always get the error message \"_Cannot send calibration older than 1 hour to transmitter_\" (see screenshot). Why is that? \r\n\r\nRunning xDrip+ on Samsung A8 - phone's time setting is fine, see also timestamp in screenshot. I can only calibrate with the \"Initial Calibration\" menu, this works most of the time but people are recommending always using the syringe calibration. Does not work for me :-(\r\n\r\n![image](https://user-images.githubusercontent.com/60714349/79638182-96916a80-8184-11ea-99ba-50f036c0e622.png)",
+ "comments": [
+  {
+   "id": 616894453,
+   "user": "justinthomas",
+   "created_at": "2020-04-21T01:22:58Z",
+   "body": "I've been having the same issue, but I think it's only when I enter a calibration code of 0000 (e.g. when I restart a sensor). Is that the same for you?"
+  },
+  {
+   "id": 617348348,
+   "user": "emp-00",
+   "created_at": "2020-04-21T18:50:53Z",
+   "body": "Thanks for the feedback but clear \"NO\" - I am always entering the calibration code, see in screenshot below (here 7171). Do you see the \"Initial Calibration\" menu item? In my case it's always there and this is the only way for me to enter calibrations. Anybody else having this issue?\r\n\r\n![image](https://user-images.githubusercontent.com/60714349/79902358-a83b7200-8411-11ea-915b-a6335eebf08c.png)\r\n"
+  },
+  {
+   "id": 617397193,
+   "user": "justinthomas",
+   "created_at": "2020-04-21T20:28:30Z",
+   "body": "Yes, I do have the \"Initial Calibration\" item in the menu, and it is the only way I can currently calibrate. I also get the exact same errors that you're describing. I had this issue previously and a complete wipe and re-install of xDrip fixed it. However, I ended up back in the same scenario, but I haven't yet identified the specific trigger. I assumed it was the sensor restart, but it appears that's not the case. I'll let you know if it goes back to normal after starting a new sensor (probably within a couple days). If not, I'll wipe and pay more attention as I configure things to see if I can pinpoint the trigger.\r\n\r\nSome more details about my config:\r\n\r\n- Original Pixel, running Android 10\r\n- xDrip version: d0011d1-2020.03.25\r\n\r\n- Data Source: G6 Native\r\n- Status page:\r\n<img src=\"https://user-images.githubusercontent.com/1320751/79910633-0b66dd80-83ed-11ea-97db-1c0d720a8f48.png\" width=\"50%\">\r\n- G5/G6 Settings\r\n<img src=\"https://user-images.githubusercontent.com/1320751/79910650-10c42800-83ed-11ea-9c10-9c2b4a4394d9.png\" width=\"50%\">\r\n<img src=\"https://user-images.githubusercontent.com/1320751/79910663-13bf1880-83ed-11ea-8cee-6072932ba443.png\" width=\"50%\">\r\n<img src=\"https://user-images.githubusercontent.com/1320751/79910676-17529f80-83ed-11ea-84f6-a1a4bded776c.png\" width=\"50%\">\r\n"
+  },
+  {
+   "id": 617401068,
+   "user": "emp-00",
+   "created_at": "2020-04-21T20:37:02Z",
+   "body": "I also do sensor restarts (stop session, pop out, wait 15min, pop back in => start session). When re-starting I always enter the initial calibration code (never used 0000 before). My G5/G6 debug settings differ in some switches (see my config above). So all of that's is probably not the trigger...\r\n\r\nI have done frequent xDrip updates by downloading a more recent nightly or by using the auto-update function. Currently we're both using the same version 03/25 - we could upgrade to the latest alpha from April 19th but probably this does not fix our problem - I'm monitoring the changelog and saw no hint these updates solve our problem.\r\n\r\nMaybe @jamorham or any other specialist can have a look and give us a good hint. I'm sure we're not the only ones...\r\n\r\n"
+  },
+  {
+   "id": 618169694,
+   "user": "justinthomas",
+   "created_at": "2020-04-23T04:26:23Z",
+   "body": "Just documenting some troubleshooting. I started a new sensor with the calibration code. After warmup, I get the same rejection errors and see the Initial Calibration option in the hamburger menu. I backed up my settings, uninstalled xDrip, reinstalled, and restored the settings. I ignored all prompts to start the sensor (since it was already started). Once connected again, I was in the same situation. Next, I stopped the sensor, uninstalled xDrip, popped out the transmitter, reinstalled, and did **not** restore settings. Followed setup and wizard as if setting up for the first time. I'll report back with my findings once warmup is done and I'm awake."
+  },
+  {
+   "id": 618540035,
+   "user": "justinthomas",
+   "created_at": "2020-04-23T17:37:25Z",
+   "body": "Unfortunately, no luck. In addition to the steps mentioned above, I\r\n-  Started the sensor using the https://github.com/NightscoutFoundation/xDrip/commit/8c4987f16f5481f73ecdbe62de2c26cc7fe7d218 version (buddy said it was working for him)\r\n- Started the sensor using Dexcom's app before switching to xDrip\r\n\r\nneither of which fixed the issue.\r\n\r\nNext, I'm going to dive into the code to investigate the specific errors to see if I can figure anything out from that perspective."
+  },
+  {
+   "id": 618589803,
+   "user": "emp-00",
+   "created_at": "2020-04-23T18:52:47Z",
+   "body": "Thanks @justinthomas ... Here's the code - looks like xDrip is confused by somehow reading a wrong timestamp thinking the current time is \"older than 1 hour\" ? Is this a bug or a wrong setting in our phones? I'm using \"automatic date and time provided by network\" in my Android settings. Time displayed is correct. So maybe xDrip is in a different \"timezone\"??? I travelled from EU to the US and back 8 weeks ago. Maybe this confused xDrip? Had no issues with wrong timestamps during my travels though...\r\n\r\npublic static void addCalibration(final int glucose, final long timestamp) {\r\n            final long since = msSince(timestamp);\r\n[...]\r\n            if (**since > HOUR_IN_MS**) {\r\n                final String msg = \"**Cannot send calibration older than 1 hour to transmitter**: \" + glucose + \" @ \" + JoH.dateTimeText(timestamp);\r\n                JoH.static_toast_long(msg);\r\n                UserError.Log.wtf(TAG, msg);\r\n                return;\r\n            }\r\n"
+  },
+  {
+   "id": 619585935,
+   "user": "justinthomas",
+   "created_at": "2020-04-26T17:02:50Z",
+   "body": "I have good news to help get functional again! I downgraded to the [2019.10.27 Nightly Build](https://github.com/NightscoutFoundation/xDrip/releases/tag/2019.10.27) and calibration seems to work now. I had an issue with Bluetooth dropping communication, but I think it was because I had a permission set incorrectly. I'm not giving up on digging in deeper, but I just needed something stable to fall back to for own psychological well-being. @emp-00, hopefully this will help you as well!\r\n\r\nThe G5/G6 settings I currently have toggled **on** for this version:\r\n- Use the OB1 Collector\r\n- Native Algorithm\r\n- Go on without calibrations\r\n- G6 Support\r\n- Allow OB1 unbonding\r\n- Allow OB1 initiate bonding\r\n- Authenticate G5 before each read\r\n\r\n@emp-00, following up on your message...\r\n\r\nI doubt it's a wrong phone setting since I haven't changed anything in my phone other than downgrading the version of xDrip. I'm curious, did you happen to start a transmitter in a different timezone? Though, I don't have any reason to think that could be the root cause since I was having the issue within days of starting a new transmitter and did not change time zones."
+  },
+  {
+   "id": 619587006,
+   "user": "justinthomas",
+   "created_at": "2020-04-26T17:08:44Z",
+   "body": "Oh, another thing to note is that the Initial Calibration section of the hamburger menu is still there in my current working configuration, so it's presence is not sufficient to claim that the ideal calibration approach is not working.\r\n\r\nInstead of checking that menu, I've been monitoring the G5/G6 status tab to ensure that a single calibration is queued immediately after an attempt to calibrate, and then confirming that the calibration was transmitted and accepted by the transmitter by viewing the Events Log. Note that when using the \"Initial Calibration\" menu item, it queues two calibrations even if only one is entered, but the ideal calibration approach only queues one."
+  },
+  {
+   "id": 619591004,
+   "user": "emp-00",
+   "created_at": "2020-04-26T17:30:48Z",
+   "body": "Thanks justinthomas for your efforts! That's encouraging! \r\n\r\nI have JUST restarted my tx after another 10 days: first reading +100 mg/dL too high (as \"always\") and calibrated down by -20% with the Initial Calibration function. As you mentioned always (2) calibrations are queued with this method, confirmed. Tx accepted this first calibration! Damn I'm LUCKY :-) !! The last time I did this I had to restart once more due to \"confused calibration\" messages. Does anybody know if 20% or a fixed -XX mg/dL is the limit which makes the tx accept calibrations? And how long must I wait until the next calibrations step can be entered without crash?\r\n\r\nNow I JUST saw your posting. I have to wait now for 1 or better 2 hours (anbody knows better?) before the next calibration (I'm still almost 50 mg/dL off). Then I will try the syringe again. Have changed my settings as per your suggestion above (switched these 2 ON: \"Go on without Calibrations\" and \"Authenticate G5 before each...\"). Maybe this is doing the trick already? Will let you know.\r\n\r\nIf this does not work I might consider reverting to the 2019.10.27 Nightly Build as per your suggestion. However, hopefully this gives the developers (@jamorham) already the decisive hint which change after 10.27 introduced this bug that @justinthomas and myself are describing here. Let's keep on digging!"
+  },
+  {
+   "id": 619591830,
+   "user": "emp-00",
+   "created_at": "2020-04-26T17:35:35Z",
+   "body": "@justinthomas : yes, I had calibrated during my travels in another timezone... no idea if this caused the problem though. do you have an idea why xDrip+ thinks the current time is \"older than 1 hour\"? The message obviously appears due to the code snippet above which indicates that one of the two compared variables are \"wrong\". maybe due to time-zone changes? which code has changed in xDrip after the 10.27 revision possibly causing this issue? any ideas?"
+  },
+  {
+   "id": 621186082,
+   "user": "sashasochka",
+   "created_at": "2020-04-29T12:56:53Z",
+   "body": "having exactly the same issue"
+  },
+  {
+   "id": 621404918,
+   "user": "emp-00",
+   "created_at": "2020-04-29T19:06:48Z",
+   "body": "have you tried to revert to the 2019.10.27 Nightly Build as mentioned by @justinthomas above? I have not yet had the time to test this... currently my sensor is running fine - had to calibrate 3 times in small steps and now OK but still cannot use the syringe for calibration, nothing changed. now we are 3 people with this issue and at least one lead to fix this ... any more ideas?"
+  },
+  {
+   "id": 622131810,
+   "user": "7kilobytes",
+   "created_at": "2020-04-30T21:45:00Z",
+   "body": "I have also this issue. Will try to downgrade to the mentioned version"
+  },
+  {
+   "id": 622630849,
+   "user": "justinthomas",
+   "created_at": "2020-05-02T00:29:45Z",
+   "body": "FYI, I'm now running the [2019.12.22 Nightly build](https://github.com/NightscoutFoundation/xDrip/releases/tag/2019.12.22) and have been able to calibrate."
+  },
+  {
+   "id": 626315058,
+   "user": "emp-00",
+   "created_at": "2020-05-10T11:42:39Z",
+   "body": "@justinthomas: my Calibration Data Table looks similar to the one posted by @sashasochka ; we're all running in native mode and I guess that's normal as you mentioned (no raw data provided by 8G+ transmitters any more => only native calibration possible).\r\nI'm also still calibrating with the \"Initial Calibration\" menu since the syringe option still does not work. Very interesting to learn that you have no entries in the Calibration Data Table! That's very strange to me. How do you send calibrations to the transmitter? Maybe you're using a Dexcom receiver thus circumventing xDrip?"
+  },
+  {
+   "id": 626337567,
+   "user": "justinthomas",
+   "created_at": "2020-05-10T14:34:09Z",
+   "body": "Could there be an issue with a state machine where somehow the app thinks it's not using native node even when the box is checked?\n\nI'm not using the dexcom receiver. When I calibrate, I use either the syringe icon or auto using a Bluetooth glucometer, both of which have been working for me since I dropped back to the 12.22 release.\n\nTrying to think of anything else that could be different... I did completely wipe and reinstall (including manually reconfiguring) xDrip several times during my debugging. Could there be a bug with settings that persist when upgrading rather than a fresh install?\n\nAlso, I have now upgraded to the 12.31 release and have still been able to calibrate."
+  },
+  {
+   "id": 626358230,
+   "user": "emp-00",
+   "created_at": "2020-05-10T17:02:30Z",
+   "body": "Do you still enter the calibration code or again back to using \"0000\" as in your first post above? I'm **always** entering the code - also when restarting the sensor. I never did otherwise since it's recommended when using the (mandatory) native mode.\r\n\r\nStill I need to significantly calibrate \"down\" the BG after sensor restarts since first readings are always ~100 mg/dL too high. Also need to be VERY careful and enter max ~20% difference to actual values and wait a few hours between calibrations, otherwise I get \"Confused Calibration\" errors. How do you manage this when even using auto calibration with your BG meter? These \"confused\" errors are nasty for me since mostly only \"pop out\" and \"restart\" procedure helps -> back again giving 100 mg difference... Does this NOT happen when using the syringe calibration function?"
+  },
+  {
+   "id": 626358235,
+   "user": "justinthomas",
+   "created_at": "2020-05-10T17:02:33Z",
+   "body": "Interesting plot twist... I just updated to the original version that I was having trouble with (2020-03-25) and according to the logs and indications, it calibrated successfully. My calibration was really close to the measured - I didn't see my BG jump to correct, so I can't confirm it actually made a difference, but I certainly didn't get the original \"Cannot send calibration older than 1 hour to transmitter\" error that I was getting before."
+  },
+  {
+   "id": 626383484,
+   "user": "justinthomas",
+   "created_at": "2020-05-10T20:17:34Z",
+   "body": "@emp-00 I use the correct calibration code when I start a new sensor and only use the \"0000\" calibration code when I'm restarting a sensor (which I really only do when my current session is tracking well with very low noise). The updates that I've done most recently are in the middle of a sensor session, so there was no need to enter a calibration code.\r\n\r\nWow, I've never seen an error of 100 mg/dL, even after a restart! Last I chatted with Dexcom, an error that large was grounds for starting a new sensor. Personally, if I saw that on a **new** sensor, I'd call and ask for a replacement. Though, if it's after a restart, I wouldn't expect them to do so."
+  },
+  {
+   "id": 626387512,
+   "user": "sashasochka",
+   "created_at": "2020-05-10T20:48:43Z",
+   "body": "This is what happened to the data when I restarted it (gap with missed readings) It was too high until I checked against finger pricking (right side) - I tried to enter calibrations which the app rejected but then suddenly the data self corrected by a massive jump down.\r\n\r\n2 days later it's still about 15% higher than it should be but not that huge 40% diff anymore.\r\n\r\nBtw, what's the benefit of using 0000 instead of the real sensor code when restarting? I used the original sensor code. \r\n![107739602_243685](https://user-images.githubusercontent.com/822771/81510229-f3fa8080-9318-11ea-98e5-914a3a0a1d9d.jpg)\r\n"
+  },
+  {
+   "id": 626387936,
+   "user": "emp-00",
+   "created_at": "2020-05-10T20:52:11Z",
+   "body": "@justinthomas : Interesting! what's the advantage of using the \"0000\" code after a restart? How did you get to this idea?\r\n\r\nI practically always have the +100 mg/dL error after each sensor restart (done >10 times). Maybe you don't because of using the \"0000\" code?? Actually this large BG offset has been reported many times -> Seen/read it on different forums as well as in the jamorham gitter room. I'm 100% sure not the only one having this. After 2-3 calibrations the sensor is tracking again nicely with blood BG, so it's not a permanent issue. Actually this offset was not surprising to me since it also happened with 80/81 sensors using the nice preemptive restart functionality. Reason for this offset from my understanding is the \"insertion trauma\" causing initially too low readings which is compensated by the transmitter. When RESTARTING a sensor the transmitter also thinks it needs to compensate the trauma - even though this is wrong since it's a sensor restart and the trauma does not occur again. That's why this trauma offset always needs to be calibrated down. \r\n\r\nActually you're the first reporting this is NOT happening after a sensor restart! Would like to understand this better, see question above."
+  },
+  {
+   "id": 626392736,
+   "user": "emp-00",
+   "created_at": "2020-05-10T21:30:52Z",
+   "body": "I'm still running xDrip latest alpha 2020-03-25: Just tested using the \"syringe calibration\" once again and still getting the \"Cannot send calibration older than 1 hour to transmitter\" error. See screenshot.\r\n\r\nThis time looking closely:\r\n- The error message says \"...older than 1 hour... **95@2020-05-07 16:46** (yellow marked)\r\n- This is actually the timestamp and calibration value of my **LAST/PREVIOUS calibration** done with the \"Initial Calibration\" menu item after my last sensor restart 3 days ago!\r\n- Just now I had entered **91 mg/dL** with the syringe fuction on **2020-05-10** (see green marked log entry!)\r\n\r\n==> xDrip seems to look at the PREVIOUS but not the ACTUAL calibration and then cancels it because it's \"too old\"! This is the problem! @jamorham: Can you have a look into this issue? It looks like a software bug. THANKS!!\r\n\r\n![image](https://user-images.githubusercontent.com/60714349/81510921-d1b33380-9315-11ea-8c9a-77bd0dde7683.png)"
+  },
+  {
+   "id": 626400085,
+   "user": "sashasochka",
+   "created_at": "2020-05-10T22:35:04Z",
+   "body": "My probably irrelevant update. \r\nThe transmitter now says there is a sensor error. I enabled the \"fallback to xdrip\" option and seeing the below screenshot.  \r\nIt says \"unusual calibration state\" - it seems like if I was able to calibrate it it would have still worked for a bit of time.\r\n\r\n![107919150_172827](https://user-images.githubusercontent.com/822771/81512199-6d00d480-9327-11ea-9ca2-c237072a7cb2.jpg)\r\n"
+  },
+  {
+   "id": 626400507,
+   "user": "sashasochka",
+   "created_at": "2020-05-10T22:38:26Z",
+   "body": "Hm, I also noticed the initial calibration menu option is gone even though the calibration data table shows everything in the red.\r\n\r\n![107921803_171207](https://user-images.githubusercontent.com/822771/81512265-0334fa80-9328-11ea-9f34-e850085b5848.jpg)\r\n\nP.s. after resetting all calibrations (even though in xdrip they were all disabled anyways) sensor is working again "
+  },
+  {
+   "id": 626700204,
+   "user": "jamorham",
+   "created_at": "2020-05-11T13:25:28Z",
+   "body": "The issue described by @emp-00 shows that it refuses to create the new calibration record because the sensor sanity fails because there is no raw data. (see the screenshot for the log details) In that case it defaults to the last valid calibration which is why the timestamp is wrong.\r\n\r\nxDrip shouldn't be doing this and looking at the code paths it seems to me that its possible it is treating syringe entered blood tests values differently depending on another setting.\r\n\r\nCheck in `Less Common Settings` -> `Advanced Calibration` -> `Use Treatment BG values` is set to `Automatic mode`\r\n\r\n \r\n"
+  },
+  {
+   "id": 626868354,
+   "user": "sashasochka",
+   "created_at": "2020-05-11T18:14:41Z",
+   "body": "For me automatic mode is on"
+  },
+  {
+   "id": 626918927,
+   "user": "emp-00",
+   "created_at": "2020-05-11T19:46:16Z",
+   "body": "@jamorham : Thanks for your feedback. I had indeed set \"Advance Calibration/Use Treatment BG values\" to \"Ask me every time\". Have now switched to \"Automatic mode\" as proposed!\r\n\r\nJust tested 2 calibrations. Result: Entering BG via the syringe icon now leads to \"red squares\" shown in the BG trend (never seen before, new to me) BUT no calibration is being scheduled (System status), no entries to Calibration Data Table and absolutely nothing regarding calibration showing up in the Event Log. See screenshots. In short words => only red squares appearing but nothing else happens. Menu item \"Initial Calibration\" also still showing. No success....\r\n\r\n![image](https://user-images.githubusercontent.com/60714349/81604758-ae00f380-93d0-11ea-9ef4-53c62963dddd.png)"
+  },
+  {
+   "id": 626937900,
+   "user": "emp-00",
+   "created_at": "2020-05-11T20:20:25Z",
+   "body": "Now it worked!! I additionally switched **\"Advanced Calibration/Automatic Calibration (experimental)\" ON** ---> now when using the syringe \"(1) calibration\" is sent to the tx and it's accepted, showing in Event Log!! Interestingly though, in the \"Calibration Data Table\" the syringe calibrations do NOT appear. The \"Initial Calibration\" menu item is also still available. \r\n\r\nWhat's now the recommendation: Calibrating via syringe or Initial Calibration? What's the difference other than (1) vs. (2) calibrations are being queued? I heard syringe is \"better\" for G6 but why?"
+  },
+  {
+   "id": 634246817,
+   "user": "jamorham",
+   "created_at": "2020-05-26T19:57:41Z",
+   "body": "I believe that this issue and other related issues should be resolved in the 26th may nightly. Please test and let me know. thanks"
+  },
+  {
+   "id": 635351488,
+   "user": "sashasochka",
+   "created_at": "2020-05-28T13:30:39Z",
+   "body": "Entered blood glucose value through syringe. Then pressed it and calibrated using the value. Got sensor sanity value error followed by cannot submit older than 1 hour error.\r\n\r\nTried \"initial calibration\" dialog - \"impossible slope\" error.\r\n\r\nVersion 2020.05.26"
+  },
+  {
+   "id": 643280951,
+   "user": "Pogman",
+   "created_at": "2020-06-12T13:50:48Z",
+   "body": "Automated meter readings (Contour Next One) to Dex G6 via xDrip (20200526) show the same error."
+  },
+  {
+   "id": 657027520,
+   "user": "sashasochka",
+   "created_at": "2020-07-11T09:44:16Z",
+   "body": "Has this been fixed for anyone @Pogman @emp-00 @justinthomas ?"
+  },
+  {
+   "id": 657032001,
+   "user": "emp-00",
+   "created_at": "2020-07-11T10:04:31Z",
+   "body": "I'm good - see my reply in this thread on May 11 and the comments before leading to \"my\" solution"
+  },
+  {
+   "id": 657681664,
+   "user": "Pogman",
+   "created_at": "2020-07-13T17:10:31Z",
+   "body": "emp-00's workaround works good for automated calibration, the only thing to be wary of is that it will always calibrate without giving you a choice so got to be sure sg is fairly flat when doing a bg check or cal may be a bit messed up."
+  },
+  {
+   "id": 719833062,
+   "user": "old-square-eyes",
+   "created_at": "2020-10-30T22:48:03Z",
+   "body": "Just switched to G6. I have this issue on Alpha 20200713 (8Hxxx TX), using Caresens BT calibrations. Since I'm looping, all auto calibration settings are turned off. I'm set to \"Ask every time\".\r\n\r\nProcess for me is to test with my BT meter, then after 10-15 minutes I tap the red square and accept the calibration if I like it. The G6 seems to accept the calibration (see logs), but I get the slope error in xDrip, and the red square does not turn to a circle. I haven't tested accepting the calibration ~45 mintues, but on G5 this used to trigger the >1hr error.\r\n\r\nEdit: 3rd clibration didn't take. It was sent to the TX, but I have no acceptance in my logs :( Below is a screenshot after the 2nd successful calibration.\r\n\r\n![Screenshot_20201031-103407_xDrip-](https://user-images.githubusercontent.com/25760491/97762937-e955d100-1b6e-11eb-8712-544b4320a545.jpg)\r\n"
+  },
+  {
+   "id": 719978189,
+   "user": "old-square-eyes",
+   "created_at": "2020-10-31T19:37:38Z",
+   "body": "@jamorham I have tried nightly and still no change. I also tried temporarily enabling auto calibrations as you and @emp-00 suggested, it said waiting 15 mins, but it didn't even queue in Status, and after 15 minutes what looked flat to me there were no logs confirming the G6 did or did not get the calibration. Repeated later and had same results.\r\n\r\nI guess I just want to know if this is a cosmetic xDrip thing or whether calibrations are indeed not making it to the G6."
+  },
+  {
+   "id": 787134897,
+   "user": "Navid200",
+   "created_at": "2021-02-27T21:03:17Z",
+   "body": "I can successfully calibrate a G6, currently using an 8QXXXX.  But, I have done it on 8J and 81 as well.  \r\n\r\nThere are event logs that suggest xDrip is rejecting the calibration.  Nevertheless, the transmitter accepts them, which is all that matters in native mode.\r\n\r\nWhen I need to calibrate, which is limited to when I restart a G6 sensor, I use \"Initial calibration\" from the top left menu.\r\nI have disabled double calibration on the advanced calibration page.\r\nThe initial calibration option is not available right after the 2-hour warm up.  But, it becomes available in up to 15 minutes after.\r\n\r\nIt is known that some of the xDrip logs could be confusing.  And, we can talk about changing the code to address the logs.\r\nBut, G6 can be calibrated no problem."
+  },
+  {
+   "id": 798837326,
+   "user": "Navid200",
+   "created_at": "2021-03-14T05:34:11Z",
+   "body": "Can we close this issue please?\r\nThanks"
+  },
+  {
+   "id": 798898625,
+   "user": "emp-00",
+   "created_at": "2021-03-14T12:28:27Z",
+   "body": "Closed, problem solved (see above)"
+  }
+ ]
+}

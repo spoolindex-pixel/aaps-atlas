@@ -1,0 +1,69 @@
+{
+ "id": 1006595865,
+ "repo": "nightscout/AndroidAPS",
+ "number": 689,
+ "title": "[Dev] [Bug]Intermittent Issue with Delta values not being passed from glucose_status to _determine_basal",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/689",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-09-24T15:44:01Z",
+ "closed_at": "2021-09-30T18:30:33Z",
+ "comment_count": 9,
+ "body": "In the current Dev code, the values for Delta, Short Average Delta and Long Average Delta are not always passed to determine_basal. \r\n\r\nScreenshots attached showing example where none is showing up on either the GUI main screen or in openAPS SMB in spite of a change in glucose value of 32 mg/dl. Dev build listed in image. \r\n\r\nLogfile also attached. \r\n\r\n![Screenshot_20210924-164031_AndroidAPS](https://user-images.githubusercontent.com/14833174/134703074-9fc5a28b-c1ca-4b94-a1fa-40cd0af767ce.jpg)\r\n![Screenshot_20210924-164039_AndroidAPS](https://user-images.githubusercontent.com/14833174/134703081-3fd851fd-5358-4d9f-87a7-848a846758ba.jpg)\r\n![Screenshot_20210924-164047_xDrip+](https://user-images.githubusercontent.com/14833174/134703085-f9114f94-2043-4a8a-9690-4708009ebad2.jpg)\r\n![Screenshot_20210924-153559_AndroidAPS](https://user-images.githubusercontent.com/14833174/134703087-5a6f3696-11b8-49f7-a452-dd5fb7961848.jpg)\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/7226925/AndroidAPS.log)\r\n",
+ "comments": [
+  {
+   "id": 926849956,
+   "user": "dexdan",
+   "created_at": "2021-09-24T18:50:41Z",
+   "body": "Likely linked to https://github.com/0pen-dash/AndroidAPS/issues/104 "
+  },
+  {
+   "id": 931564101,
+   "user": "MilosKozak",
+   "created_at": "2021-09-30T18:30:33Z",
+   "body": "it's caused by your wrong setup: doubled BG values with identical timestamp.\r\nG6 is smoothing old values and you are probably synchnonizing them elsewhere which breaks it"
+  },
+  {
+   "id": 932787031,
+   "user": "tim2000s",
+   "created_at": "2021-10-02T17:18:05Z",
+   "body": "If there are dual glucose entries for each point, then the backfill from NS must be picking up additional data from Dexcom bridge in Nightscout which has the same value and a slight time delay. I'm surprised that the backfill from NS would pick this up and use it, but I think that explains the problem. \r\n\r\nI wonder how many others use dual feeds to NS for redundancy purposes?\r\n\r\nMore to the point, this was never an issue in 2.8.2 Master, so something on the way that AAPS is receiving and handling data from Nightscout and how it looks at missed readings serms to be different. "
+  },
+  {
+   "id": 932789983,
+   "user": "MilosKozak",
+   "created_at": "2021-10-02T17:36:16Z",
+   "body": "I don't know your setup but for Dexcom patched app + aaps is recommended for NS upload "
+  },
+  {
+   "id": 934149191,
+   "user": "tim2000s",
+   "created_at": "2021-10-05T07:39:40Z",
+   "body": "> I don't know your setup but for Dexcom patched app + aaps is recommended for NS upload\r\n\r\nYes. Nightscout upload is configured via AAPS. There is also an upload via Share, which had the Bridge component enabled in Nightscout providing an alternative route. \r\n\r\nThe key difference between master behaviour and Dev behaviour is that in the Dev version, the dual values are being recognised and generating incorrect delta data. In master, this wasn't happening. \r\n\r\nIt looks like the Dev handles duplicate timestamps differently. "
+  },
+  {
+   "id": 934182414,
+   "user": "MilosKozak",
+   "created_at": "2021-10-05T08:25:06Z",
+   "body": "Double upload can cause only troubles. Keep only AAPS which handles backward smoothing properly"
+  },
+  {
+   "id": 934182881,
+   "user": "MilosKozak",
+   "created_at": "2021-10-05T08:25:42Z",
+   "body": "Previous versions didn't upload smoothed values to NS"
+  },
+  {
+   "id": 962461833,
+   "user": "vanelsberg",
+   "created_at": "2021-11-06T14:44:52Z",
+   "body": "@MilosKozak I do not agree on the way it seems to works now:\r\n\r\nWhen in AAPS user **explicitly defines a BG source** (xDrip, or any other BG source then NS) it should ignore BG information from NS. This includes complaining about double values....\r\n\r\nImho AAPS version 2.8.2.9 is introducing a dependency to NS that is not needed or even unwanted:\r\nUser should be able to configure AAPS to not download *any* data from NS (\"upload-only\" as was available for 2.8.2)\r\n\r\nPlease see also https://github.com/nightscout/AndroidAPS/issues/857\r\n\r\n"
+  },
+  {
+   "id": 962463354,
+   "user": "vanelsberg",
+   "created_at": "2021-11-06T14:56:12Z",
+   "body": "@MilosKozak \r\n> I don't know your setup but for Dexcom patched app + aaps is recommended for NS upload\r\n\r\nI do not see what this has to do with the Dexcom. Same goes for any other \"BG source\"\r\n\r\nWhat you are actually saying is the AAPS does not accept *any* BG source writing values to NS even if AAPS does not need or should use these values?\r\n\r\nI can not see the point in this and severely limits the functionality of NS as central information storage:\r\n* BG source writes to NS\r\n* AAPS writes to NS\r\n* Any other source may be writing to NS\r\n\r\nAAPS should be able to do the same: write to NS, without the need to read (or validate data it is not reading)\r\nIn other words: we need an \"upload only\" option as was available for 2.8.2?\r\n"
+  }
+ ]
+}

@@ -1,0 +1,93 @@
+{
+ "id": 1334887455,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2004,
+ "title": "[3.1.0.3] - AAPS uses the 5 minute backfilled BG from Xdrip instead of current reading",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2004",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-08-10T16:33:11Z",
+ "closed_at": "2023-01-21T13:54:10Z",
+ "comment_count": 13,
+ "body": "If xdrip misses a BG due to BT connection issues, next time it connects, it backfills BG.\r\nAAPS gets the current BG for a split second, after which it receives the backfilled BG and stays with that 5 minute old BG until the next reading.\r\nI've seen that frequently because my new phone has frequent xdrip BT connection issues with my G5 transmitter, basically every 10-15 minutes... (The bad BT connectivity on the Xdrip side is a separate issue).\r\nSee screenshots of 2x AAPS sequentially and Xdrip after such an event. It last occurred @ 19:31 in the attached logs.\r\nLater edit: Also opened discussion on Xdrip here: https://github.com/NightscoutFoundation/xDrip/discussions/2267\r\n\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/9302181/AndroidAPS.log)\r\n![Screenshot_2022-08-10-19-31-37-06](https://user-images.githubusercontent.com/70835405/183965073-dbaa35a6-db09-497b-b1dd-125aad14d224.jpg)\r\n![Screenshot_2022-08-10-19-31-39-68](https://user-images.githubusercontent.com/70835405/183965078-4bf9c1ea-9ed9-4ede-b2cc-531eead495bb.jpg)\r\n![Screenshot_2022-08-10-19-32-12-87](https://user-images.githubusercontent.com/70835405/183965081-4d6df574-a5b3-4d04-aca8-2efb8b34fec5.jpg)\r\n",
+ "comments": [
+  {
+   "id": 1211005098,
+   "user": "andyrozman",
+   "created_at": "2022-08-10T17:07:35Z",
+   "body": "This is Xdrip issue not AAPS... Xdrip should Broadcast only latest data entry, not the bacfilled one... So backfills should never be sent towards AAPS..."
+  },
+  {
+   "id": 1211019586,
+   "user": "nlof",
+   "created_at": "2022-08-10T17:20:54Z",
+   "body": "Interesting. For now it impacts AAPS but I'll report it on Xdrip too...\r\nIf others believe it's an Xdrip issue alone, I guess this report could be closed here.\r\nEDIT: Added Xdrip discussion here: https://github.com/NightscoutFoundation/xDrip/discussions/2267"
+  },
+  {
+   "id": 1211283393,
+   "user": "justmara",
+   "created_at": "2022-08-10T21:16:31Z",
+   "body": "Why `backfills should never be sent towards AAPS`? xDrip's broadcast bgentry messages still has the timestamp. So backfilled values can be correctly stored to be shown on graph, used for delta calculation, etc. If they still has the correct time marker - whats problem?"
+  },
+  {
+   "id": 1211299514,
+   "user": "justmara",
+   "created_at": "2022-08-10T21:32:51Z",
+   "body": "I've seen same behavior on nsclient, when it receives backfilled data from NS after network issues for example.\r\nOn screenshot below you can see that main graph is drawn correctly to current time, all the predictions are actual, OAPS label shows '1 min ago', but the BG value is shown from 99 minutes ago.\r\n![telegram-cloud-photo-size-2-5395495976782903963-y](https://user-images.githubusercontent.com/4157587/184023984-aa5ceaf4-ffcd-49c5-8cd3-896348c92f57.jpg)\r\n"
+  },
+  {
+   "id": 1214423114,
+   "user": "robertrub",
+   "created_at": "2022-08-14T17:56:53Z",
+   "body": "I confirm. AAPS received both values but AAPS shows the one before last and as expired..\n\n![Screenshot_2022-08-14-19-19-31-450_info.nightscout.androidaps.png](https://user-images.githubusercontent.com/76626474/184547936-a979885e-9dc5-4b8d-b6b9-5c4594843518.png)\n\n![Screenshot_2022-08-14-19-19-41-907_info.nightscout.androidaps.png](https://user-images.githubusercontent.com/76626474/184547940-df3cf783-2963-4165-ab43-cbc23c32741b.png)\n\n![Screenshot_2022-08-14-19-55-55-884_info.nightscout.androidaps.png](https://user-images.githubusercontent.com/76626474/184548986-ff7450e8-2695-4f49-aa81-67bb4069ce06.png)\n\n![Screenshot_2022-08-14-19-56-10-618_info.nightscout.androidaps.png](https://user-images.githubusercontent.com/76626474/184548988-537f3089-b659-4955-a04e-d791c0875b5c.png)"
+  },
+  {
+   "id": 1214443925,
+   "user": "robertrub",
+   "created_at": "2022-08-14T20:30:42Z",
+   "body": "> This is Xdrip issue not AAPS... Xdrip should Broadcast only latest data entry, not the bacfilled one... So backfills should never be sent towards AAPS...\n\nSorry Andy but I don't agree. When a BG reading is missed by BYODA or xDrip, on the next connection, all the missed data is send. This is needed to calculate precisely the deltas and stats.\n\nI used BYODA till now and this _catching up of missed BGs_ never caused any problems in AAPS."
+  },
+  {
+   "id": 1215951161,
+   "user": "Foxy7",
+   "created_at": "2022-08-15T22:48:31Z",
+   "body": "I use Samsung and xdrip+ and get the same issue described above by @robertrub, the 2nd to last timestamp is used on the main screen. It resolves on the next reading but is a pain. Have only been using AAPS since April and assumed this was a glitch we all lived with. the xdrip+ tab within AAPS has the correct data, so assume it just needs to be filtered to look for the most recent value rather than the last value recieved?"
+  },
+  {
+   "id": 1222486847,
+   "user": "Foxy7",
+   "created_at": "2022-08-22T15:03:55Z",
+   "body": "I watched this happen last night, after a disconnect due to a phone software update, the phone had missed 3 readings and as I restarted it xdrip found the latest data then loaded the missing historical data oldest to newest, so the last value to hit AAPS was the one before the current sgv. \n\nSo does suggest that the xdrip sgv value either populates the \"latest\" file with the previous sgv or AAPS looks for the last entry in a json array, instead of the latest value.\n\nHow can we find out which one this is pls?"
+  },
+  {
+   "id": 1242659189,
+   "user": "ruesseldia",
+   "created_at": "2022-09-10T07:41:59Z",
+   "body": "I noticed that the AAPS watch face shows the correct (=latest) value when data has been backfilled. I‘ve tested this a couple of times and was able to reproduce the effect. Therefore I suppose it‘s an AAPS issue.\r\n\r\n![86ED6CC0-90AD-4A4F-9F5F-0EB2BF37ED44](https://user-images.githubusercontent.com/110337879/189474171-0659a58e-53e4-4693-a42f-ded58ebd8a84.png)\r\n![FF5154C1-2BED-473B-932A-76DF01665875](https://user-images.githubusercontent.com/110337879/189474172-a8f940f7-cd95-430f-b9c6-a8652ee5e9cb.jpeg)\r\n![41FFD850-B235-44AC-A520-C25EEB73047E](https://user-images.githubusercontent.com/110337879/189474175-e67644ed-3cb0-46f1-8751-2563f39203cb.jpeg)\r\n"
+  },
+  {
+   "id": 1242789833,
+   "user": "dar-kod",
+   "created_at": "2022-09-10T19:06:06Z",
+   "body": "I use latest nightly xDrip+ and latest AAPS version. I have reported this case before in earlier versions but there was some difficulties to understand the problem. It is clear that AAPS gets all BGs from xDrip+ but it doesn't display it on the main screen in the first reading but after second reading. \r\n\r\n`In the first reading AAPS gets BG value and display very shortly for maybe 1 second` but then the value before last. In some longer disconnections I have seen than not previous value is displayed but some before about maybe 20 or 30 minutes, what was even stranger to me.\r\n\r\nI am attaching screenshots which shows what I wrote in the first paragraph.\r\n\r\n![1660829487658](https://user-images.githubusercontent.com/24446806/189498133-43be15ff-56b9-4128-b238-3e5c12395a0d.jpg)\r\n![1660829487663](https://user-images.githubusercontent.com/24446806/189498142-39a68613-3624-462b-acf3-3d6dc479e04f.jpg)\r\n![1660829487667](https://user-images.githubusercontent.com/24446806/189498147-c76e1e88-9c2e-49b7-8e6f-ba5a4b92fe46.jpg)\r\n![1660829487669](https://user-images.githubusercontent.com/24446806/189498158-fd1821f9-44ca-4295-9d24-355acb9ba869.jpg)\r\n![1660829487672](https://user-images.githubusercontent.com/24446806/189498172-4d00b451-6ade-4418-b336-3582a4a6c0f1.jpg)\r\n![1660829487660](https://user-images.githubusercontent.com/24446806/189498185-bd03817b-3568-4069-b401-74bb66a7cef7.jpg)\r\n\r\n"
+  },
+  {
+   "id": 1396213003,
+   "user": "duncanbarnes",
+   "created_at": "2023-01-18T23:08:10Z",
+   "body": "The patch by @asquelt seems to have fixed it for me. It does seem to make the query slightly slower but not to a point that its worse than the situation before. Would be great to see asquelt/AndroidAPS@f036e6e\r\n as a pull request perhaps?\r\n\r\n"
+  },
+  {
+   "id": 1396818062,
+   "user": "nlof",
+   "created_at": "2023-01-19T11:17:00Z",
+   "body": "Maybe someone can also test Milos's [commit](https://github.com/nightscout/AndroidAPS/commit/8fb5c5a984a8e16062e70282ce3d0fd6383ed864)? They look a lot alike..."
+  },
+  {
+   "id": 1396929077,
+   "user": "duncanbarnes",
+   "created_at": "2023-01-19T12:52:37Z",
+   "body": "Ah, I hadn't seen that, it is identical apart from formatting in which case I am essentially testing both, glad to see that's in the dev branch. The slower query is the only noticeable effect, it comes up with a grey 0.0 very briefly (0.5s ish) before showing the correct glucose reading."
+  }
+ ]
+}

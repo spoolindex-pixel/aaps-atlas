@@ -1,0 +1,47 @@
+{
+ "id": 679812211,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1406,
+ "title": "Xdrip + (Delay by reading raw values) ",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1406",
+ "state": "closed",
+ "labels": [
+  "enhancement"
+ ],
+ "created_at": "2020-08-16T19:32:43Z",
+ "closed_at": "2023-08-14T21:44:08Z",
+ "comment_count": 5,
+ "body": "I discovered that there is a delay by reading raw values ​​in Xdrip +.\r\nThis delay is caused by the patched Libre 2 app or sensor.\r\nThis delays are summarized and if the delay is longer than 3 minutes, Xdrip + leaves a gap on the graph.\r\nThis happens with me every 4 hours.\r\n\r\n\r\nThis delay can not be avoided, but I think it can be compensated in the Xdrip+ Code. If  Xdrip + reading only 4 raw values ​​for the next value when the delay ist more than one minute. \r\n\r\nYou can see the discussion of this issue here  https://github.com/NightscoutFoundation/xDrip/pull/1401\r\n\r\n![90328934-da647700-dfa0-11ea-9d75-b476bf21b6a1](https://user-images.githubusercontent.com/69725840/90342336-ba1bd300-e007-11ea-9bbc-7f91773b9dac.jpg)\r\n![IMG_20200815_213514](https://user-images.githubusercontent.com/69725840/90342337-bbe59680-e007-11ea-9f89-81c2d3050c42.jpg)\r\n\r\n\r\nA lot of people see this Problem (Nightly build 25th Jul 2020)\r\n\r\n\r\n\r\n",
+ "comments": [
+  {
+   "id": 674810609,
+   "user": "smuething",
+   "created_at": "2020-08-17T10:52:12Z",
+   "body": "I've taken a look at the code and I think the problem is this:\r\n\r\n- Internally, xDrip does not work on a fixed 5 min schedule.\r\n- The libre receiver code runs every time the patched app sends a new raw value, and if the most recent bg reading is older than 4.5 minutes, the code calculates a new reading from the most recent raw values. It does not look at how many values there are, in fact, the current version uses all raw values from the last 20 minutes to calculate a weighted average (that's why your green readings are so much smoother than the white raw values). The new value is stored in the database with the timestamp of the most recent raw value that the app received, and those raw values only come in every 63 seconds or so.\r\n- When creating the chart shown above, xDrip reads all calculated bg readings from the database and adds them to the chart. *But*: In order to create a nice even spacing of the points, it moves the displayed point to an exact multiple of 2.5 min (always rounding down). If you look closely at your picture, you can see that the gaps are a little smaller than a full circle: That's because the value before the gap is at 16:12:30, and the value after the gap got clamped to 16:20:00. The *actual* readings happened up to 2.5 min later.\r\n- At the gap, the following happened: The value before the gap was actually received at 16:14:59, which got rounded down to 16:12:30, and the value after the gap was received at 16:20:02, which then got rounded down to 16:20:00.\r\n"
+  },
+  {
+   "id": 674813898,
+   "user": "smuething",
+   "created_at": "2020-08-17T10:59:42Z",
+   "body": "I think this should be fixed at the display level, not at the data collection level:\r\n- I would not want to store data in the database that was modified just to make it look nice in the chart\r\n- Only calculating values at 5 min increments is a bad idea as well: Maybe your phone was out of range of your sensor for 5:10 since the last bg reading. If the next bg reading was only calculated at exact 5 min increments, you would have to wait for almost 5 more minutes before getting a new value from xDrip (not just in the chart, but also in the number display).\r\n- One option would be to add a preference that disables the clamping to 2.5 min increments, which would solve the problem, but it would still generate an irregular spacing of the points in x direction, e.g. if you missed the fifth new value, all following bg readings would shift a fifth of a point to the right."
+  },
+  {
+   "id": 952965820,
+   "user": "Navid200",
+   "created_at": "2021-10-27T14:05:38Z",
+   "body": "@Artemdrip and everyone else interested,\r\nThis is inevitable.  There is no solution for the gap.  I would love to know what the solution is if anyone can explain it.\r\n\r\nxDrip's time base is the phone's time base it runs on.  Every phone synchronizes its time with the internet.\r\nThe device that transmits readings (from the sensor to xDrip) has a local time base that is never synchronized to the internet.\r\nTherefore, there is always a relative time drift between the two.  Every time the time drift crosses the minute boundary, there has to be either a gap, or a compression (points spaced by 4 minutes instead of 5), on screen because the graph time resolution is 1 minute.\r\nHow often a gap, or compression, appears on the graph has to do with how far off the local time base of the transmitter is from a perfect time base.\r\n\r\nThere is no way to avoid the gaps, or compressions.  We can move them around in the graph.  But, there is no way to avoid them.\r\n\r\nThe only way to completely avoid these fluctuations would be to create an artificial time base for xDrip to track the time base of the transmitter and operate xDrip on that time base.  This would cause a disaster because then, we will have issues with synchronizing masters and followers and we will end up with closing one issue and having 20 more opened!\r\n\r\nPlease explain how you expect to avoid the gaps.   Otherwise, I would like to close this as expected behavior and a non-issue."
+  },
+  {
+   "id": 1568750732,
+   "user": "Navid200",
+   "created_at": "2023-05-30T16:43:14Z",
+   "body": "Is anyone still seeing the occasional gaps shown in the screenshot using the current stable release or any Nightly after?"
+  },
+  {
+   "id": 1678115473,
+   "user": "Navid200",
+   "created_at": "2023-08-14T21:44:08Z",
+   "body": "Closing due to inactivity."
+  }
+ ]
+}

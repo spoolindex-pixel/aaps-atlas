@@ -1,0 +1,39 @@
+{
+ "id": 994093404,
+ "repo": "nightscout/AndroidAPS",
+ "number": 669,
+ "title": "dev : aaps crash after install",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/669",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-09-12T08:20:19Z",
+ "closed_at": "2021-09-13T17:29:34Z",
+ "comment_count": 4,
+ "body": "dev branch, last commit, the build works, but after install the apk, click on open button, aaps crash systematically.",
+ "comments": [
+  {
+   "id": 917647256,
+   "user": "Philoul",
+   "created_at": "2021-09-12T14:28:42Z",
+   "body": "I couldn't reproduce this crash on my loop phone, but I got it once on my dev phone the first time I built dev with OpenHuman refactoring (so I tried to analyse with the debugger...)\r\n\r\n@MilosKozak and @TebbeUbben see below my analysis if it could help...\r\nThe problem seems to be in OpenHuman module in `OHCounterDelegate.kt` (line 12)\r\n`private var value = sp.getLong(\"openhumans_counter\", 1)`\r\n\r\nBreak point put on this line (I got an error when I tried to evaluate expression `sp.getLong(\"openhumans_counter\", 1)`)\r\n\r\nI just had to evaluate once `sp.putLong(\"openhumans_counter\", 1)` and I could continue and AAPS starts on my dev phone without the crash\r\nUnfortunatly I was not able to reproduce this crash after that...\r\n\r\nI proposed @MTR93600 to test dev branch with the modification below and he could start AAPS without crash (but I'm afraid it's just a workaround, I don't think it's the root cause...)\r\n```\r\nprivate var value = try {\r\n        sp.getLong(\"openhumans_counter\", 1)\r\n    } catch(e:Exception) {\r\n        sp.putLong(\"openhumans_counter\", 1)\r\n        1L\r\n    }\r\n```\r\n\r\n=> He still have a crash after testing this modification (???)\r\nI hope this will help you..."
+  },
+  {
+   "id": 918412471,
+   "user": "MilosKozak",
+   "created_at": "2021-09-13T17:27:40Z",
+   "body": "related to this\r\nhttps://console.firebase.google.com/u/0/project/androidaps-c34f8/crashlytics/app/android:info.nightscout.androidaps/issues/9a680d0fc839920f00aa2680d92ec3ff?versions=2.8.2.2-dev%20(1500)&time=last-seven-days&sessionEventKey=613CA45703DE00013D15CAE6F53F290F_1585101421281320186"
+  },
+  {
+   "id": 918413942,
+   "user": "MilosKozak",
+   "created_at": "2021-09-13T17:29:34Z",
+   "body": "I don't undestand how this could happen (crash is in android lib) but this should resolve it\r\nhttps://github.com/nightscout/AndroidAPS/commit/dc90c6b140e9df77b5739ba1ccd32a951cc83bae"
+  },
+  {
+   "id": 918889630,
+   "user": "MTR93600",
+   "created_at": "2021-09-14T07:33:13Z",
+   "body": "problem fixed :) thanks :)"
+  }
+ ]
+}

@@ -1,0 +1,41 @@
+{
+ "id": 1093877439,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1129,
+ "title": " 3beta11 Omnipod Eros Status not set to \"no active pod\" before activation",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1129",
+ "state": "closed",
+ "labels": [
+  "omnipod eros"
+ ],
+ "created_at": "2022-01-05T00:53:23Z",
+ "closed_at": "2022-06-23T10:43:23Z",
+ "comment_count": 4,
+ "body": "Phone: Pixel 4a 5G\r\nAndroid: 12\r\nv3 beta 11\r\n\r\nWhen activating a new Eros pod, the screen shows \"Setup in progress (waiting for pod activation)\".  In this instance I switched from Dash to Eros but I have noticed this screen before.  Both the activation and deactivation processes to proceed without issue.\r\n\r\nI took the following actions:\r\n1. deactivated dash pod\r\n2. opened config builder selected \"omnipod\" for Eros\r\n3. connected Orange Link (needed an AAPS restart)\r\n4. activated Eros\r\n\r\nI copied what is probably the most pertinent info here.  The entire file is attached with a screenshot as well\r\n\r\nThis is the notification in the log\r\n\r\n05:08:56.904 [OmnipodErosPumpPlugin] D/PUMP: [OmnipodErosPumpPlugin$2.run():269]: Skipping Pod status check because command queue is not empty\r\n05:08:56.906 [RxCachedThreadScheduler-2] D/NOTIFICATION: [NotificationStore.add():60]: Notification received: No active Pod\r\n\r\nDeactivation of the Dash pod starts around 5:06AM. Activation of Eros starts around 5:07AM\r\n[AndroidAPS._2022-01-03_03-54-52_.txt](https://github.com/nightscout/AndroidAPS/files/7811273/AndroidAPS._2022-01-03_03-54-52_.txt)\r\n![Screenshot_20211210-222117](https://user-images.githubusercontent.com/65825958/148143155-698192a3-df92-465c-8f60-e5f16e98e411.png)\r\n\r\n\r\nReporting bugs\r\n--------------\r\n- **Note the precise time the problem occurred** and describe the circumstances and steps that caused\r\n  the problem\r\n- Note the Build version (found in the About dialog in the app, when pressing the three dots in the\r\n  upper-right corner).\r\n- Obtain the app's log files, which can be found on the phone in\r\n  _/storage/emulated/0/Android/data/info.nightscout.androidaps/_\r\n  See https://androidaps.readthedocs.io/en/latest/EN/Usage/Accessing-logfiles.html\r\n- Open an issue at https://github.com/nightscout/AndroidAPS/issues/new\r\n",
+ "comments": [
+  {
+   "id": 1089749834,
+   "user": "happygirlnyc70",
+   "created_at": "2022-04-06T03:33:50Z",
+   "body": "The error appears to be the preferences file.  The message was removed by downgrading to ver 2.8.2.1 and importing an older preference file that didn't have an active pod."
+  },
+  {
+   "id": 1163587643,
+   "user": "happygirlnyc70",
+   "created_at": "2022-06-22T20:50:19Z",
+   "body": "Reopening this issue because it is not resolved. Will update with more recent logs at next pod change"
+  },
+  {
+   "id": 1164159965,
+   "user": "MilosKozak",
+   "created_at": "2022-06-23T09:15:10Z",
+   "body": "@happygirlnyc70 open new issue with logs"
+  },
+  {
+   "id": 1164254864,
+   "user": "happygirlnyc70",
+   "created_at": "2022-06-23T10:43:23Z",
+   "body": "Will open new issues with logs at pod change tomorrow "
+  }
+ ]
+}

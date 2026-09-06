@@ -1,0 +1,19 @@
+{
+ "issue_id": 798,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/798",
+ "title": "[3.0-beta1] Medtronic SMBs show as Meal Boluses as well as Incorrect IOB calculation from temp basals",
+ "symptom": "Using Medtronic, SMBs initially show correctly, but after 10-15 minutes get changed to appear as meal boluses. Also, when AAPS has set a 0 temp basal for 30 or 90 minutes, it is applying the full negative IOB even though a new rate is set after the next loop, so the full duration is deducted even though the rate only ran for a few minutes.",
+ "cause": "Zero TBR are not time limited; when a normal TBR is cancelled, a cancel command (rate=0, duration=0) appears in history, but this does not happen for standard Zero TBR, so the duration shown and used is always the full one.",
+ "fix": "The fix was implemented by andyrozman in a branch and later checked in. The user siggy226 confirmed that after installing the correct build, the fix looked good. The fix addresses both the SMB display issue and the Zero TBR duration issue.",
+ "settings_changed": [],
+ "devices": [
+  "Medtronic"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "Medtronic"
+ ],
+ "confidence": "high",
+ "evidence_quote": "It seems that Zero TBR are not time limited (when normal TBR is cancelled we get cancel command in history (rate=0, duration=0), this doesn't happen if we have standard Zero TBR, so duration shown (and taken by us is always full one)... The problem was there since the beginning and nobody noticed this before..."
+}

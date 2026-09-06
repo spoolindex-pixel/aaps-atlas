@@ -1,0 +1,23 @@
+{
+ "issue_id": 1502,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/1502",
+ "title": "New mongodb uri format is not supported by xDrip+",
+ "symptom": "After migrating from mlab to MongoDB Atlas, xDrip+ can no longer upload directly to the database. The new 'mongo+srv://' URI prefix can be set in the cloud parameters, but the logs show it is subsequently rejected.",
+ "cause": "The thread identifies that direct-to-Mongo uploads are not supported by Nightscout (they only worked incidentally after the REST API was introduced) and that MongoDB Atlas's mongo+srv URI scheme is not usable from xDrip+, so direct MongoDB injection is not a viable path.",
+ "fix": "The maintainers recommend removing MongoDB upload entirely or gating it behind engineering mode, and using Nightscout's REST API for uploading instead of direct Mongo.",
+ "settings_changed": [],
+ "devices": [
+  "xDrip"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "mongodb",
+  "mongo+srv",
+  "rest api",
+  "nightscout",
+  "engineering mode"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "Nightscout does not support direct to Mongo uploads anymore (it never really did, the fact it worked after REST API was introduce was incidental), so the \"correct\" fix here is to remove the Mongo uploads entirely and/or label it as something no Nightscout user should use."
+}

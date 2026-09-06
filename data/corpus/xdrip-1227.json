@@ -1,0 +1,69 @@
+{
+ "id": 560201514,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1227,
+ "title": "Libre2 patched app suddenly stopped working",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1227",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2020-02-05T07:58:42Z",
+ "closed_at": "2021-03-02T03:32:19Z",
+ "comment_count": 9,
+ "body": "Hello,\r\n\r\n I am using Libre2 patched app as source and it suddenly stopped working overnight.\r\n\r\nI can still scan sensor with nfc and patched app and it is showing values. But there are no values received in xDrip. I have tried restarting collector and still no luck.. ",
+ "comments": [
+  {
+   "id": 582296907,
+   "user": "MasterPlexus",
+   "created_at": "2020-02-05T08:33:09Z",
+   "body": "In Librelink, did you have a red mark by the alerts?\r\n\r\nJust try the following:\r\nGo to android settings, apps, all apps, at top right the three dots, select system, scroll to \"Bluetooth\", and tap it, select memory, then tap button Clear memory  (not the cache button).\r\nAfter that, check that the bluetooth is really active on your phone, go to patched LibreLink and rescan the sensor. wait for 5-10 minutes, and hope that the data transmition will restart...\r\n\r\nIf not, then it could be, that the Bluetooth stack of the Sensor was upset. Sometimes the Sensor starts to rework after half a day if you have luck.\r\n\r\nFinaly, please mention which Phone did you use, wich android version, and wich xDrip version (this is maybe importand for documentation, and further investigation)"
+  },
+  {
+   "id": 582534524,
+   "user": "juris2903",
+   "created_at": "2020-02-05T18:01:02Z",
+   "body": "The same for me. Allready tryed everything... Still works with nfc, but not with xdrip+ Phone xiaomi redmi note8t android 9.0. Worked for me normaly only about three days then in liberlink patched app the red mark appeared and xdrip stoped to get mesures from sensor. I think problem is android 9.0 pie or bletooth problems in it..."
+  },
+  {
+   "id": 582536323,
+   "user": "LubomirKovalcik",
+   "created_at": "2020-02-05T18:05:16Z",
+   "body": "I am using Xiaomi Mi9 , android 9.0, xdrip 20191027.\r\n\r\nReinstalling both apps helped me to solve this problem."
+  },
+  {
+   "id": 582546676,
+   "user": "juris2903",
+   "created_at": "2020-02-05T18:29:04Z",
+   "body": "Did you reinstall apps while the current sensor was active?"
+  },
+  {
+   "id": 583082575,
+   "user": "Gyk3522",
+   "created_at": "2020-02-06T19:58:04Z",
+   "body": "Good afternoon!\r\nYesterday we installed a new sensor. The sensor was activated by the Librelink application. After 60 minutes, no data was transferred to xDrip +. Error 120 appears. NFC reads data from the sensor. We use the phone Sumsung A50.\r\n"
+  },
+  {
+   "id": 583757541,
+   "user": "Gyk3522",
+   "created_at": "2020-02-08T17:21:28Z",
+   "body": "Hello!\r\nput a new sensor the problem is gone."
+  },
+  {
+   "id": 584708060,
+   "user": "steve8x8",
+   "created_at": "2020-02-11T16:00:54Z",
+   "body": "There is a way to find out whether the problem is with LibreLink (not) receiving one-minute (BLE) data, or with the inter-app connection LL->xDrip:\r\n- connect the phone to a computer that has adb, abe (Android Backup Extractor), tar and sqlite installed\r\n- `adb backup -f ll.ab -noapk com.freestylelibre.app.de`\r\n- `abe unpack ll.ab ll.tar \"\"`\r\n- `tar xf ll.tar`\r\n- look for `sas.db` and, using sqlite3, extract the `currentReadings` table, then check the timestamps whether they stop early\r\nThis isn't for beginners though...\r\n(NFC data go to the `realTimeReadings` and `historicReadings` tables.)"
+  },
+  {
+   "id": 589174391,
+   "user": "keencave",
+   "created_at": "2020-02-20T16:39:56Z",
+   "body": "Good idea. But this will only prove that the LL app is receiving readings from the sensor. An other user in that case found them in the sas.db but didnt receive any readings in xDrip. In that case the intent mechanism seemd to be broken somehow. "
+  },
+  {
+   "id": 788553222,
+   "user": "Navid200",
+   "created_at": "2021-03-02T03:32:19Z",
+   "body": "Closing the issue as it seems the original problem was resolved.\r\nPlease use the support channels before opening an issue.\r\nhttps://www.facebook.com/groups/xDripG5\r\nhttps://gitter.im/jamorham/xDrip-plus"
+  }
+ ]
+}

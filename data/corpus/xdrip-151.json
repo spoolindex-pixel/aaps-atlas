@@ -1,0 +1,69 @@
+{
+ "id": 245794069,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 151,
+ "title": "SiDiary-Export did not contain other Therapeutic Data (KH,IE, ect)",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/151",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2017-07-26T17:18:35Z",
+ "closed_at": "2017-08-09T13:38:43Z",
+ "comment_count": 9,
+ "body": "It seems that only the CGMS Data are included in the Export for SiDiary. For a overall-View and discussion with the doctor a complete export should be possible.",
+ "comments": [
+  {
+   "id": 318268848,
+   "user": "MasterPlexus",
+   "created_at": "2017-07-27T06:13:37Z",
+   "body": "I have a short look to the sources, and think the implementation will not that difficult. So I'll try it in my Fork. If everything is ok and working I'll come back, if ok for you, with the changes..."
+  },
+  {
+   "id": 318270188,
+   "user": "AdrianLxM",
+   "created_at": "2017-07-27T06:22:18Z",
+   "body": "@MasterPlexus, that would be great. I wrote the export at a time where there was no treatment data in xDrip.\r\nDo you know the import format specifications for SiDiary? Can CGM-Data and Treatments be mixed together?\r\n\r\nI think it would be best to export a second file with MBG data (from calibrations ans also those not used as calibrations) including the carbs (does SiDiary expect g of carbs or German \"BE\"?) and insulin.\r\n\r\nI'm looking forward to hearing how it goes :+1:  "
+  },
+  {
+   "id": 318272010,
+   "user": "MasterPlexus",
+   "created_at": "2017-07-27T06:33:14Z",
+   "body": "@AdrianLxM I know the format more or less, and yes it could be mixed. All what needs to be done is to name the right fields in the header. Nevertheless I can request the data structure, if I have problems, from the SiDiary-Team ;) \r\nMay also a interface could be possible, to transfer the data via gmail to Sidiary-online, to let import it there in the background (used that in the past for Glimp-Data). But this should be the next step what I have in mind.\r\n\r\nI'm not sure if it will be the best to separate the files by datatype. May it could be interested to made settings available which kind of data should be included in the export-File? We will see. At first I will try to implement just the rough Export all in one, just to check that everything comes in a way that the data could be well imported. After that we can see how to increase the export ;)\r\n"
+  },
+  {
+   "id": 318753289,
+   "user": "MasterPlexus",
+   "created_at": "2017-07-28T20:23:55Z",
+   "body": "Doing it a little bit. Locally it works, but I wondering in that the time stamp seems to be not absolute. In my build environment the emulator is 2 hours ago to nowtime, and the export had the same move in the time-export. But maybe this is something I did not recognized before in Java or SQLite-library...\r\nIf you want to have a look (for sure,the implementation is more rough then nice ;) )\r\nhttps://github.com/MasterPlexus/xDrip/commit/4b9e101bce926690721b31fedf0dd6858632f8e9"
+  },
+  {
+   "id": 318762750,
+   "user": "AdrianLxM",
+   "created_at": "2017-07-28T21:10:14Z",
+   "body": "Does it import correctly if treatments and BG values are not set in ascending order?\r\n\r\nMaybe it helps to add the timezone to the formatter:\r\n``` \r\ndf.setTimeZone(TimeZone.getDefault());\r\njava.text.DateFormat df = new SimpleDateFormat(\"dd.MM.yyyy;HH:mm;\");\r\n```\r\n"
+  },
+  {
+   "id": 318763186,
+   "user": "MasterPlexus",
+   "created_at": "2017-07-28T21:12:38Z",
+   "body": "Yes, this makes no issue. The order can be as you want in the CSV file. \r\nOK. Will test the timezone tomorrow, with the other corrections ;)"
+  },
+  {
+   "id": 318853811,
+   "user": "MasterPlexus",
+   "created_at": "2017-07-29T19:34:01Z",
+   "body": "So did the translation (CHO) and some typos. Also tried the Timezone, but bring no change.As this will only are a problem if the time of the Phone is set to a other area, this is not a urgent problem think. \r\n\r\nCould it be, that the BloodTest is an not used Table, and all Measurements are stored in the Calibration-Table? So I did not Include the BloodTest for now...\r\n\r\nhttps://github.com/MasterPlexus/xDrip/commit/11a4a88f5fe1a82fb39ec3a784b88bf80d0c42cf\r\n\r\nPS: I'm up to not so familiar with the CSV in Android studio, so I made in mistake two commits with the same description :("
+  },
+  {
+   "id": 320442289,
+   "user": "MasterPlexus",
+   "created_at": "2017-08-05T12:57:22Z",
+   "body": "@AdrianLxM , could you explain, what the Table BloodTest is for? I assume that this table will be filled not by manual entrys of the user, but if there will put also Values from other places (like bluetooth Measurement or something else what I did not know), that this should be also in the export... Forme the question ist, is there, if this table will be used, then also every time a entry in the Calibration-Table? If yes, then I would say only use the calibration-Table for BG export. If the answer ist sometimes yes sometimes no, it could be difficult to know the duplicates (may they are marked). If the answer will be no, then I would include the table anyhow (but can not test the result)..."
+  },
+  {
+   "id": 321257793,
+   "user": "MasterPlexus",
+   "created_at": "2017-08-09T13:38:43Z",
+   "body": "Made a Pull request for that:\r\nhttps://github.com/NightscoutFoundation/xDrip/pull/154"
+  }
+ ]
+}

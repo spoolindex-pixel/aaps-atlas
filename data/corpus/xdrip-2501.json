@@ -1,0 +1,51 @@
+{
+ "id": 1465438307,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 2501,
+ "title": "xDrip produces incorrect battery data in Nightscout devicestatus uploader JSON object",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/2501",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-11-27T13:16:57Z",
+ "closed_at": "2022-11-27T13:28:40Z",
+ "comment_count": 6,
+ "body": "The existing code produces a `battery` value like:\r\n\r\n    \"battery\": \"50 days (voltage: 285/275)\"\r\n\r\nThis can be found [here](https://github.com/NightscoutFoundation/xDrip/blob/master/app/src/main/java/com/eveningoutpost/dexdrip/UtilityModels/NightscoutBatteryDevice.java#L126) and was introduced by commit 92956f73f49dc199e2539ba055ec0d647876b91e .\r\n\r\nHowever, this is wrong. The Nightscout API docs state that `battery` must be an integer.\r\n\r\nBecause of this type mismatch, AndroidAPS crashes when its NSClient BG source plugin is read. When it reads the `devicestatus` objects, the parser throws an exception when it tries to parse `battery` as an integer. (AndroidAPS source is [here](https://github.com/nightscout/AndroidAPS/blob/dev/plugins/main/src/main/java/info/nightscout/plugins/sync/nsclient/services/NSClientService.kt#L511), and its schema is [here](https://github.com/nightscout/AndroidAPS/blob/dev/core/ns-sdk/src/main/java/info/nightscout/sdk/remotemodel/RemoteDeviceStatus.kt#L54).)\r\n\r\nThis needs to be fixed to match the expected type.",
+ "comments": [
+  {
+   "id": 1328246997,
+   "user": "Navid200",
+   "created_at": "2022-11-27T13:28:40Z",
+   "body": "I'm closing this because you ignored the request not to open an issue.\r\nPlease open a discussions and we will take it from there."
+  },
+  {
+   "id": 1328249424,
+   "user": "dv1",
+   "created_at": "2022-11-27T13:40:17Z",
+   "body": "\"request not to open an issue\" - what request? And this is clearly an issue, not a discussion. I'll open one regardless, but this makes little sense."
+  },
+  {
+   "id": 1328252011,
+   "user": "Navid200",
+   "created_at": "2022-11-27T13:54:23Z",
+   "body": "When I have an issue with xDrip, I personally consider it to be an xDrip issue.  But, that is not enough for me to declare that it is.\r\n\r\nI will open a discussion.  The developers monitor the discussions the same way they monitor the issues.\r\nMajority of requests are misunderstandings.  If they all first become issues until a developer has time to explain to the user how they should use xDrip, we will always have plenty of open issues, which are really not issues.\r\n\r\nYou are right that some of these are real issues.\r\nWe had to make a compromise.  Our decision was to ask everyone to open discussions first.\r\nWe ask many of them to be changes to an issue by asking the user to open one.  \r\n\r\nBefore we implemented this approach, the number of open issues was approaching 1000.\r\n\r\nWhat I am doing here is wrong too.  The issues platform should not be used for explaining our policies.\r\nBut, since you are talking about the issue policy and since it occasionally comes up, I am explaining it here.\r\n\r\nI am not starting a conversation.\r\nIf you like to respond to this, please be so kind to open a discussion and I will be more than happy to have an open discussions about it there."
+  },
+  {
+   "id": 1328252255,
+   "user": "Navid200",
+   "created_at": "2022-11-27T13:55:52Z",
+   "body": "When you attempt to open an issue, you will see this:\r\n![Screenshot 2022-11-27 084756](https://user-images.githubusercontent.com/51497406/204138990-f08525ca-faea-4ea4-9c8d-6b23591e7ab6.png)\r\n\r\nThat's the request from the user community to please not open an issue as a first step.\r\n\r\nWe want to help the user community.  We didn't have discussions opened in this repository.  But, we do now."
+  },
+  {
+   "id": 1339210069,
+   "user": "paravoid",
+   "created_at": "2022-12-06T11:57:05Z",
+   "body": "This is very clearly a bug, and a well-reported one at that. I understand that the volume of issues can be problematic, but for clear-cut cases such as this one, creating a \"discussion\" first defeats the point of having an issue tracking and will result in even more work for everyone involved -- so I'd like to ask you to reconsider your policy here.\r\n\r\nBut, with that aside, I have not seen a fix trickle in, nor the discussion opened up. @dv1 are you proceeding with a discussion and/or PR? Should someone else pick it up? (I'm just an interested party/drive-by contributor)"
+  },
+  {
+   "id": 1339253833,
+   "user": "dv1",
+   "created_at": "2022-12-06T12:30:45Z",
+   "body": "@paravoid I added a workaround to AAPS. [See here.](https://github.com/NightscoutFoundation/xDrip/discussions/2503#discussioncomment-4248632)"
+  }
+ ]
+}

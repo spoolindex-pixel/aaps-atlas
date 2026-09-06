@@ -1,0 +1,127 @@
+{
+ "id": 644067398,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1371,
+ "title": "Calibration for Freestyle Libre2 not working any more",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1371",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "device-libre",
+  "calibration"
+ ],
+ "created_at": "2020-06-23T18:51:29Z",
+ "closed_at": "2020-12-30T22:19:35Z",
+ "comment_count": 19,
+ "body": "Since two years I had been working with Freestyle Libre and was really happy with the performance. I did one calibration at every morning and this did really well work for me. Six weeks ago, I migrated to Freestyle Libre2, using Bluetooth. Unfortunately, I found that the calibration was fixed at a slope of 1.0! This does not correspond to my experience at all. As a measure of first help, I decreased the blood glucose targets to the lowest number allowed by AndroidAPS in order to get at least some better insulin administration. But the situation remains bad, with slopes until 1,6 not properly covered by xDrip+. \r\n\r\nxDrip should therefore offer the normal calibration, NOT FIXED at a slope of 1.0, at least as an option.\r\n\r\nThis is the calibration data of actual sensor\r\n[FSL2-Kalibrierung - Sensor-2020-06-13.pdf](https://github.com/NightscoutFoundation/xDrip/files/4821320/FSL2-Kalibrierung.-.Sensor-2020-06-13.pdf)\r\n\r\nAdditional data for the calibration show clearly the slope SHOULD NOT BE fixed to 1!\r\n\r\n\r\n![Screenshot_20200801-084816](https://user-images.githubusercontent.com/7566125/89339806-0cbbcd80-d69f-11ea-965b-257d6986bddc.png)\r\n![Screenshot_20200802-101706](https://user-images.githubusercontent.com/7566125/89339813-0f1e2780-d69f-11ea-894f-e31b946e3222.png)",
+ "comments": [
+  {
+   "id": 654699296,
+   "user": "yosepito",
+   "created_at": "2020-07-07T08:48:10Z",
+   "body": "see #1350 for issues around this and & #1335 for a discussion of potential problems of calibrations (reasons I cannot share at all)\r\nWe have that problem too \r\n\r\nOOP cannot be calibrated unless you choose the complement Xdrip classic algorithm as the BG source in advanced calibrations options. At least, I may have more accurate data, although the problem of uploading wrong native data to NS persists\r\n\r\n@tzachi-dar : please, is there any possibility to solve this?"
+  },
+  {
+   "id": 663967634,
+   "user": "Brunchen",
+   "created_at": "2020-07-26T09:55:37Z",
+   "body": "hello,\r\n\r\nin my opinion all included calibration types in xdrip+ are static ones and wrong.\r\n\r\nthere is only one solution: include my suggested kinetic solution with an ordinary differential equation. with this equation everyone will achieve consistent values for libre data and ordinary glucose measurement.\r\n\r\nlook here:\r\nhttps://github.com/NightscoutFoundation/xDrip/issues/1141#issue-541041401\r\n\r\nvery easy to implement in source code, but i don´t have these developer skills. \r\n\r\nit is a pity that nobody does this.\r\n"
+  },
+  {
+   "id": 683408266,
+   "user": "tzachi-dar",
+   "created_at": "2020-08-30T11:20:35Z",
+   "body": "We now have the possibility to calibrate libre 2 (using mm/blucon/bubble).\r\nIf anyone is interested to test this, please write here."
+  },
+  {
+   "id": 683442069,
+   "user": "Laurent67",
+   "created_at": "2020-08-30T16:38:23Z",
+   "body": "I very much would so much appreciate the possibility to calibrate libre2. I will do anything for it, but tell what I can do."
+  },
+  {
+   "id": 683449518,
+   "user": "tzachi-dar",
+   "created_at": "2020-08-30T17:48:38Z",
+   "body": "Please see instructions here:\nhttps://gitter.im/LibreOOPAlgorithm/Lobby\n\nOn Sun, 30 Aug 2020 at 19:38, Laurent67 <notifications@github.com> wrote:\n\n> I very much would so much appreciate the possibility to calibrate libre2.\n> I will do anything for it, but tell what I can do.\n>\n> —\n> You are receiving this because you were mentioned.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/1371#issuecomment-683442069>,\n> or unsubscribe\n> <https://github.com/notifications/unsubscribe-auth/AB4TBZBOEYOOCMKF7Q2YRPTSDJ6AVANCNFSM4OF6DWJQ>\n> .\n>\n"
+  },
+  {
+   "id": 683652026,
+   "user": "yosepito",
+   "created_at": "2020-08-31T08:47:47Z",
+   "body": "Excellent news. Thanks a lot, @tzachi-dar \r\nJust a summary to check that I've understood well the procedure:\r\n1) the first file in that link is your forked version of Xdrip (both files are downloaded with the same name, \"app-debug.apk\"). This is the Xdrip version we should run, ¿right? Please, could you clarify which is the base version for this fork? I use Amazfit watch to see my BGs and receive alerts, and would love to maintain it during the test.\r\n2) the second app-debug.apk\" file is OOP2. However, and this is what I could not understand well, you say we should install it but we shouldn't use OOP. What does this mean? Perhaps you may mean that we should **delete** the old OOP, install the new OOP2 and then, I do not know whether we should activate libre external algorithm or not. Can you clarify this step please?\r\n3) You say it can be used with MM, bubble and blukon. Does this mean we should not use the Libre patched app? It means that we need a bridge. Is this right?\r\n\r\nI've downloaded everything and wait for further clarifications to test this. I'm very interested. I would sacrifize simplicity of only wearing L2 for the sake of accuracy in calibrations. Now, I'm wearing a L2 that works well with libre patched app in the limit of +20 calibration most of times, that it is unable to mantain that when going low or high. Most of these times, callibration exceeds +25 or +30. I'm thinking the problem is me: 174cm and 62kg leave not much skin for the libre working well.\r\n\r\nI will test this in parallel: a smarthpone with android 7 running your Xdrip version and OOP2 with MM2 and its calibrations, and another with android 9 and libre patched app.\r\n\r\nthanks!"
+  },
+  {
+   "id": 683653827,
+   "user": "yosepito",
+   "created_at": "2020-08-31T08:51:58Z",
+   "body": "another question: what values will be uploaded to NS? So far, it uploaded Libre2 raw values. Will this method upload calibrated values? Thanks!"
+  },
+  {
+   "id": 683680958,
+   "user": "yosepito",
+   "created_at": "2020-08-31T09:50:22Z",
+   "body": "> \r\n> \r\n> Excellent news. Thanks a lot, @tzachi-dar\r\n> Just a summary to check that I've understood well the procedure:\r\n> \r\n>     1. the first file in that link is your forked version of Xdrip (both files are downloaded with the same name, \"app-debug.apk\"). This is the Xdrip version we should run, ¿right? Please, could you clarify which is the base version for this fork? I use Amazfit watch to see my BGs and receive alerts, and would love to maintain it during the test.\r\n> \r\n>     2. the second app-debug.apk\" file is OOP2. However, and this is what I could not understand well, you say we should install it but we shouldn't use OOP. What does this mean? Perhaps you may mean that we should **delete** the old OOP, install the new OOP2 and then, I do not know whether we should activate libre external algorithm or not. Can you clarify this step please?\r\n> \r\n>     3. You say it can be used with MM, bubble and blukon. Does this mean we should not use the Libre patched app? It means that we need a bridge. Is this right?\r\n> \r\n> \r\n> I've downloaded everything and wait for further clarifications to test this. I'm very interested. I would sacrifize simplicity of only wearing L2 for the sake of accuracy in calibrations. Now, I'm wearing a L2 that works well with libre patched app in the limit of +20 calibration most of times, that it is unable to mantain that when going low or high. Most of these times, callibration exceeds +25 or +30. I'm thinking the problem is me: 174cm and 62kg leave not much skin for the libre working well.\r\n> \r\n> I will test this in parallel: a smarthpone with android 7 running your Xdrip version and OOP2 with MM2 and its calibrations, and another with android 9 and libre patched app.\r\n> \r\n> thanks!\r\n\r\nI answer myself: in the question (2), OOP2 SHOULD NOT BE ACTIVATED in Xdrip (uncheck enable external algorithm). Otherwise, it will deliver no BG readings. The raw data is different to the libre 2 raw data, since I'm comparing in parallel with two collectors"
+  },
+  {
+   "id": 687234384,
+   "user": "yosepito",
+   "created_at": "2020-09-04T15:51:52Z",
+   "body": "my experience with this new OOP2\r\n\r\nmy update of running in different collectors a Libre2 patched app calibrated at its maximum (+20) and oop2 in another collector. I compared both values with finger pricks (aviva accu-chek), and the result is that OOP2 calibrated is innacurate. It needs to be re-calibrated constantly. For instance, a calibration early in the morning with a slope of 0.57 and intercept of 34.9, resulted in too high values. A new calibration during afternoon resulted in 0.73 and 8.8 for slope and intercept. The main problem it estimated a BG of 168 when it was 133, or a value of 55 when it was 70. I understand that the approach was to reverse the estimation, from libre2 BG readings to Libre1 raw values, and from these you applied the Xdrip algorithm. However, my guess is that it introduces the error twice, one from libre2 BG readings to raw values, and then from raw values to Xdrip BG values. The idea is very much appreciated, but the result is not fine yet. As I said above, I think the problem is the inconsistency of Libre2. Sometimes is within an acceptable range of +/- 5 or 10, and sometimes is well above +30. I found that, in my case, and with this current Libre2 sensor I wear, the calibration of +20 is a good estimation, although I know values are higher when BGs are higher than let's say 140 (tonight, it was 170, but Libre2+20 readings were no higher than 147). right now Libre2+20 readings are closer to finger pricks (BG finger pricks around 70). So my conclusion: Libre2 is close to finger pricks when BG is controlled at let's say 100 mg/dl or lower. But the error increases at values above 130-145 mg/dl, so **the offset range of -40/+20 in calibrations seems to be insufficient**. It is, in my experience, unable to reach high values because of the +20 limitation. \r\n\r\nThe benefit of the new OOP2 calibrated values is that Xdrip follows highs and lows quicker than Libre2+20 (patched app). Libre2 is very slow to follow that. But OOP2 may require a ca"
+  },
+  {
+   "id": 687310492,
+   "user": "Brunchen",
+   "created_at": "2020-09-04T18:26:35Z",
+   "body": "@yosepito \r\nyou may have to consider the dependency of dBG/dt and correlate these with the aviva accu check ones. try it. "
+  },
+  {
+   "id": 687319154,
+   "user": "yosepito",
+   "created_at": "2020-09-04T18:45:42Z",
+   "body": "@Brunchen \r\nagree and understand what you mean\r\njust for clarification: all the calibrations were made under stable conditions, which means that 5min. delta was below 3mg/dl for at least 20 minutes\r\n\r\non the other hand, that is exactly what I meant when comparing calibration based on OOP2 vs. Libre-2 calibrations based on just the intercept. OOP2 is able to follow quick changes earlier and quicker than libre-2\r\n\r\nwas your comment about these issues?"
+  },
+  {
+   "id": 687741646,
+   "user": "Brunchen",
+   "created_at": "2020-09-06T09:46:14Z",
+   "body": "thank you, \"stable\" is necessary. thats what i meant."
+  },
+  {
+   "id": 741710603,
+   "user": "patanito",
+   "created_at": "2020-12-09T11:25:10Z",
+   "body": "I think that the issue can be closed considering the latest developments made by @tzachi-dar regarding OOP2 and the Xdrip version developed.\r\nFurther instructions provided by @tzachi-dar here: [https://gitter.im/LibreOOPAlgorithm/Lobby?utm_source=notification&utm_medium=email&utm_campaign=unread-notifications](url) \r\nSummarized as follows (extracted from there):\r\n\r\nLatest version of the oop2 can be found at: [https://drive.google.com/uc?id=14QKSvS5gMWseXvbt_CjYqcD7QdT_2HRW&export=download](url)\r\nlatest version of xdrip can be found at: [https://drive.google.com/uc?id=1hLE_mWYeC3S84p9nOZUck37lqJHFahhZ&export=download](url)\r\nNotice this version of Xdrip is still different from that downloadable here. We hope @tzachi-dar update this soon.\r\n\r\nWhat one has to do is: \r\n1) install oop2 and see that it works (just open it). \r\n2) install xDrip. (you might have to backup your settings and DB, and uninstall the old version first.) \r\n3) When asked for the sensor choose libre bluetooth. \r\n4) Start the sensor. \r\n5) Scan the libre sensor with xDrip it will ask you if to connect to bluetooth streaming. Press yes. \r\n6) Scan the sensor again. \r\n7) after about 15 minutes you will be asked to enter a calibration. \r\n\r\n\r\nThe sensor seems to wake up only once a minute to advertise. \r\nIt has to be disconnected from a running patched LL app to start advertising. \r\nPlease stop or deinstall that app. Then you should see the sensor in the BT scan. \r\nThe UID is the company name with follwing serial number of the sensor.\r\nPlease ensure that any app which was prior connected to the sensor is not working. \r\nOtherwise it will interfere the xdrip BT connectivity as is permanently try to to connect to the L2 again.\r\n\r\nBig thanks to all the developers for this"
+  },
+  {
+   "id": 741720806,
+   "user": "Laurent67",
+   "created_at": "2020-12-09T11:47:14Z",
+   "body": "Dear patanito,\n\ndoes this mean, that this patch now went into the master of xDrip and I simply have to install to latest xDrip version together with oop2. If this is the case you can close the issue. \n\nBut I still have to do the upgrade according to the instructions.\n\nLars\n\n\n>     patanito <notifications@github.com> hat am 09.12.2020 12:25 geschrieben:\n> \n> \n> \n> \n>     I think that the issue can be closed considering the latest developments made by @tzachi-dar https://github.com/tzachi-dar regarding OOP2 and the Xdrip version developed.\n>     Further instructions provided by @tzachi-dar https://github.com/tzachi-dar here: https://gitter.im/LibreOOPAlgorithm/Lobby?utm_source=notification&utm_medium=email&utm_campaign=unread-notifications\n>     Summarized as follows (extracted from there):\n> \n>     Latest version of the oop2 can be found at:\n>     latest version of xdrip can be found at:\n> \n>     What one has to do is:\n> \n>        1. install oop2 and see that it works (just open it).\n>        2. install xDrip. (you might have to backup your settings and DB, and uninstall the old version first.)\n>        3. When asked for the sensor choose libre bluetooth.\n>        4. Start the sensor.\n>        5. Scan the libre sensor with xDrip it will ask you if to connect to bluetooth streaming. Press yes.\n>        6. Scan the sensor again.\n>        7. after about 15 minutes you will be asked to enter a calibration.\n> \n>     The sensor seems to wake up only once a minute to advertise.\n>     It has to be disconnected from a running patched LL app to start advertising.\n>     Please stop or deinstall that app. Then you should see the sensor in the BT scan.\n>     The UID is the company name with follwing serial number of the sensor.\n>     Please ensure that any app which was prior connected to the sensor is not working.\n>     Otherwise it will interfere the xdrip BT connectivity as is permanently try to to connect to the L2 again.\n> \n>     Big thanks to all the developers for this\n> \n"
+  },
+  {
+   "id": 741732491,
+   "user": "patanito",
+   "created_at": "2020-12-09T12:12:49Z",
+   "body": "@Laurent67 : no, it is not fully integrated. As mentioned above, the version of Xdrip you should install is the tzachi-dar version. You should do a backup of data and profile, uninstall Xdrip and install that version prior to perform those steps. See the conversation in gitter (see the link above)\r\n\r\nI cannot close the issue, I have no privileges to do so."
+  },
+  {
+   "id": 741738038,
+   "user": "tolot27",
+   "created_at": "2020-12-09T12:24:14Z",
+   "body": "This issue will be closed if #1524 gets merged."
+  },
+  {
+   "id": 752734848,
+   "user": "PhilTU",
+   "created_at": "2020-12-30T19:37:42Z",
+   "body": "It was merged 10/12/20"
+  },
+  {
+   "id": 752775590,
+   "user": "tolot27",
+   "created_at": "2020-12-30T22:19:35Z",
+   "body": "Closing it because #1524 is merged, already."
+  }
+ ]
+}

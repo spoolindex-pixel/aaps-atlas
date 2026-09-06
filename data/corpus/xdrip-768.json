@@ -1,0 +1,63 @@
+{
+ "id": 406893706,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 768,
+ "title": "Build troubles.  (xDrip should have a reliable documented automated build procedure)",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/768",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2019-02-05T17:30:16Z",
+ "closed_at": "2021-03-04T15:20:50Z",
+ "comment_count": 8,
+ "body": "I'm trying to build xDrip.  I have never before built any Android program or any java program.  Here are the troubles I'm running into.\r\n\r\n----\r\n\r\nEDIT: Nevermind actually.  At last, I successfully built it.  Here is the working build procedure:\r\n\r\n```\r\nwget -c https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip -O ../sdk-tools-linux-4333796.zip.partial\r\nmv ../sdk-tools-linux-4333796.zip.partial ../sdk-tools-linux-4333796.zip\r\nunzip -d ${ANDROID_HOME} ../sdk-tools-linux-4333796.zip\r\nmkdir ${ANDROID_HOME}\r\nyes | ${ANDROID_HOME}/tools/bin/sdkmanager --licenses\r\nyes | ${ANDROID_HOME}/tools/bin/sdkmanager \"platforms;android-26\" \"build-tools;27.0.3\" \"extras;google;m2repository\"\r\nbash gradlew assembleRelease\r\nln -sf app/build/outputs/apk/release/app-release-unsigned.apk .\r\n```\r\n\r\n\r\n-----\r\n\r\nI have a `Makefile` that generated these commands.  It should make it possible simply to run `git clone`, `cd xDrip` and then download and build the `.apk` just by typing `make`.  I will try it out on a fresh directory later to make sure.  Then I'll put it in a PR.",
+ "comments": [
+  {
+   "id": 776836461,
+   "user": "Navid200",
+   "created_at": "2021-02-10T16:30:31Z",
+   "body": "@afcady Sounds like your problem has been resolved.\r\nWould you please close the issue then?\r\nThanks"
+  },
+  {
+   "id": 776953721,
+   "user": "afcady",
+   "created_at": "2021-02-10T19:19:34Z",
+   "body": "Not exactly resolved, as #903 is not merged."
+  },
+  {
+   "id": 776955588,
+   "user": "Navid200",
+   "created_at": "2021-02-10T19:22:29Z",
+   "body": "But, isn't 903 self-contained?  Or, are you saying 903 and 768 are duplicates?"
+  },
+  {
+   "id": 776983710,
+   "user": "afcady",
+   "created_at": "2021-02-10T20:04:31Z",
+   "body": "903 is a pull request, not an issue."
+  },
+  {
+   "id": 777037686,
+   "user": "Navid200",
+   "created_at": "2021-02-10T21:08:57Z",
+   "body": "I see thanks."
+  },
+  {
+   "id": 777228118,
+   "user": "tolot27",
+   "created_at": "2021-02-11T06:23:16Z",
+   "body": "@afcady As commented at #903, the PR can be merged only after removing the hardcoded version numbers. When do you have time to implement this?"
+  },
+  {
+   "id": 790687988,
+   "user": "Navid200",
+   "created_at": "2021-03-04T15:10:59Z",
+   "body": "@tolot27 Considering there is already a PR, shouldn't this be closed?  What if someone else sees this open issue and starts spending time on this developing a solution?  Wouldn't that be a waste of time?"
+  },
+  {
+   "id": 790694947,
+   "user": "tolot27",
+   "created_at": "2021-03-04T15:20:26Z",
+   "body": "@Navid200 Issues will be closed automatically, as soon as the linked PR gets merged. It is recommend that people should read the complete discussion at the issues and if they are willing to contribute, discuss this with the developers.\r\n\r\nAnyway, this issue can be closed since there is a tiny HowTo at https://xdrip.github.io and there is no really need for a Makefile."
+  }
+ ]
+}

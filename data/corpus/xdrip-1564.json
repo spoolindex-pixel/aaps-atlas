@@ -1,0 +1,72 @@
+{
+ "id": 771710803,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1564,
+ "title": "Strange noise instead of alarm sound",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1564",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "ux-alarm"
+ ],
+ "created_at": "2020-12-20T21:28:53Z",
+ "closed_at": "2021-08-07T12:53:27Z",
+ "comment_count": 9,
+ "body": "\r\n### Subject of the issue\r\nWhen phone is in sleep, and alarm for low or high glucose activates with default alarm sound, it sometimes plays strange \"electronic noise\" instead of actual alarm sound. \r\n\r\n### Your environment\r\n- Version: e14bae1-2020.07.13\r\n- Data source: xDrip+ Sync Follower\r\n- Is your issue specific to a device like and Android phone or a smartwatch? Xiaomi Redmi 9 + Android 10 + MIUI 11\r\n\r\n\r\n### Expected behavior\r\nPlays alarm sound. \r\n\r\n### Actual behavior\r\nSometimes plays \"electric noise\" instead of alarm sound\r\n\r\n### Steps to reproduce the behavior:\r\nFor example:\r\n1. Create alarm for low/high BG\r\n2. Put phone to sleep and wait for alarm\r\n3. Once phone has woken and alarm is being played, there is either correct sound or electric noise\r\n\r\n\r\n\r\n",
+ "comments": [
+  {
+   "id": 748763654,
+   "user": "tolot27",
+   "created_at": "2020-12-21T05:19:29Z",
+   "body": "Wow, what a great example of filling a bug report correctly. Thanks! :smile:\n\nDo you observe this behavior with system alarms, too? Does it happen with different alarm sounds?"
+  },
+  {
+   "id": 749532822,
+   "user": "Navid200",
+   "created_at": "2020-12-22T13:10:54Z",
+   "body": "I have only one of my alarms that misbehaves sometimes.  It seems to me that when it misbehaves, it only plays a portion of the sound clip.  It is not clear to me why it only happens to one alarm.  This is an alarm that uses a personal notification sound that I have added to my system sounds on the phone.\r\n\r\nI have no idea if this is a related issue to what is described here or not."
+  },
+  {
+   "id": 788459264,
+   "user": "Navid200",
+   "created_at": "2021-03-02T00:50:53Z",
+   "body": "@LubomirKovalcik Are you still experiencing this?\r\nIf yes, by any chance, are you using the ascending volume profile?"
+  },
+  {
+   "id": 788508266,
+   "user": "LubomirKovalcik",
+   "created_at": "2021-03-02T01:43:36Z",
+   "body": "> Wow, what a great example of filling a bug report correctly. Thanks! 😄\r\n> \r\n> Do you observe this behavior with system alarms, too? Does it happen with different alarm sounds?\r\n\r\nNo system sounds works correctly (like regular notifications or alarm).\r\n\r\n\r\n> @LubomirKovalcik Are you still experiencing this?\r\n> If yes, by any chance, are you using the ascending volume profile?\r\n\r\nYes I am still experiencing this, but only on Xiaomi Redmi 9 (Android 10 + MIUI 11). \r\nI also have follower settings on Samsung A70, and main collector is Mi9 (MIUI 11) and there is no such a problem.\r\n\r\nI am not sure about ascending volume profile. I will have to check it somehow, but not quite sure where, because I could not find it anywhere in settings.  \r\n\r\n**I will try to set custom alarm sound in xDrip and see if thats make any change. I will report back.** \r\n\r\n\r\n\r\n"
+  },
+  {
+   "id": 788513972,
+   "user": "Navid200",
+   "created_at": "2021-03-02T01:53:51Z",
+   "body": "You can choose your volume profile:\r\nSettings -> Alarms and Alerts -> Glucose Alerts Settings -> Alert Volume Profile"
+  },
+  {
+   "id": 788515464,
+   "user": "Navid200",
+   "created_at": "2021-03-02T01:57:53Z",
+   "body": "If we figure out what is common between the sound files that cause this, we may be able to identify a characteristic (size, name, format, ...) that is the problem and provide guidance to users how to avoid the issue.\r\n\r\nThanks for your work"
+  },
+  {
+   "id": 855476504,
+   "user": "Navid200",
+   "created_at": "2021-06-06T23:00:52Z",
+   "body": "@LubomirKovalcik Any update on this?"
+  },
+  {
+   "id": 894651170,
+   "user": "Navid200",
+   "created_at": "2021-08-07T12:53:27Z",
+   "body": "Closing due to inactivity"
+  },
+  {
+   "id": 1404005879,
+   "user": "gilko86",
+   "created_at": "2023-01-25T17:50:18Z",
+   "body": "I recently started hearing the strange 'electronic noise' too, it was driving me nuts. I turned every possible notification off but I _think_ I have found the solution. It only started since installing AndroidAPS. There is a setting called **Import Sounds** in the Settings -> Inter-app settings menu. I switched this off and haven't heard it since. \r\n\r\nLooking at the adb shell output just after hearing the noise helped identify where to look. \r\n\r\n`logcat | toybox grep -i \"callingPack\" | toybox sed -e \"s/$/\\n/\"\r\n`\r\n\r\n_01-25 15:21:22.142   978  1997 D PackageManager: setEnabledSetting : userId = 0 packageName = info.nightscout.androidaps cmp = androidx.work.impl.background.systemalarm.RescheduleReceiver newState = 1 callingPackage = 10473/**info.nightscout.androidaps**_\r\n\r\nFingers crossed. "
+  }
+ ]
+}

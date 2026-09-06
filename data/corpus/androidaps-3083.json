@@ -1,0 +1,45 @@
+{
+ "id": 2011094988,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3083,
+ "title": "AAPS 3.2.0.2 crashes on basal temp attempt -> No connection to ruffy...",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3083",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-11-26T15:56:13Z",
+ "closed_at": "2024-01-04T22:29:17Z",
+ "comment_count": 5,
+ "body": "AAPS 3.2.0.2 (master) crashes every time a new basal temp is accepted.\r\n\r\nBuild version :  c31617fd2c-2023.11.21\r\nFlavor: full release\r\nNightscout version 15.0.2\r\n\r\nPixel 6a, Android 14\r\nOmnipod Dash\r\n\r\nHere is the log file and a screen copy. It occurred at 16:16:28\r\n16:16:28.996 [main] I/PUMP: [RuffyScripter.<init>():178]: No connection to ruffy. Pump control unavailable.\r\n\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/13467324/AndroidAPS.log)\r\n![IMG-20231126-WA0001](https://github.com/nightscout/AndroidAPS/assets/58775333/9bac9de2-1b2c-41d4-8b40-4dd111d76cd3)\r\n\r\n\r\n\r\n",
+ "comments": [
+  {
+   "id": 1826896277,
+   "user": "vanelsberg",
+   "created_at": "2023-11-26T21:05:04Z",
+   "body": "Have not seen any of this. At what objective# are you? \r\n\r\n@MilosKozak RuffyScripter? Not sure why this is in the log for DASH?"
+  },
+  {
+   "id": 1826903686,
+   "user": "b-aeby",
+   "created_at": "2023-11-26T21:36:05Z",
+   "body": "Objective 4, number of days > 7 but manual activation still at 0/20 as the app crashes on every attempts to accept a basal temp."
+  },
+  {
+   "id": 1831597187,
+   "user": "vanelsberg",
+   "created_at": "2023-11-29T10:12:34Z",
+   "body": "I'd say there is something in your profile or settings that AAPS can not handle...\r\n\r\n1. Immediately after the crash, not date and time and then get recent logfiles and attach them to this issue so dev can have a look?\r\n2. Unselect your current pump (set it to Virtual pump), close/restart AAPS (... menu, exit), reselect your pump.\r\n3. To make sure this is not some invalid setting in your profile, try removing all profiles (make a note of current profile settings) and then recreate a new one.\r\n"
+  },
+  {
+   "id": 1832096342,
+   "user": "jotomo",
+   "created_at": "2023-11-29T15:17:31Z",
+   "body": "@vanelsberg The log entry about RuffyScripter is benign. Will go away when ComboV2 has taken over."
+  },
+  {
+   "id": 1877845616,
+   "user": "b-aeby",
+   "created_at": "2024-01-04T22:28:59Z",
+   "body": "Hello, restarting setup from scratch, including all objectives solved this issue.\r\nI didn't try to reproduce but the issue happened while objective 1 was passed with Tidepool only, no Nightscout.\r\nThank you"
+  }
+ ]
+}

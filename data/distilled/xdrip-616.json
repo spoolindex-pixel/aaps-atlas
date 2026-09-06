@@ -1,0 +1,26 @@
+{
+ "issue_id": 616,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/616",
+ "title": "Eversense Integration",
+ "symptom": "The current Eversense integration in xDrip uses the Esel companion app, which requires root (su access) and a running Roche/Senseonics Eversense app, so a smartwatch standalone solution is not possible. The user asks whether xDrip could integrate Bluetooth communication with the Eversense Transmitter as a standalone alternative.",
+ "cause": null,
+ "fix": "BernhardRo's workaround: disassemble the Eversense App and add a ContentProvider for glucose measurements, then modify ESEL to use that ContentProvider as BG input and pass it to xDrip; this requires no root but still requires the (modified) Eversense APK. Files are at https://github.com/BernhardRo/Esel/tree/master/apk; later he also points to https://cr4ck3d3v3r53n53.club/ for patched APKs.",
+ "settings_changed": [],
+ "devices": [
+  "Eversense",
+  "Eversense Transmitter",
+  "EversenseXL"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "esel",
+  "companion app",
+  "eversense app",
+  "contentprovider",
+  "modified apk",
+  "bluetooth"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "I have found a solution now, which works for me: with dissassembling the Eversense App, I have added an ContentProvider, providing the glucose measurements. Then I have modified ESEL to use this ContentProvider as BG input and passes it to xDrip. This works fine, for me. Advantage: no root required."
+}

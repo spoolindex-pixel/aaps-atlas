@@ -1,0 +1,17 @@
+{
+ "issue_id": 2173,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/2173",
+ "title": "Y-axis scaling can lead to confusing views",
+ "symptom": "The y-axis (BG value) is auto-scaled to the highest level within the last 24h, which can make steep slopes appear flatter than they are and give confusing impressions. A single bad point can make the graph useless for 24 hours.",
+ "cause": "The y-axis scaling is based on the highest value in the last 24 hours, which can be skewed by a single high reading (even a bad one) and remains scaled for 24 hours.",
+ "fix": "Navid200 is testing a candidate that pans the main screen instead of changing the axis min/max, so slopes never change. The main screen keeps tracking recent readings and auto-pans based on readings from the past 3 hours, but the y-axis range is user-controlled. Additionally, a PR was opened to avoid resizing the vertical axis for readings marked as bad.",
+ "settings_changed": [],
+ "devices": [
+  "Libre 2"
+ ],
+ "android_versions": [],
+ "driver_tags": [],
+ "confidence": "medium",
+ "evidence_quote": "I finally have a candidate that I am testing. It pans instead of changing the axis min/max. Therefore, the slopes never change."
+}

@@ -1,0 +1,22 @@
+{
+ "issue_id": 1415,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/1415",
+ "title": "Unable to fully perform calibration on 8K series G6 transmitter with latest nightly (67014b0-20202.07.25)",
+ "symptom": "All attempts to calibrate result in 'Got invalid impossible slope calibration!'. The calibration is accepted by the transmitter but xdrip doesn't register as such and stays in 'initial calibration' stage. Was working on previous transmitter (81 series).",
+ "cause": "The issue is caused by the Firefly firmware (8G and later transmitters) in combination with xDrip, which has limitations on calibration when the difference between current BG and calibration value is too large (more than 15-20%). Additionally, xDrip issues confusing messages when calibrating an 8KXXXX transmitter, and the calibration command is called initial calibration even for subsequent calibrations.",
+ "fix": "Workaround: calibrate in MAX 20% steps and wait at least 12 hours between calibrations. Also, use the syringe icon for entering calibrations and follow settings as per issue #1310. The thread does not provide a definitive fix; it suggests that the confusing messages need to be addressed by developers.",
+ "settings_changed": [],
+ "devices": [
+  "G6",
+  "8K series G6 transmitter",
+  "81 series"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "native mode",
+  "Firefly firmware"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "You cannot calibrate with too big differences of current BG vs the calibration value. As a rule of thumb don't enter calibrations with more than 15-20% difference. This is a limitation of the Firefly firmware (8G and later transmitters) in combination with xDrip (unfortunately). Workaround if your real BG is *really* that far off => calibrate in MAX 20% steps and always wait a few hours until the next calibration."
+}

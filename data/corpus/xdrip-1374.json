@@ -1,0 +1,127 @@
+{
+ "id": 646198683,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1374,
+ "title": "Decreased G6 capture rate due to Corona/Covid 19 exposure API",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1374",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "device-dexcom",
+  "bluetooth"
+ ],
+ "created_at": "2020-06-26T11:29:32Z",
+ "closed_at": "2021-03-06T20:12:30Z",
+ "comment_count": 18,
+ "body": "I have xdrip+ paired with my G6, plus the patched G6 app paired with my son's G6.\r\nAfter installing Germany's official [Covid 19 exposure notification app](https://github.com/corona-warn-app/cwa-app-android/), capture rate has decreased significantly down to from 1 reading in 20 minutes at best, though it's usually at 1 reading per hour.\r\n\r\nThe logs imply multiple things not working: unable to connect, invalid authentication, or invalid keep alive requests.\r\n\r\nIn the Covid 19 app, you can toggle off exposure detection. If I do this, capture rate goes back up to 80-90%. I believe it's some time sensitive interference with [Google's exposure notification framework](https://github.com/corona-warn-app/cwa-app-android/wiki/4-Google-Exposure-Notifications-API).\r\n\r\nMeanwhile, the patched G6 app seems to be unaffected by using the Corona app.",
+ "comments": [
+  {
+   "id": 650165140,
+   "user": "jamorham",
+   "created_at": "2020-06-26T12:58:43Z",
+   "body": "Please can you specify the make and model and android version of the phone you are using and also try enabling the `Minimize Scanning` option in xDrip settings to see if that helps."
+  },
+  {
+   "id": 650420729,
+   "user": "t1dast",
+   "created_at": "2020-06-26T21:55:10Z",
+   "body": "I have a Nokia 7.2 with Android 10 and security patches from June 5th 2020.\r\n\r\nI usually have 'minimize scanning' on all the time, so I tried with that option off, and in fact the problem is reduced. Now every two or three readings I'm missing two in a row, then I get one or two again before missing the next ones.\r\n\r\nNow, the only type of error I see in the log is:\r\n```Unhandled packet type in reply: InvalidRxMessage FF0601```\r\n\r\nI often see a toast system message about unsuccessful pairing due to an invalid PIN or access code. "
+  },
+  {
+   "id": 650436385,
+   "user": "Alamo04",
+   "created_at": "2020-06-26T22:46:04Z",
+   "body": "I use XDrip, AAPS and the german corona app (since it lanched) and don't have any problems with that.\r\n\r\nSystem:\r\nSamsung S7\r\nAndroid 8\r\nRileyLink 2.2\r\nDexcom G6\r\nXDrip, AAPS, Corona App, etc."
+  },
+  {
+   "id": 650574850,
+   "user": "jamorham",
+   "created_at": "2020-06-27T15:25:57Z",
+   "body": "@t1dast I should also have asked, which xDrip+ version are you running. Can you try the latest nightly if not already using that."
+  },
+  {
+   "id": 650578059,
+   "user": "Alamo04",
+   "created_at": "2020-06-27T15:53:31Z",
+   "body": "Using latest Nightly 11.06.2020"
+  },
+  {
+   "id": 650622188,
+   "user": "t1dast",
+   "created_at": "2020-06-27T20:38:37Z",
+   "body": "@jamorham I have the latest nightly build. "
+  },
+  {
+   "id": 650631153,
+   "user": "Gimbli74",
+   "created_at": "2020-06-27T21:24:21Z",
+   "body": "I have the Same Problems here. Nearly no readings since start of the German Corona App.\r\n\r\nSystem:\r\nUmidigi A3 pro\r\nAndroid 9\r\nDexcom G6\r\nXDrip, Corona App, etc.\r\n\r\nI contacted the developers of the German Corona App and got the hint, that the Problem could refer to the Changes in the Bluetooth system Done by Google for the Corona App. \r\n\r\nMaybe that gives a hint.\r\n\r\nGerman original Text: \r\nDanke für Ihr Feedback. Möglicherweise ist dieser Fehler auf die Schnittstelle zurückzuführen, die kürzlich von Google für COVID-19-Kontaktbenachrichtigungen eingeführt wurde. Ihre Corona-Warn App nutzt diese Schnittstelle. Bitte wenden Sie sich an den Hersteller Ihres Gerätes. \r\n\r\nInfos: https://www.coronawarn.app/de/faq/#various_device_problems\r\n\r\n\r\nMotive: Nokia and Umidigi are not listed so far...:("
+  },
+  {
+   "id": 650806350,
+   "user": "t1dast",
+   "created_at": "2020-06-28T18:49:10Z",
+   "body": "@Gimbli74 does the patched G6 app work for you? The fact that for me it's receiving data flawlessly seems to indicate to me that there is something app-specific to the problem. "
+  },
+  {
+   "id": 651272613,
+   "user": "Gimbli74",
+   "created_at": "2020-06-29T17:58:58Z",
+   "body": "@t1dast  tested it , but did not find the transmitter. I think i try that App with the next sensor.\r\nEdit: Just a few moments ago i finished booting my android, an now the patched Dexcom App reads ! I get mad...:).\r\n\r\n2 things are obvious: (for xdrip)\r\n\r\n1) when it is 22:00 or later it will function better, lets say 90% , until the next morning. I watched this now for 4 Nights in a row.\r\n2) if it will function properly depends on the the locations density of Signals in the Air. Crowd of Peaople > no readings from Sensor. \r\n\r\n2.4 GHz WLAN seems to be messy also. When streaming Netflix in da house, no Sensor readings mostly the whole time....\r\n\r\nOriginal Dexcom Reader Hardware is functioning properly :(\r\n\r\n"
+  },
+  {
+   "id": 733597819,
+   "user": "t1dast",
+   "created_at": "2020-11-25T09:51:58Z",
+   "body": "After the November 15 update fixing #1494, I turned on the tracing again and it has not caused any trouble with the capture rate for 15 hrs, as opposed to my previous test three weeks ago.\r\nFinally, I think the problem might be solved :) "
+  },
+  {
+   "id": 733640274,
+   "user": "tolot27",
+   "created_at": "2020-11-25T11:09:42Z",
+   "body": "@Gimbli74 Does the [Nightly build 15th Nov 2020](https://github.com/NightscoutFoundation/xDrip/releases/tag/2020.11.15) work for you, as well?"
+  },
+  {
+   "id": 734435953,
+   "user": "Gimbli74",
+   "created_at": "2020-11-26T18:27:43Z",
+   "body": "@tolot27  Nope, it seems it does not.\r\n\r\nInstalled the new version of xdrip, got one reading. Ok, then installed Covid tracking App again and since then no reading for 84 Minutes now. (phone restart included)\r\nDeinstalled tracking app again and readings are now coming in again.\r\n\r\nWhat a pitty.  \r\n"
+  },
+  {
+   "id": 734440366,
+   "user": "Alamo04",
+   "created_at": "2020-11-26T18:44:38Z",
+   "body": "I'm using XDrip from 01.10.2020 and Corona Warn-App.\r\n\r\nNo Problems on Samsung S7, Pixel 5.\r\n\r\nBig Problems with Poco F2 Pro.\r\n\r\nI'm realy sure it is a phone and his Security Software problem."
+  },
+  {
+   "id": 768130224,
+   "user": "jamorham",
+   "created_at": "2021-01-27T08:44:46Z",
+   "body": "Can anyone experiencing this problem try the latest nightly and enable both the `minimize scanning` and `avoid scanning` options and see if that helps."
+  },
+  {
+   "id": 771159648,
+   "user": "tolot27",
+   "created_at": "2021-02-01T21:09:31Z",
+   "body": "@Gimbli74 It would be interesting to know if the latest nightly with the settings mentioned above and the new Corona app version 1.1 (using the new Google API) works better."
+  },
+  {
+   "id": 785252717,
+   "user": "Navid200",
+   "created_at": "2021-02-24T17:42:58Z",
+   "body": "If anyone is still experiencing this, would you please update to the November 27, 2020 release or after and let us know if you still experience it?\r\nThere was considerable improvement to consistent connectivity with that release.\r\nThanks"
+  },
+  {
+   "id": 788394599,
+   "user": "Navid200",
+   "created_at": "2021-03-01T23:31:58Z",
+   "body": "I will be closing this issue soon.  We can always reopen it.  \r\nPlease let us know if you are still experiencing this issue."
+  },
+  {
+   "id": 792044688,
+   "user": "Navid200",
+   "created_at": "2021-03-06T20:12:30Z",
+   "body": "Closing due to inactivity"
+  }
+ ]
+}

@@ -1,0 +1,60 @@
+{
+ "id": 737274791,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1496,
+ "title": "Statistic: the percentage sum is not equal to 100%",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1496",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "ui"
+ ],
+ "created_at": "2020-11-05T21:16:42Z",
+ "closed_at": "2020-12-10T18:05:18Z",
+ "comment_count": 7,
+ "body": "See screenshot below:\r\nThe 3 values are truncated (not rounded), so the sum equals 98% in this screenshot and not 100%\r\nMy suggestion would be to round the High and Low percentages to the nearest integer value  and calculate the \"in range value\"  with 100% complement ... \r\n\r\nHigh=5/283=1.77 => 2%\r\nLow=8/283=2.83 => 3%\r\nIn=100-(2+3) = 95%\r\n\r\n![Screenshot_20201105-064728_xDrip+](https://user-images.githubusercontent.com/52934600/98295046-32fc4c80-1fb1-11eb-92ed-5e2189601eb2.jpg)\r\n\r\n\r\n",
+ "comments": [
+  {
+   "id": 722668007,
+   "user": "user-hash",
+   "created_at": "2020-11-05T21:54:27Z",
+   "body": "Hey,\r\nI noticed the same, but I think you should not use xDrip if you don't have diabetes.\r\nJust kidding, thats perfect result..Im only a few days 98% in range, but im very happy=)\r\nCould xDrip gamification help with better results in general with diabetes?\r\nIm thinking on achivements for your blood sugar levels like 1,2,7, ... days in range. A positive incentive could give young and old people more encintive to keep their blood sugars in the range...just an idea\r\n\r\n"
+  },
+  {
+   "id": 722918422,
+   "user": "Philoul",
+   "created_at": "2020-11-06T07:10:10Z",
+   "body": "Hi,\r\nI'm T1D and I use xDrip + AAPS, I selected this day for my screenshot (yes, it's one of my best days I mostly have about 80% in range), because the sum is 98% (I think it's worst case)\r\nGenerally, sum equals 99%, and it's only when results of the 3 calculated percentages are exactly integers that sum equals 100% (quite never).\r\nI'll propose a PR soon with a little modification of percentage calculation to always get 100%..."
+  },
+  {
+   "id": 723226709,
+   "user": "AdrianLxM",
+   "created_at": "2020-11-06T18:16:03Z",
+   "body": "Back in the day when I added that, I had too many days that summed up to 101%\n\nIf many want rounding than the implicit flooring through integer division: no objections. @Philoul if you want to take this: feel free to, would be great. If I should do it or you need assistance, please drop me a message in slack."
+  },
+  {
+   "id": 723301648,
+   "user": "Philoul",
+   "created_at": "2020-11-06T21:12:05Z",
+   "body": "To avoid a sum above 100%, \"In range\" percentage calculation is not the same than High or Low range percentage calculation...\r\n\r\n@AdrianLxM can you review https://github.com/NightscoutFoundation/xDrip/pull/1498 and tell me what do you think about it ?\r\nThank's"
+  },
+  {
+   "id": 735038886,
+   "user": "Navid200",
+   "created_at": "2020-11-28T04:37:37Z",
+   "body": "This is a good improvement.\r\n\r\nBut, relatively speaking, the fact that this page, as well as the PGI page, doesn't show the High and Low level figures is a more serious shortcoming.\r\n\r\nThe PGS you see here is a function of the Low and High levels.  \r\nYou see the in-range percentage on this page.  But, what is the range?  Well, as it stands, you have to go to another page to see what the range is.  Why?  Why not include those figures here as well?  \r\nThis page as is is definitely incomplete."
+  },
+  {
+   "id": 735217036,
+   "user": "tolot27",
+   "created_at": "2020-11-28T10:59:54Z",
+   "body": "@Navid200 That is good point you mentioned. Please can you create another issue for it? A PR is available for this issue, already and waits for merging. "
+  },
+  {
+   "id": 735223990,
+   "user": "Navid200",
+   "created_at": "2020-11-28T12:14:48Z",
+   "body": "@tolot27 \r\nI created this a while ago.\r\nhttps://github.com/NightscoutFoundation/xDrip/issues/1483\r\nIs that OK?  Or, is there anything else I should do?  \r\nThanks"
+  }
+ ]
+}

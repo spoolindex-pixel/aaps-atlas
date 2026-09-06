@@ -1,0 +1,71 @@
+{
+ "id": 2864169733,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3839,
+ "title": "Accu Check insight pump doesn't connect to AAPS app",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3839",
+ "state": "closed",
+ "labels": [
+  "insight"
+ ],
+ "created_at": "2025-02-19T19:01:22Z",
+ "closed_at": "2025-02-25T09:09:15Z",
+ "comment_count": 9,
+ "body": "Reporting bugs\n--------------\n- **Note the precise time the problem occurred** and describe the circumstances and steps that caused\n  the problem\n\nA few days ago I started AAPS for the first time with Dexcom G6 and Accu check insight. I completed all the steps and a problem occured. After finishing all the steps my pump doesn't connect with AAPS. My pump is not connecting to another device. I switched BT off and on. Today I started form scratch with another laptop and the problem still occures. I have 2 accu check insight pumps and tried both.\n\nhttps://github.com/user-attachments/assets/674d013f-8a67-4a4e-a534-d27dff7f1431\n\nI already asked for help at facebook and discord\n\nI have a samsung A14\nAndroid version 13\n\n\n- Note the Build version (found in the About dialog in the app, when pressing the three dots in the\n  upper-right corner).\n\nBuild: dece928837-2025.02.16\n\n- Obtain the app's log files, which can be found on the phone in\n  _/storage/emulated/0/Android/data/info.nightscout.androidaps/_\n  See https://wiki.aaps.app/en/latest/GettingHelp/AccessingLogFiles.html\n- Open an issue at https://github.com/nightscout/AndroidAPS/issues/new\n",
+ "comments": [
+  {
+   "id": 2672894603,
+   "user": "Philoul",
+   "created_at": "2025-02-20T22:58:44Z",
+   "body": "Can you please include log files to help analysis?\n\n@MilosKozak I suspect some missing authorization, but I'm not a specialist of Bluetooth, so I have no ideas on how to fix this issue and could not reproduce it...\nAny ideas?"
+  },
+  {
+   "id": 2673767918,
+   "user": "vriesdef",
+   "created_at": "2025-02-21T07:14:56Z",
+   "body": "[AndroidAPS\\[1\\].log](https://github.com/user-attachments/files/18902526/AndroidAPS.1.log)"
+  },
+  {
+   "id": 2674230275,
+   "user": "Philoul",
+   "created_at": "2025-02-21T10:54:21Z",
+   "body": "Hum, I can't find any log information used within Paring process of insight pump within your log file...\nDid you made log export just after (only a few seconds) pairing trials?\nIf yes we can try to include additional log information within code to understand the issue...\n\nYour log file only have 10s of history information..."
+  },
+  {
+   "id": 2674247664,
+   "user": "Philoul",
+   "created_at": "2025-02-21T11:00:44Z",
+   "body": "Note that \"PUMP\" should be selected within Maintenance > Log settings (and you can disable temporary all the other parameters to limit log information to PUMP for our analysis...\n"
+  },
+  {
+   "id": 2674443468,
+   "user": "vriesdef",
+   "created_at": "2025-02-21T12:35:30Z",
+   "body": "I deleted de app on my phone a couple of days ago to rebuild AAPS form scretch on a different computer. When I finische and I couldn't pair my phone I immediatly quit. :(\n\nI just tried to connect again and made log file. \n\n[AndroidAPS\\[1\\].log](https://github.com/user-attachments/files/18906574/AndroidAPS.1.log)\n"
+  },
+  {
+   "id": 2674564299,
+   "user": "Philoul",
+   "created_at": "2025-02-21T13:32:02Z",
+   "body": "Hum, the only information from Insight Driver are below, don't see anything linked to Insight Pairing trials\n![Image](https://github.com/user-attachments/assets/b8c232d9-5dff-4382-a9b6-2c0883252a1e)\n\nSo we will probably have to add additional log information to capture the issue (I suspenct missing authorization but not sure...)\n@MilosKozak or @TebbeUbben any ideas ?"
+  },
+  {
+   "id": 2676920977,
+   "user": "vriesdef",
+   "created_at": "2025-02-23T15:21:15Z",
+   "body": "Today I tried to connect with the pump and an old samsung telephone and it worked. Do you think I can connect with my new phone A14? Or is there some setup so the accu check insight can pair with the A14?\n"
+  },
+  {
+   "id": 2676995487,
+   "user": "Philoul",
+   "created_at": "2025-02-23T17:18:22Z",
+   "body": "Insight pump parameters and AAPS parameters are the same whatever the Android version of your phone, so you can try with your Android 14 phone.\nWithin your video it's strange because we don't see the pairing activity starting.\nTry to reboot your phone before 🤔"
+  },
+  {
+   "id": 2681107158,
+   "user": "vriesdef",
+   "created_at": "2025-02-25T08:26:39Z",
+   "body": "I did a reset with my phone. Turned it of and on for a couple of times and able to pair the pump with AAPS. Thnx for the help!"
+  }
+ ]
+}

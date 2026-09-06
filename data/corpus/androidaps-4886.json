@@ -1,0 +1,21 @@
+{
+ "id": 4599967714,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4886,
+ "title": "3.4.3.2 crashes at Tidepool login when no OAUTH browser is installed.",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4886",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2026-06-05T20:37:39Z",
+ "closed_at": "2026-06-06T08:46:43Z",
+ "comment_count": 1,
+ "body": "### Summary:  \nAAPS 3.4.2.3 crashes on LineageOS 20 (Android 13) on a Motorola Moto X4 (payton) immediately after startup if Tidepool is enabled, and Crome is not installed.\n\n### Reason:\nLogcat shows a FATAL EXCEPTION caused by ActivityNotFoundException inside the Tidepool OAuth flow, since AuthorizationService attempts to launch a browser intent, but no browser app is installed:\n\n```\nandroid.content.ActivityNotFoundException at net.openid.appauth.AuthorizationService.prepareAuthorizationRequestIntent\n```\n\n### Fix:  \nInstalling a suitable browser (tried Chrome) resolves the crash.\nPre-3.4 AAPS versions did not crash in this situation.\n\n###  \nIt should be sufficcient to include a warning in the update notes. Considering that most users problably have Chrome pre-installed, those that are affected are most likely experienced enough to handle the resulting problems from their customized Android installation ;)\n\nPreferably though, AAPS could check for a valid browser before initiating Tidepool OAuth and fail gracefully.",
+ "comments": [
+  {
+   "id": 4638009098,
+   "user": "MilosKozak",
+   "created_at": "2026-06-06T08:46:43Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/ee0c3b0f3e21d992a15f6e91b4a27ea3ec60f512"
+  }
+ ]
+}

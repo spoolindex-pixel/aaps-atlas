@@ -1,0 +1,57 @@
+{
+ "id": 632426077,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1361,
+ "title": "Code to communicate with Accucheck Guide ",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1361",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2020-06-06T12:23:38Z",
+ "closed_at": "2020-07-16T12:55:24Z",
+ "comment_count": 7,
+ "body": "Hi \r\n\r\n\r\nfirst of all thank you for this work, thanks to you I have already managed to integrate the NeoTouch Flex and Reflect\r\n\r\nI would also like to code a communication with my Accucheck guide, except that I don't understand too much\r\n\r\nI can't find the BLE part that takes care of it\r\n\r\nFor flex and reflect I used `BluetoothGlucoseMeter` class \r\n\r\n```\r\nif (mLastManufacturer.startsWith(\"LifeScan\")) {\r\nawait_acks = true;\r\nBluetooth_CMD.empty_queue(); // Verio Flex isn't standards compliant\r\nBluetooth_CMD.notify(VERIO_F7A1_SERVICE, VERIO_F7A3_NOTIFICATION, \"verio general notification\");\r\nBluetooth_CMD.enable_notification_value(VERIO_F7A1_SERVICE, VERIO_F7A3_NOTIFICATION, \"verio general notify value\");\r\nBluetooth_CMD.write(VERIO_F7A1_SERVICE, VERIO_F7A2_WRITE, VerioHelper.getTimeCMD(), \"verio ask time\");\r\nBluetooth_CMD.write(VERIO_F7A1_SERVICE, VERIO_F7A2_WRITE, VerioHelper.getTcounterCMD(), \"verio T data query\"); // don't change order with R\r\nBluetooth_CMD.write(VERIO_F7A1_SERVICE, VERIO_F7A2_WRITE, VerioHelper.getRcounterCMD(), \"verio R data query\"); // don't change order with T\r\n}\r\n```\r\n\r\ncan you tell me the code that communicate with the Accucheck Guide please ?\r\nis it With bluetooth or usb ? \r\n\r\nThank's in advance ",
+ "comments": [
+  {
+   "id": 643641860,
+   "user": "srinivaskolla",
+   "created_at": "2020-06-13T15:55:22Z",
+   "body": "Hi, I have \"AccuCheck Guide Me\".  which is Bluetooth. I am able to connect it fine with this app. But not able to read the data from it. Other people are saying they can read it fine. I am investigating it.  You can use the same class BluetoothGlucoseMeter \r\nThank you. "
+  },
+  {
+   "id": 644315899,
+   "user": "srinivaskolla",
+   "created_at": "2020-06-15T18:54:08Z",
+   "body": "Finally make it work. Now it connects to \"AccuCheck Guide Me\". Let me know if you need some help."
+  },
+  {
+   "id": 644322177,
+   "user": "Chakib-Temal",
+   "created_at": "2020-06-15T19:06:08Z",
+   "body": "> Finally make it work. Now it connects to \"AccuCheck Guide Me\". Let me know if you need some help.\r\n\r\nwith the same code of BluetoothGlucoseMeter ?\r\n\r\ni did not reallly understand , i can compile the application , but it's indicate that it's an app for a watch?? it indicate same for you ? \r\nbecause if I can run it on a smartphone, I can use the debugger to be able to block the execution and follow the code step by step\r\n\r\n\r\nmy solution for now :\r\nso, i try to understand the code manually , for exemple for the TouchNeo , i have created a simple code to communicate with him by reading the code without running it on a device\r\nhttps://github.com/Chakib-Temal/Android_BLE_Usb_Sensors/tree/master/app/src/main/java/com/example/bluetoothtest/Models/bleCallBacks/OneTouch\r\n\r\nso did you know what part on code of `public void onCharacteristicRead` of `BluetoothGlucoseMeter ` class is used to communicate with the Accu chek Guide \r\n\r\nthank's "
+  },
+  {
+   "id": 644339271,
+   "user": "srinivaskolla",
+   "created_at": "2020-06-15T19:43:18Z",
+   "body": "There are two modules. app/wear. You just install \"app\" when select in Android Studio\r\n\r\nBasically BlueoothGlucoseMeter is the class which communicates to the \"guide me\". \r\n\r\n**- if (queue.isEmpty()) {**\r\nThis is where we add all the characteristics we are interested.  . So you can change the list here. I am interested in only \"Accu Check Guide Me\".  Problem is Accucheck don't have GLUCOSE CONTEXT characteristic.  So we need to delete that., like they did for \"Diamond Mobile Mini\".\r\n\r\n _If I don't delete this characteristic, I am not getting any data., as the program stuck is queue ( I think, I may be wrong)_\r\n\r\nMain command which get the data from the device is .\r\n\r\n_**Bluetooth_CMD.write(GLUCOSE_SERVICE, RECORDS_CHARACTERISTIC, RecordsCmdTx.getAllRecords(), \"request all readings\");**_\r\n\r\nHope this helps, let me know if you need more info.\r\n\r\n"
+  },
+  {
+   "id": 644839653,
+   "user": "Chakib-Temal",
+   "created_at": "2020-06-16T15:30:53Z",
+   "body": "> There are two modules. app/wear. You just install \"app\" when select in Android Studio\r\n> \r\n> Basically BlueoothGlucoseMeter is the class which communicates to the \"guide me\".\r\n> \r\n> **- if (queue.isEmpty()) {**\r\n> This is where we add all the characteristics we are interested. . So you can change the list here. I am interested in only \"Accu Check Guide Me\". Problem is Accucheck don't have GLUCOSE CONTEXT characteristic. So we need to delete that., like they did for \"Diamond Mobile Mini\".\r\n> \r\n> _If I don't delete this characteristic, I am not getting any data., as the program stuck is queue ( I think, I may be wrong)_\r\n> \r\n> Main command which get the data from the device is .\r\n> \r\n> _**Bluetooth_CMD.write(GLUCOSE_SERVICE, RECORDS_CHARACTERISTIC, RecordsCmdTx.getAllRecords(), \"request all readings\");**_\r\n> \r\n> Hope this helps, let me know if you need more info.\r\n\r\nThank's a lot Man , you saved my week \r\n\r\ni just run the App module on my Phone and i used the debug \r\n\r\nnow i can communicate with the sensor , and get all my data \r\n\r\ni created a simple code Java to do it : \r\n[With FastBle](https://github.com/Chakib-Temal/Android_BLE_Usb_Sensors/tree/master/app/src/main/java/com/example/bluetoothtest/Models/bleCallBacks/Accu_chek_Guide)\r\n\r\nthank's again "
+  },
+  {
+   "id": 656580714,
+   "user": "Chakib-Temal",
+   "created_at": "2020-07-10T09:27:13Z",
+   "body": "Hi again \r\n\r\nthe sensor sends the data without indication of the number of data inside it\r\nis there any indication of the size data it gives ? (Number of data to wait ) "
+  },
+  {
+   "id": 659392104,
+   "user": "Chakib-Temal",
+   "created_at": "2020-07-16T12:55:17Z",
+   "body": "here is some standard BLE commands \r\n\r\n * [1,1] Read all records\r\n * [4,1] Number of records\r\n * [1,6] Read last record received\r\n * [1,5] Read first record\r\n * [1,3,1,45,0] Read extract from record 45 onwards"
+  }
+ ]
+}

@@ -1,0 +1,39 @@
+{
+ "id": 1260725431,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1805,
+ "title": "3.0.0.2-dev-l: mmol/l / mg/dl bug",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1805",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-06-04T12:00:17Z",
+ "closed_at": "2022-06-08T10:51:32Z",
+ "comment_count": 4,
+ "body": "Build version: 3.0.0.2-dev-l\r\n\r\nYesterday setup a test environment for dynISF using my phone and personal accounts (Nightscout, Heroku, xDrip) for it. All have the same version as my girlfriend. My T1D girlfriend is using the production environment ;-) \r\n\r\nFound a bug in dev-l in conversion mmol/l and mg/dl: \r\n\r\n- We use mmol/L settings, but when using bolus calculator, 'blood glucose' value shows in Nightscout (most recent v14.2.5) report Treatments as mg/dl instead of mmol/l. After reverting back to 3.0.0.2 and using bolus calculator the same I see 'blood glucose' value is stored again as mmol/l.\r\n\r\n- Also, after using AndroidAPS bolus calculator entering value in mmol/l the overview screen suddenly shows the value as mg/dl. When changing AndroidAPS unit setting from mmol/l to mg/ml overview screen seems to show to correct value.\r\n\r\nSee screenshots for a deep dive: \r\n\r\n![treatments](https://user-images.githubusercontent.com/77556597/171996743-f76d88e4-e8a5-4280-874a-83ab0f72ca26.png)\r\nWith dev-l in main window when I switch units it goes wrong:\r\n\r\n![overview mmoll](https://user-images.githubusercontent.com/77556597/171996742-5a9dfe93-8a79-453c-93d3-1525f8ef4768.png)\r\nSet AndroidAPS units in mmol/l\r\n\r\n![overview mgdl](https://user-images.githubusercontent.com/77556597/171996741-c072f7d2-7eb7-4ef7-9350-b1f865cc00ea.png)\r\nSet AndroidAPS units in mg/dl\r\n\r\n![nostubs](https://user-images.githubusercontent.com/77556597/171996744-3433e26e-43f2-4923-b125-e02c698ea540.png)\r\nNo stubs in this test-round ;) \r\n\r\nFor my the upcoming days / weeks it's possible to re-test, upload log files or build a new dev version to test. Love to help. \r\n\r\nDev's, great job so far !!\r\n\r\nAll the best,\r\nPeter",
+ "comments": [
+  {
+   "id": 1146672704,
+   "user": "petervanrijt",
+   "created_at": "2022-06-04T19:23:31Z",
+   "body": "Created this issue with my testing account (diabetesdiyaps). This response by my personal account. Performed some detail testing tonight:\r\n\r\n### AndroidAPS 3.0.0.2\r\n\r\n1. AndroidAPS in mmol/l, Nightscout in mmol/l. Bolus wizard BG 5.5, carbs 20g. In Nightscout report treatments: BG 5.5\r\n2. AndroidAPS in mmol/l, Nightscout in mg/dl . Bolus wizard BG 5.5, carbs 20g. In Nightscout report treatments: BG 5.5\r\n3. AndroidAPS in mg/dl , Nightscout in mmol/l. Bolus wizard BG  99, carbs 20g. In Nightscout report treatments: BG 99\r\n4. AndroidAPS in mg/dl , Nightscout in mg/dl . Bolus wizard BG  99, carbs 20g. In Nightscout report treatments: BG 99\r\n\r\n### AndroidAPS 3.0.0.2-dev-l\r\n\r\n5. AndroidAPS in mmol/l, Nightscout in mmol/l. Bolus wizard BG 5.5, carbs 40g. In Nightscout report treatments: BG 99\r\n6. AndroidAPS in mmol/l, Nightscout in mg/dl . Bolus wizard BG 5.5, carbs 40g. In Nightscout report treatments: BG 99\r\n7. AndroidAPS in mg/dl , Nightscout in mmol/l. Bolus wizard BG  99, carbs 40g. In Nightscout report treatments: BG 99\r\n8. AndroidAPS in mg/dl , Nightscout in mg/dl . Bolus wizard BG  99, carbs 40g. In Nightscout report treatments: BG 99\r\n\r\nExpected in 5 and 6 is a BG in Nightscout report treatments of 5.5 instead of 99."
+  },
+  {
+   "id": 1147446454,
+   "user": "petervanrijt",
+   "created_at": "2022-06-06T13:27:02Z",
+   "body": "Hi, \r\n\r\nAn update on the findings. Writing to NIghtscout still is in mg/dl instead of mmol/l. But, in a chat with another Dutch user I heard he did not have trouble with his screen \"mmol/l / mg/dl stripes\" to occur. So I have tested again. \r\n\r\nI saw when the switch is \"too fast\" there's a screen error (see below). When I don't wait for the blue bar to completely finished to right the screen has \"mmol/l mg/dl stripes\". A good workaround is to Exit the app and restart, the screen will be OK after loading. \r\n\r\nPerhaps an idea to pop-up a message after switching from mg/dl to mmol/l to wait completely for the screen to load, or to Exit the app and reboot immediately?\r\n\r\nThanks and all the best,\r\nPeter\r\n\r\n![171996742-5a9dfe93-8a79-453c-93d3-1525f8ef4768](https://user-images.githubusercontent.com/13611404/172168374-fd670b99-0cc6-4cca-a33b-2e7ae7c7598d.png)"
+  },
+  {
+   "id": 1149762234,
+   "user": "MilosKozak",
+   "created_at": "2022-06-08T10:51:32Z",
+   "body": "issue is on NS side. it doesn't convert value to units selectwed in settings.\r\nI set at least upload to units selected in AAPS https://github.com/nightscout/AndroidAPS/commit/70f365960052ec28f6844538559c8cd38bf32220\r\nSo far it was always in MGDL"
+  },
+  {
+   "id": 1152284251,
+   "user": "petervanrijt",
+   "created_at": "2022-06-10T12:00:01Z",
+   "body": "Thank you @MilosKozak ! "
+  }
+ ]
+}

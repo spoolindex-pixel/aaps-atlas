@@ -1,0 +1,47 @@
+{
+ "id": 1696747467,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2530,
+ "title": "Bolus given, but not taken into account",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2530",
+ "state": "closed",
+ "labels": [
+  "combo"
+ ],
+ "created_at": "2023-05-04T21:49:53Z",
+ "closed_at": "2023-12-13T13:12:56Z",
+ "comment_count": 5,
+ "body": "- SMBs and possibly whole meal boluses are being injected, but do not appear in the treatments history, nor are they added to IOB, which results in an **endless loop of pumping in more and more insulin**\r\n- in the combo tab the correct data is shown as \"last bolus ...\", TBR are shown correclty everywhere\r\n- seems to be like that since starting objective 9\r\n- Accu Chek Spirit Combo\r\n- occured in 3.0.0.2 and still persists after updating to 3.1.0.3\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/11401832/AndroidAPS.log)\r\n[AndroidAPS._2023-05-04_22-56-39_.0.log](https://github.com/nightscout/AndroidAPS/files/11401843/AndroidAPS._2023-05-04_22-56-39_.0.log)\r\n[AndroidAPS._2023-05-04_00-00-02_.16.log](https://github.com/nightscout/AndroidAPS/files/11401844/AndroidAPS._2023-05-04_00-00-02_.16.log)\r\n\r\nEdit #1:\r\n- disabling all SMB options \"stops\" the problem",
+ "comments": [
+  {
+   "id": 1538867088,
+   "user": "jotomo",
+   "created_at": "2023-05-08T18:46:49Z",
+   "body": "According to the logs the pump was changed at 04.05.23, ~23:02.\r\nThe combo pump is identified by the MAC address which changed from eKxys3bvBxs (???) to 00:0E:2F:69:C3:6D.\r\nTo avoid importing boluses all boluses before the date of a pump switch are ignored.\r\n\r\nFrom what I gather, the first SMB (0.9) was incorrectly NOT added to treatments. Successive boluses and SMBs should work well.\r\n\r\n@Keksbendiger Did you change the pump, upgrade the OS, toggle MAC randomization or something of the sort?"
+  },
+  {
+   "id": 1539187111,
+   "user": "Keksbendiger",
+   "created_at": "2023-05-08T23:23:17Z",
+   "body": "No I did not change the pump.\r\nAlso having that problem #2017 all the time.\r\nInstead of regular ~150 Units it pumped over 250 in one day."
+  },
+  {
+   "id": 1815513315,
+   "user": "dv1",
+   "created_at": "2023-11-16T23:54:44Z",
+   "body": "Late to this, but: Does this still happen in 3.2.0.2 for you? Did you try the new combov2 driver? Does it happen with that one too?"
+  },
+  {
+   "id": 1815914063,
+   "user": "Keksbendiger",
+   "created_at": "2023-11-17T08:13:12Z",
+   "body": "> Late to this, but: Does this still happen in 3.2.0.2 for you? Did you try the new combov2 driver? Does it happen with that one too?\r\n\r\nThanks for checking out! Have not updated yet, but will do in the next few days. Gonna re-enable SMB and try it out :)"
+  },
+  {
+   "id": 1852472666,
+   "user": "Keksbendiger",
+   "created_at": "2023-12-12T17:18:28Z",
+   "body": "Updated to 3.2.0.2 and re-enabled all SMB options.\r\nAlso switched to comboV2 driver.\r\n\r\nEncountered no problems regarding SMB or bolus history, all SMBs seem to be listed under \"Treatments\".\r\nTDD did also not increase.\r\n\r\nWould say the ticket can be closed as fixed in 3.2.0.2"
+  }
+ ]
+}

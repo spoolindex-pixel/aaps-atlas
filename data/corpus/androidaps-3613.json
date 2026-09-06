@@ -1,0 +1,57 @@
+{
+ "id": 2736880360,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3613,
+ "title": "Dev F Progression barre stuck",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3613",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-12-12T21:06:14Z",
+ "closed_at": "2024-12-15T13:20:34Z",
+ "comment_count": 7,
+ "body": "@MilosKozak As we talked on Discord, with the last dev f, the progression barre gets stuck till next BG reading and stops data being sent to watch.\n\n![Screenshot_20241212_173245_AAPS.jpg](https://github.com/user-attachments/assets/7ecc7c5e-2b66-48fa-90ad-d13f371aa36a)\n\n![IMG-20241212-WA0001.jpg](https://github.com/user-attachments/assets/c429f3a8-62f1-466b-82e7-ac7f717e1d22)\n\nPulling on the Loop tab gives a black screen on loop and AutoISF\n\n![Screenshot_20241212_190905_AAPS.jpg](https://github.com/user-attachments/assets/f4d12a9b-b916-41aa-87f8-d4f0428c2092)\n\n![Screenshot_20241212_190910_AAPS.jpg](https://github.com/user-attachments/assets/cf22eaa6-091e-4402-bcd0-5dbb218b4d56)\n\nThe problem seems only with AutoISF (but that needs to be tested) and since the arrival of Dev F. Last dev E was working OK.\n\nHere are the logs. See around 19:11\n\n![AndroidAPS_LOG_1734027130885.log.zip](https://github.com/user-attachments/files/18117453/AndroidAPS_LOG_1734027130885.log.zip)\n\n",
+ "comments": [
+  {
+   "id": 2540039910,
+   "user": "Josch24",
+   "created_at": "2024-12-12T21:23:13Z",
+   "body": "Dev-e was ok till 09.12.2024. Dev-e from 10.12.2024, has the Problem. Picture is from last dev-e, that was working ok. \r\n![Screenshot_20241212-211924](https://github.com/user-attachments/assets/d015553f-cfe6-4ce9-b7e6-b9c4bef1ff08)\r\n"
+  },
+  {
+   "id": 2540058131,
+   "user": "MilosKozak",
+   "created_at": "2024-12-12T21:34:23Z",
+   "body": "does it creash without AutoISF?"
+  },
+  {
+   "id": 2540099745,
+   "user": "robertrub",
+   "created_at": "2024-12-12T22:01:49Z",
+   "body": "Nope. I switched to OpenSMB to test and it seems to work ok. Didn't check with the watch really but no more progression barre stuck on the main UI."
+  },
+  {
+   "id": 2540108058,
+   "user": "Josch24",
+   "created_at": "2024-12-12T22:07:35Z",
+   "body": "Without autoISF, on Standard SMB, everything is ok. Also Watch is getting BG immediately."
+  },
+  {
+   "id": 2540147958,
+   "user": "vanelsberg",
+   "created_at": "2024-12-12T22:36:10Z",
+   "body": "Confirming: Have been running OpenSMB/DASH for one hour now. No issue...\r\n"
+  },
+  {
+   "id": 2540162298,
+   "user": "robertrub",
+   "created_at": "2024-12-12T22:46:49Z",
+   "body": "@MilosKozak Just had the _black screen then the UI \"refilling\"_  when BG came in and the loop kicked in **but** I was using OpenSMB !!!\n\nSo, not only an AutoISF problem...\n\nLook at the logs around 23:45\n\n![AndroidAPS_LOG_1734043636553.log.zip](https://github.com/user-attachments/files/18118289/AndroidAPS_LOG_1734043636553.log.zip)\n\n"
+  },
+  {
+   "id": 2540964579,
+   "user": "MilosKozak",
+   "created_at": "2024-12-13T09:22:21Z",
+   "body": "i don't see the issue. Please go commit by commit to find out which broke it for you"
+  }
+ ]
+}

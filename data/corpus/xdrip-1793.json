@@ -1,0 +1,120 @@
+{
+ "id": 957214961,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1793,
+ "title": "Different notification channels for persistent foreground collector notification and number icon",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1793",
+ "state": "closed",
+ "labels": [
+  "enhancement",
+  "ux-notification"
+ ],
+ "created_at": "2021-07-31T10:02:03Z",
+ "closed_at": "2025-08-08T12:05:06Z",
+ "comment_count": 18,
+ "body": "### Is your feature request related to a problem? Please describe.\r\nCurrently the persistent notification for the foreground collector and the number icon use the same notification channel (Ongoing notification), so it is impossible to tell Android to hide one (e.g. the persistent collector notification) without hiding the other (the number icon) as well.\r\n\r\n### Describe the solution you'd like\r\nDifferent notification channels for the persistent foreground collector notification and the number icon. I don't need (and want) the persistent foreground collector notification when I can use the number icon.\r\n\r\n### Describe alternatives you've considered\r\nI tried turning off the foreground collector service which will get rid of the persistent notification, but also the number icon, so that's not an option.\r\n\r\n//Edit\r\nxdrip+-version: self-compiled from 3df0152195b980e42ad78c853dd2c122c10fb96f with PR #1388 merged (https://github.com/TheConen/xDrip)\r\nPhone details: OnePlus Nord 2 5G with Oxygen OS 11.3 based on Android 11\r\n",
+ "comments": [
+  {
+   "id": 890342266,
+   "user": "Navid200",
+   "created_at": "2021-07-31T12:37:44Z",
+   "body": "@TheConen Can you show the consequence of having the persistent foreground notification enabled?\r\nI mean can you show the notification that you don't like to see?\r\nAlso, can you explain how you enable or disable it?"
+  },
+  {
+   "id": 890343239,
+   "user": "Navid200",
+   "created_at": "2021-07-31T12:46:06Z",
+   "body": "@TheConen  Also, based on your description here, I take it you have successfully used the notification number.\r\nIf yes, would you please update your comment in this link?  https://github.com/NightscoutFoundation/xDrip/issues/864#issuecomment-890316275\r\nIn that link, you sound like you still don't know how to use it.  Or, please explain if I am misunderstanding one or the other."
+  },
+  {
+   "id": 890343957,
+   "user": "TheConen",
+   "created_at": "2021-07-31T12:52:04Z",
+   "body": "When running the collector in foreground (Settings -> Less common settings -> Other misc. options -> Run collector in foreground), it displays a permanent notification showing the current graph (see picture 1). When using notification channels (Settings -> Glucose Alerts Settings -> Notification channels) and ongoing notification channels (Settings -> Glucose Alerts Settings -> Use ongoing notification channel) you are able to tell Android to hide the Category \"Ongoing Notifications\" (see picture 2) - however, this has the undesired effect to also hide the number icon in the status bar which I would like to keep (see picture 3).\r\n\r\nPicture 1: The (undesired) persistent foreground notification of the collector\r\n<img width=\"300\" src=\"https://user-images.githubusercontent.com/7814881/127740328-9745ebcd-da3d-44d9-87fe-1a6d0be795ca.jpeg\" />\r\n\r\nPicture 2: Android notification settings, the category \"Ongoing notifications\" controls the persistent notification as well as the number icon in the status bar so one cannot be disabled without disabling the other\r\n<img width=\"300\" src=\"https://user-images.githubusercontent.com/7814881/127740354-f1cf4c00-ec3b-461b-b262-56f138e8ded9.jpeg\" />\r\n\r\nPicture 3: The (desired) number icon in the status bar, next to the clock\r\n<img width=\"300\" src=\"https://user-images.githubusercontent.com/7814881/127740388-f6ee425d-9487-4214-896d-d03afbd926ff.jpeg\" />\r\n"
+  },
+  {
+   "id": 890345376,
+   "user": "TheConen",
+   "created_at": "2021-07-31T13:02:38Z",
+   "body": "I would be happy with an option to hide the graph and show a very small persistent notification with just the current reading (similar to what happens when you pull down the drop-down menu fully, see picture), but I haven't been able to find such an option.\r\n<img width=\"300\" src=\"https://user-images.githubusercontent.com/7814881/127740758-ff29c6bb-01f3-406b-b809-0996c44bb444.jpeg\" />\r\n"
+  },
+  {
+   "id": 890347826,
+   "user": "Navid200",
+   "created_at": "2021-07-31T13:20:17Z",
+   "body": "@TheConen Thanks for the descriptions.  It is very well done.\r\nIf you need to upload any more images, please reduce the size of each image you upload such that it shows the required detail, but, no more.\r\n\r\nWould you please do an experiment?\r\nIn picture 1, would you please swipe right on the notification graph?\r\nIt should expose a cog on the left side of the image.  Tap on the cog.  Tap on minimize.  Restart the phone.\r\nHow does it behave now?"
+  },
+  {
+   "id": 890349876,
+   "user": "TheConen",
+   "created_at": "2021-07-31T13:36:01Z",
+   "body": "If I tap on the cog, I get into the settings shown previously in picture 2. There is no option to minimize there.\r\n\r\nI'm active on the Nightscout discord, if you want to have a direct conversation about this (TheConen#5376). You can also take a look via TeamViewer/AnyDesk if that helps you.\r\n\r\nI think part of the issue is that the number icon is a part of the persistent notification. To be able to show/hide them independent from each other, they need to be two separate notifications. Alternatively an option to hide the graph in the persistent notification so that it is not that big would be nice."
+  },
+  {
+   "id": 890356723,
+   "user": "Navid200",
+   "created_at": "2021-07-31T14:29:13Z",
+   "body": "Even if a developer creates a pull request making the change you are requesting, there is no guarantee it will be merged.\r\nThe reason usually is one of the following:\r\n1- There is a work-around already.\r\n2- The change is not absolutely necessary and the users can live with xDrip as is.\r\n3- There is no work-around; it is a good thing to have; but, the implementation is too complicated or breaks something else, or may break something else, but, cannot be verified.\r\n\r\nAll of those can be considered now, before any developer spends any time on it.\r\nSo, that's what I'm trying to do now hoping to identify the best path forward by asking questions that may be asked later.  \r\n\r\nSomeone may ask \"why do you need to see your reading number on the notification bar; why not have it as a widget\"?\r\nI'm not saying that.  But, we need to consider all the questions we will be asked.  Creating a pull request is not necessarily going to be a step forward.  It may just be a waste of time if it will never be merged."
+  },
+  {
+   "id": 890359957,
+   "user": "Navid200",
+   "created_at": "2021-07-31T14:53:19Z",
+   "body": "@TheConen Would you please edit the first post and add to it:\r\n1- xDrip version you have tried\r\n2- The phone details including brand, model and Android version on it"
+  },
+  {
+   "id": 890371558,
+   "user": "TheConen",
+   "created_at": "2021-07-31T16:24:16Z",
+   "body": "I added the details you asked for in the first post.\r\n\r\nTo answer the hypothetical question of \"why do you need to see your reading number on the notification bar; why not have it as a widget\": I want to be able to see my blood sugar at a glance at any time without needing to interact with the phone, this includes situations like using my phone for navigation in the car where I am not able to see the widget on my home screen. The number icon achieves this, but with the number icon being active, the extremely huge persistent notification is a big annoyance and completely unnecessary, hence I would like to get rid of it - or at least not have it use basically the whole notification space."
+  },
+  {
+   "id": 890519527,
+   "user": "Navid200",
+   "created_at": "2021-08-01T13:18:25Z",
+   "body": "@TheConen For clarification purposes again, this is what you have written:\r\n> I don't need (and want) the persistent foreground collector notification when I can use the number icon.\r\n\r\nThe only time you will see the foreground collector notification is when you pull down from the top of the screen to see all notifications.  Under normal circumstances, that notification isn't visible.  Is that correct?"
+  },
+  {
+   "id": 890520776,
+   "user": "TheConen",
+   "created_at": "2021-08-01T13:24:57Z",
+   "body": "No, that is not correct - the notification is also visible at all times on the lockscreen. although it has a normal size there. Since the notification is extremely huge in the pull-down menu, it takes so much place that I can see at most one other notification at the same time, forcing me to scroll through my notifications if I have multiple notifications. Normally I would be able to see at least 3 different notifications at the same time, being able to directly click on the notification that is of current interest to me. I can't do that with the persistent xdrip+ notification."
+  },
+  {
+   "id": 890521429,
+   "user": "Navid200",
+   "created_at": "2021-08-01T13:29:11Z",
+   "body": "@TheConen \r\n>the notification is also visible at all times on the lockscreen  \r\n\r\nThat was not my question.\r\n<br/>\r\n\r\nWhen you turn your phone on, if you don't pull down from the top of the screen, do you see the large notification?  \r\nI don't.\r\nSo, either we are talking about different things here, or we are not describing the issue correctly."
+  },
+  {
+   "id": 890531293,
+   "user": "TheConen",
+   "created_at": "2021-08-01T14:33:11Z",
+   "body": "When I turn my phone on und do not unlock it, I see the notification, however a bit smaller without the graph (notification on lockscreen, picture 1). \r\nWhen I turn the phone on, do not unlock it and swipe down, I see the notification (notification menu from lockscreen, picture 2).\r\nWhen I turn the phone on, unlock it and swipe down, I see the notification (notification menu from unlocked phone, picture 3). \r\n\r\nOutside of these 3 conditions, the notification is not visible.\r\n\r\nIdeally, I would like to see the notification under none of these circumstances and just have the number icon, if possible. I can tell Android to hide the notification, but hiding the notification also hides the number icon.\r\n\r\nPicture 1: Notification on lockscreen\r\n<img src=\"https://user-images.githubusercontent.com/7814881/127774475-1f592a1a-d37e-402f-b238-9024897bb912.jpeg\" width=\"300\"/>\r\n\r\n\r\nPicture 2: Notification in pull-down menu on lockscreen\r\n<img src=\"https://user-images.githubusercontent.com/7814881/127774565-49be6596-eb73-4c43-8574-90ea088f5e42.jpeg\" width=\"300\"/>\r\n\r\nPicture 3: Notification in pull-down menu on unlocked phone\r\n<img src=\"https://user-images.githubusercontent.com/7814881/127774604-a65bc638-736c-46a8-9043-ca3c6692af1b.jpeg\" width=\"300\"/>\r\n\r\n\r\n\r\n"
+  },
+  {
+   "id": 953415143,
+   "user": "Navid200",
+   "created_at": "2021-10-28T00:53:46Z",
+   "body": "@TheConen Have you seen this?\r\nhttps://github.com/NightscoutFoundation/xDrip/issues/750#issuecomment-458932675\r\nI don't think you can disable the persistent notification.\r\nWhat do you think?"
+  },
+  {
+   "id": 954024781,
+   "user": "TheConen",
+   "created_at": "2021-10-28T16:51:13Z",
+   "body": "As mentioned in the comment you linked, you can tell Android to hide the persistent notification (\"To minimize this notification either just select to minimize it or not show it by long pressing on the notification\"). The persistent notification will still be there for the system, resulting in xdrip+ not being killed, Android will just not show it to you. However, if you do hide the persistent notification, right now this will also hide the notification icon. I would like to be able to hide the persistent notification without hiding the notification icon."
+  },
+  {
+   "id": 954026593,
+   "user": "Navid200",
+   "created_at": "2021-10-28T16:53:37Z",
+   "body": "@TheConen Let me see if I can find, in the code, where I can add a notification channel for the notification icon."
+  },
+  {
+   "id": 3124365090,
+   "user": "Navid200",
+   "created_at": "2025-07-27T12:17:48Z",
+   "body": "I created a separate notification channel for the number icon.  The problem is that we will end up with two different notifications!\nAfter you disable the persistent notification, you will have one notification.  There is no way to eliminate the notification.  Showing the number icon is done through a notification.  \n\nSo, I decided to follow your other preferences of having the option of making the existing notification very small.\nThis is the smallest I can make it:  \n\n<img width=\"302\" height=\"644\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/84ae4836-1441-46ce-b449-738c7aba8bb6\" />\n\n\nWould that be acceptable?  \n  \n\nhttps://github.com/user-attachments/assets/bc17c6a9-9c18-436e-b77b-e20fb6cd177a"
+  }
+ ]
+}

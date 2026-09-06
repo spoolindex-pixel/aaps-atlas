@@ -1,0 +1,78 @@
+{
+ "id": 685019065,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1418,
+ "title": "Alarm sounds continuously ",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1418",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "ux-notification"
+ ],
+ "created_at": "2020-08-24T22:12:59Z",
+ "closed_at": "2022-05-12T04:14:51Z",
+ "comment_count": 29,
+ "body": "Previous versions of the app would sound the alarm once, then repeat it as specified by the `Re-raise every x minutes if unacknowledged` setting. Current version alarms continuously, clicking on the notification opens the app alarm still going, try and select the snooze time (alarm still blaring), and click snooze. This is extremely frustrating. Please, please, please put it back the way it was. I believe this is a bug because otherwise the re-raise setting is pointless.",
+ "comments": [
+  {
+   "id": 699135343,
+   "user": "tolot27",
+   "created_at": "2020-09-25T20:19:05Z",
+   "body": "Please can you provide the xDrip version you are using and the version as it worked before?"
+  },
+  {
+   "id": 955473791,
+   "user": "noctividus",
+   "created_at": "2021-10-30T16:54:35Z",
+   "body": "I can verify that indeed this is still an issue.\r\n<img width=\"350\" src=\"https://user-images.githubusercontent.com/5158351/139542065-9104048f-ff46-44ae-82ed-abba21921cbf.jpg\" /> <img width=\"350\" src=\"https://user-images.githubusercontent.com/5158351/139540592-b0dccae4-093e-42ec-90f8-a5da28f3d420.jpg\" />\r\n\r\n"
+  },
+  {
+   "id": 955474952,
+   "user": "noctividus",
+   "created_at": "2021-10-30T16:55:16Z",
+   "body": "Additionally, I can't answer the last version it \"worked\" it has never worked for me."
+  },
+  {
+   "id": 955597654,
+   "user": "tolot27",
+   "created_at": "2021-10-30T21:46:04Z",
+   "body": "@neirfeno We still don't know which \"Previous versions\" you are referring to. I did not have this problem with any of the versions I'm using.\r\nMaybe, this is related to the alert tone. I'm using the same alerts the Dexcom app is using. These alerts are very short like a \"beep beep\". Afterwards, nothing is heard until the alarm is re-raised."
+  },
+  {
+   "id": 958251854,
+   "user": "noctividus",
+   "created_at": "2021-11-02T22:12:18Z",
+   "body": "This has been an issue for every version I've used. That probably means the bug is linked to a phone (Samsung Galaxy S10) since I've only ever used xDrip on this phone. I'm on Android Version 11.\r\n\r\nThe bug is only present on the alert that has \"Override Phone Silent\" and \"Force Speaker\" enabled. The other alert I have only sounds once and respects the Re-raise time. Those two options probably do some pretty crazy stuff with respect to alerts, so I would look into that code. \r\n\r\nThis is a key function, because I would like to place my phone in silent mode sometimes but still get a \"super high\" alert. However, I would like that to only beep beep once. "
+  },
+  {
+   "id": 958340165,
+   "user": "noctividus",
+   "created_at": "2021-11-02T22:55:46Z",
+   "body": "Alerts that override the silent mode utilize the PlayFile method-\r\n\r\nhttps://github.com/NightscoutFoundation/xDrip/blob/38fee03be56da6ce9cbe90e08dbe8e4b651c6edc/wear/src/main/java/com/eveningoutpost/dexdrip/UtilityModels/AlertPlayer.java#L297\r\n\r\nI'm not sure why PlayFile utilizes MediaPlayer synchronously as opposed to Async, but it does. This file has only really been touched by @jamorham, so maybe he can answer that. Maybe just because alert tones are always local files and not streams.\r\n\r\nThere's no explicit call to setLooping(false). I would imagine that it defaults to false, but hey, my phone is looping that sound, so maybe throw a mediaPlayer.setLooping(false) in there after it's started. \r\n"
+  },
+  {
+   "id": 958558696,
+   "user": "Navid200",
+   "created_at": "2021-11-03T00:47:09Z",
+   "body": "I have force speaker and override silent mode enabled on all my alerts.\r\nI have never experienced this problem.  I have used xDrip with Android 6, 8, 9, and 11 over the years, always with force speaker and override silent mode enabled."
+  },
+  {
+   "id": 961479682,
+   "user": "tolot27",
+   "created_at": "2021-11-04T22:25:25Z",
+   "body": "> I'm not sure why PlayFile utilizes MediaPlayer synchronously as opposed to Async, but it does.\r\n\r\nDeclaring a method as `synchronized` has nothing to do how the MediaPlayer plays a file. It is only used to block other threads of xDrip accessing the method (`PlayFile` in this case) at the same time. For this particular case it is necessary because the global instance variable `mediaPlayer` is modified (object is released, nulled and created again). This should not be done by more than one thread at the same time.\r\n\r\nBeside the method declaration, you are still right that MediaPlayer does not play the sound asynchronously.\r\n\r\n> There's no explicit call to setLooping(false). I would imagine that it defaults to false, but hey, my phone is looping that sound, so maybe throw a mediaPlayer.setLooping(false) in there after it's started.\r\n\r\nPlease can you modify `PlayFile` according to https://stackoverflow.com/a/38821524/10373188 and test whether this solves your problem? The linked solution also enables asynchronous playback and releases the MediaPlayer on completion."
+  },
+  {
+   "id": 1118494306,
+   "user": "Navid200",
+   "created_at": "2022-05-05T12:34:31Z",
+   "body": "@noctividus Does the alarm still sound continuously with releases after April 12, 2022?"
+  },
+  {
+   "id": 1124510465,
+   "user": "noctividus",
+   "created_at": "2022-05-12T04:11:23Z",
+   "body": "This appears to be fixed in later releases. Thanks for the support!\n\nOn Thu, May 5, 2022 at 5:34 AM Navid ***@***.***> wrote:\n\n> @noctividus <https://github.com/noctividus> Does the alarm still sound\n> continuously with releases after April 12, 2022?\n>\n> —\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/1418#issuecomment-1118494306>,\n> or unsubscribe\n> <https://github.com/notifications/unsubscribe-auth/ABHLLT4RZB5C5L7VQ2GPNZDVIO56DANCNFSM4QJ7BUHQ>\n> .\n> You are receiving this because you were mentioned.Message ID:\n> ***@***.***>\n>\n"
+  }
+ ]
+}

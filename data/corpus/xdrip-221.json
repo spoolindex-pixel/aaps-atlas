@@ -1,0 +1,75 @@
+{
+ "id": 276917485,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 221,
+ "title": "Dexcom G5: Periodical interrupt of connection",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/221",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2017-11-27T06:53:56Z",
+ "closed_at": "2021-02-16T12:45:34Z",
+ "comment_count": 10,
+ "body": "We have periodical interrupts of connection and data is missing.\r\nSmartphone:\r\n Huawei Mate 10 Lite\r\nIn the attachments you see all log data and the xdrip configuration. \r\n\r\nTell me if you need more information and special log data.\r\n\r\n![23899450_2158640774161862_1458836355_n](https://user-images.githubusercontent.com/25795894/33254191-d7f7474e-d347-11e7-915a-305f94160090.png)\r\n![23972369_2158640634161876_740043660_n](https://user-images.githubusercontent.com/25795894/33254192-d80edc7e-d347-11e7-9ce2-54cdaaad5449.png)\r\n![23972600_2158640560828550_970481028_n](https://user-images.githubusercontent.com/25795894/33254193-d82514da-d347-11e7-8153-a92e537b4e4d.png)\r\n![23972618_2158650257494247_181067997_n](https://user-images.githubusercontent.com/25795894/33254195-d83b5330-d347-11e7-8ec2-c826e37dda34.jpg)\r\n![24008550_2158651737494099_756225606_n](https://user-images.githubusercontent.com/25795894/33254197-d852a4f4-d347-11e7-85ad-6ec3dd39a2b9.png)\r\n![24008717_2158640617495211_138374348_n](https://user-images.githubusercontent.com/25795894/33254199-d86a11a2-d347-11e7-9b6e-452b3aec24a6.png)\r\n![24008743_2158640990828507_960862993_n](https://user-images.githubusercontent.com/25795894/33254200-d8842844-d347-11e7-9ea8-8ca0542af126.png)\r\n![24008756_2158651714160768_1848961447_n](https://user-images.githubusercontent.com/25795894/33254201-d89c249e-d347-11e7-9563-aaed55009271.png)\r\n![24019897_2158640537495219_41728244_n](https://user-images.githubusercontent.com/25795894/33254202-d8b353d0-d347-11e7-94e0-1ba71d87224d.png)\r\n",
+ "comments": [
+  {
+   "id": 348002251,
+   "user": "jamorham",
+   "created_at": "2017-11-29T21:29:25Z",
+   "body": "What does your main graph look like? Are the data points missing regularly or just randomly?"
+  },
+  {
+   "id": 348055329,
+   "user": "ryanmccutchen",
+   "created_at": "2017-11-30T01:40:18Z",
+   "body": "Im also seeing drops in connections regularly, and several users in the Facebook group are mentioning the same thing - all on recent builds. It seems to be regularly and not randomly.\r\n\r\nIm using a S8 with today's build. All users report similar issues that the connection drops consistently and restarting the collector brings it back. I am using the OB1 Collector with no other debug settings. I have been playing around with different BT settings but no changes in behavior.\r\n\r\nThis is some of the drops. For me it happens the most at night while sleeping, and at work. I cant really determine why - in all cases I keep my phone close to me.\r\n\r\n![image](https://user-images.githubusercontent.com/7481799/33408572-045809b4-d52c-11e7-958d-35c1c6348a92.png)\r\n"
+  },
+  {
+   "id": 348098021,
+   "user": "osodebailar",
+   "created_at": "2017-11-30T06:48:05Z",
+   "body": "Same here :\r\n![01_n](https://user-images.githubusercontent.com/25795894/33417688-c9949492-d5a2-11e7-8c9a-df14081c5633.png)\r\n![02_n](https://user-images.githubusercontent.com/25795894/33417689-c9aa7cee-d5a2-11e7-95d7-7292ba8bf4a7.png)\r\n\r\n"
+  },
+  {
+   "id": 348136263,
+   "user": "jamorham",
+   "created_at": "2017-11-30T09:47:44Z",
+   "body": "Can you enable the debugging for the OB1 collector so we can gather more event logs to investigate in more detail:\r\n\r\nhttps://github.com/NightscoutFoundation/xDrip/wiki/Enabling-Debugging-for-OB1-collector\r\n"
+  },
+  {
+   "id": 348184820,
+   "user": "osodebailar",
+   "created_at": "2017-11-30T13:16:05Z",
+   "body": "Jon i am very sorry. The problem with the Huawei occured to a friend of Mine. He bought it last week for xdrip and AndroidAPS. But due to the problem he changed the mobile to a Sony xperia which does its work very well. So we can't reproduce the situation anymore."
+  },
+  {
+   "id": 348757278,
+   "user": "jamorham",
+   "created_at": "2017-12-03T11:24:15Z",
+   "body": "Ok, I think the Huawei issue is likely to be due to its non-standard power saving features. I think it has a concept of something called \"Protected Apps\" which is like the battery optimization whitelist. I don't think we have a way to control this programatically, but either disabling it or adding xDrip to its whitelist can help I think."
+  },
+  {
+   "id": 348757316,
+   "user": "jamorham",
+   "created_at": "2017-12-03T11:25:08Z",
+   "body": "@ryanmccutchen do you see anything in the `System Status` tabs when it is in the state of not receiving, for example a warning about slow wake ups ?"
+  },
+  {
+   "id": 392708049,
+   "user": "AlexanderDemko",
+   "created_at": "2018-05-29T09:12:16Z",
+   "body": "Hello! I have the same problem on Huawei Honor 9.\r\n\r\nWhile I am using my phone; or the phone is charging, there are minimal connection issues.\r\nWhile the phone's display is on sleep mode or screen lock, the capture rate is approx. 10%\r\n\r\nI can collect any log data if necessary."
+  },
+  {
+   "id": 774374590,
+   "user": "Navid200",
+   "created_at": "2021-02-06T01:42:53Z",
+   "body": "@osodebailar If you are not experiencing this problem, would you please close the issue?\r\n\r\nFor anyone with this problem or any other similar connectivity issues, please post on facebook:\r\nhttps://www.facebook.com/groups/xDripG5\r\nor in the Gitter room.  https://gitter.im/jamorham/xDrip-plus"
+  },
+  {
+   "id": 779813983,
+   "user": "Navid200",
+   "created_at": "2021-02-16T12:45:34Z",
+   "body": "Closing it for inactivity."
+  }
+ ]
+}

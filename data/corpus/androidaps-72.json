@@ -1,0 +1,45 @@
+{
+ "id": 743087979,
+ "repo": "nightscout/AndroidAPS",
+ "number": 72,
+ "title": "[2.7] connection to pump get lost",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/72",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2020-11-14T22:05:14Z",
+ "closed_at": "2020-11-22T13:14:45Z",
+ "comment_count": 5,
+ "body": "During the day and also night it could happen, after receiving a new BG value from rhe patched dexcom app that the pump connection get lost.\r\n\r\nAAPS is stil waiting for a result from  the pump. New BG values are coming in but AAPS isn't activating a new connection to the pump and still waits for a not coming result of the pump.\r\n\r\nExit AAPS and starting AAPS again helps to solve the problem diretly.\r\n\r\nWhy can't AAPS recognize that the pump does'n't delivers results for SMB or temp basals after a defined time and restarts tAAPS ?\r\n\r\nBy the way the closed issue whichvdescribes my problem couldn't solve my problem.\r\n\r\nI have already reinstalled AAPS for severeal times and all accu optimizations on my phone are switched off.\r\n\r\n\r\n![20201114_090035](https://user-images.githubusercontent.com/37514390/99157872-2375b580-26cd-11eb-8ca2-a9ad5ab6892b.jpg)\r\n\r\n\r\n",
+ "comments": [
+  {
+   "id": 727827298,
+   "user": "MilosKozak",
+   "created_at": "2020-11-16T08:40:30Z",
+   "body": "turn on pump debugging , and provide logs with time of occurence.  this not enough to be able to help you"
+  },
+  {
+   "id": 727843040,
+   "user": "Bommyt",
+   "created_at": "2020-11-16T09:09:00Z",
+   "body": "Attached you can find the log.zip file.\r\nTime is difficult to say because I recognize the problem only after some time when  temp basals or SMBs aren't done anymore.\r\n\r\nTry to use 09.00  and some minutes before.\r\n\r\n[AndroidAPS_LOG_1605308881804.log.zip](https://github.com/nightscout/AndroidAPS/files/5545208/AndroidAPS_LOG_1605308881804.log.zip)\r\n"
+  },
+  {
+   "id": 727855422,
+   "user": "MilosKozak",
+   "created_at": "2020-11-16T09:30:23Z",
+   "body": "logs doesn't conataing that time. do what said and provide logs on next occurence"
+  },
+  {
+   "id": 728183767,
+   "user": "Bommyt",
+   "created_at": "2020-11-16T16:47:13Z",
+   "body": "Here is a new log file. Please use time 17:32\r\n\r\nAnd 2 new screen shots\r\n\r\n[AndroidAPS_LOG_1605544633665.log.zip](https://github.com/nightscout/AndroidAPS/files/5548400/AndroidAPS_LOG_1605544633665.log.zip)\r\n\r\n![20201116_174441](https://user-images.githubusercontent.com/37514390/99282234-b9c3eb80-2833-11eb-8251-72cd873ef5ee.jpg)\r\n![20201116_174513](https://user-images.githubusercontent.com/37514390/99282253-be889f80-2833-11eb-89cb-befafab9eab1.jpg)\r\n"
+  },
+  {
+   "id": 731746723,
+   "user": "MilosKozak",
+   "created_at": "2020-11-22T13:14:45Z",
+   "body": "Pump failed to set TBR and this state was not properly reported to loop tab\r\nfixed by https://github.com/nightscout/AndroidAPS/commit/6f7cfdd06dba07907a8dd4781182d12e9d4424b5"
+  }
+ ]
+}

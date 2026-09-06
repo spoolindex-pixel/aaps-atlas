@@ -1,0 +1,255 @@
+{
+ "id": 1517695503,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 2597,
+ "title": "Tidepool Authentication API Deprecation",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/2597",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-01-03T17:18:43Z",
+ "closed_at": "2023-10-19T13:23:51Z",
+ "comment_count": 49,
+ "body": "### Discussed in https://github.com/NightscoutFoundation/xDrip/discussions/2596\r\n\r\n<div type='discussions-op-text'>\r\n\r\n<sup>Originally posted by **toddkazakov** January  3, 2023</sup>\r\nHello, I am the lead backend developer at Tidepool. In December 2022 we replaced our legacy authentication system with  Keycloak. As a result, the existing API endpoints are deprecated, but we noticed that they are heavily used xDrip. As we are trying to completely retire the old system, all applications should migrate to the new OpenID Connect compatible implementation.\r\n\r\nWe don't have timeframe for the removal of the old APIs, but the way xDrip currently utilizes the APIs puts a strain on the new system (existing APIs act as proxy), because it starts a new auth session every time it requires a fresh token, instead of refreshing the session token directly.\r\n\r\nI'll be more than happy to assist with setting up an integration/production environment client for the application. Any OIDC compatible library can be used (e.g. https://github.com/openid/AppAuth-Android). Let me know what's the best way to proceed.\r\n\r\n</div>",
+ "comments": [
+  {
+   "id": 1374462343,
+   "user": "jamorham",
+   "created_at": "2023-01-07T12:18:42Z",
+   "body": "Can you provide more information? For example how the new authentication flow works so that we can determine the changes which would be required in xDrip?"
+  },
+  {
+   "id": 1375435982,
+   "user": "toddkazakov",
+   "created_at": "2023-01-09T11:01:40Z",
+   "body": "Hey @jamorham. The new system supports the standard OpenID Connect flows, e.g.:\r\n- Open a browser to authenticate the user at https://auth.tidepool.org or https://auth.integration.tidepool.org\r\n- The authorization servcer will redirect the user to xDrip using a custom scheme \r\n- xDrip will receive an authorization code from the redirect\r\n- The authorization code can then be exchanged for an access and refresh token pair\r\n- Access tokens are short-lived (valid for 1 to 5 minutes) and can be renewed using the refresh token obtained in the previous step. \r\n- To disconnect a user from Tidepool, the refresh token can be revoked, which will terminate the user session.\r\n- Users have the ability to terminate sessions server-side, which will invalidate the refresh token. To obtain a fresh token pair, this process must be repeated from the beginning.\r\n\r\nYou can check https://github.com/openid/AppAuth-Android#implementing-the-authorization-code-flow for an example how to implement this. I can set up an OpenID client on the integration server when you are ready to work on this."
+  },
+  {
+   "id": 1375474710,
+   "user": "jamorham",
+   "created_at": "2023-01-09T11:18:40Z",
+   "body": "Is it possible to do this without a web browser? I can imagine that it could introduce the possibility for errors relating to the user's choice of browser component or security issues from the same.  \r\n\r\nI get 404 errors on both the above listed auth URLs.\r\n\r\nPlease go ahead and set up test credentials and send privately to jamorham at gmail\r\n\r\nthanks"
+  },
+  {
+   "id": 1375486133,
+   "user": "gazhay",
+   "created_at": "2023-01-09T11:26:24Z",
+   "body": "Something like this?\r\nhttps://github.com/openid/AppAuth-Android"
+  },
+  {
+   "id": 1375912279,
+   "user": "toddkazakov",
+   "created_at": "2023-01-09T16:30:25Z",
+   "body": "@jamorham there's no way to this without a web browser. This is the de-facto standard for authenticating against a third-party provider (e.g. sign in with Google or Facebook) and there aren't any inherent compatibility or security issues related to the choice of browser. I can give you few examples why it's important for authentication to happen in a web browser - in the near future we'll allow users to enable Multi-Factor authentication, so after they enter their username/password credentials, they'll also be prompted to enter a verification code (could be sent by SMS or obtained from Google authenticator app). Additionally, we might enable sign in/sign up with social providers, so we can't possibly ask all of our partners/clients to implement this functionality. If those flows are fully handled as an interactive browser experience, we can implement them once, and let client only deal with the bear minimum (i.e. implementing the OpenID Connect flow which delegates the authentication and authorization to Tidepool).\r\n\r\nTo create a client, I'll need to configure the redirect URL. Do you have any preference? Does `xdrip://callback/tidepool` work for you?\r\n\r\n@gazhay yes, that's a reference implementation and I suggest you use it for the xDrip integration."
+  },
+  {
+   "id": 1376469757,
+   "user": "jamorham",
+   "created_at": "2023-01-09T23:13:09Z",
+   "body": "@toddkazakov Hi, Sure I understand the reason for the approach. I was asking about whether browser is required because normally the user wouldn't leave xDrip to login to anything. Even with google sign-in this is done within the app itself.  \r\n\r\nMy main concern is that of compatibility that users may have installed or receive bundled any range of incompatible or insecure browsers (for example those that pipe all the data via their own http proxy) - Indeed the AppAuth-Android package has workarounds and lists for allowed/buggy browser implementations from what I can see looking at it. \r\n\r\nThis is a potential can of worms I would prefer to avoid but it sounds like it isn't possible to... xDrip does things like wrap the TLS stack so that we can support TLS 1.2 even down to Android 5. I'm not sure a bundled browser on an old phone has the same chance of working reliably.\r\n\r\nThe url scheme you suggest is fine, however I am also not sure what the implications are for when users have multiple copies of xDrip installed (eg using variants) and how that will handle the callback."
+  },
+  {
+   "id": 1377132388,
+   "user": "toddkazakov",
+   "created_at": "2023-01-10T11:44:06Z",
+   "body": "@jamorhan it's not required for users to leave xDrip - if I understand correctly, AppAuth-Android uses in-app browser tabs if they are available on the device.\r\n\r\n> however I am also not sure what the implications are for when users have multiple copies of xDrip installed (eg using variants) and how that will handle the callback.\r\n\r\nMultiple apps can be registered as custom scheme handlers. In this case there will be multiple xDrip instances registered for the same scheme, so users should be prompted by the OS to choose the one that should receive the callback. I'm happy to work with you on this if you have any other suggestions.\r\n\r\nI have added the client with client id `xdrip` which can use the `authorization_code` grant and with redirect uri `xdrip://callback/tidepool`. You can find all relevant endpoints here https://auth.integration.tidepool.org/realms/integration/.well-known/openid-configuration. The Tidepool base url is unchanged - https://external.integration.tidepool.org"
+  },
+  {
+   "id": 1378210442,
+   "user": "emmatovar27",
+   "created_at": "2023-01-11T03:58:45Z",
+   "body": "Hi @toddkazakov do you think is possible to add a client id for AAPS too? I'm currently working in the integration of AAPS and Tidepool. There are AAPS users that don't use xDrip+ and can benefited to upload directly from AAPS. :) "
+  },
+  {
+   "id": 1379154641,
+   "user": "toddkazakov",
+   "created_at": "2023-01-11T16:53:24Z",
+   "body": "@emmatovar27 I added a new client with client id `aaps` with redirect uri `aaps://callback/tidepool`. All endpoints are the same as above.\r\n\r\nFor both AAPS and xDrip, you should include `offline_access` in the list of scopes when making the initial authorization request in order to obtain a refresh token. The refresh token can then be used to get a new access token when the old one expires using an API call to the token endpoint."
+  },
+  {
+   "id": 1379517024,
+   "user": "jamorham",
+   "created_at": "2023-01-11T21:37:28Z",
+   "body": "@toddkazakov what is the protocol/procedure for utilizing the authorization code?"
+  },
+  {
+   "id": 1380198119,
+   "user": "toddkazakov",
+   "created_at": "2023-01-12T11:36:19Z",
+   "body": "Here's a rough (and simplified) outline how the authentication flow works:\r\n1. Open an in-app browser at the authorization endpoint e.g. `https://auth.integration.tidepool.org/realms/integration/protocol/openid-connect/auth?client_id=xdrip&response_type=code&redirect_uri=xdrip://callback/tidepool&scope=openid%20data_read%20data_write%20offline_access`\r\n2. Tidepool will prompt the user for their username/password\r\n3. On successful authentication, Tidepool will redirect the user to the `redirect_uri` specified above and will pass the `authorization_code` as a query parameter to the `redirect_uri`\r\n4. xDrip will intercept the redirect to the custom scheme and will obtain the `authorization_code` from the query parameters\r\n5. xDrip will exchange the `authorization_code` for access and refresh token at the token endpoint by making a `POST` request with to https://auth.integration.tidepool.org/realms/integration/protocol/openid-connect/token\r\n6. The validity period of the access token is relatively short (e.g. from 1 minute to 10 minutes, and is determined by the auth server). To obtain a fresh access token, xDrip can make a subsequent `POST` request to the token endpoint by passing the refresh token that was obtained in 5.\r\n\r\nFor native applications, it's important to use this flow with PKCE. You can find more info [here](https://auth.integration.tidepool.org/realms/integration/protocol/openid-connect/token).\r\n\r\nAll of the above is generally handled by the authentication library you choose. You'd only need to pass the configuration options, e.g.:\r\n```java\r\nAuthorizationServiceConfiguration serviceConfig =\r\n    new AuthorizationServiceConfiguration(\r\n        Uri.parse(\"https://auth.integration.tidepool.org/realms/integration/protocol/openid-connect/auth\"), // authorization endpoint\r\n        Uri.parse(\"https://auth.integration.tidepool.org/realms/integration/protocol/openid-connect/token\")); // token endpoint\r\n\r\nAuthorizationRequest.Builder authRequestBuilder =\r\n    new Au"
+  },
+  {
+   "id": 1382404225,
+   "user": "jamorham",
+   "created_at": "2023-01-13T21:21:18Z",
+   "body": "@toddkazakov With the old style login we would receive a `userid` field. Where is this obtained after using the new login flow? I assume we should be following the same procedure to start a session etc?"
+  },
+  {
+   "id": 1385935145,
+   "user": "jamorham",
+   "created_at": "2023-01-17T19:24:50Z",
+   "body": "@toddkazakov Do you have any more information about how we get the userid with the new flow or am I misunderstanding which steps need replacing with the new authentication mechanism?"
+  },
+  {
+   "id": 1387179977,
+   "user": "toddkazakov",
+   "created_at": "2023-01-18T14:39:39Z",
+   "body": "@jamorham you can get the user id by calling the userinfo endpoint (e.g. https://auth.integration.tidepool.org/realms/integration/protocol/openid-connect/userinfo) with the access token you obtained passed in the authorization header (`Authorization: Bearer access_token_goes_here`). The user id is returned in the `sub` attribute of the response."
+  },
+  {
+   "id": 1387645887,
+   "user": "jamorham",
+   "created_at": "2023-01-18T19:27:48Z",
+   "body": "@toddkazakov Okay I think I have this working now. How frequently might we need to refresh the authorization code because I don't think that can happen when the user is not present? thanks"
+  },
+  {
+   "id": 1404755211,
+   "user": "jamorham",
+   "created_at": "2023-01-26T09:40:20Z",
+   "body": "@toddkazakov thanks, that is what I'm doing but I will check the persistence... From what you are saying about the authentication model, if a user doesn't submit any data for a few days (eg they are on holiday without internet) when they return will they be required to complete the browser based authentication again?\r\n\r\nIs it correct that the `sub` parameter remains constant for the particular user? thanks"
+  },
+  {
+   "id": 1404858338,
+   "user": "toddkazakov",
+   "created_at": "2023-01-26T11:11:04Z",
+   "body": "> if a user doesn't submit any data for a few days (eg they are on holiday without internet) when they return will they be required to complete the browser based authentication again\r\n\r\nThat's correct. The authorization code can be used once. We can set the refresh token life time to be 2 weeks, so this doesn't happen very often. Does this work?\r\n\r\n> Is it correct that the sub parameter remains constant for the particular user?\r\n\r\nYes, `sub` is the user id and is constant."
+  },
+  {
+   "id": 1405782220,
+   "user": "jamorham",
+   "created_at": "2023-01-26T22:58:12Z",
+   "body": "@toddkazakov I have added support in commit https://github.com/NightscoutFoundation/xDrip/commit/e33663e55d34fa7d6622f205096730104359c656 which is available in the Jan 26th Nightly for testing.\r\n\r\nTo test, the user would enable `Engineering Mode` as described [here,](https://github.com/NightscoutFoundation/xDrip/wiki/Engineering-Mode) go to the `Cloud Upload` -> `Tidepool` section and select to `Use Integration (test) servers` and at the bottom enable the `Debug Option` and then enter the details to the `Login User Name` and `Login Password` sections. `Login Password` is not used with the new authentication, but on accessing this preference item it will trigger the initial browser login.\r\n\r\nIn testing so far, everything pretty much looks to be working and xDrip will cache everything it can until it detects that anything has become invalidated at which point it will start the process again requiring browser access.\r\n\r\nThere is still an issue that I think the browser is caching the login which means that it isn't possible to change selected user because it isn't possible to logout a user. So if you change the username for a logged in user, it just logs in the old user again. I haven't yet found if there is a way to resolve this."
+  },
+  {
+   "id": 1406042716,
+   "user": "toddkazakov",
+   "created_at": "2023-01-27T05:34:31Z",
+   "body": "@jamorham thanks, I'll take a look today. \r\n\r\nThe browser stores a session cookie which expires after some time (usually few days of inactivity). To force re-authenticate the user you can pass `prompt=login` to the initial authorization request with [addAdditionalParameters](https://openid.github.io/AppAuth-Android/docs/latest/net/openid/appauth/AuthorizationRequest.Builder.html#setAdditionalParameters-java.util.Map-). "
+  },
+  {
+   "id": 1406263696,
+   "user": "jamorham",
+   "created_at": "2023-01-27T09:47:18Z",
+   "body": "@toddkazakov ok great and thanks for the tip regarding login I will work to integrate that when user name is changed."
+  },
+  {
+   "id": 1406446027,
+   "user": "toddkazakov",
+   "created_at": "2023-01-27T12:36:07Z",
+   "body": "@jamorham I took a look at the commit you pointed me to. Is it possible for you to integrate the code verifier challenge to the auth flow as in the example above? This is required for public clients (e.g. native apps) to prevent authorization code hijacking by other apps installed on the device."
+  },
+  {
+   "id": 1407003392,
+   "user": "jamorham",
+   "created_at": "2023-01-27T19:50:10Z",
+   "body": "@toddkazakov  Please see https://github.com/NightscoutFoundation/xDrip/commit/8e3592e234607b6edfef6c935e2d631f93c09296 for update that includes the code verification and correctly handling the situation where a user changes the login user name in preferences."
+  },
+  {
+   "id": 1409404857,
+   "user": "jamorham",
+   "created_at": "2023-01-30T21:51:10Z",
+   "body": "@toddkazakov are you able to enable production access now? Thanks"
+  },
+  {
+   "id": 1409964486,
+   "user": "toddkazakov",
+   "created_at": "2023-01-31T08:37:46Z",
+   "body": "@jamorham implementation looks good. I'll go ahead and create a client for you. I'll need a day."
+  },
+  {
+   "id": 1414281785,
+   "user": "jamorham",
+   "created_at": "2023-02-02T19:51:28Z",
+   "body": "@toddkazakov please let me know when we can test the production side. Thanks"
+  },
+  {
+   "id": 1416176743,
+   "user": "toddkazakov",
+   "created_at": "2023-02-03T17:25:33Z",
+   "body": "@jamorham can you please try now? I have created the exact same client in our production environment."
+  },
+  {
+   "id": 1493276772,
+   "user": "jamorham",
+   "created_at": "2023-04-02T09:22:17Z",
+   "body": "I got logged out this morning even though the session has been constantly active. The error said `invalid_grant` - `Session doesn't have required client` - I haven't been able to get logged back in yet but possibly that is because my password has changed since I previously wrote it down. I'm not sure as I'm just getting invalid password messages. Is there a fault with the backend?"
+  },
+  {
+   "id": 1494344480,
+   "user": "toddkazakov",
+   "created_at": "2023-04-03T13:40:18Z",
+   "body": "@jamorham which environment are you targeting?"
+  },
+  {
+   "id": 1500165419,
+   "user": "jamorham",
+   "created_at": "2023-04-07T10:38:29Z",
+   "body": "@toddkazakov production environment"
+  },
+  {
+   "id": 1500186710,
+   "user": "toddkazakov",
+   "created_at": "2023-04-07T11:06:25Z",
+   "body": "@jamorham I believe this is caused by a bug in Keycloak (the IAM software we use). The bug is fixed in the latest version, but we'll need some time to plan the upgrade. Thank you for the understanding."
+  },
+  {
+   "id": 1500192676,
+   "user": "jamorham",
+   "created_at": "2023-04-07T11:14:33Z",
+   "body": "@toddkazakov okay please let me know when that is upgraded in the future because currently using the new authentication system is defaulted to off within xDrip settings and to complete migration I would change that default setting but need to have confidence that authentication will be reliable for users before doing so. many thanks."
+  },
+  {
+   "id": 1550997142,
+   "user": "jamorham",
+   "created_at": "2023-05-17T08:45:45Z",
+   "body": "@toddkazakov just checking in whether there has been any update here? thanks"
+  },
+  {
+   "id": 1560702275,
+   "user": "toddkazakov",
+   "created_at": "2023-05-24T08:46:13Z",
+   "body": "@jamorham apologies, I've been busy with other tasks. We'll do the upgrade in the next few weeks. I'll let you know when it's done."
+  },
+  {
+   "id": 1574784049,
+   "user": "toddkazakov",
+   "created_at": "2023-06-03T08:35:43Z",
+   "body": "@jamorham the fix has been deployed"
+  },
+  {
+   "id": 1712906590,
+   "user": "jamorham",
+   "created_at": "2023-09-10T18:31:56Z",
+   "body": "@toddkazakov are we ready to switch the new mechanism to be the default? Do you think everything is now working correctly? thanks"
+  },
+  {
+   "id": 1713397545,
+   "user": "toddkazakov",
+   "created_at": "2023-09-11T08:19:42Z",
+   "body": "@jamorham go ahead. The system has been stable since I notified you of the fix."
+  },
+  {
+   "id": 1770888253,
+   "user": "toddkazakov",
+   "created_at": "2023-10-19T12:34:12Z",
+   "body": "@jamorham has this been released? If not, I encourage you to do it as soon as possible."
+  },
+  {
+   "id": 1770916226,
+   "user": "Navid200",
+   "created_at": "2023-10-19T12:45:46Z",
+   "body": "> @jamorham has this been released? If not, I encourage you to do it as soon as possible.\r\n\r\n@toddkazakov \r\nIt was released on September 23."
+  },
+  {
+   "id": 1770979174,
+   "user": "toddkazakov",
+   "created_at": "2023-10-19T13:21:40Z",
+   "body": "Great, thank you! Should we close this issue or do you want to keep it open in case you need support?"
+  },
+  {
+   "id": 1770983282,
+   "user": "Navid200",
+   "created_at": "2023-10-19T13:23:51Z",
+   "body": "Yes, I close it for now.  Thanks"
+  }
+ ]
+}

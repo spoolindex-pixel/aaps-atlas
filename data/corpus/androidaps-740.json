@@ -1,0 +1,39 @@
+{
+ "id": 1028270986,
+ "repo": "nightscout/AndroidAPS",
+ "number": 740,
+ "title": "[Feature Request] Lock/Hide OpenAPS SMB in config builder until Obj 9 has been completed",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/740",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-10-17T09:39:59Z",
+ "closed_at": "2021-10-17T11:08:57Z",
+ "comment_count": 4,
+ "body": "In my opinion, it should NOT be possible to select OpenAPS SMB in config builder until Obj 9 has been completed. Only OpenAPS AMA should be available until obj 10. \r\n\r\nIf a new user mistakenly selects OpenAPS SMB from the beginning, the algorithm will shut off basal during meal bolus window, guaranteeing post meal highs because SMBs are not yet possible. This behaviour can inadvertently encourage the user to compensate by making their settings more aggressive. \r\n\r\nIt also can give the user a negative impression of AAPS during the beginning stages of their journey. It’s particularly an issue at obj 6.\r\n\r\nIt may be obvious to experienced users that OpenAPS AMA should instead be selected, but we should not assume new users will figure this out. \r\n\r\nI would rather OpenAPS AMA selection was defaulted from the beginning and OpenAPS SMB only unlocked after obj 9. The first task of Obj 10 for the user could then be to select OpenAPS SMB. \r\n\r\n",
+ "comments": [
+  {
+   "id": 945093427,
+   "user": "MilosKozak",
+   "created_at": "2021-10-17T11:08:57Z",
+   "body": "AMA Objective has been removed in dev"
+  },
+  {
+   "id": 945117605,
+   "user": "AureliaJohanna",
+   "created_at": "2021-10-17T13:05:12Z",
+   "body": "@MilosKozak the objective wasn’t the issue. The issue is the it’s possible to select OpenAPS SMB from the very beginning in config builder (even though SMB cannot be used yet) and it behaves in different way to OpenAPS AMA. \r\n\r\nUnless you’re saying it will be possible to use SMBs from the beginning in v3?\r\n"
+  },
+  {
+   "id": 945120200,
+   "user": "MilosKozak",
+   "created_at": "2021-10-17T13:14:31Z",
+   "body": "you are not only allowed to use micro boluses. but you can can use SMB algorithm which will work only with TBR"
+  },
+  {
+   "id": 945122849,
+   "user": "AureliaJohanna",
+   "created_at": "2021-10-17T13:25:21Z",
+   "body": "@MilosKozak Without micro bolus, completely shutting off basal during the meal window pretty much guarantees post-meals highs (and frustration). It becomes very tempting to counteract this behaviour by strengthening settings during the objective stage, which could lead to issues once micro bolus is introduced . \r\n\r\nBasal is not completely shut off in the same way during a meal using OpenAPS AMA and this behaviour can be adjusted as necessary using the ‘Bolus snooze dia divisor’ setting. "
+  }
+ ]
+}

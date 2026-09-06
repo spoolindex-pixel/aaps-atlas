@@ -1,0 +1,14 @@
+{
+ "id": 5221735434,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 4700,
+ "title": "Nocturne upload never runs: NocturneUploader constructor always throws",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/4700",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2026-08-22T11:46:11Z",
+ "closed_at": "2026-08-26T12:43:26Z",
+ "comment_count": 0,
+ "body": "Nocturne upload never runs. Once you have authenticated, every upload attempt throws inside the `NocturneUploader` constructor and the exception is swallowed. Nothing is uploaded and nothing is shown in the UI.\n\nFound on `master` at `f30226459`, from #4529.\n\n### What happens\n\n`NocturneUploader`'s constructor ends with:\n\n```java\n// NocturneUploader.java:110\napiClient.setAccessToken(accessToken);\n```\n\nIn `nocturne-java` 0.2.4 that method has no body other than a throw:\n\n```\npublic void setAccessToken(java.lang.String);\n   0: new    // class java/lang/RuntimeException\n   4: ldc    // String No OAuth2 authentication configured!\n   9: athrow\n```\n\nNo condition, no early return. `ApiClient.init()` leaves `authentications` an empty map, so there is no auth scheme to set a token on. `HttpBearerAuth` ships in the jar but is never registered.\n\n`UploaderTask.java:180` constructs the uploader inside a `try` whose `catch (Exception e)` logs and returns, so the throw never surfaces:\n\n```java\nfinal NocturneUploader nocturneUploader = new NocturneUploader(xdrip.getAppContext());\n```\n\n### Who this affects\n\nOnly users who have actually completed the device flow. Without a token, `getValidAccessToken()` returns null and the constructor takes the early return at `NocturneUploader.java:96` with a log line. With a valid token it goes on to line 110 and throws. So the failure is invisible in exactly the case where upload is supposed to work.\n\n`NocturneOAuthService` is unaffected — it never calls `setAccessToken`, which is why registration and the device flow work.\n\n### Notes\n\nThe `ApiClient` surface that does work is `addDefaultHeader`, already used two lines above for `Origin`.\n\nUnrelated to okhttp — measured at 4.12.0. Turned up while writing test coverage for the HTTP paths (#4699): the planned test could not construct the uploader at all.\n",
+ "comments": []
+}

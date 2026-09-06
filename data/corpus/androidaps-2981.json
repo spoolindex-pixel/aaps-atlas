@@ -1,0 +1,75 @@
+{
+ "id": 1962989213,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2981,
+ "title": "watchface shows a question mark instead of a trend arrow",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2981",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-10-26T08:30:17Z",
+ "closed_at": "2023-10-30T13:09:01Z",
+ "comment_count": 10,
+ "body": "since the update to 3.2 (both release candidates and master branch), the AAPS watchface often shows a question mark instead of a trend arrow. I have not yet been able to identify a pattern of when this occurs, but it happens with all possible trend directions. It can be that it works in between times for half an hour or so as predicted but then there is again a question mark. See attached picture.\r\n\r\n\r\n![watchface](https://github.com/nightscout/AndroidAPS/assets/62606176/f85dd0c5-4870-4d78-9411-293165d12cfb)\r\n",
+ "comments": [
+  {
+   "id": 1780730781,
+   "user": "Philoul",
+   "created_at": "2023-10-26T09:18:01Z",
+   "body": "Can you replace AAPS (Digital) by AAPS (custom) watchface (default one or any other one) and send a screenshot?"
+  },
+  {
+   "id": 1780745262,
+   "user": "cr582",
+   "created_at": "2023-10-26T09:26:50Z",
+   "body": "![watch_2](https://github.com/nightscout/AndroidAPS/assets/62606176/05be7f8c-1e3e-43e4-bc5f-bdf2508b7a0b)\r\n"
+  },
+  {
+   "id": 1780754275,
+   "user": "Philoul",
+   "created_at": "2023-10-26T09:32:29Z",
+   "body": "I think your issue comes from phone side (trend Arrow sent to the watch is \"invalid\"...)\nYou will probably have to provide log file to see if we find something in it...\nHow do you get BG values ?"
+  },
+  {
+   "id": 1780764272,
+   "user": "cr582",
+   "created_at": "2023-10-26T09:38:38Z",
+   "body": "through xDrip (dexcom G7). I sent the log through email. Thanks in advance"
+  },
+  {
+   "id": 1780797698,
+   "user": "Philoul",
+   "created_at": "2023-10-26T09:58:53Z",
+   "body": "I don't receive log sent by mail. copy it here if you want me to take a look\nBut because it's on phone side, I'm not sure I will be able to find root cause without @MilosKozak "
+  },
+  {
+   "id": 1780820555,
+   "user": "cr582",
+   "created_at": "2023-10-26T10:13:29Z",
+   "body": "there you go ....\r\n\r\n[AndroidAPS_LOG_1698313000571.log.zip](https://github.com/nightscout/AndroidAPS/files/13176000/AndroidAPS_LOG_1698313000571.log.zip)\r\n"
+  },
+  {
+   "id": 1781403617,
+   "user": "Philoul",
+   "created_at": "2023-10-26T15:55:55Z",
+   "body": "@MilosKozak \r\nSee below an extract of log file, datareceived include a Flat trendArrow on all lines between 11:18:10.446 and 11:18:10.967 but SingleData sent to watch is unknow at 11:18:39.605... very strange\r\n```\r\n11:18:10.446 [main] D/DATABASE: [DataReceiver.onReceive():35]: onReceive com.eveningoutpost.dexdrip.BgEstimate Bundle{ com.eveningoutpost.dexdrip.Extras.NoiseBlockLevel => 200; com.eveningoutpost.dexdrip.Extras.BgSlope => -9.806902097696358E-6; com.eveningoutpost.dexdrip.Extras.VersionInfo => 2123071614 23ccbd1-2023.07.16; com.eveningoutpost.dexdrip.Extras.Raw => 0.0; com.eveningoutpost.dexdrip.Extras.Time => 1698311887230; com.eveningoutpost.dexdrip.Extras.CalibrationInfo => -1; com.eveningoutpost.dexdrip.Extras.NsNoiseLevel => null; com.eveningoutpost.dexdrip.Extras.Noise => -9999.0; com.eveningoutpost.dexdrip.Extras.SensorBattery => -1; com.eveningoutpost.dexdrip.Extras.NoiseWarning => 0; com.eveningoutpost.dexdrip.Extras.BgSlopeName => Flat; com.eveningoutpost.dexdrip.Extras.BgEstimate => 78.0; com.eveningoutpost.dexdrip.Extras.SourceDesc => G6 Native / G5 Native; com.eveningoutpost.dexdrip.Extras.SourceInfo => G6 Native; com.eveningoutpost.dexdrip.Extras.Collector.NanoStatus =>   ; }Bundle\r\n11:18:10.623 [DefaultDispatcher-worker-4] D/BGSOURCE: [XdripSourcePlugin$XdripSourceWorker.doWorkAndLog():75]: Received xDrip data: Bundle[{com.eveningoutpost.dexdrip.Extras.NoiseBlockLevel=200, com.eveningoutpost.dexdrip.Extras.BgSlope=-9.806902097696358E-6, com.eveningoutpost.dexdrip.Extras.VersionInfo=2123071614 23ccbd1-2023.07.16, com.eveningoutpost.dexdrip.Extras.Raw=0.0, com.eveningoutpost.dexdrip.Extras.Time=1698311887230, com.eveningoutpost.dexdrip.Extras.CalibrationInfo=-1, com.eveningoutpost.dexdrip.Extras.NsNoiseLevel=null, com.eveningoutpost.dexdrip.Extras.Noise=-9999.0, com.eveningoutpost.dexdrip.Extras.SensorBattery=-1, com.eveningoutpost.dexdrip.Extras.NoiseWarning=0, com.eveningoutpost.dexdrip.Extras.BgSlopeName=Flat, com.eveningoutpost.dexdrip.Ext"
+  },
+  {
+   "id": 1782775980,
+   "user": "MilosKozak",
+   "created_at": "2023-10-27T11:46:07Z",
+   "body": "test with this https://github.com/nightscout/AndroidAPS/commit/ff0d327a157cbbf58328be70f0094829d13050e5"
+  },
+  {
+   "id": 1783871283,
+   "user": "cr582",
+   "created_at": "2023-10-28T17:01:50Z",
+   "body": "Hi @MilosKozak, I just installed the dev version and will test it for a few days. I'll report back next week. Thanks and regards "
+  },
+  {
+   "id": 1784899270,
+   "user": "cr582",
+   "created_at": "2023-10-30T10:30:30Z",
+   "body": "> test with this [ff0d327](https://github.com/nightscout/AndroidAPS/commit/ff0d327a157cbbf58328be70f0094829d13050e5)\r\n\r\nit looks like this code change resolved my problem. The trend arrow shows up as expected. No more question marks."
+  }
+ ]
+}

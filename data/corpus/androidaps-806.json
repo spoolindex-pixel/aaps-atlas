@@ -1,0 +1,27 @@
+{
+ "id": 1040012010,
+ "repo": "nightscout/AndroidAPS",
+ "number": 806,
+ "title": "[AAPS3.0_beta2] Dash screen showing poor connection quality",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/806",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-10-30T01:06:25Z",
+ "closed_at": "2021-10-30T14:17:58Z",
+ "comment_count": 2,
+ "body": "Perhaps related to the previous issue I submitted, but after 12 hours with the new DASH pod, I'm showing poor connection quality (18%). As far as I know, I haven't experienced any issues with dropped connections, but the red makes me it seem like this is concerning. Logs and screenshot attached. I have not been far from my phone today, so I'm not sure why there'd be connection issues. I did not have any similar problem with Beta1.\r\n\r\nAAPS3.0_beta2\r\nDexcom G6\r\nOmnipod DASH\r\nSamsung Galaxy Note 20 5G phone\r\n\r\n[AndroidAPS_LOG_1635555626654.log.zip](https://github.com/nightscout/AndroidAPS/files/7445516/AndroidAPS_LOG_1635555626654.log.zip)\r\n\r\n![Screenshot_20211029-175938_AndroidAPS](https://user-images.githubusercontent.com/43968079/139514816-7a30fcc7-df6e-4905-8e73-2b2da49e5fb4.jpg)\r\n.",
+ "comments": [
+  {
+   "id": 955186774,
+   "user": "avereha",
+   "created_at": "2021-10-30T10:25:28Z",
+   "body": "\r\nThis is what I wrote in the testing channel some time ago:\r\n\r\nI think the only actionable point for this number is this: if it's low all the time, then we should mark the phone as 'not supported'. If it's low(<50%) with a specific pod, don't open any issue about other errors because the pod is probably broken.\r\n\r\nA few details about 'connection quality' and how to use it:\r\n  - This field and 'delivery status' are displayed only if engineering_mode is enabled. Regular users will not see this. That's why I don't think it's very important to make it very accurate(see https://github.com/0pen-dash/AndroidAPS/issues/95)\r\n - the number represents the percentage of successful connections: (number of ok connections/number of tries) * 100\r\n - A lot of things can make this number go down, from moving away from the phone, to bad lot of pods, where do you put the pod, sleeping on the pod, etc. \r\n - if it's low only with some pods, again, it could mean it's a bad pod and not worth filling issue about this, because the pod is broken anyway(see for example: https://github.com/0pen-dash/AndroidAPS/issues/85)\r\n - in practice, I noticed that for me it is usually at 80/90%, but it can get as low as 50% sometimes(when I use a pod on the leg and keep the phone on the table, move away from the phone), etc. I use Samsung S10.\r\n - again, if this number goes low from time to time this is totally expected, we are more interested in the cases when it's consistently low"
+  },
+  {
+   "id": 955191978,
+   "user": "vanelsberg",
+   "created_at": "2021-10-30T11:08:26Z",
+   "body": "Confirming on @avereha \r\nThis is not a problem issue...."
+  }
+ ]
+}

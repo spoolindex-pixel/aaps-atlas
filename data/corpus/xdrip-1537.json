@@ -1,0 +1,156 @@
+{
+ "id": 757116809,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1537,
+ "title": "The glucose readings aren't added in 5 minute intervals anymore",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1537",
+ "state": "closed",
+ "labels": [
+  "enhancement",
+  "device-dexcom"
+ ],
+ "created_at": "2020-12-04T13:49:46Z",
+ "closed_at": "2022-08-25T12:54:06Z",
+ "comment_count": 23,
+ "body": "Hi,\r\nI use Dexcom G6 with xDrip+, it works very well but suddenly it started to add readings from 2 minutes to 8 minute intervals instead of 5 and its really visible and bothering me, i can still keep a good eye on my bloodsugar, but its really annoying.\r\n\r\nDoes anyone know why it happens?\r\nScreenshot below to show what i mean, can easily see the dots arent added in 5 minute intervals anymore.\r\n\r\n<img width=\"350\" src=\"https://user-images.githubusercontent.com/17218692/101171253-ca4fd080-363f-11eb-9375-840f86b7b61b.png\" />\r\n\r\nDoes anyone know why this suddenly started to happen?\r\n\r\nEdit:\r\nIt suddenly fixed itself. Only thing i know did earlier tonight was to go to system status, forget device, force close app, clear cache, start xdrip+ again, and start source setup wizard to connect to my G6 again.",
+ "comments": [
+  {
+   "id": 739025654,
+   "user": "tolot27",
+   "created_at": "2020-12-04T21:17:16Z",
+   "body": "There are some missing data points. Please click on some adjacent data points and check the time stamps. Are they differ by 5 minutes? What does the log shows?"
+  },
+  {
+   "id": 739080094,
+   "user": "flango",
+   "created_at": "2020-12-04T23:45:56Z",
+   "body": "Its the correct amount of dots, just doesnt look right with them uneven spaced.\r\n\r\nIt just started to add readings from 2 minutes to 8 minute intervals.\r\n\r\nAll the data points are there but not added in even 5 minute intervals, the shortest interval is 2 minutes in between and the longest 8 minutes.\r\n\r\nThey can say like 10:00am and next can be 10:02am next 10:07am and next can be at 10:15am, 10:20am, so that's the correct amount of reading just look weird visually.\r\n\r\nIt suddenly started to add the dots on uneven times even if the reading is every whole 5 minute from the logs.\r\nEven the notification reading tell the same there, a reading every whole 5 minute.\r\nSo correct number with readings, just added in weird intervals, and the log says it reads every whole 5 minute."
+  },
+  {
+   "id": 774358725,
+   "user": "IntoxRRR",
+   "created_at": "2021-02-06T00:27:16Z",
+   "body": "I notice this behaviour too, once in a while. I get it fixed again by just restarting the phone."
+  },
+  {
+   "id": 781759286,
+   "user": "Navid200",
+   "created_at": "2021-02-19T01:54:40Z",
+   "body": "@AdrianLxM \r\nAny ideas what could cause this?"
+  },
+  {
+   "id": 782251269,
+   "user": "Navid200",
+   "created_at": "2021-02-19T18:19:55Z",
+   "body": "@nickb24\r\n"
+  },
+  {
+   "id": 782482090,
+   "user": "nickb24",
+   "created_at": "2021-02-20T00:45:05Z",
+   "body": "Possibly related to https://github.com/NightscoutFoundation/xDrip/issues/1612"
+  },
+  {
+   "id": 782484883,
+   "user": "nickb24",
+   "created_at": "2021-02-20T00:54:49Z",
+   "body": "Possibly need to enable debug logs for 'BgGraphBuilder' to get more information to diagnose. If someone with the issue can do that and then post a screenshot of the logs that might help."
+  },
+  {
+   "id": 782486766,
+   "user": "Navid200",
+   "created_at": "2021-02-20T01:01:02Z",
+   "body": "That's what I thought.  Is it possible for the FUZZER to be applied only to some of the points but not the rest?  It looks like it is being applied to every other point."
+  },
+  {
+   "id": 782488835,
+   "user": "nickb24",
+   "created_at": "2021-02-20T01:07:10Z",
+   "body": "It's definitely impossible to tell with only 1 screenshot and not much other information. Also it's unclear if restarting the phone fixes the problem, if that's the case then that's something to look into as a starting point"
+  },
+  {
+   "id": 797206783,
+   "user": "Navid200",
+   "created_at": "2021-03-12T03:20:11Z",
+   "body": "Closing due to inactivity.\r\nPlease update if this is still happening while using xDrip under normal conditions.\r\nIf this only happens after you forget device and then restart collection, I wouldn't think you do that on a regular basis, do you?"
+  },
+  {
+   "id": 797272633,
+   "user": "tolot27",
+   "created_at": "2021-03-12T06:39:35Z",
+   "body": "I'm observing this issue, too but had not time digging into it. The issue is replicated to Nightscout followers as well:\r\n<img src=\"https://user-images.githubusercontent.com/1370732/110902330-044b0580-8306-11eb-9e92-61bb0abda2e9.jpg\" width=\"300\"/>\r\n"
+  },
+  {
+   "id": 797484641,
+   "user": "Navid200",
+   "created_at": "2021-03-12T13:18:28Z",
+   "body": "@tolot27 Does the data table show the same behavior?\r\nDoes the graph on Nightscout show the same, or only the followers?"
+  },
+  {
+   "id": 803212102,
+   "user": "Navid200",
+   "created_at": "2021-03-20T00:58:49Z",
+   "body": "I am experiencing this for the first time.\r\nThe data table timings are perfect.  Results on Nightscout are also perfect.  It's only what xDrip shows on the screen that has the issue for some points.\r\nSo, it must have to do with the FUZZER.\r\n\r\nThe only thing I did was to reset my phone and install xDrip from scratch.  So, I have a very small number of points.  I wonder if that's the cause.\r\n\r\nI will be monitoring the points to see when this will stop.\r\nThen, I will try installing on another phone from scratch to see if I can recreate the problem."
+  },
+  {
+   "id": 804408897,
+   "user": "Navid200",
+   "created_at": "2021-03-22T21:30:27Z",
+   "body": "I know that this is an unexpected behavior.\r\nI have confirmed, at least in my case, that the values in the data table are perfectly correct.  Therefore, the values on Nightscout are correct as well, which I have also confirmed.\r\n\r\nThis must be due to the FUZZER not being applied to all the points.  It seems to me it only happens when you have only limited number of points, when you just install xDrip.  After enough points are gathered the problem goes away.\r\n\r\nI am sure we can spend time on this to figure out what part of the code is causing it and fix it.\r\nHowever, I don't believe there is a serious problem.  It only affects the graph.\r\n\r\nHas anyone seen this behavior when they have had weeks of data in xDrip already?\r\n\r\nHas anyone seen this and experienced errors, as a consequence, in simulations?"
+  },
+  {
+   "id": 807918929,
+   "user": "IntoxRRR",
+   "created_at": "2021-03-26T04:01:14Z",
+   "body": "I have years of data and occasionally see this behaviour.\r\nToday it even happened for only two data points.\r\n\r\n![20210326](https://user-images.githubusercontent.com/60309229/112574818-653b0900-8def-11eb-84fc-0fe25479e0ae.jpg)\r\n\r\nWhen I check the BG data table and take a closer look at the seconds of the time stamps, I see a small drift. During the whole day the 5-minute-intervals stay straight and the seconds vary between 25…28. But for the two shifted data points they were at 35 and 31. Might be a hint?\r\n\r\n07:17:28\r\n07:22:25\r\n07:27:27\r\n**07:32:35**\r\n**07:37:31**\r\n07:42:26\r\n07:47:25\r\n"
+  },
+  {
+   "id": 857121122,
+   "user": "Navid200",
+   "created_at": "2021-06-08T20:42:26Z",
+   "body": "This is my take:\r\n\r\nThe time of a reading is divided by 2.5 minutes (FUZZER is a constant with a value representing 2.5 minutes).\r\n`    public static final int FUZZER = (1000 * 30 * 5); // 2.5 minutes`\r\n`        return new PointValue((float) (bgReading.timestamp / FUZZER), (float) unitized(bgReading.calculated_value));`\r\n\r\nThe result is later multiplied by 2.5 minutes.\r\n`            final Long time = (real_timestamp > 0) ? real_timestamp : ((long) pointValue.getX()) * FUZZER;`\r\n\r\nBefore this multiplication, the fractional part of the division is discarded.\r\nThe result is used as the time of the reading.    \r\nThe effect is to place all readings on a 2.5-minute grid.  A consequence of this is that there will be a time shift of the readings on the graph only that could be anywhere between 0 to 2.5 minutes to the left (showing the reading at an earlier time than the real time).\r\nIf everything works as described, all readings should show up with a 5-minute spacing between them.\r\n\r\nHowever, if the fractional part of the division is very close to either 0 or 1, a small time jitter could cause the integer part of the division to grow or shrink by 1 resulting in an unintended time shift of 2.5 minutes.  \r\nStatistically speaking, most of the time we will be away from 0 or 1.  That's why this issue doesn't happen all the time.\r\n\r\nIf you are wondering how far you are from the boundary, tap on your last reading on screen and note the time.  Then, open the BG Data Table and look at the time of the last reading.  The difference between the two timings is something between 0 and 2.5 minutes.  If it is too close to 0 or 2.5 minutes, you could experience this issue.\r\n\r\nBefore we can consider making any changes, I'd like to know why the FUZZER scheme was introduced originally in March of 2015.  So, I have asked the question, and hopefully will hear back.\r\n\r\nOne solution I can think of is to reduce FUZZER from 2.5 minutes to 1 minute.  Then, we will still experience this behavior.  How"
+  },
+  {
+   "id": 857209037,
+   "user": "Navid200",
+   "created_at": "2021-06-08T22:10:06Z",
+   "body": "It turns out this issue had been noticed a long time ago:\r\nhttps://github.com/StephenBlackWasAlreadyTaken/xDrip-Experimental/pull/288"
+  },
+  {
+   "id": 857974965,
+   "user": "Navid200",
+   "created_at": "2021-06-09T18:47:08Z",
+   "body": "I took the graph from the post by tolot27.  I identified the readings that had moved because of the unfortunate positioning of the readings with respect to the FUZZER bucket boundaries.\r\nI used a spreadsheet to create a set that would visually look the same.  \r\n![Screenshot 2021-06-09 143230](https://user-images.githubusercontent.com/51497406/121409541-a2fbf800-c92f-11eb-9f96-6efdb1d01a0e.png)\r\n\r\nThen, I changed the value of FUZZER to 0.  This is what it looks like.\r\n![Screenshot 2021-06-09 143436](https://user-images.githubusercontent.com/51497406/121409777-dcccfe80-c92f-11eb-8651-e7cec054b7e0.png)\r\nYou can see the distortion is gone.  I wish we could completely remove the FUZZER.  But, that is an extreme change to xDrip and very unlikely it will be accepted.\r\n\r\nThen, I changed the FUZZER value to 1 minute (instead of 2.5 minutes).\r\n![Screenshot 2021-06-09 143601](https://user-images.githubusercontent.com/51497406/121410066-2e758900-c930-11eb-891b-528aa84ba091.png)\r\n\r\nThen, I changed it to 30 seconds:\r\n![Screenshot 2021-06-09 143830](https://user-images.githubusercontent.com/51497406/121410242-6381db80-c930-11eb-9d3f-41709f5b091c.png)\r\n\r\nWe cannot forget that reducing the value of FUZZER will increase the probability of the issue occurring.  Reducing FUZZER from 2.5 minutes  to 30 seconds will increase the probability by a factor of 5.\r\n\r\nI am going to open a PR reducing FUZZER to 30 seconds.  This will limit the error caused by the possible issue to something between 0 to 30 seconds.  Currently, the error can be anywhere between 0 to 2.5 minutes.\r\nThe probability will go up.  But, it is still almost unnoticeable at 30 seconds.    \r\n\r\nEdit:\r\nWhen I created those graphs using a spreadsheet, I overlooked the fact that the xDrip main screen only shows points placed on a 1-minute grid.  So, the graphs are not really representative of what will happen if we reduce the value of Fuzzer"
+  },
+  {
+   "id": 858340006,
+   "user": "tolot27",
+   "created_at": "2021-06-10T06:15:46Z",
+   "body": "Is the FUZZER also applied to Libre raw values which appear every minute? If yes, are there visual artefacts, too?"
+  },
+  {
+   "id": 860053205,
+   "user": "Navid200",
+   "created_at": "2021-06-12T13:24:13Z",
+   "body": "> Is the FUZZER also applied to Libre raw values which appear every minute? If yes, are there visual artefacts, too?\r\n\r\nI believe so.  I say that based on my observation of an image I have copied from this issue: https://github.com/NightscoutFoundation/xDrip/pull/1303\r\nand shown here:\r\n![79228350-f082ef00-7e69-11ea-8e33-b8332267708a](https://user-images.githubusercontent.com/51497406/121777376-b5f50f00-cb5f-11eb-8d09-d549b04a6dcb.png)\r\n\r\nYou can see that the raw value are bunched up together on a 2.5-minute grid.\r\nIf my PR is merged, they will appear on a 37.5-second grid."
+  },
+  {
+   "id": 881902943,
+   "user": "Navid200",
+   "created_at": "2021-07-17T13:53:23Z",
+   "body": "You can now lower the fuzzer, to 37.5 seconds, in engineering mode by going to the advanced display settings and enabling the option at the very bottom.\r\n\r\nThat should address the issue reported here."
+  },
+  {
+   "id": 894441320,
+   "user": "Navid200",
+   "created_at": "2021-08-06T18:27:25Z",
+   "body": "I have reopened this issue because the change I made to xDrip has not addressed the issue.\r\nI am still working on this issue."
+  },
+  {
+   "id": 1227219373,
+   "user": "Navid200",
+   "created_at": "2022-08-25T12:54:06Z",
+   "body": "This is supposed to have been fixed with August 18, 2022.\r\nhttps://github.com/NightscoutFoundation/xDrip/releases/tag/2022.08.18\r\n\r\nPlease update to that release or any after that, and please report if you ever still experience the reported issue."
+  }
+ ]
+}

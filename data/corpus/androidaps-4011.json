@@ -1,0 +1,225 @@
+{
+ "id": 3113490024,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4011,
+ "title": "Medtrum Pump unreachable after 2 minutes",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4011",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-06-03T11:01:24Z",
+ "closed_at": "2025-10-21T15:33:20Z",
+ "comment_count": 35,
+ "body": "Medtrum pump + Android 15 + BYODA: I have a problem with Medtrum pump disconnecting from phone and cannot connect back. After phone restart the pump communicates with AAPS about 2 minutes so I can get bolus or set new profile, but after this time AAPS just cannot connect with pump anymore. If I restart the phone, I can control the pump again, but again just for about 2 minutes.\n\nI use:\nSamsung Galaxy S24 Ultra (Android 15)\nBYODA 1.12.1.0 (Dexcom G6)\nAAPS 3.3.3.0-dev\nBuild: 1590206a4a-2025.05.30\nMedtrum pump (type MD8201, FW version 1.80.83)\n\nI tried and did not help:\nAAPS - Medtrum option - Scan on connection error ON/OFF\nAAPS option - BT Watchdog ON/OFF\nUninstalling and clean install of AAPS\nDifferent AAPS builds (3.3.2.0-Tsunami_3.4.1, 3.2.0.4-AutoISF)\nPlay Protect ON/OFF\nNew Metrum pump/reservoir\n\nWhat works?\nSetup above, but Danai pump\nSetup above, but my older phone (S23+ with Android 14)\n\nSome other users have no problems with AAPS 3.3.3.0-dev + Medtrum + Android 15 combo, but they don't use BYODA (but xDrip for example). So maybe there is some conflict between Medtrum and BYODA on Android 15?\n\n[AndroidAPS_LOG_1748868734664.log.zip](https://github.com/user-attachments/files/20572245/AndroidAPS_LOG_1748868734664.log.zip)",
+ "comments": [
+  {
+   "id": 2934757202,
+   "user": "PetrMlejnek",
+   "created_at": "2025-06-03T11:18:05Z",
+   "body": "Demonstration video of the behavior here: https://www.youtube.com/watch?v=pks15PPsM8c"
+  },
+  {
+   "id": 2943841411,
+   "user": "MilosKozak",
+   "created_at": "2025-06-05T11:39:48Z",
+   "body": "@jbr7rr "
+  },
+  {
+   "id": 2952138332,
+   "user": "manfred-h",
+   "created_at": "2025-06-07T08:04:06Z",
+   "body": "I have a very similar behaviour using AAPS version 3.3.2.0 (ba55) on my Google Pixel 8a running Android 15 (BP1A.250505.005.B1).\n\nI'll have to change my pump system later this year, which is why I am running a test with 10 Nano Patches I paid for on my own. The problem has already killed two of the patches. I know of another user running a similar test and he has absolutely no problems on the exact same phone. The only difference is he uses Freestyle Libre2 as the CGM, while I use the BYODA app Petr is using with a Dexcom G6.\n\nIs it possible that BYODA/Dexcom BT might cause this misbehaviour? I'll probably run a new test with a third patch tomorrow, but I'll stop BYODA and its BT connection before that. Will collect logs and post them here then."
+  },
+  {
+   "id": 2954137716,
+   "user": "manfred-h",
+   "created_at": "2025-06-08T15:29:55Z",
+   "body": "> I have a very similar behaviour using AAPS version 3.3.2.0 (ba55) on my Google Pixel 8a running Android 15 (BP1A.250505.005.B1).\n> \n> I'll have to change my pump system later this year, which is why I am running a test with 10 Nano Patches I paid for on my own. The problem has already killed two of the patches. I know of another user running a similar test and he has absolutely no problems on the exact same phone. The only difference is he uses Freestyle Libre2 as the CGM, while I use the BYODA app Petr is using with a Dexcom G6.\n> \n> Is it possible that BYODA/Dexcom BT might cause this misbehaviour? I'll probably run a new test with a third patch tomorrow, but I'll stop BYODA and its BT connection before that. Will collect logs and post them here then.\n\nAs described, I ran the third test today with BYODA/Dexcom G6 BT completely disabled. For this I killed the BYODA app, cleared its cache and removed all \"Dexcom *\" connections in BT.\n\nAfter that I switched the pump driver in AAPS from AccuChek/Insight to Medtrum and activated a new patch. All this happened around 14:38 MEST as you can probably see in the logs; AAPS even showed a message that the pump date/time had been updated.\n\nThe patch could be activated, but couldn't be used for more than appr. 20 seconds. Trying to update its status on the Medtrum tab in AAPS ran into an endless loop.\n\nI then rebooted the smartphone several times with\n\n(a) nothing changed\n(b) BT disabled\n(c) BT enabled again\n\nIn all these situations the pump connected happily for another appr. 20 seconds. I also tried to emit a mini-bolus of 0.5 units, but it timed out as can be seen in one of the screenshots.\n\nIn the Medtrum tab I normally (when no connections appears possible) see as BLE Status the usual bluetooth icon with a black background, while shortly after the reboot this icon is shown with a white background.\n\nFWIW, I ran all tests both with the Medtrum extended setting \"Scan on connection error\" being on an off, which did not chang"
+  },
+  {
+   "id": 2958231791,
+   "user": "jbr7rr",
+   "created_at": "2025-06-10T08:46:41Z",
+   "body": "I see something weird in the logs, I need more information. \n\n@PetrMlejnek , @manfred-h Would one of you be able to test with a custom build(s) with added logging? You can re-use a patch for testing if needed (out of body ofcourse), contact me on discord and I can explain how etc."
+  },
+  {
+   "id": 2958315729,
+   "user": "manfred-h",
+   "created_at": "2025-06-10T09:12:25Z",
+   "body": "> I see something weird in the logs, I need more information.\n> \n> [@PetrMlejnek](https://github.com/PetrMlejnek) , [@manfred-h](https://github.com/manfred-h) Would one of you be able to test with a custom build(s) with added logging? You can re-use a patch for testing if needed (out of body ofcourse), contact me on discord and I can explain how etc.\n\n@jbr7rr : thanks for looking at the logs! I'll get a new pump base this week, but I'll definitely can add a patch to my pristine sources and build my own .apk, in order retain my local key. Will contact you on discord."
+  },
+  {
+   "id": 2960591450,
+   "user": "PetrMlejnek",
+   "created_at": "2025-06-10T21:11:00Z",
+   "body": "Hello @manfred-h and @jbr7rr. I tried different pump base, did not help. I also tried the \"trick\" with forcing BYODA to stop, did not help. Right now I am back to 3.3.2.0-dev-Tsunami_3.4.1 and Danai, because of #3984 that also starts to happen to me. Until #3984 is fixed, I will not install current dev version. After that I will be more than happy to test this issue #4011 with added logging."
+  },
+  {
+   "id": 2961632444,
+   "user": "manfred-h",
+   "created_at": "2025-06-11T08:00:15Z",
+   "body": "Hi @PetrMlejnek, thanks for testing! Too bad to hear the different pump base did not make a change! FWIW, I switched from BYODA to xDrip+ now, but did not test with the Medtrum pump again yet.\n\nI'll continue to get it to work (hopefully) by following what @jbr7rr suggested with his pumpcontrol app!"
+  },
+  {
+   "id": 2961649778,
+   "user": "PetrMlejnek",
+   "created_at": "2025-06-11T08:06:36Z",
+   "body": "@manfred-h Thank you for your reply. My friend @Korostensky is using AAPS 3.3.3.0-dev, Samsung phone with Android 15 and xDrip+ (instead of BYODA) and have no problems with Medtrum. So the problem really could be some BYODA + Medtrum conflict."
+  },
+  {
+   "id": 2961729697,
+   "user": "manfred-h",
+   "created_at": "2025-06-11T08:34:10Z",
+   "body": "@PetrMlejnek Yes, as I wrote earlier I suspected that, too. But I found successful users of Medtrum, BYODA and Android 15 in the list on Discord...\n\nI hope you didn't throw away your patches yet, as @jbr7rr wrote in some private discussion they can be reactivated for additional tests, which is where the \"aaps-pumpcontrol\" app comes into play. It is a second AAPS app, but only for testing other stuff, and which is installed next to your real AAPS app to continue using your working loop configuration. @jbr7rr will setup a separate branch for us which will emit more/changed logs to identify what might the real reason for the failures we see. So, I would encourage you to try that out, too. Shall I pull you into my communication channel I have with @jbr7rr on Discord?"
+  },
+  {
+   "id": 2971698205,
+   "user": "PetrMlejnek",
+   "created_at": "2025-06-13T21:13:20Z",
+   "body": "@manfred-h sure, thank you."
+  },
+  {
+   "id": 3009767250,
+   "user": "manfred-h",
+   "created_at": "2025-06-26T19:53:36Z",
+   "body": "FWIW, I have tried everything now and I give up! I cannot get the Medtrum Nano patch to get controllable by my phone :-("
+  },
+  {
+   "id": 3010005667,
+   "user": "PetrMlejnek",
+   "created_at": "2025-06-26T20:57:06Z",
+   "body": "I Will give it a few tries tomorrow with latest dev build, uninstall byoda (because my sensor will expire), another Android 15 phone or another Android 14 phone."
+  },
+  {
+   "id": 3015980601,
+   "user": "PetrMlejnek",
+   "created_at": "2025-06-28T18:47:21Z",
+   "body": "Ok, so after whole day of testing... PROBLEM SOLVED (found)! Medtrum pump communication is somehow in conflict with My BMW app. If you remove \"Nearby devices permission\" from My BMW app (set it to \"Don't allow\") the pump works. Dear @jbr7rr do you think that you can fix this conflict somehow? I would like to use My BMW app also. :-)\n\n![Image](https://github.com/user-attachments/assets/b80b0322-cca3-4f39-a109-2721dc54e2ae)"
+  },
+  {
+   "id": 3015994871,
+   "user": "manfred-h",
+   "created_at": "2025-06-28T19:26:35Z",
+   "body": "Unbelievable! I'll try this myself next, as I found out that communication with an Omnipod DASH pump fails exactly the same way as we have seen with the Medtrum Nano pump/patches!\nThanks for investing your time in trying out everything!"
+  },
+  {
+   "id": 3016010042,
+   "user": "manfred-h",
+   "created_at": "2025-06-28T20:10:01Z",
+   "body": "I can confirm that removing \"Nearby devices permission\" from My BMW app solves the situation for me, too. This is with an Omnipod DASH pod in the meantime, but I think there is a conflict between AAPS and the My BMW app! I'll control the car with my wife's phone now..."
+  },
+  {
+   "id": 3016035673,
+   "user": "PetrMlejnek",
+   "created_at": "2025-06-28T21:17:44Z",
+   "body": "@manfred-h thank you too. I hope someone will fix it."
+  },
+  {
+   "id": 3016327036,
+   "user": "jbr7rr",
+   "created_at": "2025-06-29T05:40:56Z",
+   "body": "@PetrMlejnek TBH this problem is then with the BMW app and you should report it to them. In our testing with @manfred-h we tried every conceivable hack and workaround but nothing works.\n\nGiven that:\n- For Manfred the problem also existed with the official medtrum app\n- The problem also exist with dash \n\nI suspect BMW does something dirty/wrong with the Bluetooth API.\n\nSo there are two things wrong from my perspective:\n- This should simply not be possible in the Android OS, so it should be reported there\n- BMW should not do whatever they do and it should also be reported there.\n\n"
+  },
+  {
+   "id": 3023843455,
+   "user": "manfred-h",
+   "created_at": "2025-07-01T12:38:09Z",
+   "body": "Just had contact with BMW to report the problem with their app. Luckily they cannot claim that this is caused by some other app (ours), because I remembered that I had trouble to connect my smartphone via BT to the BMW charging wallbox last year. Today I tried to connect my wife's phone to the wallbox and failed again; once I disabled the \"find local devices in the environment\" right for the \"My BMW\" app, the connection happily succeeded. So, their app conflicts even with their own other app..."
+  },
+  {
+   "id": 3026657647,
+   "user": "PetrMlejnek",
+   "created_at": "2025-07-02T06:46:49Z",
+   "body": "Thank you @jbr7rr and @manfred-h for the update, I hope BMW will fix it. Anything I can help with?"
+  },
+  {
+   "id": 3067792264,
+   "user": "WanaGo",
+   "created_at": "2025-07-14T04:27:29Z",
+   "body": "Having the exact same problem with my Galaxy S23 Ultra, just upgraded to Android 15, and my Medrum also only works for a few mninutes and then cannot be contacted by AAPS again. I also have myBMW and have just diabled this permission, I hope this solves it! Thank you\n\n3.3.2.0 2025.06.10\nMedtrum Nano, Dexcom G6 Anubis, xDrip, AAPS"
+  },
+  {
+   "id": 3069009033,
+   "user": "WanaGo",
+   "created_at": "2025-07-14T11:04:26Z",
+   "body": "Seems have to have solved it, by disabling that permission in myBMW. Thanks so much for posting this, it really helped. Now to hope for a fix. I'll raise a case with BMW also, to add another voice to the mix."
+  },
+  {
+   "id": 3070693103,
+   "user": "PetrMlejnek",
+   "created_at": "2025-07-14T19:20:08Z",
+   "body": "@WanaGo Thank you for your feedback. Good to know that there are more of us. :-)"
+  },
+  {
+   "id": 3128063712,
+   "user": "ThommyS",
+   "created_at": "2025-07-28T16:33:22Z",
+   "body": "I would like to thank you very much. Manfred informed me on Discord that the My BMW app could be the reason for the error. In my case, it's also the MyBMW app. I will also inform BMW to build up more pressure."
+  },
+  {
+   "id": 3205377362,
+   "user": "ObstKur",
+   "created_at": "2025-08-20T10:14:08Z",
+   "body": "Same issue here with Google Pixel 6 pro/Android 16 and MyBMW app. Seems I need a new car...\n\nBMW is informed by me, hope that helps."
+  },
+  {
+   "id": 3226142254,
+   "user": "WanaGo",
+   "created_at": "2025-08-26T23:54:17Z",
+   "body": "Has anyone had any luck with BMW and raising this issue?\nI raise it online with them to the New Zealand BMW tech support team, and I got passed to a team in Australia who just called me, and they are referring me back to my local dealership to see if a local 'BMW Genius' can assist in diagnosing the issue in person.\nI dont have high hopes, but ill go along with it and see if they can help in person. It however sure seems like a bug in the myBMW app."
+  },
+  {
+   "id": 3227208492,
+   "user": "manfred-h",
+   "created_at": "2025-08-27T08:03:36Z",
+   "body": "I haven't received anything yet from the technical guys, not even a question. I'll chase them again today, but, to be honest, I doubt they'll do anything.\nFWIW, with Google's recent announcements to stop sideloading non-certified apps, I start thinking to buy a second phone with Android 14 only just for running AAPS and xDrip+."
+  },
+  {
+   "id": 3229906537,
+   "user": "WanaGo",
+   "created_at": "2025-08-27T22:16:45Z",
+   "body": "> I haven't received anything yet from the technical guys, not even a question. I'll chase them again today, but, to be honest, I doubt they'll do anything. FWIW, with Google's recent announcements to stop sideloading non-certified apps, I start thinking to buy a second phone with Android 14 only just for running AAPS and xDrip+.\n\nI sure hope a simple solution for the sideloading issue is found, as I have zero desire to carry around a second phone - that would be a complete pain in the ass.\n\nMy appointment at BMW is on the 3rd, will post back here after that as to what happened and if any solution is found.\n\nThis permission that is causing the problems, what does it actually provide the myBMW app with? What features on the app no longer work with this permission removed? I personally have not actually noticed anything significantly different that I can dissern. My Android Auto works fine, my app can still talk to my car and lock the doors remotely etc, I get calls just fine in the car. I have had situations where the phone does not immediately connect, so maybe its that and it just takes it a bit longer sometimes to realise its in range - but thats about it. Anyone have different experiences?"
+  },
+  {
+   "id": 3232339424,
+   "user": "manfred-h",
+   "created_at": "2025-08-28T07:47:33Z",
+   "body": "> This permission that is causing the problems, what does it actually provide the myBMW app with? What features on the app no longer work with this permission removed? I personally have not actually noticed anything significantly different that I can dissern. My Android Auto works fine, my app can still talk to my car and lock the doors remotely etc, I get calls just fine in the car. I have had situations where the phone does not immediately connect, so maybe its that and it just takes it a bit longer sometimes to realise its in range - but thats about it. Anyone have different experiences?\n\nI didn't even try to start the app again. When I did, I got asked if I want to gain all the benefits and enable the missing permission. That's when I killed the app from the task manager and never even tried to start it again. After your post I just tried and can confirm, that it works for me, too! AAPS is not affected either, so for me that's an acceptable solution!\n\nPerhaps you can ask the guy why the permission appears to be needed and what feature won't work without it enabled.\n\nThanks, you made my day!"
+  },
+  {
+   "id": 3247996243,
+   "user": "PetrMlejnek",
+   "created_at": "2025-09-03T07:19:34Z",
+   "body": "Hello, I have no problem using BMW app without \"Nearby devices permission\". After removing the permission app asked me if I want to grant these permission, I clicked no and it does not bother me anymore. I don't know what for this app needs it... Wireless Android Auto works fine (Android Auto has it's own permissions) and wirelessly unlocking my car (BMW iX) also works fine (Samsung Wallet also was it's own permissions). So if you agree with me, I will Close this issue as resolved. We can reopen it if anyone finds out some limitations in BMW app without those permissions."
+  },
+  {
+   "id": 3248377975,
+   "user": "ObstKur",
+   "created_at": "2025-09-03T09:10:51Z",
+   "body": "I cannot use the AAIdrive-app without the permissions..."
+  },
+  {
+   "id": 3248407838,
+   "user": "WanaGo",
+   "created_at": "2025-09-03T09:17:35Z",
+   "body": "> Hello, I have no problem using BMW app without \"Nearby devices permission\". After removing the permission app asked me if I want to grant these permission, I clicked no and it does not bother me anymore. I don't know what for this app needs it... Wireless Android Auto works fine (Android Auto has it's own permissions) and wirelessly unlocking my car (BMW iX) also works fine (Samsung Wallet also was it's own permissions). So if you agree with me, I will Close this issue as resolved. We can reopen it if anyone finds out some limitations in BMW app without those permissions.\n\nEverything seems to work fine for me also.\nI went to our local dealership today, and spoke with the BMW Genius there, who had no idea what it would be, didnt seem to be much of a Genius if I am honest. Anyway, I explained the situation, and they said if the work around with the permission removed, works, then just roll with it. Seems too hard to get the 'big' BMW machine to fix their app. A few quiet voices out of all BMW's customers, I don't think is going to make them do anything. The Genius did have concerns that other people with medical devices that talk to phones, may also be impacted - but had no idea how to find out. \nDoes this affect any other pumps that anyone is aware of? \n\n> I cannot use the AAIdrive-app without the permissions...\n\nWhat is this app?\nmyBMW is the app we are talking about that has this permission causing issues. What is AAIdrive-app ? Does this one also conflict with the insulin pump?"
+  },
+  {
+   "id": 3249729577,
+   "user": "ObstKur",
+   "created_at": "2025-09-03T15:27:28Z",
+   "body": "No, it communicates via the BMW-app with my car and shows for example my xdrip notifications on the BMW-display. So that i can check my sugar without touching the phone (which is illegal here)."
+  },
+  {
+   "id": 3250553887,
+   "user": "BillShepp",
+   "created_at": "2025-09-03T19:48:15Z",
+   "body": "On Sep 3, 2025 at 2:17:56 AM, James ***@***.***> wrote:\r\n\r\n> *WanaGo* left a comment (nightscout/AndroidAPS#4011)\r\n> <https://github.com/nightscout/AndroidAPS/issues/4011#issuecomment-3248407838>\r\n>\r\n> Does this affect any other pumps that anyone is aware of?\r\n>\r\n>\r\n> Message ID: ***@***.***>\r\n>\r\nYes, it affects the Omnipod Dash (though not the latest revision of it).\r\n"
+  },
+  {
+   "id": 3250815028,
+   "user": "WanaGo",
+   "created_at": "2025-09-03T21:09:33Z",
+   "body": "> No, it communicates via the BMW-app with my car and shows for example my xdrip notifications on the BMW-display. So that i can check my sugar without touching the phone (which is illegal here).\n\nahhh right. That would be very helpful for me also.\nhmm. That is annoying that wont work without this permission"
+  }
+ ]
+}

@@ -1,0 +1,33 @@
+{
+ "id": 1029956725,
+ "repo": "nightscout/AndroidAPS",
+ "number": 761,
+ "title": "[3.0-dev] Unable to enter carbs in main screen",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/761",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-10-19T07:29:41Z",
+ "closed_at": "2021-10-19T10:06:34Z",
+ "comment_count": 3,
+ "body": "After a night of looping with 3.0 I wanted to enter carbs in the morning - but any press on the \"+\" button just resets the field to empty. MaxCarbs was set to 90 during clean app setup last night.\r\nadb log contains lines like\r\n`10-19 09:21:12.711 32380 32380 D CONSTRAINTS: [main]: [Constraint.setIfSmaller():47]: Setting because of smaller value 1111111 -> 0 (Begrenze Kohlenhydrate auf 0 g wegen Max. Wert in den Einstellungen)[Safety]\r\n10-19 09:21:12.770   770   840 E SDM     : HWCDisplay::GetHWCLayer: [0] GetLayer(82149) failed: no such layer\r\n10-19 09:21:12.772   839   839 W HwcComposer: command 0x3000000 generated error 3\r\n10-19 09:21:12.890 32380 32380 D CONSTRAINTS: [main]: [Constraint.setIfSmaller():47]: Setting because of smaller value 1111111 -> 0 (Begrenze Kohlenhydrate auf 0 g wegen Max. Wert in den Einstellungen)[Safety]\r\n10-19 09:21:12.968  3399  8089 W NotificationService: Toast already killed. pkg=info.nightscout.androidaps token=android.os.BinderProxy@53dd8dd\r\n10-19 09:21:13.091 32380 32380 D CONSTRAINTS: [main]: [Constraint.setIfSmaller():47]: Setting because of smaller value 1111111 -> 0 (Begrenze Kohlenhydrate auf 0 g wegen Max. Wert in den Einstellungen)[Safety]\r\n10-19 09:21:13.121   770   840 E SDM     : HWCDisplay::GetHWCLayer: [0] GetLayer(82151) failed: no such layer\r\n10-19 09:21:13.123   839   839 W HwcComposer: command 0x3000000 generated error 3\r\n10-19 09:21:13.259 32380 32380 D CONSTRAINTS: [main]: [Constraint.setIfSmaller():47]: Setting because of smaller value 1111111 -> 0 (Begrenze Kohlenhydrate auf 0 g wegen Max. Wert in den Einstellungen)[Safety]\r\n10-19 09:21:13.425 32380 32380 D CONSTRAINTS: [main]: [Constraint.setIfSmaller():47]: Setting because of smaller value 1111111 -> 0 (Begrenze Kohlenhydrate auf 0 g wegen Max. Wert in den Einstellungen)[Safety]\r\n10-19 09:21:13.472   770   840 E SDM     : HWCDisplay::GetHWCLayer: [0] GetLayer(82154) failed: no such layer\r\n10-19 09:21:13.474   839   839 W HwcComposer: command 0x3000000 generated error 3\r\n10-19 09:21:13.610 32380 32380 D CONSTRAINTS: [main]: [Constraint.setIfSmaller():47]: Setting because of smaller value 1111111 -> 0 (Begrenze Kohlenhydrate auf 0 g wegen Max. Wert in den Einstellungen)[Safety]\r\n`\r\nSo apparently carbs are now limited to 0? Settings still confirm \"Max. erlaubte Kohlenhydrate [g]\" to be 90,0.\r\nEditing the value and re-setting it to \"90\" fixed the issue.\r\n\r\nMy guess: The setup-wizzard stored the value as \"90,0\" - mind the \",\" - and this can't be parsed afterwards (as it would like to have a \".\") leading to a limit of \"0\".",
+ "comments": [
+  {
+   "id": 946461951,
+   "user": "Philoul",
+   "created_at": "2021-10-19T08:02:54Z",
+   "body": "Only integer values works, decimal values for carbs maximum values are not accepted ( , or . separator...)...\r\nI'll take a look if I can fix it..."
+  },
+  {
+   "id": 946486781,
+   "user": "savek-cc",
+   "created_at": "2021-10-19T08:34:43Z",
+   "body": "I certainly did not enter it specifically as \"90,0\" in the setup wizard - not sure if it was a scrolling thing or if I entered \"90\" as numbers."
+  },
+  {
+   "id": 946573700,
+   "user": "MilosKozak",
+   "created_at": "2021-10-19T10:06:34Z",
+   "body": "fixed by https://github.com/nightscout/AndroidAPS/commit/f7f7ba3a2bae8ad35fb23e5e1b4ce5d42b49e5d2\r\nthanks!"
+  }
+ ]
+}

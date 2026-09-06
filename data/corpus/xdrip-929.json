@@ -1,0 +1,204 @@
+{
+ "id": 459629786,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 929,
+ "title": "nightscout follower delayed by 5 to 10 min.",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/929",
+ "state": "closed",
+ "labels": [
+  "enhancement",
+  "sync-nightscout"
+ ],
+ "created_at": "2019-06-23T23:22:03Z",
+ "closed_at": "2023-11-21T08:35:33Z",
+ "comment_count": 34,
+ "body": "using xdrip to follow my kids bg. prefer xdrip as follower app because of the prediction display. but the bg data gets delayed by 5 to 10 min. have to restart collector everytime. and gettin error like 'nightscout follower.  woke up early'. is there a way to get xdrip to ping nightscout site si it gets latest bg value always?",
+ "comments": [
+  {
+   "id": 508860967,
+   "user": "ahaarrestad",
+   "created_at": "2019-07-05T20:58:17Z",
+   "body": "@Kaivish I have just got my pull-request accepted. Next nightly will contain a status page to see when the data is pulled, how old the readings were etc. \r\n\r\nI am looking further into this issue and will probably add more pull requests to further improve this feature. The tradeoffs are data and cpu usage vs bd delay.\r\n\r\nxdrip wakes up about 5 minutes after the previuos reading. the challenge is that the data is arriving late to Nightscout which has a default poll rate of 2.5 minutes without looking at the bg time. Looking into improving that too."
+  },
+  {
+   "id": 748955711,
+   "user": "tolot27",
+   "created_at": "2020-12-21T12:45:33Z",
+   "body": "@Kaivish Is your problem solved?"
+  },
+  {
+   "id": 772535907,
+   "user": "Navid200",
+   "created_at": "2021-02-03T14:06:40Z",
+   "body": "Someone on facebook experiences the delay.\r\nI am following her child hoping to figure out what the problem is.  The attached image is from my follower.\r\n\r\nHer son uses an iPhone 6 and has the Dexcom app on it that uploads to Nightscout.\r\n\r\nI see on my follower that Next poll time is 10 minutes past the last BG time.  Why is that?\r\nWhen I use the same phone and follow myself, those two are always only 5 minutes apart.  My collector is xDrip on an Android uploading to my Nightscout?\r\n\r\nIs there a way to reduce the delay she experiences following her child?  She uses xDrip on her Android phone to follow.\r\n\r\nThanks \r\n\r\n<img width=\"350\" src=\"https://user-images.githubusercontent.com/51497406/106757978-fca98a00-65fe-11eb-8ecb-f911c3f6866c.png\" />"
+  },
+  {
+   "id": 772617861,
+   "user": "tolot27",
+   "created_at": "2021-02-03T16:00:17Z",
+   "body": "> Her son uses an iPhone 6 and has the Dexcom app on it that uploads to Nightscout.\n\nThe Dexcom app cannot upload to Nightscout directly. It can only upload to Clarity or invite followers. Please can you clarify this?"
+  },
+  {
+   "id": 772662080,
+   "user": "Navid200",
+   "created_at": "2021-02-03T16:58:31Z",
+   "body": "Thanks so much.  Will update soon."
+  },
+  {
+   "id": 772752044,
+   "user": "Navid200",
+   "created_at": "2021-02-03T19:14:52Z",
+   "body": "Can Dexcom app not upload to Nightscout if it has \"Bridge username and password\"?"
+  },
+  {
+   "id": 772865514,
+   "user": "tolot27",
+   "created_at": "2021-02-03T22:19:38Z",
+   "body": "> Can Dexcom app not upload to Nightscout if it has \"Bridge username and password\"?\r\n\r\nEach user has their own Nightscout instance with an individual URL. This URL and API key cannot configured within the Dexcom app. I've found http://www.nightscout.info/wiki/welcome/nightscout-with-ios-and-dexcom-share but this is ancient and works only with G4/G5.  With this system, latency is \"build in\"."
+  },
+  {
+   "id": 772877740,
+   "user": "Navid200",
+   "created_at": "2021-02-03T22:44:08Z",
+   "body": "Thanks so much for the tips.\r\nThe lady has found an old Android phone and is going to try using xDrip on it as a collector.  This should solve the problem.  \r\nIf the approach fails for some reason and she decides to keep using the Dexcom app, I will use your tips.\r\nThanks so much."
+  },
+  {
+   "id": 772936053,
+   "user": "tolot27",
+   "created_at": "2021-02-04T00:40:58Z",
+   "body": "She can also use \"Dex Share Follower\" as hardware data source and just send a share invitation from the Dexcom app. A lot is possible. 😄 "
+  },
+  {
+   "id": 773286427,
+   "user": "ahaarrestad",
+   "created_at": "2021-02-04T12:59:30Z",
+   "body": "If you use dexcom share to upload data and then set up nightscoud to get\ndata from dexcom share you can follow the data in xdrip / nightscout. The\nabove problem is related to the \"delays\" caused by trying to save cpu and\nbattery etc.\n\n* In nightscout you can set the poll-interval for dexcom share. Default is\nevery 2-3 minutes I think, so if you get \"out of sync\" you will experience\nthe above delays. The poll-interval can be reduced down to somewhere\nbetween 1 minute and 10 seconds. This should help.\n* xdrip has a \"second pass\" if it not receive the bg data after 5 minutes,\nso the poll interval in nightscout helps.\n\n\nThe \"config var\" is called \"BRIDGE_INTERVAL\" and I've set ours to 10000 (10\nseconds as milliseconds). Works fine.\n\n[image: image.png]\n\n- asbjørn\n\ntor. 4. feb. 2021 kl. 01:41 skrev Mathias Walter <notifications@github.com>:\n\n> She can also use \"Dex Share Follower\" as hardware data source and just\n> send a share invitation from the Dexcom app. A lot is possible. 😄\n>\n> —\n> You are receiving this because you commented.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/929#issuecomment-772936053>,\n> or unsubscribe\n> <https://github.com/notifications/unsubscribe-auth/AAUMXSG2NEWTHIZBVU2G46LS5HUKRANCNFSM4H22AGZQ>\n> .\n>\n"
+  },
+  {
+   "id": 773293280,
+   "user": "Navid200",
+   "created_at": "2021-02-04T13:11:46Z",
+   "body": "I asked the individual I was helping to switch the master phone from an iPhone to an Android and use xDrip on it.  After setting up Nightscout on the master and confirming that xDrip had readings and new readings were uploaded to Nightscout, the problem persisted.\r\n\r\nI then asked her to switch the follower from a Nightscout follower to an xDrip Sync follower.  The problem persisted.\r\n\r\nI then noticed in the last screenshot sent to me that the time on the follower phone was 3 minutes ahead of the correct time!\r\n\r\nShe synchronized the time and the problem is resolved.\r\nI am not going to ask her to go back to see if the problem under other conditions will be resolved too or not."
+  },
+  {
+   "id": 773297632,
+   "user": "tolot27",
+   "created_at": "2021-02-04T13:19:14Z",
+   "body": "> I then noticed in the last screenshot sent to me that the time on the follower phone was 3 minutes ahead of the correct time!\r\n\r\nPlease tell her to enable time synchronization with provider. This ensures that the time never diverges again."
+  },
+  {
+   "id": 785530024,
+   "user": "Navid200",
+   "created_at": "2021-02-25T02:30:04Z",
+   "body": "@Kaivish Are you still experiencing this problem?\r\nIf not, can we close the issue?\r\nThanks"
+  },
+  {
+   "id": 800825793,
+   "user": "tolot27",
+   "created_at": "2021-03-17T06:15:12Z",
+   "body": "PR #1307 tries to address this."
+  },
+  {
+   "id": 1460580419,
+   "user": "Navid200",
+   "created_at": "2023-03-08T17:48:00Z",
+   "body": "@ahaarrestad How can I recreate this problem.\r\nWhen I set up a Nightscout follower, I never experience a 5 minute extra delay."
+  },
+  {
+   "id": 1771593835,
+   "user": "ChiSoxDev",
+   "created_at": "2023-10-19T19:35:51Z",
+   "body": "@Navid200 I experience this issue and would be happy to work with you for troubleshooting. Being a nightscout follower, my xDrip updates with about a 10 minutes delay. I believe this is due to the polling time settings. It retries quickly for a few attempts, then after that it waits another 3 minutes. That three minute gap results in 8-10 minute delay."
+  },
+  {
+   "id": 1771602872,
+   "user": "Navid200",
+   "created_at": "2023-10-19T19:43:08Z",
+   "body": "@ChiSoxDev This is not something I experience.  I need to know why.\r\nCan you provide any detail about your findings?"
+  },
+  {
+   "id": 1771617974,
+   "user": "ChiSoxDev",
+   "created_at": "2023-10-19T19:55:46Z",
+   "body": "Screenshots here to give more details, but essentially it is polling Nightscout too quickly before a new reading. It retries once after 20 seconds, but then doesn't poll again for 4 minutes. I believe a better logic would be for xDrip to re-poll every minute if there was a successful poll within the past 10 minutes.\r\n\r\n1) Here we are about ready to get a reading into Nightscout from Dexcom Share.\r\n\r\n![Screenshot_20231019-134633~2](https://github.com/NightscoutFoundation/xDrip/assets/121800704/e3937ebe-58db-49ba-87a8-b2e96923c45c)\r\n\r\n2) Here is just after it polls, but you can see it was before Nightscout received the reading. It will try again once 20 seconds later.\r\n\r\n![Screenshot_20231019-134722~2](https://github.com/NightscoutFoundation/xDrip/assets/121800704/ae3dec6e-288a-462b-aca2-41930b6d3a7d)\r\n\r\n3) After that second poll 20 seconds later, if Nightscout doesn't have the data yet, it is going to wait another 4 minutes before trying again. This results in a 10 minute difference in BG readings.\r\n\r\n![Screenshot_20231019-134742~2](https://github.com/NightscoutFoundation/xDrip/assets/121800704/e5a08047-f96b-4ae8-82a6-994e87a7fbb5)\r\n\r\nIt's probably important to note that it isn't really a 10 minute delay. It's a 5 minute delay. xDrip will just say 10 because a 5 minute delay on a single reading means 10 minutes since the last one."
+  },
+  {
+   "id": 1771897507,
+   "user": "Navid200",
+   "created_at": "2023-10-20T00:46:13Z",
+   "body": "This is what I have:\r\n![1](https://github.com/NightscoutFoundation/xDrip/assets/51497406/1980f2c1-47c8-41bc-9440-b4649b7a4039)\r\n![2](https://github.com/NightscoutFoundation/xDrip/assets/51497406/11d9fd68-b3da-4231-8de2-37fe2439f0c4)\r\n![3](https://github.com/NightscoutFoundation/xDrip/assets/51497406/f6e5cd18-6a03-4a1a-a2da-317ce0e6078b)\r\n\r\nWhen it gets to the point that it shows last reading, 5 minutes ago, a few seconds after, it gets the next reading.  \r\nAnd this is consistent.\r\n\r\n\r\nConsidering there is no difference in xDrip, I wonder if the difference between us that causes the difference in experience is our Nightscout servers.\r\nPlease ignore that you are using the July release and I am using the October release.  There has been no change to anything related to Nightscout follow for such a long time.  You can forget that.\r\n\r\nI wonder if you are willing to try to set up an experimental Nightsocut site just to see if that could give us any clues.  \r\nThis is how I have set up my Nightscout: https://navid200.github.io/xDrip/docs/Nightscout/GoogleCloud.html"
+  },
+  {
+   "id": 1771904174,
+   "user": "ChiSoxDev",
+   "created_at": "2023-10-20T00:56:07Z",
+   "body": "I think you are right in that for some reason my Nightscout is updating slower. I can look into that. But I think there is a solution on xDrip side too. If I am making correct assumptions xDrip polls down to the exact second it thinks there should be new data, then again 20 seconds later. But if Nightscout is late, it waits another cycle to poll. Adding a longer grace period than 20 seconds should solve the problem since I can't control how quick Nightscout gets the data from Dexcom.\n\nI assume you are not using Dexcom bridge?\n\n![Screenshot_20231019-185155~2.png](https://github.com/NightscoutFoundation/xDrip/assets/121800704/b2d20889-82bf-4378-bec2-ca4d1ebf3a02)\n\n"
+  },
+  {
+   "id": 1771905205,
+   "user": "ChiSoxDev",
+   "created_at": "2023-10-20T00:57:45Z",
+   "body": "To clarify, I think there is closer to a 60 second delay for Dexcom bridge to send data to Nightscout. So it never has a reading within the 20 seconds grace period allowed and always hits 10 minutes. "
+  },
+  {
+   "id": 1771906221,
+   "user": "Navid200",
+   "created_at": "2023-10-20T00:59:21Z",
+   "body": "There are many factors.  Yes, the data source is the other parameter.  I use a Dexcom G6 and I collect from it directly with xDrip that uploads to Nightscout.\r\n\r\nThe only time I can get behind a solution is if I understand the problem.  I see no problem on my side.  As long as I cannot recreate the problem, I cannot consider a solution.  I'm not denying that you are experiencing a problem.  I'm saying I need to know what is causing it before I can consider the solution you are suggesting."
+  },
+  {
+   "id": 1771908268,
+   "user": "Navid200",
+   "created_at": "2023-10-20T01:02:37Z",
+   "body": "If the bridge is the cause of the problem, perhaps the developers of it should fix it."
+  },
+  {
+   "id": 1771908766,
+   "user": "ChiSoxDev",
+   "created_at": "2023-10-20T01:03:23Z",
+   "body": "I feel like I've explained it. Dexcom is not linked to xDrip. Dexcom readings are adding to Nightscout via the Bridge option. xDrip polls exactly when there SHOULD be a reading, but the Dexcom Bridge to Nightscout is NOT instant like yours is where it's linked to xDrip. Instead the reading goes from Dexcom director to Nightscout, but at a slight delay (estimated 30-60 seconds.) \n\nSo when xDrip polls, Nightscout hasn't gotten the next reading yet. xDrip tries again 20 seconds later but that's still too soon. Then it waits a whole additional 5 min cycle to try again and the loop continues of always being one reading behind. "
+  },
+  {
+   "id": 1771909411,
+   "user": "ChiSoxDev",
+   "created_at": "2023-10-20T01:04:24Z",
+   "body": "> If the bridge is the cause of the problem, perhaps the developers of it should fix it.\n\nThe bridge isn't a problem, it's just a slower API call. So xDrip is polling too fast before it gets data. "
+  },
+  {
+   "id": 1771918326,
+   "user": "Navid200",
+   "created_at": "2023-10-20T01:13:49Z",
+   "body": "Let me see if I can create a test xDrip that would extend the wait time if data is delayed for you to try."
+  },
+  {
+   "id": 1771999859,
+   "user": "ChiSoxDev",
+   "created_at": "2023-10-20T02:58:17Z",
+   "body": "Thanks that would be great! I'm happy to test whatever you put together. "
+  },
+  {
+   "id": 1772006138,
+   "user": "Navid200",
+   "created_at": "2023-10-20T03:07:53Z",
+   "body": "This is not that simple.\r\nxDrip has been written by people who know what they are doing.  \r\nxDrip wakes up 5 minutes after the previous reading.  If there s slight variation, xDrip already can address it.  So, this would be a variation that is sometimes leading and sometimes lagging.\r\nBut, if we need to always delay, that means the frequency is wrong.  That's not a timing problem.  That is a frequency problem.\r\n\r\nI will continue to read the code trying to see if there is anything that has been overlooked.\r\nBut, there is only so much we can go in addressing variations before we increase phone battery consumption.\r\nIf I find anything I can do, I will open a PR."
+  },
+  {
+   "id": 1772009822,
+   "user": "ChiSoxDev",
+   "created_at": "2023-10-20T03:14:04Z",
+   "body": "That makes sense, thank you! Let me know if you'd like me to open a different bug report since after looking it seems unrelated to this old one, just similar symptoms."
+  },
+  {
+   "id": 1790011637,
+   "user": "Navid200",
+   "created_at": "2023-11-02T03:35:52Z",
+   "body": "@ChiSoxDev \r\n> I assume you are not using Dexcom bridge? \r\n\r\nHow can I set up a bridge?  I need to see the problem with my own eyes.\r\nIt's not that I don't believe you.  What I need is a test case I can use to verify my solution.  I am looking for a solution that identifies the problem and fixes it.  But, leaves every working situation alone.  And I am not looking for adding a new setting to let the user decide to enable or disable this.\r\n\r\nSo, please provide a link to instructions for setting up a bridge."
+  },
+  {
+   "id": 1791431878,
+   "user": "Navid200",
+   "created_at": "2023-11-02T19:35:15Z",
+   "body": "I believe I have been able to recreate this problem: https://github.com/NightscoutFoundation/xDrip/discussions/3164\r\nI will open a Pr to address it."
+  }
+ ]
+}

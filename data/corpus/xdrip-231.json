@@ -1,0 +1,105 @@
+{
+ "id": 279671971,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 231,
+ "title": "Nightly build 20171203 failing to receive transmitter readings",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/231",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2017-12-06T08:51:15Z",
+ "closed_at": "2021-02-24T18:40:44Z",
+ "comment_count": 15,
+ "body": "When trying to start a new sensor, xDrip+ appears to hang in the receive three sensor readings state and can take a long time to progress to calibration, sometimes never doing so. It hung like this for me for 24 hours and took a reinstall and six hour wait before it would calibrate. \r\n\r\nFollowing calibration, it only took readings every ten minutes and then lost connectivity and wouldn’t reconnect. ",
+ "comments": [
+  {
+   "id": 349587082,
+   "user": "jamorham",
+   "created_at": "2017-12-06T09:44:27Z",
+   "body": "Which data source are you using?"
+  },
+  {
+   "id": 350277596,
+   "user": "jamorham",
+   "created_at": "2017-12-08T14:34:32Z",
+   "body": "Try the latest nightly and see if that improves things for you."
+  },
+  {
+   "id": 350649387,
+   "user": "tim2000s",
+   "created_at": "2017-12-11T08:05:04Z",
+   "body": "Using G5. Latest nightly takes about 30 mins to get three readings. Also noticed that after first 4 readings it drops to once every ten mins. This is different to previous behaviour, where, on the same phone, I got 5 minute readings on an early November build. "
+  },
+  {
+   "id": 350667146,
+   "user": "jamorham",
+   "created_at": "2017-12-11T09:23:35Z",
+   "body": "@tim2000s can you confirm that you are using the 6th Dec nightly? Which phone model are you using and are you using the OB1 G5 collector or the original one?"
+  },
+  {
+   "id": 352178202,
+   "user": "tim2000s",
+   "created_at": "2017-12-16T11:40:28Z",
+   "body": "I have been using the 6th Dec nightly, a Sony Xperia X Compact and the OB1 G5 Collector. I uploaded a set of logs last night where I'd had it disconnect from the transmitter for hours.\r\n\r\nIt's worth noting that I've run with this phone for a good five months with no issues and the first problems started when I updated to the nightly of 1st December."
+  },
+  {
+   "id": 352178980,
+   "user": "jamorham",
+   "created_at": "2017-12-16T11:56:21Z",
+   "body": "Can you try the Dec 15th nightly? https://github.com/NightscoutFoundation/xDrip/releases/download/2017.12.15b/xDrip-plus-20171215-a87d7b8.apk or select the Nightly update channel.\r\n\r\n\r\nThanks.\r\n\r\nJon"
+  },
+  {
+   "id": 352183247,
+   "user": "tim2000s",
+   "created_at": "2017-12-16T13:22:47Z",
+   "body": "Will do."
+  },
+  {
+   "id": 352279635,
+   "user": "tim2000s",
+   "created_at": "2017-12-17T19:36:34Z",
+   "body": "That’s hung on the first radio button and hasn’t yet pulled any data. I’m probably going to go back to the Dexcom app just because I need it to loop, and will try again at the next sensor change. "
+  },
+  {
+   "id": 352422005,
+   "user": "jamorham",
+   "created_at": "2017-12-18T13:14:20Z",
+   "body": "It implies you're not getting any data at all. I would be interested to know what you get in the G5 System Status page while this is happening. I appreciate if you have no time to test this, but please let me know if you get any more information. "
+  },
+  {
+   "id": 355230814,
+   "user": "tim2000s",
+   "created_at": "2018-01-04T09:01:20Z",
+   "body": "@jamorham I’ve been doing some digging into this over the past couple of days. It seems to be affected by Android Wear. \r\n\r\nWhen Wear is installed, even without a watch connected, even if xDrip+ is not set to use Wear, it loses connectivity to the transmitter. As soon as i uninstall Wear, everything works. "
+  },
+  {
+   "id": 355231149,
+   "user": "tim2000s",
+   "created_at": "2018-01-04T09:03:11Z",
+   "body": "For info - running on a Pixel with Android 8.1 and an active BT hotspot for OpenAPS. "
+  },
+  {
+   "id": 355415646,
+   "user": "jamorham",
+   "created_at": "2018-01-04T22:20:58Z",
+   "body": "Does your wear installation have watches it would try to connect to configured? I found that having watches which wear was hunting for but not finding killed bluetooth."
+  },
+  {
+   "id": 355693044,
+   "user": "tim2000s",
+   "created_at": "2018-01-05T23:27:23Z",
+   "body": "I did a clean uninstall and forget of all watches. Then the transmitter stayed connected but when reinstalling Wear it couldn’t find the watch. It seems that 8.1 is rather more picky on some aspects of the Bluetooth front than perhaps older versions are. In the meantime the phone happily connected to an OpenAPS rig and Combo via Bluetooth. "
+  },
+  {
+   "id": 782091673,
+   "user": "Navid200",
+   "created_at": "2021-02-19T13:58:19Z",
+   "body": "@tim2000s What is the status of this issue?"
+  },
+  {
+   "id": 785288716,
+   "user": "Navid200",
+   "created_at": "2021-02-24T18:40:44Z",
+   "body": "Android and xDrip both have changed dramatically since this issue was opened.\r\nIf you have issues similar issues, please post in the support channels.\r\nhttps://www.facebook.com/groups/xDripG5\r\nhttps://gitter.im/jamorham/xDrip-plus"
+  }
+ ]
+}

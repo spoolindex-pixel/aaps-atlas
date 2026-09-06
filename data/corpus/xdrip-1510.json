@@ -1,0 +1,84 @@
+{
+ "id": 743815434,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1510,
+ "title": "Bad Battery life on Watch since 'Nightly build 1st Oct 2020'",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1510",
+ "state": "closed",
+ "labels": [
+  "help",
+  "device-ticwatch"
+ ],
+ "created_at": "2020-11-16T12:56:16Z",
+ "closed_at": "2023-08-14T22:00:59Z",
+ "comment_count": 11,
+ "body": "Hi,\r\nI think I have found a problem with Battery life on the Smartwatch since the '_Nightly build 1st Oct 2020_'.\r\n\r\nI use the following setup for my little son:\r\nSmartwatch is a TicWatch C2 with '_Force Wear_' enabled.\r\nThe watch is only for collecting BG, no incoming messages etc..\r\nPhone is a Samsung S5 mini\r\n\r\nAfter Oct. update the watch had 14% Battery after 12h, before around 60%.\r\nNow I am back on '_Nightly build 4th Sep 2020_' and after 12h it shows me 60% again.\r\n\r\nCan someone confirm that?",
+ "comments": [
+  {
+   "id": 729854919,
+   "user": "tolot27",
+   "created_at": "2020-11-18T17:59:30Z",
+   "body": "That is strange. The difference between [2020.09.04 and 2020.10.01](https://github.com/NightscoutFoundation/xDrip/compare/2020.09.04...2020.10.01) is only the usage of [JodaTime](https://www.joda.org/joda-time) in the Android App. The wear app did not change.\r\nIt would be interesting to get some logs from the TicWatch."
+  },
+  {
+   "id": 729871056,
+   "user": "oddy1968",
+   "created_at": "2020-11-18T18:28:37Z",
+   "body": "I know. \r\nOnly two apps are on the watch which updates. That are xdrip and wearOS.\r\nAt first I thought its a problem with the wear app but its a problem to downgrade.\r\nThen I tried xdrip and after two weeks with 14% I had 60% again.\r\n\r\nHow can I get logs from the TicWatch?"
+  },
+  {
+   "id": 731111786,
+   "user": "dbnsacc",
+   "created_at": "2020-11-20T11:22:48Z",
+   "body": "I can partially confirm this phenomenon. I'm using a TicWatch Pro 2020 and I've just reverted from the 2020.10.01 build back to 2020.09.04 on both phone and watch and the watch battery has been better over the last day since I did so.\r\n\r\nI was actually investigating a strange kernel wakelock related to bluetooth (I think) on the phone which I couldn't trace back to an app and initially this seems to have alleviated itself also after going back but I intend to give it a few days before I'm sure that xDrip+ was the cause. The wakesource I was seeing was from alarmtimer and the screenshot below details the reason which I have been unable to find a cause for after searching.\r\n\r\nSlim chance, but could this be related to the JodaTime change in 2020.10.01 @tolot27 or am I on the wrong track?\r\n![shot-19112020_1732](https://user-images.githubusercontent.com/44261610/99794855-b5911a00-2b22-11eb-95f9-817562b88475.jpeg)\r\n"
+  },
+  {
+   "id": 731128153,
+   "user": "tolot27",
+   "created_at": "2020-11-20T11:59:09Z",
+   "body": "Please add the extra logging tag joda-time-android:v. I don't think it gives us more information because logging is rarely used in the joda library.\r\n\r\nI still have no idea why joda should affect the wear app. It is not packaged with it."
+  },
+  {
+   "id": 731986949,
+   "user": "oddy1968",
+   "created_at": "2020-11-23T07:45:43Z",
+   "body": "> Please add the extra logging tag joda-time-android:v. I don't think it gives us more information because logging is rarely used in the joda library.\r\n\r\nCan you do this dbnsacc? thx"
+  },
+  {
+   "id": 786453636,
+   "user": "radugreta",
+   "created_at": "2021-02-26T06:57:38Z",
+   "body": "Hello  I use p20 huawei and TicWatch S2 Glacier.   I am just a follower in xdrip. and the master have a A40 Samsung.\r\nThe watch connected to my phone and also to the masters phone, the battery was emply in less than 1 day.\r\nWe used e14bae1-2020.07.13.\r\nNow I moved to 39e880d-2021.02.17 and it seems to be a much better battery life.\r\nI put a screenshot with 2 screenshots from before and 1 after.\r\n\r\n![Screenshot 2021-02-26 085641](https://user-images.githubusercontent.com/58292604/109266320-92a48f00-7810-11eb-9d0a-0b2b1fac99f6.png)\r\n\r\n\r\n\r\n"
+  },
+  {
+   "id": 953071890,
+   "user": "Navid200",
+   "created_at": "2021-10-27T16:00:40Z",
+   "body": "How could xDrip affect the battery runtime of the watch?\r\nIs this still a problem with latest Nightly builds?"
+  },
+  {
+   "id": 953092039,
+   "user": "dbnsacc",
+   "created_at": "2021-10-27T16:23:08Z",
+   "body": "I'd need to update as I'm running 2021.08.18 at the moment but I think what it boils down to when looking at a debug dump in batteryhistorian is the amount of alarms and wakelocks xDrip+ makes with bluetooth. If I remove the complication from my watchface and force stop xDrip+ on the watch battery consumption usually reduces quite a bit until its reactivated. I can update both phone and watch to the latest nightly this week and get a new dump for battery historian if you like?"
+  },
+  {
+   "id": 953112421,
+   "user": "Navid200",
+   "created_at": "2021-10-27T16:46:19Z",
+   "body": "@dbnsacc I don't have a grasp of the problem.  You may be able to help me with that.\r\nAre you thinking we change xDrip so that it would send less frequent alarms to address this?\r\nIf yes, why would this have started with the October 1, 2020?\r\nRegardless, if we reduce the number of updates, would that not reduce the update rate on watches?\r\nOr, are you saying xDrip unnecessarily sends redundant info it shouldn't?"
+  },
+  {
+   "id": 953155821,
+   "user": "dbnsacc",
+   "created_at": "2021-10-27T17:34:29Z",
+   "body": "I would have to install a version prior to 1st October 2020 to compare their behaviour again and get a dump as it's been a while now but I do remember battery consumption of xDrip seemed to increase from this build on my watch. It seems to me that there are potentially excessive wakelocks and alarms. I'll give a brief example from the last debug I took from my Ticwatch below. \r\n\r\nIf the BG is updated every 5 minutes it would be reasonable to expect there to be bluetooth communication for xDrip every 5 minutes or so between watch and phone (which is the collector) which would be 12 times an hour (which does just about match up with 'watchlistener-onstart'). However my stats are showing other wakelocks and alarms at a rate of about 34 times an hour according to battery historian. There may well be good reasons for this that I don't know about but it seems (if we give some leeway from 12 times an hour to 17 times an hour) as if xDrip is firing alarms and holding wakelocks twice the amount it maybe could be?\r\n\r\nAnother app I use for heart rate which is set to every 30 minutes wakes up twice an hour and sends the results back to its companion phone app. It shows up as waking up around twice an hour as I'd expect in the stats.\r\n\r\n![xdrip-1510_screenshot_001-27102021](https://user-images.githubusercontent.com/44261610/139116994-b64136b3-6934-43ec-8df3-36cefde841a2.jpg)\r\n![xdrip-1510_screenshot_002-27102021](https://user-images.githubusercontent.com/44261610/139116999-fc8eb7b0-35c7-4ea3-88bd-7d65ea42fa92.jpg)\r\n![xdrip-1510_screenshot_003-27102021](https://user-images.githubusercontent.com/44261610/139117000-756121a8-41e7-46a2-aeb0-54bb6570bf5e.jpg)\r\n.\r\n"
+  },
+  {
+   "id": 1678134729,
+   "user": "Navid200",
+   "created_at": "2023-08-14T22:00:41Z",
+   "body": "I'm hoping that someone will move WearOS out of xDrip.  Then, WearOS can be better supported.\r\nIn the meantime, I am going to convert this to a discussion."
+  }
+ ]
+}

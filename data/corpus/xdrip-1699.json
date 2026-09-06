@@ -1,0 +1,35 @@
+{
+ "id": 860304692,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1699,
+ "title": "Nightscout uploader causes HTTP error 413 - Payload Too Large when sending a large number of entries",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1699",
+ "state": "closed",
+ "labels": [
+  "status-postponed"
+ ],
+ "created_at": "2021-04-17T02:37:42Z",
+ "closed_at": "2021-04-23T13:16:29Z",
+ "comment_count": 3,
+ "body": "Nightscout uploader sends bg readings using a JSON array in the request body, but it causes HTTP error 413 (Payload Too Large) when there are a lot of entries. \r\n\r\nA person I was helping faced this problem during a new installation of Nightscout (version 14.2.2). She tried to send all data for more than 2 years, resulting in more than 6000 entries (BgReadings) in Nightscout REST queue.\r\n\r\n- Version of xDrip: 202103081944\r\n- Using Libre 1 with MiaoMiao 2, master sending data to Nightscout. \r\n- Tested in different phones (I exported original data to another phone with same result).\r\n\r\nWorkaround: I exported xDrip database, extracted SQLite3 database, opened it and deleted all content from table UploaderQueue.  Then, we decided to send only 1 month of data to Nightscout and it worked. I think the problem would happen again if we we try to send all data again.\r\n\r\nMy suggestion is to send data to Nightscout in smaller batches. \r\n\r\nBest\r\n",
+ "comments": [
+  {
+   "id": 821843626,
+   "user": "Navid200",
+   "created_at": "2021-04-17T15:49:06Z",
+   "body": "Would you be willing to do a test and tell us exactly what minimum size would cause the error?\r\nThen, we can add it as a warning to the existing warning (use with care).\r\n![Screenshot_20210417-114020](https://user-images.githubusercontent.com/51497406/115118768-e0b55380-9f72-11eb-804c-bae2be5eea4e.png)"
+  },
+  {
+   "id": 823642754,
+   "user": "Navid200",
+   "created_at": "2021-04-20T22:37:08Z",
+   "body": "You should respond.  \r\n\r\nThis is not something that we can fix if we don't know what the problem is.\r\nThe existing comment on that page already suggests that you have to be careful meaning if you attempt a very long period, it will fail.\r\n\r\nI will be happy to update that warning to clarify how large the data can be before there will be trouble.\r\nIn that case, for example, we can say only load data for one year at a time.\r\nThen, you can upload data for 1-year chunks.\r\nBut, we need to know when it fails.\r\n\r\nI don't see why any developer would spend time on this when it has never caused a problem."
+  },
+  {
+   "id": 825651378,
+   "user": "Navid200",
+   "created_at": "2021-04-23T13:16:29Z",
+   "body": "There is already a warning that the user has to use this carefully.  We can add more detail to that warning if we get more info.\r\nBut, this doesn't seem to be a show-stopper.\r\nWe will address this when more developers join and we have addressed more critical issues."
+  }
+ ]
+}

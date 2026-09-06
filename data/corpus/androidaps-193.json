@@ -1,0 +1,41 @@
+{
+ "id": 780892853,
+ "repo": "nightscout/AndroidAPS",
+ "number": 193,
+ "title": "[Improvements] Secondary graphs (use same scales if same units on the same graph) and replace Activity by -BGI",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/193",
+ "state": "closed",
+ "labels": [
+  "enhancement"
+ ],
+ "created_at": "2021-01-06T22:41:23Z",
+ "closed_at": "2021-02-12T18:51:00Z",
+ "comment_count": 4,
+ "body": "See below 2 suggestions concerning secondary graphs to open discussion:\r\n1) When several curves with \"same units\" are in the same subGraph, it could be nice to calculate scale with all values and not separatly (for ex. if we put Absolute Insulin and IOB on the same graph, then use the same scale for both curves) to be able to directly compare curves.\r\n \r\n2) It would be nice (I think) if we replace for secondary graphs Insulin Activity (redondant with Activity available in main graph) by Blood Glucose Impact (-BGI to be exact)\r\n-BGI is very close to Activity (these curves are proportional if you have only one ISF value in your profile), and we can directly compare -BGI values with deviations values (so curve compare only if same scale is used for both curves, see above1st suggestion)\r\n=> If deviation = -BGI then BG value remains constant, \r\n=> If deviation > -BGI then BG increases,\r\n=> If deviation < -BGI then BG decreases\r\nI think BGI is better (especially if profile contains multiple ISF values) for analyzing the impact of insulin on BG variations\r\n\r\nJust to illustrate the second proposition, I took a screenshot when the Activity curve was very close to \"-BGI value\" with the same scale than deviation:\r\nOn the left BG value is constant (deviations equals \"-BGI\"), then between red lines deviations are greater than -BGI (BG rise), and finally on the right BG is constant again...\r\n![Screenshot_20210106-230412_AndroidAPS](https://user-images.githubusercontent.com/52934600/103824695-b94a1300-5074-11eb-9822-ef1af1299280.jpg)\r\n",
+ "comments": [
+  {
+   "id": 767810825,
+   "user": "Philoul",
+   "created_at": "2021-01-26T20:34:04Z",
+   "body": "@AdrianLxM \r\nI was waiting to have a feedback on this proposal before looking at the code.\r\nI can try to look if I can do it if you think it's a good proposition. (I don't know yet if it's complicated or not...)"
+  },
+  {
+   "id": 767813440,
+   "user": "AdrianLxM",
+   "created_at": "2021-01-26T20:39:03Z",
+   "body": "@Philoul I didn't have the time to fully think that through.\r\nDo Absolute insulin and \"insulin activity\" have the same unit?\r\n\r\nBGI and delta definitely are comparable - change and expected change -> That would be great if they had the same scale if they are in the same graph!"
+  },
+  {
+   "id": 768071544,
+   "user": "Philoul",
+   "created_at": "2021-01-27T06:43:48Z",
+   "body": "> Do Absolute insulin and \"insulin activity\" have the same unit?\r\n\r\nNo, but Absolute Insulin and Insulin on board yes... (my bad, in french IOB is translated IA for \"Insuline Active\", I updated my proposal to avoid misunderstanding, thanks)"
+  },
+  {
+   "id": 770280504,
+   "user": "Philoul",
+   "created_at": "2021-01-30T21:05:46Z",
+   "body": "@AdrianLxM what do you think of this proposal #276 ?\r\n=> Should I change -BGI color? (identical to the activity's color in this first commit)"
+  }
+ ]
+}

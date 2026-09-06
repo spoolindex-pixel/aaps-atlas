@@ -1,0 +1,89 @@
+{
+ "id": 1590882983,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2426,
+ "title": "NEW INFO Dev-h tdd calculation doesnt work in stats tab",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2426",
+ "state": "closed",
+ "labels": [
+  "unknown_reason"
+ ],
+ "created_at": "2023-02-19T22:24:57Z",
+ "closed_at": "2023-08-17T15:06:00Z",
+ "comment_count": 12,
+ "body": "Tdd calculation doesnt work anymore.\r\n\r\nMaybe related. Also notice really slow refresh of main screen calculations. (takes regularly 15 Till 30 secs to calculate all graphs).\r\n\r\nTried reset button from stats, didnt work.\r\nTried cleaning database (deleted all old data) from maintenance, didnt work.\r\n\r\nAlready noticed that tdd calculation was slow sometimes, the last months, but they eventually did come through. Now they dont appear anymore.\r\n\r\nAm using dana-i. Issue has nothing to do with the tdd stats directly from dana. That works fine still.\r\n\r\n[Screenshot_20230219-231241](https://user-images.githubusercontent.com/15680598/219978741-5dd2d1f8-e891-4784-bb03-0057b795ba2b.png)\r\n\r\n[AndroidAPS._2023-02-19_01-00-00_.86.zip](https://github.com/nightscout/AndroidAPS/files/10778111/AndroidAPS._2023-02-19_01-00-00_.86.zip)\r\n",
+ "comments": [
+  {
+   "id": 1437217757,
+   "user": "MilosKozak",
+   "created_at": "2023-02-20T15:42:29Z",
+   "body": "log doesn't have time 23:12\r\nI cannot reproduce this issue"
+  },
+  {
+   "id": 1439082270,
+   "user": "RalfCGM",
+   "created_at": "2023-02-21T20:56:47Z",
+   "body": "Can i help investigating? Can i provide more info?\r\n\r\nWhat do you expect the maximum wait time to be to calculate tdd? 5 minutes? "
+  },
+  {
+   "id": 1439105105,
+   "user": "RalfCGM",
+   "created_at": "2023-02-21T21:17:26Z",
+   "body": "I noticed that My history browser (which was always really slow), doesnt work anymore at all. Does this point towards a database issue?\r\n![Screenshot_20230221-221342](https://user-images.githubusercontent.com/15680598/220460514-911bd8bb-0ab1-406e-84d5-a3220f46339d.png)\r\n"
+  },
+  {
+   "id": 1444460433,
+   "user": "vanelsberg",
+   "created_at": "2023-02-24T20:49:43Z",
+   "body": "Did you try resetting your database?\r\n"
+  },
+  {
+   "id": 1445166386,
+   "user": "MilosKozak",
+   "created_at": "2023-02-25T17:39:05Z",
+   "body": "I cannot reproduce this issue. Try to open the screen again and provide log from that time"
+  },
+  {
+   "id": 1445871899,
+   "user": "RalfCGM",
+   "created_at": "2023-02-27T08:03:45Z",
+   "body": "Tried cleaning up database, not resetting, because of the hassle of getting started up after reset. "
+  },
+  {
+   "id": 1445992300,
+   "user": "RalfCGM",
+   "created_at": "2023-02-27T09:29:34Z",
+   "body": "Attached logs.\r\n\r\nWhat I did:\r\nI force stopped aaps\r\nCleared cache of aaps\r\nStarted aaps\r\nWaited Till app was fully running. (Main screen refreshed)\r\nLoaded stats\r\nWaited couple of minutes.\r\nCreated first log file\r\nWaited an other couple of minutes\r\nCreated second log file.\r\n[AndroidAPS_LOG_1677485893041.log.zip](https://github.com/nightscout/AndroidAPS/files/10838097/AndroidAPS_LOG_1677485893041.log.zip)\r\n[AndroidAPS_LOG_1677485506472.log.zip](https://github.com/nightscout/AndroidAPS/files/10838098/AndroidAPS_LOG_1677485506472.log.zip)\r\n"
+  },
+  {
+   "id": 1446349486,
+   "user": "MilosKozak",
+   "created_at": "2023-02-27T13:45:44Z",
+   "body": "pls reset logging to default , do it again and give me exact time \r\nit's impossible to find anything in this"
+  },
+  {
+   "id": 1446875641,
+   "user": "RalfCGM",
+   "created_at": "2023-02-27T18:51:06Z",
+   "body": "Ok, thats really weird. Tried again, and now it suddenly worked...\r\n\r\nAttached the logs of the attempt that did work. Maybe theres still something pointing in a direction? I pushed the stats button 1 or 2 seconds after 19:42.\r\n\r\nIve compared the stats of the dana with the calculated stats of aaps, and they arent (even slightly) the same. Also attached. \r\n![Screenshot_20230227-194804](https://user-images.githubusercontent.com/15680598/221655749-85a34cbe-f831-4fb6-91a4-8b3125a00fb6.png)\r\n![Screenshot_20230227-194719](https://user-images.githubusercontent.com/15680598/221655755-d6852596-f7ea-43d8-bfec-90e81d2bf6d7.png)\r\n\r\n\r\n[AndroidAPS_LOG_1677523472248.log.zip](https://github.com/nightscout/AndroidAPS/files/10842982/AndroidAPS_LOG_1677523472248.log.zip)\r\n"
+  },
+  {
+   "id": 1471425204,
+   "user": "RalfCGM",
+   "created_at": "2023-03-16T07:06:57Z",
+   "body": "Happened again. \r\nData attached. Around 22.50 or before. \r\nNow tdd stats dont load anymore. Cleaning database doesnt help.\r\n\r\nAlso notice the double data in the autosens calcutions. \r\n\r\nMaybe related? \r\n\r\n![Screenshot_20230316-075121](https://user-images.githubusercontent.com/15680598/225540077-5ee46419-f00f-42d0-bc6b-fb4688478c85.png)\r\n\r\n\r\n![Screenshot_20230315-225006](https://user-images.githubusercontent.com/15680598/225539613-e744ad2f-47d0-4077-a1b3-4081329b8f2b.png)\r\n\r\n[AndroidAPS_LOG_1678917065870.log.zip](https://github.com/nightscout/AndroidAPS/files/10987665/AndroidAPS_LOG_1678917065870.log.zip)\r\n"
+  },
+  {
+   "id": 1480281542,
+   "user": "MilosKozak",
+   "created_at": "2023-03-22T21:25:37Z",
+   "body": "I cannot replicate this issue. and there is no error visible in logs"
+  },
+  {
+   "id": 1483569509,
+   "user": "RalfCGM",
+   "created_at": "2023-03-24T23:20:14Z",
+   "body": "Thats a pity. Can i assist in some other way? Im now on dev-i. Try reporting when things happen again. "
+  }
+ ]
+}

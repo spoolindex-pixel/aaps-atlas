@@ -1,0 +1,33 @@
+{
+ "id": 550145643,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1175,
+ "title": "Watch Wake Up negative value preventing syncing of data when using a watch collector and coming back into range of the phone",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1175",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2020-01-15T12:04:12Z",
+ "closed_at": "2020-02-17T12:24:00Z",
+ "comment_count": 3,
+ "body": "The 'Watch Wake Up' field found within the status screen continues to count down past zero when the watch is sued as a primary collector and is out of range of the phone. \r\n\r\nThis is preventing the copy of xdrip found on the phone from retrieving data from the watch as it never attempts to reset the Watch wake up back to a 5min countdown. The watch continues to collect readings, but the phone shows as missed reading until you reboot your phone. \r\n![Screenshot_20191217-123234_xDrip+](https://user-images.githubusercontent.com/6833057/72432497-1a574780-378f-11ea-99fc-8f5e95e1d736.jpg)\r\n",
+ "comments": [
+  {
+   "id": 574637752,
+   "user": "jamorham",
+   "created_at": "2020-01-15T12:26:18Z",
+   "body": "I believe this is a symptom rather than a cause. The failover time is reported by the watch so if they stop communicating then this time goes in to the past even though at the watch end it is being reset to each new time interval.\r\n\r\nNext time this happens can you try force killing the WearOS app on the phone and re-opening it to see if that is where the stall is?"
+  },
+  {
+   "id": 574675100,
+   "user": "SimonPhilpott",
+   "created_at": "2020-01-15T14:08:39Z",
+   "body": "Will do, if that turns out to be the cause I'll write something in Tasker to accomplish the same procedure. I could detect the string \"Watch Wake Up : -\".\r\n"
+  },
+  {
+   "id": 586970089,
+   "user": "SimonPhilpott",
+   "created_at": "2020-02-17T12:24:00Z",
+   "body": "That did indeed fix the issue. I was able to kill the WearOS service in Tasker to accomplish the recommended fix. Factory resetting the watch and Wear OS installed fresh also seemed to stop all occurrences of the above issue. "
+  }
+ ]
+}

@@ -1,0 +1,51 @@
+{
+ "id": 1438692067,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2172,
+ "title": "Last Dev-C : lost connection to watch face",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2172",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-11-07T17:04:56Z",
+ "closed_at": "2022-11-13T16:18:37Z",
+ "comment_count": 6,
+ "body": "![Screenshot_20221107_172151.jpg](https://user-images.githubusercontent.com/76626474/200370437-cb4bb13b-cd9c-4256-952e-3f3d50f07870.jpg)\n\n@MilosKozak I lost connection to watch face after updating the phone apk and watch apk to the last dev-c.\n\nNew apk on phone and 3 days  \"old\" apk on watch did not communicate either.",
+ "comments": [
+  {
+   "id": 1306176587,
+   "user": "overfrenk",
+   "created_at": "2022-11-07T20:53:38Z",
+   "body": "Same for me! Samsung watch4"
+  },
+  {
+   "id": 1306427305,
+   "user": "robertrub",
+   "created_at": "2022-11-08T00:35:28Z",
+   "body": "To be more precise, AAPS Wear menu has the correct watch name (thus is connected) but BGs COB and IOB ate stale, not updated (even when I hit send resend dll data to watch)."
+  },
+  {
+   "id": 1307572585,
+   "user": "robertrub",
+   "created_at": "2022-11-08T17:26:42Z",
+   "body": "![Screenshot_20221108_182459.jpg](https://user-images.githubusercontent.com/76626474/200633659-48c0ecb9-1253-46bd-96c0-b68a94e31a10.jpg)\n\nThis version does not solve the connection problem to the watch."
+  },
+  {
+   "id": 1311806933,
+   "user": "Andries-Smit",
+   "created_at": "2022-11-11T15:13:04Z",
+   "body": "Duplicate of #2168"
+  },
+  {
+   "id": 1312552603,
+   "user": "Andries-Smit",
+   "created_at": "2022-11-12T19:07:33Z",
+   "body": "Issue is caused be depended libraries that are old, to make them work on modern Android, jettifier could be used. However this was disabled in commit https://github.com/nightscout/AndroidAPS/commit/e7c41beab74306ee3b5c68c41aac9bf05da36034\r\n\r\n(Also the preference menu is impacted)\r\n\r\nProbable reason, it slows the build. I could recommend \"pre-jetifier\" the decencies as described here.\r\nhttps://adambennett.dev/2020/08/disabling-jetifier/\r\n\r\nFor all inpatient, that do not want to way on a fix, just enable jetifier again, and rebuild"
+  },
+  {
+   "id": 1312775774,
+   "user": "robertrub",
+   "created_at": "2022-11-13T16:59:28Z",
+   "body": "Hi @Andries-Smit \r\n\r\nYou last modifications did the job. The watchface is working again. Tnx a lot. \r\n\r\nRobby"
+  }
+ ]
+}

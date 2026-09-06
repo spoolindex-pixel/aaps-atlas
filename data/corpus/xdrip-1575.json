@@ -1,0 +1,85 @@
+{
+ "id": 774764513,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1575,
+ "title": "G6 values discarded after transmitter change and warmup due to small time sync difference",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1575",
+ "state": "closed",
+ "labels": [
+  "wontfix",
+  "device-dexcom-transmitter",
+  "type-documentation"
+ ],
+ "created_at": "2020-12-25T17:38:06Z",
+ "closed_at": "2021-05-23T16:11:01Z",
+ "comment_count": 12,
+ "body": "### G6 values discarded after transmitter change and warmup\r\nAfter changing the transmitter and starting a new sensor using my hardware receiver, after the warmup my hardware receiver started getting results but xdrip+ showed me no readings. I checked the logs and saw some entries about values being received but discarded as invalid.\r\n\r\n### My environment\r\n- The nightly build from 16th December 2020\r\n- G6 with a new transmitter (8N..) and a new sensor.\r\n- G6 settings enabled: OB1 collector, native algorithm, minimize scanning, G6, allow OB1 initiate bonding\r\n\r\n### Expected behavior\r\nSince the hardware receiver started getting values, I expected to get values in xdrip+. The log shows that values were received (\"Got usable glucose data from G5\") thus I'd expect this even more so.\r\n\r\n### Actual behavior\r\nThe values didn't show up in the graph. Instead the status was something about not having received any readings yet. The log shows that the \"Got usable glucose data from G5\" is followed by \"invalid timestamp comparison for transmitter id: 8N...\"  and then by \"No sensor, ignoring this bg reading\" and \"New bg reading was null in processGlucoseRxMessage\". I then noticed a time difference between hardware receiver and smartphone of 3 minutes. I updated the time on the hardware receiver and soon started getting results.\r\n\r\n### Steps to reproduce the behavior:\r\n1. End the sensor session (or wait for it to end)\r\n2. Have a time difference between receiver and mobile phone of 3+ minutes (phone 3 minutes ahead).\r\n3. Use the hardware receiver to pair a new transmitter, provide sensor code, provide transmitter S/N, start the sensor.\r\n4. Change to the new transmitter S/N in xdrip+.\r\n5. Confirm pairing worked by waiting for status message similar to \"Warming up 1.9 hrs\"\r\n6. Wait for the warm up to finish.\r\n7. Notice the first reading on the HW receiver.\r\n\r\nJust changing the receiver's time in the middle of a session seems not to produce any issues of this type.\r\n\r\n### Considerations\r\nI'm not sure if the protocol prevents xdrip+ from getting usable data if its time stamp on the phone is not within the expected range of the transmitter's. But the log indicates that values have been received and discarded. The conclusion \"no sensor\" seems wrong and the values should be used in my opinion.",
+ "comments": [
+  {
+   "id": 774137563,
+   "user": "Navid200",
+   "created_at": "2021-02-05T16:26:22Z",
+   "body": "Can you explain step 2?\r\nWhy would you knowingly have a time difference between the two?  Why would you not correct the one that is incorrect?\r\n\r\nIf one goes through the steps to recreate the problem, will it be resolved if they correct the time on the phone?"
+  },
+  {
+   "id": 774316801,
+   "user": "t1dast",
+   "created_at": "2021-02-05T22:13:41Z",
+   "body": "You would knowingly have the difference in order to reproduce the issue. I for one only realised the difference in hindsight by investigating the log messages.\r\n\r\nBut to be more precise: the phone was three minutes ahead of the clock on the hardware receiver but actually it was the hardware receiver that was behind the actual time (since its clock is not permanently synchronising as opposed to my phone).\r\n\r\nSo what you would do is set a wrong time on the receiver and later on correct it. That fixed the issue for me. "
+  },
+  {
+   "id": 774317743,
+   "user": "Navid200",
+   "created_at": "2021-02-05T22:16:07Z",
+   "body": "Thank,\r\nSo, if I understand correctly, as long as both the phone and the receiver have correct time, this issue never happens.  Is that correct?\r\nIf that is correct, do you agree that there is nothing wrong, with respect to this issue, with the xDrip code?"
+  },
+  {
+   "id": 774321653,
+   "user": "t1dast",
+   "created_at": "2021-02-05T22:26:22Z",
+   "body": "You're right that this hasn't happened to me while the time difference was small enough.\r\n\r\nI wouldn't draw any conclusions myself about the correctness. I don't know the protocol. Why are, say, 90 seconds of difference fine but 3+ minutes is an issue? If the transmitter refuses to send data in that case, I'd say sure, nothing wrong. But there was data coming in according to the log, it just appears to have been discarded. The message \"No sensor, ignoring this data\" looks wrong, given that I had a sensor that was sending data."
+  },
+  {
+   "id": 774323321,
+   "user": "Navid200",
+   "created_at": "2021-02-05T22:30:32Z",
+   "body": "I agree with you that xDrip can improve.\r\nThe problem is that we have limited resources (developers).  We have to choose our battles.  \r\nIf we tell the developers that there are thousands of issues, we may not get as much attention from them as opposed to telling them that there are 5 serious issues.\r\nSo, I am looking for serious issues with the code that cause grief for us, the users.\r\n\r\nIf you believe that this issue is a serious issue and absolutely needs to be fixed, then fine.  \r\nOtherwise, I respectfully suggest that you close it."
+  },
+  {
+   "id": 774338658,
+   "user": "t1dast",
+   "created_at": "2021-02-05T23:15:10Z",
+   "body": "I'm not sure if I understand where this is coming from. I appreciate prioritisation. And I'm being clear: this is low prio in my opinion. But I will not blur the lines between \"low prio\" and \"no issue\". This is not a bidding platform. It's an issue tracker. "
+  },
+  {
+   "id": 774567511,
+   "user": "tolot27",
+   "created_at": "2021-02-07T00:44:47Z",
+   "body": "It is likely that we cannot fix this in the near future. Since there exists a workaround which also acts as a suitable fix, it is better to document this. IMHO, having the correct time at the receiver is useful as well."
+  },
+  {
+   "id": 846343483,
+   "user": "Navid200",
+   "created_at": "2021-05-22T03:41:00Z",
+   "body": "@t1dast \r\nI don't have a receiver to test this.  I wish I did.  \r\n  \r\nI don't see why a wrong time on the receiver could cause an issue with xDrip receiving data from the transmitter.\r\nThe active timeslot of the transmitter is defined by the transmitter internal clock and is not affected by the receiver.\r\nxDrip adjusts its time and scans when it expects the next transmitter cycle.  \r\n\r\nI wonder if this was caused by some other issue we are overlooking.\r\nFirefly G6 connectivity can be challenging.  In order to help users, I created some guides.\r\nhttps://github.com/Navid200/xDrip/wiki\r\nThere are logs that are not correct because we still have not completely updated the code to perfectly deal with Firefly.\r\n\r\nCan you still recreate this problem?\r\nAre you willing to work with me to see if we can connect properly with xDrip after having caused the issue?"
+  },
+  {
+   "id": 846579492,
+   "user": "Navid200",
+   "created_at": "2021-05-23T15:18:33Z",
+   "body": "Please follow the guidelines for bringing up xDrip with a session already in progress.\r\nhttps://github.com/Navid200/xDrip/wiki/Receiver-or-t:slim  \r\n\r\nClosing due to inactivity."
+  },
+  {
+   "id": 846585569,
+   "user": "t1dast",
+   "created_at": "2021-05-23T16:00:05Z",
+   "body": "Thanks for getting back on this issue. I have no knowledge about the details, so I can't explain what the time would have to do about this. It's just that the log contained a message concerning an invalid timestamp comparison. I agree that the actual reason might in fact be something else.\r\nI haven't observed the exact issue again. But it happened at least twice that I wouldn't get any readings after warmup until restarting the collector.\r\nSince the messages are the same (no sensor, ignoring reading), I'm considering to use this issue instead of opening a new one. Would you be okay with this?\r\nI am very much willing to work on this. What would you need to get as much support from my side as possible? \r\nIt is just happening pretty unregularly. However it's quite annoying, since my sensor changes are around bed time and I wake up to missed readings. "
+  },
+  {
+   "id": 846586624,
+   "user": "Navid200",
+   "created_at": "2021-05-23T16:06:50Z",
+   "body": "If you are open to it, it will be much more productive if we communicate using a forum.  If we conclude that it is an issue, we can come back here, or we can open a new issue.  \r\nIf you agree, please post here:\r\nhttps://github.com/Navid200/xDrip/discussions\r\n\r\nIf you prefer to use an issue instead, we can continue here.\r\nBut, I suggest the forum."
+  }
+ ]
+}

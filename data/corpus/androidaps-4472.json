@@ -1,0 +1,33 @@
+{
+ "id": 3783027962,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4472,
+ "title": "[3.4] Bolus Progress notification on Wear does not show total amount of insulin to be delivered",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4472",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2026-01-05T22:20:02Z",
+ "closed_at": "2026-07-29T23:00:39Z",
+ "comment_count": 3,
+ "body": "Due to Bolus Progress refactoring in ab620d32 for 3.4 the string below was removed and replaced with a string only showing what has been delivered and not the total amount to be delivered. The code for several pumps were also adjusted.\n\n<string name=\"bolus_delivered_so_far\">%1$.2f U / %2$.2f U delivered</string>\n\nProblem is that on watch you then don't see the total amount to be delivered.\n\nScreenshot below.\n\n<img width=\"480\" height=\"480\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/ba3d855a-6130-4d74-8fcf-010c0c8dea80\" />\n\nI've fixed this myself with this commit, this is simply reverting the change from Bolus Progress refactoring:\nhttps://github.com/nightscout/AndroidAPS/commit/e278382b7adc5dc2c73768a7b37652ee95d0accb",
+ "comments": [
+  {
+   "id": 3721292207,
+   "user": "Philoul",
+   "created_at": "2026-01-07T23:43:28Z",
+   "body": "The bolus progress string (with or without the total amount) was previously built by pump driver (so could be different according to the driver...)\n\nIn Insight Driver I also had the total amount included.\n\nWith bolus progress refactoring, the string is now the same for all drivers but without the total amount... But it's seems to be for all drivers except Dash that use a workaround and continue to use it's own string 🤔.\n\nI think we should first remove the workaround of Dash driver and use the calculation percent -> amount included in EventOverviewBolusProgress (this will become mandatory for correct amount calculation with different insulin concentration), so your commit dedicated for Dash driver is not the right solution.\n\nCurrently we use the same string in BolusProgressDialog and in Watch.\n- total amount is redundant in BolusProgressDialog (it's also included into the header of dialog)\n- but this information is currently missing in Watch\n\nDifferent solutions:\n- keep unchanged status (so only with the delivered amount), but add in WearPlugin the total amount in addition to percent and status into `EventData.BolusProgress(...)` sent to the Watch (and update notification in Watch), or update the status in WearPlugin...\n- add total amount in `BolusProgressData.status` (a bit redundant in BolusProgressDialog in phone but add missing info in Watch)\n- add a dedicated `BolusProgressData.wearStatus` and build the additional string with total amount in EventOverviewBolusProgress\n\nTo be discussed (I didn't analyze these code recently, not 100% sure of the best solution 🤔)"
+  },
+  {
+   "id": 3722704817,
+   "user": "Philoul",
+   "created_at": "2026-01-08T08:13:31Z",
+   "body": "After one night, I think the dedicated `BolusProgressData.wearStatus` and build the additional string with total amount in EventOverviewBolusProgress is probably the best solution\n- no need for end user to update wear apk\n- no un-needed redundancies in BolusProgressDialog\n\nI will propose a fix (It will generate a little conflict with my other working branch linked to insulin concentration, so I prefer working directly on this fix 😉)"
+  },
+  {
+   "id": 5124250281,
+   "user": "olorinmaia",
+   "created_at": "2026-07-29T23:00:39Z",
+   "body": "https://github.com/nightscout/AndroidAPS/pull/4480"
+  }
+ ]
+}

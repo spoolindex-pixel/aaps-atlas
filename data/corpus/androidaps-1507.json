@@ -1,0 +1,23 @@
+{
+ "id": 1182486982,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1507,
+ "title": "OmniPod Dash \"Insulin delivery is suspended\" notification shortly after updating pump time for DST",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1507",
+ "state": "closed",
+ "labels": [
+  "omnipod dash"
+ ],
+ "created_at": "2022-03-27T11:02:50Z",
+ "closed_at": "2022-06-19T19:52:15Z",
+ "comment_count": 1,
+ "body": "On waking this morning I had a notification that pump time was out of sync (due to the time change) so updated it from the Dash tab with the \"Set Time\" button that appeared. About 30 minutes later the pod beeped a notification beep (beep, beep, short pause, beep, beep, long pause, beep, beep, short pause, beep, beep). On refreshing the Active Pod Alert was \"Insulin delivery is suspended\"\r\n\r\nAttached are my logs from between 7am and 8am, time update was at 7:18, alarm sync was at 7:47. AAPS 3.0.0, running with Engineering Mode enabled since I missed the extra details on the dash page from beta.\r\n\r\nAlso attached are an image of the Dash page with alert showing, and the pod history from time update till alert silenced.\r\n\r\nAfter the alert I verified that a bolus would dispense (clicking heard fine), then did a profile switch (to 95% then back) to make sure basal was delivering (Total Delivered is still decreasing and I occationally hear the clicks). Seems likely to be something to do with DST change and the suspension when time is changed, so likely not urgent but would be nice to fix/document before the next DST change in Autumn.\r\n\r\n[AndroidAPS._2022-03-27_07_00_00-08_00_00.log](https://github.com/nightscout/AndroidAPS/files/8357414/AndroidAPS._2022-03-27_07_00_00-08_00_00.log)\r\n[Dash tab with Alert](https://user-images.githubusercontent.com/593705/160278386-c7037c68-0564-45cd-b8b0-d3be34a27bcd.png)\r\n[Pod History](https://user-images.githubusercontent.com/593705/160278387-6e3f1829-e274-4a93-b709-8e0378457156.png)\r\n",
+ "comments": [
+  {
+   "id": 1159029999,
+   "user": "avereha",
+   "created_at": "2022-06-17T16:13:40Z",
+   "body": "I think this is related to:\r\nhttps://androidaps.readthedocs.io/en/latest/Configuration/OmnipodDASH.html?highlight=Dash#resuming-insulin-delivery\r\nCommunication can fail during profile switches, there is nothing we can do in this case. "
+  }
+ ]
+}

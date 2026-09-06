@@ -1,0 +1,77 @@
+{
+ "id": 1365865811,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2067,
+ "title": "[3.1.0.3] Loop stuck on basal rate despite instance of low BG. Pump unreachable issue? ",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2067",
+ "state": "closed",
+ "labels": [
+  "omnipod eros"
+ ],
+ "created_at": "2022-09-08T09:16:02Z",
+ "closed_at": "2023-04-17T16:40:48Z",
+ "comment_count": 10,
+ "body": "Using Omni Eros via Emalink, AAPS 3.1.0.3 (screenshot with built version), G5 BYODA. Using extensive temp target automations (probably irrelevant in this case?).\r\n\r\nIt seems that there was a period of ~ 5 hours (from ~ 5:30 to ~ 10:30) in which loop was stuck on basal rate. Before and after there were SMB's and varying rates. Normal behavior returned after AAPS restart.\r\n\r\nDuring those 5 hours, at around 8 am BG reached a sudden low of 62, which seemed to correct on its own afterwards inching towards 70, but the basal rate didn't change one bit.\r\n\r\nAt around 9:30 a pump unreachable error was signaled (it's set to 30 minutes). Only around 10:30 I manually restarted AAPS which immediately fixed the issue and normal pump variability restarted.\r\n\r\nI think that the pump was unreachable for longer extent of time during those 5 hours, which caused this behavior. It may have been intermittent or not sure why it was only signaled at 9:30.\r\nA simple reboot cured this issue as it always does.\r\n\r\nI'm not sure this is the explanation for those 5 hours of stuck loop but I frequently get pump unreachable and the simplest cure is to exit AAPS which immediately restarts and fixes the problem with the pump reconnecting right away.\r\n\r\nAs a suggestion for a new feature, maybe an AAPS reboot if \"pump unreacheable\" could be incorporated in AAPS as an on off toggle option (on off box or switch)?\r\n\r\n[AndroidAPS._2022-09-08_05-11-36_.3.zip](https://github.com/nightscout/AndroidAPS/files/9525474/AndroidAPS._2022-09-08_05-11-36_.3.zip)\r\n[AndroidAPS._2022-09-08_05-11-36_.4.zip](https://github.com/nightscout/AndroidAPS/files/9525475/AndroidAPS._2022-09-08_05-11-36_.4.zip)\r\n[AndroidAPS._2022-09-08_05-11-36_.5.zip](https://github.com/nightscout/AndroidAPS/files/9525476/AndroidAPS._2022-09-08_05-11-36_.5.zip)\r\n[AndroidAPS._2022-09-08_05-11-36_.6.zip](https://github.com/nightscout/AndroidAPS/files/9525477/AndroidAPS._2022-09-08_05-11-36_.6.zip)\r\n[AndroidAPS._2022-09-08_05-11-36_.7.zip](https://github.com/nightscout/AndroidAPS/files/9525478/AndroidAPS._2022-09-08_05-11-36_.7.zip)\r\n[AndroidAPS._2022-09-08_05-11-36_.8.zip](https://github.com/nightscout/AndroidAPS/files/9525479/AndroidAPS._2022-09-08_05-11-36_.8.zip)\r\n[AndroidAPS._2022-09-08_05-11-36_.9.zip](https://github.com/nightscout/AndroidAPS/files/9525480/AndroidAPS._2022-09-08_05-11-36_.9.zip)\r\n[AndroidAPS._2022-09-08_05-11-36_.27.zip](https://github.com/nightscout/AndroidAPS/files/9525481/AndroidAPS._2022-09-08_05-11-36_.27.zip)\r\n[AndroidAPS._2022-09-08_05-11-36_.28.zip](https://github.com/nightscout/AndroidAPS/files/9525482/AndroidAPS._2022-09-08_05-11-36_.28.zip)\r\n[AndroidAPS._2022-09-08_05-11-36_.29.zip](https://github.com/nightscout/AndroidAPS/files/9525483/AndroidAPS._2022-09-08_05-11-36_.29.zip)\r\n[AndroidAPS._2022-09-08_05-11-36_.30.zip](https://github.com/nightscout/AndroidAPS/files/9525484/AndroidAPS._2022-09-08_05-11-36_.30.zip)\r\n[AndroidAPS._2022-09-08_05-11-36_.31.zip](https://github.com/nightscout/AndroidAPS/files/9525485/AndroidAPS._2022-09-08_05-11-36_.31.zip)\r\n[AndroidAPS._2022-09-08_10-08-30_.0.zip](https://github.com/nightscout/AndroidAPS/files/9525486/AndroidAPS._2022-09-08_10-08-30_.0.zip)\r\n[AndroidAPS._2022-09-08_10-08-30_.1.zip](https://github.com/nightscout/AndroidAPS/files/9525487/AndroidAPS._2022-09-08_10-08-30_.1.zip)\r\n[AndroidAPS._2022-09-08_10-08-30_.2.zip](https://github.com/nightscout/AndroidAPS/files/9525488/AndroidAPS._2022-09-08_10-08-30_.2.zip)\r\n[AndroidAPS._2022-09-08_10-41-00_.0.zip](https://github.com/nightscout/AndroidAPS/files/9525489/AndroidAPS._2022-09-08_10-41-00_.0.zip)\r\n[AndroidAPS._2022-09-08_10-41-00_.1.zip](https://github.com/nightscout/AndroidAPS/files/9525490/AndroidAPS._2022-09-08_10-41-00_.1.zip)\r\n[AndroidAPS._2022-09-08_10-41-00_.2.zip](https://github.com/nightscout/AndroidAPS/files/9525512/AndroidAPS._2022-09-08_10-41-00_.2.zip)\r\n\r\n![Screenshot_2022-09-08-10-41-33-20](https://user-images.githubusercontent.com/70835405/189083084-4773902b-cd87-4684-a791-2b0cbe8442d4.jpg)\r\n![Screenshot_2022-09-08-10-57-40-39](https://user-images.githubusercontent.com/70835405/189083093-e29b9956-64a4-49fa-85c9-551315fe8f22.jpg)\r\n![Screenshot_2022-09-08-12-02-15-96](https://user-images.githubusercontent.com/70835405/189083095-c9621c35-f828-435d-9c83-f4a56316863a.jpg)\r\n",
+ "comments": [
+  {
+   "id": 1240475831,
+   "user": "nlof",
+   "created_at": "2022-09-08T09:40:07Z",
+   "body": "Just adding a screenshot an hour later with what normally my loop does (cuts off basal rate) as the BG goes down towards 70..\r\n![Screenshot_2022-09-08-12-37-41-01](https://user-images.githubusercontent.com/70835405/189089778-f12c4b32-1944-4514-88fe-61c341daf9b0.jpg)\r\n"
+  },
+  {
+   "id": 1241633614,
+   "user": "MilosKozak",
+   "created_at": "2022-09-09T07:55:29Z",
+   "body": "did you disable playprotect?"
+  },
+  {
+   "id": 1241802914,
+   "user": "nlof",
+   "created_at": "2022-09-09T10:35:31Z",
+   "body": "Yep, it's been off since I started running AAPS. The app is running but it frequently disconnects from the pump. The most efficient cure is to exit AAPS, it restarts on its own and reconnects immediately."
+  },
+  {
+   "id": 1241808583,
+   "user": "nlof",
+   "created_at": "2022-09-09T10:41:43Z",
+   "body": "BTW, you can see from the screenshot that the app was running because the temp target line changed several times during the fixed basal rate period.\r\nI believe it just couldn't control the pump because it wasn't connected and it didn't reconnect on its own until i restarted AAPS.\r\nI see that behavior frequently when I'm awake.\r\n\r\nIt would be awesome if AAPS  could restart on its own as an option after x minutes of disconnect."
+  },
+  {
+   "id": 1242743088,
+   "user": "MilosKozak",
+   "created_at": "2022-09-10T14:34:43Z",
+   "body": "![image](https://user-images.githubusercontent.com/11146458/189488095-92b2080f-abf6-40f3-bf2b-edc823182e87.png)\r\nstop exactly at 5 am is typical for playprotect"
+  },
+  {
+   "id": 1242743994,
+   "user": "MilosKozak",
+   "created_at": "2022-09-10T14:39:15Z",
+   "body": "in logs is visible that AAPS really cannot connect to pump. this is android thing, nothing what could AAPS resolve itself\r\n\r\ndo you have bt watchdogs disabled in aaps and xdrip?"
+  },
+  {
+   "id": 1242784006,
+   "user": "nlof",
+   "created_at": "2022-09-10T18:34:07Z",
+   "body": "It has nothing to do with playprotect. It happens randomly througout the day, rarely at night. It happened three times in the two attached screenshots.\r\nI do have BT watchdog ENABLED jn AAPS, maybe I'll try with it off...\r\n\r\nXdrip doesn't use Bluetooth in this setup because I use BYODA as collector. I use xdrip just to keep a local record but it doesn't use Bluetooth.\r\n\r\nAnd Bluetooth via BYODA works because I get regular BG readings throughout that time.\r\n\r\nPlus of course play protect is turned off to begin with 🙂.\r\n\r\n![Screenshot_2022-09-10-13-12-36-56](https://user-images.githubusercontent.com/70835405/189497050-37c0ae23-12b0-418a-8942-220c487fcd44.jpg)\r\n![Screenshot_2022-09-10-00-03-34-67](https://user-images.githubusercontent.com/70835405/189497052-d75d1577-c515-4e19-b892-86cd742ea9f0.jpg)\r\n"
+  },
+  {
+   "id": 1242785355,
+   "user": "nlof",
+   "created_at": "2022-09-10T18:40:59Z",
+   "body": "I do believe it is related to AAPS because a simple restart of AAPS immediately causes a reconnection with the pump and solves the problem. I don't need to touch Emalink at all. Also Bluetooth works during this time because BYODA keeps collecting BG's.\r\n\r\nEven if it is not directly an AAPS problem it would be a proactive fix to add the option of AAPS rebooting if it doesn't connect with the pump (for a variable, user-specified amount of minutes). And add it as an on/off option, with the default being off, so only whomever has this kind of a problem will use it.\r\n\r\nIf this cannot be taken on as a project by someone else, I might have to teach myself programming again maybe to implement such a fix myself (I used to write programs in Basic on Commodore Vic 20.in the 1980's as a teenager 😀).\r\n\r\nHope it's not too complicated, it should be only an **IF (pump not connected for >X time).. THEN (restart AAPS)**.... kind of question running constantly in the loop mechanism. Plus having that X time variable input option from the user if he turns that switch on."
+  },
+  {
+   "id": 1272997707,
+   "user": "nlof",
+   "created_at": "2022-10-10T08:59:34Z",
+   "body": "A weird instance which may be related to the same thing, unclear.\r\n\r\nI found the app screen stuck on an SMB 0.1u request at around 11:39AM. Restarted app and saw that the pump was stuck on basal rate since ~ 6:30AM. Uploading all the logs since. \r\nThere was no pump unreachable warning at any time...\r\nLuckily the basal rate handled BG great anyway.\r\n\r\n![Screenshot_2022-10-10-11-48-43-42](https://user-images.githubusercontent.com/70835405/194830997-0f178b37-2cf3-43bf-93f5-7dd87c663b8c.jpg)\r\n![Screenshot_2022-10-10-11-48-30-78](https://user-images.githubusercontent.com/70835405/194831004-de3ed667-52ed-4625-a6ce-69db626609db.jpg)\r\n\r\n[AndroidAPS._2022-10-10_11-38-25_.1.zip](https://github.com/nightscout/AndroidAPS/files/9744512/AndroidAPS._2022-10-10_11-38-25_.1.zip)\r\n[AndroidAPS._2022-10-10_11-38-25_.0.zip](https://github.com/nightscout/AndroidAPS/files/9744513/AndroidAPS._2022-10-10_11-38-25_.0.zip)\r\n[AndroidAPS._2022-10-10_00-00-03_.70.zip](https://github.com/nightscout/AndroidAPS/files/9744514/AndroidAPS._2022-10-10_00-00-03_.70.zip)\r\n[AndroidAPS._2022-10-10_00-00-03_.69.zip](https://github.com/nightscout/AndroidAPS/files/9744515/AndroidAPS._2022-10-10_00-00-03_.69.zip)\r\n[AndroidAPS._2022-10-10_00-00-03_.68.zip](https://github.com/nightscout/AndroidAPS/files/9744516/AndroidAPS._2022-10-10_00-00-03_.68.zip)\r\n[AndroidAPS._2022-10-10_00-00-03_.67.zip](https://github.com/nightscout/AndroidAPS/files/9744517/AndroidAPS._2022-10-10_00-00-03_.67.zip)\r\n[AndroidAPS._2022-10-10_00-00-03_.66.zip](https://github.com/nightscout/AndroidAPS/files/9744518/AndroidAPS._2022-10-10_00-00-03_.66.zip)\r\n[AndroidAPS._2022-10-10_00-00-03_.65.zip](https://github.com/nightscout/AndroidAPS/files/9744519/AndroidAPS._2022-10-10_00-00-03_.65.zip)\r\n[AndroidAPS._2022-10-10_00-00-03_.64.zip](https://github.com/nightscout/AndroidAPS/files/9744520/AndroidAPS._2022-10-10_00-00-03_.64.zip)\r\n[AndroidAPS._2022-10-10_00-00-03_.63.zip](https://github.com/nightscout/AndroidAPS/files/9744521/AndroidAPS._2022-10"
+  },
+  {
+   "id": 1511719228,
+   "user": "nlof",
+   "created_at": "2023-04-17T16:40:41Z",
+   "body": "I'll close this. I think the main problem was with unreliable BT connection with that phone (Realme 8). Since I moved to another phone this hasn't recurred significantly..."
+  }
+ ]
+}

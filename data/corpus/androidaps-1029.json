@@ -1,0 +1,33 @@
+{
+ "id": 1070981386,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1029,
+ "title": "Autosense not working: always 100% with flat line in overview.",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1029",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-12-03T21:26:58Z",
+ "closed_at": "2021-12-04T09:36:36Z",
+ "comment_count": 3,
+ "body": "AndroidAPS 2.8.2.14-dev (and earlier versions)\r\nBuild: d7a4740e7\r\nFlavor: Fullrelease\r\n\r\n**Problem description:**\r\nSwitched to Oref1 and enabled autosense a few weeks ago when running 2.8.2.13-dev.  Somewhere around that time autosense is always showing at 100% with sensitivity on overview as a flat line. Clearly autosense is not working while sensitivity changes a lot during the day (as confirmed by deviation and deviation slope?)\r\n\r\nI know changing/saving profile does reset autosens data, But that does not explain as according to Config builder Oref1 calculates from 8h or 24h in the past (using either which is more sensitive). So I would expect autosense to recover at max 24 hrs?\r\n\r\n**Additional information**\r\n\r\n- Running AAPS latest dev builds, Oref1, OpenAPS SMB, with Autosense and UAM enabled in settings.\r\n- On SBM data, seeing reported: sensResult: \"(24 hours) Sensibility normal 8 h ration 1.0 vs 24h ratio 1.0\"\r\n\r\n![Screenshot_20211203-215604_AndroidAPS](https://user-images.githubusercontent.com/45144129/144673822-01245650-1d74-491a-b927-37e0cf9301f7.jpg)\r\n\r\n**Some recent logfiles with log settings for autosense data \"on\":**\r\n\r\n[AndroidAPS._2021-11-30_13-54-42_.5.zip](https://github.com/nightscout/AndroidAPS/files/7652380/AndroidAPS._2021-11-30_13-54-42_.5.zip)\r\n[AndroidAPS._2021-11-30_13-54-42_.6.zip](https://github.com/nightscout/AndroidAPS/files/7652381/AndroidAPS._2021-11-30_13-54-42_.6.zip)\r\n[AndroidAPS._2021-11-30_13-54-42_.4.zip](https://github.com/nightscout/AndroidAPS/files/7652382/AndroidAPS._2021-11-30_13-54-42_.4.zip)\r\n\r\n**Additional info**\r\n\r\n![Screenshot_20211203-221653_AndroidAPS](https://user-images.githubusercontent.com/45144129/144674003-0793dc69-7c15-422e-93ec-49f9e0df5879.jpg)\r\n\r\n![Screenshot_20211203-221712_AndroidAPS](https://user-images.githubusercontent.com/45144129/144674016-6688dc9c-603b-40a5-b47f-bd8adac2d6b9.jpg)\r\n\r\n\r\n\r\n",
+ "comments": [
+  {
+   "id": 985850760,
+   "user": "vanelsberg",
+   "created_at": "2021-12-03T21:40:15Z",
+   "body": "Seeing \"Ratio limit (19 out of 48.0 values\"): Have no idea what it is saying here...?\r\nLimiting what, autosense?\r\n"
+  },
+  {
+   "id": 985999142,
+   "user": "vanelsberg",
+   "created_at": "2021-12-04T09:36:36Z",
+   "body": "Update: After being at 100% constantly for the past 2 weeks, by \"miracle\"   autosense started to work for me today.\r\nOther then updating to latest build and checking settings on autosense I am not aware of change anything.\r\n\r\nBtw: \"Ration limit\" is now reported as an empty string?\r\n\r\n@MilosKozak Closing this issue for now.\r\nWill reopen when necessary ..."
+  },
+  {
+   "id": 986207882,
+   "user": "vanelsberg",
+   "created_at": "2021-12-05T10:55:32Z",
+   "body": "Origin of the problem is about ORef1 autosense reset when cancelling a temp % profile.\r\nSee issue https://github.com/nightscout/AndroidAPS/issues/1036"
+  }
+ ]
+}

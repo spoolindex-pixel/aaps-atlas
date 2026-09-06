@@ -1,0 +1,219 @@
+{
+ "id": 741711312,
+ "repo": "nightscout/AndroidAPS",
+ "number": 67,
+ "title": "UI Feedback",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/67",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2020-11-12T15:48:36Z",
+ "closed_at": "2021-01-03T17:04:47Z",
+ "comment_count": 45,
+ "body": "### Overview Screen\r\nI thought it might be nice to have some more useful buttons on the overview screen:\r\n\r\n- Temp target buttons:\r\n  - I find setting a temp target is quite fiddly and hard. There are too many long-presses, clicks and small UI elements involved. Definitely hard for people with shaky hands, etc. It might be nice to have large buttons for these functions on the overview screen, similar to the grey buttons already present.\r\n  - User can choose which targets appear as buttons.\r\n  - The buttons either immediately apply the temp target, or prompt for a confirmation if you think that's safer.\r\n  - Maybe there could be a text area that immediately updates with the temp target that is going to be applied, once the connection to the pump has been established.\r\n- Profile switch buttons:\r\n  - Would be cool if there were -/+ buttons that jump in 10% (or user-defined) intervals. You can click the buttons multiple times (for example to set a profile of 130%), then after a short delay (2 seconds?) the profile switch is applied.\r\n  - There's also a cancel button to set the profile back to 100%.\r\n  - There could be a text area that immediately updates with the profile percentage that will be applied, once the connection to the pump has been established.\r\n  - If you think there are safety concerns with this behaviour, there could at least just be a button that opens the profile switch interface?\r\n- Loop button:\r\n  - Would be cool if we could have the option of the Loop status button (that allows disconnection of pump, etc) to be a normal button, i.e not long-press\r\n\r\n### General UI feedback\r\n- Long press is hard for people with shaky hands, especially on small buttons. Can we have the option to have all button functions without long press?\r\n- There are too many very small UI elements. These are hard to click.\r\n- Drop down menu in Temp target interface (next to \"reason\") is too small and fiddly and annoying. Can we get large buttons for each temp target instead of a drop-down list?\r\n- Percentage -/+ buttons on Profile Switch interface currently go up/down by 1%. Can we have them jump in intervals of 10%, or at least an option to have that.\r\n\r\n![image](https://user-images.githubusercontent.com/26227058/98962057-253d4e80-24fe-11eb-9475-55a9bd9ab8e2.png)\r\n\r\n",
+ "comments": [
+  {
+   "id": 726203832,
+   "user": "mistermintsgh",
+   "created_at": "2020-11-12T16:56:09Z",
+   "body": "I like these!\r\n\r\nCan I also add to this list... I **HATE** the 3 dot menu in the top right hand corner. I have no mobility issues or anything like that described above, but I cannot tell you how often I go to press those 3 dots and end up somehow pulling down the notification/quick settings menu of my phone.\r\n\r\nThis happens all the time for me, but it is even more annoying in the middle of the night when I'm still half asleep and I get a pump disconnect alarm that can only be fixed by exiting AAPS and opening it up again. Its tough to be able to focus when you're half asleep, in the dark, trying to press the smallest of buttons on the menu to get your pump functioning again."
+  },
+  {
+   "id": 726347473,
+   "user": "Philoul",
+   "created_at": "2020-11-12T21:17:58Z",
+   "body": "@jamespaulley I think it is necessary for security reasons to avoid any single click without confirmation (I do not count the number of unwanted calls and even SMS sent by my pocket!)\r\n=> unwanted several short presses everywhere on the screen are very frequent... The idea of setting a temporary profile with a single press on +10 and tempo is definitively too dangerous ...\r\n=> I never had an unwanted \"Long Press\"\r\n\r\nI understand that it can be difficult for shaky hand to long press on small zone on the top of the screen, but may be a good compromise could be:\r\n- to keep the long press but to double the heigth of the zone to make it easier\r\n- to replace the 2 menus (profile and targets) by temporary buttons with single press action (as you proposed) but only shown after the long press on upper zone... (according to zone you pressed you only show target buttons or profiles buttons)\r\n\r\n@mistermintsgh For the three dot button, if it's only to have an easy way to restart AAPS, there are several devices that restart after a very long press on power button (phone, computers, ...)\r\n=> If we keep this idea a \"very long press\" (about 5s for example) on the loop status zone (big zone just below profile and target buttons) could be used to show a popup to confirm or not a restart of AAPS...\r\n"
+  },
+  {
+   "id": 726350104,
+   "user": "mistermintsgh",
+   "created_at": "2020-11-12T21:23:36Z",
+   "body": "@Philoul it's not just used to restart AAPS though, it's used to access any of these options\r\n![Screenshot_20201112-212110_AndroidAPS](https://user-images.githubusercontent.com/42671801/98997839-191cb580-252d-11eb-8b11-5366c6704887.jpg)\r\n\r\nMy point being that the button is tiny, and it's far too close to the notification bar to be able to bit with any kind of precision.\r\n\r\nAs I said above, I particularly struggle if I'm half asleep, but I also struggle sometimes in the middle of the day when I'm fully awake!\r\n\r\nIt just needs to be bigger, or in a better position"
+  },
+  {
+   "id": 726538119,
+   "user": "swissalpine",
+   "created_at": "2020-11-13T05:53:39Z",
+   "body": "There are larger buttons for temp target and profile switch in the actions tab ... No need to put them on the Home tab. Afaik all preferences can be reached via the config builder.\r\nAnd: If you enter the number directly in the dialogs, and not via the small +/- keys, the number keyboard will open.  This one has quite large numbers ... Of course this is not the one click solution you have in mind - but beside that I don't see the problem.\r\nAnd: On small devices isn't enough place to put additional buttons on the home screen without loosing the main graph."
+  },
+  {
+   "id": 726870783,
+   "user": "jamespaulley",
+   "created_at": "2020-11-13T16:47:08Z",
+   "body": "Okay great feedback guys thank you. A few things are being discussed now. I'll summarise everything below. Please also see the attached PDF for mockups and explanations of everything.\r\n\r\nhttps://drive.google.com/file/d/1LD6uBF8oItpcF1L3NqemBBV_qnc9hl1N/view?usp=sharing\r\n\r\n### Spacing issues at top of Overview Screen\r\n- The spacing is too tight at the top of the Overview screen. It’s hard to use. As mentioned by @mistermintsgh.\r\n- There needs to be more space around the “...” menu.\r\n- The tabs area needs more spacing top and bottom.\r\n\r\n### Concern regarding accidental single-clicks triggering dangerous action\r\nAs mentioned by @Philoul.\r\n\r\n- We can forget the idea of having buttons that immediately trigger a profile change, I agree.\r\n- I think immediate buttons for Temp Targets might still be useful, but I'm happy to drop that for now.\r\n### Long press throughout the UX\r\n- I think long-press is bad UI/UX and we should have the option of not using it. People who want it can keep it, but I don't think users should be forced to use it.\r\n### Buttons on Overview screen\r\n- I think we should have the option of placing Profile Switch and Temp Target buttons on overview screen.\r\n- Two rows of buttons would be nice, for people with large screens. People with smaller screens can choose to use only one row, and decide which buttons appear.\r\n- I understand these buttons already exist on the Actions screen, as mentioned by @swissalpine , but it would be convenient to have the option of also placing them on the overview screen. It would reduce the number of swipes and clicks needed to access the features, that many people use very frequently.\r\n- I realise you can long-press the text at the top to access these features, but that top area is very badly designed: the areas are too small to function nicely as buttons, and long-press is not good UI/ UX. It’s fine to have it as an option for those who like it, but I think there should definitely be the option of not using long-press, too.\r"
+  },
+  {
+   "id": 727049228,
+   "user": "Philoul",
+   "created_at": "2020-11-13T21:42:11Z",
+   "body": "Thank's @jamespaulley for this detailled synthesis\r\n- For Loop button, if we replace long press by a short one, I think it's necessary to add a confirmation popup because the area that can launch an action is too important (click a second time somewhere in half the screen is enough to disconnect, suspend or disable loop...)\r\n=> All buttons with single press action are followed by a confirmation popup with a small zone (Ok / Cancel)\r\n=> So if we modify this, we should replace a long press and a short press by 3 short presses (like it is done today for bottom buttons)\r\n- For profile switch I think it's a very good idea and it is easy to modify (it's always possible to select field and manually enter another value)\r\n- For Target popup, today the \"menu\" prefilled the values AND select the reason of the TT (with \"Manual\" reason as default), so if we replace selection menu, we have to add an additional information into the popup to show selected reason of the TT (I think it's a good idea too)\r\n- Concerning resolution, we initialized a low res skin in dev, so it's possible to have a specific layout for these phones (ex Atom) with for example less buttons in overview than in high res phones. But I don't think it's a good idea to add additional settings to customize interface (long press or not, additionnal zone for buttons or not...), the more we add settings, the more it's complicated to setup preferences...\r\n- On bottom buttons, we have 3 buttons that are close: Treatment, Insulin and Carbs. On my side I never show treatment button because it's not the equivalent of Insulin + Carbs buttons (with carb you can enter slow carbs, with insulin and Carbs you can select a reason, enter carbs/insulin in the past, you have increments buttons). If we make a complete \"merge\" of Carbs + Insulin popup in a new treatment popup with all functions, we can replace 2 or 3 buttons by only one (and remove settings in preferences or replace them by TT and Profile Switch buttons...)\r\n"
+  },
+  {
+   "id": 727069330,
+   "user": "mistermintsgh",
+   "created_at": "2020-11-13T22:37:10Z",
+   "body": "Suggestion on the profile switch:\r\n\r\n- Make it customisable\r\n\r\nIn the same way I can edit the quick bolus settings (I've edit the small bolus to be 0.25U, the medium bolus to be 1U, and the large bolus to be 2U) it would be could to be able to edit the +/- percentage too. Some might want 5%, some 10% some 20%. Let us choose, through the settings, which quick profile switch we want."
+  },
+  {
+   "id": 728858158,
+   "user": "jamespaulley",
+   "created_at": "2020-11-17T11:10:18Z",
+   "body": "### **Loop Button**\r\nI agree that short-presses with a confirmation dialogue would be preferable over the current long-press behaviour, as described by @Philoul. My personal opinion is that 3 short presses is safer than a long click followed by a single click, but I appreciate that others might feel differently. Some users might like the long-press behaviour, so ideally there would be a settings preference for this.\r\n\r\n### Profile Switch\r\nExactly, @Philoul. I also like @mistermintsgh's suggestion for customisation of the percentage intervals for the \"+/–\" buttons on the profile switch screen.\r\n\r\n### **Temp Target Popup**\r\nExactly as described by @Philoul. Alternatively, we could leave the drop-down in place and provide the buttons as well, as seen below.\r\nhttps://i.imgur.com/Txph56A.png\r\n\r\n### **Resolution and display density**\r\n@Philoul points out that if we add too many settings to configure the interface, it'll get too complicated. That's fair enough. I think having a low-density skin as mentioned is good, and it doesn't need to be over complicated with loads of config options. But I don't think users with normal screen sizes should be suffering with cramped UI. \r\n-  I think users with tiny screens could have the option to disable certain elements from the Overview Screen, if they want to, to create more space.\r\n- I think small phone screens should utilise vertical scrolling, instead of cramping and squashing the elements to fit on screen all at once.\r\n- Small phone users should utilise horizontal scrolling between the \"tabs\" to access functions.\r\n\r\n### **Bottom Buttons**\r\nI agree with @Philoul that the current Treatment Button is scarcely useful and could probably go. I also think the button sizes could come down a touch and be graphics-only, to optimise space. The buttons shown should be selectable by the user. Example of how this could look:\r\nhttps://i.imgur.com/wuDHBxb.png\r\n\r\n### **Treatments UI** \r\nI like the idea of combining the Insulin and Carb UI into on"
+  },
+  {
+   "id": 728879472,
+   "user": "guydavies",
+   "created_at": "2020-11-17T11:56:55Z",
+   "body": "I would prefer all.those changes to be optional. I like the system as it is.\n\nOn Tue, 17 Nov 2020, 12:10 jamespaulley, <notifications@github.com> wrote:\n\n> *Loop Button*\n>\n> I agree that short-presses with a confirmation dialogue would be\n> preferable over the current long-press behaviour, as described by @Philoul\n> <https://github.com/Philoul>. My personal opinion is that 3 short presses\n> is safer than a long click followed by a single click, but I appreciate\n> that others might feel differently. Some users might like the long-press\n> behaviour, so ideally there would be a settings preference for this.\n> Profile Switch\n>\n> Exactly, @Philoul <https://github.com/Philoul>. I also like @mistermintsgh\n> <https://github.com/mistermintsgh>'s suggestion for customisation of the\n> percentage intervals for the \"+/–\" buttons on the profile switch screen.\n> *Temp Target Popup*\n>\n> Exactly as described by @Philoul <https://github.com/Philoul>.\n> Alternatively, we could leave the drop-down in place and provide the\n> buttons as well, as seen below.\n> https://i.imgur.com/Txph56A.png\n> *Resolution and display density*\n>\n> @Philoul <https://github.com/Philoul> points out that if we add too many\n> settings to configure the interface, it'll get too complicated. That's fair\n> enough. I think having a low-density skin as mentioned is good, and it\n> doesn't need to be over complicated with loads of config options. But I\n> don't think users with normal screen sizes should be suffering with cramped\n> UI.\n>\n>    - I think users with tiny screens could have the option to disable\n>    certain elements from the Overview Screen, if they want to, to create more\n>    space.\n>    - I think small phone screens should utilise vertical scrolling,\n>    instead of cramping and squashing the elements to fit on screen all at once.\n>    - Small phone users should utilise horizontal scrolling between the\n>    \"tabs\" to access functions.\n>\n> *Bottom Buttons*\n>\n> I agree with @Philoul <https://github.com/Ph"
+  },
+  {
+   "id": 729070534,
+   "user": "4RK4N",
+   "created_at": "2020-11-17T17:09:51Z",
+   "body": "personally i wouldnt need those buttons either. im fine with overview long presses or actions tab for that. actions tab does exactly that alrdy. just add it as tab and swipe right once u have ur buttons for profile change and temp target.\r\nbesides they, sry to say it that way, look like pure eye cancer. (means they are really ugly)\r\nadding those button only makes the problem worse."
+  },
+  {
+   "id": 729074770,
+   "user": "Philoul",
+   "created_at": "2020-11-17T17:16:14Z",
+   "body": "@jamespaulley \r\n\r\n> Treatments UI\r\n> I like the idea of combining the Insulin and Carb UI into one screen. Suggestion below:\r\n> https://drive.google.com/file/d/1CVvChtSMW29Os_z1wUXM-1i-WSSPEOOd/view?usp=sharing\r\n\r\nMain idea is here, but interface has to be a little bit different to manage correctly \"Record Only\" for insulin and \"Event Time\" (and \"Activity\", \"Eating Soon\" and \"Hypo\" selection should be hidden I think for \"record only\" events)"
+  },
+  {
+   "id": 729157241,
+   "user": "swissalpine",
+   "created_at": "2020-11-17T19:40:20Z",
+   "body": "The proposal \"Treatments UI\" isn't possible on low res screens. Please let this untouched!\r\nHere is the actual look on an Unihertz Atom:\r\n![Screenshot_20201117-203858](https://user-images.githubusercontent.com/12517693/99439141-1945f800-2915-11eb-83f2-d59cf47cf4d8.png)\r\n"
+  },
+  {
+   "id": 729225272,
+   "user": "Philoul",
+   "created_at": "2020-11-17T21:29:19Z",
+   "body": "@swissalpine  I understand that the merge of Carbs and Insulin layout isn't possible on atom, but we can keep the 2 buttons (Carbs and Insulin) seperatly for low res phone like atom.\r\nWhat do you think concerning the other points discussed here with your Atom ? (difficulty for short press on 3 dots button, difficulty for long press on profile or Target buttons to show menu, proposal of increase the heights of these zones, remove text on bottom buttons...)\r\n=> Can you share several screenshots of your main screen (max number of bottom buttons according to you, heigth of upper zones, loop button's menu after a long press...) (when I run emulator I don't have same size than in your phone, so it's difficult for me to simulate results...)\r\n=> For layout organization (size of each zone,) it's some work, but quite easy to have a dedicated layout for low res phone (size of buttons, length of strings..), but I think it's better to have the same global strategy for all skins (long or short press on buttons...)"
+  },
+  {
+   "id": 729239261,
+   "user": "MilosKozak",
+   "created_at": "2020-11-17T21:59:18Z",
+   "body": "A few comments from my side and what I've learned: \r\n* you can never fulfill needs of all \r\n* \"Make it optional\" is a way to hell. It will lead to xDrip syndrome. No one knows what all settings means. As a compromise I allowed layout selection where everyone can choose what fits best\r\n* Increasing number of layouts is last resort. We already had it and maintain all layouts was a real pain\r\n* I already tested BT status text in appearing/disappearing line and it's not possible to watch jumping screen as it's not once up and once disappear. And keeping it all the time is just wasting of space.\r\n* Top menu has larger spacing if you don't choose short texts\r\n* Notification has text button because there was/is a plan to have notification with more actions\r\n* Shortening text with dots inside to fit text box would be really hard to implement\r\n* Bottom buttons have text because quick wizard displays continuous result there\r\n* I understand people like scrolling graph like in xdrip. But nobody thinks about the data. AAPS calculates data about 24h+ back. If you need more data back just try history browser to see how \"realtime\" calculation realy is ...\r\n* Temp target dialog with buttons i find possible. But questions is if keep these options in popup menu and if these buttons should be single click like OK or just prefils of values\r\n\r\nIn general:\r\n* i'd go way of reducing options in most used dialogs, screens etc. It makes it easier to use and reducing potential mistakes\r\n\r\nWhat I'm missing in UI is a mark what is possible to click/long click. I'm not a designer and never be but still everything in AAPS has it's own reason ...\r\n"
+  },
+  {
+   "id": 729480348,
+   "user": "swissalpine",
+   "created_at": "2020-11-18T07:04:54Z",
+   "body": "@MilosKozak Thank you for your clear statement, which I fully agree with, as far as I can judge.\r\n\r\n@Philoul In the zip-file you will find the screenshots you want. They also show how difficult changes are when you want to have all possible displays in view ...\r\nBy the way, I made the following adjustments for the atom in the file SkinLowRes.kt (150 instead of 100, delete isSmallHeight9:\r\n```\r\n@Singleton\r\nclass SkinLowRes @Inject constructor(private val config: Config): SkinInterface {\r\n\r\n    override val description: Int get() = R.string.lowres_description\r\n    override val mainGraphHeight: Int get() = 200\r\n    override val secondaryGraphHeight: Int get() = 150\r\n\r\n    override fun overviewLayout(isLandscape: Boolean, isTablet: Boolean, isSmallHeight: Boolean): Int =\r\n        when {\r\n            config.NSCLIENT && isTablet  -> R.layout.overview_fragment_nsclient_tablet\r\n            config.NSCLIENT              -> R.layout.overview_fragment_nsclient\r\n            isLandscape                 -> R.layout.overview_fragment_landscape\r\n            else                         -> R.layout.overview_fragment\r\n        }\r\n    override fun actionsLayout(isLandscape : Boolean, isSmallWidth : Boolean): Int =\r\n        when {\r\n            isLandscape || !isSmallWidth -> R.layout.actions_fragment\r\n            else                         -> R.layout.actions_fragment_lowres\r\n        }\r\n}\r\n````\r\nProfile and Target Buttons have an extra padding and a bigger font size.."
+  },
+  {
+   "id": 729647223,
+   "user": "jamespaulley",
+   "created_at": "2020-11-18T12:30:59Z",
+   "body": "> personally i wouldnt need those buttons either. im fine with overview long presses or actions tab for that. actions tab does exactly that alrdy. just add it as tab and swipe right once u have ur buttons for profile change and temp target.\r\n> besides they, sry to say it that way, look like pure eye cancer.\r\n> adding those button only makes the problem worse.\r\n\r\nThanks for the input. It is understood that many users are happy with using the Actions page as you describe, but some users will want faster access to certain functions on the Overview screen, so this is about whether we can build this optionality in to AAPS without creating complexity. Just to be clear, what are you saying looks like \"pure eye cancer\"? Please keep your language professional, by the way.\r\n\r\n> @jamespaulley\r\n> \r\n> > Treatments UI\r\n> > I like the idea of combining the Insulin and Carb UI into one screen. Suggestion below:\r\n> > https://drive.google.com/file/d/1CVvChtSMW29Os_z1wUXM-1i-WSSPEOOd/view?usp=sharing\r\n> \r\n> Main idea is here, but interface has to be a little bit different to manage correctly \"Record Only\" for insulin and \"Event Time\" (and \"Activity\", \"Eating Soon\" and \"Hypo\" selection should be hidden I think for \"record only\" events)\r\n\r\nYes this is just a very quick mockup and more consideration would have to go in to any final design, should this idea be explored further.\r\n\r\n> The proposal \"Treatments UI\" isn't possible on low res screens. Please let this untouched!\r\n> Here is the actual look on an Unihertz Atom:\r\n> ![Screenshot_20201117-203858](https://user-images.githubusercontent.com/12517693/99439141-1945f800-2915-11eb-83f2-d59cf47cf4d8.png)\r\n\r\nIt's really important that we cater for users of small screens and make sure any designs collapse/adapt responsively to small screen sizes. But we should also cater to larger screen sizes too. Any changes made to the interface should accommodate all screen sizes. So for example, if we did create a unified treatment screen, it could be an "
+  },
+  {
+   "id": 729947893,
+   "user": "Philoul",
+   "created_at": "2020-11-18T20:55:00Z",
+   "body": "> Essentially, long press is like right-click on a desktop. So it's additional and secondary functionality hidden behind a single-press button. Nothing should be primarily long-press. From Googles guidelines, \"long presses can reveal additional modes and features, but are not easily discoverable\". More on that here:\r\n> https://material.io/design/interaction/gestures.html#types-of-gestures\r\n\r\nInterresting link, thank's\r\nWe have an illustration of the \"Swipe / Don't section\" in AAPS interface with Automation screen (Swipe between screens and delete a rule)\r\n> Don't\r\n> Avoid situations where a single gesture might produce two different results.\r\nhttps://kstatic.googleusercontent.com/files/d2d7b6dce2efa234cb0b51a0576fb7cfef2a80b0cacc7bb6a23f10537924575a5a03aaed0f0ec143d91ae1c15c3a15fc7e0704ca0c7826fa231ded1e87aa09c0\r\n\r\n@MilosKozak what was the reason of this modification ? (in previous versions there was a dedicated button to delete a rule in automation layout...)\r\n\r\n@swissalpine I don't find your zip with screenshots. I read (but I can't remember where) that in some plugin screens, we could have buttons unreachable on low res phone because outside of the screen, If you have this kind of issue can you include screenshots too, that way I will be able to propose update for low res skin in parallel of this discussion...)  (Can you update dev-mod5 branch too with your latest modification please, it's easier for me to find all modifications done on your side...)\r\n"
+  },
+  {
+   "id": 730187773,
+   "user": "swissalpine",
+   "created_at": "2020-11-19T07:34:53Z",
+   "body": "@Philoul No, I don't have this issue (unreachable buttons) but I'm not shure if I have done some fixes. Important was to change the font sizes from sp to dp because the Android text size settings crashes the layout.\r\nSorry for the missing zip-file ... If you need more screenshots, please tell me.\r\nMy repo will be updated soon.\r\n[atom-screenshots.zip](https://github.com/nightscout/AndroidAPS/files/5565115/atom-screenshots.zip)\r\n"
+  },
+  {
+   "id": 730347945,
+   "user": "MilosKozak",
+   "created_at": "2020-11-19T12:39:29Z",
+   "body": "> @MilosKozak what was the reason of this modification ? (in previous versions there was a dedicated button to delete a rule in automation layout...)\r\n\r\nthey were too close, hard to click one"
+  },
+  {
+   "id": 730350997,
+   "user": "guydavies",
+   "created_at": "2020-11-19T12:42:47Z",
+   "body": "I have to admit that the swipe to delete is *really* annoying when you have swipe to move page left/right in all other pages (and on any empty space at the bottom of this page).  I think that the button (even if small) was the better option.\n\n> On 19 Nov 2020, at 13:39, Milos Kozak <notifications@github.com> wrote:\n> \n> \n> @MilosKozak <https://github.com/MilosKozak> what was the reason of this modification ? (in previous versions there was a dedicated button to delete a rule in automation layout...)\n> \n> they were too close, hard to click one\n> \n> —\n> You are receiving this because you commented.\n> Reply to this email directly, view it on GitHub <https://github.com/nightscout/AndroidAPS/issues/67#issuecomment-730347945>, or unsubscribe <https://github.com/notifications/unsubscribe-auth/AAS7B3WFX7P3CCN6FXAORMTSQUGY7ANCNFSM4TTONRAQ>.\n> \n\n"
+  },
+  {
+   "id": 730596722,
+   "user": "Philoul",
+   "created_at": "2020-11-19T19:45:51Z",
+   "body": "@swissalpine very interesting your note concerning text size:\r\n\r\n> Important was to change the font sizes from sp to dp because the Android text size settings crashes the layout.\r\n\r\nThe recommendation is to use sp for text and dp for everything else, but this recommendation is to adjust text size according to android text size selection. This is important when you have a lot of text to read but could have side effects for \"dense\" layouts with lots of icons, graphs and text built and adjusted with default font size (see screenshot below, with default font size on the left and min/max selection on my phone).\r\nEven on small resolution screen, @swissalpine probably increased text size in android settings but prefer dp to avoid side effects on its layout...\r\n![dp vs sp](https://user-images.githubusercontent.com/52934600/99714753-42e25900-2aa6-11eb-87e1-f2d7788c24ad.jpg)\r\n\r\nI think we can keep sp for tablet's layout (big size and it might be worth to reduce text size to avoid huge text in interface) but use dp in all other layouts to be sure to keep layout as it was designed whatever text size selection in device.\r\n(On my side I confirm this side effect on watchfaces too if you increase default text size in watch...)\r\nMost of users that don't change android default settings won't see any changes, but it could improve interface for those who change it..."
+  },
+  {
+   "id": 731806087,
+   "user": "osodebailar",
+   "created_at": "2020-11-22T18:27:29Z",
+   "body": "Have you test icon texts in other languages ?\r\nToo much word wrapping in button text , maybe in other languages , is not very useful for a good UI Design. If you have not enough space it is better to see no text. \r\nOr place the buttons in 2 rows. "
+  },
+  {
+   "id": 731834188,
+   "user": "Philoul",
+   "created_at": "2020-11-22T19:47:26Z",
+   "body": "@osodebailar in proposed PR, labels are only in Landscape and Tablet mode, I removed labels for standard portrait layout.\r\nBut I think we could add \"Short Label\" strings for low res\r\nCan you help me to solve default in screenshot below (when we have quickwizard, with a label, bottom margin of left icon is too important and icons of other buttons are aligned top and I don't know how to keep every icons vertical align center)\r\n![Remove labels](https://user-images.githubusercontent.com/52934600/99915154-322e1f00-2d02-11eb-8474-2edd1452e9d4.jpg)\r\n"
+  },
+  {
+   "id": 731837272,
+   "user": "osodebailar",
+   "created_at": "2020-11-22T19:57:49Z",
+   "body": "@Philoul I will have a look onto it tomorrow and see what’s the best to align icons vertical"
+  },
+  {
+   "id": 732366616,
+   "user": "osodebailar",
+   "created_at": "2020-11-23T19:10:54Z",
+   "body": "@Philoul  the best way to center icon in layout_no_label is to use an Imagebutton. \r\nThe disadvantage is you need a seperate SingleClickButton (SingleClickButtonImage) ansd seperate code parts.\r\n![Screenshot_1606157539](https://user-images.githubusercontent.com/25795894/100004570-fa89aa80-2dc7-11eb-8d4d-092b183e3298.png)\r\n "
+  },
+  {
+   "id": 732783848,
+   "user": "jamespaulley",
+   "created_at": "2020-11-24T09:50:26Z",
+   "body": "> @Philoul the best way to center icon in layout_no_label is to use an Imagebutton.\r\n> The disadvantage is you need a seperate SingleClickButton (SingleClickButtonImage) ansd seperate code parts.\r\n> ![Screenshot_1606157539](https://user-images.githubusercontent.com/25795894/100004570-fa89aa80-2dc7-11eb-8d4d-092b183e3298.png)\r\n\r\nWhat is being discussed here, sorry? Is it how to handle the design of the text in the Quick Bolus button?"
+  },
+  {
+   "id": 733122829,
+   "user": "Philoul",
+   "created_at": "2020-11-24T17:22:24Z",
+   "body": "@jamespaulley no, it's the other buttons with no labels.\r\n=> I removed label, so we can add one or two additional buttons easily.\r\nIt's ok when quickwizard is not shown but when we have it, the icon on other icons is not centered vertically (see in screenshot insulin or carb icons).\r\n@osodebailar thank's, I'll try to do that."
+  },
+  {
+   "id": 733666272,
+   "user": "jamespaulley",
+   "created_at": "2020-11-25T12:04:10Z",
+   "body": "@Philoul Suggestion: Get rid of the pretzel icon in the Quickwizard button? Then everything can be centred?"
+  },
+  {
+   "id": 734915446,
+   "user": "Philoul",
+   "created_at": "2020-11-27T16:41:16Z",
+   "body": "@jamespaulley I think it's better to keep quickwizard icon (I reduced it's size). Vertical alignment is now corrected see https://github.com/nightscout/AndroidAPS/pull/76#issuecomment-734914727, thank's @osodebailar , it works, can you verify if you think it's \"clean\" for code maintainability?\r\n\r\n@MilosKozak or @osodebailar In my PR I added an OK/CANCEL popup for testing overview layout with only a \"short click\" to display Loop or Profile/TT menus, but I don't know how to replace the current \"Long Press\" by a \"Short Press\"... Can you help me ?"
+  },
+  {
+   "id": 735399851,
+   "user": "mistermintsgh",
+   "created_at": "2020-11-29T14:03:47Z",
+   "body": "Another thought, this time for the calculator. I believe the iOS app Loop has a Pizza button, and I think something similar would be useful in AAPS.\r\n\r\nWhat got me thinking about this was a post in the FB group today where someone has set their dose to be 60% via Plugin Preferences > Advanced Settings.\r\n\r\nSomeway to have a screen that allows me to enter bolus, carb amount, carb duration, and an upfront bolus as a percentage would be useful.\r\n\r\nIt may already exist, and I'm just doing things wrong, but as I see it at the moment I need to manually workout split dose percentages, flip to another screen/button to add extra carbs or carb duration and so on. Why not have a calculator that allows me to enter all carbs, and split them to extend, and split the bolus with a percentage up front and so on. Why add the complexity of working out what X% of Y grams is to bolus for, and then an extra step to extend carbs over several hours?"
+  },
+  {
+   "id": 735449665,
+   "user": "Philoul",
+   "created_at": "2020-11-29T20:31:56Z",
+   "body": "Hi all,\r\nI have finished to worki on this PR https://github.com/nightscout/AndroidAPS/pull/76 (not all but most of above proposals are included)\r\nI would appreciate comments and feedbacks\r\nThank's"
+  },
+  {
+   "id": 751489666,
+   "user": "Philoul",
+   "created_at": "2020-12-27T16:44:21Z",
+   "body": "@jamespaulley I think most of proposals discussed here are now included in dev branch.\r\nDo you think it's necessary to keep it open ?"
+  },
+  {
+   "id": 752068210,
+   "user": "jamespaulley",
+   "created_at": "2020-12-29T13:05:47Z",
+   "body": "@Philoul sorry for being away. Just replied in the other thread."
+  },
+  {
+   "id": 753646674,
+   "user": "MilosKozak",
+   "created_at": "2021-01-03T17:04:20Z",
+   "body": "> Another thought, this time for the calculator. I believe the iOS app Loop has a Pizza button, and I think something similar would be useful in AAPS.\r\n> \r\n> What got me thinking about this was a post in the FB group today where someone has set their dose to be 60% via Plugin Preferences > Advanced Settings.\r\n> \r\n> Someway to have a screen that allows me to enter bolus, carb amount, carb duration, and an upfront bolus as a percentage would be useful.\r\n> \r\n> It may already exist, and I'm just doing things wrong, but as I see it at the moment I need to manually workout split dose percentages, flip to another screen/button to add extra carbs or carb duration and so on. Why not have a calculator that allows me to enter all carbs, and split them to extend, and split the bolus with a percentage up front and so on. Why add the complexity of working out what X% of Y grams is to bolus for, and then an extra step to extend carbs over several hours?\r\n\r\nthis is against how OpenAPS works"
+  }
+ ]
+}

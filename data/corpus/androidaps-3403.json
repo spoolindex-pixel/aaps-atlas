@@ -1,0 +1,39 @@
+{
+ "id": 2457514896,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3403,
+ "title": "Medtrum patch pump alarms cannot be acknowledged",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3403",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-08-09T09:32:32Z",
+ "closed_at": "2024-11-01T14:50:06Z",
+ "comment_count": 4,
+ "body": "When using the Medtrum PDM, the user manual states that if a pump alarm occurs, the alarm must be acknowledged in the PDM. If the alarm is not acknowledged in the PDM within 10 minutes, the patch will sound a siren until the alarm is acknowledged.\r\n\r\nAAPS currently lacks the ability to acknowledge these alarms. This means, for example, that when the reservoir is empty, a siren sound is emitted that the user cannot stop in AAPS. The alarm can only be stopped by removing the patch and disconnecting the pump base. If no new patch is connected within 10 minutes, another alarm is triggered. Since this cannot be acknowledged, a siren sound is emitted until a new patch is connected. This can be very unpleasant if you do not have a new patch to hand.\r\n\r\nI only have a German user manual for Medtrum pump. \r\n![alarm01](https://github.com/user-attachments/assets/b18d8014-b705-41c5-92af-cd6e7d07ba1d)\r\n![alarm02](https://github.com/user-attachments/assets/d0d4fddd-eba1-4b29-8fd5-e0d9d6f9f27e)\r\n![alarm03](https://github.com/user-attachments/assets/f53eac26-7a18-4282-a43e-a77d117d33e1)\r\n![alarm04](https://github.com/user-attachments/assets/3c2641f4-24b1-43a7-9627-ce1e4d82917a)\r\n![alarm05](https://github.com/user-attachments/assets/ffee5ac9-9f3b-478f-9c4c-1e70eeae5c14)\r\n![alarm06](https://github.com/user-attachments/assets/c2174f7a-e5bb-4582-bb23-dc77c4f17e3e)\r\n![doc_version](https://github.com/user-attachments/assets/847e6f1d-35b7-458a-9a48-bd5bcaeb3a8b)\r\n\r\nSee last row in alarm04.jpg. It's about empty reservoir. There it says 'Tap to acknowledge'. See alarm01.jpg, there it says if an alarm is not acknowledged within 10 minutes patch will emit a siren sound until confirmation of alarm.\r\n\r\nIn AAPS, a way to acknowledge alarms is needed to achieve the same behavior as with the PDM.",
+ "comments": [
+  {
+   "id": 2295281800,
+   "user": "I1985",
+   "created_at": "2024-08-18T14:24:33Z",
+   "body": "I've wondered about this as well, but haven't gotten round to check the Medtrum documentation (something about ADD and \"should do that later\"). But I very much support the request to integrate this in AAPS if possible!"
+  },
+  {
+   "id": 2352203698,
+   "user": "jbr7rr",
+   "created_at": "2024-09-16T07:35:44Z",
+   "body": "So far I have only been able to test alarm functionality with the Medtrum app. and there is no option to acknowlegde the critical alarms and prevent the base from beeping after 10 mins. Is there someone who is able to test this on PDM and describe the behavoir for that?"
+  },
+  {
+   "id": 2725076293,
+   "user": "blaqone",
+   "created_at": "2025-03-14T15:45:04Z",
+   "body": "@MilosKozak Why closed as completed?!"
+  },
+  {
+   "id": 2725293002,
+   "user": "MilosKozak",
+   "created_at": "2025-03-14T17:15:41Z",
+   "body": "see @jbr7rr 's comment"
+  }
+ ]
+}

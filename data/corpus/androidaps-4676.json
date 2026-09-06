@@ -1,0 +1,23 @@
+{
+ "id": 4200040290,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4676,
+ "title": "Unable to recover Medtrum activation process in FILLED state",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4676",
+ "state": "closed",
+ "labels": [
+  "medtrum"
+ ],
+ "created_at": "2026-04-03T11:05:39Z",
+ "closed_at": "2026-04-10T19:14:31Z",
+ "comment_count": 1,
+ "body": "The fix for https://github.com/nightscout/AndroidAPS/issues/4594 blocks the most used case for the retry activation, i.e. user is filling the patch with pump based attached and interrupts the process in AAPS (phone call or whatever reason)\n\nThe deeper issue is that there is a failure mode with Medtrum patches were it goes back to FILLED state (basicly it resets itself) We should handle this in all cases, also outside of the activation process. (i.e. throw an alert/alarm when this happens). \n\nIt would be good to block reactivation of a patch session when once it's passed the PRIMING stage, regardless of which state it is in (either NONE, FILLED or whatever) and always require patch deactivation first in those cases\n\nFor this I will propose a PR in the short term to rework the activation process and handle this failure mode.\n\nSee also:\nhttps://github.com/nightscout/AndroidAPS/issues/4333\nWhile we cannot address that exact issue (pump dies completly and a connection can not be established, it ties a bit into that as well and can maybe be addressed at the same time",
+ "comments": [
+  {
+   "id": 4201897549,
+   "user": "jbr7rr",
+   "created_at": "2026-04-07T20:11:01Z",
+   "body": "Todo: dev4 merge/port (working on it)"
+  }
+ ]
+}

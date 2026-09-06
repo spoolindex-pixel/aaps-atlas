@@ -1,0 +1,45 @@
+{
+ "id": 2193302748,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3271,
+ "title": "Omnipod Eros fails comm after 1d",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3271",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-03-18T20:58:07Z",
+ "closed_at": "2024-11-13T13:04:30Z",
+ "comment_count": 5,
+ "body": "Since moved to 3.2.0.4 of AAPS, the pods are failing communication earlier than 3 days.\r\nThe issue happens when trying to deliver Insulin or changing the temp basal, message is:\r\ncommunication failed: nonce resume failed\r\n\r\nI couldn't find any issue similar, let me know if there's a walk around or a fix,\r\n\r\ntha ks in advance!\r\n\r\nbuild: 5d3e33ce8a-28.02.2024\r\nmy setup is:\r\n- Omnipod Eros\r\n- Orange link pro with latest firmware\r\n- xdrip+\r\n- G6\r\n\r\n[AndroidAPS_LOG_1710794405126.log.zip](https://github.com/nightscout/AndroidAPS/files/14642383/AndroidAPS_LOG_1710794405126.log.zip)",
+ "comments": [
+  {
+   "id": 2020135063,
+   "user": "vanelsberg",
+   "created_at": "2024-03-26T11:06:29Z",
+   "body": "Looks like comms problems (Phone-RL-device-Pod):\r\nNext time this happens, try switching off and then on again your RL-device. If this does not solve restart the phone.\r\nIf the problem then still persists, try removing and re-registering your RL.\r\n\r\n(Btw: always make sure you export AAPS settings for the currently active Pod so worse case you can reconnect to the active Pod when things fail and you need to reinstall)"
+  },
+  {
+   "id": 2029572989,
+   "user": "frankaxela",
+   "created_at": "2024-04-01T10:50:17Z",
+   "body": "hi @vanelsberg thanks for the recommendations, I tried everything you mentioned for every pod that failed and nothing changed. Also, this issue didn't appear with the previous version of AAPS, 2.8.\r\nThese issues are happening with the latest.\r\nI still think this is an issue"
+  },
+  {
+   "id": 2029663835,
+   "user": "andyrozman",
+   "created_at": "2024-04-01T12:11:19Z",
+   "body": "If pods work in the beggining and they just run out of \"juice\" and are nor reachable anymore, then there could be 2 possible explanation:\r\n1. We communicate to much which drains battery (which I don't think is the case)\r\n2. Your pods battery has too low voltage for some reason (faulty pods or something)\r\n\r\nIf you compare code from 2.8 with 3.1, there were major architectural changes in whole application, so there could be million reasons... \r\n\r\nNow question is, do other Eros users encounter the same problems, if not, then this could be your local setup problem, although from what you have written, your setup seems to be standard one, that should work... Would it be possible that you have a series of faulty pods?  "
+  },
+  {
+   "id": 2029971246,
+   "user": "vanelsberg",
+   "created_at": "2024-04-01T15:25:56Z",
+   "body": "Yes. Agree.\r\n\r\n> If pods work in the begining and they just run out of \"juice\" ...\r\n\r\nad2. Reason can be poor batteries are to old, which is the case when Pod's are beyond the expiration date.\r\n"
+  },
+  {
+   "id": 2034389683,
+   "user": "frankaxela",
+   "created_at": "2024-04-03T12:01:15Z",
+   "body": "I thought that too, so I opened a different package and still had the same issue.\r\n\r\nI will revert to the old algorithm as I changed to start using SMBs, maybe there's an increase in calls because of this too.\r\n\r\nIn the meantime, had another faulty pod, this time after 1d 20h. Which is early.\r\nTried the restart and disconnect the OL something is going on with the pods, will try to get some DASHs\r\n\r\n[AndroidAPS_LOG_1712131187366.log.zip](https://github.com/nightscout/AndroidAPS/files/14851744/AndroidAPS_LOG_1712131187366.log.zip)\r\n"
+  }
+ ]
+}

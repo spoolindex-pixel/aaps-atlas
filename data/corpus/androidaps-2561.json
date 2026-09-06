@@ -1,0 +1,105 @@
+{
+ "id": 1732063186,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2561,
+ "title": "Bolus delivery % only for cob and Carbs !?",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2561",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-05-30T11:28:27Z",
+ "closed_at": "2026-02-28T13:20:12Z",
+ "comment_count": 16,
+ "body": "The option \"Deliver this part of bolus wizard result\" does what it says, but does it safely represent most user's intention?\r\n\r\nAn overdosing may occur if there are multiple consecutive carb entries within a short time period. This can easily happen, if the user eats more then bolused for and enters some carbs afterwards with the bolus wizard (calculator).\r\n\r\nCompare current implementation with 1x60g carb entry on the left with 2,93U and the same amount of carbs with 2 entries resulting in 4,02U - a lot more!\r\n\r\n![image](https://github.com/nightscout/AndroidAPS/assets/64865503/1ee2dacd-cf2d-45b3-a5de-51b2fd0cd0ee)\r\n\r\nIf the bolus delivery % is only considered for cob and Carbs, there is no difference if 1 or 2 entries happen (again 60g in 1 entry on the left and with 2 entries on the right):\r\n\r\n![image](https://github.com/nightscout/AndroidAPS/assets/64865503/bb40349e-2247-4615-b637-de0e08a5041e)\r\n\r\nIs there anything speaking against the latter behaviour?\r\nI'm already testing it for some weeks, and it seems to be OK.\r\n\r\nI don't think, that there is any benefit, if the other insulin components (BG, trend, IOB_bolus, IOB_basal) are affected by the \"Deliver this part of bolus wizard result\" percentage.",
+ "comments": [
+  {
+   "id": 1569778532,
+   "user": "MilosKozak",
+   "created_at": "2023-05-31T08:56:05Z",
+   "body": "How could this lead to overdosing if you still received less than needed?"
+  },
+  {
+   "id": 1569818439,
+   "user": "szantos",
+   "created_at": "2023-05-31T09:20:06Z",
+   "body": "Simply try:\r\n- set \"Deliver this part of bolus wizard result\" to 50%\r\n- enter 60g of carbs note the calculated insulin (in my example 2,93U)\r\n- as a comparison enter first 45g and bolus (in my example 2,18U)\r\n- then shortly after that 15g (in my example 1,84U will be calculated)\r\n- 2,18 + 1,84 = 4,02U > 2,93U (for the same total carb amount)\r\n\r\nThe difference in % between the 2 methods (all carbs in 1 entry vs. in 2 consecutive entries):\r\nDIFF = 1stCarbs% x ( 1 - BolusDelivery% ) = 37% = 75% x ( 1 - 50% )\r\nwhere\r\n1stCarbs% means carbs entered in the 1st entry of the 2-entry variant / total carbs (75% in my example)\r\nBolusDelivery% means \"Deliver this part of bolus wizard result\"\r\n\r\nIf you enter 59g then 1g the DIFF will be 49%.\r\nAnd the doses 2,88U for 59g and 1,49U(!) for 1g, which means 4,37U in total.\r\nCompare this with the 2,93U (60g entered with 1 entry).\r\n\r\nNow why less, than needed!?"
+  },
+  {
+   "id": 1571597205,
+   "user": "MilosKozak",
+   "created_at": "2023-06-01T08:30:47Z",
+   "body": "I understand it. But I'm not sure if this behavior is an issue and should be changed. It depends on case. For example if 2nd bolus is for something sweet current behavior is better"
+  },
+  {
+   "id": 1571626010,
+   "user": "szantos",
+   "created_at": "2023-06-01T08:52:00Z",
+   "body": "IMHO people use \"Deliver this part of bolus wizard result\" (with less than 100%), if the BG raising effect of the meal will probably be slower, than the effect of insulin. This population will probably be larger with the growing use of faster insulins.\r\n\r\nThe goal is to avoid early postprandial hypo and to maintain more agressive boundaries for later postprandial raises. Delivering too much early on could push some people in early postprandial hypos, which is a safety issue.\r\n\r\nI know, that the bolus wizard is a key feature which should be modified very carefully. That is why I'm asking you to consider it - ask other key developers, look into usage statistics, etc. I've solved it myself, it's not a selfish wish.\r\n\r\nThank you!"
+  },
+  {
+   "id": 1584836244,
+   "user": "naromero77",
+   "created_at": "2023-06-09T16:19:11Z",
+   "body": "I am trying to understand the issue as I had some questions about the behavior as well. It sounds like percentage of bolus delivery applies to all components (new carbs, COB, ...), but you are saying that most people intentions are to apply the percentage bolus delivery just for new carbs? Yes, if you are coming from a manual pump that would make sense. I think for a close loop system, it may be misaligned with the spirit of the algorithm At least in Loop, although it is only configurable in the code there as an \"application factor\" at compile time, it always takes into account all these terms and it cannot apply the \"application factor\" just to new carbs. But I do get your point... at least I think I do."
+  },
+  {
+   "id": 1585028416,
+   "user": "szantos",
+   "created_at": "2023-06-09T19:15:56Z",
+   "body": "> It sounds like percentage of bolus delivery applies to all components\r\n\r\nYes. It applies to all components.\r\n\r\n> but you are saying that most people intentions are to apply the percentage bolus delivery just for new carbs\r\n\r\nNo. Not only for new carbs, but for all carbs, which means: COB and new carbs.\r\n\r\n> for a close loop system, it may be misaligned with the spirit of the algorithm\r\n\r\nIMHO you are right - as the whole bolus wizard of AAPS has not much (nothing?) to do with the loop algorithm, since it is a simple 1-step calculation for the end of DIA. I'd be very happy to see a superior algorithm (like oref) behind the bolus wizard - but this would be another topic (issue?)."
+  },
+  {
+   "id": 1699347104,
+   "user": "AdrianLxM",
+   "created_at": "2023-08-30T14:59:02Z",
+   "body": "The percentage IMHO should apply BG correction as well. If it is used to have a safety margin for some physical activity (and have the loop cover the rest of need be), that should apply to the whole bolus, not just the carb part.\n\nIdeally the full bolus would be calculated without the IOB. Then the percentage would be applied. Then the IOB would be subtracted.\n\nThis way, a percentage of 80% would mean \"after the bolus the IOB is at 80% of a full coverage of COB+Carbs and BG\". ... and have the loop cover the final 20% afterwards :)"
+  },
+  {
+   "id": 1699359880,
+   "user": "AdrianLxM",
+   "created_at": "2023-08-30T15:06:23Z",
+   "body": "Also \"new carbs\" is always zero for me. I enter the carbs before via the carb entry and then hit the bolus wizard.\n\nThis has several advantages:\n\n1) I can calculate carbs for different components separately and COB will sum it up.\n\n2) In case the connection fails for the bolus, the carbs still get stored. (Running to the bathroom away from the phone just before dinner). Then AAPS would start SMBing when in reach of the pump. And I can also hit the bolus wizard again without remembering what I calculated before for carbs."
+  },
+  {
+   "id": 1699362262,
+   "user": "fjpezuela",
+   "created_at": "2023-08-30T15:07:45Z",
+   "body": "I occasionally split the bolus into two parts. In the first bolus, the BG and IOB boxes are ticked. In the second bolus, I always uncheck BG (the correction is already set in the first bolus) and IOB (I want to put insulin for the rest of the carbs)."
+  },
+  {
+   "id": 1699630800,
+   "user": "jbfeutz",
+   "created_at": "2023-08-30T18:12:06Z",
+   "body": "As a user of this feature, I agree that %of bolus makes more intuitive sense in our application applying to new carbs only. We accomplish this by reviewing and unchecking the the appropriate factors in the bolus wizard. "
+  },
+  {
+   "id": 1699703991,
+   "user": "olorinmaia",
+   "created_at": "2023-08-30T19:14:18Z",
+   "body": "I agree that todays %-bolus logic is troublesome if all components are turned on in calculator for multiple boluses during same meal. \r\n\r\nI work around this today by reducing next bolus from 70% to 50% or unticking all components in calculator on 2nd bolus. The latter is also explained as best practice in docs when bolusing additional carbs in the same meal. \r\n\r\nI would love more options and customization to the calculator. AAPS should remember the toggles of components you use. Now if you untick all boxes and bolus just for carbs, and open calculator again, the components have changed. If you consider implementing this, i would suggest it to be an option for the user, of which components to consider reducing when delivering %-bolus. IOB should be left out of the %-reduction and subtracted in the end after reduction of the preferred components."
+  },
+  {
+   "id": 1699727487,
+   "user": "dwvl",
+   "created_at": "2023-08-30T19:35:01Z",
+   "body": "I support the proposed change. Personally, I have only recently started to use the \"bolus % delivery\" in the wizard, and it seems useful. I would prefer it to work the way szantos proposes.\r\n\r\n(Actually, I would prefer the wizard bolus to be for 100% of the first 30g of carbs and 0% for any carbs above 30g, but that's a different request!)"
+  },
+  {
+   "id": 1701021539,
+   "user": "szantos",
+   "created_at": "2023-08-31T13:16:25Z",
+   "body": "The issue is receiving more attention, because it was mentioned by @MilosKozak in social media. I'd like to use this attention to highlight a higher level and another \"solution\".\r\n\r\nThe particular problem demonstrated above is, that consecutive bolus wizard entries could lead to overdosing. But this is all because of the primitive way, the bolus wizard works: it does one calculation for the end of the DIA. This forces AAPS-loopers to have to think about the time in-between, which is a huge burden.\r\n\r\n**AAPS has superior loop algorithms (oref0/1 + DynISF, etc.), and they are not used in the bolus wizard?!**\r\n(Which is one of the most used feature of AAPS.) IMHO the wizard should use the loop algorithm to recommend (upfront) bolus amount and to ensure a consistent behaviour.\r\n\r\n----\r\n\r\nBenefits of a loop algorithm based (smarter) bolus wizard:\r\n- Taking insulin activity into account: Current bolus wizard considers IOB, but does not know how (fast) it produces blood glucose impact. This can lead to early postprandial hypo.\r\n- Reducing the burden: Current bolus wizard requires the looper to think about the time from bolusing until end of DIA, which is half of the daytime. Finding the correct upfront bolus amount and eCarb amount/delay/duration are the tasks, the looper has to care about.\r\n- Consistency: Many AAPS-loopers ask why bolus wizard displays any insulin / carbs needed on opening (without entering anything) and why these values are not equal to the current InsulinReq or Carbs required of the loop calculation.\r\n- Maximizing loop algorithm potential: I suppose a smarter bolus wizard could (pre)bolus better, and with better (pre)bolusing the loop has less work after that and can preserve more of its potential for unforeseen scenarios.\r\n- Help finding better IC ratios: If there are postprandial problems, I often see, that users rush to tune their ICs, but the problem is related to bolus splitting or the lack of that. If the wizard does the splitting (determining the"
+  },
+  {
+   "id": 1701576032,
+   "user": "AdrianLxM",
+   "created_at": "2023-08-31T18:42:34Z",
+   "body": "The idea to think about the loop algorithm as base is worth pursuing.\nHowever: it is intended to give the estimated  amount over a period of time. Part of the reasoning is \"if I'm wrong can I still undo it when the next CGM values come in\". It even gives higher SMB and at the same time sets a zero-temp to automatically undo it in case the connection to the pump breaks.\n\nImho that is a different task than optimization of the bolus wizard as it is now."
+  },
+  {
+   "id": 3977159382,
+   "user": "MilosKozak",
+   "created_at": "2026-02-28T13:20:12Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/6616be42791eb8ced53ee6ec2d1f878c1629c897"
+  }
+ ]
+}

@@ -1,0 +1,21 @@
+{
+ "id": 2048896655,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3128,
+ "title": "AAPS treatment -> xDrip sync config",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3128",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-12-19T15:30:15Z",
+ "closed_at": "2023-12-20T11:40:11Z",
+ "comment_count": 1,
+ "body": "Hey guys,\r\nI struggle to get all my treatments from AAPS to xDrip. Until now I was using Nightscout (at fly.io) for exchanging the bgs, treatments etc between AAPS and xDrip. I wanted to get rid of this and do it via local broadcast. But I struggle to set it up correctly.\r\nI searched the documentations and different discussions (e.g. https://github.com/NightscoutFoundation/xDrip/discussions/2636) but even then it is not working.\r\n\r\nMy setup:\r\n- xDrip Nightly 2123120516\r\n- Libre 3\r\n- Juggluco (enabled xdrip broadcast and patched broadcast)\r\n- AndroidAPS 3.2.0.2 (getting BGs directly from Juggluco now)\r\n- *AAPS: enabled broadcast to xDrip+\r\n\r\n*I also saw the hint here to enable \"xDrip+ Sync Follower\" as main source in xDrip. This is fine for me, but what is the master in this way? I tried localhost or 127.0.0.1 , but no luck. Nothing is received.\r\nIn xDrip I have enabled \"local broadcast\"+ \"Accept Glucose\" + \"Accept treatments\". I also played a bit with different settings for \"identify receiver\" ...\r\nCan anyone support me to set this correctly? I really tried lots of configurations...\r\nAny ideas?\r\n\r\nMy goal is pretty simple: I want to get rid of the necessity to have nightscout in fly.io to exchange all treatments between AAPS and XDrip, especially when both apps are running on my mobilephone :)\r\n\r\nPS: I also raised similar topic at xDrip team: https://github.com/NightscoutFoundation/xDrip/discussions/3247 ",
+ "comments": [
+  {
+   "id": 1864329585,
+   "user": "Amidamaru",
+   "created_at": "2023-12-20T11:40:12Z",
+   "body": "I fixed it finally :)\r\n\r\nToday I realized in xDrip I see all the treatments like intended. I switched off the setting \"Local Broadcast\" in xDrip and I think this did the trick.\r\n\r\nso my final working setup:\r\n- xDrip Nightly 2123120516 \r\n1.  disable local broadcast\r\n2. enable \"accept treatment\" and \"accept glucose\"\r\n3. Data source: Libre patched\r\n- Libre 3\r\n- Juggluco (enabled xdrip broadcast and patched broadcast)\r\n- AndroidAPS 3.2.0.2 (getting BGs directly from Juggluco now)"
+  }
+ ]
+}

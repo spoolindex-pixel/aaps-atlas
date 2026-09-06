@@ -1,0 +1,135 @@
+{
+ "id": 389596383,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 705,
+ "title": "huawei EMUI Bluetooth issues and missed readings",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/705",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2018-12-11T04:53:14Z",
+ "closed_at": "2021-02-25T01:53:22Z",
+ "comment_count": 20,
+ "body": "This isn't necessarily an issue with xDrip+ but its an issue with all users trying to utilize a Huawei phone. Looks like the Huawei EMUI software does some of its own BLE trickery and causes issue with scanning and connecting thus causing missed readings. The error you will see in the logs is this:\r\n\r\n11-08 17:55:43.935 11438 11503 E Bth     : G.GattService:App 'Your APP' is scanning too frequently on screen off\r\n\r\nSee here: https://github.com/AltBeacon/android-beacon-library/issues/554\r\n\r\nThey didn't find an answer for it but I was thinking an easy work around would be to have an option wake the screen for a second while connecting. It's not ideal but would probably open up xDrip use to the Huawei phones.\r\n\r\n",
+ "comments": [
+  {
+   "id": 446102976,
+   "user": "jamorham",
+   "created_at": "2018-12-11T07:43:54Z",
+   "body": "Can you let me know what type of collector you are using within xDrip and the android version of the affected phone? \r\n\r\nIf you are using G5/G6 can you check if the `Minimize Scanning` option is enabled and if not enable it."
+  },
+  {
+   "id": 446235819,
+   "user": "Mikeyatrum",
+   "created_at": "2018-12-11T15:08:48Z",
+   "body": "Thanks for the quick reply. I'm 90% sure I had that minimize scanning option checked while messing around with it for the last 5 days. Today it's not checked, I probably messed with it. I've checked the box and will see if it makes a difference.\r\n\r\nCollector: OB1\r\nAndroid Version: 7.0.0\r\nDexcom Version: G6\r\nxDrip Version: 2018.09.08\r\n"
+  },
+  {
+   "id": 446262084,
+   "user": "Mikeyatrum",
+   "created_at": "2018-12-11T16:16:07Z",
+   "body": "Just validated with the \"minimize scanning\". Sure enough after the screen went off I started losing readings. I'm currently 30 in without a reading. Woke up the screen and had readings back within a few minutes. This is the pattern."
+  },
+  {
+   "id": 446394743,
+   "user": "opasha",
+   "created_at": "2018-12-11T22:57:24Z",
+   "body": "Not sure if you've tried this, but have you tried locking xdrip+ in Recents. Just like miui, emui kills apps aggressively. I know because I've owned a Mate 9. Try that and see? "
+  },
+  {
+   "id": 446398101,
+   "user": "Mikeyatrum",
+   "created_at": "2018-12-11T23:10:00Z",
+   "body": "Yup tried that. Funny you mention that though. I have found if I don't\nforce it to the UI thread that it does get killed off eventually even if\nlocked in the recent's screen. That said, today's reading have been a bit\nbetter since re-ticking the \"minimize scanning\". I'm getting a lot more\nconsistent 5 min reading. I still see gaps of 10 - 15 minutes but I'm not\nseeing the 30 - 60 minutes I was seeing. I'll keep it at these settings for\nnow.\n\nOn Tue, Dec 11, 2018 at 3:57 PM Omar <notifications@github.com> wrote:\n\n> Not sure if you've tried this, but have you tried locking xdrip+ in\n> Recents. Just like miui, emui kills apps aggressively. I know because I've\n> owned a Mate 9. Try that and see?\n>\n> —\n> You are receiving this because you authored the thread.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/705#issuecomment-446394743>,\n> or mute the thread\n> <https://github.com/notifications/unsubscribe-auth/ArXqEafr5ZqDZ7NjzLB-Wluw5EvcVWMJks5u4DhZgaJpZM4ZMqsj>\n> .\n>\n"
+  },
+  {
+   "id": 446413903,
+   "user": "opasha",
+   "created_at": "2018-12-12T00:20:16Z",
+   "body": "How about this:\r\n\"Solution\r\nWe had the same issue in our app. The solution in our app was to change the setting in Settings\r\n\r\nSettings->Apps & notifications->Apps-><your app>->Battery\r\n\r\nSet App launch to 'Manage manually'\r\nAuto-launch - activated\r\nSecondary launch - activated\r\nRun in background - activated\""
+  },
+  {
+   "id": 446493346,
+   "user": "gregorybel",
+   "created_at": "2018-12-12T07:47:34Z",
+   "body": "- yes these options are important.\r\n- lock App in App Manager.\r\n- make sure Xdrip ignores battery optimization\r\n- might want to add persistent notification\r\n\r\nI have a p20 pro with 100% capture rate for g5."
+  },
+  {
+   "id": 446598996,
+   "user": "Mikeyatrum",
+   "created_at": "2018-12-12T14:05:57Z",
+   "body": "I'm not finding those settings on the Huawei. I'm back to 10 - 30 min random gaps. "
+  },
+  {
+   "id": 447097747,
+   "user": "Nalla306",
+   "created_at": "2018-12-13T19:50:02Z",
+   "body": "I have a mate 20 pro and don't suffer this issue with emui.\r\n\r\nIn settings>apps>apps click on 3 dots in top right and select special access then battery optimisation. Change the drop down to all apps and find xdrip, click on it and check 'don't allow'\r\n\r\nNext in Settings > battery > app launch find xdrip and click to select to manage manually and make sure all three options are selected.\r\n\r\nThis is with the latest emui, hopefully you have those options. "
+  },
+  {
+   "id": 447105419,
+   "user": "Mikeyatrum",
+   "created_at": "2018-12-13T20:14:06Z",
+   "body": "Yeah this older version of EMUI doesn't have the \"app launch\" options. It's already set to ignore battery optimizations. I'll looking into finding an upgrade path on this phone.. if not looks like I'm looking at replacing it. "
+  },
+  {
+   "id": 447246143,
+   "user": "gregorybel",
+   "created_at": "2018-12-14T08:00:52Z",
+   "body": "look under battery settings and you need to allow xdrip launch.\r\n\r\nthen lock app, right corner, look at app running and click on lock"
+  },
+  {
+   "id": 448822956,
+   "user": "Mikeyatrum",
+   "created_at": "2018-12-20T01:24:44Z",
+   "body": "Yeah did all that. I'm just grabbing a new phone. Unfortunately we can't get steady results from this one."
+  },
+  {
+   "id": 516590611,
+   "user": "mountrcg",
+   "created_at": "2019-07-30T20:51:05Z",
+   "body": "@gregorybel could you plz outline the G5 Debugging options you use in xdrip. Anytime I lock the Huawei P20 Pro with Android version9 I loose my readouts. The App launch options under Battery I set for xdrip and aaps to manual and also did not allow the battery optimizations for both in Apps special access. "
+  },
+  {
+   "id": 516603683,
+   "user": "gregorybel",
+   "created_at": "2019-07-30T21:30:58Z",
+   "body": "did you Check this?\r\n\r\nhttps://androidaps.readthedocs.io/en/latest/EN/Usage/huawei.html\r\n"
+  },
+  {
+   "id": 517127552,
+   "user": "mountrcg",
+   "created_at": "2019-08-01T05:38:19Z",
+   "body": "Yes I did, as this is the summary of this thread. I found the issue yesterday. In Settings>Battery it needs to be put in Performance mode. I had it in Power Saveing mode."
+  },
+  {
+   "id": 517128421,
+   "user": "mountrcg",
+   "created_at": "2019-08-01T05:42:14Z",
+   "body": "Also took me a while to figure out how to get the lock on the Apps in the switcher - pull the app down.\r\nThe persistent notification in xdrip+ I did not find. But I capture 100% now, also in sleep mode. Thanks a lot."
+  },
+  {
+   "id": 517241823,
+   "user": "gregorybel",
+   "created_at": "2019-08-01T11:22:26Z",
+   "body": "Great! would you like to add your findings in the documentation page? Like this you will help other people"
+  },
+  {
+   "id": 517401834,
+   "user": "mountrcg",
+   "created_at": "2019-08-01T18:18:59Z",
+   "body": "Yes. How, I looked but couldn't see how to participate.\n\nSent from my iPhone\n\n> On 1. Aug 2019, at 13:22, Grégory Beloncle <notifications@github.com> wrote:\n> \n> Great! would you like to add your findings in the documentation page? Like this you will help other people\n> \n> —\n> You are receiving this because you commented.\n> Reply to this email directly, view it on GitHub, or mute the thread.\n"
+  },
+  {
+   "id": 517606822,
+   "user": "gregorybel",
+   "created_at": "2019-08-02T08:18:14Z",
+   "body": "https://androidaps.readthedocs.io/en/latest/EN/make-a-PR.html\r\n\r\n"
+  },
+  {
+   "id": 785516953,
+   "user": "Navid200",
+   "created_at": "2021-02-25T01:53:22Z",
+   "body": "@Mikeyatrum If you need help with G6 connectivity, please use the support channels.\r\nhttps://www.facebook.com/groups/xDripG5\r\nhttps://gitter.im/jamorham/xDrip-plus\r\nWe can always re-open this if it is really an xDrip bug."
+  }
+ ]
+}

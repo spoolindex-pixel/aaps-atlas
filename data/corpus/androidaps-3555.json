@@ -1,0 +1,75 @@
+{
+ "id": 2691671456,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3555,
+ "title": "[Dev 3.3.0-dev-d] Cannot do \"Maintenance/Import Settings\" and \"Wear/Load Watchface\" because AAPS crashes immediatelly.",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3555",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-11-25T17:45:20Z",
+ "closed_at": "2024-11-29T10:41:56Z",
+ "comment_count": 10,
+ "body": "Phone: Samsung Galaxy S21 5G,  Android 14, One UI 6.1, latest updates done\r\n\r\nThe phone was earlie used as main AAPS with master 3.2.0.4 and worked without this problem.\r\nI took this phone as a test phone because of Android 14 and tried to install the latest dev.\r\nI could not complete a clean install with the latest dev but it was possible with some earlier dev.\r\nThen I installed Preferences from my 3.2.0.4 master AAPS.\r\nThen I updated into the latest dev and seemed to go smoothly.\r\n\r\nBut then I found at least two problems\r\n- Custom watchfaces cannot be selected -> AAPS crash\r\n- Settings cannot be imported -> AAPS crash\r\n\r\nAAPS directory is normally selected and access allowed as requested.\r\nExporting settings is however possible and creates a new preference file.\r\n\r\nI send a log file with AAPS and attach number of this Issue.\r\n\r\nAAPS 3.3.0-dev-d dated 984167245c-2024.11.25 \r\n![1000046095](https://github.com/user-attachments/assets/5c7dcabb-a308-4ce7-aea4-518a7ac9e0d5)\r\n",
+ "comments": [
+  {
+   "id": 2499087613,
+   "user": "MilosKozak",
+   "created_at": "2024-11-25T21:37:55Z",
+   "body": "try latest dev"
+  },
+  {
+   "id": 2500058666,
+   "user": "reijoahola-nightscout",
+   "created_at": "2024-11-26T09:08:06Z",
+   "body": "Installed the latest dev (f3d464036) from yesterday evening.\r\n- now it did not crash but gave an error about folder (do not remember exact error text)\r\n\r\nCreated .../Internal storage/AAPS again and waited when AAPS app created the subfolders\r\n- Maintenance/Import Settings still gave an error about folder\r\n- ... but Wear/Load Watchface opened and could change Custom watchface\r\n- ... but only once and when trying again watchafaces folder, it gave the same error about folder\r\n\r\nNext I created AAPS again but now under Documents folder (.../Internal Storage/Documents/AAPS)\r\n- now both folders seems to open normally and I tried it several time\r\n- also Export Settings still work\r\n- ... but if I try to copy some new custom watchface zip file into exports folder, it again gives that error about folder\r\n\r\nNow I have in export folder only those files that AAPS created and it seems to work.\r\nIs there some rule that AAPS folder should not be directly under Internal Storage and should be created for example Under Documents folder ?\r\n\r\nI continue tests with dev installation and try to backup enough TDD data from NS so that I can use Auto ISF.\r\n"
+  },
+  {
+   "id": 2503460899,
+   "user": "MilosKozak",
+   "created_at": "2024-11-27T10:09:01Z",
+   "body": "@Philoul can you replicate?"
+  },
+  {
+   "id": 2503815665,
+   "user": "Philoul",
+   "created_at": "2024-11-27T12:58:16Z",
+   "body": "No, I never got crash during CWF file selection.. But file RW access works fine on my config or emulator when I updated my config. After AAPS folder selection, I approved Android access request for AAPS and it worked (new files externally added from computer in exports folder are visible, I can export new templates...)\nI managed (I think) all potential crashes due to wrong zip file format, like wrong content, wrong zip, so only \"good files\" are visible and all the others are hidden withoit crash.\nHere I think crash (if remaining after your update) is probably more due to issue during access to folder content (list of files) or when we try to access to file binary data 🤔, but it should not be limited to Wear plugin..."
+  },
+  {
+   "id": 2503967788,
+   "user": "reijoahola-nightscout",
+   "created_at": "2024-11-27T14:06:03Z",
+   "body": "Crashes were with earlier dev versions. After AAPS 3.3.0-dev-d dated 2024.11.25 there are no crashes but\r\nduring certain situations (explained earlier), it gives an error \"Error accessing file system ....\".\r\n\r\nWhen I have now selected AAPS file as ../Internal Storage/Documents/AAPS, Import Settings does not cause problems.\r\nAlso Load Watchfaces does not cause error message if I do not add custom watchface.\r\n\r\nNote, AAPS master worked in this phone without these problems.\r\nAlso with some older dev version I could install (clean install) and load Preferences file but\r\nproblems are with these newer AAPS dev versions that use user selectable AAPS directory (I believe so but not sure)."
+  },
+  {
+   "id": 2504194182,
+   "user": "Philoul",
+   "created_at": "2024-11-27T15:41:13Z",
+   "body": "The strange issue (if I understood you correctly) is that you can select all default CWF created by AAPS (from assets), but when you manually add another zip file within exports folder (could be with phone file manager, or with computer explorer), then new files are not visible 🤔 (looks like authorization is attached to each file and not folder content).\n\nI cannot reproduce this error, all zip files put within exports folder, if they have correct content, are visible and can be selected... (when I develop or tune a new CWF, I spend my time to update \"exports folder\" from my computer, with new files, updated files... and everything is immediatly visible within Wear plugin)."
+  },
+  {
+   "id": 2504334248,
+   "user": "reijoahola-nightscout",
+   "created_at": "2024-11-27T16:42:46Z",
+   "body": "Yes, I downloaded \"Blue Ring\" watchface by using Wear/More Watchfaces. Then moved zip file into ...Internal storage/Documents/AAPS/exports. After this Wear/Load Watchface gives an error \"Error accessing filesystem.....\".\r\nI tested earlie with some other custom watchface and same result so probably it is not that specific watchface that cause the error but something related access rights etc. for these added files. BTW, how to see access rights for files and folders in Android ?"
+  },
+  {
+   "id": 2506669621,
+   "user": "Philoul",
+   "created_at": "2024-11-28T19:15:15Z",
+   "body": "@reijoahola-nightscout Do you have same issue with preferences ? (if you manually copy/Paste an external json preference file from another phone within preferences folder, can you see and select them or can you only select preferences json files saved directly by running version of AAPS on phone ?)"
+  },
+  {
+   "id": 2506690570,
+   "user": "reijoahola-nightscout",
+   "created_at": "2024-11-28T19:40:06Z",
+   "body": ">\"Do you have same issue with preferences\"\r\nI think I did not test with such way very much but ptrobably it also caused a problem.\r\n\r\nBut I have now new information about the problem and better put this into hold for some time.\r\nI started to believe that my phone (file system) was somehow corrupted and decided to do total reset (factory reset).\r\nI have now restored the installation and first impression is that now it works normally\r\n- AAPS directory can be .../Internal Storage/AAPS\r\n- can Import settings normally\r\n- can open Custom Watchfacesa folder\r\n\r\nI have not yet stressed the system much. I tell later if it still cause problems.\r\n"
+  },
+  {
+   "id": 2507220951,
+   "user": "reijoahola-nightscout",
+   "created_at": "2024-11-29T07:18:21Z",
+   "body": "After more extensive testing I am sure that now it works and the root cause was some corruption in my phone Android file system. I think this issue can now be closed."
+  }
+ ]
+}

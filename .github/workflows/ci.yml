@@ -21,7 +21,9 @@ jobs:
           python-version: "3.12"
       - name: Build search index (data/ -> site/)
         run: python3 scripts/build_index.py
-      - name: Search acceptance check (docs + threads for demo queries)
+      - name: Validate distilled schema (url required on every record)
+        run: python3 scripts/validate_distilled.py
+      - name: Search acceptance (docs + threads + distilled)
         run: node scripts/search_check.mjs
       - name: Verify static site artifacts exist
         run: |
@@ -56,7 +58,7 @@ jobs:
           path: site
       - name: CF token missing - manual setup step
         if: env.CLOUDFLARE_API_TOKEN == ''
-        run: echo "CF token secret not set - deploy skipped (designed manual gate)."
+        run: echo "CF token secret not set - deploy skipped (manual gate)."
       - name: Deploy site to Cloudflare Pages (aaps-atlas)
         if: env.CLOUDFLARE_API_TOKEN != ''
         run: npx -y wrangler@4.129.0 pages deploy site --project-name aaps-atlas

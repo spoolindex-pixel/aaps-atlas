@@ -1,0 +1,39 @@
+{
+ "id": 1590434991,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2420,
+ "title": "\"Pump busy\" until AAPS restart",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2420",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-02-18T18:43:41Z",
+ "closed_at": "2023-02-26T18:11:00Z",
+ "comment_count": 4,
+ "body": "[AndroidAPS._2023-02-17_01-00-00_.14.log](https://github.com/nightscout/AndroidAPS/files/10774947/AndroidAPS._2023-02-17_01-00-00_.14.log)\r\n\r\n- Loop reverted to default basal for hours until I noticed (because of an UAM and high BG). A restart of AAPS immeditately fixed the issue.\r\n- Log indicates the \"Pump is busy\", as if the last command is hanging and canceled on AAPS restart. \r\n- In the log this begins at 21:17 and stays like that until AAPS is restarted.\r\n- This happends frequently (2x this week).\r\n\r\nAAPS version: 3.1.0.3-dev-h, but also happened with dev-g\r\nPump: DanaRS v3, Model: 05, Protokoll: 12, Code: [11]\r\nNightscout: dev",
+ "comments": [
+  {
+   "id": 1435763206,
+   "user": "MilosKozak",
+   "created_at": "2023-02-18T20:31:33Z",
+   "body": "```\r\n21:10:38.986 [Thread-14481] D/PUMPBTCOMM: [BLEComm.sendMessage():779]: >>>>> BASAL__APS_SET_TEMPORARY_BASAL B2 C1  B4 00 96 \r\n21:10:41.518 [RxCachedThreadScheduler-64] D/AUTOMATION: [AutomationPlugin$onStart$11.accept():176]: Grabbed new BT event: EventBTChange[deviceAddress=E5:DC:4C:F5:84:EE,deviceName=Versa 2,state=CONNECT]\r\n21:10:44.040 [Thread-14481] W/PUMPBTCOMM: [BLEComm.sendMessage():839]: Reply not received BASAL__APS_SET_TEMPORARY_BASAL\r\n21:10:45.041 [Thread-14481] D/PUMPCOMM: [DanaRSPacketAPSHistoryEvents.<init>():44]: Loading event history from: 17.02.23 21:04\r\n21:10:45.042 [Thread-14481] D/PUMPCOMM: [DanaRSService.loadEvents():266]: Loading event history from: 17.02.23 21:04\r\n21:10:45.043 [Thread-14481] D/PUMPBTCOMM: [BLEComm.sendMessage():779]: >>>>> APS_HISTORY_EVENTS B2 C2  17 02 11 15  04 23 \r\n21:10:50.097 [Thread-14481] W/PUMPBTCOMM: [BLEComm.sendMessage():839]: Reply not received APS_HISTORY_EVENTS\r\n```\r\n\r\nPump stops responding. From logs I'd say connection of Versa 2 is the reason\r\nBest would be resolve it on Android side but as a workaround which could help AAPS recover from this situation you may try add following code:\r\n\r\nBLEComm:841 \r\n`danaRSPlugin.disconnect(\"Reply not received\")`\r\n\r\nlet me know"
+  },
+  {
+   "id": 1435772891,
+   "user": "tanja3981",
+   "created_at": "2023-02-18T21:28:20Z",
+   "body": "Thanks a lot, I will try this out and report back!\r\n\r\nIf the Versa2 is the cause, this is very weird, as I have that watch for more than two years now and the problem only appeared recently. I will watch this."
+  },
+  {
+   "id": 1442183754,
+   "user": "tanja3981",
+   "created_at": "2023-02-23T17:44:06Z",
+   "body": "@MilosKozak The additional line helped, no more outages since then. Thank you!!! \nShould I create a PR so anybody else could profit or keep it in my fork? "
+  },
+  {
+   "id": 1445423683,
+   "user": "MilosKozak",
+   "created_at": "2023-02-26T18:11:00Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/1fa2cb937095647843ef9febdc344b26fb6133a9"
+  }
+ ]
+}

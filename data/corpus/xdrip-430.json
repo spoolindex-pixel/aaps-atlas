@@ -1,0 +1,39 @@
+{
+ "id": 321887861,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 430,
+ "title": "xDrip+ hard crash with  libre oop algo on new sensor",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/430",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2018-05-10T10:41:55Z",
+ "closed_at": "2018-05-13T06:21:10Z",
+ "comment_count": 4,
+ "body": "Xdrip+ will crash consistently when using libre as collector and out of process algorithm on a brand new sensor, when only one historic bg is available. This hit me in real life after starting a new sensor may 6th.\r\n\r\nPlease note that libre will add more historic bgs every five minutes. So this crash only happens when sensor is brand new and only one historic bg is available.\r\n\r\nCrashlog:\r\n```\r\n\r\n05-10 12:30:58.271 20049 20716 E LibreBlock: Updating bg for timestamp 1525948257328\r\n05-10 12:30:58.288 20049 20716 E BgReading: Invalid data fed to InsertFromInt\r\n05-10 12:30:58.309 20049 20716 E AndroidRuntime: FATAL EXCEPTION: Thread-53\r\n05-10 12:30:58.309 20049 20716 E AndroidRuntime: Process: com.eveningoutpost.dexdrip, PID: 20049\r\n05-10 12:30:58.309 20049 20716 E AndroidRuntime: org.apache.commons.math3.exception.NumberIsTooSmallException: number of points (2)\r\n05-10 12:30:58.309 20049 20716 E AndroidRuntime: \tat org.apache.commons.math3.analysis.interpolation.SplineInterpolator.interpolate(SplineInterpolator.java:74)\r\n05-10 12:30:58.309 20049 20716 E AndroidRuntime: \tat com.eveningoutpost.dexdrip.LibreAlarmReceiver.CalculateFromDataTransferObject(LibreAlarmReceiver.java:269)\r\n05-10 12:30:58.309 20049 20716 E AndroidRuntime: \tat com.eveningoutpost.dexdrip.Models.LibreOOPAlgorithm.HandleData(LibreOOPAlgorithm.java:112)\r\n05-10 12:30:58.309 20049 20716 E AndroidRuntime: \tat com.eveningoutpost.dexdrip.NSEmulatorReceiver$1.run(NSEmulatorReceiver.java:105)\r\n05-10 12:30:58.403  9209  9209 E FJD.ExternalReceiver: Unable to bind to com.google.android.apps.tachyon.jobs.DuoJobService\r\n```\r\n\r\nPlease see this change in libreoopalgorithm to contsistently reproduce this bug: https://github.com/dabear/LibreOOPAlgorithm/commit/29e12b8a812234e2c75d67ea199a3c6c830e6a73",
+ "comments": [
+  {
+   "id": 388018991,
+   "user": "dabear",
+   "created_at": "2018-05-10T10:42:33Z",
+   "body": "@tzachi-dar maybe you could take a look at this"
+  },
+  {
+   "id": 388175054,
+   "user": "tzachi-dar",
+   "created_at": "2018-05-10T20:26:37Z",
+   "body": "The issue is the fact that the extrapolation library wants to have at least 3 values each time.\r\n\r\n public PolynomialSplineFunction interpolate(double x[], double y[])\r\n        throws DimensionMismatchException,\r\n               NumberIsTooSmallException,\r\n               NonMonotonicSequenceException {\r\n        if (x.length != y.length) {\r\n            throw new DimensionMismatchException(x.length, y.length);\r\n        }\r\n\r\n        if (x.length < 3) {\r\n            throw new NumberIsTooSmallException(LocalizedFormats.NUMBER_OF_POINTS,\r\n                                                x.length, 3, true);\r\n        }\r\n\r\n"
+  },
+  {
+   "id": 388193346,
+   "user": "tzachi-dar",
+   "created_at": "2018-05-10T21:34:45Z",
+   "body": "Sent https://github.com/NightscoutFoundation/xDrip/pull/431 as a fix."
+  },
+  {
+   "id": 388537729,
+   "user": "jamorham",
+   "created_at": "2018-05-12T07:48:43Z",
+   "body": "Can I mark this as resolved?"
+  }
+ ]
+}

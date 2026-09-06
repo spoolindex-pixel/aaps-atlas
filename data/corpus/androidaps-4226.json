@@ -1,0 +1,41 @@
+{
+ "id": 3514693392,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4226,
+ "title": "AAPS freezes if BT communication with Medtrum is disrupted",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4226",
+ "state": "closed",
+ "labels": [
+  "medtrum"
+ ],
+ "created_at": "2025-10-14T16:35:54Z",
+ "closed_at": "2025-11-08T06:57:00Z",
+ "comment_count": 4,
+ "body": "For several weeks now, I have noticed that AAPS freezes when I leave the room (during communication between AAPS and Medtrum). Afterwards, the app interface is blank or unusable, Android says that AAPS is not responding and asks if I want to wait. Restarting the app fixes the problem.\nToday, the problem occurred again with yesterday's dev (including individual private changes, but these do not affect this area).\nLooking at the log, I suspect that AAPS was still working at 16:18:54, after which futile attempts to connect to Medtrum began, before Medtrum Service reached IdleState at 16:20:02. From then on, there is very little activity in the log...\nTime of restart: 16:36:42.\n\n[AndroidAPS.log](https://github.com/user-attachments/files/22909128/AndroidAPS.log)\n\nThanks for fixing!",
+ "comments": [
+  {
+   "id": 3421577812,
+   "user": "swissalpine",
+   "created_at": "2025-10-20T10:55:13Z",
+   "body": "<img width=\"1080\" height=\"2640\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/376219c6-75ed-4856-b1e4-456506b19c78\" />\n\nThere was another freeze today. This time after syncing with Nightscout – the Medtrum pump was apparently not involved this time.\nFreeze probably from 12:23:27\n```12:23:27.510 [RxCachedThreadScheduler-65] D/NSCLIENT: [NSClientV3Plugin$onStart$8.accept():263]: ► UPL Start```\nRestart at 12:37.01\n\n\n[AndroidAPS.log](https://github.com/user-attachments/files/23000121/AndroidAPS.log)"
+  },
+  {
+   "id": 3421587088,
+   "user": "swissalpine",
+   "created_at": "2025-10-20T10:58:27Z",
+   "body": "Related to https://github.com/nightscout/AndroidAPS/issues/3984 ???"
+  },
+  {
+   "id": 3432382586,
+   "user": "swissalpine",
+   "created_at": "2025-10-22T13:31:52Z",
+   "body": "New Freeze.\nBeginn: 21:52:54.866\nAAPS Restart: 22:07:50.509\n\n[AndroidAPS.log](https://github.com/user-attachments/files/23054468/AndroidAPS.log)\n"
+  },
+  {
+   "id": 3506081213,
+   "user": "swissalpine",
+   "created_at": "2025-11-08T06:57:00Z",
+   "body": "Since I haven't observed any more freezes with the new dev versions, I'm closing the issue. "
+  }
+ ]
+}

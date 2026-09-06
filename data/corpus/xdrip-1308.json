@@ -1,0 +1,119 @@
+{
+ "id": 601122532,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1308,
+ "title": "Enabling OOP calibration",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1308",
+ "state": "closed",
+ "labels": [
+  "duplicate"
+ ],
+ "created_at": "2020-04-16T14:46:30Z",
+ "closed_at": "2021-03-27T04:34:34Z",
+ "comment_count": 17,
+ "body": "Hello,\r\nI wrote this issue to reopen the problem, discussed early in the issue [#525](https://github.com/NightscoutFoundation/xDrip/issues/525). I would ask one more time to enable the checkbox \"**OOP algorithm calibration**\". Using OOP algorithm is the only way, which helped me to connect xDrip+, Miaomiao2 & Libre2. But BG values without calibration turned out systematically far from a glucose meter. As a workaround, I could toggle this checkbox by saving xDrip+ settings to XML, editing the value of option \"_calibrate_external_libre_algorithm_\" from \"_false_\" to \"_true_\" and loading the settings back. When I've done a calibration after this, BG values became close enough to glucose meter's ones. Why don't leave the decision to use OOP calibration to user with appropriate precautions, if necessary?\r\n\r\nIf it will facilitate changes, I could do a pull request.",
+ "comments": [
+  {
+   "id": 614729702,
+   "user": "dabear",
+   "created_at": "2020-04-16T15:38:40Z",
+   "body": "The algorithm has A low boundary of 39 mgdl. I.e. It is not possible to get values below that. Enabling this feature might be unsafe as you can miss out on certain low glucose  scenarios. "
+  },
+  {
+   "id": 614747949,
+   "user": "tzachi-dar",
+   "created_at": "2020-04-16T16:10:46Z",
+   "body": "I second deaber.\r\nIf for example when your bg is 100, the oop is giving a value of 50, this means that you have to add 50 to the result.\r\n\r\nSo, in the case that your BG will be 70 OOP should give 20 for us to get a good result (20 + 50 = 70).\r\nBut since the limit on oop is 40, xdrip will give 90 (that is 40+50). \r\nIn other words you will never be in a hypo.\r\n\r\nThis is a dangerous thing. Don't use it."
+  },
+  {
+   "id": 614751363,
+   "user": "akadismas",
+   "created_at": "2020-04-16T16:16:48Z",
+   "body": "> The algorithm has A low boundary of 39 mgdl. I.e. It is not possible to get values below that. Enabling this feature might be unsafe as you can miss out on certain low glucose scenarios.\r\n\r\nOk, maybe as a quick fix just make a notice about that limitation under the checkbox and enable it? I had a few weeks of good experience of OOP calibration and ready to put up with this limitation. Because OOP algorithm without calibration shows too distorted BG-values, it's unacceptable for me. I suggest to let users to decide what is the lesser of evils.\r\n\r\nAnother question for future - will it make sense to try to fix this limitation and make a pull request, or there are some reasons not to do that?"
+  },
+  {
+   "id": 614765186,
+   "user": "akadismas",
+   "created_at": "2020-04-16T16:42:09Z",
+   "body": "> But since the limit on oop is 40, xdrip will give 90 (that is 40+50).\r\n> In other words you will never be in a hypo.\r\n\r\nThanks, I realized the possible theoretical danger on this example. But in practice OOP algorithm with calibration gave BG-values up to 3.2 mmol/l (57mgdl), so I never missed hypos."
+  },
+  {
+   "id": 614769587,
+   "user": "akadismas",
+   "created_at": "2020-04-16T16:50:31Z",
+   "body": "> Don't use it.\r\n\r\nCurrently I don't know any working alternative for the bundle xDrip + Miaomiao2 + Libre2.\r\nAnyway permanently disabled checkbox in settings looks strange, maybe move it to experimental section?"
+  },
+  {
+   "id": 614899168,
+   "user": "tzachi-dar",
+   "created_at": "2020-04-16T21:12:51Z",
+   "body": "> Currently I don't know any working alternative for the bundle xDrip + Miaomiao2 + Libre2.\r\n> Anyway permanently disabled checkbox in settings looks strange, maybe move it to experimental section?\r\n\r\nThe goal was to enable it, but then we have realized it is too dangerous to be used."
+  },
+  {
+   "id": 615318976,
+   "user": "akadismas",
+   "created_at": "2020-04-17T15:45:14Z",
+   "body": "Ok, I agree that being unaware of OOP calibration limitation (40 mgdl threshold) could lead user to a hidden hypo and this danger can't be ignored. On the other hand OOP algorithm at the moment is the only way to use the bundle of xDrip + Miaomiao2 + Libre2 (correct me if not). With enabled calibration it is very useful and reliable in wide range of BG-values in my practice. But without calibration BG-values from OOP are systematically underestimated, so trusting it in the long term will be dangerous too.\r\nIf we can't do anything with OOP threshold, maybe it is possible to implement some additional checks to prevent users from hidden hypos. E.g. introduse the concept of \"lower trust threshold\".\r\nWhen OOP not used a lower trust threshold will be set to 0. \r\nWhen OOP used without calibration a lower trust threshold will be set to 40 mgdl. \r\nWhen OOP used with calibration a lower trust threshold will be set to 40 mgdl + bias correction after calibration.\r\nThis lower trust threshold could be displayed at the graph as a line and when BG-values go near this line an alarm will appear that real BG-values could be much lower.\r\nWhat do you think about such a variant?"
+  },
+  {
+   "id": 616087502,
+   "user": "mick711",
+   "created_at": "2020-04-19T09:37:48Z",
+   "body": "I'm very interested about that, i use Oop and never have problem when i go to hypo. I use librekink for know if Oop work fine and value is thé same. I use libre 1 with blucon. So i think in thé futur i use dexcom for always enable smb. Thanks "
+  },
+  {
+   "id": 616344185,
+   "user": "akadismas",
+   "created_at": "2020-04-20T06:43:17Z",
+   "body": "> i use Oop and never have problem when i go to hypo\r\n\r\nIf without calibration I have an explanation (see next)\r\n\r\n> I use librekink for know if Oop work fine and value is thé same.\r\n\r\nAs I know, OOP and LibreLink use the same algorithm, so its values should match. I compared BG-values between OOP and LibreLink on one side and glucose meters on other. Results were always the same - OOP and LibreLink systematically underestimated BG-values, so I I thought about calibration. And it's my explanation why you never have problem with hypo detection. But the problem may be that OOP and LibreLink give sometimes wrong hypos and underestimate high BG-values, which is not so good too."
+  },
+  {
+   "id": 617204730,
+   "user": "RainerTischnet",
+   "created_at": "2020-04-21T14:10:03Z",
+   "body": "The calibration works with the old original xdrip function. Many tests were required. The values ​​are identical to the patch Xdrip calibration. However, I use the same sensor, but the reading time is not the same. 100 -> 99.\r\nThe problem is also that the calibrated values ​​are not sent to androidaps, but the raw data from the ooplibre app. I use an Androidaps with a virtual pump for the test. My loop is secure thanks to the patch. However, it will be difficult for users to load it. Checkins are constantly blocked on Github. It would make sense if xdrip treats the values ​​the same way as the values ​​of the patch app. Then we would be safe. and again: the raw data of the patched app and ooplibre are the same.\r\nI have separated from the nightscout rest API on the smartphone with the ooplibre xdrip, now the calibrated values ​​are sent to Aaps. The calibrations are not transferred to the Xdrip blood sugar table."
+  },
+  {
+   "id": 617336987,
+   "user": "RainerTischnet",
+   "created_at": "2020-04-21T18:29:26Z",
+   "body": "> I'm very interested about that, i use Oop and never have problem when i go to hypo. I use librekink for know if Oop work fine and value is thé same. I use libre 1 with blucon. So i think in thé futur i use dexcom for always enable smb. Thanks\r\n\r\nI use temp targets to enable smb. Libre 2"
+  },
+  {
+   "id": 617760550,
+   "user": "RainerTischnet",
+   "created_at": "2020-04-22T12:52:39Z",
+   "body": "since yesterday i set the calibrate oop to true. it cannot be used for loob. I am posting a photo to compare the data. libre-app above, oop below. as you can see, the row data is the same, only the calibration is not. why not rate values the same way as with the libre patch?"
+  },
+  {
+   "id": 617815552,
+   "user": "RainerTischnet",
+   "created_at": "2020-04-22T14:31:48Z",
+   "body": "![570318D2-D854-44EB-832B-0552D0FA1D35](https://user-images.githubusercontent.com/49461374/79994812-b55e6c80-84b6-11ea-8558-39300106b6ba.jpeg)\r\n"
+  },
+  {
+   "id": 617865966,
+   "user": "akadismas",
+   "created_at": "2020-04-22T15:54:09Z",
+   "body": "> since yesterday i set the calibrate oop to true. it cannot be used for loob. I am posting a photo to compare the data. libre-app above, oop below. as you can see, the row data is the same, only the calibration is not. why not rate values the same way as with the libre patch?\r\n\r\nHi, I'm not sure I clearly understood your problem and its relationship with original theme. Did you adjust the calibration according to BG-values from a glucose meter after enabling OOP calibration or not? In my opinion the ultimate goal of calibration is to bring displayed BG-values into compliance with BG-values from a glucose meter. I don't see the point of comparing BG-values from libre-app, which may have its own inaccuracy, with BG-values from OOP calibration."
+  },
+  {
+   "id": 617871375,
+   "user": "RainerTischnet",
+   "created_at": "2020-04-22T16:02:57Z",
+   "body": "> \r\n> \r\n> > since yesterday i set the calibrate oop to true. it cannot be used for loob. I am posting a photo to compare the data. libre-app above, oop below. as you can see, the row data is the same, only the calibration is not. why not rate values the same way as with the libre patch?\r\n> \r\n> Hi, I'm not sure I clearly understood your problem and its relationship with original theme. Did you adjust the calibration according to BG-values from a glucose meter after enabling OOP calibration or not? In my opinion the ultimate goal of calibration is to bring displayed BG-values into compliance with BG-values from a glucose meter. I don't see the point of comparing BG-values from libre-app, which may have its own inaccuracy, with BG-values from OOP calibration.\r\n\r\nthe libre calibration in the xdrip largely corresponds to the measured values ​​with the Contour next one. I'm very happy with that, especially because it has Bluetooth. It would only be nice if there was no dependency on the libre app."
+  },
+  {
+   "id": 683408209,
+   "user": "tzachi-dar",
+   "created_at": "2020-08-30T11:20:10Z",
+   "body": "We now have the possibility to calibrate libre 2 (using mm/blucon/bubble).\r\nIf anyone is interested to test this, please write here."
+  },
+  {
+   "id": 808649961,
+   "user": "Navid200",
+   "created_at": "2021-03-27T04:34:34Z",
+   "body": "@akadismas \r\nPlease don't open an issue if a duplicate, open or closed, exists.\r\nKeeping all the discussion in one thread helps keep continuity and present the correct number of people affected.\r\n\r\nDuplicate https://github.com/NightscoutFoundation/xDrip/issues/525"
+  }
+ ]
+}

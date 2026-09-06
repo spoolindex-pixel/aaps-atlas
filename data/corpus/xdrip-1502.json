@@ -1,0 +1,174 @@
+{
+ "id": 739309166,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1502,
+ "title": "New mongodb uri format is not supported by xDrip+",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1502",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "sync-nightscout"
+ ],
+ "created_at": "2020-11-09T19:39:01Z",
+ "closed_at": "2021-03-12T17:01:45Z",
+ "comment_count": 29,
+ "body": "After migrating from the old mlab to the newer MongoDB Atlas version, xDrip no longer seems to be able to upload directly to the database. You can use the new \"mongo+srv://\" URI prefix in the cloud parameters but the logs seem to show that this is subsequently being rejected.\r\n\r\n![IMG_20201109_191257](https://user-images.githubusercontent.com/10944929/98587491-21bd8380-22c2-11eb-8920-ad6595a11d0d.jpg)\r\n",
+ "comments": [
+  {
+   "id": 728846773,
+   "user": "sulkaharo",
+   "created_at": "2020-11-17T10:47:05Z",
+   "body": "FYI Nightscout does not support direct to Mongo uploads anymore (it never really did, the fact it worked after REST API was introduce was incidental), so the \"correct\" fix here is to remove the Mongo uploads entirely and/or label it as something no Nightscout user should use."
+  },
+  {
+   "id": 729121741,
+   "user": "Cagier",
+   "created_at": "2020-11-17T18:35:25Z",
+   "body": "That's a pity. I use both so that I can keep a second site running for redundancy. I did read earlier today  that Atlas also support the old URI format (but it is less future-proof) so I might try that anyway and if it works then it works. Thanks for the info anyway."
+  },
+  {
+   "id": 729129025,
+   "user": "tolot27",
+   "created_at": "2020-11-17T18:49:13Z",
+   "body": "@sulkaharo Shall we remove the MongoDB upload or just make them visible in the engineering mode, only?"
+  },
+  {
+   "id": 729179079,
+   "user": "sulkaharo",
+   "created_at": "2020-11-17T20:21:49Z",
+   "body": "Engineering mode would make a lot of sense. As pointed out in the thread, there's valid use cases for it like backups and possibly other experimentation, but I'd love a solution that reduces the likelihood a user who doesn't know exactly what they're doing assumes it's the good way to upload data to Nightscout."
+  },
+  {
+   "id": 729562797,
+   "user": "tolot27",
+   "created_at": "2020-11-18T09:48:00Z",
+   "body": "I'm still unsure whether we should add support for the URI scheme `mongo+srv` or just disable the setting except in engineering mode.\r\n@sulkaharo Do I understand you correctly that the new URI scheme is just not supported but still possible?\r\nAre there any differences between `mongo` and `mongo+srv`."
+  },
+  {
+   "id": 729570421,
+   "user": "tzachi-dar",
+   "created_at": "2020-11-18T10:01:00Z",
+   "body": "We should make it very clear that uploading to nightscout sites is not supported and will not work.\r\nThere are other legitimate uploading/downloading supported ways, for example uploading of libreblock data.\r\n\r\nI intend to try and handle this in a week or two."
+  },
+  {
+   "id": 729572329,
+   "user": "tolot27",
+   "created_at": "2020-11-18T10:04:07Z",
+   "body": "@tzachi-dar What do you try to handle? The clear statement not uploading to nightscout or uploading of libreblock data?"
+  },
+  {
+   "id": 729579339,
+   "user": "tzachi-dar",
+   "created_at": "2020-11-18T10:16:50Z",
+   "body": "Two things:\r\n1) making libre block uploading work.\r\n2) Making libre block downloading work.\r\n3) Making sure that there is a message saying that uploading to nightscout is not allowed.\r\n4) (maybe) making uploading to nightscout requires engineering mode."
+  },
+  {
+   "id": 735365472,
+   "user": "tzachi-dar",
+   "created_at": "2020-11-29T09:21:59Z",
+   "body": "I have made many experiments to download from a mongodb, and failed.\r\nLooking at https://stackoverflow.com/questions/50916467/how-to-connect-to-atlas-m0-free-tier-cluster-correctly-via-java-driver this seems possible. I have tried this, but failed.\r\n\r\nOther places suggest that it would not work, and we should move to stich.\r\nFor example: \r\nhttps://jira.mongodb.org/browse/JAVA-3245\r\n\r\n\r\nhttps://stackoverflow.com/questions/59538402/how-to-properly-connect-mongodb-atlas-to-an-application-on-android-studio-that\r\n\r\nhttps://stackoverflow.com/questions/55110874/how-do-i-connect-an-android-app-to-mongodb-stitch\r\n\r\nSo, I wonder if the correct thing to do is move to stich / keep fighting for a workaround on mongo, or simply use nightscout rest api."
+  },
+  {
+   "id": 735366094,
+   "user": "tzachi-dar",
+   "created_at": "2020-11-29T09:28:09Z",
+   "body": "Actually, looking at https://stackoverflow.com/questions/50916467/how-to-connect-to-atlas-m0-free-tier-cluster-correctly-via-java-driver this is not android. So, it seems to me that we are either at stich or at rest api.\r\n\r\nprobably rest should be simpler.\r\n\r\nThoughts?"
+  },
+  {
+   "id": 735690708,
+   "user": "sulkaharo",
+   "created_at": "2020-11-30T10:13:54Z",
+   "body": "From Nightscout perspective, users only using REST would be the right way forward"
+  },
+  {
+   "id": 743193672,
+   "user": "tzachi-dar",
+   "created_at": "2020-12-11T13:30:41Z",
+   "body": "@sulkaharo I'm trying to upload a document to a new collection in nightscout but my code fails with error 404\r\n\r\nHere is the code that I'm trying:\r\n\r\nurl = 'https://snirdar3.herokuapp.com/api/v1/libre'\r\npayload = {'some': 'data'}\r\npayload = {\"_id\":\"5fd370324e412324f4d253a5\",\"device\":\"xDrip-LimiTTerWifi\",\"date\":1607692311331,\"dateString\":\"2020-12-11T13:11:51.331Z\",\"sgv\":134,\"delta\":-12.55,\"direction\":\"SingleDown\",\"type\":\"sgv\",\"filtered\":131176.46075,\"unfiltered\":131176.46075,\"rssi\":100,\"noise\":1,\"sysTime\":\"2020-12-11T13:11:51.331Z\",\"utcOffset\":120,\"mills\":1607692311331}\r\nheaders = {'content-type': 'application/json',\r\n           'api-secret': 'xxx'}\r\n\r\nresponse = requests.post(url, data=json.dumps(payload), headers=headers)\r\nprint(response, response.content)\r\n\r\nIf I upload the same data to the entries collection this works. So, I wonder if nightscout only supports uploading to a fixed set of collections."
+  },
+  {
+   "id": 743202725,
+   "user": "sulkaharo",
+   "created_at": "2020-12-11T13:50:02Z",
+   "body": "Yes, Nightscout only supports the predefined collections and data formats"
+  },
+  {
+   "id": 743206165,
+   "user": "tzachi-dar",
+   "created_at": "2020-12-11T13:57:17Z",
+   "body": "Should it be complicated to add another collection to it?"
+  },
+  {
+   "id": 743208072,
+   "user": "sulkaharo",
+   "created_at": "2020-12-11T14:00:54Z",
+   "body": "Depends - what's the use case? The system expects treatment data with carbs and insulin to live in /treatments and CGM data to live in /entries and from data model perspective the only justification for a new collection would be the addition of completely new type of data."
+  },
+  {
+   "id": 743214206,
+   "user": "tzachi-dar",
+   "created_at": "2020-12-11T14:11:57Z",
+   "body": "The system should not do anything with the data. Only allow to upload and download it.\r\nBasically we are talking about libre readings. There are pis that collect and write them and then xDrip reads them.\r\nThey used to write to mongo directly, but now it is not possible. "
+  },
+  {
+   "id": 743303258,
+   "user": "sulkaharo",
+   "created_at": "2020-12-11T16:47:25Z",
+   "body": "If you're storing Libre readings, why not store them in /entries? Nightscout is not a general data storage for CGM apps to store data for their own use, vs an ecosystem component to allow interoperability - if you want to push data into Nightscout, it should play nice with the built-in visualisation and alarms and you should assume apps other than the uploader will access it, so it should be stored in places apps expect to be in and in format that complies with the core Nightscout field spec."
+  },
+  {
+   "id": 743448640,
+   "user": "sulkaharo",
+   "created_at": "2020-12-11T21:58:37Z",
+   "body": "Actually - has xDrip been using the mongo connection to upload data to arbitrary collections, not just the ones Nightscout uses?"
+  },
+  {
+   "id": 743778930,
+   "user": "tzachi-dar",
+   "created_at": "2020-12-12T16:18:56Z",
+   "body": "Well xDrip had the possibility to store data to a mongodb. Some of this data was stored to collections that nightscout was not aware of. Some of them were stored to DBS that were not connected to NS at all...\r\nWith the move to atlas, xDrip has lost the ability to write directly.\r\nI'll try to see if using the entires collection can be used, or maybe we need another rest service to be installed on heroku. "
+  },
+  {
+   "id": 743919956,
+   "user": "tzachi-dar",
+   "created_at": "2020-12-12T23:30:42Z",
+   "body": "OK, I got a web service that is bringing the node calls... No need for a change in nightscout."
+  },
+  {
+   "id": 745959502,
+   "user": "tzachi-dar",
+   "created_at": "2020-12-16T09:09:15Z",
+   "body": "I have created a PR to start using rest at least for reading libre blocks.\r\nhttps://github.com/NightscoutFoundation/xDrip/pull/1557"
+  },
+  {
+   "id": 746099255,
+   "user": "tolot27",
+   "created_at": "2020-12-16T10:57:48Z",
+   "body": "@tzachi-dar If you link the issue with the PR (as I did), it will be closed automatically, if the PR is merged. \r\nPlease can you briefly describe, why it is necessary to directly download/upload to a mongoDB?"
+  },
+  {
+   "id": 746238071,
+   "user": "tzachi-dar",
+   "created_at": "2020-12-16T12:47:27Z",
+   "body": "When using libre, there are a few ways to have all house coverage.\r\nOne of the methods is shown here: https://github.com/tzachi-dar/LibreAllHouse\r\nThis methods is based on rpis that can be contacted directly by xDrip or they can write to a mongodb.\r\n\r\nThe PR sent allows xDrip to read from this mongodb (using rest api as mongo is not supported by android any more).\r\nThe main advantage of this method is that xDrip does not have to be on the same wifi network with the pis."
+  },
+  {
+   "id": 797203590,
+   "user": "Navid200",
+   "created_at": "2021-03-12T03:10:18Z",
+   "body": "Is this still an issue?\r\nCan we still use mongoDB?"
+  },
+  {
+   "id": 797288146,
+   "user": "sulkaharo",
+   "created_at": "2021-03-12T07:15:14Z",
+   "body": "You absolutely should not use MongoDB data injection with Nightscout."
+  },
+  {
+   "id": 797624122,
+   "user": "Navid200",
+   "created_at": "2021-03-12T17:01:45Z",
+   "body": "xDrip users who like to have a repository of their blood glucose readings can use Nightscout as long as they follow the clear instructions.  \r\n\r\nMongo is a no go and we were supposed to switch to Atlas.  And one can even set up a new Nightscout account as well, again following the clear Nightscout instructions.\r\n\r\nIf anyone likes to make changes to Nightscout, the suggestions should be made on the Nightscout site, not xDrip.\r\n\r\nI am closing this.  \r\nIf you want to reopen, please explain why not being able to upload to MongoDB is an xDrip issue."
+  }
+ ]
+}

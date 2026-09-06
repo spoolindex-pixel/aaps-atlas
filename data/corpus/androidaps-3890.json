@@ -1,0 +1,51 @@
+{
+ "id": 2926675664,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3890,
+ "title": "Tidepool Integration: Authentication Changes",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3890",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-03-18T00:04:40Z",
+ "closed_at": "2025-09-25T21:11:43Z",
+ "comment_count": 6,
+ "body": "Tidepool is planning to deprecate our legacy authentication APIs in favor of new OAuth2 / OpenID Connect standards based APIs. You can find the documentation here:\n\nhttps://developer.tidepool.org/TidepoolApi/#tag/Authentication/operation/Authorize\nhttps://developer.tidepool.org/TidepoolApi/#tag/Authentication/operation/ObtainToken\n\nWe see that AndroidAPS is currently using the legacy authentication APIs: https://github.com/nightscout/AndroidAPS/blob/master/plugins/sync/src/main/kotlin/app/aaps/plugins/sync/tidepool/comm/TidepoolApiService.kt#L28-L29\n\nPlease contact us to discuss migration to the new authentication APIs:\n\nhttps://developer.tidepool.org/\ninfo@tidepool.org\n\nSincerely,\n\nTapani Otala\nVP, Engineering\nTidepool\n",
+ "comments": [
+  {
+   "id": 2763559926,
+   "user": "MilosKozak",
+   "created_at": "2025-03-29T15:46:53Z",
+   "body": "![Image](https://github.com/user-attachments/assets/0560fa37-b1c6-4e45-ad4c-0883a95e77e3)\n@tjotala what is allowed clientId ?\n\"AAPS\" didn't pass"
+  },
+  {
+   "id": 2763600636,
+   "user": "MilosKozak",
+   "created_at": "2025-03-29T16:04:44Z",
+   "body": "tha same for redirectUri \"aaps://callback/tidepool\""
+  },
+  {
+   "id": 2804272926,
+   "user": "toddkazakov",
+   "created_at": "2025-04-15T08:37:04Z",
+   "body": "Hi @MilosKozak, here are the client details:\n\nIntegration:\n- Authorization Endpoint: https://auth.integration.tidepool.org/realms/integration/protocol/openid-connect/auth\n- Token Endpoint: https://auth.integration.tidepool.org/realms/integration/protocol/openid-connect/token\n- Well Known: https://auth.integration.tidepool.org/realms/integration/.well-known/openid-configuration\n- API Host: https://external.integration.tidepool.org\n- Client ID:`aaps`\n- Callback URL: `aaps://callback/tidepool`\n\nProduction:\n- Authorization Endpoint: https://auth.tidepool.org/realms/tidepool/protocol/openid-connect/auth\n- Token Endpoint: https://auth.tidepool.org/realms/tidepool/protocol/openid-connect/token\"\n- Well Known: https://auth.tidepool.org/realms/tidepool/.well-known/openid-configuration\n- API Host: https://api.tidepool.org\n- Client ID:`aaps`\n- Callback URL: `aaps://callback/tidepool`\n\nLet me know if I can assist you in any other way. Thanks!\n"
+  },
+  {
+   "id": 3273828296,
+   "user": "toddkazakov",
+   "created_at": "2025-09-10T08:12:06Z",
+   "body": "@MilosKozak is there any progress on this issue?"
+  },
+  {
+   "id": 3285093157,
+   "user": "MilosKozak",
+   "created_at": "2025-09-12T12:26:54Z",
+   "body": "https://github.com/nightscout/AndroidAPS/pull/4151/"
+  },
+  {
+   "id": 3335958655,
+   "user": "MilosKozak",
+   "created_at": "2025-09-25T21:11:39Z",
+   "body": "@toddkazakov some people have problems displaying data in Tidepool (mostly profile updates).\nIs there someone who can help on Tidepool side and analyzi the issue. I did my best and data is accepted by Tidepool"
+  }
+ ]
+}

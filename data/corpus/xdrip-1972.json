@@ -1,0 +1,23 @@
+{
+ "id": 1118626895,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1972,
+ "title": "Make xDrip compatible with latest Full Android Smartwatches",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1972",
+ "state": "closed",
+ "labels": [
+  "device-watch"
+ ],
+ "created_at": "2022-01-30T17:48:45Z",
+ "closed_at": "2022-01-30T17:51:48Z",
+ "comment_count": 1,
+ "body": "As per discussed on this [topic](https://github.com/Navid200/xDrip/discussions/161), xDrip is detecting Full Android Smartwaches as Android Wear (wearOS) Smartwaches and Bluetooth Service stops after smartwatches are wrongly detected.\r\n\r\nI have compiled a version with @tolot27 code suggestion and shared on [xDrip Facebook](https://www.facebook.com/groups/xDripG5/posts/6823530591053711/) group and this is the list of watches tested and confirmed the fix:\r\n- LEMFO LEMP\r\n- Rogbid Brave Pro\r\n- Kospet Optimus 2\r\n- Rogbid AIR\r\n\r\nThe patch applied on `app/src/main/java/com/eveningoutpost/dexdrip/Services/Ob1G5CollectionService.java`:\r\nLine [972](https://github.com/NightscoutFoundation/xDrip/blob/5bf48f918ce10bd59c8eb855551c2ae3d663ded7/app/src/main/java/com/eveningoutpost/dexdrip/Services/Ob1G5CollectionService.java#L972)\r\n**Before:**\r\n`android_wear = (getResources().getConfiguration().uiMode & Configuration.UI_MODE_TYPE_MASK) == Configuration.UI_MODE_TYPE_WATCH;`\r\n**After:**\r\n`android_wear = getPackageManager().hasSystemFeature(PackageManager.FEATURE_WATCH);\r\n`\r\n**Adding at the top of the file:**\r\n`import android.content.pm.PackageManager;`\r\n\r\nThe patch applied on `app/src/main/java/com/eveningoutpost/dexdrip/Services/DexCollectionService.java`:\r\nLines [821 - 829](https://github.com/NightscoutFoundation/xDrip/blob/f43d0377467dcbfa968c43a0b776bee838798548/app/src/main/java/com/eveningoutpost/dexdrip/Services/DexCollectionService.java#L821-L829)\r\n**Before:**\r\n```\r\n    @SuppressLint(\"ObsoleteSdkInt\")\r\n    private static boolean shouldServiceRun() {\r\n        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2) return false;\r\n        final boolean result = (DexCollectionType.hasXbridgeWixel() || DexCollectionType.hasBtWixel())\r\n                && ((!Home.get_forced_wear() && (((UiModeManager) xdrip.getAppContext().getSystemService(UI_MODE_SERVICE)).getCurrentModeType() != Configuration.UI_MODE_TYPE_WATCH))\r\n                || PersistentStore.getBoolean(CollectionServiceStarter.pref_run_wear_collector));\r\n        if (d) Log.d(TAG, \"shouldServiceRun() returning: \" + result);\r\n        return result;\r\n    }\r\n```\r\n**After:**\r\n```\r\n    @SuppressLint(\"ObsoleteSdkInt\")\r\n    private boolean shouldServiceRun() {\r\n        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2) return false;\r\n        final boolean result = (DexCollectionType.hasXbridgeWixel() || DexCollectionType.hasBtWixel())\r\n                && ((!Home.get_forced_wear() && !getPackageManager().hasSystemFeature(PackageManager.FEATURE_WATCH))\r\n                || PersistentStore.getBoolean(CollectionServiceStarter.pref_run_wear_collector));\r\n        if (d) Log.d(TAG, \"shouldServiceRun() returning: \" + result);\r\n        return result;\r\n    }\r\n```\r\n**Adding at the top of the file:**\r\n`import android.content.pm.PackageManager;`\r\n\r\nFiles changed:\r\n- app/src/main/java/com/eveningoutpost/dexdrip/Services/DexCollectionService.java\r\n- app/src/main/java/com/eveningoutpost/dexdrip/Services/Ob1G5CollectionService.java\r\n\r\nFiles where `Configuration.UI_MODE_TYPE_WATCH` is present:\r\nhttps://github.com/NightscoutFoundation/xDrip/search?q=Configuration.UI_MODE_TYPE_WATCH",
+ "comments": [
+  {
+   "id": 1025194532,
+   "user": "Navid200",
+   "created_at": "2022-01-30T17:51:00Z",
+   "body": "@parapenT1sta Where you asked to open an issue?"
+  }
+ ]
+}

@@ -1,0 +1,63 @@
+{
+ "id": 1203829279,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1615,
+ "title": "Insight Pump prime not reset canular time/date",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1615",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-04-13T21:56:21Z",
+ "closed_at": "2022-04-14T18:14:42Z",
+ "comment_count": 8,
+ "body": "When an Infusion site change was made at the pump then the canular date/time was not made/updated in AAPS.\r\nAAPS 3.0.0.1 dev-i.  Insight F/W V3.00.17. Around 20:57hrs.  Log and screenshots attached.  Treatment tab showing pump disconnect and connect with no prime in-between.\r\n\r\n[AndroidAPS._2022-04-13_00-00-01_.7.zip](https://github.com/nightscout/AndroidAPS/files/8484867/AndroidAPS._2022-04-13_00-00-01_.7.zip)\r\n![Screenshot_20220413-210324_AndroidAPS](https://user-images.githubusercontent.com/43484095/163276415-22702843-5a2b-429b-80d3-78153a8385fb.jpg)\r\n![Screenshot_20220413-210127_AndroidAPS](https://user-images.githubusercontent.com/43484095/163276425-9a425d47-d72c-4f93-9328-68a0b7690e42.jpg)\r\n\r\n\r\nReporting bugs\r\n--------------\r\n- **Note the precise time the problem occurred** and describe the circumstances and steps that caused\r\n  the problem\r\n- Note the Build version (found in the About dialog in the app, when pressing the three dots in the\r\n  upper-right corner).\r\n- Obtain the app's log files, which can be found on the phone in\r\n  _/storage/emulated/0/Android/data/info.nightscout.androidaps/_\r\n  See https://androidaps.readthedocs.io/en/latest/EN/Usage/Accessing-logfiles.html\r\n- Open an issue at https://github.com/nightscout/AndroidAPS/issues/new\r\n",
+ "comments": [
+  {
+   "id": 1098603447,
+   "user": "chrisbev",
+   "created_at": "2022-04-14T00:44:06Z",
+   "body": "Cartridge and Tube changes are actioned in AAPS OK."
+  },
+  {
+   "id": 1099052941,
+   "user": "Philoul",
+   "created_at": "2022-04-14T10:39:28Z",
+   "body": "How many U of insulin is injected by the pump when you prime Canula from your Pump?\nI'll try to prepare a version of AAPS with more log to analyse what could be wrong in your situation... (I made exactly same test on my side with my pump, same firmware, and it works)\n![Screenshot_20220413-224926_AndroidAPS.jpg](https://user-images.githubusercontent.com/52934600/163371936-a7338122-5a62-404c-a485-bc42a206e661.jpg)\n\nI also don't understand why you made disconnection and re connection from overview... (as you can see in my screenshot, everything was done directly from pump). But it shouldn't impact results..."
+  },
+  {
+   "id": 1099127159,
+   "user": "chrisbev",
+   "created_at": "2022-04-14T12:20:15Z",
+   "body": "Because I was going to control pump from pump buttons I didn't want AAPS to interfere or get confused so thought it would be best to disconnect (can't remember if there was basal running at the time?). Canular prime 0.7U.  I will try without disconnection."
+  },
+  {
+   "id": 1099184557,
+   "user": "Philoul",
+   "created_at": "2022-04-14T13:25:42Z",
+   "body": "> Canular prime 0.7U\n\nOk, so it should work.\nLet me make a dedicated version with more log  in insight driver, to be able to trace and understand what could be wrong in your case (I'll try to do it this evening)."
+  },
+  {
+   "id": 1099193767,
+   "user": "chrisbev",
+   "created_at": "2022-04-14T13:35:23Z",
+   "body": "Hey, don't worry if only me hardly a big deal, it doesn’t coinside very often and easy workaround I mainly cannula change through AAPS you are busy with other things, it only started as a question on TDD which is now confirmed as OK."
+  },
+  {
+   "id": 1099438692,
+   "user": "Philoul",
+   "created_at": "2022-04-14T17:22:37Z",
+   "body": "@chrisbev It's probably a stupid question, but have you checked if in Insight preferences, \"Log site changes\" setting is enabled?\n![Screenshot_20220414-191914_AndroidAPS.jpg](https://user-images.githubusercontent.com/52934600/163441074-b31c75f8-246f-47dc-aa8a-6990d2dd8c88.jpg)"
+  },
+  {
+   "id": 1099493987,
+   "user": "chrisbev",
+   "created_at": "2022-04-14T18:14:42Z",
+   "body": "@Philoul you are kind never a silly question you suspected right it was set off, don't know how/when.  Thanks for investigating can only say sorry to have troubled you."
+  },
+  {
+   "id": 1099512018,
+   "user": "Philoul",
+   "created_at": "2022-04-14T18:30:46Z",
+   "body": "Cool.\nYou probably set this preference to off with aaps v2.8 (or earlier).\nA site change was always recorded with a reservoir change (this bug was only for Insight pump with firmware v3).\nI fixed this issue in Insight driver of aaps v3..."
+  }
+ ]
+}

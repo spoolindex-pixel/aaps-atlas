@@ -1,0 +1,81 @@
+{
+ "id": 1107757446,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1199,
+ "title": "RC3 / BYODA calibration / red triangle still there ",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1199",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-01-19T07:35:46Z",
+ "closed_at": "2022-01-29T09:19:51Z",
+ "comment_count": 12,
+ "body": "[AndroidAPS_LOG_1642575888700.log.zip](https://github.com/nightscout/AndroidAPS/files/7894993/AndroidAPS_LOG_1642575888700.log.zip)\r\n\r\nLook at logs at around 7:30\r\n\r\n@MilosKozak You had modified rhe code for this problem but it is still there. I'm calibrating G6/BYODA 4 minutes after last reading and I get a double in the BGs and rhe red triangle. \r\n\r\n![Screenshot_20220119-073639_AndroidAPS.jpg](https://user-images.githubusercontent.com/76626474/150084963-0346f49a-adfe-4315-8d5c-4dd65af2c0d1.jpg)\r\n![Screenshot_20220119-073656_AndroidAPS.jpg](https://user-images.githubusercontent.com/76626474/150084979-ef7c0bbb-4050-4fdb-abcb-8c5b2211f5d9.jpg)\r\n\r\n",
+ "comments": [
+  {
+   "id": 1016190675,
+   "user": "MilosKozak",
+   "created_at": "2022-01-19T08:20:43Z",
+   "body": "i fixed it for G5. I'll check your G6 logs if it's the same"
+  },
+  {
+   "id": 1017708114,
+   "user": "MilosKozak",
+   "created_at": "2022-01-20T16:50:54Z",
+   "body": "\r\n\r\n```\r\n07:30:46.643 [main] D/DATABASE: [DataReceiver.onReceive():29]: onReceive com.dexcom.cgm.EXTERNAL_BROADCAST Bundle{ sensorInsertionTime => 1641909055; senorInsertionTime => 1641909055; meters => Bundle[mParcelledData.dataSize=2764]; glucoseValues => Bundle[mParcelledData.dataSize=44124]; packageName => com.dexcom.g6.region3.mgdl; sensorType => G6; }Bundle\r\n07:30:47.323 [pool-15-thread-3] D/DATABASE: [DexcomPlugin$DexcomWorker.doWork():185]: Inserted calibration TherapyEvent(id=1484, version=0, dateCreated=1642573847284, isValid=true, referenceId=null, interfaceIDs_backing=null, timestamp=1642573844000, utcOffset=3600000, duration=0, type=FINGER_STICK_BG_VALUE, note=null, enteredBy=null, glucose=104.0, glucoseType=null, glucoseUnit=MGDL)\r\n07:30:47.334 [RxCachedThreadScheduler-86] D/CORE: [UserEntryLogger$log$2.invoke():45]: USER ENTRY: CALIBRATION Dexcom  [Timestamp(value=16425738 44000), TherapyEventType(value=FINGER_STICK_BG_VALUE), Mgdl(value=104.0)]\r\n07:30:53.096 [main] D/DATABASE: [DataReceiver.onReceive():29]: onReceive com.dexcom.cgm.EXTERNAL_BROADCAST Bundle{ sensorInsertionTime => 1641909055; senorInsertionTime => 1641909055; meters => Bundle[mParcelledData.dataSize=2764]; glucoseValues => Bundle[mParcelledData.dataSize=44428]; packageName => com.dexcom.g6.region3.mgdl; sensorType => G6; }Bundle\r\n07:30:53.590 [RxCachedThreadScheduler-59] D/DATABASE: [CompatDBHelper.dbChangeDisposable$lambda-18():35]: Firing EventNewBg GlucoseValue(id=31423, version=0, dateCreated=1642573853572, isValid=true, referenceId=null, interfaceIDs_backing=InterfaceIDs(nightscoutSystemId=null, nightscoutId=null, pumpType=null, pumpSerial=null, temporaryId=null, pumpId=null, startId=null, endId=null), timestamp=1642573851000, utcOffset=3600000, raw=null, value=107.0, trendArrow=FLAT, noise=null, sourceSensor=DEXCOM_G6_NATIVE)\r\n07:30:53.591 [RxCachedThreadScheduler-59] D/DATABASE: [CompatDBHelper.dbChangeDisposable$lambda-18():40]: Firing EventNewHistoryData GlucoseValue(id=3142"
+  },
+  {
+   "id": 1017709076,
+   "user": "MilosKozak",
+   "created_at": "2022-01-20T16:51:51Z",
+   "body": "i'd need one more example. It's not so straightforward like G5"
+  },
+  {
+   "id": 1017718588,
+   "user": "robertrub",
+   "created_at": "2022-01-20T17:01:18Z",
+   "body": "OK, I'll need to change my sensor tomorrow. I'll try to calibrate >4 min and see if it triggers. Will post logs here.   "
+  },
+  {
+   "id": 1019544565,
+   "user": "robertrub",
+   "created_at": "2022-01-23T18:51:48Z",
+   "body": "@MilosKozak I tested at 3 min and 4 min after last BG but didn't get a double BG... Next time, I'll test just when 4 becomes 5 and see if I get the red triangle.\nWill give more info here."
+  },
+  {
+   "id": 1020437003,
+   "user": "robertrub",
+   "created_at": "2022-01-24T18:59:41Z",
+   "body": "@MilosKozak \r\n\r\nIt happened again. I think that I was around 4.5 min past last BG.\r\n\r\n![Screenshot_20220124-192203_AndroidAPS.jpg](https://user-images.githubusercontent.com/76626474/150846230-adc705c8-6a9e-46d8-a60b-8376253aa12f.jpg)\r\n\r\nStrangely, the GitHub app doesn't let me add the log file. I'll add via the web interface...\r\n\r\n[AndroidAPS_LOG_1643048483321.log.zip](https://github.com/nightscout/AndroidAPS/files/7928147/AndroidAPS_LOG_1643048483321.log.zip)\r\n"
+  },
+  {
+   "id": 1020569387,
+   "user": "MilosKozak",
+   "created_at": "2022-01-24T21:32:32Z",
+   "body": "1st try https://github.com/nightscout/AndroidAPS/commit/1aa4f7452c58630c66dd4b56e6b4967341557700"
+  },
+  {
+   "id": 1021404874,
+   "user": "MilosKozak",
+   "created_at": "2022-01-25T16:59:08Z",
+   "body": "disabled BOYDA calibration button\r\nhttps://github.com/nightscout/AndroidAPS/commit/74daf2e7845c2568f1329208bc628eae2b5e8b6a"
+  },
+  {
+   "id": 1021518163,
+   "user": "robertrub",
+   "created_at": "2022-01-25T19:09:52Z",
+   "body": "@MilosKozak Sorry but your _first try_ didn't solve the problem.\r\n\r\nEntered calibration directly in BYODA maybe 15-20 seconds before BYODA reads the BG from the transmitter. I got the double BGs in AAPS. \r\n![Screenshot_20220125-193145_AndroidAPS.jpg](https://user-images.githubusercontent.com/76626474/151042531-f2947880-5742-4133-a6b8-7699d47d1fc8.jpg)\r\n![Screenshot_20220125-193200_AndroidAPS.jpg](https://user-images.githubusercontent.com/76626474/151042558-b6439ae9-d72d-407f-aa27-490a2a0f8a57.jpg)\r\n\r\n\r\nFYI, the ligne highlighted in RED is the \"normal\" reading and the one just above is the calibration value.\r\n\r\nIf it helps, the real timing was calibration followed by a \"normal\" reading but in AAPS, the order is reversed. \"Normal\" reading was registered first and the calibration BG was noted later.\r\n\r\nLook at the logs around 19:29 to 19:31\n\r\n[AndroidAPS_LOG_1643135529010.log.zip](https://github.com/nightscout/AndroidAPS/files/7936487/AndroidAPS_LOG_1643135529010.log.zip)\r\n"
+  },
+  {
+   "id": 1023617437,
+   "user": "MilosKozak",
+   "created_at": "2022-01-27T20:35:39Z",
+   "body": "2nd  try https://github.com/nightscout/AndroidAPS/commit/900c5db0dc71c63ddef5e93586fbcd9b58588375"
+  },
+  {
+   "id": 1024492108,
+   "user": "robertrub",
+   "created_at": "2022-01-28T18:22:25Z",
+   "body": "@MilosKozak  Seems like the 2nd try is the good one :)\r\nJust tested at 12 sec before new BG read and didn't have a double in AAPS \r\nAs you can see, the 92 (which is the \"real blood\" test result) arrived and stayed at +6 minutes and (I suppose) the BG via the transmitter at +5 min was deleted :)\r\n![Screenshot_20220128-191707_AndroidAPS.jpg](https://user-images.githubusercontent.com/76626474/151600815-d99fa94d-e9ae-43c0-ae23-f11338d84598.jpg)\r\nGreat job, tnx.\r\nLeave this issue open for a couple of days so that I can test some more and add if needed.\r\n[AndroidAPS_LOG_1643394450867.log.zip](https://github.com/nightscout/AndroidAPS/files/7961139/AndroidAPS_LOG_1643394450867.log.zip)\r\n"
+  }
+ ]
+}

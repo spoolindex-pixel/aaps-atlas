@@ -1,0 +1,27 @@
+{
+ "id": 2294235680,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3336,
+ "title": "After replacing the battery in the Accu-Chek Combo, AAPS cannot automatically reconnect.",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3336",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-05-14T02:48:42Z",
+ "closed_at": "2024-11-13T12:55:24Z",
+ "comment_count": 2,
+ "body": "Reporting bugs\r\n--------------\r\n- **Note the precise time the problem occurred** and describe the circumstances and steps that caused\r\n  the problem\r\n- Note the Build version (found in the About dialog in the app, when pressing the three dots in the\r\n  upper-right corner).\r\n- Obtain the app's log files, which can be found on the phone in\r\n  _/storage/emulated/0/Android/data/info.nightscout.androidaps/_\r\n  See https://wiki.aaps.app/en/latest/Usage/Accessing-logfiles.html\r\n- Open an issue at https://github.com/nightscout/AndroidAPS/issues/new\r\n\r\nWhen the pump battery is depleted, it will automatically stop infusion. AAPS will display that the pump has stopped running. After replacing the battery, you need to manually refresh the pump to reconnect. If this operation is not performed, AAPS will remain in a suspended state.\r\n",
+ "comments": [
+  {
+   "id": 2124796616,
+   "user": "parapenT1sta",
+   "created_at": "2024-05-22T13:26:16Z",
+   "body": "@dv1 "
+  },
+  {
+   "id": 2308460789,
+   "user": "jotomo",
+   "created_at": "2024-08-24T17:14:56Z",
+   "body": "AAPS automatically connects to the pump if the last connection was more than 15 minutes ago (see _KeepAliveReceiver.checkPump()_).\r\nSince AAPS can't know when a battery or cartridge change is completed, the user can either inform AAPS via a manual refresh, or simply wait for AAPS do so as described above (also if the user forgets to perform a manual refresh).\r\n\r\nSo, while not obvious to the user, AAPS does handle this case."
+  }
+ ]
+}

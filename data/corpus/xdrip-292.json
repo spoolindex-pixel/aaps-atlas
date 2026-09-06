@@ -1,0 +1,33 @@
+{
+ "id": 294173548,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 292,
+ "title": "extension of TransmiterPL/LimiTTer  protocol",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/292",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2018-02-04T06:08:52Z",
+ "closed_at": "2021-02-24T21:48:39Z",
+ "comment_count": 3,
+ "body": "additional info about device (Transmiter/Limiter) error states\r\n4-fields message (BG*1000, battery mV, battery%, sensor minutes/10)\r\n\r\nwhen BG value = (string) '000999' = info about error\r\nbattery mV = error number (0001, 0002, etc)\r\nbattery% and sensor minutes = additional info about errors\r\n\r\naction -> display info without triggering alarm (display for 1-minute if possible or until OK button pressed by user)\r\n\r\nerror numbers:\r\n0001 - to low voltage for NFC reading (BLE work even with 1.8V, but NFC need more than 2.3V) -> Message: \"please check battery?\"\r\n0002 - all device working OK, but no sensor in NFC field of work - transmited every 5 minutes only when device recognize connected to phone state. -> Message: \"Please check position of device. Is it fixed on sensor?\"\r\n0003 - 9999 - other errors -> Message 'Error xxxx-yy-zzzz' (xxxxx = battery mV, yy-battery%, zzz-sensor minutes)\r\n\r\n+add info about received error message to log",
+ "comments": [
+  {
+   "id": 362884857,
+   "user": "FPV-UAV",
+   "created_at": "2018-02-04T06:38:42Z",
+   "body": "DexCollectionService.java\r\n\r\nprocessNewTransmitterData(TransmitterData transmitterData, long timestamp)\r\n\r\nafter:\r\nif (use_transmiter_pl_bluetooth && (transmitterData.raw_data == 100000)) {\r\n            Log.wtf(TAG, \"Ignoring probably erroneous Transmiter_PL data: \" + transmitterData.raw_data);\r\n            return;\r\n        }\r\nadd\r\nif (transmitterData.raw_data == 999) {\r\n....\r\n}"
+  },
+  {
+   "id": 778828481,
+   "user": "Navid200",
+   "created_at": "2021-02-14T19:31:00Z",
+   "body": "@FPV-UAV Would you please close this issue if it has been resolved?\r\nOtherwise, would you please update?\r\nThanks"
+  },
+  {
+   "id": 784467706,
+   "user": "Navid200",
+   "created_at": "2021-02-23T19:51:55Z",
+   "body": "If you ever like to re-open this, I suggest that you clearly specify what we have now and what you would like to have instead.\r\nThe more clear and shorter and simpler you make it, the more likely it is that someone may decide to implement it."
+  }
+ ]
+}

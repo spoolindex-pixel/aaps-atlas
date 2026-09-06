@@ -1,0 +1,63 @@
+{
+ "id": 821932609,
+ "repo": "nightscout/AndroidAPS",
+ "number": 394,
+ "title": "Problem receiving warnings from Accu Chek Insight Pump",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/394",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-03-04T09:18:08Z",
+ "closed_at": "2021-03-06T14:58:16Z",
+ "comment_count": 8,
+ "body": "When my pomp issues an insulin low alert or a battery alert the smartphone beeps but no text message will be dislplayed.\r\n The alarm can only be silenced with the control panel on the pump.\r\nAfter the alarm is received, communication with the pump remains on continuously. Also restarting AAPS will not disconnect the connection, only restarting the phone can solve the problem.\r\nI am using a Samsung Galaxy S9+ with Android 10 and the Insight pump software V2.01.03.\r\nThis problem did not occur in previous versions of AAPS.\r\n\r\n\r\n\r\n",
+ "comments": [
+  {
+   "id": 790552454,
+   "user": "reijoahola-nightscout",
+   "created_at": "2021-03-04T11:40:23Z",
+   "body": "I have the same configuration, same pump version but Galaxy S9 / Android 10. I have set insulin level warning 20 U in the pump and the same level also in AAPS reservoir red status light. Typically I change the reservoir when reaching that 20 U limit. AAPS gives some notification/alarm in the phone but I have not noticed the problem you reported. I am not sure what alarm pump had time give in that situation but I expect that the notification that AAPS gives is based on the alarm from the pump."
+  },
+  {
+   "id": 790620330,
+   "user": "bertroode",
+   "created_at": "2021-03-04T13:32:38Z",
+   "body": "In previous AAPS versions my phone showed a warning message and I was able to switch the alarm off with the phone.\r\nNow the phone only beeps, but no message describing the kind of alarm and the communication connection with the pump is always on after the alarm has been triggered.\r\n"
+  },
+  {
+   "id": 790632529,
+   "user": "reijoahola-nightscout",
+   "created_at": "2021-03-04T13:52:03Z",
+   "body": "Do you have Android/AAPS Notifications on for \"Insight Pump Alerts\" ?"
+  },
+  {
+   "id": 790744947,
+   "user": "bertroode",
+   "created_at": "2021-03-04T16:27:40Z",
+   "body": "Yes, all warnings are on. The strange behaviour of the blue tooth connection worries me."
+  },
+  {
+   "id": 791251401,
+   "user": "reijoahola-nightscout",
+   "created_at": "2021-03-05T08:25:26Z",
+   "body": "Today I tested again what happens if let Insight give reservoir level warning (W31). Now AAPS did not notice the warning and the pump gave an alarm about W31. I accepted the alarm from Insight pump and then it was OK. Edit: Later noticed taht AAPS had read W31 warning from the pump and logged it into Treatments."
+  },
+  {
+   "id": 791354575,
+   "user": "bertroode",
+   "created_at": "2021-03-05T11:16:04Z",
+   "body": "The next time the insuline level triggers the alarm again I will save and analayze the log. The annoying consequence of this problem is that the pump's battery can quickly run out. That happened to me this week during the night. Because of my old age (76) I cannot hear the weak warning signal that sounds in such a situation. "
+  },
+  {
+   "id": 791367879,
+   "user": "reijoahola-nightscout",
+   "created_at": "2021-03-05T11:44:19Z",
+   "body": "I do not let the battery level go lower than 70%. I use in AAPS Status light (red) 70% and yellow is 95%. With that systen I have never reached the level where the pump gives battery alarm."
+  },
+  {
+   "id": 791967519,
+   "user": "bertroode",
+   "created_at": "2021-03-06T14:58:16Z",
+   "body": "Well, quite a surprise what caused this problem. The documentation for the Insight pump states that only one communication channel should be set on the pump. However, the Insight pump has the option to set up 5 connections. If you remove the first row, the list won't scroll up in the display. So when three rows in the display are showing \"--------\" there still may be connections left  in  row 4 or 5. In my pump there was a connection for the hospita in row 5l. As a result, the alarms did not function properly and the connection with AAPS was also lost.\r\n\r\nIt may be usefull to add some extra information into the documentation of the Insight pump documentation  about stored connections in row 4 and/or 5.\r\n\r\n"
+  }
+ ]
+}

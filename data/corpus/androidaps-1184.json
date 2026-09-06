@@ -1,0 +1,111 @@
+{
+ "id": 1104884992,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1184,
+ "title": "AndroidAPS doesn't take BG value in main window ",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1184",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-01-15T23:18:10Z",
+ "closed_at": "2023-08-17T14:54:54Z",
+ "comment_count": 16,
+ "body": "AndroidAPS 3.0-rc1\r\nBuild version: 86ec769f6\r\nPhone: Poco F3\r\nBG Source: xDrip+ (build 73ada42)\r\nTime: 18:37\r\n\r\nIt is not the first time that I have seen such behavior. I have to see is there some rule for this to appear. In the screenshots, you can see that the BG value in the home window or tab is crossed while at the same time xDrip+ tab and xDrip+ app show the current BG reading. A log file is attached. Please note that the first screenshot was taken a few minutes later when already a new reading came from xDrip+ but the reading was already at about 18:40 just before I made screenshot of xDrip+.  \r\n![photo_2022-01-15_23-55-21](https://user-images.githubusercontent.com/24446806/149640688-244c50d1-8e5d-4f75-ad6a-e1075db023e6.jpg)\r\n![photo_2022-01-15_23-55-43](https://user-images.githubusercontent.com/24446806/149640695-d8f26a0a-5266-4bd5-9638-e697a64c4eb8.jpg)\r\n![photo_2022-01-15_23-55-43](https://user-images.githubusercontent.com/24446806/149640702-3beb4459-1ae8-45bf-ba9a-7c5bf54b14b1.jpg)\r\n[AndroidAPS._2022-01-12_14-11-14_.1.zip](https://github.com/nightscout/AndroidAPS/files/7876074/AndroidAPS._2022-01-12_14-11-14_.1.zip)\r\n\r\n",
+ "comments": [
+  {
+   "id": 1013896581,
+   "user": "MilosKozak",
+   "created_at": "2022-01-16T15:28:56Z",
+   "body": "Enable EVENT logging and provide logs if you see this issue again"
+  },
+  {
+   "id": 1013917150,
+   "user": "dar-kod",
+   "created_at": "2022-01-16T17:23:58Z",
+   "body": "Thank you. I have enabled EVENT logging now."
+  },
+  {
+   "id": 1014278878,
+   "user": "dar-kod",
+   "created_at": "2022-01-17T08:54:57Z",
+   "body": "It just happened again at 9:02. I'm attaching screenshots and a log file at the end.\r\n\r\n![photo_2022-01-17_09-44-18](https://user-images.githubusercontent.com/24446806/149737971-12381499-096d-4591-bfca-01c7a403c81b.jpg)\r\n![photo_2022-01-17_09-44-32](https://user-images.githubusercontent.com/24446806/149737985-98cde810-4e4c-4417-8752-8ea520d2d4cf.jpg)\r\n![photo_2022-01-17_09-44-45](https://user-images.githubusercontent.com/24446806/149738465-f3ecec43-9d92-43a0-9b9d-66e866f41f37.jpg)\r\n\r\n[AndroidAPS._2022-01-17_00-00-05_.11.zip](https://github.com/nightscout/AndroidAPS/files/7880456/AndroidAPS._2022-01-17_00-00-05_.11.zip)"
+  },
+  {
+   "id": 1014419526,
+   "user": "regiorunner",
+   "created_at": "2022-01-17T11:29:21Z",
+   "body": "I experienced the same problem a few times. I have attached one of the occurrences including log file. I even had this problem for a duration of over 200 minutes, unfortunately no screenshot or log file. APS was Beta 11, xdrip version 49817a5-2021.10.04.\r\n\r\n![Screenshot_20220110-151729](https://user-images.githubusercontent.com/90383626/149761643-a7f673c1-7e74-4d36-8ca7-f1316a3c0c51.png)\r\n![Screenshot_20220110-151828](https://user-images.githubusercontent.com/90383626/149761689-fb31d663-bdcd-41dd-9d23-e1266f671062.png)\r\n[AndroidAPS._2022-01-10_00-00-00_.1.zip](https://github.com/nightscout/AndroidAPS/files/7881465/AndroidAPS._2022-01-10_00-00-00_.1.zip)\r\n\r\n"
+  },
+  {
+   "id": 1017728367,
+   "user": "MilosKozak",
+   "created_at": "2022-01-20T17:11:01Z",
+   "body": "@regiorunner next time pls keep phone time on screenshot\r\nanyway AAPS didn't receive any data from xdrip for 15 min\r\n```\r\n14:46:06.553 [main] D/DATABASE: [DataReceiver.onReceive():29]: onReceive com.eveningoutpost.dexdrip.BgEstimate Bundle{ com.eveningoutpost.dexdrip.Extras.NoiseBlockLevel => 200; com.eveningoutpost.dexdrip.Extras.BgSlope => -4.2391448032144006E-5; com.eveningoutpost.dexdrip.Extras.VersionInfo => 2110041402 49817a5-2021.10.04; com.eveningoutpost.dexdrip.Extras.Raw => 93.3020433770585; com.eveningoutpost.dexdrip.Extras.Time => 1641822365657; com.eveningoutpost.dexdrip.Extras.CalibrationInfo => 1640809446350; com.eveningoutpost.dexdrip.Extras.NsNoiseLevel => null; com.eveningoutpost.dexdrip.Extras.Noise => -9999.0; com.eveningoutpost.dexdrip.Extras.SensorBattery => 80; com.eveningoutpost.dexdrip.Extras.NoiseWarning => 0; com.eveningoutpost.dexdrip.Extras.BgSlopeName => SingleDown; com.eveningoutpost.dexdrip.Extras.BgEstimate => 93.3020433770585; com.eveningoutpost.dexdrip.Extras.SourceDesc => Tomato; }Bundle\r\n14:56:15.257 [main] D/DATABASE: [DataReceiver.onReceive():29]: onReceive com.eveningoutpost.dexdrip.BgEstimate Bundle{ com.eveningoutpost.dexdrip.Extras.NoiseBlockLevel => 200; com.eveningoutpost.dexdrip.Extras.BgSlope => -4.566866909977561E-5; com.eveningoutpost.dexdrip.Extras.VersionInfo => 2110041402 49817a5-2021.10.04; com.eveningoutpost.dexdrip.Extras.Raw => 65.4983182677477; com.eveningoutpost.dexdrip.Extras.Time => 1641822974471; com.eveningoutpost.dexdrip.Extras.CalibrationInfo => 1640809446350; com.eveningoutpost.dexdrip.Extras.NsNoiseLevel => null; com.eveningoutpost.dexdrip.Extras.Noise => -9999.0; com.eveningoutpost.dexdrip.Extras.SensorBattery => 80; com.eveningoutpost.dexdrip.Extras.NoiseWarning => 0; com.eveningoutpost.dexdrip.Extras.BgSlopeName => SingleDown; com.eveningoutpost.dexdrip.Extras.BgEstimate => 65.4983182677477; com.eveningoutpost.dexdrip.Extras.SourceDesc => Tomato; }Bundle\r\n15:01:15.122 [main] D/DATABASE: [DataReceiv"
+  },
+  {
+   "id": 1017733170,
+   "user": "MilosKozak",
+   "created_at": "2022-01-20T17:15:56Z",
+   "body": "and if you look into logs you'll see phone was in really strange state 15.00-15.15"
+  },
+  {
+   "id": 1017738108,
+   "user": "MilosKozak",
+   "created_at": "2022-01-20T17:20:35Z",
+   "body": "@dar-kod the same is valid for your phone\r\nno data from xdrip 8:37-9:02\r\n```\r\n08:32:19.810 [main] D/DATABASE: [DataReceiver.onReceive():29]: onReceive com.eveningoutpost.dexdrip.BgEstimate Bundle{ com.eveningoutpost.dexdrip.Extras.NoiseBlockLevel => 200; com.eveningoutpost.dexdrip.Extras.BgSlope => -9.99796708002706E-6; com.eveningoutpost.dexdrip.Extras.VersionInfo => 2122011519 c25c5dc-2022.01.15; com.eveningoutpost.dexdrip.Extras.Raw => 0.0; com.eveningoutpost.dexdrip.Extras.Time => 1642404736613; com.eveningoutpost.dexdrip.Extras.CalibrationInfo => -1; com.eveningoutpost.dexdrip.Extras.NsNoiseLevel => null; com.eveningoutpost.dexdrip.Extras.Noise => -9999.0; com.eveningoutpost.dexdrip.Extras.SensorBattery => -1; com.eveningoutpost.dexdrip.Extras.NoiseWarning => 0; com.eveningoutpost.dexdrip.Extras.BgSlopeName => Flat; com.eveningoutpost.dexdrip.Extras.BgEstimate => 87.0; com.eveningoutpost.dexdrip.Extras.SourceDesc => G6 Native / G5 Native; com.eveningoutpost.dexdrip.Extras.SourceInfo => G6 Native; com.eveningoutpost.dexdrip.Extras.Collector.NanoStatus =>   ; }Bundle\r\n08:37:19.683 [main] D/DATABASE: [DataReceiver.onReceive():29]: onReceive com.eveningoutpost.dexdrip.BgEstimate Bundle{ com.eveningoutpost.dexdrip.Extras.NoiseBlockLevel => 200; com.eveningoutpost.dexdrip.Extras.BgSlope => 3.334133525379425E-5; com.eveningoutpost.dexdrip.Extras.VersionInfo => 2122011519 c25c5dc-2022.01.15; com.eveningoutpost.dexdrip.Extras.Raw => 0.0; com.eveningoutpost.dexdrip.Extras.Time => 1642405036541; com.eveningoutpost.dexdrip.Extras.CalibrationInfo => -1; com.eveningoutpost.dexdrip.Extras.NsNoiseLevel => null; com.eveningoutpost.dexdrip.Extras.Noise => -9999.0; com.eveningoutpost.dexdrip.Extras.SensorBattery => -1; com.eveningoutpost.dexdrip.Extras.NoiseWarning => 0; com.eveningoutpost.dexdrip.Extras.BgSlopeName => SingleUp; com.eveningoutpost.dexdrip.Extras.BgEstimate => 97.0; com.eveningoutpost.dexdrip.Extras.SourceDesc => G6 Native / G5 Native; com.eveningoutpost.dexdrip.E"
+  },
+  {
+   "id": 1019147966,
+   "user": "dar-kod",
+   "created_at": "2022-01-22T09:59:39Z",
+   "body": "@MilosKozak, you wrote: \"the same is valid for your phone no data from xdrip 8:37-9:02\"\r\n\r\nDoes it mean that data was received at 9:02 or 9:07? At 9:06 data was there in XDRP+ tab but not in the home tab or main screen of AAPS. Did AAPS receive missing readings at 9:02? If yes, then it is AAPS issue.\r\n\r\nI didn't mention that \"no data\" happens because I was away from the phone for, in this case, about 20 minutes."
+  },
+  {
+   "id": 1019158292,
+   "user": "MilosKozak",
+   "created_at": "2022-01-22T10:14:46Z",
+   "body": "i probably don't undestand. you were away from phone and expecting there will be BGs?"
+  },
+  {
+   "id": 1019345479,
+   "user": "dar-kod",
+   "created_at": "2022-01-22T19:38:13Z",
+   "body": "Not like that. I expected this: as soon as xDrip+ has BGs, they will appear also in AAPS but acording to what I see without logs, BGs appeared only in AAPS **XDRIP+** tab."
+  },
+  {
+   "id": 1024157589,
+   "user": "dar-kod",
+   "created_at": "2022-01-28T12:13:00Z",
+   "body": "@MilosKozak, did you read my previous answer? I think that this issue is wrongly closed. \r\n\r\nWhat I didn't mention at the beginning is that this happens only if I am away of my phone for some time and no readings come to xDrip+ and AAPS. But as soon as I come to my phone and the missing reading come to xDrip+, the readings appear not all in AAPS main screen but only in XDRIP+ tab and are not taken into AAPS calculations. **After another 5 minutes of waiting, the all readings come** in the main or home screen of AAPS. **I would expect that all reading come to AAPS main screen as soon as they come to xDrip+ and XDRIP+ tab in AAPS and not first after 5 minutes.**\r\n\r\nFrom my point of view, this is AAPS issue."
+  },
+  {
+   "id": 1024951519,
+   "user": "MilosKozak",
+   "created_at": "2022-01-29T17:21:28Z",
+   "body": "@dar-kod provide new logs with GLUCOSE logging enabled"
+  },
+  {
+   "id": 1030138907,
+   "user": "dar-kod",
+   "created_at": "2022-02-04T16:20:01Z",
+   "body": "I am providing new logs with GLUCOSE enabled:\r\n![photo_2022-02-04_16-51-47](https://user-images.githubusercontent.com/24446806/152564326-9f89af2d-ea2d-4fc0-affc-4467c337394d.jpg)\r\n![photo_2022-02-04_16-51-42](https://user-images.githubusercontent.com/24446806/152564355-439c2c26-60f9-4ce8-985f-f748c678445c.jpg)\r\n![photo_2022-02-04_16-51-35](https://user-images.githubusercontent.com/24446806/152564931-dabd3c08-b413-49f0-9f83-8e1c2e1818ef.jpg)\r\n[AndroidAPS._2022-02-04_00-00-00_.20.zip](https://github.com/nightscout/AndroidAPS/files/8004586/AndroidAPS._2022-02-04_00-00-00_.20.zip)\r\n"
+  },
+  {
+   "id": 1144137186,
+   "user": "eversteegt",
+   "created_at": "2022-06-01T21:07:36Z",
+   "body": "We have an issue which is probably related (will enable logging when I get my hands on my GF's phone again, since she is the user of AAPS ).  It looks like it sort of started either after the upgrade to AAPS 3.x, or a recent Android security update from Samsung (A52-5g). \r\n\r\nSensor: Libre 2, either with native Xdrip BT connection (and OOP2) or with Miaomiao2 (tomato) transmitter. \r\n\r\nALL permissions for AAPS, OOP2 and Xdrip are enabled and Xdrip's inter-app communication settings point toward AAPS. Also, the apps are exempted from any battery optimization. \r\n\r\nAside from the ever permanently  present yellow triangle (due to the irregular nature of Libre readings), AAPS, at random moments, starts screaming no BG data was received for some long (extended) period of time, sometimes more than one hour. That message is totally incorrect, as AAPS has a complete BG graph and, before the error/alarm popped up, definitely had actual (recent) value. "
+  },
+  {
+   "id": 1399386193,
+   "user": "duncanbarnes",
+   "created_at": "2023-01-22T02:11:29Z",
+   "body": "Looks the same as #2004 so fixed by https://github.com/nightscout/AndroidAPS/commit/8fb5c5a984a8e16062e70282ce3d0fd6383ed864\n\n?"
+  },
+  {
+   "id": 1682431817,
+   "user": "MilosKozak",
+   "created_at": "2023-08-17T14:54:54Z",
+   "body": "Closed for inactivity. Create new issue is if you still see the problem on latest branch"
+  }
+ ]
+}

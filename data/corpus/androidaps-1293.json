@@ -1,0 +1,57 @@
+{
+ "id": 1127868069,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1293,
+ "title": "Permanent warning next to BG number",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1293",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-02-08T23:29:46Z",
+ "closed_at": "2022-02-09T09:19:25Z",
+ "comment_count": 7,
+ "body": "First off, thanks so much for all the work put in to AAPS.\r\nI have an issue with 3.0.0.1 and the new warning icon next to the BG number. My understanding from what I read from Milos is that it shows when recalculated data is used, ie when data is recalculated to be in 5 minute intervals. My data is coming from xDrip and is sent every 5 minutes (see screenshot). So why is the warning icon permanently showing?\r\nIt is very disquieting to see this permanent warning when everything seems fine and is working - not good UI practice in my humble opinion.\r\n![XdripReadings](https://user-images.githubusercontent.com/50314479/153093129-c855e7fe-9197-44f9-955c-5b90731efbad.jpg)\r\n\r\n",
+ "comments": [
+  {
+   "id": 1033534304,
+   "user": "MilosKozak",
+   "created_at": "2022-02-09T09:19:25Z",
+   "body": "AAPS uses around last 30 hours of BGs for calculations. triangle means the irregularity outside tolerance appeared within this period.\r\nOAPS is designed on top of 5 min BG data and with recalculation there could be delay in response. therefore the warning"
+  },
+  {
+   "id": 1033566584,
+   "user": "dkmsoft",
+   "created_at": "2022-02-09T09:46:57Z",
+   "body": "Thanks for response. Please consider giving option to dismiss the warning - I think a couple of missed readings in last 30 hours is not material and warrants this. A number of others have complained about this that I have seen. Clicking on icon once acknowledged should dismiss it or at least add an option in preferences not to show it. "
+  },
+  {
+   "id": 1033629870,
+   "user": "MilosKozak",
+   "created_at": "2022-02-09T10:55:45Z",
+   "body": "missing BG itself doesn't trigger exclamation mark. it must be something like BG 4 min from previous etc"
+  },
+  {
+   "id": 1033982492,
+   "user": "maheini",
+   "created_at": "2022-02-09T16:58:41Z",
+   "body": "Got that as well - since 2 months now. It's perfectly working, looks a little strange and therefore a useless warning for me.\r\nSetup: Libre 2 patched -> Xdrip -> AAPS v. 3.x using AMA\r\n\r\na thought about the cause:\r\nIs it because xdrip does not calculate the values from the Libre 2 exactly every 5 min (which is the case)?"
+  },
+  {
+   "id": 1034474529,
+   "user": "dkmsoft",
+   "created_at": "2022-02-10T04:12:16Z",
+   "body": "Milos, thanks for explanation. I understand this is not a bug, just strict requirement placed on interval of BG values.\r\nBut please try appreciate my point. I think this happens for all Libre users (and there are many) and what it means is that all\r\nthese users have a 24x7 warning displayed on the main screen and THERE IS NOTHING THEY CAN DO ABOUT IT. Not all can switch to Dexcom. (I tried Dexcom for over a year and does not work well for me and more inaccurate than Libre in my experience). So this means all these users have to learn to ignore a warning that they see all the time. Everything works fine, just has it has done for all previous versions.\r\nAll I am asking is to be able to dismiss this warning once acknowledged. That would be correct user interface when the user  can't do anything about the issue and actually does not need to. (I have been developing software for over 48 years with tens of thousands of users worldwide). All your Libre users will thank you for that.\r\n\r\nPlease also understand I really appreciate what you have done - an incredible piece of software for which I am very grateful."
+  },
+  {
+   "id": 1034785286,
+   "user": "maheini",
+   "created_at": "2022-02-10T11:05:00Z",
+   "body": "@dkmsoft It's basically not a real problem and Milos and all the other developers have lot's of other important things to do as well. I really appreciate all the effort put into AndroidAPS and the fact it's made available for everyone.\r\n\r\nI made a quick fork (as a temporary workaround) with disabled Warning. Please keep in mind that you are using it at your own risk. It's based on AndroidAPS 3.0.1, I only disabled the yellow warning. Here's the fork: [Link to the AndroidAPS Fork without warning](https://github.com/maheini/AndroidAPS/tree/AndroidAPS_3.0.0.1_disabled_ic-baseline-warning). Feel free to build your AndroidAPS from this fork.\r\n\r\nMaybe I'll even find the time & solution to create a real fix."
+  },
+  {
+   "id": 1035656851,
+   "user": "dkmsoft",
+   "created_at": "2022-02-10T23:56:51Z",
+   "body": "@maheini Thank you very much."
+  }
+ ]
+}

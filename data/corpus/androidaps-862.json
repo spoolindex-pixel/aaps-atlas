@@ -1,0 +1,129 @@
+{
+ "id": 1046727495,
+ "repo": "nightscout/AndroidAPS",
+ "number": 862,
+ "title": "Dana I not showing TDD",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/862",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-11-07T11:55:14Z",
+ "closed_at": "2021-12-14T10:13:25Z",
+ "comment_count": 19,
+ "body": "Reporting bugs\r\n--------------\r\nUsing Beta3 ver 4 and previously ver3\r\nUsed these versions from the time they have each been released.\r\nUsing Dana I\r\nSame pump all the way through.\r\n\r\nI find that it does not total the units for TDD.\r\n\r\nhttps://user-images.githubusercontent.com/37948551/140643805-061f8f65-38e6-47a1-88d6-16b27652a0b1.mov\r\n\r\n\r\n",
+ "comments": [
+  {
+   "id": 962644380,
+   "user": "Philoul",
+   "created_at": "2021-11-07T16:52:41Z",
+   "body": "How many days do you have in aaps database? \r\nTDD is not calculated with pump informations, but with data recorded in aaps database..."
+  },
+  {
+   "id": 962650311,
+   "user": "MilosKozak",
+   "created_at": "2021-11-07T17:30:54Z",
+   "body": "fixed by https://github.com/nightscout/AndroidAPS/commit/3bbf50ca3e3193c99f860885b29db57e4d2fffd6"
+  },
+  {
+   "id": 962692461,
+   "user": "pbloom209",
+   "created_at": "2021-11-07T22:29:55Z",
+   "body": "I did the code change and reinstalled.\r\n\r\nI ran the TDD after a few hours.  See attached.\r\nSeems to be the same issue\r\n\r\nhttps://user-images.githubusercontent.com/37948551/140664175-c43919c3-cff4-4619-b5a1-3a1ed28484eb.mp4\r\n\r\n."
+  },
+  {
+   "id": 962700023,
+   "user": "MilosKozak",
+   "created_at": "2021-11-07T23:18:20Z",
+   "body": "try it after one day\r\n"
+  },
+  {
+   "id": 986951353,
+   "user": "mxsrm",
+   "created_at": "2021-12-06T16:42:15Z",
+   "body": "@MilosKozak \r\nThe issue is not fixed (3.0-beta9): after one day it will only show the TDD for the day that has passed, not the rest:\r\n\r\n![Screenshot_20211206-120147](https://user-images.githubusercontent.com/7951225/144886138-a80f8243-451d-4d33-8dfc-4087a942048d.png)\r\n\r\nDanaRS v3. After pressing \"RELOAD\" it loads the values from the pump but does nothing with it.\r\n\r\n@Philoul \r\nIf that is the case, why does it connect to the pump? If I remember correctly this worked in the past?!"
+  },
+  {
+   "id": 988249136,
+   "user": "MilosKozak",
+   "created_at": "2021-12-07T20:41:05Z",
+   "body": "i checked it again and it works with Dana-i\r\nwait at least 2 days after you changed pump"
+  },
+  {
+   "id": 989117407,
+   "user": "mxsrm",
+   "created_at": "2021-12-08T19:10:40Z",
+   "body": "@MilosKozak After 3 days it still does not show more than the days that AAPS has data for anyway; nothing that is loaded from the pump is used:\r\n\r\n\r\nhttps://user-images.githubusercontent.com/7951225/145269035-3295e816-473e-4276-b43d-d37fa29bbf55.mp4\r\n\r\n\r\n"
+  },
+  {
+   "id": 992435637,
+   "user": "MilosKozak",
+   "created_at": "2021-12-13T12:36:30Z",
+   "body": "do you see TTD in pump?\r\non video there is no recent data comming visible"
+  },
+  {
+   "id": 992475418,
+   "user": "mxsrm",
+   "created_at": "2021-12-13T13:26:43Z",
+   "body": "Yes, the pump shows normal data as far back as I want (checked till start of november). After 6 days it still only shows data that AAPS collected itself.\r\n\r\n![PXL_20211213_132323604](https://user-images.githubusercontent.com/7951225/145820757-609e44e0-39df-44cb-a4e9-3d053c0edafd.jpg)\r\n"
+  },
+  {
+   "id": 992477728,
+   "user": "mxsrm",
+   "created_at": "2021-12-13T13:29:21Z",
+   "body": "Pump history browser shows the data without problem, it's just never used in TDD tab:\r\n\r\n![Screenshot_20211213-142735](https://user-images.githubusercontent.com/7951225/145821304-01a56452-25d7-4cf5-abc5-2d6f12b60643.png)\r\n\r\n"
+  },
+  {
+   "id": 992496330,
+   "user": "MilosKozak",
+   "created_at": "2021-12-13T13:52:37Z",
+   "body": "ok. reload history from AAPS and provide logs. we'll see"
+  },
+  {
+   "id": 992496707,
+   "user": "MilosKozak",
+   "created_at": "2021-12-13T13:53:06Z",
+   "body": "be sure you are using latest version"
+  },
+  {
+   "id": 992557885,
+   "user": "mxsrm",
+   "created_at": "2021-12-13T14:52:19Z",
+   "body": "> be sure you are using latest version\r\n\r\nBeta or dev?"
+  },
+  {
+   "id": 992585538,
+   "user": "MilosKozak",
+   "created_at": "2021-12-13T15:20:46Z",
+   "body": "there is no difference from this point of view"
+  },
+  {
+   "id": 992685526,
+   "user": "mxsrm",
+   "created_at": "2021-12-13T17:06:45Z",
+   "body": "Log using beta9:\r\n\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/7705586/AndroidAPS.log)\r\n\r\n"
+  },
+  {
+   "id": 992999772,
+   "user": "MilosKozak",
+   "created_at": "2021-12-13T23:17:46Z",
+   "body": "i see loaded data 5/12 - 12/12"
+  },
+  {
+   "id": 993311178,
+   "user": "mxsrm",
+   "created_at": "2021-12-14T08:49:12Z",
+   "body": "For all older entries it just notes\r\n\r\n```\r\n18:04:56.867 [main] D/CORE: [TDDStatsActivity.onResume$lambda-18():209]: EventDanaRSyncStatus: 05/12/2021 00:00 dailyinsulin\r\n18:04:56.915 [Binder:15993_3] D/PUMPBTCOMM: [BLEComm.processMessage():859]: <<<<< REVIEW__DAILY B2 12 03 15  0C 04 03 B6  14 50 18 06\r\n18:04:56.918 [Binder:15993_3] D/PUMPCOMM: [DanaRSPacketHistory.handleMessage():137]: History packet: 3 Date: 04/12/2021 00:00 Code: 80 Value: 6150\r\n18:04:56.925 [Binder:15993_3] E/PUMP: [PumpSyncImplementation.confirmActivePump():83]: Ignoring pump history record  Allowed: 04/12/2021 14:36:34 DanaRS TKK00197FB Received: 1638572400000 04/12/2021 00:00:00 DanaRS TKK00197FB\r\n```\r\n\r\n\"Ignoring pump history record  Allowed: 04/12/2021 14:36:34\" so it discards all data before the new install of AndroidAPS started?"
+  },
+  {
+   "id": 993315719,
+   "user": "MilosKozak",
+   "created_at": "2021-12-14T08:55:20Z",
+   "body": "only data from settin up pump in AAPS is accepted\r\ndo you see these 7 days?"
+  },
+  {
+   "id": 993376085,
+   "user": "mxsrm",
+   "created_at": "2021-12-14T10:07:14Z",
+   "body": "Yes the days since setting up AAPS are displayed correctly. I wasn't aware, that the days before are not taken into account. Then it works as intended."
+  }
+ ]
+}

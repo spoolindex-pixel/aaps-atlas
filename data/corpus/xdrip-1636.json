@@ -1,0 +1,91 @@
+{
+ "id": 802035129,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1636,
+ "title": "Error: xDrip looses connection often for up to 1hr, error in the logs: \"No Transmitter mac address\"",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1636",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "device-dexcom",
+  "bluetooth"
+ ],
+ "created_at": "2021-02-05T10:13:02Z",
+ "closed_at": "2021-02-09T15:21:02Z",
+ "comment_count": 12,
+ "body": "### Subject of the issue\r\n\r\nSince the last nightlies (from January) xDrip has issues again in connecting the transmitter. It has downtimes of over an hour in between until it is able to reconnect.\r\nThe error message shown in the logs (I just uploaded the logs) is\r\n\"No transmitter mac address\" followed by a note that location permission is missing. I double checked and xDrip has the location permission enabled.\r\nThis started already with the Nightly of January I installed and now got worse with the latest nightly of February.\r\nIt looks like the missing mac address is not the root of xDrip not being able to connect, since after phone reboot the transmitter connects again and can be read, but the error is spamming the logs again.\r\n\r\n### Your environment\r\n\r\n#### version of xDrip \r\nxDrip-plus-20210204-ea2c013.apk\r\n\r\n#### type of hardware data source \r\n\r\nDexcom G6 (Transmitter Serial 8JXLGT)\r\n\r\nHuawei P30 Pro, EMUI 10.1.0, Android 10\r\n\r\nTicwatch Pro 2020\r\n\r\n#### settings related to the issue\r\n\r\nhard to tell, I did not change my settings over the past year. \r\n\r\n### Expected behavior\r\n\r\nWell, a stable connection to the transmitter with as minimum downtimes as possible would be great of course.\r\n\r\n### Actual behavior\r\n\r\nxDrip looses connection pretty regulary, needing between 30min and 1hr to be able to reconnect.\r\n\r\n### Screenshots\r\n\r\n![Screenshot_20210205_105851_com eveningoutpost dexdrip](https://user-images.githubusercontent.com/48352696/107020382-18e62c00-67a3-11eb-83f0-4345ec3eb71a.jpg)\r\n\r\n",
+ "comments": [
+  {
+   "id": 774237440,
+   "user": "Navid200",
+   "created_at": "2021-02-05T19:21:51Z",
+   "body": "There is no similar experience in the community on facebook.  We have transmitters in use from 8G all the way to 8Q.\r\nThe only blackout is the 2-hour warm-up once every 10 days.\r\nDo you have a facebook account to ensure your settings are correct?\r\nhttps://www.facebook.com/groups/xDripG5/permalink/4838757582864365"
+  },
+  {
+   "id": 774438363,
+   "user": "xannasavin",
+   "created_at": "2021-02-06T09:59:24Z",
+   "body": "Hi @Navid200 thank you for your answer and the link.\r\n\r\nI checked the settings (screenshots linked in point 4) and they where almost the same. I changed the following ones to meet the screenshots:\r\n\r\n### Other Misc: \r\nunchecked the Samsung Workarounds (though I had them active since the very beginning)\r\nDid not check the \"battery optimization warning\" since I don't see the point why it should not warn?\r\n\r\n\r\n### G5 Debug\r\n\"go on without calibration\" is checked since I don't use calibrations\r\nunchecked the \"minimize scanning\"\r\nchecked the \"allow OB1 disconnect\" though I had troubles last time with that option active\r\n\r\nLet's see how it will work with those settings, will get back soon\r\n"
+  },
+  {
+   "id": 774471777,
+   "user": "Navid200",
+   "created_at": "2021-02-06T12:41:15Z",
+   "body": "The battery optimization was an oversight on my part.  Will correct in a few hours.  Thanks so much for the feedback.  Please let me know how it goes."
+  },
+  {
+   "id": 774503531,
+   "user": "Alamo04",
+   "created_at": "2021-02-06T16:33:07Z",
+   "body": "If I see that right,  there is no location service running, or xdrip has no permission to use it.\r\nWithout location permission Bluetooth and XDrip didn't work."
+  },
+  {
+   "id": 774654926,
+   "user": "xannasavin",
+   "created_at": "2021-02-07T11:05:19Z",
+   "body": "@Alamo04 as written above, xDrip has full location service permissions. Bluetooth is of course turned on.\r\n@Navid200 so far connection seems more stable - will continue observing for another day or so"
+  },
+  {
+   "id": 774673868,
+   "user": "Navid200",
+   "created_at": "2021-02-07T13:23:08Z",
+   "body": "@xannasavin Would you mind showing your current logs after having updated the settings?"
+  },
+  {
+   "id": 774676675,
+   "user": "xannasavin",
+   "created_at": "2021-02-07T13:43:58Z",
+   "body": "Sure, here you go. \r\n\r\nThe error from above seems to be gone at the moment. It still displays the \"missing location service\" error, which is quite strange since - as said - xDrip has full location permission.\r\n\r\nIn between there was also a security update for the ROM, not sure what else changed there.\r\nI still expirience minor \"downtimes\" (1 reading gets missed in between here and then) but at least no more those up to an hour missed readings.\r\n\r\n![2021-02-07 14 40 06](https://user-images.githubusercontent.com/48352696/107148218-69e85280-6952-11eb-9f4d-2fa8d1c429d6.jpg)\r\n"
+  },
+  {
+   "id": 774677334,
+   "user": "Navid200",
+   "created_at": "2021-02-07T13:48:34Z",
+   "body": "Are you sure the phone is on Android 10, and not 11?"
+  },
+  {
+   "id": 774686897,
+   "user": "xannasavin",
+   "created_at": "2021-02-07T14:50:42Z",
+   "body": "![2021-02-07 15 50 13](https://user-images.githubusercontent.com/48352696/107150056-36aac100-695c-11eb-85d8-ae9450b5a6d6.jpg)\r\n\r\n100% :D "
+  },
+  {
+   "id": 774698422,
+   "user": "nickb24",
+   "created_at": "2021-02-07T15:59:07Z",
+   "body": "The error messages for location services you are seeing are for your smart watch. If you are not using your smart watch as a collector I would disable that setting from the smart watch. "
+  },
+  {
+   "id": 774775303,
+   "user": "xannasavin",
+   "created_at": "2021-02-07T21:57:45Z",
+   "body": "Hey @nickb24 thanks a lot for that hint!\r\nIndeed I am not using the watch as collector, those settings are unticked on the watch and also in xDrip). however I granted xDrip on the watch now the location permissions - just in case... The watch is soleley to display the measurements.\r\nwill come back soon if everything seems solved now. (just right now I am missing another reading >< )"
+  },
+  {
+   "id": 776018052,
+   "user": "xannasavin",
+   "created_at": "2021-02-09T15:21:01Z",
+   "body": "Thanks again @nickb24 and @Navid200 looks like this is solved for me."
+  }
+ ]
+}

@@ -1,0 +1,57 @@
+{
+ "id": 1551787637,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2371,
+ "title": "[AAPS 3.1.0.3-dev-g Build 0569d2ba0a Both AMA and SMB algorithms are activated at the same time.",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2371",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-01-21T12:29:15Z",
+ "closed_at": "2023-01-23T22:11:50Z",
+ "comment_count": 7,
+ "body": "Reporting bugs\r\n--------------\r\nI use the OpenAPS AMA algorithm and every time I compile a new dev version of AAPS and install it, the OpenAPS AMA and OpenAPS SMB algorithms are checked and the second one is left running. This also tends to happen without updating, every so often without any apparent cause.\r\n\r\nThe problem occurred after updating AAPS, around 13:16.\r\n\r\nAAPS 3.1.0.3-dev-g Build 0569d2ba0a\r\n\r\n[AndroidAPS._2023-01-21_01-00-40_.9.zip](https://github.com/nightscout/AndroidAPS/files/10472145/AndroidAPS._2023-01-21_01-00-40_.9.zip)\r\n[Record_2023-01-21-13-09-44.zip](https://github.com/nightscout/AndroidAPS/files/10472158/Record_2023-01-21-13-09-44.zip)\r\n[AndroidAPS.zip](https://github.com/nightscout/AndroidAPS/files/10472160/AndroidAPS.zip)\r\n\r\n",
+ "comments": [
+  {
+   "id": 1399276313,
+   "user": "MilosKozak",
+   "created_at": "2023-01-21T15:48:20Z",
+   "body": "how do you do upgrade? remove AAPS, install new and load config?"
+  },
+  {
+   "id": 1399277164,
+   "user": "fjpezuela",
+   "created_at": "2023-01-21T15:52:32Z",
+   "body": "It happens to me all the time. A few days ago I removed AAPS, installed it from scratch clean and it also starts with the two selected algorithms."
+  },
+  {
+   "id": 1399280241,
+   "user": "MilosKozak",
+   "created_at": "2023-01-21T16:09:22Z",
+   "body": "i see 13:10 was loaded configuration with Insight enabled but not APS selected which means it was defaulted to SMB"
+  },
+  {
+   "id": 1399280720,
+   "user": "MilosKozak",
+   "created_at": "2023-01-21T16:12:05Z",
+   "body": "let me guess. configuration was saved with some experimental branch like AIMI. If i'm right if you now restore configuration it will be back to SMB"
+  },
+  {
+   "id": 1399335650,
+   "user": "fjpezuela",
+   "created_at": "2023-01-21T21:25:35Z",
+   "body": "Yes, I used AIMI several months ago, but before making the switch to the dev version, I have been using EatingNow.\r\n\r\nI tried installing the dev on top of it and had the problem. I tried saving the dev configuration and going back to the master and the same thing happened. I switched to dev from master and the same thing happened. I left AMA and saved configuration, cleared the AAPS cache and uninstalled. Then I installed the dev version again and the same thing happened. I don't know if I might have something cached somehow that is causing this problem. I'll try it tomorrow on another phone."
+  },
+  {
+   "id": 1400119460,
+   "user": "MilosKozak",
+   "created_at": "2023-01-23T10:28:50Z",
+   "body": "try dev wiith this commit https://github.com/nightscout/AndroidAPS/commit/c4353e2e3eb698393aeba587e9a19ab4304ed31e"
+  },
+  {
+   "id": 1400285722,
+   "user": "fjpezuela",
+   "created_at": "2023-01-23T12:47:48Z",
+   "body": "I have just tested it and it is working fine. It has left me marked AMA.\r\n\r\nThe only thing, in case you want to take it into account, is that the OpenAPS AMA check, I don't have it checked (I have it in the hamburger menu) and now it has moved it to the tabs. As I said, no problem with that.\r\n\r\nThank you very much for all the support."
+  }
+ ]
+}

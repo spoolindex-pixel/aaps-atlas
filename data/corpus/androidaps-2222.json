@@ -1,0 +1,141 @@
+{
+ "id": 1465230963,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2222,
+ "title": "[Bug] [Combov2] [Latest dev] Preferences tab craches on Android 12",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2222",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-11-26T18:58:23Z",
+ "closed_at": "2022-11-28T09:23:27Z",
+ "comment_count": 21,
+ "body": "Unfortunatly the preferences tab crashes on Android 12 (Samsung Galaxy Flip 4) and I can't pair a combo. Other preference screens on other tabs works fine. And there is no problem on my Jelly 2 with Android 11 with the same build. This problem also exists with old builds, which I also tried today: Android 11 -> no problem, Android 12 -> crash.\r\nHere is the logcat:\r\n```\r\n2022-11-26 19:48:31.174 24888-24888/? E/AndroidRuntime: FATAL EXCEPTION: main\r\n    Process: info.nightscout.androidaps, PID: 24888\r\n    java.lang.ClassCastException: java.lang.String cannot be cast to java.lang.Integer\r\n        at android.app.SharedPreferencesImpl.getInt(SharedPreferencesImpl.java:321)\r\n        at androidx.preference.Preference.getPersistedInt(Preference.java:1813)\r\n        at androidx.preference.SeekBarPreference.onSetInitialValue(SeekBarPreference.java:207)\r\n        at androidx.preference.Preference.onSetInitialValue(Preference.java:1634)\r\n        at androidx.preference.Preference.dispatchSetInitialValue(Preference.java:1607)\r\n        at androidx.preference.Preference.onAttachedToHierarchy(Preference.java:1330)\r\n        at androidx.preference.Preference.onAttachedToHierarchy(Preference.java:1345)\r\n        at androidx.preference.PreferenceGroup.addPreference(PreferenceGroup.java:253)\r\n        at androidx.preference.PreferenceGroup.addItemFromInflater(PreferenceGroup.java:173)\r\n        at androidx.preference.PreferenceInflater.rInflate(PreferenceInflater.java:350)\r\n        at androidx.preference.PreferenceInflater.rInflate(PreferenceInflater.java:351)\r\n        at androidx.preference.PreferenceInflater.inflate(PreferenceInflater.java:161)\r\n        at androidx.preference.PreferenceInflater.inflate(PreferenceInflater.java:112)\r\n        at androidx.preference.PreferenceManager.inflateFromResource(PreferenceManager.java:217)\r\n        at info.nightscout.androidaps.activities.MyPreferenceFragment.addPreferencesFromResource(MyPreferenceFragment.kt:298)\r\n        at info.nightscout.androidaps.activities.MyPreferenceFragment.onCreatePreferences(MyPreferenceFragment.kt:181)\r\n        at androidx.preference.PreferenceFragmentCompat.onCreate(PreferenceFragmentCompat.java:161)\r\n        at info.nightscout.androidaps.activities.MyPreferenceFragment.onCreate(MyPreferenceFragment.kt:163)\r\n        at androidx.fragment.app.Fragment.performCreate(Fragment.java:3090)\r\n        at androidx.fragment.app.FragmentStateManager.create(FragmentStateManager.java:475)\r\n        at androidx.fragment.app.FragmentStateManager.moveToExpectedState(FragmentStateManager.java:257)\r\n        at androidx.fragment.app.FragmentManager.executeOpsTogether(FragmentManager.java:1899)\r\n        at androidx.fragment.app.FragmentManager.removeRedundantOperationsAndExecute(FragmentManager.java:1817)\r\n        at androidx.fragment.app.FragmentManager.execPendingActions(FragmentManager.java:1760)\r\n        at androidx.fragment.app.FragmentManager.dispatchStateChange(FragmentManager.java:2985)\r\n        at androidx.fragment.app.FragmentManager.dispatchActivityCreated(FragmentManager.java:2895)\r\n        at androidx.fragment.app.FragmentController.dispatchActivityCreated(FragmentController.java:263)\r\n        at androidx.fragment.app.FragmentActivity.onStart(FragmentActivity.java:351)\r\n        at androidx.appcompat.app.AppCompatActivity.onStart(AppCompatActivity.java:248)\r\n        at android.app.Instrumentation.callActivityOnStart(Instrumentation.java:1473)\r\n        at android.app.Activity.performStart(Activity.java:8351)\r\n        at android.app.ActivityThread.handleStartActivity(ActivityThread.java:4262)\r\n        at android.app.servertransaction.TransactionExecutor.performLifecycleSequence(TransactionExecutor.java:221)\r\n        at android.app.servertransaction.TransactionExecutor.cycleToPath(TransactionExecutor.java:201)\r\n        at android.app.servertransaction.TransactionExecutor.executeLifecycleState(TransactionExecutor.java:173)\r\n        at android.app.servertransaction.TransactionExecutor.execute(TransactionExecutor.java:97)\r\n        at android.app.ActivityThread$H.handleMessage(ActivityThread.java:2498)\r\n        at android.os.Handler.dispatchMessage(Handler.java:106)\r\n        at android.os.Looper.loopOnce(Looper.java:226)\r\n        at android.os.Looper.loop(Looper.java:313)\r\n        at android.app.ActivityThread.main(ActivityThread.java:8855)\r\n        at java.lang.reflect.Method.invoke(Native Method)\r\n        at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:571)\r\n        at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:1135)\r\n        ```\r\n\r\nBUILD: 188279b616-2022.11.26",
+ "comments": [
+  {
+   "id": 1328103513,
+   "user": "clvsjr9",
+   "created_at": "2022-11-26T19:44:32Z",
+   "body": "Android 10 crashes too"
+  },
+  {
+   "id": 1328115810,
+   "user": "MilosKozak",
+   "created_at": "2022-11-26T21:15:21Z",
+   "body": "which preference screen?"
+  },
+  {
+   "id": 1328116307,
+   "user": "MilosKozak",
+   "created_at": "2022-11-26T21:19:20Z",
+   "body": "no issue with A12 on my test phone"
+  },
+  {
+   "id": 1328118482,
+   "user": "clvsjr9",
+   "created_at": "2022-11-26T21:38:29Z",
+   "body": "Android 10 (Samsung Galaxy S9). Combov2 Preferences and Preferences with General, Overview, Treatments safety, etc crashes."
+  },
+  {
+   "id": 1328119523,
+   "user": "swissalpine",
+   "created_at": "2022-11-26T21:47:37Z",
+   "body": "Android 12 (Samsung Flip 4) with Combov2 Preferences, openAPS Preferences crashes f. e., other works (Free Peak Oref, Loop f. e.). As written above I see no issues on my Jelly 2."
+  },
+  {
+   "id": 1328120900,
+   "user": "MilosKozak",
+   "created_at": "2022-11-26T22:00:02Z",
+   "body": "hmmm. no idea. could you test which commit is responsible?"
+  },
+  {
+   "id": 1328123087,
+   "user": "clvsjr9",
+   "created_at": "2022-11-26T22:18:23Z",
+   "body": "git log -1  \r\n\r\ncommit 7fae8335a66a2031039dedc655079a38327a4a31 (HEAD -> dev, origin/dev)\r\nMerge: e47cdded0b d4c6759dd8\r\nAuthor: Milos Kozak <m.kozak@sysop.cz>\r\nDate:   Sat Nov 26 00:22:00 2022 +0100\r\n\r\n    Merge branch 'dev' of https://github.com/nightscout/AndroidAPS into dev\r\n\r\nDetail: My tests started from this commit. I don't know if the problem already existed before it."
+  },
+  {
+   "id": 1328197311,
+   "user": "swissalpine",
+   "created_at": "2022-11-27T08:41:29Z",
+   "body": "The combov2 preferences don't seem to work with Android 12 (Samsung), since my first merge on 06.11.22.\r\nAt least the openAPS SMB preferences and Overview preferences work up to\r\nBUILD cc25d1b967 on 25.11.22, after that no more.\r\nAs I said, everything is fine on the Jelly with Android 11."
+  },
+  {
+   "id": 1328208260,
+   "user": "MilosKozak",
+   "created_at": "2022-11-27T09:47:02Z",
+   "body": "could you test if it works on clean installation?"
+  },
+  {
+   "id": 1328217271,
+   "user": "swissalpine",
+   "created_at": "2022-11-27T10:36:30Z",
+   "body": "It was a \"clean installation\". I got the phone yesterday ...\r\nOr do you mean an installation without own changes?\r\nI did the same with today's dev without any personal change and complete reinstallation. Same result:\r\nOverview > 3 point menu > Preferences: Crash\r\nCombo v2 > Preferences: Crash\r\nopenAPS SMB > Preferences: now no crash\r\nIn the meantime, the Samsung Flip4 pulled Android 13, which brought no change at all."
+  },
+  {
+   "id": 1328228529,
+   "user": "clvsjr9",
+   "created_at": "2022-11-27T11:44:20Z",
+   "body": "How should I find the commit number equivalent to BUILD cc25d1b967 on 25.11.22 and try to do a git hard reset for it and evaluate on Android 10 to see if it works? I can do a clean installation too."
+  },
+  {
+   "id": 1328234839,
+   "user": "swissalpine",
+   "created_at": "2022-11-27T12:19:10Z",
+   "body": "Last commit for my build with working pref for openAPS SMB and Overview was:\r\n2e034e91fabae11c55f4aac59458ad3351442f27\r\nRevert \"resolve deprecation warning\""
+  },
+  {
+   "id": 1328235068,
+   "user": "MilosKozak",
+   "created_at": "2022-11-27T12:20:33Z",
+   "body": "> It was a \"clean installation\". I got the phone yesterday ... Or do you mean an installation without own changes? I did the same with today's dev without any personal change and complete reinstallation. Same result: Overview > 3 point menu > Preferences: Crash Combo v2 > Preferences: Crash openAPS SMB > Preferences: now no crash In the meantime, the Samsung Flip4 pulled Android 13, which brought no change at all.\r\n\r\nI mean without imported data"
+  },
+  {
+   "id": 1328243792,
+   "user": "swissalpine",
+   "created_at": "2022-11-27T13:09:51Z",
+   "body": "Second attempt: This time with location authorisation for bluetooth and it worked ...\r\nI installed \"clean\" without importing the settings - and, tata, no more crashes.\r\nBut: Can you fix this, please, @MilosKozak. Because this way I lose not only my settings, but also my objectives."
+  },
+  {
+   "id": 1328246872,
+   "user": "clvsjr9",
+   "created_at": "2022-11-27T13:27:58Z",
+   "body": "I did a \"clean\" install with BUILD cc25d1b967 on 25.11.22 (from @swissalpine ) on Android 10 and 100% working now. I will try to do with current dev version with \"clean\" too..."
+  },
+  {
+   "id": 1328250345,
+   "user": "clvsjr9",
+   "created_at": "2022-11-27T13:45:04Z",
+   "body": "With latest dev version 100% OK on Android 10 with \"clean install\". No more crashed with Preferences access and ComboV2 Preferences too. When I imported Settings the problem appears again.\n\nIs possible to edit (using a plain text editor) and remove the json entry that causes the problem ?"
+  },
+  {
+   "id": 1328292632,
+   "user": "MilosKozak",
+   "created_at": "2022-11-27T16:46:54Z",
+   "body": "fixed by https://github.com/nightscout/AndroidAPS/commit/57c96770b06aceb6d7868a923bc7e30d6032d88f (only ignore wrong value in preferences)"
+  },
+  {
+   "id": 1328301984,
+   "user": "clvsjr9",
+   "created_at": "2022-11-27T17:37:29Z",
+   "body": "@MilosKozak very thanks !!!"
+  },
+  {
+   "id": 1328302865,
+   "user": "MilosKozak",
+   "created_at": "2022-11-27T17:41:59Z",
+   "body": "working?"
+  },
+  {
+   "id": 1328303435,
+   "user": "clvsjr9",
+   "created_at": "2022-11-27T17:45:02Z",
+   "body": "on my Android 10 yes. No more crashes on Preferences menus."
+  },
+  {
+   "id": 1328343530,
+   "user": "swissalpine",
+   "created_at": "2022-11-27T21:25:25Z",
+   "body": "Same here: Fixed for Android 13. Thank you! @MilosKozak "
+  }
+ ]
+}

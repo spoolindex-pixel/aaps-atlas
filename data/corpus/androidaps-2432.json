@@ -1,0 +1,69 @@
+{
+ "id": 1594172126,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2432,
+ "title": "BG source NSClientV3 is missing BG values",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2432",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-02-21T22:20:38Z",
+ "closed_at": "2023-02-26T18:07:59Z",
+ "comment_count": 9,
+ "body": "**AndroidAPS** 3.1.0.3-dev-h\r\n**Build**: `faee7d38a0`\r\n**Flavor**: fullrelease / Engineering mode\r\n\r\n**Problem description**:\r\nSince switching to NSClientV3 on my test phone BG source NSClient started missing BG values.\r\n\r\n**Details**\r\nI have my dev/test phone configured with NSClient as BG source so it get's my BG data from my main AAPS phone. Together with syncing/downloading treatments from NS the test phone is \"shadowing\" BG and treatments from my main phone for testing purposes (no pump attached).\r\n\r\nThis setup was working perfectly fine until I upgrade Nightscout to versie 15.0.0. This version is working without problems on the main phone which uploads treatments and BG values (BYODA) to Nightscout 15.0.0 (recent dev version).\r\n\r\nSince upgrading to NS v15.0.0 the test phone started missing BG's: soon after the phone's lockscreen activates AAPS is no longer receiving BG values. When I reopen the app it updates to the latest BG value and start updating as usual.\r\n\r\nAs this setup was working fine and as I did not change the phone's setup or settings other then updating to latest dev-h and activating NSClientv3, my conclusion would be AAPS is not properly waking on new BG values from NSClient. I am sure this has nothing to do with power savings, Google Play Protect etc..\r\n\r\n**Screenprints**\r\n_**Note that the overview is partially filled as I did a re-install of AAPS to see if this somehow solved the problem described above**_\r\n\r\n\r\n![Screenshot_20230221-225050_2](https://user-images.githubusercontent.com/45144129/220467492-686de7e0-b51c-4db3-8e81-436a28353093.png)\r\n\r\n![Screenshot_20230221-224933](https://user-images.githubusercontent.com/45144129/220467483-7572caae-83c5-481a-a19b-39d001270a45.png)\r\n\r\n**Logfiles:**\r\n[AndroidAPS_LOG_1677016311427.log.zip](https://github.com/nightscout/AndroidAPS/files/10798093/AndroidAPS_LOG_1677016311427.log.zip)\r\n",
+ "comments": [
+  {
+   "id": 1445165784,
+   "user": "MilosKozak",
+   "created_at": "2023-02-25T17:36:05Z",
+   "body": "Did you enable websockets?\r\nHow do you upload BG data to NS?"
+  },
+  {
+   "id": 1445214829,
+   "user": "vanelsberg",
+   "created_at": "2023-02-25T22:00:02Z",
+   "body": "> Did you enable websockets?\r\n\r\nYes. I am running my Nightscout service from Docker image *nightscout/cgm-remote-monitor:latest_dev*. So no hosting server that needs WebSockets to be enabled. NGINX frontend is configured for WebSocket proxying with a proxy_read_timeout of 120 secs.\r\n\r\n> How do you upload BG data to NS?\r\n\r\n- Main phone:\r\nis uploading treatments and BG data to NS (v15.0.0. dev) using NSClinetV3. Main phone is happy ;-)\r\n\r\n- Test phone:\r\nuses NSClient for BG source (download only)\r\nFor this to work I need to enable NSClient(V1) or NSClientV3. AAPS is only receiving BG values with NSClientV1 enabled.\r\n\r\n"
+  },
+  {
+   "id": 1445329401,
+   "user": "MilosKozak",
+   "created_at": "2023-02-26T10:59:42Z",
+   "body": "BG data is available in NS?\r\ndid you try both WS ON and OFF on NSclient side?"
+  },
+  {
+   "id": 1445330586,
+   "user": "vanelsberg",
+   "created_at": "2023-02-26T11:04:00Z",
+   "body": "Observations, on te test phone, NSV3 tab:\r\n- Not seeing the regular \"TICK\". \r\n- TICKS only trailing a \"UPL start/End\"?\r\n- Waking the phone seems to trigger UPL/TICK most of the time, so it will get BG on the next BG update."
+  },
+  {
+   "id": 1445332236,
+   "user": "vanelsberg",
+   "created_at": "2023-02-26T11:10:08Z",
+   "body": "> BG data is available in NS?\r\n\r\nYes, there definitely is. It is my main NS, synchronizing with my daily driver AAPS\r\n\r\n> did you try both WS ON and OFF on NSclient side?\r\n\r\nNot sure what you mean bij \"WS\". WebSockets?\r\nNothing on that in AAPS settings (the client)?\r\n\r\n\r\n"
+  },
+  {
+   "id": 1445341181,
+   "user": "vanelsberg",
+   "created_at": "2023-02-26T11:52:09Z",
+   "body": "Not at all convinced this is not in my NS deployment. Maybe something blocking Web Sockets between frontend and NS backend? Will investigate further and maybe go for a repro on an alternate NS deployment.\r\n\r\nDo you know if xDrip+ (dev) is supporting NSClientV3. Could use that for a test client?\r\n\r\n"
+  },
+  {
+   "id": 1445341198,
+   "user": "vanelsberg",
+   "created_at": "2023-02-26T11:52:14Z",
+   "body": "Busy, so will need some time for this so propose to park this issue. I'll keep you posted.\r\nFeel free to close this issue for now, I'll reopen/follow-up when needed?"
+  },
+  {
+   "id": 1445445623,
+   "user": "vanelsberg",
+   "created_at": "2023-02-26T19:30:53Z",
+   "body": "@MilosKozak \r\nBtw: not convinced this is a Web Socket problem as NS log output is claiming to use it..."
+  },
+  {
+   "id": 1454759169,
+   "user": "vanelsberg",
+   "created_at": "2023-03-04T14:33:47Z",
+   "body": "@MilosKozak Update: Found the problem:\r\nSwitched off \"connect to websockets\" and it started to work (why didn't I try - you told me so :-| ):\r\n\r\nNightscout v15.0.0-dev (data source for BG and treatments - download only) is running NSClientV3 but somehow websockets do not work."
+  }
+ ]
+}

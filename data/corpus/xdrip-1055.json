@@ -1,0 +1,44 @@
+{
+ "id": 506580349,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1055,
+ "title": "Bluetooth meter calibrations ignored as identical",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1055",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "device-glucometer",
+  "calibration",
+  "status-postponed"
+ ],
+ "created_at": "2019-10-14T10:56:23Z",
+ "closed_at": "2021-03-01T20:19:10Z",
+ "comment_count": 4,
+ "body": "I use XDrip with a Libre and Bubble transmitter. To calibrate, I have a Contour Next One. Sometimes, calibrations from the meter are rejected because the value is the same as the previous one. In the event log, I see this message:\r\n`Ignoring Remote calibration value as identical to last one`\r\n\r\nI imagine this feature being useful in another context, but for a Bluetooth glucose meter I can't see how it makes sense. For example, suppose I draw a 6.0 one day and the sensor is calibrated. After two days, it has drifted a bit and I decide to calibrate again. This value may also be 6.0, but it is still not identical since the raw value of the sensor has changed. Therefore, it should be accepted.",
+ "comments": [
+  {
+   "id": 556982099,
+   "user": "boc-the-git",
+   "created_at": "2019-11-21T08:50:21Z",
+   "body": "I was hoping this would be a quick win for me to change, but it is more complicated than I had hoped.\r\nI might get time to look at this at some point, but probably not something I'll do soon.\r\n\r\nFor anyone who wants to look at it, the relevant code seems to be here: https://github.com/NightscoutFoundation/xDrip/blob/master/app/src/main/java/com/eveningoutpost/dexdrip/AddCalibration.java#L140"
+  },
+  {
+   "id": 787564982,
+   "user": "Navid200",
+   "created_at": "2021-03-01T00:49:13Z",
+   "body": "@kalleelmer Are you still experiencing this?\r\nIf yes, would you please provide the xDrip release?\r\nThanks"
+  },
+  {
+   "id": 788182186,
+   "user": "kalleelmer",
+   "created_at": "2021-03-01T18:47:31Z",
+   "body": "@Navid200 I have since moved from the Bubble transmitter to Libre 2 with the patched LibreLink app. This means i calibrate rarely so I haven't experienced this problem since the switch. The issue might still be present, but I wouldn't know."
+  },
+  {
+   "id": 788243166,
+   "user": "Navid200",
+   "created_at": "2021-03-01T20:19:10Z",
+   "body": "Thanks for your response.  \r\nIn that case, leaving the issue open will not resolve the issue.  I will close it.  If anyone finds this issue and is experiencing the same issue, please post here and we can reopen the issue."
+  }
+ ]
+}

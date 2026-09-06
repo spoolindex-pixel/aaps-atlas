@@ -1,0 +1,49 @@
+{
+ "id": 413164614,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 790,
+ "title": "Duplication of bluetooth meter values messing with graph and calibration",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/790",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "duplicate",
+  "device-glucometer"
+ ],
+ "created_at": "2019-02-21T23:01:05Z",
+ "closed_at": "2021-09-11T15:15:48Z",
+ "comment_count": 5,
+ "body": "I have observed a bug with the Accu-Check Aviva Connect sync: sometimes historic glucose levels are suddenly populated on the graph at a wrong time. E.g. I would measure 5.3 at 8 in the morning. That same 5.3 would sometimes suddenly appear at 14:30 again after taking a measurement at say 16:00 but with no measurement happening at 14:30 and other measurements having happened between 8:00 and 14:30. Often these measurements would appear multiple times. This doesn't happen very often but does from time to time and did sometimes mess with the Libre calibration. The times these reading reappear seems quite random and not connected to when the device sends the information to xDrip (it never appears close to a reading that was just taken and correctly synchronized, always a few hours in the past. Often I don't even notice until I scroll back.\r\n\r\nA similar issue has been opened for the Contour next:\r\nhttps://github.com/NightscoutFoundation/xDrip/issues/138\r\nI would assume it's the same issue caused by the bluetooth sync.",
+ "comments": [
+  {
+   "id": 481534362,
+   "user": "nsghub",
+   "created_at": "2019-04-10T05:01:41Z",
+   "body": "I can confirm this bug. Still happens with the Contour Next.\r\nWas the first time for me this morning. The BT meter was not connected when the repeated measurement value was populated."
+  },
+  {
+   "id": 729912401,
+   "user": "muthijammy",
+   "created_at": "2020-11-18T19:45:11Z",
+   "body": "I have more data on issue of duplicate calibration triggering at random time. These seem to be triggerring conditions:\r\n\r\nMeter connected to xdrip on mobile\r\nKeep automatic calibration enabled in config\r\nDo BG test and Dont calibrate using it (4:22 pm)\r\nOpen xdrip after 30 minutes\r\nEarlier BG value randomly applied as calibration now(4:50 pm)\r\n\r\nI had noticed this issue in past but didnt realise last step in trigger. It has been discussed in past in FB and I see below open issues raised without triggers mentioned and open. \r\n\r\nWorkaround seems to be disabling automatic calibration or click on BG in graph and calibrate. Can there be quick fix as time-is-money and delayed BG used for calibration is quite dangerous. Should I raise new issue or this issue will get priority based on new comments\r\n\r\nhttps://github.com/NightscoutFoundation/xDrip/issues/138\r\n\r\n[\r\n![Screenshot_20201118-171342_xDrip+](https://user-images.githubusercontent.com/37772619/99579880-ea25a880-2a32-11eb-938b-57da90c4a11f.jpg)\r\n![Screenshot_20201118-171526_xDrip+](https://user-images.githubusercontent.com/37772619/99579885-ebef6c00-2a32-11eb-89bc-b66169993cf0.jpg)\r\n\r\n](url)"
+  },
+  {
+   "id": 846584487,
+   "user": "Navid200",
+   "created_at": "2021-05-23T15:53:05Z",
+   "body": "@diagnoe4 Do you still experience this with the latest xDrip release?\r\nMay 21, 2021"
+  },
+  {
+   "id": 917423629,
+   "user": "Navid200",
+   "created_at": "2021-09-11T15:15:48Z",
+   "body": "@diagnoe4 If this is not related to the following, please explain.\r\nhttps://github.com/NightscoutFoundation/xDrip/issues/296\r\n\r\nIf it is related, please use that existing issue to communicate your concerns."
+  },
+  {
+   "id": 917563979,
+   "user": "diagnoe4",
+   "created_at": "2021-09-12T06:03:31Z",
+   "body": "> \r\n> \r\n> @diagnoe4 Do you still experience this with the latest xDrip release?\r\n> May 21, 2021\r\n\r\nHi all, sorry for the late reply. I have not observed this issue in many months. I would therefore assume it's fixed at least for my case."
+  }
+ ]
+}

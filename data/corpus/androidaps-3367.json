@@ -1,0 +1,33 @@
+{
+ "id": 2354596031,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3367,
+ "title": "Timeline in History screen is not Always correct",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3367",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-06-15T06:44:58Z",
+ "closed_at": "2025-10-13T09:05:03Z",
+ "comment_count": 3,
+ "body": "In the history screen, while switching scale, the timeline is not correct for 6 and 12 hours.\r\nFor 6 : the current hour appears two times (see screenshots attached)\r\nFor 12 hours :  the graph is one hour wrong (i.e 7 instead of 8 on the screenshots \r\n\r\nAny idea why?\r\n![Screenshot_20240615-084422](https://github.com/nightscout/AndroidAPS/assets/171514589/602f2b08-2294-494f-b6da-42797d9761dc)\r\n\r\n![Screenshot_20240615-081518](https://github.com/nightscout/AndroidAPS/assets/171514589/4ea18561-04d1-4441-a8bb-89a14aa498de)\r\n![Screenshot_20240615-081534](https://github.com/nightscout/AndroidAPS/assets/171514589/f640c395-2a91-4f23-81b9-75ac82f77b48)\r\n![Screenshot_20240615-081629](https://github.com/nightscout/AndroidAPS/assets/171514589/e444f0bb-fa5f-4e17-82dc-631a2912a9df)\r\n![Screenshot_20240615-081546~2](https://github.com/nightscout/AndroidAPS/assets/171514589/5204e9dd-4b5b-470a-be92-db824aa292fe)\r\n![Screenshot_20240615-081557~2](https://github.com/nightscout/AndroidAPS/assets/171514589/caa88064-2020-4f94-b2ee-d19731e8284e)\r\nReporting bugs\r\n--------------\r\n- **Note the precise time the problem occurred** and describe the circumstances and steps that caused\r\n  the problem\r\n- Note the Build version (found in the About dialog in the app, when pressing the three dots in the\r\n  upper-right corner).\r\n- Obtain the app's log files, which can be found on the phone in\r\n  _/storage/emulated/0/Android/data/info.nightscout.androidaps/_\r\n  See https://wiki.aaps.app/en/latest/Usage/Accessing-logfiles.html\r\n- Open an issue at https://github.com/nightscout/AndroidAPS/issues/new\r\n",
+ "comments": [
+  {
+   "id": 2568388039,
+   "user": "fezulin",
+   "created_at": "2025-01-02T21:16:16Z",
+   "body": "I observe the same behavior in both version 3.2.0.4 and version 3.3.0.0.\r\nIn the first image: On the left is a part of the \"History\" (This is not a screenshot from the main view!). On the right is a screenshot of the \"Treatments\".\r\n1.) Left grey arrow: \r\nApparently, two SMBs were delivered around 5:30 AM. \r\n2.) Right grey arrow: \r\nAccording to the \"Treatment\", the SMBs were given at 6:30 AM. One hour later! (And this is the time I remember.)\r\n3.) Red square: \r\nThe \"08\" is missing. So, an entire hour is missing. \r\nThe same issue happens with entered carbohydrates (KH) and manual bolus (not visible in this screenshot). The displays in the graph are sometimes shifted by one hour compared to the labels on the axis.\r\n![History_1](https://github.com/user-attachments/assets/ff98c568-b362-477d-b87c-be5004a11840)\r\n\r\nIn the following image: The scale is also incorrect, too. Here, at 8 PM, one hour \"too much\" is displayed.\r\n![History_2](https://github.com/user-attachments/assets/41b1b08d-fbde-4246-b3a7-4f9f998c94e3)\r\n\r\nI encounter this behavior repeatedly. I have adjusted the time interval (6, 12, 18, 24 hours) several times, and I have shifted the time window multiple times using the arrow keys. In the process, I accidentally set the display to a time period in the future. Now the behavior is like this. However, I don't know what caused the display to be incorrect in this sense. \r\nSo I don’t know how to reproduce it."
+  },
+  {
+   "id": 2606288167,
+   "user": "pnharris02",
+   "created_at": "2025-01-22T04:47:56Z",
+   "body": "I also experience variations of this behaviour.  I remember it occurring back in Sep/Oct in v3.2.0.4, on a Samsung tablet, and it's still occurring in v3.3.1.3 on a Pixel 9 Pro phone.  My experience is a bit more like @fezulin reports, but I have a different interpretation/understanding of the problem, at least in my case.\n\nI believe it is only the scale on the X-axis that is displayed incorrectly, with all data on the graph otherwise shown correctly.  No data is missing.  I assume that the time periods displayed are meant to start from 0:00 (for 24hrs), 00:00 or 12:00 (for 12 hours) and 0:00, 6:00, 12:00 or 18:00 (for 6 hours).  That appears to be match up with the DATA I see on the graph.\n\nHowever, the scale is wrong.  \n* Any time period starting from 0:00 will often show the first label on the X-axis to be 23. Then at some point later, it may or may not skip an hour, so that the last label on the X-axis is correct.  \n* I see this behaviour occurring regardless of the time-frame selected, whether it be 6,12,18 or 24hrs.\n* It is easily reproduced by starting at the current day, then skipping back using the arrow at top left.  Some periods display with the correct axis labels, and others don't.  Some will display correctly, some will start and finish with the wrong time on the axis, others will start on the wrong time and finish on the correct time, or vice versa\n* If the time period is set to 6 hours, then I also see some periods displaying the same hour twice on the axis\n\nI am in daylight savings time, but I can't see how that could be relevant.  We are nowhere near a changeover period for daylight savings (Oct-Mar for me) and I'm pretty sure I experienced this behaviour when I first installed AAPS back in September."
+  },
+  {
+   "id": 2606592969,
+   "user": "pnharris02",
+   "created_at": "2025-01-22T08:33:02Z",
+   "body": "Sorry, I just found that there are previous issues that raise the same point and @MilosKozak has said that it is a bug in the library and therefore unsolvable.\nhttps://github.com/nightscout/AndroidAPS/issues/2854\nhttps://github.com/nightscout/AndroidAPS/issues/3217"
+  }
+ ]
+}

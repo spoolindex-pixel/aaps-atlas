@@ -1,0 +1,27 @@
+{
+ "id": 4966489534,
+ "repo": "nightscout/AndroidAPS",
+ "number": 5002,
+ "title": "Carelevo first Suspend pump attempt fails while temp basal or extended bolus is active",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/5002",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2026-07-24T08:01:17Z",
+ "closed_at": "2026-07-27T09:40:17Z",
+ "comment_count": 2,
+ "body": "Description\n\nBuild version\n- 4.0.0-dev-a (d01e) (branch: carelevo)\n\nTime of issue\n- Reproduced repeatedly during testing on July 24, 2026\n\nEnvironment\n- Device / OS: Galaxy S25 (Android 16)\n- Branch: carelevo\n- Frequency: 100%\n\nPrecondition\n- Patch is connected\n- A temp basal or extended bolus is currently running\n\nSteps to reproduce\n1. Start a temp basal or extended bolus.\n2. Confirm on the Home screen that the infusion is in progress.\n3. Navigate to the Carelevo Overview screen\n4. On the patch info screen, tap `Suspend pump`.\n5. Set a suspend duration and confirm.\n\nExpected behavior\n- Suspend pump should succeed on the first attempt.\n- All running infusions should stop.\n- The patch/pump should be shown as suspended.\n\nActual behavior\n- The first suspend attempt fails and a failure toast is shown.\n- However, the running temp basal or extended bolus is actually stopped.\n- After that, a second suspend attempt usually succeeds.\n\nAdditional note\n- This issue is easier to reproduce when `Suspend pump` is triggered while a temp basal or extended bolus is active.\n- In practice, the first attempt fails, and from the second attempt onward it tends to succeed.\n\nLogs\n- Relevant logs will be attached.",
+ "comments": [
+  {
+   "id": 5067678231,
+   "user": "Kisu-Choi",
+   "created_at": "2026-07-24T08:16:45Z",
+   "body": "A possible fix has been prepared in commit : 2c7f5f9ff481ca0d8d527d1864a304bb44734d2c\n\nCould you please review and confirm whether this approach looks acceptable?\n"
+  },
+  {
+   "id": 5076664882,
+   "user": "Kisu-Choi",
+   "created_at": "2026-07-25T03:22:24Z",
+   "body": "Verified with https://github.com/nightscout/AndroidAPS/commit/0e1a25b47f75ed7913c291701725129dc015a582.\nThis issue is confirmed fixed on our side.\n"
+  }
+ ]
+}

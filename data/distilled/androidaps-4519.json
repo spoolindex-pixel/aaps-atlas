@@ -1,0 +1,23 @@
+{
+ "issue_id": 4519,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/4519",
+ "title": "Medtronic 722 Version 2.2A Orange Pro fails to connect.",
+ "symptom": "After updating to version 3.4.0.0 on a XIAOMI 14 phone, the Orange Pro Link app is unable to connect to the Medtronic 722 Version 2.2A insulin pump. After the first successful connection, the basal rate can be read, and the pump's time and settings can be retrieved. However, during subsequent connection attempts, the pump status shows a connection failure. It is impossible to connect to the pump to deliver bolus insulin or adjust the basal rate. Version 3.3.2.1 functions properly without these issues.",
+ "cause": "The issue is caused by a migration bug in the Medtronic Encoding setting during version upgrade to 3.4.0.0. The display names for FourByteSixByteLocal and FourByteSixByteRileyLink were swapped in the code, leading to incorrect encoding behavior after upgrade.",
+ "fix": "Go to the 'Medtronic Encoding' setting and switch the option from one to another (toggle it). This completely fixed the issue. A pull request #4526 was created to fix the underlying bug, and it is recommended to mention in release notes that if pump work is unstable after upgrade to or from 3.4.0.0, try switching the Medtronic Encoding setting.",
+ "settings_changed": [
+  "Medtronic Encoding → toggled between options"
+ ],
+ "devices": [
+  "Medtronic 722 Version 2.2A",
+  "Orange Pro Link"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "RileyLink",
+  "Medtronic"
+ ],
+ "confidence": "high",
+ "evidence_quote": "I proposed to go to the \"Medtronic Encoding\" setting and just switch the option from one to another. And that completely fixed the issue."
+}

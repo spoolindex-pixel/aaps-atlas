@@ -1,0 +1,51 @@
+{
+ "id": 772406152,
+ "repo": "nightscout/AndroidAPS",
+ "number": 130,
+ "title": "[DEV from 18.12.2020] RileyLink changes causes in many RL connection lost with no reconnect",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/130",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2020-12-21T19:23:03Z",
+ "closed_at": "2020-12-23T21:57:29Z",
+ "comment_count": 6,
+ "body": "With the dev version, from 18.12.2020, there are changes done with RileyLink connection.\r\n\r\nI think the changes are for Omnipod, but with this changes i have a lot connection lost to my Medtronic Rileylink 2.2. It doesn't reconnect automaticly, you have to close and restart the Bluetooth connection and/or close and restart AAPS to get the RL to connect again.\r\n\r\n**Didn't have this problem before this updates.**\r\n\r\nLast happen this night from 0:00 to 0:55, see log.\r\n**After this, I going back to the previous version.**\r\n\r\n[AndroidAPS_LOG_1608527696668.log.zip](https://github.com/nightscout/AndroidAPS/files/5726045/AndroidAPS_LOG_1608527696668.log.zip)\r\n\r\n**My System:**\r\nSmartphone: Google Pixel 5\r\nPump: Medtronic 754\r\nRileyLink: v2.2\r\n\r\n**Question:**\r\nAndy Rozman has created the Medtronic and RileyLink integration in a complete stand alone test version.\r\nHe let it come to to AAPS Dev, after  the most work was done and the pump and RL was already working good.\r\n\r\nWhy isn't the Omnipod integration going the same way ?",
+ "comments": [
+  {
+   "id": 749761206,
+   "user": "bartsopers",
+   "created_at": "2020-12-22T20:29:38Z",
+   "body": "I'm not convinced that this is caused by the recent minor changes we did to the RL framework for Omnipod. Is anyone else experiencing these issues? Do they persist or was it maybe just coincidental?\r\n\r\nAnd just FYI, to answer your last question: the Omnipod driver has been developed in a separate project for about a year before we merged any code to the main AAPS repo. Since the Omnipod driver is in a testing phase and the code has been integrated into the main AAPS repo, the RL framework has been shared between Omnipod and Medtronic in order to prevent duplicate code."
+  },
+  {
+   "id": 749782504,
+   "user": "ktomy",
+   "created_at": "2020-12-22T21:23:29Z",
+   "body": "Hi @Alamo04,\r\nFrst of all, please consider what @bartsopers told, Omnipod driver was developed in a separate (from AAPS) project (together with Medtronic driver). It was just a matter of chance that Medtronic was integrated earlier (Andy could work on it more and the protocol is simpler).\r\nThe change we are talking about is valid for both Medtronic and Omnipod, as both use Riley(Ema/Orange/Loop)Link and RileyLink battery level is a valuable piece of information, which you want to have regardless of the pump you use. Again, it is just a matter of chance it was first available for Omnipod.\r\nAbout the connection issue. In order to get the battery level AAPS does an additional call to the RL to get its battery level. To have this value in real time, this call is made after each connection to the pump. It may happen that if you have an unstable Bluetooth connection, giving the number of Bluetooth calls grow, the changes of connection failures grows as well. We have tested the feature on 5 different RileyLinks from different manufacturers, on different phones, and it worked flawlessly, so the feature was included in the development branch.\r\nYou are the first person who reports issues. It might happen that it is your particular setup, the RileyLink model or lot, the phone model or lot or the environment factors which negatively influenced the connection. Finding such kind of issues is the meaning of the development branch, so I would like to thank you for your report and would like to assure you we treat we will treat it with all the seriousness.\r\nIn order to better understand the context, would you mine to answer a few additional questions? It is important for us to know how would you appreciate the connection stability over time. How often does it happen for you to loose connection between the phone and the RileyLink? What do you usually do to restore the lost connection? How often does it happen that you loose communication link between the RileyLink and your pump? How "
+  },
+  {
+   "id": 749808706,
+   "user": "Alamo04",
+   "created_at": "2020-12-22T22:27:56Z",
+   "body": "@ktomy \r\n\r\nThanks for your reply, also to you @bartsopers .\r\n\r\n**Your questions:**\r\n\r\n**It is important for us to know how would you appreciate the connection stability over time.** \r\nBefore this update, the connection stability over time was great, no problems with RileyLink.\r\nSometimes connection to pump lost, but it reconnects automatically.\r\n\r\n**How often does it happen for you to loose connection between the phone and the RileyLink?** \r\n- After different numbers of hours on the Poco F2 Pro, without reconnect and restart phone needed (send the phone back)\r\n- Verry rare with my old Samsung S7. \r\n- Never with my Google Pixel 5 (until this update comes up)\r\n  Normaly it happened only if the battery goes low... after 60 hours. \r\n  It should not happen, because I charge my RileyLink every 48 hours.\r\n\r\n**What do you usually do to restore the lost connection?** \r\nUsually I stopp and restart Bluetooth. If that doesn't work, I close AAPS and restart it. Normaly it is fixed then.\r\nLong time ago, it was needed to do a complete restart of the phone., \r\n\r\n**How often does it happen that you loose communication link between the RileyLink and your pump?** \r\nSometimes and then perhaps 1 times a day, sometimes 2-3 times a day. It was normaly fixed with the next connection then.\r\n\r\n**How often do you restart your phone?**\r\nOnly if I become problems with AAPS or XDrip, or if an phone update comes up.\r\n\r\n**But it can be, that this was the problem. In the history, with a new experimental Medtronic AAPS version, it was needed to do a complete restart, sometimes to do a complete clean install with restart. Not need that for a long time now, but will try it after work tomorrow and give you feedback.**\r\n\r\n**Additional Information:**\r\nWith this new version, I had 2 RL connection lost over the day and another one in the night.\r\nSince back to the previous version, no connection losts to my RL."
+  },
+  {
+   "id": 749809613,
+   "user": "andyrozman",
+   "created_at": "2020-12-22T22:29:47Z",
+   "body": "Is is really wise to check RL battery status on every call? In Medtronic driver I do some calls just like every 60/120 minutes (dependening on previous value)?"
+  },
+  {
+   "id": 750348807,
+   "user": "Alamo04",
+   "created_at": "2020-12-23T15:26:17Z",
+   "body": "@bartsopers and @ktomy \r\nI installed the build 691a867d8-2020.12.19 yesterday 23:56 again (Update, not clean installation).\r\nThis time I restart the phone after installation. \r\n\r\n**Until now no connection lost comes up, so I think the restart of the phone has fixed it.\r\nWill close this issue in a few hours, after this version runs 24 hours.**\r\n\r\n**But another question:**\r\nIf you check the RL batterie so many times, did that not affect the runtime of the RileyLink and drain the batterie more than before ?\r\n"
+  },
+  {
+   "id": 750488769,
+   "user": "Alamo04",
+   "created_at": "2020-12-23T21:57:29Z",
+   "body": "After 23 hours with no problems this issue can be closed.\r\n\r\nRestart phone has fixed this issue and the version is working good so far."
+  }
+ ]
+}

@@ -1,0 +1,39 @@
+{
+ "id": 2097045594,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3186,
+ "title": "Self-Designated Maximum SMB Amount",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3186",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-01-23T21:50:13Z",
+ "closed_at": "2024-01-25T13:48:35Z",
+ "comment_count": 4,
+ "body": "This is an enhancement/feature request regarding how SMBs are delivered. \r\n\r\nThe current SMBs are limited to the smallest of (with a personal example in parentheses):\r\n- Current basal rate for next x minutes (.7u for 30 minutes)\r\n- Half the amount of the required basal (sometimes up to 5u)\r\n- The remaining amount needed to reach maxIOB that is set (Ours is set to 10u)\r\n\r\nSo, the largest SMB is about .7u for us, however even this can be too much to receive in one go right after a site change, causing unnecessary pain. We would like to request a way to manually set a maximum SMB amount (specifically, set a lower limit). With this option, we could perhaps use it in conjunction with automations (not sure, we haven't unlocked those yet) to limit SMB insulin amount and increase the delivery rate right after a site change.",
+ "comments": [
+  {
+   "id": 1907977048,
+   "user": "MilosKozak",
+   "created_at": "2024-01-24T11:52:25Z",
+   "body": "this doesn't make sense much. what do you do if you need to send a bolus?"
+  },
+  {
+   "id": 1908535118,
+   "user": "Svagtlys",
+   "created_at": "2024-01-24T16:50:40Z",
+   "body": "You mean how do we bolus for meal/correction? When using the original PDM with the Dash, we did extended bolus. Now with AAPS, our options are reduced as extended boluses aren't an option in looping, so we have to bolus, stop it partway when it hurts, and try to remember to bolus again in a few minutes. Rinse and repeat until the needed insulin is delivered (can be up to ten iterations of this).\r\n\r\nWe thought we may be able to use SMBs for this purpose once they were unlocked, but the lack of ability to set a lower maximum insulin amount means we have to disable SMBs on site change, do our \"bolus, stop, try to remember to repeat\", and then also try to remember to re-enable SMBs.\r\n\r\nIf you would prefer to chat about this on Discord, voice or text, you can ping me on WANW or DM me @momothebestest\r\n\r\nWe would love to explain our situation and use case if it means that this feature, or one that serves a similar purpose, would be considered."
+  },
+  {
+   "id": 1909818447,
+   "user": "MilosKozak",
+   "created_at": "2024-01-25T10:11:53Z",
+   "body": "This doesn't have a good solution on AAPS (or any automated system) side if a SMB, which is pretty small, can be too much .... and algorithm needs to deliver needed insuling as fast as possible to be effective\r\nI see this possible options:\r\n* try another pump/insulin/infusion set\r\n* lower the limit (from default 30 min) for SMB for borrowing insulin from the future. This will decrease SMB size\r\n* disable issuing SMB at all. Then AAPS will use TBRs only. You should probably increase limits to have it more effective"
+  },
+  {
+   "id": 1910255927,
+   "user": "Svagtlys",
+   "created_at": "2024-01-25T13:48:35Z",
+   "body": "We understand it's not ideal to not be able to inject all insulin at once. We'll depend on the basal limitation then."
+  }
+ ]
+}

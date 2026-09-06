@@ -1,0 +1,59 @@
+{
+ "id": 387631009,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 702,
+ "title": "daily archive gets saved to internal storage",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/702",
+ "state": "closed",
+ "labels": [
+  "enhancement"
+ ],
+ "created_at": "2018-12-05T07:45:20Z",
+ "closed_at": "2023-08-14T21:25:26Z",
+ "comment_count": 7,
+ "body": "### Device\r\n* Phone: Moto G1 XT1039, LineageOS 14.1-20180908-nightly-peregrine (Android 7.1.2)\r\n* xDrip+ nightly (a series of...)\r\n\r\n### Gist\r\n_My house is a squash and a squeeze._\r\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_Julia Donaldson_\r\n\r\n### Details\r\nOn my device, there are internal, external, and virtual storage locations:\r\n```\r\nperegrine:/storage # df -h /storage/*\r\nFilesystem              Size  Used Avail Use% Mounted on\r\n/mnt/media_rw/58D3-59DB  14G  2.9G   12G  21% /storage/58D3-59DB\r\n/data/media             5.5G  5.3G  153M  98% /storage/emulated\r\ntmpfs                   427M     0  427M   0% /storage\r\n```\r\n\r\nmedia is made available on the mount point `mnt` and unfortunately `sdcard` (which is also made available as `/sdcard`) there points to internal storage, while the external storage is mounted as ` /mnt/media_rw/58D3-59DB/ `.\r\n\r\n```\r\ndrwxr-x--- 3 root media_rw 60 2018-12-05 07:43 /mnt/media_rw\r\nlrwxrwxrwx 1 root root     21 1971-01-03 19:10 /mnt/sdcard -> /storage/self/primary\r\n```\r\nlooks brain-dead to me... so on the risk of breaking things once I exchange the sdcard for another, I re-assigned that link to point to external storage. Unfortunately upon reboot that was merrily revoked...\r\n\r\nThere are backup directories for xdrip at either location, but as of current, the internal one gets written to. Neither xdrip nor AndroidAPS are too happy once that fills up...\r\n```\r\nperegrine:/storage # find . -type d -name xdrip -exec du -sh {} \\;\r\n142M\t./58D3-59DB/xdrip\r\n1.8G\t./emulated/0/xdrip\r\n```\r\n\r\nLooks like this hasn't always been the case:\r\n```\r\nperegrine:/storage # find . -type d -print -name xdrip -exec ls -l {} \\;\r\n./58D3-59DB/xdrip\r\ntotal 145504\r\n-rwxrwx--x 1 root sdcard_rw    282720 2018-09-25 11:00 export20180217-143452.zip\r\n-rwxrwx--x 1 root sdcard_rw 148655712 2018-09-25 17:16 export20180925-161142.zip\r\n-rwxrwx--x 1 root sdcard_rw      1523 2018-09-25 17:16 exportCSV20180925-161454.zip\r\n./emulated/0/xdrip\r\ntotal 1910240\r\n-rw-rw---- 1 root sdcard_rw 347066688 2018-11-30 04:13 daily20181130-040053.zip\r\n-rw-rw---- 1 root sdcard_rw 350750186 2018-11-30 20:53 daily20181130-204633.zip\r\n-rw-rw---- 1 root sdcard_rw 353393844 2018-12-01 13:45 daily20181201-133835.zip\r\n-rw-rw---- 1 root sdcard_rw 356851643 2018-12-02 13:02 daily20181202-125550.zip\r\n-rw-rw---- 1 root sdcard_rw 358284409 2018-12-03 21:16 daily20181203-210957.zip\r\n-rw-rw---- 1 root sdcard_rw 187768832 2018-12-05 04:03 daily20181205-040001.zip\r\nperegrine:/storage # find . -type d -name xDrip-export -print -exec ls -l {} \\>\r\n./58D3-59DB/Download/xDrip-export\r\ntotal 32\r\n-rwxrwx--x 1 root sdcard_rw 22412 2018-09-25 17:18 com.eveningoutpost.dexdrip_preferences.xml\r\n./emulated/0/Download/xDrip-export\r\ntotal 28\r\n-rw-rw---- 1 root sdcard_rw 23932 2018-12-05 07:38 com.eveningoutpost.dexdrip_preferences.xml\r\n```\r\n\r\n### Plea\r\nWhile I assume it's more of an Android Problem than an Application Problem, would it be possible to prefer writing to `media_rw` if present?\r\n(On a side note, it might be an idea to only preserve a backlog of _x_ copies with an interval based on the retention period defined by the user, since later backups, if successful, replicate the data in-between. But that's also something the user can handle when dumping the logs to his archive storage)\r\n\r\n> _Wise old man, won't you help me, please?_\r\n> _My house is a squash and squeeze._\r\n> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_Julia Donaldson_\r\n\r\nThanks in advance, and for all the time and dedication that went into this life-changing project\r\n   Tatjana",
+ "comments": [
+  {
+   "id": 469384613,
+   "user": "th122",
+   "created_at": "2019-03-04T19:17:28Z",
+   "body": "This is an ongoing problem - even though I have reduced data retention time in xDrip to 90 days, the xDrip database (stuck on) on internal storage covers 3.5G at the moment. xDrip is unable to save the databse anywhere, since it won't offer  place that's not on the internal storage, and any time memory runs full (two days worth of AAPS logfiles are getting there, by now), xdrip gets stuck or crashes, and just wont *get* any data.\r\nOh, and AAPS goes crashing when space gets tight, as well.\r\n\r\nIt looks like xdrip once *had* written to external storage (the \"real\" sdcard), but reverted to internal storage at some point in time."
+  },
+  {
+   "id": 478246301,
+   "user": "zip9",
+   "created_at": "2019-03-30T13:36:46Z",
+   "body": " Seems to be a big issue on my LG G5 phone (31.7 of 32G used). Running out of internal space due to daily zip files...going back almost one year. All other system and app uses 10G. See no way to control how long to retain these files in X-drip+, or to migrate to SD card. Manually deleting the majority if these files seems to be my only recourse. "
+  },
+  {
+   "id": 478251166,
+   "user": "th122",
+   "created_at": "2019-03-30T14:31:24Z",
+   "body": "I'm using nextcloud, and the automatic upload feature to offload them from my phone (upload all (.zip files from that particular directory, and automatically delete from that directory after successful upload), and still be able to archive them.\r\n\r\nWhat had been aggravating my problems was that my xDrip database had been exploding due to whatever problem it had to clean itself up. It was way beyond normal size, to the extent where a copy wouldn't fit onto the phone at all.\r\n\r\nI still think that being able to configure a storage directory would be a life-saver."
+  },
+  {
+   "id": 776803413,
+   "user": "Navid200",
+   "created_at": "2021-02-10T15:45:03Z",
+   "body": "@th122 Hi,\r\nI don't have a solution.  But, I would like to understand the problem.\r\nI have been using xDrip for more than 3 years.   I can access any of my readings for the past 2 years and a few weeks (the period I have been using my current phone) on xDrip under history.\r\n\r\nWhen I check Apps storage, I see only 157MB occupied by xDrip.\r\n\r\nWould you please help me understand what the problem is?\r\nThanks"
+  },
+  {
+   "id": 776825713,
+   "user": "tolot27",
+   "created_at": "2021-02-10T16:15:43Z",
+   "body": "@th122 Did you enable extra logging for some classes? That could cause excessive storage consumption."
+  },
+  {
+   "id": 782776227,
+   "user": "Navid200",
+   "created_at": "2021-02-21T01:15:24Z",
+   "body": "Closing due to inactivity"
+  },
+  {
+   "id": 1678089221,
+   "user": "Navid200",
+   "created_at": "2023-08-14T21:25:26Z",
+   "body": "We now have a backup to Google Drive feature that backs up to the cloud.\r\nhttps://navid200.github.io/xDrip/docs/GoogleDriveBackup.html\r\n\r\nIt also has an automatic daily backup.\r\n\r\nI will close this gain because there is a workaround, using the alternative backup methodology."
+  }
+ ]
+}

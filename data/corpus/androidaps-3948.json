@@ -1,0 +1,33 @@
+{
+ "id": 2998973024,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3948,
+ "title": "Question about the calculation of ZTpredBG:",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3948",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-04-16T09:03:20Z",
+ "closed_at": "2025-04-17T02:04:30Z",
+ "comment_count": 3,
+ "body": "![Image](https://github.com/user-attachments/assets/652c6054-0406-4a47-91e8-2cd1e91488eb)\n\nAs shown in the diagram, in the glucose prediction module, there are four predictions: IOB, COB, UAM, and ZT. \nWhy is it that only ZT does not calculate predDev? \nI don’t quite understand the reasoning behind this design and would like to ask for your insights.",
+ "comments": [
+  {
+   "id": 2809858539,
+   "user": "MilosKozak",
+   "created_at": "2025-04-16T14:57:03Z",
+   "body": "@scottleibrand "
+  },
+  {
+   "id": 2811517684,
+   "user": "scottleibrand",
+   "created_at": "2025-04-17T01:50:50Z",
+   "body": "predDev is a short-term inertia term, which allows all the other prediction lines to start out pointing in roughly the same direction as the historical trendline, whether that's rising from carb absorption, dropping fast from something unexpected, or something in between. The ZTpredBG isn't intended to capture such short-term inertia: it's intended to visually show how much BG \"should\" be dropping from predicted insulin activity alone (if carb absorption were to suddenly cease), and predicts how the BG would trend if carb impact were to remain at zero, BG were to move according to predicted insulin impact, and the pump were to remain zero temped until BGs start rising above a threshold."
+  },
+  {
+   "id": 2811534686,
+   "user": "doudou-ux",
+   "created_at": "2025-04-17T02:04:25Z",
+   "body": "Thank you very much for your response. As I continued to think about the subsequent code, I only considered the aspect of being unaffected by carbohydrates. However, your explanation is much deeper and more comprehensive."
+  }
+ ]
+}

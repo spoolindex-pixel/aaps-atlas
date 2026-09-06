@@ -1,0 +1,33 @@
+{
+ "id": 2000763265,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3071,
+ "title": "NormalTarget's inconsistency",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3071",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-11-19T09:04:38Z",
+ "closed_at": "2026-03-08T12:21:45Z",
+ "comment_count": 3,
+ "body": "There is a concept of 'normalTarget' widely used in AAPS: for high/low temptargets (target value is compared with normalTarget); dynISF uses normalTarget as a base to scale up/down ISF with BG level...\r\n\r\nHowever there are some problems with it:\r\n\r\n1. `var normalTarget = 100;` - this is hardcoded value used in oref1 js files. But the value of 100 is impossible to be used on devices with `mmol` units. Because 100 is `5.(5)` - you cannon set up the tempTarget of 5.55555555... in AAPS, nor you can not set this value for profile. So is always lower or higher than normalTarget. The mgdl users does not suffer from this problem.\r\n\r\n2. Even documentation [lies](https://androidaps.readthedocs.io/en/latest/Usage/temptarget.html#hypo-temp-target) (hypo and activity sections) :) It states that TT `of 100 (or 5.5) or higher` is considered as _High Temp-Target_\r\n<img width=\"694\" alt=\"image\" src=\"https://github.com/nightscout/AndroidAPS/assets/4157587/faf47561-ada8-41c7-91bb-83f99d2279a9\">\r\n<img width=\"709\" alt=\"image\" src=\"https://github.com/nightscout/AndroidAPS/assets/4157587/3b802aab-dfed-40a2-a9a7-b23e00fd063b\">\r\n\r\n\r\n**But** the code uses strict comparision with 100: `else if (! profile.allowSMB_with_high_temptarget && profile.temptargetSet && target_bg > 100)`. So setting 100 with mgdl-units system witll not trigger 'high temp' despite doc says that. But setting 5.5 on mmol system will be treated as '**low** TT`, while doc says it is _high_ value :)\r\n\r\nLooks like AAPS requires new global constant of normalTarget (=99) to be reused when needed.\r\n\r\n",
+ "comments": [
+  {
+   "id": 1817808458,
+   "user": "justmara",
+   "created_at": "2023-11-19T10:08:43Z",
+   "body": "Another buggy scenario.\r\nAssume enabled settings:\r\n1. high TT raises sens\r\n2. low TT lowers sens\r\n3. disable SMB with TT\r\n\r\nUsing mgdl you can set TT for 100 so SMBs are disabled, but ISF is not altered. Using mmol you cannot set such  TT because 5.5 (\\*18=99) would be 'low TT' (lower than 100) and thus ISF would be lowered. While 5.6 on the other hand is high TT (5.6*18=100.8 which is higher than 100) so ISF would be lowered.\r\n\r\nSo definitely normalTarget must be 99.\r\nOr, maybe, it must be the average of profile target (since it is specified as bg range)?"
+  },
+  {
+   "id": 1817810563,
+   "user": "justmara",
+   "created_at": "2023-11-19T10:17:19Z",
+   "body": "Also ExtendedBolusExtension.kt uses 100 as normalTarget in `fun ExtendedBolus.iobCalc`"
+  },
+  {
+   "id": 4018953424,
+   "user": "MilosKozak",
+   "created_at": "2026-03-08T12:21:45Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/3ebb4b17a1a39eb3c51510b6b5723c2e17268610"
+  }
+ ]
+}

@@ -1,0 +1,63 @@
+{
+ "id": 2589873003,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3470,
+ "title": "AAPS After database reset: loop process blocks, app crashes on manual calculation (tab SMB/AUTOISF - swipe)",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3470",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-10-15T20:46:55Z",
+ "closed_at": "2024-12-01T11:21:20Z",
+ "comment_count": 8,
+ "body": "**AndroidAPS 3.3.0-dev-c**\r\nFlavor: fullDebug\r\nBuild commit# ba1c475fcce4a7275e21d5be3799aefb5771e0b6\r\n\r\nProblem is when config is set to OpenAPS SMB or AutoISF\r\nWhen selecting OpenAPS AMA all seems well\r\n\r\n*After database reset:*\r\n- Loop stops, no APS/algo calculations on SBM/AutoISF tab\r\n- App crashes when APS calculation is forced by manual swipe on this tab\r\n\r\n**Additional info:**\r\nJust before crashing AAPS briefly shows the \"Fallback to SMB. Not enough TDD data\". Also seeing the alert \"Fallback to profile sensitivity. Not enough TDD data\".\r\nThis is even after 6++ hours...\r\n\r\n*Logfile:*\r\n[AndroidAPS.log](https://github.com/user-attachments/files/17384814/AndroidAPS.log)\r\n\r\n*Logcat of crash after forcing loop calc:*\r\n![Screenshot 2024-10-15 222724](https://github.com/user-attachments/assets/a9d3b525-44df-46f9-b16c-304de1c05b52)\r\n",
+ "comments": [
+  {
+   "id": 2415184977,
+   "user": "ga-zelle",
+   "created_at": "2024-10-15T21:17:38Z",
+   "body": "When testing new averageISs for AutoISF with dev-b I saw similar behaviour:\r\n1. cleared database\r\n2. cleared results to start with clean averages\r\n3.  With 1 minute random BG the loop did not trigger on its own.\r\nEvery few minutes I pressed \"run now\" and after about 20-30 minutes it would run on its own. \r\n\r\nI did not investigate further because I had a different focus."
+  },
+  {
+   "id": 2417318995,
+   "user": "Philoul",
+   "created_at": "2024-10-16T16:24:13Z",
+   "body": "@ga-zelle Hum for me it's not the same behaviour, it looks like it take several minutes to have loop working in your side, but AAPS don't crash\n\n@vanelsberg  crash immediatly so it can be difficult to recover a working situation (probably he will have to switch back to an old working branch, let it work for a few minutes to feed again database with records and then switch again to latest dev... (or something like that 🤔)"
+  },
+  {
+   "id": 2417516227,
+   "user": "ga-zelle",
+   "created_at": "2024-10-16T17:52:00Z",
+   "body": "After updating to ladybug and merging all latest dev commits still working. Cleared database and results - still working after a pause of 1-2 minutes. This is full release in AS emulation.\r\n\r\nmay be related to my current changes which avoid any fallbacks in AutoISF plugin."
+  },
+  {
+   "id": 2417800064,
+   "user": "vanelsberg",
+   "created_at": "2024-10-16T19:46:56Z",
+   "body": "> ... crash immediately so it can be difficult to recover ...\r\n\r\nIt crashes as soon as calculations are triggered (new BG or manual swipe). So I can switch to AMA to stop the crashing and starting loop. Even after 24 hours of TDD, still same behavior.\r\nThinking I might have tinkered a bit to much with the database corrupting it, so tried uninstalling, restart phone, install+import settings. That did not solve the problem.\r\n\r\nCurrently on a branch so not latest. Will test tomorrow to see if latest dev changes solve the problem... 🤔 \r\n\r\n\r\n"
+  },
+  {
+   "id": 2473120526,
+   "user": "MilosKozak",
+   "created_at": "2024-11-13T10:31:11Z",
+   "body": "i tested it on SMB and got \"No profile\" result which is expected (dev-d)"
+  },
+  {
+   "id": 2508975833,
+   "user": "MilosKozak",
+   "created_at": "2024-11-30T14:16:31Z",
+   "body": "still reproducible?"
+  },
+  {
+   "id": 2509127971,
+   "user": "vanelsberg",
+   "created_at": "2024-11-30T18:05:56Z",
+   "body": "> still reproducible?\r\n\r\nWill retry .."
+  },
+  {
+   "id": 2509713870,
+   "user": "vanelsberg",
+   "created_at": "2024-12-01T11:09:32Z",
+   "body": "@MilosKozak Retested with todays dev-e build.\r\nCan not repro, feel free to close this issue."
+  }
+ ]
+}

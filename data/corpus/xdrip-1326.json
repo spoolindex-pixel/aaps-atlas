@@ -1,0 +1,77 @@
+{
+ "id": 611216194,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1326,
+ "title": "Libre2 sensor dont deliver readings",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1326",
+ "state": "closed",
+ "labels": [
+  "question"
+ ],
+ "created_at": "2020-05-02T15:41:56Z",
+ "closed_at": "2021-03-15T18:08:46Z",
+ "comment_count": 10,
+ "body": "Some user reports that the Libre2 sensor dont connect to the phone via BT. Sometimes this could be solved by simply waiting or they delete the BT cache. In such a case in the xdrip+ system status instead of the serial number a MAC like adress (?) is displayed: \r\n![94872984_1070961463259962_3337327517571743744_o](https://user-images.githubusercontent.com/23220008/80868594-0aab3280-8c9c-11ea-8d69-31e5885d41ca.jpg)\r\nWhere does this number come from?\r\n",
+ "comments": [
+  {
+   "id": 633082568,
+   "user": "yosepito",
+   "created_at": "2020-05-23T16:00:01Z",
+   "body": "I assume you're running the librelink app patched. Check that you have bluetooth activated and librelink is running in the background. Check also that there are no warnings in librelink app. If there is your first time, you should activate NFC, BT, location services GPS and an alarm in librelink to be able to connect. When librelink has no connection with Libre-2, there won't be readings. \r\n\r\nIn the image, it seems you were running with 1% of battery. In this situation, it is likely that android disabled BT so there are no readings coming from librelink. "
+  },
+  {
+   "id": 633085217,
+   "user": "fookatchu",
+   "created_at": "2020-05-23T16:12:40Z",
+   "body": "There are currently faulty libre 2 sensors in the wild. I received an email which explains that the alarms (bluetooth) are not working, but scanning (nfc) is not affected. Since the patched app gets it's data via bluetooth, no data is send to xdrip. This at least is my assumption. I have one of these sensors running right now. I suppose this is somehow related. I only received a german mail from Abbott, but anyone affected should have received that too. If not, here are the affected Lot-numbers:\r\n\r\n[https://abbott.emsecure.net/images/B2C/_2020/COS_Oneshot/DE_de/Adhoc_FSL02_Communication/img.png](https://abbott.emsecure.net/images/B2C/_2020/COS_Oneshot/DE_de/Adhoc_FSL02_Communication/img.png)"
+  },
+  {
+   "id": 633089085,
+   "user": "ghost",
+   "created_at": "2020-05-23T16:31:14Z",
+   "body": "Kann leider praktisch dazu nichts austesten aber liegt dies vielleicht am Datensparen in den neueren Android Versionen?\r\nÄhnliches Problem hatte ich nach einem android Update bei meinen Samsungtelefonen in Verbindung mit Dexcom G6, xdrip hatte keine Werte bis ich Daten im Hintergrund für xdrip und bluetooth erlaubt und beide auscder Energiesparoption nahm, dann hat es wieder funktioniert\r\nUnfortunately, can not test practically anything, but maybe this is due to data saving in the newer Android versions?\r\n I had a similar problem after an android update on my Samsung phones in connection with Dexcom G6, xdrip had no values ​​until I allowed data in the background for xdrip and bluetooth and took both energy saving options, then it worked again"
+  },
+  {
+   "id": 636313289,
+   "user": "steve8x8",
+   "created_at": "2020-05-30T10:48:04Z",
+   "body": "Since Abbott has confirmed that (a major part of) K sensors are faulty, and most users didn't change anything between the last working and the failing sensor(s), and there are now reports that the replacements (with the \"old\" LOT numbering scheme) are working again, also without modifications to the smartphone/app/settings -\r\n- can this issue be marked as \"unrelated to xDrip\" and possibly closed?"
+  },
+  {
+   "id": 643736575,
+   "user": "benfiscal",
+   "created_at": "2020-06-14T08:38:59Z",
+   "body": "#1056 "
+  },
+  {
+   "id": 644644888,
+   "user": "benfiscal",
+   "created_at": "2020-06-16T09:19:40Z",
+   "body": "I had the same screen as above, but managed to get it working by allowing the apps to run in the background in the auto run manager in Settings.\r\n#1367 "
+  },
+  {
+   "id": 660957723,
+   "user": "corneliusroemer",
+   "created_at": "2020-07-20T10:58:34Z",
+   "body": "> There are currently faulty libre 2 sensors in the wild. I received an email which explains that the alarms (bluetooth) are not working, but scanning (nfc) is not affected. Since the patched app gets it's data via bluetooth, no data is send to xdrip. This at least is my assumption. I have one of these sensors running right now. I suppose this is somehow related. I only received a german mail from Abbott, but anyone affected should have received that too. If not, here are the affected Lot-numbers:\r\n> \r\n> https://abbott.emsecure.net/images/B2C/_2020/COS_Oneshot/DE_de/Adhoc_FSL02_Communication/img.png\r\n\r\n@fookatchu Can you give more details about this manufacturing problem. My lot number looks very different:\r\n\r\nMore like 5857407, no K, fewer numbers. Maybe mine is also this (10)5857407.\r\n\r\nI'm having occasional reception problems, it works over night, but sometimes it doesn't work for 50min, it may be interference from my BT mouse. Not sure yet. Trying to figure it out.\r\n![15952425803274845328075068100317](https://user-images.githubusercontent.com/25161793/87930503-80978c80-ca88-11ea-9fc8-3efaeea1bb94.jpg)\r\n"
+  },
+  {
+   "id": 660982684,
+   "user": "fookatchu",
+   "created_at": "2020-07-20T11:57:22Z",
+   "body": "> > There are currently faulty libre 2 sensors in the wild. I received an email which explains that the alarms (bluetooth) are not working, but scanning (nfc) is not affected. Since the patched app gets it's data via bluetooth, no data is send to xdrip. This at least is my assumption. I have one of these sensors running right now. I suppose this is somehow related. I only received a german mail from Abbott, but anyone affected should have received that too. If not, here are the affected Lot-numbers:\r\n> > https://abbott.emsecure.net/images/B2C/_2020/COS_Oneshot/DE_de/Adhoc_FSL02_Communication/img.png\r\n> \r\n> @fookatchu Can you give more details about this manufacturing problem. My lot number looks very different:\r\n> \r\n> More like 5857407, no K, fewer numbers. Maybe mine is also this (10)5857407.\r\n> \r\n> I'm having occasional reception problems, it works over night, but sometimes it doesn't work for 50min, it may be interference from my BT mouse. Not sure yet. Trying to figure it out.\r\n> ![15952425803274845328075068100317](https://user-images.githubusercontent.com/25161793/87930503-80978c80-ca88-11ea-9fc8-3efaeea1bb94.jpg)\r\n\r\nI don't have any more infos. All faulty sensors were replaced and everything is working again. If you haven't been contacted, I think you are not affected. "
+  },
+  {
+   "id": 696415929,
+   "user": "tolot27",
+   "created_at": "2020-09-21T22:38:18Z",
+   "body": "The original question is where the globally unique identifier comes from. Is it still of interest or can this issue be closed?"
+  },
+  {
+   "id": 799633984,
+   "user": "Navid200",
+   "created_at": "2021-03-15T18:08:46Z",
+   "body": "Closing due to inactivity."
+  }
+ ]
+}

@@ -1,0 +1,27 @@
+{
+ "issue_id": 474,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/474",
+ "title": "AAPS 2.8.2 not connecting to Orangelink on Samsung a20e",
+ "symptom": "After initial successful connection, AAPS 2.8.2 fails to reconnect to OrangeLink on Samsung a20e. RileyLink Status on MEDTRONIC page remains in 'RileyLink initialization...' state. Logs show BLE write failures and 'BT Device not supported' errors. nRF Connect app also fails to connect with GATT error 133.",
+ "cause": "The thread identifies that Samsung devices may have Bluetooth stack issues after AAPS crashes, leaving BLE in a blocked state. Also, a separate issue (#476) with Medtronic history processing causing crashes is identified as the root cause of the crashes that lead to the BLE problem.",
+ "fix": "Workaround: delete OrangeLink from AAPS, remove batteries, reboot phone, reinsert batteries, and reconnect. Also, pairing the phone with an unrelated device (e.g., speakers) sometimes helps. The issue may be resolved in AAPS 3.0 beta builds, but still occurs occasionally. For persistent cases, the OL must be removed from AAPS and re-added after power cycling.",
+ "settings_changed": [],
+ "devices": [
+  "OrangeLink",
+  "Samsung a20e",
+  "Samsung S7",
+  "Nexus 5x",
+  "Medtronic 722"
+ ],
+ "android_versions": [
+  "Android 11"
+ ],
+ "driver_tags": [
+  "RileyLink",
+  "OrangeLink",
+  "BLE"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "After million of attempts I got connected with one trick: paired phone with some unrelated device - speakers. It probably touched something in Bluetooth stack and enabled connections to OrangeLink again (while clearing of cache and data of system Bluetooth app was not helping)."
+}

@@ -1,0 +1,39 @@
+{
+ "id": 1034394011,
+ "repo": "nightscout/AndroidAPS",
+ "number": 777,
+ "title": "[3.0-beta1] Automation issues with temporary/durational %profile change ",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/777",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-10-24T11:43:21Z",
+ "closed_at": "2021-10-25T16:10:38Z",
+ "comment_count": 4,
+ "body": "I have noticed a couple of discrepancies when using automations to create % profile change with duration. \r\n\r\n1. precondition \"Profile pct is equal to 100\" is ignored.\r\nAutomation runs several times as long as the other conditions are met. In this case using the following conditions:\r\n- Glucose is greater than 12.0 mmol\r\nAND \r\n- Delta is equal or greater than 0.4\r\nAND\r\n- Last bolus time is equal or greater than 150 min ago\r\nThis automation is set to run a 130% profile change for 20 minutes\r\n\r\nAutomation ran a total of 4 times at 18.24, 18.29,18.34 and 18.39.\r\n\r\n\r\n2. end time for profile duration doesn't update when automation is \"renewed\" due to error 1 described above\r\nThe timer next to the profile name in Overview tab counted down to the original end time from the first run of the automation, then started counting with negative numbers. On this occasion I manually ended the temporary profile change by setting a new permanent profile change at 18.59. \r\n\r\nAdditional info: \r\nI did another observation the next time the automation kicked in. This time it ran only twice. I waited to see what would happen after the second round ran out of time, and it then cancelled the temporary profile change correctly. \r\n\r\n\r\n![247531597_2955325118070200_3978968117241261947_n (1)](https://user-images.githubusercontent.com/71758682/138592560-16e39957-ab49-4910-8f73-e91a2410431f.jpg)\r\n![247858722_2070237293146886_1202914780265696841_n (1)](https://user-images.githubusercontent.com/71758682/138592561-8908f23d-1927-4f57-b5a6-9ad456168efc.jpg)\r\n![247839525_6264456983596432_1272639861926333715_n (1)](https://user-images.githubusercontent.com/71758682/138592562-79eac413-1077-4d53-93ba-4cd1a49a13cb.jpg)\r\n\r\n\r\n",
+ "comments": [
+  {
+   "id": 951081426,
+   "user": "MilosKozak",
+   "created_at": "2021-10-25T16:10:38Z",
+   "body": "fixed by https://github.com/nightscout/AndroidAPS/commit/8efa66f23dbfb55fc2f81c70d974778324ac949f"
+  },
+  {
+   "id": 974812121,
+   "user": "tanja3981",
+   "created_at": "2021-11-21T12:51:45Z",
+   "body": "@MilosKozak I saw the same issue in beta6:\r\nI have two automations that have the 100% profile precondition, which trigger at different BG values. \r\nIf the higher BG is reached, it would set a higher profile.\r\nIf the lower of both BGs is reached, this shouldn't trigger as the first automation would have already did a temporary profile change. However, it does trigger, too.\r\nCould this be a timing issue, because the profile switch takes some seconds to be applied and the second automation rule is evaluated before that?\r\n(I'm using omnipod, so profile changes are slower than with dana pump...)\r\n\r\nHowever, apart from this propably misusing the system and I could add additional conditions to the second automation rule, this does work differently than the current release and we should add a note to the release notes. indicating so.\r\n\r\n\r\n"
+  },
+  {
+   "id": 974865599,
+   "user": "MilosKozak",
+   "created_at": "2021-11-21T18:04:47Z",
+   "body": "can be ....\r\nis it possible to replicate it on fresh aaps?"
+  },
+  {
+   "id": 974896786,
+   "user": "tanja3981",
+   "created_at": "2021-11-21T21:12:49Z",
+   "body": "@MilosKozak Yes, was able to reproduce on a spare phone with deleted database. \r\nAs long as I was using a virtual pump, everything was working fine.\r\nWhen I connected to my dana RS pump the problem again occured. \r\n\r\nAttached you can find the logfile.\r\nYou can see that both automations are evaluated. The profile switch done by the first automation is not taken into account during the evalutation of the second automation rule.\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/7577127/AndroidAPS.log)"
+  }
+ ]
+}

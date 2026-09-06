@@ -1,0 +1,60 @@
+{
+ "id": 949051605,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1786,
+ "title": "Smart alert doesn't work",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1786",
+ "state": "closed",
+ "labels": [
+  "ui",
+  "ux-alarm"
+ ],
+ "created_at": "2021-07-20T20:22:08Z",
+ "closed_at": "2024-04-07T17:13:08Z",
+ "comment_count": 7,
+ "body": "Despite having smart snoozing and smart alerting enabled, I get alerts when my son is going in the right direction, but is near an alert threshold.\r\n\r\nI have added screenshots of the graph, the alert settings, eventlog and alert levels, in hope that it makes it easier to troubleshoot\r\n![Screenshot_20210720-185130_xDrip+](https://user-images.githubusercontent.com/87724445/126390286-cdba73cb-acdd-4ea1-8c56-90320a18d205.jpg)\r\n![Screenshot_20210720-185149_xDrip+](https://user-images.githubusercontent.com/87724445/126390290-5c97f4c6-33ba-433f-b881-408e2ee701ee.jpg)\r\n![Screenshot_20210720-185333_xDrip+](https://user-images.githubusercontent.com/87724445/126390301-409fb9a1-fa55-461a-ad9c-93b20429d0fe.jpg)\r\n![Uploading Screenshot_20210720-185812_xDrip+.jpg…]()\r\n",
+ "comments": [
+  {
+   "id": 985719057,
+   "user": "StephenBrown2",
+   "created_at": "2021-12-03T17:59:18Z",
+   "body": "Been having this issue for a long time as well, my wife's phone is a follower to mine and also alerts even when I'm headed in the right direction."
+  },
+  {
+   "id": 985784627,
+   "user": "Navid200",
+   "created_at": "2021-12-03T19:48:37Z",
+   "body": "I'm sorry about the delay in responding.\r\n\r\nLooking at the logs, I see four HIGH level alert triggers.  They are at 16:01, 16:40, 17:41 and 18:51.  The corresponding readings (again, from the logs) are 8.3, 11.6, 12.0 and 8.6 respectively.\r\n\r\nThe two at 16:01 and 16:40 are expected because at those times, the trend is up.\r\n\r\nBut, the other two, at 17:41 and 18:51, occur when the glucose is decreasing.  So, one would expect the alert should not trigger because of smart alerting being active.\r\n\r\nI have cropped the main screen showing the readings:\r\n![126390286-cdba73cb-acdd-4ea1-8c56-90320a18d205](https://user-images.githubusercontent.com/51497406/144663085-6f80c6d5-619c-4e94-8419-42b40f0e5295.jpg)\r\nYou can see two transient readings that cause xDrip, only a computer program, to see an upward trend.  I have highlighted them with white circles.\r\nThose are the reason for the alerts.\r\n\r\nWe can look at the readings now after the fact and ask why it triggered then.  But, at the time, xDrip has no way of knowing what the next reading is going to be."
+  },
+  {
+   "id": 986044098,
+   "user": "ace-fjeldsven",
+   "created_at": "2021-12-04T15:19:17Z",
+   "body": "No worries about the delay, all time spend on this, is volunteer time, and I am just glad that you are doing this in the first place.\r\n\r\nI see the ones going upwards, but the general trend is going down. Could it be possible to add some sort of \"if the past 3 readings is down, delay alarm\", to make the smart feature even smarter? "
+  },
+  {
+   "id": 986055512,
+   "user": "Navid200",
+   "created_at": "2021-12-04T16:38:24Z",
+   "body": "There is another conversation going on:  https://github.com/Navid200/xDrip/discussions/142 that may be related.\r\nI need some tests to figure out what exactly the Dexcom app does.\r\n\r\nWe can always do what you suggest.  But, that effectively is a delay.  I mean what if the past 3 were down and all of a sudden the trend really changes direction and starts going up?  \r\n\r\nI don't see how we can do any kind of smoothing (ignoring transient changes) without effectively introducing a delay.  \r\nBut, we already have a delay from the blood glucose to interstitial fluid glucose.  I don't want any more delay.\r\nSo, it's very important to figure out if there is really a way to accomplish this without causing a delay.\r\nIf yes, by all means, we should have the feature added to xDrip.\r\n\r\nBut, we need to answer that question first.  "
+  },
+  {
+   "id": 986315994,
+   "user": "ace-fjeldsven",
+   "created_at": "2021-12-05T22:53:44Z",
+   "body": "I understand and also the reason why I left out possible solutions in the first place - I was always taught to only bring the issue, so the developer can find the best solution 😊\r\n\r\nAs you can see, I have both the \"smart snoozing\", \"smart alerting\" and \"start snoozed\" enabled, all to prevent getting 'false' alerts during the night. I have looked in the wiki, but cannot find the definitions on these features and had hoped at least one of them would snooze/delay the alert, when the general trend is downward. \r\n\r\nAt day time its a minor inconvenience, but getting woken by an 'unnecessary' alert, is not."
+  },
+  {
+   "id": 988308678,
+   "user": "tzachi-dar",
+   "created_at": "2021-12-07T22:31:16Z",
+   "body": "Smart snoozing and smart alerts means that the alert will not trigger in the case that there is a \"real\" movement in the correct direction.\r\nThey have been implemented with a paranoid approach. So, for the alert not to trigger, the difference in the last 5 minutes should be at least 4 (mgdl), and the difference for the last 10 minutes should be at least 10 (mgdl).\r\nYou can see the details in the function BgReading.trendingToAlertEnd()\r\nI must say that today, this values seems to big for me.\r\n\r\nThe start snooze feature means that when the bar is crossed, there will not be an alert for the snooze time of the alert. So, if your limit is 70 mgdl, and bg is trending in the range 75-80 and now it fails for 69 for 10 minutes, there will not be an alert until the snooze time. so if after 10 minutes BG is higher than 70 the alert will not be triggered.\r\nUse this feature carefully, since too much snooze time per the alert might cause it not to trigger when it should."
+  },
+  {
+   "id": 2041536413,
+   "user": "Navid200",
+   "created_at": "2024-04-07T17:21:11Z",
+   "body": "This issue is now closed even though we have only made a change to high alerts.\r\nThis is intentional.\r\nLet's go forward one step at a time.  Low alerts are more critical.  \r\nLet's use this new release and make sure everyone is happy with the change.  If we don't find any issues, we can always work on improving smart snooze and alert also for low alerts.\r\n\r\nI will not forget this issue even though it is closed now.  And we can always reopen it."
+  }
+ ]
+}

@@ -1,0 +1,33 @@
+{
+ "id": 4282605767,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4727,
+ "title": "Improve Dana-i driver handling of Timezone Changes and Daylight Saving Time (auto-sync pump time with phone time)",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4727",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2026-04-17T12:31:07Z",
+ "closed_at": "2026-04-28T08:01:33Z",
+ "comment_count": 3,
+ "body": "**Description**\nFor the Dana-i insulin pump, timezone changes and Daylight Saving Time (DST) transitions can cause issues in AAPS because the pump stores timestamps in local time without timezone information.\nThis may lead to:\n•\tduplicated treatments after timezone changes \n•\tincorrect interpretation of pump history \n•\ttemporary inaccuracies in IOB/COB \n•\tneed for manual workarounds (profile time shift or history reset) \nCurrently, DST handling is partially supported, but timezone changes during travel still require manual user intervention and can be error-prone.\n________________________________________\n**Request**\nPlease consider improving the Dana-i driver so that it:\n•\tAutomatically detects and handles phone timezone changes safely \n•\tKeeps pump time and AAPS interpretation consistent with phone time \n•\tPrevents duplicate treatment entries after timezone shifts \n•\tClearly distinguishes between: \no\ttimezone changes (travel) \no\tDST changes (system-wide adjustment) \nIdeally:\n•\tDST transitions should remain fully automatic and safe \n•\tTravel-related timezone changes should be handled more robustly or automatically synchronized without corrupting history \n________________________________________\n**Impact**\nImproving this would:\n•\treduce user complexity during travel \n•\timprove safety of closed-loop operation \n•\tprevent IOB/COB inconsistencies after time changes \n•\treduce need for manual profile time shifting workarounds \n________________________________________\n**Environment**\n•\tPump: Dana-i insulin pump \n•\tApp: AndroidAPS \n•\tAndroid version: (varies, e.g. Android 14–16)\n",
+ "comments": [
+  {
+   "id": 4268359267,
+   "user": "MilosKozak",
+   "created_at": "2026-04-17T13:27:39Z",
+   "body": "I though driver uses millis .... are you pointing something special?"
+  },
+  {
+   "id": 4269186264,
+   "user": "Roozeboom007",
+   "created_at": "2026-04-17T15:11:38Z",
+   "body": "Good point — AAPS may use millis internally.\nBut according to the documentation, Dana pumps store history in local time without timezone info:\nhttps://androidaps.readthedocs.io/nl/latest/DailyLifeWithAaps/TimezoneTraveling-DaylightSavingTime.html\nBecause of that, after a timezone change the same records can be interpreted differently and even duplicated.\nSo the issue is not millis itself, but ambiguous source timestamps after timezone changes.\nIs the documentation still accurate, or am I missing something here?\n\nI always appreciate your work.\nBest regards,"
+  },
+  {
+   "id": 4273225781,
+   "user": "MilosKozak",
+   "created_at": "2026-04-18T08:22:36Z",
+   "body": "Dana-i is the only pump surviving timezone travelling and DST changes internaly"
+  }
+ ]
+}

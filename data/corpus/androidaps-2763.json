@@ -1,0 +1,21 @@
+{
+ "id": 1889853736,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2763,
+ "title": "NSClientV3 Full sync fails when encounters non-sgv entries",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2763",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-09-11T07:30:03Z",
+ "closed_at": "2023-09-13T11:15:59Z",
+ "comment_count": 1,
+ "body": "[Here](https://github.com/nightscout/cgm-remote-monitor/issues/8090) is the discussion started in NS issue.\r\ntl;dr\r\n/entries/history api can return non-sgv records\r\n\r\nThis [line of code](https://github.com/nightscout/AndroidAPS/blob/dev/core/ns-sdk/src/main/java/info/nightscout/sdk/mapper/SvgMapper.kt#L17) results in null record when there is no sgv field in entry.\r\n\r\nAnd [here](https://github.com/nightscout/AndroidAPS/blob/dev/core/ns-sdk/src/main/java/info/nightscout/sdk/NSAndroidClientImpl.kt#L125) all the nulls are filtered out 🙂\r\n\r\nSo when Full sync tries to iterate over entries it stops prematurely because it receives lower amount of records than it requested. But these records were filtered-out on NSClient side.\r\n",
+ "comments": [
+  {
+   "id": 1717430307,
+   "user": "MilosKozak",
+   "created_at": "2023-09-13T11:15:59Z",
+   "body": "resolved in https://github.com/nightscout/AndroidAPS/commit/d379b769d3739b75bb02d07d300f41871cb18c6d"
+  }
+ ]
+}

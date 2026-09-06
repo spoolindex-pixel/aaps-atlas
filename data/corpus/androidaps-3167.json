@@ -1,0 +1,27 @@
+{
+ "id": 2074516629,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3167,
+ "title": "Error in CGM inserted since data",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3167",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-01-10T14:38:11Z",
+ "closed_at": "2024-01-17T09:35:03Z",
+ "comment_count": 2,
+ "body": "Latest Dev.\n\nI work with 2 G6 transmitters. Yesterday (Jan 9th at 12:41) I started the 2nd sensor on xDrip variant1 while the first one was at day 9 (on xDrip main). Both xDrip are very recent nightlies.\n\nSensor 1 ended at 10d (today Jan 10th). I swapped transmitter serials from variant1 to xDrip main. I had to do a \"start sensor\" sequence just for xDrip to understand that the transmitter was already started. I suppose that sent a \"new sensor inserted\" message to AAPS.\n\nxDrip variant 1 not being connected to AAPS, yesterday I had manually marked a sensor insertion in AAPS at 12:41 on the 9th.\n\nNow, I remarked that my sensor age was wrong.\n\n![Screenshot_20240110_152446_AAPS.jpg](https://github.com/nightscout/AndroidAPS/assets/76626474/df938676-eb57-4353-9179-6677c4ba7cd1)\n\nIt should be 1 day and 3 hours old.\n\nI deleted the sensor inserted lines from the treatments tab and re-entered a _sensor inserted_ on the 9th at 12:41but the sensor age is still wrong in the main UI.\n\n![Screenshot_20240110_152430_AAPS.jpg](https://github.com/nightscout/AndroidAPS/assets/76626474/615665db-3d38-46f0-b296-e5c90a6110e1)\n\n![Screenshot_20240110_152401_AAPS.jpg](https://github.com/nightscout/AndroidAPS/assets/76626474/f4e2025e-9a0c-490b-ab72-c60ae010bed1)\n\nIt seems that I can't delete or replace the _new sensor start_ message coming from xDrip.\n\nHere are the logs. Look around 15:23 for the deletion and re-entry of the new sensor manually. A AAPS restart didn't change the result on the UI.\n\n![AndroidAPS_LOG_1704896735588.log.zip](https://github.com/nightscout/AndroidAPS/files/13889056/AndroidAPS_LOG_1704896735588.log.zip)\n\n",
+ "comments": [
+  {
+   "id": 1889481097,
+   "user": "MilosKozak",
+   "created_at": "2024-01-12T15:14:41Z",
+   "body": "this is question on xdrip how it does send the record"
+  },
+  {
+   "id": 1889495148,
+   "user": "robertrub",
+   "created_at": "2024-01-12T15:19:50Z",
+   "body": "Yes, I wrote to them too and they already have a PR to solve the problem on their side.\r\n\r\nWhat seems strange is that AAPS takes into account the xDrip data and not the one entered in AAPS. But, this may be explained by the date sent by xDrip being \"newer\"...\r\n\r\nKeeping this one open till the xDrip PR gets merged and see what it does with AAPS. The PR should fix a similar problem with G7 too.\r\n\r\n"
+  }
+ ]
+}

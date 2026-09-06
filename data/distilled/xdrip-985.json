@@ -1,0 +1,25 @@
+{
+ "issue_id": 985,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/985",
+ "title": "Libre 2 NFC scan ",
+ "symptom": "xDrip cannot scan Libre 2 with NFC and cannot retrieve history from patched LibreLink app, causing gaps in xDrip and Nightscout graphs when phone loses connection with sensor.",
+ "cause": "Libre 2 data is encrypted and keys are not known, preventing direct NFC scan. Also, xDrip+ does not implement reception of the patched LibreLink intent 'com.librelink.app.ThirdPartyIntegration.SENSOR_SCAN' which contains scanned values.",
+ "fix": "For Libre 2 EU, NFC scan is supported in xDrip+ (might require OOP2). For filling gaps from patched LibreLink, xDrip+ should implement receiving the intent 'com.librelink.app.ThirdPartyIntegration.SENSOR_SCAN' and handle scanned data, but this is not yet implemented.",
+ "settings_changed": [],
+ "devices": [
+  "Libre 2",
+  "MiaoMiao3",
+  "MiaoMiao2"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "NFC scan",
+  "patched LibreLink",
+  "intent",
+  "OOP2",
+  "MiaoMiao"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "The patched LibreLink sends also an Intent \"com.librelink.app.ThirdPartyIntegration.SENSOR_SCAN\" with all the scanned values (historic and realtime). I tried it in a small test app and all the scanned values seem to be there. It's just xDrip+, which doesn't take this intent and fills the gap with the scanned values. Couldn't xDrip+ implement the reception of this patched LibreLink intent?"
+}

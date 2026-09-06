@@ -1,0 +1,69 @@
+{
+ "id": 1097562447,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1145,
+ "title": "3.0beta11",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1145",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-01-10T08:00:51Z",
+ "closed_at": "2022-01-16T15:52:49Z",
+ "comment_count": 9,
+ "body": "probleme avec BOYDA qui a 23mn de retard dans APS j’ai dus repassé a NS pour avoir mes glycemies à jour cela fait 2 ou 3 jrs que BOYDA rame sur APS je cours avec\r\nAPS 3.0beta11 nightsout version 14.2.2 et BOYDA 1.9.0 si on peut m’expliquer pourquoi cela fonctionnais bien avant ?\r\nje précise je n’ai pas supprime le pont dexcom dans nightsout.\r\nfinalement je suis passé avec nightsout cela ma créer pleins de doublon impossible a supprimer de ce fait la boucle ne fonctionnait pas comme il faut j'ai décider de désinstaller l'appli et fermer mon tel et réinstaller l'appli et remettre mes préférences j'ai eu une hyper de 22h00 à 3h00 ensuite sa c'est remis bien. Donc encore quelques beug qui sont gênant!\r\n",
+ "comments": [
+  {
+   "id": 1010276795,
+   "user": "Philoul",
+   "created_at": "2022-01-11T19:09:50Z",
+   "body": "It's better writing in english here (we are very few fluent in french here...)\r\nIt seems you have settings in your config (dexcom bridge should be disable, data upload to NS enable from AAPS, all data download from NS disable to avoid duplicate entries).\r\nI sometimes have some troubles with data arriving late from boyda (between 10 and 15/20min), but it's always when I use some specific other apps on the same phone (some games...). And when I close these specifics apps, byoda and aaps resynchronise data slowly (5min by 5 min) within 1h/2h...\r\nDo you use other apps on your phone?\r\nIf your prefer french, you can PM me on discord..."
+  },
+  {
+   "id": 1011054736,
+   "user": "Philoul",
+   "created_at": "2022-01-12T13:37:58Z",
+   "body": "I had to take my car this morning and I had same problem.\r\nI started waze in frontend at ~8:30 (aaps running in background and I check my bg with my watch when I'm driving). I already did that hundred of times in the past...\r\nBut at 8:50 I noticed in my watch that my bg value was outdated, I immediatly put aaps in frontend, last received bg 20 min ago (while bg received in byoda was up to date).\r\nDuring ~45min I still received every 5 min an outdated bg value that was sent by G6 sensor ~16/17min ago\r\nI restarted AAPS at 9:34, same problem.\r\nAt ~9:50 I reboot my phone and restarted everything.\r\nAt 10:00 (10 min after restart, so an outdated bg that was received 31 min ago) was replaced by a 5min ago bg value (loop could restart 1h30 after last run), and during 45 additional minutes, I received every 5 min a bg value reveived 6 or 7 min earlier.\r\nIt's only at 10:45 min that everything was correct again with an up to date bg value (sent ~1min ago).\r\nDuring all these 2h15min, byoda was always up to date, it's only aaps that was 3 or 4 values late compare to byoda.\r\nI'm sorry to be a bit long in my explains, but I'm not at home and I don't have my computer to analyse logs to help analysis...\r\n\r\nI just attached log files before removal (I hope it's correct one... tell me if you need earlier or later)\r\n\r\n[AndroidAPS._2022-01-12_09-48-40_.0.zip](https://github.com/nightscout/AndroidAPS/files/7854872/AndroidAPS._2022-01-12_09-48-40_.0.zip)\r\n[AndroidAPS._2022-01-12_09-34-25_.0.zip](https://github.com/nightscout/AndroidAPS/files/7854873/AndroidAPS._2022-01-12_09-34-25_.0.zip)\r\n\r\nNote: byoda 1.7.0.3 ok since install 1 year ago\r\nAAPS 2.8.2.19-dev built 2 days ago"
+  },
+  {
+   "id": 1011070578,
+   "user": "Philoul",
+   "created_at": "2022-01-12T13:55:31Z",
+   "body": "2 screenshots made (one before restart, 2nd after) one manual bolus made at 9:38 after verification in byoda that my bg was still rising...\r\n![Screenshot_20220112-091742_AndroidAPS](https://user-images.githubusercontent.com/52934600/149152813-43dd81cd-fefb-425e-a436-d4ae1d8b5659.jpg)\r\n![Screenshot_20220112-095543_AndroidAPS](https://user-images.githubusercontent.com/52934600/149152867-61d41008-bec1-4e0c-b491-bed4415dc857.jpg)\r\n"
+  },
+  {
+   "id": 1011917067,
+   "user": "catherinefranq",
+   "created_at": "2022-01-13T08:42:15Z",
+   "body": "bonjour\r\nj'ai supprimé le bridge dans heroku et pour l'instant j'ai plus de problèmes à voir dans le temps merci"
+  },
+  {
+   "id": 1012416277,
+   "user": "Philoul",
+   "created_at": "2022-01-13T18:53:32Z",
+   "body": "@catherinefranq Peux-tu renommer l'issue stp ?(bouton Edit à côté du nom), car \"3.0beta11\" ne décrit pas le problème, je te propose de mettre \"BG values received in AAPS more than10min after available in BYODA\", je ne peux pas la renommer de mon côté...\r\n@MilosKozak I asked Catherine to rename this issue..."
+  },
+  {
+   "id": 1012577797,
+   "user": "Philoul",
+   "created_at": "2022-01-13T22:31:33Z",
+   "body": "I started to analyse log file (line filtered with `[DexcomPlugin$DexcomWorker.doWork():154]: Inserted bg GlucoseValue`\r\nI compared \"DateCreated\" and \"timestamp\" on each line and between each 2 lines (see Excel file)\r\n- exactly 5 min (+/- 2s) between 2 timestamp => OK\r\n- less than 1 min between date created and timestamp when everything is Ok (before 8:00 and after 10:46)\r\n- duration between date created and timestamp increase slowly (but remain < 5 min between 8:00 and 8:17)\r\n- I then received new data only 8/10 min after previous one (after that at 8:47 I had 16 min between Date Created and Timestamp)\r\n- It's only 10 min after restart that I received within 1s five BG values\r\n\r\n[Byoda_Analysis.xlsx](https://github.com/nightscout/AndroidAPS/files/7866375/Byoda_Analysis.xlsx)\r\n\r\nI hope this will help analysis..."
+  },
+  {
+   "id": 1013141947,
+   "user": "MilosKozak",
+   "created_at": "2022-01-14T14:00:40Z",
+   "body": "I'm afraid I cannot help. AAPS receives broadcast later. Impossible to say if it was broadcasted late or delayed.\r\nI believe the issue is related to phone"
+  },
+  {
+   "id": 1013905909,
+   "user": "Philoul",
+   "created_at": "2022-01-16T16:22:05Z",
+   "body": "I think Room has increased the CPU workload, and we have this issue among several other side effects (popup \"AndroidAPS not responding\" on main graph rescale or higher consumption of the phone)\r\nIf we can reduce the amount of calculations done when receiving new BG, I think (hope) we should improve the situation."
+  },
+  {
+   "id": 1013908222,
+   "user": "MilosKozak",
+   "created_at": "2022-01-16T16:35:41Z",
+   "body": "calculations would not delay broadcasts by minutes"
+  }
+ ]
+}

@@ -1,0 +1,25 @@
+{
+ "issue_id": 2612,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/2612",
+ "title": "AAPS only sporadically receives the BG values from XDrip. DEV-j",
+ "symptom": "BG values arrive very irregularly in AAPS, sometimes with a 2 hour break. The problem only occurs in the DEV version, not in Master. Also, sync between master and follower via NS V3 is unreliable, while the old method works cleanly.",
+ "cause": "The thread does not definitively establish a root cause. Initial suggestions point to xDrip+ background/power management issues, but the reporter notes the problem is specific to the DEV version. Later, a maintainer found that setting 'Identify receiver' in xDrip+ fixed it for them, but the original reporter could not confirm. The thread ends with the reporter suspecting an xDrip problem after trying a different xDrip version.",
+ "fix": "No definitive fix is stated. One participant (vanelsberg) resolved the issue for themselves by setting 'Settings -> Inter-app settings -> Identify receiver' in xDrip+, but the original reporter could not confirm this fix. The reporter later found that using a different xDrip version (from blaqone/xDrip) worked better but not perfectly.",
+ "settings_changed": [
+  "Identify receiver → set (in xDrip+ Inter-app settings)"
+ ],
+ "devices": [
+  "xDrip",
+  "Juggluco"
+ ],
+ "android_versions": [
+  "Android 12"
+ ],
+ "driver_tags": [
+  "broadcast",
+  "xDrip collector"
+ ],
+ "confidence": "low",
+ "evidence_quote": "Needed to set _Settings -> Inter-app settings -> Identify receiver_ to get it working (https://wiki.aaps.app/en/latest/Configuration/xdrip.html#xdrip-identify-receiver) So my bad: has been long since I tested xDrip+ for BG source. Never needed to set this so overlooked that option."
+}

@@ -1,0 +1,95 @@
+{
+ "id": 1013841314,
+ "repo": "nightscout/AndroidAPS",
+ "number": 705,
+ "title": "[Bug] Pump Connection freeze",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/705",
+ "state": "closed",
+ "labels": [
+  "combo"
+ ],
+ "created_at": "2021-10-01T23:38:56Z",
+ "closed_at": "2021-10-08T08:29:56Z",
+ "comment_count": 13,
+ "body": "Reporting bugs\r\n--------------\r\n- Irregularly and not at a specific time or event\r\n- Cannot reproduce the issue manually\r\n- AAPS 2.8.2 (latest), Accu Check Combo, G6\r\n\r\nAfter some time the connection to the pump does not update anymore and gets stuck. Can't put boli or TBRs and get an error saying, that the pump is unreachable. On the COMBO Tab, I can't update and in the status row there is always the bed-icon. Once Ikill the app and restart it, everything works fine again. \r\n\r\n\r\nI will post the logs, as soon as I have them. \r\n",
+ "comments": [
+  {
+   "id": 932636230,
+   "user": "leonbohmann",
+   "created_at": "2021-10-01T23:45:03Z",
+   "body": "This is the latest log file: https://1drv.ms/u/s!AoTLnpMVgq_EhPkDs_eWothlFDB9iQ"
+  },
+  {
+   "id": 932721794,
+   "user": "leonbohmann",
+   "created_at": "2021-10-02T09:28:06Z",
+   "body": "Reading the logs starting from line 136 I can see that there is a `DeadObjectException` on the `RuffyScripter`. I will further investigate this."
+  },
+  {
+   "id": 932726568,
+   "user": "leonbohmann",
+   "created_at": "2021-10-02T10:07:36Z",
+   "body": "What I imagine is, that maybe the ruffy service is not running correctly? \r\nCould this be solved by calling `initializePump` again? Or even completely restart the `RuffyScripter`?"
+  },
+  {
+   "id": 932753839,
+   "user": "andyrozman",
+   "created_at": "2021-10-02T13:38:48Z",
+   "body": "Ruffy service is external application... \r\n\r\nWhat you see happening is something that happens normally (on some phones and some OSes)... I used Combo on 7 phones (3 phones with different Android versions). This worked without problem only on 2 of them (Samsung S9 with LineageOS 15.1 and OnePlus 5T with Android 8.1). As soon as I upgraded my OnePlus 5T to 9 (and later on 10), this problem happens again). \r\n\r\nThere was a fix looong time ago in some separate branch, where AAPS could terminate Ruffy service and restart it, without beeing restarted itself... It was never merged into main branch, and I never tested it myself... \r\n\r\nIt just happens that sometimes ruffy terminates in background or that it gets stuck in background (not doing anything). In such cases I just Force close AAPS and Ruffy and then start AAPS again (AAPS starts Ruffy in background)."
+  },
+  {
+   "id": 932760195,
+   "user": "leonbohmann",
+   "created_at": "2021-10-02T14:19:57Z",
+   "body": "Thanks for your info. That is what I am doing, too. The sad thing is, that during the night one cant restart both apps manually. "
+  },
+  {
+   "id": 932771195,
+   "user": "MasterPlexus",
+   "created_at": "2021-10-02T15:32:55Z",
+   "body": "There are also other possibilities to tell the os not to shut down Ruffy (of course related to the os). You can try to change the settings in the energy management that Ruffy will be an exception, and not handled by the os (search in the android settings). Or you can try to lock Ruffy in the task manager to tell the provider energy management not to kill. Most likely you can do that in the task manager, and check if there is a button, choice or a pull down to make a lock. This worked for me on all OnePlus phones I had in the past."
+  },
+  {
+   "id": 932777597,
+   "user": "leonbohmann",
+   "created_at": "2021-10-02T16:15:36Z",
+   "body": "Yes. I have ruffy and Aaps on the Whitelist. They do not get shut down.\r\n\r\nI was thinking about rooting my device in order to install a service which kills both apps periodically and will also restart aaps. But that will require a factory reset of my phone which I do not like, at all. "
+  },
+  {
+   "id": 932784867,
+   "user": "andyrozman",
+   "created_at": "2021-10-02T17:03:59Z",
+   "body": "@MasterPlexus Having both Apps on \"Power whitelist\" is prerequisite... But even with that it still happens, that sometimes ruffy gets stuck (non-responsive) or terminates (doesn't happen so much). \r\n\r\nSo AAPS and Combo worked perfectly for me when I had Android 8.1 (OnePlus 5T), then I upgraded to 9, and now here and there happens that AAPS stops communicating (this happens for me maybe once every 2 weeks, so NOT often), in meantime my OnePlus was upgraded to 10, and it happens less often (but it still happens). When I used Combo on Samsung S9 with Android 8.1, this happened much more often (1x week), before that I used Combo on Samsung A6, and there it happened every few days (that phone was Android 7 that was rooted).\r\n\r\n@leonbohmann \r\nIs this problem for you that you need to restart AAPS? How often does it happen? I mean there is alarm that you can set that would notify you if pump hasn't communicated for last 30 minutes.\r\n\r\nFrom my times with my first phone, I always modify my Combo driver a little, so that it shows how many communication errors it had (its just counter that gets reset, when we get successful communication). I was thinking of adding that into main code, but haven't gotten around to it yet...   "
+  },
+  {
+   "id": 932788847,
+   "user": "leonbohmann",
+   "created_at": "2021-10-02T17:29:24Z",
+   "body": "The problem for me is, that this peoblem occurs overnight. At night, I want the LGS Loop to stop the pump automatically, when there are low glucose levels forecast.\r\nThe alarm is does solve that issue during the day, but at night I want to sleep 😏\r\n\r\nWhat I propose is, that the ruffy service needs to be restarted, when a timeout occurs. So lets say there hasn't been a connection to the pump for x Minutes, restart the whole service. Is this possible to implement? I mean it works when I kill and restart AAPS, so a restart of only the service should do, right? "
+  },
+  {
+   "id": 932799924,
+   "user": "andyrozman",
+   "created_at": "2021-10-02T18:32:51Z",
+   "body": "Like I said this was already implemented in some branch somewhere (you need to make changes in ruffy and AAPS for that work), but it was never \"imported\" into mainstream AAPS... \r\n\r\nI will try to find where that stuff is, I already contacted developer that did that, so we might have solution for you. But that was for very old version of AAPS, so it might need to be refactored... "
+  },
+  {
+   "id": 932802005,
+   "user": "leonbohmann",
+   "created_at": "2021-10-02T18:45:54Z",
+   "body": "Sorry, I must've overread that. \r\n\r\nSounds promising. If you find the code I might try to implement it myself and create a PR :) \r\n\r\nThanks a lot!"
+  },
+  {
+   "id": 933794425,
+   "user": "Krzyskn11",
+   "created_at": "2021-10-04T19:37:25Z",
+   "body": "Maybe it - google play protect? did you turn it off?"
+  },
+  {
+   "id": 938381392,
+   "user": "leonbohmann",
+   "created_at": "2021-10-08T06:30:33Z",
+   "body": "Currently, after a lot of troubleshooting I think I found the issue.\r\n\r\nAfter rebuilding both ruffy and AndroidAPS with Android SDK Platform 28, the disconnect happens very rarely, if not at all. Had a stable for connection for the past couple of days.\r\n\r\nI had both apps compiled with Android 11 Framework before. Maybe the issue lies in the different API. "
+  }
+ ]
+}

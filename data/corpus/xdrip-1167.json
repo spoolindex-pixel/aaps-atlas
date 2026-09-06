@@ -1,0 +1,69 @@
+{
+ "id": 548541331,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1167,
+ "title": "G6 transmitter battery drain",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1167",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2020-01-12T08:56:26Z",
+ "closed_at": "2021-02-27T14:29:19Z",
+ "comment_count": 9,
+ "body": "This is not about any scanning or connection issue. This works fine.\r\n\r\nSetup\r\nXperia XZ1\r\nAndroid 9\r\nDexdcom G6 8G* -> no restarts\r\nxDrip: 6d4d283-2019.10.27\r\n\r\nThis is the second transmitter in a row running low in battery much to early. xDrip and the Dexcom App on the Iphone a giving the same message. Dexcom I never use, but  for cross checking the failure codes. So it only connects 1% of the times. The following pictures states the Bluetooth issue, since I switched to the iPhone to cross check.\r\n\r\n![Screenshot_20200112-093032](https://user-images.githubusercontent.com/41136910/72216247-00afc900-351f-11ea-8c5f-1deb51fdae58.png)\r\n\r\nAre their any options to reduce the battery drain? My Bluetooth  setup is the following:\r\n\r\n![Screenshot_20200112-094239](https://user-images.githubusercontent.com/41136910/72216451-79b02000-3521-11ea-85cd-5a0cd8373ec9.png)\r\n![Screenshot_20200112-094329](https://user-images.githubusercontent.com/41136910/72216454-7ae14d00-3521-11ea-9208-edf7a3f7b59c.png)\r\n\r\nThanks in  advance!",
+ "comments": [
+  {
+   "id": 581036753,
+   "user": "Lorekeks",
+   "created_at": "2020-02-01T14:43:28Z",
+   "body": "Hi @Dainem21, same here: 3 transmitters (8G/8H) in a row, which could not connect to xdrip or the dexcom receiver after working normally for the first 4 weeks. Could you find a reason or solution?"
+  },
+  {
+   "id": 581125956,
+   "user": "Dainem21",
+   "created_at": "2020-02-02T11:25:57Z",
+   "body": "Hi @Lorekeks not realy yet. The point is, that it takes very long until an effect is seen. As in your case 4 weeks. My first step was, that I downgraded to Version 1905161004. There is nothing special I know with this version. It was in my download folder of my phone and in this time frame there was no early battery failure.\r\n\r\n![Screenshot_20200202-122310](https://user-images.githubusercontent.com/41136910/73607498-f4b3a600-45b6-11ea-859f-32e0a28d0d40.png)\r\n\r\nI am just wondering that the last query for the battery was 20 days ago. But for now  the transmitter is fine unit now."
+  },
+  {
+   "id": 581163716,
+   "user": "jamorham",
+   "created_at": "2020-02-02T18:37:19Z",
+   "body": "@Dainem21 the older version that you are using is unable to read the battery status from the `2.18.2.88` firmware so the statistics will never update."
+  },
+  {
+   "id": 581171322,
+   "user": "Dainem21",
+   "created_at": "2020-02-02T20:01:46Z",
+   "body": "@jamorham Thanks for the answer. As i said. I have no direct hint that this special Version does not drain then battery. It was just a version I had on the phone with the time stamp of a time frame in which I did not had the problem. I am not even sure, that it is xdrip+ making the battery failing that fast.\r\n\r\nIs there any easy way tom see the different Changes to the G6 algorithm. So what was changed and when?I am not that familiar with GitHub. \r\n\r\n"
+  },
+  {
+   "id": 581815470,
+   "user": "Lorekeks",
+   "created_at": "2020-02-04T09:22:10Z",
+   "body": "Thanks for your answers @Dainem21 and @jamorham! I will try to look up which versions I used and report here. @Dainem21, is the version you downgraded to a nightly build? You write \"Version 1905161004\", Im sory, I cannot tell by the name, if its a master or nightly build. As far as I can remember, the wiki says one should use nightly build with the 8G/8H transmitters. "
+  },
+  {
+   "id": 590145759,
+   "user": "IntoxRRR",
+   "created_at": "2020-02-24T02:04:53Z",
+   "body": "> Hi @Lorekeks not realy yet. The point is, that it takes very long until an effect is seen. As in your case 4 weeks. My first step was, that I downgraded to Version 1905161004.\r\n\r\n@Dainem21, is your transmitter still running?\r\nIn this case I will try that old version myself. Rather no battery status shown, than watching the voltage dropping day by day.\r\nSeeing your Bluetooth Link shows \"Disconnect**ed**\" gives me some hope – mine is always stuck at \"Disconnect**ing**\"."
+  },
+  {
+   "id": 598133365,
+   "user": "Dainem21",
+   "created_at": "2020-03-12T11:18:10Z",
+   "body": "Sorry for the delaid reply. Finally it looks like it was an issue of the transmitters. The current transmitters looks good. No massive train:\r\n\r\n**xDrip+ Version: 1e91-2020.02.07**\r\nTransmitter: 8GK2RC Started: 16.Jan.20\r\n\r\nDate | Time | VoltageA | VoltageB | Resistance | Temperature\r\n-- | -- | -- | -- | -- | --\r\n22.Feb.20 | 23:34 | 309 | 293 | 9257 | 17\r\n23.Feb.20 | 11:34 | 310 | 294 | 8746 | 113\r\n23.Feb.20 | 23:34 | 309 | 293 | 8234 | 4\r\n24.Feb.20 | 11:34 | 310 | 293 | 8235 | -7\r\n24.Feb.20 | 23:34 | 310 | 294 | 7979 | -91\r\n25.Feb.20 | 11:34 | 310 | 293 | 8492 | 112\r\n25.Feb.20 | 23:39 | 309 | 293 | 9748 | -114\r\n26.Feb.20 | 11:39 | 310 | 294 | 8493 | -40\r\n26.Feb.20 | 23:39 | 310 | 294 | 7725 | -124\r\n27.Feb.20 | 11:39 | 310 | 294 | 8494 | -115\r\n27.Feb.20 | 23:44 | 309 | 293 | 8495 | -40\r\n28.Feb.20 | 11:44 | 309 | 293 | 8495 | -21\r\n28.Feb.20 | 23:44 | 309 | 293 | 7983 | -14\r\n29.Feb.20 | 11:49 | 310 | 292 | 5680 | 6\r\n29.Feb.20 | 23:59 | 310 | 293 | 7472 | -63\r\n01.Mär.20 | 11:59 | 310 | 293 | 7729 | -21\r\n02.Mär.20 | 00:04 | 309 | 292 | 9009 | -21\r\n02.Mär.20 | 12:14 | 310 | 292 | 6962 | -79\r\n03.Mär.20 | 00:19 | 310 | 294 | 9266 | -101\r\n03.Mär.20 | 12:19 | 310 | 293 | 7731 | -92\r\n04.Apr.20 | 00:19 | 310 | 293 | 8499 | 99\r\n04.Apr.20 | 12:19 | 310 | 292 | 7732 | 61\r\n05.Mär.20 | 00:19 | 310 | 293 | 9012 | -38\r\n05.Mär.20 | 12:19 | 310 | 292 | 7221 | 88\r\n06.Mär.20 | 00:19 | 310 | 293 | 8757 | -7\r\n06.Mär.20 | 12:24 | 309 | 292 | 6966 | -77\r\n07.Mär.20 | 00:24 | 310 | 292 | 9014 | -54\r\n07.Mär.20 | 12:24 | 309 | 292 | 7991 | -64\r\n08.Mär.20 | 00:29 | 309 | 293 | 8759 | 81\r\n08.Mär.20 | 12:29 | 309 | 291 | 5432 | 32\r\n09.Mär.20 | 00:29 | 310 | 293 | 8760 | -113\r\n09.Mär.20 | 12:29 | 310 | 292 | 8505 | -6\r\n10.Mär.20 | 00:29 | 309 | 292 | 9017 | 20\r\n10.Mär.20 | 12:29 | 309 | 292 | 8762 | 81\r\n11.Mär.20 | 00:29 | 310 | 292 | 7738 | 104\r\n11.Mär.20 | 12:29 | 309 | 292 | 8507 | 82\r\n12.Mär.20 | 00:29 | 310 | 292 | 8763 | -84\r\n\r\n"
+  },
+  {
+   "id": 782794976,
+   "user": "Navid200",
+   "created_at": "2021-02-21T04:27:14Z",
+   "body": "@Dainem21 It looks like you have concluded that it was not xDrip that drained the battery.\r\nCan we then close this issue please?\r\nThanks"
+  },
+  {
+   "id": 787080996,
+   "user": "Navid200",
+   "created_at": "2021-02-27T14:29:19Z",
+   "body": "Closing due to inactivity"
+  }
+ ]
+}

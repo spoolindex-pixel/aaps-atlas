@@ -1,0 +1,53 @@
+{
+ "id": 5227205644,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 4706,
+ "title": "Regression: false \"Appears to have lost bonding, skipping this connect!\" with Special Pairing Workaround since 2026.07.08 — lost readings",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/4706",
+ "state": "closed",
+ "labels": [
+  "bug"
+ ],
+ "created_at": "2026-08-23T13:51:49Z",
+ "closed_at": "2026-08-26T12:41:46Z",
+ "comment_count": 6,
+ "body": "## Summary\n\nSince updating to a nightly containing commit 7213241f4 (\"OB1: add mac caching fix\", July 8), users with **Special Pairing Workaround** enabled (Samsung setting) get bursts of:\n\n    Appears to have lost bonding, skipping this connect! @ 1 ... @ 10\n\nThe bonding is NOT actually lost. The check misfires, connects are skipped, and readings are lost until the safety valve at 10 skips forces a connect, or the user re-pairs or restarts the app. Several users are reporting this (e.g. on Facebook groups), and reports will likely grow as more people update.\n\nI located the source of the problem myself and used Claude to help analyze the code history, gather the background details, and propose a possible fix.\n\n## Root cause\n\nCommit 7213241f4 added to `onStartCommand` in `Ob1G5CollectionService.java`:\n\n```java\ntransmitterMAC = null; // clear on every service start\nautomata(); // sequence logic\n```\n\nThe chain that turns this into a false positive:\n\n1. `isDeviceLocallyBonded()` starts with `if (transmitterMAC == null) return false;`  — an unknown MAC is reported as \"not bonded\".\n2. `onStartCommand` runs on every alarm wake-up and now clears the MAC every time,  right before calling `automata()`.\n3. The state reset above it only maps `BOND/PREBOND/DISCOVER/CONNECT` back to `SCAN`  — **`CONNECT_NOW` is kept**. So `automata()` can enter `CONNECT_NOW` with a freshly cleared MAC and no `tryLoadingSavedMAC()` call on the way.\n4. In `CONNECT_NOW`, with Special Pairing Workaround on, the guard fires:  `wasBonded.equals(getTransmitterID()) && !isDeviceLocallyBonded()` → skip connect  → missed reading. Repeats until `skippedConnects` reaches 10.\n\nUsers without the workaround setting never run this check, which matches reports that only Samsung users with the setting enabled are affected.\n\n## Testing from my sons live-rig (Samsung SM-F711B / Z Flip3, Android 15, Dexcom G7)\n\nI tested versions on the same afternoon (Aug 20), same sensor, same pairing:\n\n| Build | Result |\n|---|---|\n| 049ce18-2026.03.27 | clean (4 days, zero occurrences) |\n| c2a0ba1-2026.08.08 | skip bursts @1–@10 within hours |\n| f49d55f-2026.06.17 | clean |\n| f8b047f-2026.04.22 | clean |\n| 805ba04-2026.03.01 | clean |\n| back to c2a0ba1-2026.08.08 | skips return within 4 minutes |\n\nAll clean builds predate the July 8 commit; the only commit in the regression window touching this code path is 7213241f4. Burst pattern in the log matches the code exactly: counts to @10 (the `skippedConnects < 10` valve), ~5 s between attempts, ~5 min between clusters (G7 connect cycle). \n\nRecovery that worked: forget BT pairing + re-pair (or app restart — see below). On G7 every sensor is a new bonded transmitter, so each sensor change re-arms the condition.\n\n## Suggested fix\n\nDo not treat \"MAC not known yet\" as \"bonding lost\". Options:\n\n- Call `tryLoadingSavedMAC()` at the top of the `CONNECT_NOW` case (or inside `isDeviceLocallyBonded()`) so the cached MAC is restored before the check, or\n- Require `transmitterMAC != null` in the skip condition:\n\n```java\nif (wasBonded.equals(getTransmitterID()) && transmitterMAC != null\n        && !locallyBonded && skippedConnects < 10) {\n```\n\nEither keeps the original purpose of both the July 8 MAC-clearing fix and the lost-bonding guard.\n\nSee proposed fix in 712eac9b uploaded to my repo\n\n## Workaround for affected users until a fix ships\n\n- Try to disable \"Special pairing workaround\". Forget BT device and re-pair. OR\n- Rollback to recommended version for G7 - https://github.com/NightscoutFoundation/xDrip/releases/tag/2026.06.17\n\nLogs:\n[1787486871-xDrip-log.txt](https://github.com/user-attachments/files/31348328/1787486871-xDrip-log.txt)\n\nScreenshot of issue:\n| <img width=\"568\" height=\"1229\" alt=\"image\" src=\"https://github.com/user-attachments/assets/1b40f6f8-a3f1-496c-be45-693ea692d8bb\" /> | <img width=\"568\" height=\"1229\" alt=\"image\" src=\"https://github.com/user-attachments/assets/2143ca62-ea42-4489-ab2d-49915ca165d4\" /> |\n|--------|--------|\n\nThreads on facebook from users experiencing this error:\nhttps://www.facebook.com/groups/xdrip/permalink/1998405371546783/\nhttps://www.facebook.com/groups/xdrip/permalink/1988820212505299/\nhttps://www.facebook.com/groups/xdrip/permalink/1998636931523627/\n\n_Originally posted by @olorinmaia in https://github.com/NightscoutFoundation/xDrip/discussions/4705_\n\nTagging @jamorham after discussing issue with @Navid200 - let me know if there is anything else I can contribute with here.",
+ "comments": [
+  {
+   "id": 5388612882,
+   "user": "olorinmaia",
+   "created_at": "2026-08-23T21:40:49Z",
+   "body": "I started a new G7 sensor for my son on my test-rig (Galaxy flip z 5) now and quickly reproduced the issue with latest nightly after pairing. Seem to happen if you loose a reading or if you restart collector while scanning or just randomly. Only way to fix it seem to be forget BT pairing and re-pair then it starts connecting properly again until next time it happens. The first time I experienced this was directly after updating from 03.27 to 08.08 release while already running an active sensor.\n\nI was not able to reproduce this issue after I updated the app with applied fix https://github.com/NightscoutFoundation/xDrip/commit/712eac9b0c678f4dc792ecc3060a6a70a5bdabdc - tried all of the above steps. I'm switching over this sensor to my son's live-rig so can't test any more as I've reverted to the [2026.06.17](https://github.com/NightscoutFoundation/xDrip/releases/tag/2026.06.17) release where this issue doesn't appear."
+  },
+  {
+   "id": 5389033225,
+   "user": "Navid200",
+   "created_at": "2026-08-23T23:17:23Z",
+   "body": "@jamorham This is being reported in the facebook group.  \nI would work on fixing it.  But, I don't have a Samsung for recreating the problem and testing.  "
+  },
+  {
+   "id": 5417028458,
+   "user": "olorinmaia",
+   "created_at": "2026-08-25T21:26:41Z",
+   "body": "> [@jamorham](https://github.com/jamorham) This is being reported in the facebook group. I would work on fixing it. But, I don't have a Samsung for recreating the problem and testing.\n\nI think you can recreate the issue by enabling that setting special pairing workaround if you can do so without putting yourself in harms way! I don't necessarily think a Samsung phone is needed. "
+  },
+  {
+   "id": 5417447326,
+   "user": "Navid200",
+   "created_at": "2026-08-25T22:05:18Z",
+   "body": "Well, that setting is there for fixing a problem with Samsung phones.   \nI am using the latest Nightly with absolutely no problem on my Pixel phones.\nI have no reason to enable that setting.  But, if I had a Samsung phone, I would need to enable it.  \n\nIf I understand you correctly, you say if I test an old release with my phone, I can enable that setting and it will not cause the problem you are reporting.  If I enable the setting with our latest Nightly, I will experience the problem.  If I enable it with your fix, I will not experience the problem.  But, that would still not be a real world scenario.  There is no reason to enable the setting on a Pixel.\n\nI accept that there is a problem with our current Nightly.  But, I would like someone who has a Samsung to test and open the PR.\nIs there a reason you cannot open the PR?  "
+  },
+  {
+   "id": 5417522186,
+   "user": "olorinmaia",
+   "created_at": "2026-08-25T22:11:45Z",
+   "body": "Correct, and you have a very valid point. \n\nI can submit the PR as a draft but I was hoping to get an opinion from @jamorham on the proposed fix before doing so since this isn't something I'm able to test more right now due to lack of test equipment and I can't use my sons live rig for it either. "
+  },
+  {
+   "id": 5417574062,
+   "user": "Navid200",
+   "created_at": "2026-08-25T22:16:10Z",
+   "body": "He will not merge it if he thinks it is a risk.\nAs long as you explain everything in the PR, I don't see any problem with opening a PR.  You can state in the PR to what extent you have tested it.  "
+  }
+ ]
+}

@@ -1,0 +1,257 @@
+{
+ "id": 286484465,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 261,
+ "title": "Fitbit Ionic and Garmin API support",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/261",
+ "state": "closed",
+ "labels": [
+  "device-watch"
+ ],
+ "created_at": "2018-01-06T13:27:09Z",
+ "closed_at": "2021-08-06T14:44:30Z",
+ "comment_count": 75,
+ "body": "I believe that both of these watches support a web based API which can receive remote data from a web server. \r\n\r\nI propose attempting to incorporate an optional web service in to xDrip to respond to queries on the localhost address but I am not familiar with watch-face development for either of these devices at the moment to know fully whether this will work and the ideal way to structure it.\r\n\r\nWhat is the best format for data to be provided? json? \r\nWhat information should be provided to the watch? \r\nDoes anyone have any of these devices to test/develop with?\r\nCan we respond to events, for example an action on the watch to generate a specific request which we could use for example to snooze alerts? I could attempt to open up the tasker interface via http etc...",
+ "comments": [
+  {
+   "id": 355747090,
+   "user": "jamorham",
+   "created_at": "2018-01-06T13:29:26Z",
+   "body": "@danpowell88 @Rytiggy you may be interested in this."
+  },
+  {
+   "id": 355755965,
+   "user": "Rytiggy",
+   "created_at": "2018-01-06T15:59:17Z",
+   "body": "Hey, I was able to connect to a REST API server when the fetch is formatted like shown below on my Fitbit Ionic companion app. my REST API is just the a basic heroku API that was set up through [this tutorial ](https://github.com/nightscout/cgm-remote-monitor#nightscout-api), \r\n\r\nCode: \r\n```\r\nconst test = () => {\r\n  console.log('TEST IS A CONNECTION')\r\n  let url = 'YOUR URL'\r\n  fetch('url',{\r\n    method: 'GET',\r\n    mode: 'cors',\r\n    headers: new Headers({\r\n      \"Content-Type\": 'application/json; charset=utf-8'\r\n    })\r\n  })\r\n    .then(response => {\r\n      console.log('Get Data On Phone');\r\n      response.text().then(data => {\r\n        console.log( data);\r\n        sendVal(data);\r\n\r\n        \r\n      })\r\n      .catch(responseParsingError => {\r\n        console.log('fetchError');\r\n        console.log(responseParsingError.name);\r\n        console.log(responseParsingError.message);\r\n        console.log(responseParsingError.toString());\r\n        console.log(responseParsingError.stack);\r\n      });\r\n    }).catch(fetchError => {\r\n      console.log('fetchError');\r\n      console.log(fetchError.name);\r\n      console.log(fetchError.message);\r\n      console.log(fetchError.toString());\r\n      console.log(fetchError.stack);\r\n    })\r\n};\r\n\r\ntest(); // test right away\r\n\r\n\r\nfunction sendVal(data) {\r\n  console.log('sendVal')\r\n  if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {\r\n      console.log('Sending Values')\r\n      messaging.peerSocket.send(data);\r\n  }\r\n  \r\n\r\n}\r\n```\r\n  \r\n  "
+  },
+  {
+   "id": 355759741,
+   "user": "jamorham",
+   "created_at": "2018-01-06T16:54:56Z",
+   "body": "@Rytiggy so this is with the garmin api? Is there any existing watch-face for garmin which connects to nightscout? I am thinking if one already exists I can emulate the same endpoint within xDrip"
+  },
+  {
+   "id": 355760352,
+   "user": "Rytiggy",
+   "created_at": "2018-01-06T17:03:39Z",
+   "body": "@jamorham I did not use the garmin API, I am developing this on the fitbit Ionic using the fitbit sdk, and fitbit studio. \r\n  "
+  },
+  {
+   "id": 355767277,
+   "user": "jamorham",
+   "created_at": "2018-01-06T18:51:50Z",
+   "body": "If you make it work either with the `/pebble` endpoint or `/api/v1/entries/sgv.json?count=24` endpoint then I can make sure that it is supported out of the box with xDrip"
+  },
+  {
+   "id": 355772963,
+   "user": "danpowell88",
+   "created_at": "2018-01-06T20:15:48Z",
+   "body": "The garmin api actually supports sending messages to the watch directly and can handle processing them order etc. I believe it just requires the watch face an xdrip to share an 'inbox' address "
+  },
+  {
+   "id": 355773150,
+   "user": "danpowell88",
+   "created_at": "2018-01-06T20:18:51Z",
+   "body": "See https://developer.garmin.com/connect-iq/programmers-guide/communication/ directly messaging"
+  },
+  {
+   "id": 355773347,
+   "user": "danpowell88",
+   "created_at": "2018-01-06T20:21:12Z",
+   "body": "I believe Andreas May had some kind of fork of xdrip and a watch face built that would take advantage of it, I don't have his github d to ails though, he goes by Swissalpine on gittter"
+  },
+  {
+   "id": 355776255,
+   "user": "jamorham",
+   "created_at": "2018-01-06T20:59:50Z",
+   "body": "@danpowell88 yes, @swissalpine has sent me that fork which I can look over. The problem is that without a device for me to test it with its going to be really tricky to get reliable etc and if we need to implement a http api for fitbit then the same interface I assume could be used for garmin and its going to be that much easier to maintain."
+  },
+  {
+   "id": 355776606,
+   "user": "danpowell88",
+   "created_at": "2018-01-06T21:04:03Z",
+   "body": "True, when I last looked through the Fitbit forums people were complaining and asking for api integration as fitbit is the only one that doesnt really have it, didn't see any official response though\r\n\r\nI can test the garmin integration currently nt using a garmin vivoactive hr 24/7 with @swissalpine watch face, but it is sort of limited due to requiring a data connection to always be available, would love to have it working off local data"
+  },
+  {
+   "id": 355851523,
+   "user": "jamorham",
+   "created_at": "2018-01-07T20:48:50Z",
+   "body": "@Rytiggy can you try with either of the endpoints which are now available in the Jan 7th nightly version and let me know if the fitbit api can connect to them? https://github.com/NightscoutFoundation/xDrip/blob/master/Documentation/technical/Local_Web_Services.md"
+  },
+  {
+   "id": 355854708,
+   "user": "Rytiggy",
+   "created_at": "2018-01-07T21:36:48Z",
+   "body": "@jamorham I'm not quite sure how to get the local end points set up, I have x drip running and linked to my rest API receiving data points. \r\n\r\nWith the fetch I have set up on my Fitbit ionic it will work with any rest API "
+  },
+  {
+   "id": 355855517,
+   "user": "jamorham",
+   "created_at": "2018-01-07T21:49:16Z",
+   "body": "@Rytiggy You should be able to go to `Settings` -> `Inter-App settings` -> `xDrip Web Service` -> `ON`\r\n\r\nThen with the ionic code you have, see if you can create a connection to url: `http://127.0.0.1:17580/sgv.json`\r\n\r\nThis should pull a nightscout style json but from xDrip's internal database."
+  },
+  {
+   "id": 355855968,
+   "user": "Rytiggy",
+   "created_at": "2018-01-07T21:55:43Z",
+   "body": "@jamorham I don't think I have the local web server set up right, here is what my inner app settings look like \r\n![screenshot_20180107-165304](https://user-images.githubusercontent.com/17414914/34654560-8f8c82cc-f3cb-11e7-93bc-46435bc6691e.png)\r\n\r\n  "
+  },
+  {
+   "id": 355856582,
+   "user": "jamorham",
+   "created_at": "2018-01-07T22:05:17Z",
+   "body": "Upgrade to the latest version to see the new settings item:\r\n\r\nhttps://github.com/NightscoutFoundation/xDrip/wiki/How-to-get-the-Nightlies-on-Automatic-Update"
+  },
+  {
+   "id": 359193193,
+   "user": "swissalpine",
+   "created_at": "2018-01-20T18:47:36Z",
+   "body": "@Klaus3d3 Which device are you using?\r\nI've tested it myself on vivoactive, vivoactive hr and fr 920xt."
+  },
+  {
+   "id": 359193391,
+   "user": "Klaus3d3",
+   "created_at": "2018-01-20T18:50:54Z",
+   "body": "fenix3hr\r\n"
+  },
+  {
+   "id": 359200993,
+   "user": "PedanticAvenger",
+   "created_at": "2018-01-20T20:47:35Z",
+   "body": "@jamorham what are the chances that the units field could be included in the nightscout feed as well?  I like the idea but if someone points the web call to their nightscout (which I could see in various scenarios) then without that we would still need to provide a toggle in the watch settings."
+  },
+  {
+   "id": 359594061,
+   "user": "jamorham",
+   "created_at": "2018-01-22T22:35:20Z",
+   "body": "@raymond-richmond @Rytiggy @swissalpine in the `sgv.json` endpoint provided by xDrip I have added a `units_hint` in the first record as described below. You could use this to set your watch face units automatically to follow what xDrip is set to.\r\n\r\nThe first record will contain a hint as to the units being used, `units_hint` will be `mgdl` or `mmol` to indicate the user's preference but the values will always be sent as mgdl\r\n\r\nhttps://github.com/NightscoutFoundation/xDrip/blob/master/Documentation/technical/Local_Web_Services.md"
+  },
+  {
+   "id": 377705895,
+   "user": "tim2000s",
+   "created_at": "2018-03-31T16:38:59Z",
+   "body": "I've just ordered a Fitbit Versa (due to arrive in about two weeks) which seems to use the Ionic OS. Did the Ionic integration get anywhere? The versa looks a lot like it could be a good replacement for the pebble."
+  },
+  {
+   "id": 377712429,
+   "user": "Rytiggy",
+   "created_at": "2018-03-31T18:13:35Z",
+   "body": "@tim2000s  hey! Congrats in the new versa, I haven't tested on a versa yet only my ionic but I have a working watch face here on my repo https://github.com/Rytiggy/api-watchface\r\n\r\nYou should be able to pull in the code and load it on your watch.\r\n\r\nSide note I'll be releasing version 1 of my watchface soon, next few weeks.  And v1 will be compatible with both watchs. "
+  },
+  {
+   "id": 378763790,
+   "user": "vpwagner",
+   "created_at": "2018-04-04T22:22:16Z",
+   "body": "@Rytiggy I just got a Fitbit ionic and in desperate to pull the xdrip data onto the watchface, but I have ZERO coding experience to even begin the process of using your code (thank you by the way). \r\nAny chance you could help me out with this? Be it a written tutorial or a Skype meeting, I'm determined to make it happen and your feedback is welcome (and appreciated). \r\n\r\nThanks!"
+  },
+  {
+   "id": 378765267,
+   "user": "danpowell88",
+   "created_at": "2018-04-04T22:29:35Z",
+   "body": "https://dev.fitbit.com/blog/2017-09-26-fitbit-sdk-preview-get-started/ is a good start"
+  },
+  {
+   "id": 378805695,
+   "user": "Rytiggy",
+   "created_at": "2018-04-05T02:53:17Z",
+   "body": "@vpwagner I just made a how-to guide you can follow here: https://github.com/Rytiggy/api-watchface/blob/master/howto.md"
+  },
+  {
+   "id": 381299416,
+   "user": "Rytiggy",
+   "created_at": "2018-04-14T03:14:33Z",
+   "body": "Hey guys I just released a new version of my watch face. I'm calling it Glance, Check out out!\r\nhttps://github.com/Rytiggy/Glance"
+  },
+  {
+   "id": 381360989,
+   "user": "gitanO0",
+   "created_at": "2018-04-14T21:15:44Z",
+   "body": "Wow, that looks awesome.  Time for me to get a watch.  Will it work with a Versa?"
+  },
+  {
+   "id": 381365406,
+   "user": "Rytiggy",
+   "created_at": "2018-04-14T22:35:12Z",
+   "body": "@gitanO0 Thanks! I just updated the repo to make it super easy to install. Just follow these steps. \r\nhttps://github.com/Rytiggy/Glance#user-setup\r\n\r\nI haven't tested on a Versa yet but I have used the simulator, so it should work. let me know how it goes and if you need any help!\r\n\r\n@jamorham  We might be able to sideload it now?"
+  },
+  {
+   "id": 384171645,
+   "user": "ryanwalker9",
+   "created_at": "2018-04-25T06:12:30Z",
+   "body": "Hi new to all this and not very tech savy can someone point me in the right direction in how i get my sons data onto my versa iam using the 600 series uploader for nightscout. Ive got the watch face up on my versa but it just says loading  where bgl should be.\r\nThanks"
+  },
+  {
+   "id": 384265803,
+   "user": "Rytiggy",
+   "created_at": "2018-04-25T12:16:56Z",
+   "body": "@ryanwalker9 Hey I'm glad you're using the watchface! The next step for you would be to set up a web services so you can tell the watch where to read Dada from.\r\n\r\nIf you are using xDrip which I recommended ( your setup sounds similar to mine, (670g with a gardian sensor)\r\n In xDrip, Navigate to Settings -> Inter-App settings -> xDrip Web Service -> ON\r\n\r\nOpen up glances settings and enter this url http://127.0.0.1:17580/sgv.json in the API endpoint settings input box and set your high and low thresholds and you should start seeing bgs on the watchface\r\n"
+  },
+  {
+   "id": 384296270,
+   "user": "PedanticAvenger",
+   "created_at": "2018-04-25T13:57:23Z",
+   "body": "@ryanwalker9 Further, if you are using xDrip+ I believe you need to be using the \"nightly\" release which has an embedded web server that needs to be turned on as @Rytiggy outlined.  Not sure if the \"public\" release has it yet.  And if you are not using xDrip+ you need to point the watch face configuration to the appropriate URL for your nitescout site, likely https://<your sitename>/api/v1/entries/sgv.json?count=24\r\n"
+  },
+  {
+   "id": 393627368,
+   "user": "gitanO0",
+   "created_at": "2018-05-31T18:21:55Z",
+   "body": "Has anyone gotten any traction on getting heart rate and steps data out of fitbit device, through the companion app and then back into xdrip+? Would love to get that working but don't quite know what the code should look like.  I'm comfortable writing code for a fitbit versa/iconic watch face and getting xdrip/nightscout data to the watchface (thanks to all of @Rytiggy work on that front), but going the other way ???  I know xdrip will take that local web service URL with the appended ?heart=xxx&steps=xxx syntax but how to pass that data from the fitbit device, to the companion and then have the companion app send that URL for xdrip to pickup?"
+  },
+  {
+   "id": 393701200,
+   "user": "PedanticAvenger",
+   "created_at": "2018-05-31T22:26:24Z",
+   "body": "Yes, but I haven't released it generally on my watch face as nightscout receipt of the data directly is still different. Fundamentally it is exactly the same with a URL get from the companion as outlined by @jamorham above. I'm using a timer on the ionic/versa to trigger a data request from the watch and at the same time push the current steos/HR values. "
+  },
+  {
+   "id": 394030479,
+   "user": "gitanO0",
+   "created_at": "2018-06-01T22:57:59Z",
+   "body": "Ok, Thanks.  I've got it working now.  Sending heart and step data back to xdrip+.  "
+  },
+  {
+   "id": 454484166,
+   "user": "Bard09",
+   "created_at": "2019-01-15T17:44:35Z",
+   "body": "Still hoping for this to make it into the main branch :)"
+  },
+  {
+   "id": 454514660,
+   "user": "jamorham",
+   "created_at": "2019-01-15T19:14:24Z",
+   "body": "@Bard09 what do you mean? The nightlies from June time are included in the main release from September."
+  },
+  {
+   "id": 454538283,
+   "user": "Bard09",
+   "created_at": "2019-01-15T20:25:30Z",
+   "body": "@jamorham So xDrip+ is currently able to gather Step/HR data from Fitbit devices?  I'm on the xDrip beta channel and running the 2018.09.08 version and haven't seen any of the HR/step data appearing.\r\n\r\nI have the Web Service turned on and have all of the Health Data/HR options enabled.\r\n"
+  },
+  {
+   "id": 454542576,
+   "user": "Rytiggy",
+   "created_at": "2019-01-15T20:39:20Z",
+   "body": "@Bard09, in the pre-release version of Glance, it supports sending the HR/steps back to xDrip. I plan to release it later this month :) "
+  },
+  {
+   "id": 454561413,
+   "user": "Bard09",
+   "created_at": "2019-01-15T21:38:29Z",
+   "body": "@Rytiggy You beautiful beautiful dev.  Sorry for the confusion @jamorham.  I already use Glance so that's exciting!!"
+  },
+  {
+   "id": 529125017,
+   "user": "jsPl",
+   "created_at": "2019-09-07T16:47:59Z",
+   "body": "Do you guys think it is possible to develop a websocket server in xDrip+ which, as soon as new glucose data comes from the collector, pushes it to the connected clients (say, a FitBit app)?\r\nData sync between the watch and the phone would be almost instantaneous, wouldn't it?\r\nThere would be no need of polling the web service every n minutes.\r\n\r\nI've been browsing the sources of Glance to understand how it gets and updates data and that websocket idea just came to me.\r\nDoes it make sense to you?"
+  },
+  {
+   "id": 894310410,
+   "user": "Navid200",
+   "created_at": "2021-08-06T14:44:30Z",
+   "body": "@jamorham \r\nI hope you are OK with me closing this issue as it seems to be that the capability was already added."
+  }
+ ]
+}

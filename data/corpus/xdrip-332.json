@@ -1,0 +1,33 @@
+{
+ "id": 302101254,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 332,
+ "title": "Have \"Send Display Glucose\" only smoothen the last 3-to-5 readings when more than 30 min of new data is uploaded.",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/332",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2018-03-04T16:51:41Z",
+ "closed_at": "2018-03-07T09:50:40Z",
+ "comment_count": 3,
+ "body": "```Settings | Cloud Upload | Nightscout Sync (REAST-API) | Send Display Glucose ``` is a very useful setting (for me) as it greatly helps my CGM to be stable. My sensor is a FreeStlye Libre, and it can at time be noisy, hence this setting helps.\r\n\r\nHowever, if there is a long time between xDrip obtaining glucose values[1], this setting can \"smoothen\" out the values to be a \"flat line\", as seen in #316. Therefore, when uploading to Nightscout, only \"smoothen\" the last 3-to-5 readings when there is more than 30 min of new glucose readings being uploaded. It is better that the earlier ones be noisy than flat as the Nightscout reports and newer tools like Autotune will be more accurate.\r\n\r\n/e\r\n\r\n\r\n[1] eg: if I take the SW3 off the Libre at night, and turn (my xDrip HW source) LibreAlarm off until morning. If I sleep on the SW3+Libre, I seem to physically deform the cannula and the Libre dies after about 7 days, returning only a \"LO\" reading.",
+ "comments": [
+  {
+   "id": 370268078,
+   "user": "tzachi-dar",
+   "created_at": "2018-03-04T21:59:43Z",
+   "body": "Does this happen by default, or did you set anything for it to happen?\n\n\nOn Sun, 4 Mar 2018 at 18:51, Enda Farrell <notifications@github.com> wrote:\n\n> Settings | Cloud Upload | Nightscout Sync (REAST-API) | Send Display\n> Glucose is a very useful setting (for me) as it greatly helps my CGM to\n> be stable. My sensor is a FreeStlye Libre, and it can at time be noisy,\n> hence this setting helps.\n>\n> However, if there is a long time between xDrip obtaining glucose\n> values[1], this setting can \"smoothen\" out the values to be a \"flat line\",\n> as seen in #316 <https://github.com/NightscoutFoundation/xDrip/issues/316>.\n> Therefore, when uploading to Nightscout, only \"smoothen\" the last 3-to-5\n> readings when there is more than 30 min of new glucose readings being\n> uploaded. It is better that the earlier ones be noisy than flat as the\n> Nightscout reports and newer tools like Autotune will be more accurate.\n>\n> /e\n>\n> [1] eg: if I take the SW3 off the Libre at night, and turn (my xDrip HW\n> source) LibreAlarm off until morning. If I sleep on the SW3+Libre, I seem\n> to physically deform the cannula and the Libre dies after about 7 days,\n> returning only a \"LO\" reading.\n>\n> —\n> You are receiving this because you are subscribed to this thread.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/332>, or mute the\n> thread\n> <https://github.com/notifications/unsubscribe-auth/AHkw5IqCXFTVL4QvdSYs6rqlNus4Yge-ks5tbBuegaJpZM4SbZ1k>\n> .\n>\n"
+  },
+  {
+   "id": 370920454,
+   "user": "jamorham",
+   "created_at": "2018-03-06T20:40:13Z",
+   "body": "@endafarrell Can you try the March 6th nightly and let me know whether this resolves the issue?"
+  },
+  {
+   "id": 371083947,
+   "user": "endafarrell",
+   "created_at": "2018-03-07T09:50:39Z",
+   "body": "Hi @tzachi-dar - sorry I didn't see your comment until @jamorham mentioned me.\r\n\r\nYour fix for #316 has removed the need for this issue - with the [2018.03.06 APK](https://github.com/NightscoutFoundation/xDrip/releases/tag/2018.03.06) the data sent to Nightscout is smooth without being a flat line. Success :-)\r\n\r\n![issue-316-is-fixed](https://user-images.githubusercontent.com/890447/37085417-46ed1326-21f5-11e8-87bf-cc2e53817b7f.PNG)\r\n\r\nMany thanks to you both for this."
+  }
+ ]
+}

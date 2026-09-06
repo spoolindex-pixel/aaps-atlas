@@ -1,0 +1,257 @@
+{
+ "id": 552322565,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1189,
+ "title": "Displaying blood glucose on Xiaomi MiBand 4 ",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1189",
+ "state": "closed",
+ "labels": [
+  "enhancement"
+ ],
+ "created_at": "2020-01-20T14:09:08Z",
+ "closed_at": "2020-09-21T20:18:16Z",
+ "comment_count": 77,
+ "body": "Hello, It's posible to integreated this versión in our xdrip?\r\n\r\nhttps://bigdigital.home.blog/2019/11/21/xdrip-miband/#xdrip_miband",
+ "comments": [
+  {
+   "id": 577185172,
+   "user": "steve8x8",
+   "created_at": "2020-01-22T13:37:38Z",
+   "body": "I'd like to see this too, but I'm afraid it takes a MR - and the author, last time I asked him, didn't feel ready for that."
+  },
+  {
+   "id": 578078321,
+   "user": "davidnatalia2000",
+   "created_at": "2020-01-24T10:40:24Z",
+   "body": "A shame……\r\nHave you tried the application? It works great, but I dare not put it on my daughter xdrip because she is the xdrip master and I don´t want to install this verison because is not the \"official\" xdrip. Only her mother has it installed as a follower.\r\nBut as I said, It Works great!!!!!"
+  },
+  {
+   "id": 578484327,
+   "user": "steve8x8",
+   "created_at": "2020-01-26T09:17:51Z",
+   "body": "A quick'n'dirty idea:\r\nSince there are \"variants\" of the official xDrip app (which, I suppose, get updated with every nightly) it should be possible to run an official _variant_ as master, and the bigdigital one as follower, on the _same_ smartphone.\r\nIf this is possible at all - has anyone ever tried it?"
+  },
+  {
+   "id": 579731626,
+   "user": "bigdigital",
+   "created_at": "2020-01-29T12:22:07Z",
+   "body": "Today i've released a new version https://bigdigital.home.blog/2020/01/23/future-of-the-xdrip-miband-project/ which should work better for mibandv4 . The v2 and v3 would work as before .  If this version would be stable, i’ll create a pull request for the  Xdrip master record.  So i would be grateful if someone can help to test it on different miband versions and let me know if there some issues."
+  },
+  {
+   "id": 579750496,
+   "user": "steve8x8",
+   "created_at": "2020-01-29T13:17:00Z",
+   "body": "Downloaded 0.2.0, installed it on my follower phone.\r\nWith a MiBand2 connected, on \"Update BG manually\", I only see a \"waving\" notification bubble - but no text.\r\nBTW, the \"authentication\" thingy is  bit fragile, as the only hint at a missing auth is in the System Status, far far away.\r\nSo let's try the MiBand4 instead?\r\nFirst I mistyped the auth key, causing xDrip to FC with \"invalid hex char 'r'\". Please add some sanity check...\r\nAfter app data reset: Yes, the 4 shows the notifications as it did yesterday.\r\nFor the watchface, it's almost empty, _no curve_, no (obviously visible) value.\r\nOn top, battery, date (_wrong_, instead encoding the value!!!) and time (_no separator_, btw) on top and two very small numbers (step counter, and some _random heart rate_) above the four colour bars at the bottom.\r\nClose, but no cigar yet, I'd say. Going back to 0.1.4 for now (which I didn't test with the MB2 yet)"
+  },
+  {
+   "id": 579782779,
+   "user": "bigdigital",
+   "created_at": "2020-01-29T14:34:14Z",
+   "body": "Thank you for suggestion regarding sanity check, i'll add it. Unfortunately, at the moment, i do not have any device which can generate glucose bg values, but i have access to MiBands models v2, v3 and v4 . So i can't test all functions without real bg readings.  I guess if someone can add me as a follower so i can receive bg readings in realtime, this will allow me to test these devices better on teal bg values. If someone can do this, please email me at bigdigital.kov@gmail.com . Thanks"
+  },
+  {
+   "id": 579799270,
+   "user": "steve8x8",
+   "created_at": "2020-01-29T15:09:43Z",
+   "body": "Something I've encountered several times when trying to switch things back and forth: I've been kicked back to the home screen (or even got an \"app failure\" message from MIUI) multiple times when trying to check/change the band MAC or Auth Key, with Use=Off. This also happens with 0.1.4 - one shouldn't do that too often. Sometimes, after restarting the app, the previous MAC magically reappears.\r\n\r\nWhat would be really helpful - if there was (a) a change on the MiBand page that shows *which type* has been paired, and (b) en/disabling items that don't make sense, e.g., \"Install watchface\" isn't useful with <4 bands.\r\n\r\nI completely failed to pair the Band2 with 0.1.4.\r\n\r\nAs for followership, I haven't yet fully understood how this works at all (and apparently it doesn't work when the two devices aren't in the same network), so this probably wouldn't help, sorry..."
+  },
+  {
+   "id": 579870302,
+   "user": "bigdigital",
+   "created_at": "2020-01-29T17:31:22Z",
+   "body": "Thank you, i already got a message from one guy, he shared an own nightcloud server with me, so i can receive a live bg readings. Now i see a problem with the black screen you mentioned. And i guess fixed it https://imgur.com/a/rzBOTO0 . Also i will check auth and MAC fields. \r\n\r\n\r\n"
+  },
+  {
+   "id": 580309040,
+   "user": "steve8x8",
+   "created_at": "2020-01-30T15:32:53Z",
+   "body": "0.2.0.1 is much much better now on my Band4, I'm going to like it! Thanks a bunch for that update.\r\nA few minor things:\r\n- The \"trend/last\" line is rather hard to read, this must be the smallest font available. Can this be made a bit bigger, for ageing eyes? (What about dropping the unit completely? The smartwatch watchface doesn't show it either, and the user knows it. Also replacing the \"at \" string with a single \"@\" might further shorten this line.)\r\n- The date (on top, in grey) is plain wrong. (showing Fri 2/10, maybe a leftover representation of a former glucose value?)\r\n- May I ask for a battery percentage?\r\n- Disabling the Heart Rate in the Features section might also remove it from the display... (I haven't found how to configure HR measurements at all?)\r\n- Any means to show \"treatments\" (meals, boluses) attached to the curve, as coloured dots?\r\n\r\nI'll go back to my old trusted Band2 and check what went wrong with the pairing/auth later, for now I'm rather happy. Thanks again!\r\n\r\nThere seem to be a few inconsistencies in the MiBand config page of the app though.\r\n- If \"Send Readings\" is disabled, \"Update manually\" can still be selected (and confirmed) but nothing happens - this and \"watchface diagram\" should be disabled IMHO?\r\n\r\nDo you have an idea how much battery will be drawn by the frequent watchface updates, both from the smartphone and the band? The band display backlight gets activated each time a new value is sent..."
+  },
+  {
+   "id": 580403718,
+   "user": "bigdigital",
+   "created_at": "2020-01-30T19:01:18Z",
+   "body": "@steve8x8 \r\n1. Yes, i've noticed this when i get a real bg values from nightcloud server. I also think that bg units can be removed from the delta. Regarding replacing \"at\" to @, these symbols take almost the same width, but i guess \"at\" can be more descriptive. \r\n2. This leftover from the previous  xdrip version. Now all miband features should control thirdparty applications. The xdrip will only send xdrip related notifications and would upload watchfaces.  So to set the correct date, you would need to synchronize miband with MiFit, or any other thirdparty applications that can work with miband.\r\n3. Unfortunately, there would be not enough place to display battery percentage. The only solution is to remove bat icon at all. \r\n5. This is how watch faces work on miband. Yes, it is possible to generate a new watch face without a heart icon. But HR measurements  digits would be still there. Actually, at the moment my watchface generator is very limited. I still can't normally generate an image with any color palette. And sometimes miband do not want to display generated image (the problem which was in 2.0.0). And seems this related to the total number of colors used on an image. \r\n6. I guess it would be possible, but it required to improve current image encoding algorithm to able to generate more colors on the image.\r\n7. i'll add dependencies for these properties.\r\n\r\nRegarding battery consumption, yes the consumption increased significantly, almost in two times. Before releasing v 2.0.0 i've made some tests https://i.imgur.com/8xwP2Zf.png \r\nThe average time between uploading watch face was 5 minutes.\r\nAs i know, this is better than even on pebble watch.\r\n But i have thoughts regarding optimization which at the moment was delayed. Will back to this when all main things would work stable. \r\nAnd again thank you for suggestions and testing. "
+  },
+  {
+   "id": 580665737,
+   "user": "steve8x8",
+   "created_at": "2020-01-31T09:56:00Z",
+   "body": "Hi, some feedback to your feedback which is appreciated ;)\r\n1. looking forward to testing this :)\r\n2. I paired the band with GadgetBridge (no MiFit around) and it indeed got the right date set\r\n3. there also seems to be no other place that shows battery percentage :( not even in Status, but an icon is better than nothing - mine looks like >50% still (was at 70% last time I could connect to GB)\r\n4. I don't really mind...\r\n5. there are already 3 colours in the graph (curve, low, high), reuse them?\r\n\r\nFor updates and battery drain, I'll continue watching - runtime is still much longer than what I get from my Sony smartwatch. Now if there wasn't that constant wakeup - at night, or during meetings... Perhaps I'll go back to the old \"static\" watchface approach. Would be great if that was supported as well.\r\n\r\nFor the MiBand2, I found that it isn't able to show notifications at all, it takes at least a 3 to present their content (beyond the existence of a notification which, on a 2, is only useful to learn xDrip is still kicking). It would be great if you could add a note to your initial (December) blog post that MiBand2 is almost useless for this purpose..."
+  },
+  {
+   "id": 583598555,
+   "user": "davidnatalia2000",
+   "created_at": "2020-02-07T20:33:42Z",
+   "body": "Todas I have installed the new version at my wife band 4. \r\nIt  works great!!!\r\nThanks a lot for your work.\r\nI hope you can integreated It in xdrip oficial versión soon."
+  },
+  {
+   "id": 583627795,
+   "user": "ANDREAPIPPI",
+   "created_at": "2020-02-07T21:43:30Z",
+   "body": "Hi. Could you please show here an image of the actual watch face?\r\nThank you.\r\nPippo   "
+  },
+  {
+   "id": 583719021,
+   "user": "davidnatalia2000",
+   "created_at": "2020-02-08T09:18:19Z",
+   "body": "![Uploading IMG_20200208_101619.jpg…]()\r\n"
+  },
+  {
+   "id": 583728002,
+   "user": "ANDREAPIPPI",
+   "created_at": "2020-02-08T11:27:18Z",
+   "body": "Sorry, image doesn't show.... can you check, please?\r\nThanks.\r\nPippo"
+  },
+  {
+   "id": 674991493,
+   "user": "yaiza88",
+   "created_at": "2020-08-17T16:49:40Z",
+   "body": "Hola muchas gracias por su trabajo, tengo una pregunta, ¿Es posible crear mi propia esfera y usarla con xdrip? De ser posible ¿Existe algún tutorial para implementarlo? Muchas gracias"
+  },
+  {
+   "id": 680168229,
+   "user": "rdicey",
+   "created_at": "2020-08-25T17:32:31Z",
+   "body": "Hi there.\r\nJust installed on a Mifit 4 with Xdrip and Miaomiao collector and working brilliantly thanks. Only one problem, the Mifit vibrates every few minutes and I can't see why. All notifications are cleared. Any ideas?"
+  },
+  {
+   "id": 682150445,
+   "user": "mirjamraaf",
+   "created_at": "2020-08-27T19:36:22Z",
+   "body": "Hi!\r\nI have successfully paired the miband 4, but the only thing it shows is 'no data'.\r\nAm I missing something.\r\n\r\nIn a previous comment I saw something about installing the watchface, a button. I did not get that button.\r\n\r\nCan someone please help me what to do next?\r\n\r\nThanks in advance!"
+  },
+  {
+   "id": 682154014,
+   "user": "rdicey",
+   "created_at": "2020-08-27T19:44:28Z",
+   "body": "> Hi!\r\n> I have successfully paired the miband 4, but the only thing it shows is 'no data'.\r\n> Am I missing something.\r\n> \r\n> In a previous comment I saw something about installing the watchface, a button. I did not get that button.\r\n> \r\n> Can someone please help me what to do next?\r\n> \r\n> Thanks in advance!\r\n\r\nFollow the advice in this link. I did and it worked perfectly. https://bigdigital.home.blog/2019/11/21/xdrip-miband/#xdrip_miband"
+  },
+  {
+   "id": 682163918,
+   "user": "mirjamraaf",
+   "created_at": "2020-08-27T20:05:22Z",
+   "body": "> > Hi!\r\n> > I have successfully paired the miband 4, but the only thing it shows is 'no data'.\r\n> > Am I missing something.\r\n> > In a previous comment I saw something about installing the watchface, a button. I did not get that button.\r\n> > Can someone please help me what to do next?\r\n> > Thanks in advance!\r\n> \r\n> Follow the advice in this link. I did and it worked perfectly. https://bigdigital.home.blog/2019/11/21/xdrip-miband/#xdrip_miband\r\n\r\n\r\nI have, but it still shows the same. In the first screen, with the graphs, it keeps asking me what I use. I can click on freestyle libre, but then it asks me another question I can not answer, because the miband isn't an options. It is either bluetooth devices, Sony smartwatch or a third option.\r\n"
+  },
+  {
+   "id": 682167668,
+   "user": "bigdigital",
+   "created_at": "2020-08-27T20:13:48Z",
+   "body": "> Hi!\r\n> I have successfully paired the miband 4, but the only thing it shows is 'no data'.\r\n> Am I missing something.\r\n> \r\n> In a previous comment I saw something about installing the watchface, a button. I did not get that button.\r\n> \r\n> Can someone please help me what to do next?\r\n> \r\n> Thanks in advance!\r\n\r\nIf you see \"no data\" on your band. this means the connection with your band was successfully established, but you do not have any valid data from xdrip to display. Make sure you configured glucose data source in xdrip and this data is valid and not outdated."
+  },
+  {
+   "id": 682170123,
+   "user": "rdicey",
+   "created_at": "2020-08-27T20:19:22Z",
+   "body": "> > > Hi!\r\n> > > I have successfully paired the miband 4, but the only thing it shows is 'no data'.\r\n> > > Am I missing something.\r\n> > > In a previous comment I saw something about installing the watchface, a button. I did not get that button.\r\n> > > Can someone please help me what to do next?\r\n> > > Thanks in advance!\r\n> > \r\n> > \r\n> > Follow the advice in this link. I did and it worked perfectly. https://bigdigital.home.blog/2019/11/21/xdrip-miband/#xdrip_miband\r\n> \r\n> I have, but it still shows the same. In the first screen, with the graphs, it keeps asking me what I use. I can click on freestyle libre, but then it asks me another question I can not answer, because the miband isn't an options. It is either bluetooth devices, Sony smartwatch or a third option.\r\n\r\nYou need to choose the top option to link with the Miaomiao. I think it's Limiter/Tomato/Libre or similar. The Miaomiao works with Tomato\r\n"
+  },
+  {
+   "id": 682171587,
+   "user": "mirjamraaf",
+   "created_at": "2020-08-27T20:22:34Z",
+   "body": "> > > > Hi!\r\n> > > > I have successfully paired the miband 4, but the only thing it shows is 'no data'.\r\n> > > > Am I missing something.\r\n> > > > In a previous comment I saw something about installing the watchface, a button. I did not get that button.\r\n> > > > Can someone please help me what to do next?\r\n> > > > Thanks in advance!\r\n> > > \r\n> > > \r\n> > > Follow the advice in this link. I did and it worked perfectly. https://bigdigital.home.blog/2019/11/21/xdrip-miband/#xdrip_miband\r\n> > \r\n> > \r\n> > I have, but it still shows the same. In the first screen, with the graphs, it keeps asking me what I use. I can click on freestyle libre, but then it asks me another question I can not answer, because the miband isn't an options. It is either bluetooth devices, Sony smartwatch or a third option.\r\n> \r\n> You need to choose the top option to link with the Miaomiao. I think it's Limiter/Tomato/Libre or similar. The Miaomiao works with Tomato\r\n\r\nBuuuttt, I don't have a miaomiao.  Choose it anyway?"
+  },
+  {
+   "id": 682172586,
+   "user": "rdicey",
+   "created_at": "2020-08-27T20:24:59Z",
+   "body": "> > > > > Hi!\r\n> > > > > I have successfully paired the miband 4, but the only thing it shows is 'no data'.\r\n> > > > > Am I missing something.\r\n> > > > > In a previous comment I saw something about installing the watchface, a button. I did not get that button.\r\n> > > > > Can someone please help me what to do next?\r\n> > > > > Thanks in advance!\r\n> > > > \r\n> > > > \r\n> > > > Follow the advice in this link. I did and it worked perfectly. https://bigdigital.home.blog/2019/11/21/xdrip-miband/#xdrip_miband\r\n> > > \r\n> > > \r\n> > > I have, but it still shows the same. In the first screen, with the graphs, it keeps asking me what I use. I can click on freestyle libre, but then it asks me another question I can not answer, because the miband isn't an options. It is either bluetooth devices, Sony smartwatch or a third option.\r\n> > \r\n> > \r\n> > You need to choose the top option to link with the Miaomiao. I think it's Limiter/Tomato/Libre or similar. The Miaomiao works with Tomato\r\n> \r\n> Buuuttt, I don't have a miaomiao. Choose it anyway?\r\n\r\nOk, if you are not using a collector/transmitter on your Libre, I'm afraid I can't help. "
+  },
+  {
+   "id": 682173460,
+   "user": "bigdigital",
+   "created_at": "2020-08-27T20:26:54Z",
+   "body": "> @bigdigital do we have an ETA for when this would be developed and available for mi band 5? Just got a libre and miaomiao, so looking for a watch that will have a good battery life still...\r\n> \r\n> Do you still achieve 10+ days battery whilst running xdrip?\r\n\r\n\r\nIt is already available https://bigdigital.home.blog/2020/08/25/new-xdrip-now-supports-miband-5/ . Regarding battery life time. On new miband5, i guess the battery life time should be a little shorter because battery capacity was reduced in comparison to miband4.  In my first test, miband5 lasted 7 days on a single charge. But during this time і did a lot of development requests to band,  which can drain the battery much faster. I guess in normal use, it would work at least 10 days. "
+  },
+  {
+   "id": 682174777,
+   "user": "bigdigital",
+   "created_at": "2020-08-27T20:29:51Z",
+   "body": "> Hi there.\r\n> Just installed on a Mifit 4 with Xdrip and Miaomiao collector and working brilliantly thanks. Only one problem, the Mifit vibrates every few minutes and I can't see why. All notifications are cleared. Any ideas?\r\n\r\nIf it vibrates after every display synchronization, make sure you have disabled option \"Vibrate on reading\" in xdrip->miband settings"
+  },
+  {
+   "id": 682182838,
+   "user": "rdicey",
+   "created_at": "2020-08-27T20:47:53Z",
+   "body": "> > Hi there.\r\n> > Just installed on a Mifit 4 with Xdrip and Miaomiao collector and working brilliantly thanks. Only one problem, the Mifit vibrates every few minutes and I can't see why. All notifications are cleared. Any ideas?\r\n> \r\n> If it vibrates after every display synchronization, make sure you have disabled option \"Vibrate on reading\" in xdrip->miband settings\r\n\r\nThanks. This setting is set to off. I have a workaround by snoozing the notification in Xdrip but it's a pain in the butt 🙂"
+  },
+  {
+   "id": 682365745,
+   "user": "mirjamraaf",
+   "created_at": "2020-08-28T07:05:29Z",
+   "body": "> > > > > > Hi!\r\n> > > > > > I have successfully paired the miband 4, but the only thing it shows is 'no data'.\r\n> > > > > > Am I missing something.\r\n> > > > > > In a previous comment I saw something about installing the watchface, a button. I did not get that button.\r\n> > > > > > Can someone please help me what to do next?\r\n> > > > > > Thanks in advance!\r\n> > > > > \r\n> > > > > \r\n> > > > > Follow the advice in this link. I did and it worked perfectly. https://bigdigital.home.blog/2019/11/21/xdrip-miband/#xdrip_miband\r\n> > > > \r\n> > > > \r\n> > > > I have, but it still shows the same. In the first screen, with the graphs, it keeps asking me what I use. I can click on freestyle libre, but then it asks me another question I can not answer, because the miband isn't an options. It is either bluetooth devices, Sony smartwatch or a third option.\r\n> > > \r\n> > > \r\n> > > You need to choose the top option to link with the Miaomiao. I think it's Limiter/Tomato/Libre or similar. The Miaomiao works with Tomato\r\n> > \r\n> > \r\n> > Buuuttt, I don't have a miaomiao. Choose it anyway?\r\n> \r\n> Ok, if you are not using a collector/transmitter on your Libre, I'm afraid I can't help.\r\n\r\nI was under the impression I did not need additional tech. Was I wrong?"
+  },
+  {
+   "id": 682378682,
+   "user": "rdicey",
+   "created_at": "2020-08-28T07:39:17Z",
+   "body": "> > > > > > > Hi!\r\n> > > > > > > I have successfully paired the miband 4, but the only thing it shows is 'no data'.\r\n> > > > > > > Am I missing something.\r\n> > > > > > > In a previous comment I saw something about installing the watchface, a button. I did not get that button.\r\n> > > > > > > Can someone please help me what to do next?\r\n> > > > > > > Thanks in advance!\r\n> > > > > > \r\n> > > > > > \r\n> > > > > > Follow the advice in this link. I did and it worked perfectly. https://bigdigital.home.blog/2019/11/21/xdrip-miband/#xdrip_miband\r\n> > > > > \r\n> > > > > \r\n> > > > > I have, but it still shows the same. In the first screen, with the graphs, it keeps asking me what I use. I can click on freestyle libre, but then it asks me another question I can not answer, because the miband isn't an options. It is either bluetooth devices, Sony smartwatch or a third option.\r\n> > > > \r\n> > > > \r\n> > > > You need to choose the top option to link with the Miaomiao. I think it's Limiter/Tomato/Libre or similar. The Miaomiao works with Tomato\r\n> > > \r\n> > > \r\n> > > Buuuttt, I don't have a miaomiao. Choose it anyway?\r\n> > \r\n> > \r\n> > Ok, if you are not using a collector/transmitter on your Libre, I'm afraid I can't help.\r\n> \r\n> I was under the impression I did not need additional tech. Was I wrong?\r\n\r\nYou need a wireless collector like Miaomiao if you want the data continuously. If you don't have one I guess you'd have to manually update using NFC."
+  },
+  {
+   "id": 682387748,
+   "user": "bigdigital",
+   "created_at": "2020-08-28T08:01:26Z",
+   "body": "> I was under the impression I did not need additional tech. Was I wrong?\r\n\r\nNope. If you use sensors like libre1, you would need to read data with your phone via nfc, or use a wireless collectors like Miaomiao, bubble, etc, which would send data from the sensor to the xdrip app.\r\nYou can also use a libre2 sensors which can send data directly to the phone via Bluetooth, in such case, you won't need any additional wireless readers \r\nThe miband watch only displays the data from xdrip and nothing else."
+  },
+  {
+   "id": 683469700,
+   "user": "lwychan",
+   "created_at": "2020-08-30T20:57:22Z",
+   "body": "I am trying to follow the below advise... :\r\n\r\n_So if you want to see the reading on the main screen and ready to sacify life tracking functionality, you can disable “BG readings as notification” option and press on “Install miband4 watchface” button to install a custom watcface, which will display a bg readings directly on the main watch screen_. \r\n\r\nBut I disable BG readings as a notification, and there is no \"install miband4 watchface\" button anywhere. \r\n![Screenshot_20200831_112059_com eveningoutpost dexdrip](https://user-images.githubusercontent.com/69717137/91710418-21936000-eb7c-11ea-96c0-094a0931d207.jpg)\r\n![Screenshot_20200831_112104_com eveningoutpost dexdrip](https://user-images.githubusercontent.com/69717137/91710421-22c48d00-eb7c-11ea-997f-5cc9917d81e0.jpg)\r\n"
+  },
+  {
+   "id": 685445388,
+   "user": "bigdigital",
+   "created_at": "2020-09-02T08:34:37Z",
+   "body": ">But I disable BG readings as a notification, and there is no \"install miband4 watchface\" button anywhere.\r\n\r\nIt seems you are following an incorrect instruction for older xdrip version. Please follow configuration steps described here https://bigdigital.home.blog/2020/01/23/future-of-the-xdrip-miband-project/"
+  },
+  {
+   "id": 688808743,
+   "user": "lwychan",
+   "created_at": "2020-09-08T11:33:15Z",
+   "body": "\r\n> > But I disable BG readings as a notification, and there is no \"install miband4 watchface\" button anywhere.\r\n> \r\n> It seems you are following an incorrect instruction for older xdrip version. Please follow configuration steps described here https://bigdigital.home.blog/2020/01/23/future-of-the-xdrip-miband-project/\r\n\r\nThis did eventually work, I think the fact I was still running glance and the Fitbit webservice might of been causing an interference.\r\n\r\n2 things, occasionally I'm not getting the reading from the phone to my miband4, I'll have a reading 3 mins ago on phone and miband shows a reading from 25 minutes ago, I normally reboot everything and it eventually works.\r\n\r\n![IMG_20200908_135217](https://user-images.githubusercontent.com/69717137/92478893-c1836600-f1da-11ea-84b7-f8496b124d15.jpg) here I've had my reading, and I've then had an alarm warning me they were going up, but the watchface doesn't show that.\r\n\r\n\r\nSecondly, I can't seem to get predicted low alerts like I do with the low alerts... All turned on in settings etc, ani idea?"
+  },
+  {
+   "id": 695200247,
+   "user": "majamajaa",
+   "created_at": "2020-09-19T11:12:16Z",
+   "body": "Mi smo spojili xdrip sa mi band 4 ali na ekranu ne prikazuje nista samo se alarm ponekad na mi band 4 upali kad i na telefonu.Do cega je to i sta da uradimo da nam na mi band prikazuje ocitavanja????"
+  },
+  {
+   "id": 695200773,
+   "user": "majamajaa",
+   "created_at": "2020-09-19T11:18:15Z",
+   "body": "> > > Али онемогућујем очитавање БГ као обавештење и нигде нема дугмета „инсталирај мибанд4 ватцхфаце“.\r\n> > \r\n> > \r\n> > Изгледа да следите нетачна упутства за старију верзију кдрип-а. Слиједите кораке за конфигурацију описане овдје [хттпс://бигдигитал.хоме.блог/2020/01/23/футуре-оф-тхе-кдрип-мибанд-пројецт/](https://bigdigital.home.blog/2020/01/23/future-of-the-xdrip-miband-project/)\r\n> \r\n> То је на крају успело, мислим да је чињеница да сам још увек бацио поглед и да је Интернет услуга Фитбит могла да изазове сметње.\r\n> \r\n> 2 ствари, повремено не примам очитавање са телефона на мибанд4, имаћу очитавање пре 3 минута на телефону, а мибанд приказује очитање од пре 25 минута, обично све поново покренем и на крају успе.\r\n> \r\n> ![ИМГ_20200908_135217](https://user-images.githubusercontent.com/69717137/92478893-c1836600-f1da-11ea-84b7-f8496b124d15.jpg) овде сам прочитао и тада сам имао аларм који ме упозорава да иду горе, али то не показује сатна плоча.\r\n> \r\n> Друго, не могу да добијем предвиђена упозорења са ниским нивоом као што то радим са упозорењима са ниским ... Све укључено у подешавањима итд, ани идеја?\r\n\r\nKako si ga spojio sa zdripom da prikazuje ocitavanja?nama se samo ponekad alarm javi "
+  },
+  {
+   "id": 695333193,
+   "user": "tolot27",
+   "created_at": "2020-09-19T17:09:47Z",
+   "body": "@majamajaa Please write in English."
+  },
+  {
+   "id": 695333370,
+   "user": "tolot27",
+   "created_at": "2020-09-19T17:11:07Z",
+   "body": "@bigdigital Is this issue solved or is there something left?"
+  },
+  {
+   "id": 695351967,
+   "user": "majamajaa",
+   "created_at": "2020-09-19T20:17:40Z",
+   "body": "We connected xdrip and mi band 4,xdrip find it but it doesn't show readinigs on the screen except that sometimes the alarm goes off when on the phone.Will anyone know what it can be?"
+  },
+  {
+   "id": 695992025,
+   "user": "bigdigital",
+   "created_at": "2020-09-21T09:04:09Z",
+   "body": "> @bigdigital Is this issue solved or is there something left?\r\n\r\nInitially, this issue was related to my fork integration, which was successfully done. Now, it seems this thread is more a discussion than an issue.  I guess we can close this issue. I see there another discussion issue thread https://github.com/NightscoutFoundation/xDrip/issues/1441  so i think we can close the current issue, and leave https://github.com/NightscoutFoundation/xDrip/issues/1441  thread for discussions."
+  },
+  {
+   "id": 696350023,
+   "user": "tolot27",
+   "created_at": "2020-09-21T20:18:16Z",
+   "body": "Closed in favour of #1441."
+  }
+ ]
+}

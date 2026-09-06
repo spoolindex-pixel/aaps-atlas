@@ -1,0 +1,69 @@
+{
+ "id": 2317246868,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3349,
+ "title": "Why does NS have to be secure HTTPS for writing only ?",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3349",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-05-25T21:05:04Z",
+ "closed_at": "2024-06-03T11:10:33Z",
+ "comment_count": 9,
+ "body": "I use NS on my RPI4 with HTTPS disabled for ease of use and flexibility. Why do you FORCE us to use HTTPS for writing only ? Why not just have the option do choose for ourselves. I'm old enough to understand the risks etc ... At least, can you document where I can change the calling routine in the library that you use and I will do the mods myself ?\r\n\r\nI'm sure that I'm not the only person that has issues using SSL certificates etc ... Especially when it comes to a home server situation. I understand the security between AAPS and the pump for control purposes. \r\n\r\nThe reason why we like Open Source is the ability to modify as we feel fit and not be bound my corporate systems built for their needs more than the needs of their clients ! This will help advance systems in the future !\r\n\r\nYou can email me directly if posting a response isn't appropriate : dfw@inforap.com\r\n\r\nDon't get me wrong, I appreciate all the effort you put into this project.",
+ "comments": [
+  {
+   "id": 2132976600,
+   "user": "qq254344379",
+   "created_at": "2024-05-27T08:46:19Z",
+   "body": "I think http with certificate is necessary. ns provides not only uploading, but also downloading. High-level security settings are more beneficial to use."
+  },
+  {
+   "id": 2133337363,
+   "user": "sircsaba",
+   "created_at": "2024-05-27T12:04:11Z",
+   "body": "Not if you need only to write to NS only. I use NS as a viewer for the data.. Also, I think that the user should determine what he prefers ... Its very simple to just put the option to use HTTP or HTTPS with a simple message stating that the data isn't secure etc . No need to discuss because I'm looking for the solution to make AAPS use NS with HTTP."
+  },
+  {
+   "id": 2144661147,
+   "user": "vanelsberg",
+   "created_at": "2024-06-03T08:59:36Z",
+   "body": "> Not if you need only to write to NS only. I use NS as a viewer for the data.\r\n\r\nI think you underestimate the risks in doing such.\r\n\r\nUsing secure HTTPS for modern webclients is standard for good reasons even when deploying on your home network.\r\n\r\nWhen hosting a web application like NS on a homeserver in your home network you should prefer HTTPS. Implementing access over HTTPS should not be complicated and most homeservers have this capability build-in. If not, invest some effort into deployment using a self signed or free Let's encrypt certificate (Check doc's or Google?).\r\n\r\nSee f.i. https://nightscout.github.io/nightscout/advanced/#building-nightscout-diy-in-a-virtual-server"
+  },
+  {
+   "id": 2144923081,
+   "user": "MilosKozak",
+   "created_at": "2024-06-03T11:10:33Z",
+   "body": "leaving HTTP is not only a case of entrerprise. HTTPS is just common safety. Along with NGINX and ACME it's easy to achieve even in home use"
+  },
+  {
+   "id": 2145135886,
+   "user": "sircsaba",
+   "created_at": "2024-06-03T12:55:51Z",
+   "body": "Don't worry, I know all of this. My point is that the user should decide and not someone else. Its like we all know that smoking is bad for your health but you are an adult and are willing to take the risk, then go ahead ... Like driving on the autobahn at 160km/h versus driving 100km/h. You are informed and you make your decision accordingly.\r\n\r\nSame thing with software, there are in many instances warning that this software can do harm to your computer, do you accept the risk. Yes I do, so I continue, like we all do in Windows and other OS ...\r\n\r\nIf we start making decisions for others then we are no better than big Pharma who are also trying to control the narrative. This is my point.\r\n\r\nThis has nothing to do with your software or the quality of it of course.\r\n\r\nBTW, if you think that hiding behind a secured site you are secure ... Think about ! \r\n\r\nAll of this because all I want to do with AAPS and NS is for AAPS to write to my NS and nothing else. But some people have decided for me that I shouldn't be doing it. After over 40 years in the software development career, sometimes things never change. \r\n\r\nGood day and Cheers to everyone. Keep safe and wear your seat belts, just a suggestion ..."
+  },
+  {
+   "id": 2145152415,
+   "user": "MilosKozak",
+   "created_at": "2024-06-03T13:03:34Z",
+   "body": "making it configurable (disable https if it doesn't work for me) would lead to situation where non skilled users would just disable it as a resolution without evaluating the risk(s). And risk is high because you can control AAPS through NS. \r\nIT professional can change the code and will understand the risk or will use VPN instead for example \r\noptimal solution from my side"
+  },
+  {
+   "id": 2145160917,
+   "user": "sircsaba",
+   "created_at": "2024-06-03T13:07:30Z",
+   "body": "No worries, I have already started changing the code but I have to concentrate more on the health issues than this for now. Also, things are moving quickly in the industry and depending on where you live and insurance policies using AAPS as a primary source might prove to be problematic. It would have been nice to evaluate it but, c'est la vie ! \r\nKeep up the good work and open minds."
+  },
+  {
+   "id": 2145759706,
+   "user": "sircsaba",
+   "created_at": "2024-06-03T17:29:50Z",
+   "body": "Can you quickly tell me which libraries you use for https communications please. This will make it quicker for me in the future when I have time... You can send it to my email : jeff at inforap dot com"
+  },
+  {
+   "id": 2147735709,
+   "user": "vanelsberg",
+   "created_at": "2024-06-04T14:50:17Z",
+   "body": "> which libraries...\r\n\r\nYou will need a frontend like **NGINX** or **Treafic** to handle HTTPS with a certificate. For a certificate you can use \"Let's Encrypt\" which is totally free (https://**letsencrypt.org)**.\r\n\r\nHow, depends on your deployment.\r\n\r\nMy prefred method, easiest would be using Docker, running on a VM or Raspberry Pi 4 (see f.i https://gist.github.com/Andries-Smit/daac75cd4c06af78cde68c5dec941705). All you need is to install Docker and use the projects dockercompose file.\r\n\r\nFore deployment to a NAS like Synology or QNAP see https://nightscout.github.io/nightscout/advanced/#building-nightscout-diy-in-a-virtual-server.\r\n\r\nIn case you like to deploy to a local Ubuntu/Linux server, just search the internet. Lots of examples, f.i https://gist.github.com/johnmales/1b3c927f2a56aae640b4b2cd0298b1e7\r\n\r\n\r\n\r\n\r\n"
+  }
+ ]
+}

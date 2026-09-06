@@ -1,0 +1,39 @@
+{
+ "id": 1907392517,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2815,
+ "title": "[DEV] Autosens is shown on Overview even if disabled",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2815",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-09-21T16:55:04Z",
+ "closed_at": "2023-09-23T12:10:31Z",
+ "comment_count": 4,
+ "body": "[This](https://github.com/nightscout/AndroidAPS/blob/dev/plugins/main/src/main/java/info/nightscout/plugins/general/overview/OverviewFragment.kt#L1091) line of code makes aaps always draw Autosens data on overview screen as 'active', even if isAutosensModeEnabled() returns false.\r\n\r\n<img width=\"117\" alt=\"image\" src=\"https://github.com/nightscout/AndroidAPS/assets/4157587/b0c00a54-0b5c-4c6b-affd-4f9a8a981a26\">\r\n<img width=\"474\" alt=\"image\" src=\"https://github.com/nightscout/AndroidAPS/assets/4157587/bd44ab87-aa12-433f-b002-d60b9992856a\">\r\n",
+ "comments": [
+  {
+   "id": 1731102469,
+   "user": "NighthawkEvP",
+   "created_at": "2023-09-22T09:24:26Z",
+   "body": "And if you select dynISF the related figures are missing since a few days. \r\nCould that be related to the Autosens thing?"
+  },
+  {
+   "id": 1731309802,
+   "user": "MilosKozak",
+   "created_at": "2023-09-22T12:09:22Z",
+   "body": "this is by design because it's calculated anyway. it's there to notify user some change can be usefull"
+  },
+  {
+   "id": 1731519626,
+   "user": "justmara",
+   "created_at": "2023-09-22T14:27:39Z",
+   "body": "@MilosKozak  There is special icon with `x`-mark that were used to show `disabled` autosens. Why it is not used anymore? The design has changed?\r\nAll the way till latest it were showing `X` without value for disabled autosens and this icon with percentage value only when autosens is enabled (ie USED). Whats the point of showing disabled functionality on main screen?\r\nAnd the condition in code states that this icon must be used when `isAutosensModeEnabled() == true` - ie autosens IS enabled. Second part of condition is simply errorneus and it makes no sense."
+  },
+  {
+   "id": 1732295268,
+   "user": "MilosKozak",
+   "created_at": "2023-09-23T12:10:31Z",
+   "body": "right! resolved in https://github.com/nightscout/AndroidAPS/commit/0ef3d9b3757cc3b983132cae832d04cb51180395"
+  }
+ ]
+}

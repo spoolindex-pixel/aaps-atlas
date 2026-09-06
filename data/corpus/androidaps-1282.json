@@ -1,0 +1,45 @@
+{
+ "id": 1125090584,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1282,
+ "title": "3.0.0.1 - Hypo TT replaces Active TT",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1282",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-02-06T03:08:36Z",
+ "closed_at": "2022-02-07T15:11:12Z",
+ "comment_count": 5,
+ "body": "When you have a current Tenp Target such as Activity running, a hypo Temp Target will replace the Temp Target currently active. In previous versions I believe the previous temp target would have been re-enabled after a hypo Temp target?\r\n\r\nUse case, out exercising with a tenp target ser for 240 mins of 8.0mmol . Hypo after 2 hours sets TT to hypo for 30 mins (in my case). After 30mins TT does not return to 8.0 activity target but instead the default profile target.\r\n\r\n![Screenshot_20220206-024921_AndroidAPS](https://user-images.githubusercontent.com/4039041/152666297-daef25b4-7181-418c-a51b-7751c52f4615.jpg)\r\n",
+ "comments": [
+  {
+   "id": 1030931649,
+   "user": "MilosKozak",
+   "created_at": "2022-02-06T22:48:54Z",
+   "body": "this behavior is expected"
+  },
+  {
+   "id": 1031664228,
+   "user": "haspden",
+   "created_at": "2022-02-07T16:29:01Z",
+   "body": "@MilosKozak In my eyes not desired or safe... (with safety first and all being the name of the game)\r\n\r\nIf a temporary target overnight has been set for a specific reason (such as 8.0mmol post exercise in my case) when entering a carbs a Hypo TT is automatically added, it should not remove my 600 minute long temp target, but instead take precedence over this for 30 minutes as the most recent Temp Target before returning to the original / originals"
+  },
+  {
+   "id": 1031871781,
+   "user": "Andries-Smit",
+   "created_at": "2022-02-07T20:08:09Z",
+   "body": "When the user sets a new temp target, it is expected it replaces the old one. But in this case, the systems change the temp target without the user noticing, which is undesired in this case.  The hypo TT is set by the automation. Can we find a way to automate the restore of the old TT in another way?"
+  },
+  {
+   "id": 1031901114,
+   "user": "haspden",
+   "created_at": "2022-02-07T20:42:29Z",
+   "body": "It's not even necessarily by automation @Andries-Smit as hypo Temp targets are set by default when low and adding carbs thus overriding targets set for a specific reason...\r\n\r\nAn alternative solution to my higherarchy method proposed above would be perhaps to prompt if a temp target exists if the user wanted to add it in addition (perhaps then add a temp target scheduled for future when the new one expires) or replace it..."
+  },
+  {
+   "id": 1298993825,
+   "user": "Koeppchen",
+   "created_at": "2022-11-01T19:15:06Z",
+   "body": "From a user interface view it would be good to have the stacking behaviour just like the profiles. And i also lost my sports target due to setting a shorter hypo target. What happend to @haspden also happend to me during sports and having smb's delivered during sports due to lost temp targets is not good.\r\nThis is the reason why i would love to have stacking for  temp targets."
+  }
+ ]
+}

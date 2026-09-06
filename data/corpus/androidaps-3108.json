@@ -1,0 +1,45 @@
+{
+ "id": 2038573902,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3108,
+ "title": "Short delta \"15m\" less than most recent delta of 5m",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3108",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-12-12T21:26:45Z",
+ "closed_at": "2023-12-13T09:25:35Z",
+ "comment_count": 5,
+ "body": "The short delta \"15m\" is less than most recent delta of 5m even when every 5 minutes the blood glucose has risen. Long delta is also wrong. For example if BYODA is: 132, 129, 128, 127, then delta reads +3, 15m reads: +2, and 40m reads: +1. If the time is 306pm and the last reading was at 302pm of 132, and 40 minutes before at 222pm it was 119, and it gradually rose each time, then the 40m is +1. \r\nI've been told that it's not really measuring 15min and 40min, but even so, it is wrong.\r\nI've had my screenshots criticized so I'll let the person reading this look for themselves - your 15m isn't your 15m delta, and your 40m isn't your 40min delta, and it isn't even a longer timespan longer than your immediate delta.\r\nIt is useful to have it right for things like OpenAPS SMB Advanced Settings where \"Always use short delta instead of simple delta: Useful when data from unfiltered sources like xDrip+ gets noisy\". Thank you.\r\nBuild version: 3.1.0.3\r\n",
+ "comments": [
+  {
+   "id": 1852843411,
+   "user": "MilosKozak",
+   "created_at": "2023-12-12T21:32:44Z",
+   "body": "long deltas are calculates as an average value of deltas in the past"
+  },
+  {
+   "id": 1852849191,
+   "user": "alex22rest",
+   "created_at": "2023-12-12T21:37:47Z",
+   "body": "Thank you for your fast response! If I look at my BYODA, then if it is an average of the past 40m, it is data of: 132+129+128+127+127+126+124+122+119. Does the 40m show the delta average of every 5 minutes? So 132-129=3, 129-128=1, etc, and average all those deltas over 40m = +1? 12 (the total of all the deltas)/7 deltas, rounded down = 1. And not the total delta like I was thinking from X minutes ago to the last reading."
+  },
+  {
+   "id": 1852857097,
+   "user": "MilosKozak",
+   "created_at": "2023-12-12T21:44:04Z",
+   "body": "yes"
+  },
+  {
+   "id": 1852859050,
+   "user": "MilosKozak",
+   "created_at": "2023-12-12T21:45:37Z",
+   "body": "meaning is not how much did bg change but what was the average change"
+  },
+  {
+   "id": 1852869975,
+   "user": "alex22rest",
+   "created_at": "2023-12-12T21:54:46Z",
+   "body": "Thank you for clarifying. I'd asked other people and read the docs and didn't get a clear answer, but this answers it."
+  }
+ ]
+}

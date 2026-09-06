@@ -1,0 +1,21 @@
+{
+ "id": 4512468708,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4855,
+ "title": "Medtrum Nano causes crash-loop when interrupted during initial patch refill.",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4855",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2026-05-24T17:59:48Z",
+ "closed_at": "2026-05-24T19:38:09Z",
+ "comment_count": 1,
+ "body": "## Setup\n- AAPS 3.3.1.3 , \n- Samsung S6 edge/G925F (zerolte) , \n- [Android 11 (lineage 18.1)](https://xdaforums.com/t/rom-sm-g920-5f-11-0-unofficial-lineageos-18-1.4576015/), Magisk for root, but no Google/gapps.\n- The phone was down to about 15% of battery.\n\n## Events\n- switched pump driver from Dana-I/RS to Medtrum Nano\n- Went to the Pump driver screen, following the actions for connecting the base and filling the first patch, to the letter, albeit rather slowly since it was a first and a tutorial session. \n- A moment after the refill screen started counting the increasing amount of insulin in the patch (between 72 and 75 IE, iirc), the screen went blank and the phone shut down. Oopsie.\n- The phone got tethered to a powerbank, and after a few moments of feeding was switched back on.\n- Immediately, AAPS went into continuous **crash-loops**, without even getting as far as displaying a UI.\n- The situation was **resolved** by stopping AAPS (`pm disable info.nightscout.androidaps`), and editing `/data/data/info.nightscout.androidaps/shared_prefs/info.nightscout.androidaps_preferences.xml`  (accessing anything below `/data/data` requires the phone to be rooted) to disable the Medtrum Nano driver and enable the Virtual Pump instead.\n- AAPS then started without fuss, and it was possible to select the Medtrum driver in the config again, and point it to the (not yet activated) patch again to continue activating it. My memory is fuzzy if (for the sake of demonstration) we continued filling the patch while watching on the screen, or if we filled it \"offline\" and just enabled the patch afterwards. I /think/ we went along the guided procedure from the AAPS-included driver.\n\nDon't y'all just love edge-cases? ;-p",
+ "comments": [
+  {
+   "id": 4529764661,
+   "user": "MilosKozak",
+   "created_at": "2026-05-24T19:38:09Z",
+   "body": "sorry, support is provided only on latest master and latest dev.\nUpdate and if you can replicate it, create new issue with log files"
+  }
+ ]
+}

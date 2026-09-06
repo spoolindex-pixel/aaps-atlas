@@ -1,0 +1,51 @@
+{
+ "id": 530350739,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1107,
+ "title": "Dexcom G6 / 8G Sensor:  InvalidRxMessage FF0601",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1107",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2019-11-29T13:36:30Z",
+ "closed_at": "2020-01-17T22:51:38Z",
+ "comment_count": 6,
+ "body": "I'm using a Pixel 3a with Android 10 and lateat patch level with xDrip Nov 22nd nightly.\r\n\r\nMy 8G sensor reported \"sensor errors\" today. I do not receive values anymore, eventhough the Dexcom receiver does. I can see the InvalidRxMessage entry in the log.\r\n\r\nBesides this error I also have the occasionally lost connection problem that others have reported. This is nomally solved by manally unbonding, which does not help in this case.\r\n\r\n![Screenshot_20191129-141220~2](https://user-images.githubusercontent.com/39347827/69872397-9536d280-12b5-11ea-81d5-cfe5a12ffc2b.png)\r\n\r\n\r\n![Screenshot_20191129-141245](https://user-images.githubusercontent.com/39347827/69872254-340eff00-12b5-11ea-96fa-9b3464c93bb2.png)\r\n",
+ "comments": [
+  {
+   "id": 559793531,
+   "user": "nsghub",
+   "created_at": "2019-11-29T13:40:42Z",
+   "body": "While I was writing the post, the phone reconnected to the transmitter and received values. The error message stopped showing up."
+  },
+  {
+   "id": 562957384,
+   "user": "nsghub",
+   "created_at": "2019-12-08T15:02:31Z",
+   "body": "The message appears approximately after one day. A reboot with additional unbonding fixes the issue."
+  },
+  {
+   "id": 563307933,
+   "user": "bobsbbq",
+   "created_at": "2019-12-09T16:04:28Z",
+   "body": "Curious when you say unbonding, are you referring to using the forget device? Does this just break the transmitter connection and you have to enter it back? Does the sensor session stop or does it keep going?"
+  },
+  {
+   "id": 564277034,
+   "user": "nsghub",
+   "created_at": "2019-12-10T21:56:09Z",
+   "body": "Yes, I mean the \"Forget device\" button. But this is the same as directly removing the device from the paired devices list in android. The button caption is a bit misleading.\r\nThe sensor is not stopped!"
+  },
+  {
+   "id": 566641489,
+   "user": "wouterla",
+   "created_at": "2019-12-17T16:31:45Z",
+   "body": "I've been having the same issue:\r\n- An initial reading is  fine\r\n- Sometimes this works, even up to a day long, with data received every five minutes as expected\r\n- Often, it will stop working, and I'll only get it working again after a 'forget device' and 'restart collector'\r\n\r\nI've had this problem with both a 81xxx and 8Gxxx transmitter, with two different sensors.\r\nOnly the 8Gxxx transmitter seems to be giving the InvalidRxMessage FF0601 message, though, so that might not be the main reason this is happening.\r\n\r\nI added a 'reset_bond' call in the SCAN section of automate (plus set the msSince to 7 minutes) to try and see if I could, ahem, automate my manual actions for the time being. That seems to ensure me getting readings every 10 minutes. But is obviously not a structural solution.\r\n\r\nMaybe the G6 also needs a 'force unbond' setting like the old collector for the G5 had?\r\n\r\nAdditional data point: I'm using a OnePlus 7 Pro, and there might be a correlation between this starting and the latest update (to 10.0.2.GM21BA) of OxygenOS / Android 10."
+  },
+  {
+   "id": 575825504,
+   "user": "nsghub",
+   "created_at": "2020-01-17T22:51:38Z",
+   "body": "After a nightly from december the issue is gone. It only happend right after an update again, but fixed itself after another reading."
+  }
+ ]
+}

@@ -1,0 +1,194 @@
+{
+ "id": 882473383,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1720,
+ "title": "Dexcom G5: Scan Error: Unable to Start scanning (Pixel 4a 5G with Android 12 / S Preview)",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1720",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "bluetooth",
+  "breaking",
+  "android12+"
+ ],
+ "created_at": "2021-05-09T15:51:47Z",
+ "closed_at": "2021-06-18T08:46:35Z",
+ "comment_count": 34,
+ "body": "**xDrip Nightly build 5th May 2021**\r\n**Dexcom G5 receiver**\r\n**Mobile:** Google Pixel 4a 5G\r\n**Android Version**: S (12 Preview) build bramble-spp3.210325.010-factory-b282d767\r\n\r\n**Issue:** Scan Error: Unable to start scanning\r\n**Error log:**\r\n```\r\nUnable to Start Scanning\r\ncom.polidea.rxandroidble2.exceptions.BleScanException: Bluetooth Cannot Start (code 0)\r\nNo transmitter mac address!\r\n```\r\n\r\nDexcom G5 works perfectly fine with Dexcom Official App and also working fine with MiaoMiao 2 / Bubble 1 & Mini.\r\nWith xDrip+ the scanning is not even starting/working.  \r\n\r\n![image](https://user-images.githubusercontent.com/608650/117578480-6ea1db80-b0e6-11eb-9eec-6921043802c7.png)\r\n\r\n![image](https://user-images.githubusercontent.com/608650/117578552-d5bf9000-b0e6-11eb-827a-8a5cf80dde0a.png)\r\n\r\n![image](https://user-images.githubusercontent.com/608650/117580239-00154b80-b0ef-11eb-9169-48306bd62dd5.png)\r\n",
+ "comments": [
+  {
+   "id": 841860323,
+   "user": "tolot27",
+   "created_at": "2021-05-16T18:52:00Z",
+   "body": "Please enable verbose logging for Ob1G5CollectionService.\r\n\r\nIt looks more like a permission issue."
+  },
+  {
+   "id": 841862118,
+   "user": "parapenT1sta",
+   "created_at": "2021-05-16T19:04:51Z",
+   "body": "@tolot27 I will try it on the next time I update to Android 12. "
+  },
+  {
+   "id": 844415781,
+   "user": "Smip",
+   "created_at": "2021-05-19T19:44:51Z",
+   "body": "@parapenT1sta did you solve the problem? I have pixel 4 and after I updated the system have a problem like you."
+  },
+  {
+   "id": 844419136,
+   "user": "parapenT1sta",
+   "created_at": "2021-05-19T19:49:50Z",
+   "body": "@Smip I downgraded from Android 12 to 11 and problem solved.\r\n"
+  },
+  {
+   "id": 844481839,
+   "user": "Smip",
+   "created_at": "2021-05-19T21:19:21Z",
+   "body": "@tolot27 \r\n![photo_2021-05-19_22-59-07](https://user-images.githubusercontent.com/11481452/118883944-22c91080-b8f6-11eb-84eb-60002e985625.jpg)\r\n"
+  },
+  {
+   "id": 844486627,
+   "user": "tolot27",
+   "created_at": "2021-05-19T21:27:34Z",
+   "body": "Looks like either a permission problem or a new security layer. Did xDrip ever ask to bond the transmitter? I assume it is not bonded, yet."
+  },
+  {
+   "id": 844492816,
+   "user": "Smip",
+   "created_at": "2021-05-19T21:38:56Z",
+   "body": "Probably xDrip didn't ask to bond. I used this transmitter with Android 11 and everything was good. After updating, xDrip worked for a while and after some time I got this error. I tried to change a lot of different settings and nothing helps. The last thing I tried is to reinstall the application. After installation of the app, I didn't see a bond request."
+  },
+  {
+   "id": 844494486,
+   "user": "tolot27",
+   "created_at": "2021-05-19T21:41:52Z",
+   "body": "@Smip \r\n\r\n> I have pixel 4 and after I updated the system have a problem like you.\r\n\r\nYou did not mention if you have also upgraded to a preview version. If you did, it is a waste of time discussing unreleased Android versions which likely still have some bugs."
+  },
+  {
+   "id": 844495975,
+   "user": "parapenT1sta",
+   "created_at": "2021-05-19T21:44:42Z",
+   "body": "@tolot27 Android 12 is now at a beta stage: https://www.google.com/android/beta"
+  },
+  {
+   "id": 844497153,
+   "user": "Smip",
+   "created_at": "2021-05-19T21:46:49Z",
+   "body": "I updated to the beta version \r\n![photo_2021-05-19_23-43-57](https://user-images.githubusercontent.com/11481452/118888779-61fa6000-b8fc-11eb-9446-e04ee8a50ed2.jpg)\r\n"
+  },
+  {
+   "id": 844544842,
+   "user": "tolot27",
+   "created_at": "2021-05-19T22:40:29Z",
+   "body": "A beta version is still an unreleased version which likely contains bugs. We don't have the time to support unreleased versions. If you believe this problem will persist in the final release and if you like to support us, please try to find out whether the Bluetooth stack has changed fundamentally.\r\n\r\nAs far as I remember, a new Bluetooth stack named \"Gabeldorche\" was introduced with Android 11 which can be enabled. Maybe, this stack is now the default stack in Android 12? If yes, please investigate if it can be disabled or if the problem is reproducible in Android 11 if Gabeldorche is enabled.\r\nThat's currently the only suggestions I have."
+  },
+  {
+   "id": 844556890,
+   "user": "Smip",
+   "created_at": "2021-05-19T23:09:25Z",
+   "body": "I found this stack in the developer options list and it's disabled by default. I tried to enable it and nothing changed. So probably the reason is different.\r\n\r\nI remember a few months ago I have a problem when Android aks to bond every 5 minutes and if I didn't click \"bond\" I have very similar behavior. How I know, there was some patch to fix this problem. How can I manually bond a transmitter?"
+  },
+  {
+   "id": 844557978,
+   "user": "tolot27",
+   "created_at": "2021-05-19T23:12:21Z",
+   "body": "I've found the reason. As assumed before, it is a permission problem. A12 introduced two new runtime permissions: [New Bluetooth permissions in Android 12](https://developer.android.com/about/versions/12/features/bluetooth-permissions). As soon as we declare this permissions in the manifest, it should work.\r\nI'll provide a PR soon."
+  },
+  {
+   "id": 844559000,
+   "user": "parapenT1sta",
+   "created_at": "2021-05-19T23:14:59Z",
+   "body": "> I've found the reason. As assumed before, it is a permission problem. A12 introduced two new runtime permissions: [New Bluetooth permissions in Android 12](https://developer.android.com/about/versions/12/features/bluetooth-permissions). As soon as we declare this permissions in the manifest, it should work.\r\n> I'll provide a PR soon.\r\n\r\nWhat great news! :) "
+  },
+  {
+   "id": 844570838,
+   "user": "tolot27",
+   "created_at": "2021-05-19T23:43:56Z",
+   "body": "@parapenT1sta Are you able to build you own apk?"
+  },
+  {
+   "id": 844721012,
+   "user": "parapenT1sta",
+   "created_at": "2021-05-20T05:51:49Z",
+   "body": "> @parapenT1sta Are you able to build you own apk?\r\n\r\nI can try to build it and will let you know. "
+  },
+  {
+   "id": 845033465,
+   "user": "taylorfowler",
+   "created_at": "2021-05-20T12:02:03Z",
+   "body": "> > @parapenT1sta Are you able to build you own apk?\r\n> \r\n> I can try to build it and will let you know.\r\n\r\nIf either of you could share that apk if you build it, that would be swell. Getting a ton of gradle errors when i try to build your branch (Android studio is to blame, not the branch, almost certainly).\r\n\r\nEdit: got it to build properly. \r\n\r\nNow getting \r\n>Unable to start scan com.polidea.rxandroidble2. exceptions.BleScanException: Bluetooth cannot start (code 0)"
+  },
+  {
+   "id": 845480504,
+   "user": "parapenT1sta",
+   "created_at": "2021-05-20T21:12:38Z",
+   "body": "> > > @parapenT1sta Are you able to build you own apk?\r\n> > \r\n> > \r\n> > I can try to build it and will let you know.\r\n> \r\n> If either of you could share that apk if you build it, that would be swell. Getting a ton of gradle errors when i try to build your branch (Android studio is to blame, not the branch, almost certainly).\r\n> \r\n> Edit: got it to build properly.\r\n> \r\n> Now getting\r\n> \r\n> > Unable to start scan com.polidea.rxandroidble2. exceptions.BleScanException: Bluetooth cannot start (code 0)\r\n\r\nFor some reason I am getting this error while compiling the apk:\r\n```\r\nExecution failed for task ':wear:compileFastDebugJavaWithJavac'.\r\n> javax/xml/bind/JAXBException\r\n```\r\n\r\nThe messsage you are getting is the same I was getting before. Did you check to remove all permissions and then enabling them after?"
+  },
+  {
+   "id": 845520621,
+   "user": "tolot27",
+   "created_at": "2021-05-20T22:25:37Z",
+   "body": "> If either of you could share that apk if you build it, that would be swell. Getting a ton of gradle errors when i try to build your branch (Android studio is to blame, not the branch, almost certainly).\r\n\r\nYou can get my preview build at https://github.com/tolot27/xDrip/releases/tag/Android12BTPermissions_v0.1."
+  },
+  {
+   "id": 846545106,
+   "user": "Smip",
+   "created_at": "2021-05-23T11:09:23Z",
+   "body": "@tolot27 I tried your version and nothing changed. Android asked for a \"Nearby devices\" permission but the error is still there.\r\n![photo_2021-05-23_13-08-29](https://user-images.githubusercontent.com/11481452/119257968-fcda8f00-bbc7-11eb-9315-4c21dfe03b44.jpg)\r\n![photo_2021-05-23_13-08-31](https://user-images.githubusercontent.com/11481452/119257969-fd732580-bbc7-11eb-96c3-1e83fc6b619f.jpg)\r\n\r\n "
+  },
+  {
+   "id": 846633594,
+   "user": "parapenT1sta",
+   "created_at": "2021-05-23T22:26:19Z",
+   "body": "@Smip Can you check how do you have it on G5/G6 Status tab in System Status. "
+  },
+  {
+   "id": 846808361,
+   "user": "Smip",
+   "created_at": "2021-05-24T06:57:29Z",
+   "body": "@parapenT1sta  Sure\r\n\r\n![Screenshot_20210524-085639.png](https://user-images.githubusercontent.com/11481452/119308968-fbfc3880-bc6d-11eb-811f-864b3fba4632.png)"
+  },
+  {
+   "id": 846947316,
+   "user": "parapenT1sta",
+   "created_at": "2021-05-24T10:28:20Z",
+   "body": "@Smip Exactly what I was getting :-(\r\n"
+  },
+  {
+   "id": 850852802,
+   "user": "Smip",
+   "created_at": "2021-05-29T15:37:39Z",
+   "body": "probably the solution is to wait for update the RxAndroidBle library due to issue https://github.com/Polidea/RxAndroidBle/issues/752"
+  },
+  {
+   "id": 860017978,
+   "user": "parapenT1sta",
+   "created_at": "2021-06-12T08:01:28Z",
+   "body": "> probably the solution is to wait for update the RxAndroidBle library due to issue [Polidea/RxAndroidBle#752](https://github.com/Polidea/RxAndroidBle/issues/752)\r\n\r\nThe newest version of xDrip includes this commit: https://github.com/NightscoutFoundation/xDrip/pull/1723\r\n\r\nAre you able to check if solve the issue? "
+  },
+  {
+   "id": 860020284,
+   "user": "Smip",
+   "created_at": "2021-06-12T08:21:16Z",
+   "body": "> > probably the solution is to wait for update the RxAndroidBle library due to issue [Polidea/RxAndroidBle#752](https://github.com/Polidea/RxAndroidBle/issues/752)\r\n> \r\n> The newest version of xDrip includes this commit: #1723\r\n> \r\n> Are you able to check if solve the issue?\r\n\r\nI updated Android to beta 2 and luckily it works. I'm not sure that the new version of xDrip helped, but I keep testing."
+  },
+  {
+   "id": 860020504,
+   "user": "parapenT1sta",
+   "created_at": "2021-06-12T08:23:23Z",
+   "body": "@Smip Can you keep me posted? "
+  },
+  {
+   "id": 863468537,
+   "user": "parapenT1sta",
+   "created_at": "2021-06-17T18:30:39Z",
+   "body": "> > > probably the solution is to wait for update the RxAndroidBle library due to issue [Polidea/RxAndroidBle#752](https://github.com/Polidea/RxAndroidBle/issues/752)\r\n> > \r\n> > \r\n> > The newest version of xDrip includes this commit: #1723\r\n> > Are you able to check if solve the issue?\r\n> \r\n> I updated Android to beta 2 and luckily it works. I'm not sure that the new version of xDrip helped, but I keep testing.\r\n\r\nHow is it working? Should I leave this topic open or should I close it?"
+  },
+  {
+   "id": 863868210,
+   "user": "Smip",
+   "created_at": "2021-06-18T08:40:58Z",
+   "body": "> > > > probably the solution is to wait for update the RxAndroidBle library due to issue [Polidea/RxAndroidBle#752](https://github.com/Polidea/RxAndroidBle/issues/752)\r\n> > > \r\n> > > \r\n> > > The newest version of xDrip includes this commit: #1723\r\n> > > Are you able to check if solve the issue?\r\n> > \r\n> > \r\n> > I updated Android to beta 2 and luckily it works. I'm not sure that the new version of xDrip helped, but I keep testing.\r\n> \r\n> How is it working? Should I leave this topic open or should I close it?\r\n\r\n1 week without problems. Probably you can close the issue. If I find a bug I'll reopen the issue. Thanks"
+  }
+ ]
+}

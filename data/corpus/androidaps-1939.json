@@ -1,0 +1,39 @@
+{
+ "id": 1313080975,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1939,
+ "title": "manual BG checks keep replicating in Treatments",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1939",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-07-21T11:04:43Z",
+ "closed_at": "2022-10-04T10:53:56Z",
+ "comment_count": 4,
+ "body": "I'm using xDrip to add manual BG checks. xDrip then uploads it to NS. Both nsclient and aaps itself (checked in 3.0, 3.1-beta1, 3.1) keep syncing this value and re-adding it to Treatmens list indefinitely.\r\nHere is how it looks in NS database (you can see only 1 value)\r\n<img width=\"1249\" alt=\"image\" src=\"https://user-images.githubusercontent.com/4157587/180198518-6b4b71d0-ad77-4f8b-9d08-b56f98a5d1a6.png\">\r\nand here how it looks in nsclient's Treatments\r\n![telegram-cloud-photo-size-2-5390838664570977715-y](https://user-images.githubusercontent.com/4157587/180198634-c2879b5c-ce26-421c-9f6d-b84ad55790c8.jpg)\r\n\r\nI tried deleting all the duplicate entries trough treatments 'delete' button, but they keep re-appearing again after some period of time. After 'deleting' these entries are marked `IsValid: false` in mongodb, but still keep downloading and adding back to treatments list. ",
+ "comments": [
+  {
+   "id": 1266766343,
+   "user": "MilosKozak",
+   "created_at": "2022-10-04T10:53:56Z",
+   "body": "only one app must upload to NS, all other configurations usually lead to troubles you see\r\nit's mentioned in wiki"
+  },
+  {
+   "id": 1266796257,
+   "user": "justmara",
+   "created_at": "2022-10-04T11:20:03Z",
+   "body": "What do you mean under \"only one app must upload to NS\"? NS is an API. It receives data and returns it for requests. There is no (and never was) any reason on limiting number of applications uploading data to NS. The only rule was to not duplicate data.\r\nHere is the case, where data is NOT duplicated in NS. It IS duplicated only in AAPS itself. NS contains and shows single record.\r\nBut AAPS continuously syncs it to local db. Over and over again. Duplicating same record from NS to new records in LOCAL treatments db.\r\nSo its not even close to _completed_. Same issue is observed by other users, who has their xDrip sending BG and BG Check records directly to NS."
+  },
+  {
+   "id": 1266812741,
+   "user": "justmara",
+   "created_at": "2022-10-04T11:25:56Z",
+   "body": "![Screenshot_20221004-142345_xDrip+](https://user-images.githubusercontent.com/4157587/193807386-2a0382b0-bcc5-4ac5-a84f-292359de96ad.jpg)\r\n![Screenshot_20221004-142252_xDrip+](https://user-images.githubusercontent.com/4157587/193807395-cb88eb3d-8676-4159-9288-37e58e5611fc.jpg)\r\n![Screenshot_20221004-142223_NSClient](https://user-images.githubusercontent.com/4157587/193807400-927f4151-55ec-4e62-a6f4-a1cf57d1b1d5.jpg)\r\n![Screenshot_20221004-142205_NSClient](https://user-images.githubusercontent.com/4157587/193807403-e90f678c-fa63-49e2-bbaa-b3f92584d97a.jpg)\r\n"
+  },
+  {
+   "id": 1267058392,
+   "user": "MilosKozak",
+   "created_at": "2022-10-04T14:03:07Z",
+   "body": "problem is data from all apps are not 100% compatible, API v1 doesn't have sync protocol and finaly AAPS is using websockets and data comming through WS are even modified.\r\nIf there would be an easy solution it would already in place"
+  }
+ ]
+}

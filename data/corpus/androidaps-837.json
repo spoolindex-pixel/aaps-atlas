@@ -1,0 +1,21 @@
+{
+ "id": 1044302502,
+ "repo": "nightscout/AndroidAPS",
+ "number": 837,
+ "title": "Automations actions exceeding 'normal' limits can be enabled, but don't fire",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/837",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-11-04T02:35:56Z",
+ "closed_at": "2021-11-04T11:21:33Z",
+ "comment_count": 1,
+ "body": "When the user configures a rule that sets a Profile % out of range or beyond normal limits, the rule turns red.\r\n\r\nThe bug is that:\r\n- If 'red' means that the rule is valid but beyond normal limits: the rule isn't firing\r\n- If 'red' means that the rule is out of limits: it should not be possible to enable it\r\n\r\nRepro steps:\r\n- Import settings from 2.8.2. It contains an automation rule to increase profile % to 150% for 10m when BG > 15mmol\r\n--> On the automation screen, the rule displays as red, but it's enabled. Since it's enabled, my interpretation is that this means that the rule is valid, but exceeds 'normal' values.\r\n-  When BG > 15 mmol\r\n--> The rule doesn't fire!\r\n\r\nTested on 3.0 beta 3.",
+ "comments": [
+  {
+   "id": 960666043,
+   "user": "MilosKozak",
+   "created_at": "2021-11-04T11:21:33Z",
+   "body": "red means invalid rule and this is not executed until you fix it\r\nadded code to disable it https://github.com/nightscout/AndroidAPS/commit/0a798d1ea494be9f9e7136ccad177ff1a36ff309"
+  }
+ ]
+}

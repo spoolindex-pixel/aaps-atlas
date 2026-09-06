@@ -1,0 +1,71 @@
+{
+ "id": 1044205477,
+ "repo": "nightscout/AndroidAPS",
+ "number": 836,
+ "title": "Progress pop-up windows for manual bolus immediately closed while bolus still progressing",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/836",
+ "state": "closed",
+ "labels": [
+  "enhancement"
+ ],
+ "created_at": "2021-11-03T23:05:35Z",
+ "closed_at": "2021-11-12T09:27:34Z",
+ "comment_count": 9,
+ "body": "**AndroidAPS 2.8.2.9-dev**\r\nBuild: aea868ac6 / Fullrelease\r\n**Pump: DASH**\r\n\r\n**Problem description:**\r\nWhen starting a manual bolus (2u) the progress window popped, immediately showed a full bar, then closed.\r\nThe bollus command itself was executed without problems: seeing progress on wear, Pod ticking, DASH history confirming.\r\n\r\nRepro:\r\nThis was a one-time occasion, could not repro.\r\n\r\n**Additional Info**\r\nThis very much _looks like_ the problem AAPS had some months ago: The problems then was caused by starting a manual bolus at the moment an SMB was running. When SMB finished it closed the progress window (for the manual bolus)?\r\n",
+ "comments": [
+  {
+   "id": 960902667,
+   "user": "MilosKozak",
+   "created_at": "2021-11-04T13:16:00Z",
+   "body": "this is close to impossible with current implementation"
+  },
+  {
+   "id": 962125731,
+   "user": "vanelsberg",
+   "created_at": "2021-11-05T18:34:30Z",
+   "body": "(*grin*) I'd take your word on that.\r\nProblem is that I have seen it happen twice now. So maybe there is some other cause that closes the pop-up.\r\nWill check the logs to see if they show anything that is \"impossible\" ;-)"
+  },
+  {
+   "id": 966188190,
+   "user": "MilosKozak",
+   "created_at": "2021-11-11T10:30:31Z",
+   "body": "i did some improvement recently but to be honest i'm not 100% sure it helps"
+  },
+  {
+   "id": 966604498,
+   "user": "vanelsberg",
+   "created_at": "2021-11-11T20:29:53Z",
+   "body": "@MilosKozak \r\nTnx. Have not seen it happen for a while as I described. So improvement may have helped here.\r\n\r\nOne way to repro which may be similar in behavior:\r\nStart a manual bolus. Then on the phone switch to active apps view (pressing button on the bottom if the phone screen) and swipe/close AAPS. In will continue the bolus on the background (wear notifications confirm by showing progress). Opening AAPS does no longer show the progress pop-up (while bolus is progressing in the background).\r\nCan reproduce this behavior without any problem. \r\n"
+  },
+  {
+   "id": 966952412,
+   "user": "MilosKozak",
+   "created_at": "2021-11-12T09:27:34Z",
+   "body": "when you close app (by swiping out) all activities are destroyed and there is no way to restore it. it's android design\r\nif you switch to another app and back bolus progress survive as activity is restored"
+  },
+  {
+   "id": 1033100382,
+   "user": "vanelsberg",
+   "created_at": "2022-02-08T21:55:59Z",
+   "body": "@MilosKozak \r\n*Minor issues but it still is there?*\r\nDo not think this should have high priority but still seeing this behavior now and then, also for current 3.0 release/dev branch.\r\n\r\nStart a manual bolus from overview (so no closing of the app):\r\nOn starting the bolus progress opens with a flash of 100% yellow progress, then seams to start the bolus (grey 0% progress) immediately (within 1 secs) followed by closing the progress pop-up.\r\nBolus does proceed in the background without issues.\r\n\r\nJust can not find a way to reproduce this. Have seen at least 2 users in Discord reporting the same.\r\n"
+  },
+  {
+   "id": 1033119837,
+   "user": "CaptainBalou",
+   "created_at": "2022-02-08T22:18:39Z",
+   "body": "> @MilosKozak _Minor issues but it still is there?_ Do not think this should have high priority but still seeing this behavior now and then, also for current 3.0 release/dev branch.\r\n> \r\n> Start a manual bolus from overview (so no closing of the app): On starting the bolus progress opens with a flash of 100% yellow progress, then seams to start the bolus (grey 0% progress) immediately (within 1 secs) followed by closing the progress pop-up. Bolus does proceed in the background without issues.\r\n> \r\n> Just can not find a way to reproduce this. Have seen at least 2 users in Discord reporting the same.\r\n\r\nI've had this as well with 3.0 betas. Setup here is DanaRS, Dexcom G6 with BYOD. But because I've found no way to reproduce it I couldn't create a log. Because the bolus in background was always delivered well I haven't put that much energy into it."
+  },
+  {
+   "id": 1051262333,
+   "user": "TranceCake",
+   "created_at": "2022-02-25T20:58:42Z",
+   "body": "I have seen this with both 2.8.x and 3.0 about 8+ times I think, of which 3 in 3.0"
+  },
+  {
+   "id": 1060755678,
+   "user": "antoinekh",
+   "created_at": "2022-03-07T14:36:50Z",
+   "body": "Still same problem in last dev #1315 "
+  }
+ ]
+}

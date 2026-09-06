@@ -1,0 +1,83 @@
+{
+ "id": 1091981038,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1117,
+ "title": "DASH / EROS Show either percentage or units of bolus already injected",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1117",
+ "state": "closed",
+ "labels": [
+  "enhancement"
+ ],
+ "created_at": "2022-01-02T09:17:43Z",
+ "closed_at": "2022-07-25T19:11:01Z",
+ "comment_count": 11,
+ "body": "The watch face can tell me the percentage of the bolus injected but not the app :(\n\nIt would be helpful to show the percentage, or even better, the units, of bolus already injected on the phone interface too.\n\n![screen.png](https://user-images.githubusercontent.com/76626474/147871471-c8c150ed-e838-436d-a4c2-0198bbd2a95b.png)\n![Screenshot_20220102-093947_AndroidAPS.jpg](https://user-images.githubusercontent.com/76626474/147871477-c3799803-894e-48fc-bc6f-e78ae7f58967.jpg)",
+ "comments": [
+  {
+   "id": 1003697117,
+   "user": "Thomas-Wolff",
+   "created_at": "2022-01-02T10:54:17Z",
+   "body": "I can also confirm this, would be very helpful as Robby describes it."
+  },
+  {
+   "id": 1003765435,
+   "user": "vanelsberg",
+   "created_at": "2022-01-02T19:45:35Z",
+   "body": "I think the progress bar gives a pretty good idea on progress. Can not see how adding percentage is this helpful.\r\n_Question_: What can/should user do with this knowledge?\r\n"
+  },
+  {
+   "id": 1003766910,
+   "user": "robertrub",
+   "created_at": "2022-01-02T19:57:25Z",
+   "body": "If you suddenly remark that you're going to get too much insulin and want to stop at a certain amount, you need the _U really injected_ information.\n\nWith the other pumps, you already have the precise amount injected, it is only missing in Omnipod pumps ;)"
+  },
+  {
+   "id": 1003771613,
+   "user": "vanelsberg",
+   "created_at": "2022-01-02T20:37:04Z",
+   "body": "Ok.\r\nNote user needs to know the number of units. Not the percentage which would only an calculated estimate from progress.\r\n\r\nShowing the percentage would not be very efficient then?\r\n\r\n1. User would need to note the exact percentage shown at the time bolus is stopped.\r\n2. User would need to calculate XX% of of N units,\r\n3. I think progress bar is based on estimated time, not on actual Pod ticks.\r\n4. Executing a bolus cancel command takes some time so the last percentage shown may not be accurate?\r\n\r\nI'd recommend users to **always** check treatments as it shows the most exact number of units for the bolus and may be more accurate.\r\n\r\n(Btw: I think sole purpose of watch showing percentage is to show progress (as it does not have the progress bar). I would not trust using the last percentage shown for calculating the actual bolus amount.\r\n"
+  },
+  {
+   "id": 1003773790,
+   "user": "robertrub",
+   "created_at": "2022-01-02T20:54:49Z",
+   "body": "That is why I said that knowing sent units is better than percentage.\n\nI agree with you but even a _not very precise_ number will give a better precision than a blant progression bar. The injected U number might be a couple of tics wrong and each tic is only 0.05U... \n\nOf course, once you abort the injection, you should look up the real amount injected and add some more U if needed.\n\nA progress bar is useless information. Either give an information that can be useful or just draw a dansing Gizmo :)"
+  },
+  {
+   "id": 1004050058,
+   "user": "vanelsberg",
+   "created_at": "2022-01-03T12:10:35Z",
+   "body": "How about a 0...100 ruler under the progress bar (e.g steps of 10%) then?\r\n"
+  },
+  {
+   "id": 1004096284,
+   "user": "robertrub",
+   "created_at": "2022-01-03T13:34:12Z",
+   "body": "Theo, why complicate things ? Watch face gives a percentage, same could be easily done on app UI too.\n\nAAPS can even multiply the percentage with the total U to inject and give the amount already injected.\n\nWhy are you against more information ?"
+  },
+  {
+   "id": 1004185888,
+   "user": "vanelsberg",
+   "created_at": "2022-01-03T15:55:35Z",
+   "body": "Against is the wrong word: I just would not vote **for** this as a feature ;-)\r\nAnd please note: this is just my personal view. Anyone is free to see this differently."
+  },
+  {
+   "id": 1004319396,
+   "user": "vanelsberg",
+   "created_at": "2022-01-03T19:53:08Z",
+   "body": "Hi @robertrub,\r\nReading back I see myself circling around the basics of why I would not choose to show any percentage. I'll try to rephrase what I was actually trying to say as I see some danger in suggesting a percentage of the bolus being given.\r\n(Please ignore my previous comments.... As you have valid points, sorry for the confusion?)\r\n\r\nThe progress bar is a generic way of AAPS to show progress based on the estimated total time needed to finish the task of administering a bolus. How this task is performed is up to the driver. It could very well include some pump initialization and finishing with the actual bolus being executed somewhere along the way (please correct me if I am wrong here?)\r\n\r\n_In the context of the AAPS progress bar showing XX%, to the user this would suggest XX% of the bolus was administrated (your argument) which may be incorrect. For DASH the progress bar pretty well matches the actual bolus process, however last time I checked a DASH bolus of 1U finishes at about 90% in progress.\r\nHave no idea how this is for other pumps._\r\n"
+  },
+  {
+   "id": 1010285993,
+   "user": "Philoul",
+   "created_at": "2022-01-11T19:22:11Z",
+   "body": "In AAPS, when you have a total amount, and a percentage for a progress bar, it's easy to convert to approximate amount of injected units...\r\nUser Interface for Insight pump is a bit different...\r\n![Screenshot_20220111-201358_AndroidAPS](https://user-images.githubusercontent.com/52934600/149007103-9b589c9e-6c5e-4922-89da-cea70a0aadf9.jpg)\r\nif @avereha is ok it could be easy to use same UI for dash (and eros)"
+  },
+  {
+   "id": 1010872294,
+   "user": "avereha",
+   "created_at": "2022-01-12T10:07:05Z",
+   "body": "Sounds good to me!\n\nOn Tue, 11 Jan 2022, 19:22 Philoul, ***@***.***> wrote:\n\n> In AAPS, when you have a total amount, and a percentage for a progress\n> bar, it's easy to convert to approximate amount of injected units...\n> User Interface for Insight pump is a bit different...\n> [image: Screenshot_20220111-201358_AndroidAPS]\n> <https://user-images.githubusercontent.com/52934600/149007103-9b589c9e-6c5e-4922-89da-cea70a0aadf9.jpg>\n> if @avereha <https://github.com/avereha> is ok it could be easy to use\n> same UI for dash (and eros)\n>\n> —\n> Reply to this email directly, view it on GitHub\n> <https://github.com/nightscout/AndroidAPS/issues/1117#issuecomment-1010285993>,\n> or unsubscribe\n> <https://github.com/notifications/unsubscribe-auth/AAI6EKU62Q5A335IYUDJHGLUVR7O7ANCNFSM5LDOTL3A>\n> .\n> Triage notifications on the go with GitHub Mobile for iOS\n> <https://apps.apple.com/app/apple-store/id1477376905?ct=notification-email&mt=8&pt=524675>\n> or Android\n> <https://play.google.com/store/apps/details?id=com.github.android&referrer=utm_campaign%3Dnotification-email%26utm_medium%3Demail%26utm_source%3Dgithub>.\n>\n> You are receiving this because you were mentioned.Message ID:\n> ***@***.***>\n>\n"
+  }
+ ]
+}

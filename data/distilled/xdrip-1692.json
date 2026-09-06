@@ -1,0 +1,27 @@
+{
+ "issue_id": 1692,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/1692",
+ "title": "Original Dexcom Reciver loses connection.",
+ "symptom": "With xDrip version 210204 or newer, the original Dexcom receiver cannot establish a connection to the transmitter; xDrip itself still works. After going back to version 210203, the receiver reconnects and shows the new value.",
+ "cause": "A change in xDrip code between 2021.02.03 and 2021.02.04 is the regression point; newer xDrip builds interfere with the original receiver because disabling xDrip's collection restores receiver operation. Low transmitter battery was initially suspected but ruled out when the problem continued with higher-voltage transmitters.",
+ "fix": "No permanent code fix is offered; the workaround is to stay on xDrip version 210203, the last version where the original Dexcom receiver still works. With newer versions, temporarily selecting Settings -> Hardware Data Source -> Disable Collection lets the receiver connect again, but stops xDrip readings.",
+ "settings_changed": [
+  "Hardware Data Source → Disable Collection",
+  "Hardware Data Source → G5/G6 Transmitter"
+ ],
+ "devices": [
+  "original Dexcom receiver",
+  "Samsung S10",
+  "transmitter"
+ ],
+ "android_versions": [
+  "Android 11"
+ ],
+ "driver_tags": [
+  "dexcom collector",
+  "g5/g6 transmitter"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "Something changed, in the xDrip code, from Feb. 3 to Feb. 4 that is causing this considering that the same transmitter works fine with the same receiver with one version and not with the other."
+}

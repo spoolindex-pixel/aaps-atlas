@@ -1,0 +1,41 @@
+{
+ "id": 1104804969,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1182,
+ "title": "Strange Omnipod DASH error code",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1182",
+ "state": "closed",
+ "labels": [
+  "omnipod dash"
+ ],
+ "created_at": "2022-01-15T18:13:58Z",
+ "closed_at": "2022-01-22T10:16:21Z",
+ "comment_count": 4,
+ "body": "While injecting a bolus with Omnipod DASH, I received a POD Fault: 49.\r\nOfficiali Insulet error codes do not include 049. What does it stands for?\r\nPOD was beeping until deactivated.\r\n\r\nAndroidAPS 3.0-beta11\r\nbuild: e39014962-2021.12.19-13:34\r\n\r\nLog Files:\r\n[AndroidAPS._2022-01-05_13-15-23_.0.zip](https://github.com/nightscout/AndroidAPS/files/7875544/AndroidAPS._2022-01-05_13-15-23_.0.zip)\r\n[AndroidAPS._2022-01-05_13-15-23_.1.zip](https://github.com/nightscout/AndroidAPS/files/7875545/AndroidAPS._2022-01-05_13-15-23_.1.zip)\r\n![Screenshot_20220105-131835_AndroidAPS](https://user-images.githubusercontent.com/38248445/149633045-c005be8b-a832-4c8a-b63d-ec853097ce06.jpg)\r\n\r\n",
+ "comments": [
+  {
+   "id": 1014795075,
+   "user": "avereha",
+   "created_at": "2022-01-17T18:18:14Z",
+   "body": "Please share all the steps that you tried and as many details as possible.\r\n\r\nFrom what I can see in the logs:\r\n - you used the wizard to request a 5.65 bolus. This started to get delivered.\r\n - the app crashed while the bolus was delivered. Or did you close it on purpose?\r\n - you requested another bolus of 5.6 while the previous bolus was being delivered. Was this on purpose. did you want to request 11U or did you think that the previous bolus failed?\r\n \r\nI could add a check for this case, but maybe it's better in this case to let the pod fail to prevent people from issuing multiple boluses.\r\n"
+  },
+  {
+   "id": 1014872404,
+   "user": "christinadamianou",
+   "created_at": "2022-01-17T20:39:32Z",
+   "body": "I requested 5.65 bolus. App seemed to stuck\r\nI killed the app and requested new bolus, because I didnt receive any notification that insulin was injected.\r\n\r\nIt sounds ok the way the app acts when POD fails.\r\nMy question is that Insulet officially does not give the 049 error code, so what does it means? What would be more helpful is to have the full error code (digits dash digits dash digits) somewhere available."
+  },
+  {
+   "id": 1015869499,
+   "user": "avereha",
+   "created_at": "2022-01-18T21:55:21Z",
+   "body": "This might help: https://loopkit.github.io/loopdocs/troubleshooting/omnipod-faults/"
+  },
+  {
+   "id": 1018913521,
+   "user": "avereha",
+   "created_at": "2022-01-21T22:34:32Z",
+   "body": "Fixed with https://github.com/nightscout/AndroidAPS/pull/1211"
+  }
+ ]
+}

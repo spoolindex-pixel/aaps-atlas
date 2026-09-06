@@ -1,0 +1,27 @@
+{
+ "id": 4227101923,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4698,
+ "title": "Max IOB limits not informing user",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4698",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2026-04-08T19:27:42Z",
+ "closed_at": "2026-04-28T14:52:38Z",
+ "comment_count": 2,
+ "body": "When adding in a max IOB the hardcoded limits specified [here](https://androidaps.readthedocs.io/en/latest/DailyLifeWithAaps/KeyAapsFeatures.html#open-aps-features-overview-of-hard-coded-limits) are not triggering a message when exceeded.\n\n**Reproduction steps**\n1. Be in loop mode (for me it SMB)\n2. Go to preferences --> OpenAPS SMB --> `Maximum total IOB OpenAPS can't go over [U]`\n3. Set this value to one higher than the [table](https://androidaps.readthedocs.io/en/latest/DailyLifeWithAaps/KeyAapsFeatures.html#open-aps-features-overview-of-hard-coded-limits)\n4. Value is silently turned down to the limit without warning user (As confirmed by going to the OPENAPS SMB page and looking at `max_iob`)\n\nSo for example if you set it to 38 while your patient type is `Insulin Resistant Adult`, it will be turned down to 30 without any notification. Importantly it still **visually shows up** as 38 in the settings, even though it's being turned down to 30.\n\n<img width=\"720\" height=\"1416\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/7239eb60-71e3-453c-8897-57618759b01f\" />\n\n<img width=\"720\" height=\"1416\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/344a80cc-92e9-413e-b3b3-ee73194f2bfd\" />\n\n**Extra info**\nPatient type was set to `Insulin Resistant Adult` if that helps\n\nBuild version: `fe9789d-2026.04.07`\n\nI also created a PR to link to those limits from the summary #4699 4699 to come shortly\n",
+ "comments": [
+  {
+   "id": 4209167298,
+   "user": "Descent098",
+   "created_at": "2026-04-08T19:50:00Z",
+   "body": "I unfortunately am not familiar enough with the codebase to fix the primary issue. \n\nBut, after a bit of playing around it seems like potentially some good places might be the max value here overriding everything:\n\n- https://github.com/nightscout/AndroidAPS/blob/master/core/keys/src/main/kotlin/app/aaps/core/keys/DoubleKey.kt#L30\n\nor something in here:\n- https://github.com/nightscout/AndroidAPS/blob/master/plugins/aps/src/main/kotlin/app/aaps/plugins/aps/openAPSSMB/OpenAPSSMBPlugin.kt#L426\n\nI'm just not familiar enough with either to know what/how to update this to do a warning, or at least visually show the corrected value"
+  },
+  {
+   "id": 4336420295,
+   "user": "MilosKozak",
+   "created_at": "2026-04-28T14:52:38Z",
+   "body": "will be updated in AAPS4"
+  }
+ ]
+}

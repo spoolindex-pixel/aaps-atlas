@@ -1,0 +1,41 @@
+{
+ "id": 1035544866,
+ "repo": "nightscout/AndroidAPS",
+ "number": 781,
+ "title": "Error while pairing dash",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/781",
+ "state": "closed",
+ "labels": [
+  "omnipod dash"
+ ],
+ "created_at": "2021-10-25T20:29:17Z",
+ "closed_at": "2021-11-16T18:09:58Z",
+ "comment_count": 4,
+ "body": "**Running:** Android 11 - OnePlus 6T\r\n**Build from commit:** 8efa66f2\r\n\r\n**Issue** Was pairing first dash pod, filled pod & got 2 beeps, on the step of initializing pod, but then it couldn't connect. Restarting the app/process then it connected successfully the second time.\r\n\r\n[AndroidAPS_LOG_1635191734185.log.zip](https://github.com/nightscout/AndroidAPS/files/7413339/AndroidAPS_LOG_1635191734185.log.zip)\r\n",
+ "comments": [
+  {
+   "id": 952116739,
+   "user": "avereha",
+   "created_at": "2021-10-26T16:38:01Z",
+   "body": "Hello @erobinson !\r\n\r\nCould you please add more details? I'm interested in any detail about:\r\n - all the operations/settings that you changed before this error(I see that you switched from Medtronic to Dash?)\r\n - the error message when it couldn't connect\r\n - times for all the operations/errors so I can correlate them in logs\r\n - anything else you could remember\r\n\r\nAfter reading the logs, this is what I found so far:\r\n - AAPS was restarted at: `15:34:41`, `15:36:46`, `15:55:15`\r\n - you switched from Metronic pump to Dash at `15:37`\r\n - then you enabled a pod with success(the first part, before inserting the cannula) at `15:53`\r\n - after that the logs end.\r\nI'm missing here the error that you mentioned before.\r\n\r\nAnd I don't see any AAPS restart between switching from Medtronic to Dash. Could it be that you received the error while the Medtronic driver was still enabled?\r\n\r\nCC @andyrozman : I noticed in the logs, that the Medtronic driver keeps on running something after it is stopped:\r\n```\r\n15:37:34.044 [main] D/PUMP: [PumpPluginAbstract.onStop():96]: Medtronic onStop()\r\n15:37:34.053 [main] D/CORE: [PluginBase.setPluginEnabled():88]: Stopping: Medtronic\r\n...\r\n15:37:36.371 [pool-18-thread-1] D/PUMPCOMM: [MedtronicCommunicationManager.isDeviceReachable():102]: isDeviceReachable. Waking pump...  (retry 2)\r\n15:37:36.374 [pool-18-thread-1] D/PUMPCOMM: [MedtronicUtil.buildCommandPayload():140]: buildCommandPayload [A7 58 49 23 8D 00]\r\n```\r\nThis should not cause any issue for Dash!"
+  },
+  {
+   "id": 954218937,
+   "user": "erobinson",
+   "created_at": "2021-10-28T21:08:14Z",
+   "body": "Before trying to pair the pod I was using a Medtronic pump with emalink. I exported my settings, uninstalled APS, installed a build from dev (exact commit above), added the engineering mode file, started APS, imported my settings (still on Medtronic pump) changed the pump over to dash. Started the new pod process, then encountered the error on the initialize pod screen. \r\n\r\nThe pod was taking a while to initialize (a minute or so maybe without any clicks). \r\n\r\nThen I closed APS and restarted the activation process I think then saw the \"pod not activated\" message. Thought that was an error (but doing a second pod it's obviously just an info message). Then it was able to go through the rest of the process smoothly.\r\n\r\nI bet that setting the pump to dash and starting from a clean state would have avoided the issue.\r\n\r\nDid a second pod today and went smoothly without any problems at all. Could probably close the issue unless it comes up for others."
+  },
+  {
+   "id": 956282648,
+   "user": "erobinson",
+   "created_at": "2021-11-01T14:28:48Z",
+   "body": "@avereha - Could not replicate when changing pods yesterday, will try again on next pod change."
+  },
+  {
+   "id": 970532978,
+   "user": "erobinson",
+   "created_at": "2021-11-16T18:10:11Z",
+   "body": "been unable to recreate"
+  }
+ ]
+}

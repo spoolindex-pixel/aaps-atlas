@@ -1,0 +1,65 @@
+{
+ "id": 2328501042,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3358,
+ "title": "BUG : Bolus interrupted on empty pod / COB lost",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3358",
+ "state": "closed",
+ "labels": [
+  "medtrum"
+ ],
+ "created_at": "2024-05-31T19:53:41Z",
+ "closed_at": "2024-11-13T12:49:56Z",
+ "comment_count": 8,
+ "body": "Tested with Medtrum Nano.\n\nOnly 3U are left. I use bolus calculator for 40gr carbs thus 5.2U.\n\nNano started bolusing without any alerts (not normal)\n\nBolus stopped at 3U with screaming alerts (normal)\n\nCarbs were NOT added !!! IOB said 3U but COB was at 0 (not normal).\n\nWhen new pod was activated, bolus didn't continue with the missing units (normal I suppose).",
+ "comments": [
+  {
+   "id": 2143343649,
+   "user": "Philoul",
+   "created_at": "2024-06-01T07:36:38Z",
+   "body": "If I remember well pump driver should return to bolus calculator a \"successful result\" on Bolus delivery to record Carbs correctly (even if bolus was only partially delivered).\n\nSo here on 5.2U request you should get a \"true\" result (but with only 3U recorded in database...\n\nWhat happen if during bolus delivery you cancel delivery to not inject all what was calculated?"
+  },
+  {
+   "id": 2143396994,
+   "user": "MilosKozak",
+   "created_at": "2024-06-01T10:27:07Z",
+   "body": "exactly. carbs are recorded only on bolus success to prevent overdosing on next bolus wzard attempt"
+  },
+  {
+   "id": 2143418653,
+   "user": "robertrub",
+   "created_at": "2024-06-01T11:44:23Z",
+   "body": "In this case, partial success ;)\n\nAs carbs and bolus are not physically connected, I think that the carbs should be added to the COB even if the bolus was not given (for any reason).\n\nI start eating and use calculator to enter 40g and is says 6U to bolus. Even if the pump is unreachable or has 0U left or ..., I'll eat the 40g. Thus the need to add carbs to COB even before starting to inject (thus, separating carbs and bolus actions)."
+  },
+  {
+   "id": 2143434509,
+   "user": "Philoul",
+   "created_at": "2024-06-01T12:38:53Z",
+   "body": "@robertrub if I compare with insight driver, when I send a bolus with not enough insulin. it's ok without alarm (I think it should work like that)\nWhen reservoir is empty then I get alarm from pump (and Carbs + partial bolus is recorded)\nThen after reservoir change if bolus is resumed, then bolus amount is updated, if not, then only delivered insulin is recorded.\nThe most important point is to get the alarm from pump to be aware of the error and let you check evrrything (for ex launch again calculator to calculate missing insulin after patch pump change)."
+  },
+  {
+   "id": 2143506169,
+   "user": "jbr7rr",
+   "created_at": "2024-06-01T16:30:04Z",
+   "body": "> exactly. carbs are recorded only on bolus success to prevent overdosing on next bolus wizard attempt\r\n\r\nI find this logic not really intuivite, the user already added the carbs? Also this is only when using the bolus wizard not when recording carbs separately ?\r\n\r\nWhat is the desired outcome when only part of the bolus was delivered? (carbs recorded or not?)\r\n\r\nI will have a look into how other drivers handle this as well\r\n"
+  },
+  {
+   "id": 2143512866,
+   "user": "robertrub",
+   "created_at": "2024-06-01T16:54:47Z",
+   "body": "User can either add the carbs first and use the calculator (without carbs of course) or use only the calculator and enter carbs there.\nIn both cases, the carbs should be added to the COB counter (insulin delivered or not).\n\nIn my exemple, I ended with 3U but no carbs. If I hadn't added carbs again, then AAPS would be \"lost\" with high IOB, no COB and BGs raising... "
+  },
+  {
+   "id": 2143719933,
+   "user": "emilisev",
+   "created_at": "2024-06-02T06:35:08Z",
+   "body": "I experienced similar issue when using the calculator and then the connection to the pump (medtrum also) was lost during injection : carbs were not recorded. Bolus was administered in full but AAPS did not get confirmation so it was not recorded. But I found it confusing that carbs were also not recorded in this case. "
+  },
+  {
+   "id": 2226919615,
+   "user": "jbr7rr",
+   "created_at": "2024-07-13T14:04:50Z",
+   "body": "@MilosKozak \r\n\r\nThis is the code that determines the behavior:\r\nhttps://github.com/nightscout/AndroidAPS/blob/08ffac78e198635a44391d0bc6b31a65eec9fec2/pump/medtrum/src/main/java/info/nightscout/pump/medtrum/MedtrumPlugin.kt#L395\r\n\r\nThis is the same for dana:\r\nhttps://github.com/nightscout/AndroidAPS/blob/08ffac78e198635a44391d0bc6b31a65eec9fec2/pump/danars/src/main/kotlin/app/aaps/pump/danars/DanaRSPlugin.kt#L320\r\n\r\nSo can we conclude that this is desired behavoir? As seen in this issue, users do get confused by this, but it also makes the user alert and force them to check delivered insulin."
+  }
+ ]
+}

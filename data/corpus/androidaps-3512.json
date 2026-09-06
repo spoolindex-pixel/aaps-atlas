@@ -1,0 +1,27 @@
+{
+ "id": 2631583101,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3512,
+ "title": "DynIsfTDDSens / ISF for Boluscalc is showing incorrectly on AAPSClient and presentation is confusing",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3512",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-11-04T00:15:47Z",
+ "closed_at": "2024-11-30T14:11:11Z",
+ "comment_count": 2,
+ "body": "In AAPS if DynISF TDD based autosens and Dynamic sensitivity is activated alot of information is showing under the autosens icon. It makes the home screen abit more stretched than necessary.\r\n\r\n![image](https://github.com/user-attachments/assets/0c5dc2c0-1c56-4d17-9b7b-94812ecfbe15)\r\n\r\nIn AAPS:\r\n![image](https://github.com/user-attachments/assets/65222bfc-e160-4dfb-9d3e-29978b8321aa)\r\n\r\nIn AAPSClient:\r\n![Skjermbilde 2024-11-04 010335](https://github.com/user-attachments/assets/38dcbf5f-fd65-4c9b-8cb7-efd14861576a)\r\n\r\n1) The number in \"( )\" is different in AAPSClient, aka same as profile ISF, while in AAPS it is a different value than profile ISF or DynISF. How is this value calculated? I can see it is used in Bolus calculator now so it is important this value is same in both AAPS and AAPSClient. I would expect it was the same value as DynISF conjures that is used in Bolus calculator if DynISF is enabled. Is there a need for a new calculated value for this?\r\n\r\n2) The DynISF TDD based \"autosens\" number is missing in AAPSClient, but see 3)\r\n\r\n3) Should we compress the information under the Sens Icon to one line? \r\n\r\nIf DynISF is enabled, I suggest showing the DynISF vs profile ISF and move other information to a popup-window like with TBR and IOB icon when clicking on the Sensitivity arrows. This way we can add more explanation regarding Autosens %-value, DynISF TDD based sens %-value and possibly the value for bolus calc if it has to be something else than DynISF. \r\n\r\nIf DynISF is disabled and Autosens enabled, it can be like before with no popup and show %-value of autosens.",
+ "comments": [
+  {
+   "id": 2453645472,
+   "user": "olorinmaia",
+   "created_at": "2024-11-04T00:27:32Z",
+   "body": "Bolus calc in AAPS and AAPSClient:\r\n| AAPS | AAPSClient |\r\n|--------|--------|\r\n| ![image](https://github.com/user-attachments/assets/d387b3d0-8e7c-42d7-940d-fc12857079b1) | ![image](https://github.com/user-attachments/assets/94ed9276-c3fb-4d63-a47e-173f1825626c) |"
+  },
+  {
+   "id": 2508974389,
+   "user": "MilosKozak",
+   "created_at": "2024-11-30T14:11:11Z",
+   "body": "implemented by https://github.com/nightscout/AndroidAPS/commit/c22e7922458acdd851b7ce9ad66f1b383be35358"
+  }
+ ]
+}

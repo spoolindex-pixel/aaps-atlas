@@ -1,0 +1,111 @@
+{
+ "id": 255689413,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 171,
+ "title": "Broken Watchface with patched/Nfc enabled Sony watch",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/171",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2017-09-06T17:51:13Z",
+ "closed_at": "2017-09-11T09:18:27Z",
+ "comment_count": 16,
+ "body": "Hi there, \r\ni'm new to the libre cgm world.\r\nI got myself a sony watch 3 and patched it to read my libre and use it with xdrip+.\r\nMy plan was to use it at night as a cgm to be getting woken up by my phone in case of wrong bg level.\r\nAt daytime i wanted to use the watch as normal smart watch with infos of my latest values and predictions.\r\n\r\nThe watch face of the last release worked very well with the unpatched watch. But since i patched the watch to enable nfc, i could not get the watchface to work again. Multiple repatches, resets and trying every possible setup did not help. \r\nThan i tried an old xdrip+ version from 2016 and it worked again.\r\nI figured out that the last working build where the watch face works, is the one from the 28th of June '17.\r\nOverall i'm quite happy now. But there are so many new functions and i'm not sure that the entries i make in the watch are getting synced back to my phone. Would be nice if this works, too.\r\n\r\nThanks for youre help. \r\n",
+ "comments": [
+  {
+   "id": 327733821,
+   "user": "jamorham",
+   "created_at": "2017-09-07T08:46:46Z",
+   "body": "Can you describe the symptoms of what you mean by \"could not get the watchface to work again\"\r\n\r\nMy fork of LibreAlarm has the option to force uninstall the xdrip watchface. Make sure that isn't enabled."
+  },
+  {
+   "id": 328272190,
+   "user": "Klaus3d3",
+   "created_at": "2017-09-09T11:46:31Z",
+   "body": "The watchface doesn't receive any data and stays empty. No values, no battery status sometimes even no time. This option in librealarm ist not selected, of cause. "
+  },
+  {
+   "id": 328273488,
+   "user": "Klaus3d3",
+   "created_at": "2017-09-09T12:13:01Z",
+   "body": "I've tried several times to reset the watch and deinstalled xdrip-prefs via root-essentials, but no help. It works only with the version from 28th june and older. "
+  },
+  {
+   "id": 328273898,
+   "user": "Klaus3d3",
+   "created_at": "2017-09-09T12:21:26Z",
+   "body": "With the newer versions xdrip-prefs crashes almost every time i change a setting. "
+  },
+  {
+   "id": 328279788,
+   "user": "jamorham",
+   "created_at": "2017-09-09T14:13:28Z",
+   "body": "Are you able to connect a usb cable to the watch and use `adb -d logcat` to attempt to view any errors appearing inside the watch? This would help us diagnose the problem a great deal. I am assuming that if you have enabled NFC on the smartwatch you will be familiar with using adb to connect to it. Please let me know."
+  },
+  {
+   "id": 328287652,
+   "user": "Klaus3d3",
+   "created_at": "2017-09-09T16:25:02Z",
+   "body": "Yes, should be possible if my wife lets me get to the computer. :-D"
+  },
+  {
+   "id": 328288924,
+   "user": "Klaus3d3",
+   "created_at": "2017-09-09T16:44:13Z",
+   "body": "**Installed is Nightly Build from 06th September. Xdrip watch face selected.\r\nThis is was came up after allowing debugging and sending Data to watch again.**\r\n\r\n\r\nI/BrcmNfcNfa(  789): NFA got event 0x010D\r\nI/BrcmNfcNfa(  789): nfa_dm_evt_hdlr event: NFA_DM_API_SET_P2P_LISTEN_TECH_EVT (0x0d)\r\nI/BrcmNfcNfa(  789): nfa_dm_set_p2p_listen_tech ()  tech_mask = 0\r\nI/BrcmNfcNfa(  789): nfa_p2p_update_listen_tech ()  tech_mask = 0x0\r\nI/BrcmNfcNfa(  789): nfa_dm_delete_rf_discover () handle=0x2\r\nI/BrcmNfcNfa(  789): nfa_p2p_enable_listening () sys_id = 3, update_wks = 0\r\nD/BrcmNfcJni(  789): nfaConnectionCallback: event= 33\r\nD/BrcmNfcJni(  789): nfaConnectionCallback: NFA_SET_P2P_LISTEN_TECH_EVT\r\nD/BrcmNfcJni(  789): PeerToPeer::enableP2pListening: exit; mIsP2pListening: 0\r\nD/BrcmNfcJni(  789): PowerSwitch::setModeOff(deactivated=0x1) : mCurrActivity=0x0\r\nD/BrcmNfcJni(  789): PowerSwitch::setLevel: level=PS-LOW-POWER (2)\r\nD/BrcmNfcJni(  789): PowerSwitch::setLevel: actual power level=PS-FULL\r\nD/BrcmNfcJni(  789): nfcManager_disableDiscovery: exit\r\nD/BaseWatchFace( 1968): onDraw\r\nD/jamorham listener( 1968): onStartCommand entered\r\nD/jamorham listener( 1968): sendData DataRequester != null lastRequest:1970-01-01 01:00:00\r\nD/jamorham listener( 1968): sendData SDK < M call execute lastRequest:1970-01-01 01:00:00\r\nD/wearSENSOR( 1968): InitDb DB exists\r\nD/jamorham listener( 1968): DataRequester DataRequester: /nightscout_watch_data_resend lastRequest:1970-01-01 01:00:00\r\nD/jamorham listener( 1968): forceGoogleApiConnect: forcing google api reconnection\r\nI/NfcNciHal(  789): nci_brcm_lp_timeout_cback ()\r\nI/NfcNciHal(  789): nfc_hal_dm_power_mode_execute () event = 2\r\nI/NfcNciHal(  789): nfc_hal_dm_set_nfc_wake () DEASSERT\r\nD/USERIAL_LINUX(  789): UPIO_Set: ioctl, state=1\r\nD/audio_in(  139): ENTERING in_standby() for device -2147483644\r\nV/alsa_hal_controller(  139): ENTERING set_app_profile()\r\nV/alsa_hal_controller(  139): ENTERING enable_app_profile 7\r\nE/alsa_control(  139): Control "
+  },
+  {
+   "id": 328290120,
+   "user": "AdrianLxM",
+   "created_at": "2017-09-09T17:01:30Z",
+   "body": "Like discussed on FB this looks like the same crash as this one: https://github.com/NightscoutFoundation/xDrip/issues/167\r\n"
+  },
+  {
+   "id": 328292189,
+   "user": "Klaus3d3",
+   "created_at": "2017-09-09T17:34:07Z",
+   "body": "But in #167 the watchface is still showing data, right? "
+  },
+  {
+   "id": 328292287,
+   "user": "Klaus3d3",
+   "created_at": "2017-09-09T17:35:38Z",
+   "body": "I guess the crashing xdrip-prefs comes on top to my main issue."
+  },
+  {
+   "id": 328302929,
+   "user": "jamorham",
+   "created_at": "2017-09-09T20:55:24Z",
+   "body": "The prefs crash looks the same as referenced in #167 and should be resolved in the Sept 8th nightly. I suggest installing the latest nightly to get that fix.\r\n\r\nI think your other problem is likely this:\r\n\r\n`W/GooglePlayServicesUtil( 1968): Google Play services out of date. Requires 9452000 but found 7899534`\r\n\r\nYou need to update the google play services on the watch.  You can try: `Settings` -> `About` -> `Versions` -> `Google Play` and tap the version to see if that will trigger an update. I think it needs version 9.x to run. "
+  },
+  {
+   "id": 328307450,
+   "user": "Klaus3d3",
+   "created_at": "2017-09-09T22:35:06Z",
+   "body": "Nothing hapens when i tap this. "
+  },
+  {
+   "id": 328327196,
+   "user": "Klaus3d3",
+   "created_at": "2017-09-10T08:16:28Z",
+   "body": "Any advice how i can install a newer version? \r\ni get following msg:\r\n\r\nC:\\adb>adb install \"com.google.android.gms_9.8.41_(534-130237018)-9841534_minAPI20(armeabi-v7a)(240dpi)_apkmirror.com.apk\"\r\n4547 KB/s (24085414 bytes in 5.171s)\r\n        pkg: /data/local/tmp/com.google.android.gms_9.8.41_(534-130237018)-9841534_minAPI20(armeabi-v7a)(240dpi)_apkmirror.com.apk\r\nFailure [INSTALL_FAILED_ALREADY_EXISTS]\r\n\r\n\r\nThanks"
+  },
+  {
+   "id": 328328024,
+   "user": "Klaus3d3",
+   "created_at": "2017-09-10T08:33:15Z",
+   "body": "Everytime the watch tries to update itself and restarts after my confirmation, it restarts in the recovery mode, where normaly the update happens. But with the patched watch i'm landing in the twrp bootloader from where i don't know how to start the update.\r\nWhen i reboot to system no update gets installed. "
+  },
+  {
+   "id": 328330525,
+   "user": "jamorham",
+   "created_at": "2017-09-10T09:23:37Z",
+   "body": "do like `adb install -r` to upgrade (note the -r)"
+  },
+  {
+   "id": 328333541,
+   "user": "Klaus3d3",
+   "created_at": "2017-09-10T10:25:56Z",
+   "body": "Wuhu,  seems to work now.\r\nHad to install the 9.8.41 version of play services.\r\nOlder versions got me crashes and atempts to update, newer version i got error messages \"old sdk\" while installation.\r\nWatchface works now with the newest nightly build of xdrip+, also the syncing between watch and phone.\r\nAll i have to check is, if librealarm is still working. But looks ok so far. I can start and stop the service.\r\n\r\nI have a little infant to care about, so i only have always couple of minutes to check things. ;-)\r\n\r\nThank you so much for your support. "
+  }
+ ]
+}

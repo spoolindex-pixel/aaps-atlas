@@ -1,0 +1,27 @@
+{
+ "id": 1292774573,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1882,
+ "title": "EROS: Pod is not discarded properly",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1882",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-07-04T07:53:48Z",
+ "closed_at": "2022-07-08T07:22:37Z",
+ "comment_count": 2,
+ "body": "**AAPS version 3.0.0.1 release and higher**\r\n**Driver: Omnipod EROS**\r\n\r\n**Problem description:**\r\nThe Omnipod EROS driver has a bug that can lead to a situation where users get stuck with a pod registration that can not be continued or discarded. Several users reported running into this problem as a result of Pod activation failure.\r\n\r\nProblem was introduced by [Eros: try to resolve fake TBR alert](https://github.com/nightscout/AndroidAPS/commit/4cea57acf6d74baffef83e1f04376b10bb5c1978). As a result of this \"fix\" pod state  can no longer be discarded through code. Pod may also not be assigned a new random Pod address on activation.\r\n\r\nAs a direct result user is unable to Discard Pod on failures during activation where the Pod can not be succesfully activated.\r\nSee also: https://github.com/nightscout/AndroidAPS/issues/1853\r\n\r\n**Solution:**\r\nRevise code logic for discarding a Pod.\r\n",
+ "comments": [
+  {
+   "id": 1173488990,
+   "user": "vanelsberg",
+   "created_at": "2022-07-04T08:05:27Z",
+   "body": "Solving related:\r\nhttps://github.com/nightscout/AndroidAPS/issues/1853\r\n\r\nPossibly related:\r\nhttps://github.com/nightscout/AndroidAPS/issues/1627\r\nhttps://github.com/nightscout/AndroidAPS/issues/1129"
+  },
+  {
+   "id": 1173493468,
+   "user": "vanelsberg",
+   "created_at": "2022-07-04T08:09:21Z",
+   "body": "@MilosKozak Working on a PR, currently under test"
+  }
+ ]
+}

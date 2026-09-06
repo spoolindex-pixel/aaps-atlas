@@ -1,0 +1,255 @@
+{
+ "id": 3491293040,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4201,
+ "title": "Safety issue: can't stop an ongoing bolus after closing AAPS",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4201",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-10-07T12:30:21Z",
+ "closed_at": "2025-11-23T22:30:16Z",
+ "comment_count": 50,
+ "body": "**AndroidAPS 3.3.3-dev**: Lates dev builds\n**Flavor**: fullrelease\n\n**Problem:**\nWhen executing a manual bolus the resulting pop-up screen will show bolus progress and a \"STOP\" button to cancel the onging bolus. _Closing the app (using Android UI \"Close All\" or swiping) does not stop the bolus by design. However, when I reopen the AAPS app it only shows the (still) ongoing bolus at the bottom of the overview screen without a STOP button to cancel._\n\nConsidering safety, one could argue that this is not acceptable\n\n**Additional info:**\nTo STOP the bolus then user has no other option then to forcefully close AAPS through settings, restart the phone, disconnect the pump or \n(when running the AAPS Wear app) using the option to cancel the bolus from the watch.\n\n_Screenprints:_\n\n**Ongoing bolus with STOP button enables canceling the ongoing bolus.**\n\n![Image](https://github.com/user-attachments/assets/f5f6fa0d-1814-4d58-adba-179ba4b04492)\n\n**After closing and reopening AAPS: ther is no way to STOP the ongoing bolus**\n\n![Image](https://github.com/user-attachments/assets/15cc5246-7b30-4d1b-a791-8930e97f3919)\n",
+ "comments": [
+  {
+   "id": 3376756426,
+   "user": "andyrozman",
+   "created_at": "2025-10-07T12:51:32Z",
+   "body": "I would say that is by design... Closing AAPS shouldn't cancel the bolus, unless user presses the button... \n\nNow... Good question... Why did you do the \"Close All\" while bolus was executing... You need to wait until all commands are executed and then you can close your AAPS... \n\nThat small thing there is just showing that command is executed. You can cancel command only while you are in original AAPS instance and when command was issued... AND this is especially true if you are using pump which has no other way of cancelling command (pod pumps without screen and buttons)."
+  },
+  {
+   "id": 3378607023,
+   "user": "vanelsberg",
+   "created_at": "2025-10-07T20:30:56Z",
+   "body": "Yes. By design and this is correct.\n> Why did you do the \"Close All\" while bolus was executing...\n\nI did to show that _when you do_, there is no way to stop the ongoing bolus.\n- Think about a user entering a large bolus, then realizing this was wrong and panicking - swipes/closes AAPS to stop it...\n\nWhen close/open AAPS I still can STOP the bolus from the watch. Can't see any reason why this would not be possible from AAPS?\n"
+  },
+  {
+   "id": 3378655517,
+   "user": "andyrozman",
+   "created_at": "2025-10-07T20:45:19Z",
+   "body": "- Think about a user entering a large bolus, then realizing this was wrong and panicking - swipes/closes AAPS to stop it...\n\nYes simple solution, press that little button with \"Stop\" text on it. I don't see anything wrong with how it works... But that is for Milos to decide..."
+  },
+  {
+   "id": 3382324616,
+   "user": "robertrub",
+   "created_at": "2025-10-08T16:23:44Z",
+   "body": "@vanelsberg I think, if you had used the \"back\" button of Android, you'd see the progression window with the stop button.\n\nEDIT : Discard my message. Just tested, _back_ doesn't bring back the progression bar."
+  },
+  {
+   "id": 3383114416,
+   "user": "vanelsberg",
+   "created_at": "2025-10-08T20:27:57Z",
+   "body": "**Imho**:\nAny situation where _user loses control_ over what the pump is doing is \"not be design\" and \"potentially dangerous\" 🤔"
+  },
+  {
+   "id": 3419859373,
+   "user": "vanelsberg",
+   "created_at": "2025-10-19T18:21:20Z",
+   "body": "\n@MilosKozak Merged PR4229 with current dev commits.\n\n@Angus-repo No issues (used your AAPS pr-CI btw 😄)\nNICE! Works as expected ❤️ "
+  },
+  {
+   "id": 3420468984,
+   "user": "robertrub",
+   "created_at": "2025-10-20T04:07:46Z",
+   "body": "Building dev now. Will test and report."
+  },
+  {
+   "id": 3421183058,
+   "user": "robertrub",
+   "created_at": "2025-10-20T09:16:53Z",
+   "body": "@Angus-repo Works as expected but there is a small bug.\n\nI start a 0.5U bolus, Android 3 vertical bar, Close all. Open AAPS again.\n\nI see the progression bar (that part is working ok) but the total amount on top of the page is wrong. It probably shows the amount already injected when I _closed all_ \n\nThe xU injected / total yU to be injected line is correct.\n\n![Screenshot_20251020_111049_AAPS.jpg](https://github.com/user-attachments/assets/dce69d87-6faa-4e80-a9b4-d187539f2b9f)\n\n"
+  },
+  {
+   "id": 3421351189,
+   "user": "Angus-repo",
+   "created_at": "2025-10-20T10:00:08Z",
+   "body": "> [@Angus-repo](https://github.com/Angus-repo) Works as expected but there is a small bug.\n> \n> I start a 0.5U bolus, Android 3 vertical bar, Close all. Open AAPS again.\n> \n> I see the progression bar (that part is working ok) but the total amount on top of the page is wrong. It probably shows the amount already injected when I _closed all_\n> \n> The xU injected / total yU to be injected line is correct.\n> \n> ![Screenshot_20251020_111049_AAPS.jpg](https://github.com/user-attachments/assets/dce69d87-6faa-4e80-a9b4-d187539f2b9f)\n\n@robertrub Which type of pump are you using?"
+  },
+  {
+   "id": 3421481778,
+   "user": "robertrub",
+   "created_at": "2025-10-20T10:27:54Z",
+   "body": "@Angus-repo The bug happens even if I quit AAPS and come back to it (without closing it).\n\nScreenshot during lunch bolus. I went to another app then back to AAPS.\n\nIt used to show the total amount on top and the _progression /total amount_ over the progression bar.\n\nI'm using the Medtrum Nano pump.\n\n![Screenshot_20251020_120253_AAPS.jpg](https://github.com/user-attachments/assets/6f8fffc1-6bf0-4404-a2da-c34251ec3122)\n\n"
+  },
+  {
+   "id": 3423558370,
+   "user": "MilosKozak",
+   "created_at": "2025-10-20T20:10:10Z",
+   "body": "I'll try to fix it"
+  },
+  {
+   "id": 3423581342,
+   "user": "robertrub",
+   "created_at": "2025-10-20T20:16:58Z",
+   "body": "@MilosKozak  If it helps : bolus running, if I turn off the screen, wait a bit and turn it ON again, I get this screen for around 1 second (a lot of missing information). Then, it fills up.\n\n![Screenshot_20251020_221547_Gallery.jpg](https://github.com/user-attachments/assets/16555add-c8ba-4be0-98ad-dab5209cc2c5)\n\n"
+  },
+  {
+   "id": 3424248392,
+   "user": "Angus-repo",
+   "created_at": "2025-10-21T00:40:15Z",
+   "body": "Got it, I’ll also try to resolve it."
+  },
+  {
+   "id": 3425187072,
+   "user": "MilosKozak",
+   "created_at": "2025-10-21T07:34:36Z",
+   "body": "@Angus-repo I will do larger refactoring and cleanup. This code is 10 years old"
+  },
+  {
+   "id": 3425245416,
+   "user": "Angus-repo",
+   "created_at": "2025-10-21T07:49:13Z",
+   "body": "Okay, I won’t modify it for now."
+  },
+  {
+   "id": 3460178794,
+   "user": "robertrub",
+   "created_at": "2025-10-29T07:29:17Z",
+   "body": "Nope, sorry, nothing changed. Built as you said\n\n![Screenshot_20251029_073709_AAPS.jpg](https://github.com/user-attachments/assets/c55c1520-cdbe-4124-84d0-d635440d3e20)\n\nBut the result is the same\n\nhttps://drive.google.com/file/d/1IwYfWcuREU1RSBVuNuYtFgR6PBIfsyw7/view?usp=drivesdk"
+  },
+  {
+   "id": 3461690665,
+   "user": "Angus-repo",
+   "created_at": "2025-10-29T13:59:17Z",
+   "body": "@robertrub \n\nI’ve updated it — please test PR #4265 again and upload the log after testing. Thank you!"
+  },
+  {
+   "id": 3462953319,
+   "user": "robertrub",
+   "created_at": "2025-10-29T18:10:17Z",
+   "body": "Hi @Angus-repo \nFirst 2 manual bolus worked ok. Logs attached. Will test more\n\n![AndroidAPS_LOG_1761761282391.log.zip](https://github.com/user-attachments/files/23216683/AndroidAPS_LOG_1761761282391.log.zip)\n\n\n"
+  },
+  {
+   "id": 3463204451,
+   "user": "robertrub",
+   "created_at": "2025-10-29T18:42:32Z",
+   "body": "Minor bug persists. I ask for 0.3U manual bolus. It shows something (the amount to be injected ?) for less than 1 sec, than shows the correct amount. Better to not show it or show it for a longer time.\n\nhttps://drive.google.com/file/d/168Lv57_Ma2haVrC6kiVNCE441rbOjtZA/view?usp=drivesdk"
+  },
+  {
+   "id": 3463961937,
+   "user": "robertrub",
+   "created_at": "2025-10-29T20:53:02Z",
+   "body": "@Angus-repo Seems to be working for Nano with your last changes 👍🏻 Just the minor _only visible for 1 sec_ text \"problem\" unsolved."
+  },
+  {
+   "id": 3465886943,
+   "user": "Angus-repo",
+   "created_at": "2025-10-30T02:30:14Z",
+   "body": "> @Angus-repo Seems to be working for Nano with your last changes 👍🏻 Just the minor _only visible for 1 sec_ text \"problem\" unsolved.\n\n@robertrub \nDo you mean the 0.15U shown at the 9-second mark in the video?\n\n![Screenshot_20251030_081619~2.jpg](https://github.com/user-attachments/assets/0382b22c-4c18-47c3-b965-f17b6db996c8)\n\n\n"
+  },
+  {
+   "id": 3465933491,
+   "user": "robertrub",
+   "created_at": "2025-10-30T02:59:59Z",
+   "body": "> > @Angus-repo Seems to be working for Nano with your last changes 👍🏻 Just the minor _only visible for 1 sec_ text \"problem\" unsolved.\n> \n> @robertrub \n> Do you mean the 0.15U shown at the 9-second mark in the video?\n> \n> ![Screenshot_20251030_081619~2.jpg](https://github.com/user-attachments/assets/0382b22c-4c18-47c3-b965-f17b6db996c8)\n> \n\nYes, exactly that. It shows the total amount to be injected for <1 sec. The information is not useful as it's noted above. As it is, it's too fast and user might think he missed some information as it goes away too fast.\n\nExcept that minor point, I couldn't fault it. It's a _go_ for merging (for Nano) 👍🏻🤝🏻\n\n\n"
+  },
+  {
+   "id": 3467542532,
+   "user": "robertrub",
+   "created_at": "2025-10-30T11:31:52Z",
+   "body": "@Angus-repo Don't merge yet. Something is not totally ok. I need more testing. I sent 0.5U manual and the bar started at 0.35U waited some time and then went normally from 0.35U till 0.5U\n\nThe last SMB was 0.35U... I suppose one variable is not reset when starting the procedure (or when finishing it).\n\n![Screenshot_20251030_122913_AAPS.jpg](https://github.com/user-attachments/assets/72e5e168-49b7-4942-ae31-83291dbf63d4)\n\nI get an error uploading the logs. Will try later.\n"
+  },
+  {
+   "id": 3467546427,
+   "user": "robertrub",
+   "created_at": "2025-10-30T11:32:45Z",
+   "body": "@Angus-repo \n\nThe logs\n\n![AndroidAPS_LOG_1761823704636.log (1).zip](https://github.com/user-attachments/files/23232362/AndroidAPS_LOG_1761823704636.log.1.zip)\n\n"
+  },
+  {
+   "id": 3468419326,
+   "user": "robertrub",
+   "created_at": "2025-10-30T14:50:50Z",
+   "body": "@MilosKozak and @Angus-repo \nI'm with the latest dev and the PR 4265. Don't know what triggers this. Didn't have this problem before starting to test PR4265\n\n![Screenshot_20251030_134525_AAPS.jpg](https://github.com/user-attachments/assets/250774ae-7e55-4273-a021-e5345cba692e)\n\nThis happened 2 times already. The progression bar stops in the middle and doesn't move any more. I go away and come back to AAPS but the bar is still at the same place/amount injected.\n\n![Screenshot_20251030_154310_AAPS.jpg](https://github.com/user-attachments/assets/a98c8243-76c1-4e6a-94a4-ceea2273e673)\n\nI closed all running applications then opened AAPS once more. I hit the SMB line at the bottom and got this.\n\n![Screenshot_20251030_154346_AAPS.jpg](https://github.com/user-attachments/assets/abd73770-68ea-472a-a02b-5942a8b1373f)\n\nWill test without PR4265...\n\n"
+  },
+  {
+   "id": 3468759626,
+   "user": "Angus-repo",
+   "created_at": "2025-10-30T16:01:01Z",
+   "body": "@robertrub \n\nI’ve adjusted the conditions based on the logs I observed. Please test PR 4265 again and upload the logs (a video would be even better)."
+  },
+  {
+   "id": 3468810536,
+   "user": "robertrub",
+   "created_at": "2025-10-30T16:11:20Z",
+   "body": "> @robertrub \n> \n> I’ve adjusted the conditions based on the logs I observed. Please test PR 4265 again and upload the logs (a video would be even better).\n\nOk, will rebuild. Funny stuff : rebuild dev alone fails but rebuild using test PR works...\n\nN.B. You're lucky that I got my flu and COVID injections and need more insulin then usual. I can add manual bolus almost at will.\n"
+  },
+  {
+   "id": 3469030527,
+   "user": "robertrub",
+   "created_at": "2025-10-30T16:55:09Z",
+   "body": "> @robertrub \n> \n> I’ve adjusted the conditions based on the logs I observed. Please test PR 4265 again and upload the logs (a video would be even better).\n\nNothing seems to have changed.\n\nAs you can see, the bar starts at the last SMB (or manual bolus ??) level (instead of starting at 0), waits and then starts progressing till the end.\n\nNot very important but NANO injects by 0.05U steps. Before you had changed the code, the bar and text were advancing at 0.05U. Now, on the progression window, it updates by 0.1U steps. Not a major problem.\n\nhttps://drive.google.com/file/d/1uQv93C7F83kxPMpn3ZU51TMfCfhpQy_O/view?usp=drivesdk"
+  },
+  {
+   "id": 3469582459,
+   "user": "robertrub",
+   "created_at": "2025-10-30T18:50:48Z",
+   "body": "@Angus-repo Your code is interfering with the nano connection. Since I started testing it, I had 3 or for time \"pod unreachable alert\" at the end of a bolus. Almost never happened before tour PR.\n\nLook around 19:28 in the logs.\n\n![AndroidAPS_LOG_1761848897200.log.zip](https://github.com/user-attachments/files/23243283/AndroidAPS_LOG_1761848897200.log.zip)\n\n"
+  },
+  {
+   "id": 3470467393,
+   "user": "vanelsberg",
+   "created_at": "2025-10-30T22:20:53Z",
+   "body": "👍 Changing Pod in 2 days. Will switch to Nano then and try to confirm/test any of this....\n\n"
+  },
+  {
+   "id": 3470929083,
+   "user": "robertrub",
+   "created_at": "2025-10-31T01:21:14Z",
+   "body": "@Angus-repo Came back to dev-d (without your PR) and I still get the _pump unreachable_ alerts. So, nothing wrong with your PR on the connection subject. Might be a pod problem🤞🏻"
+  },
+  {
+   "id": 3471026390,
+   "user": "Angus-repo",
+   "created_at": "2025-10-31T02:13:47Z",
+   "body": "@robertrub \n\nOkay, understood.\nThis change mainly affects the progress display, and there were no modifications related to connectivity.\n\nCurrently, Nano is not available for sale in my region, so I’m unable to participate in testing for now.\n\nI’ll look around to see if I can find a second-hand Nano for testing later."
+  },
+  {
+   "id": 3498915468,
+   "user": "robertrub",
+   "created_at": "2025-11-06T18:51:42Z",
+   "body": "After the latest dev update (to fix the Nano unreachable alert), if I bolus manually, there is no more \"Stop\" bolus button... 🥶\n\n![Screenshot_20251106_183451_AAPS.jpg](https://github.com/user-attachments/assets/4b532e70-3707-42d2-a0a7-8e48a37adf47)\n\nCheck the screenshot video. At start, the button is there, then shows the full progression bar of the latest bolus (the test I did before filming this one), then the actual progression bar starts, without the stop button and then, the whole windows disappears.\n\nEdit : wrong link. Will be back...\n\nThe correct link is below.\n\nhttps://drive.google.com/file/d/1L5QSB2peoQDpB-DLhBoXSLyOkGH8SjMa/view?usp=drivesdk"
+  },
+  {
+   "id": 3538717954,
+   "user": "robertrub",
+   "created_at": "2025-11-16T12:48:32Z",
+   "body": "Hi @Angus-repo &  @MilosKozak \n\nThe progression bar stays always visible now but only if you use the wizard to bolus.\n\nThere is still the issue with manual bolus (using Medtrum patch). I had sent links to videos and explained what happened.\n\nDo I open another issue for the manual bolus issue or do we let it stay here ?"
+  },
+  {
+   "id": 3539460936,
+   "user": "vanelsberg",
+   "created_at": "2025-11-16T23:10:51Z",
+   "body": ">  issue with manual bolus\nCan confirm for current dev...\n\nDid not notice anything on \"no stop button\". Will test more...\nI did see with manual bolus what looks like progress bar initially showing the most recent bolus briefly but then updating to actual ongoing bolus 🤔\n\n"
+  },
+  {
+   "id": 3540344183,
+   "user": "robertrub",
+   "created_at": "2025-11-17T07:33:07Z",
+   "body": "The problem is visible with a 2nd manual bolus (or manual bolus after the use of the wizard)\n\nEDIT: Seems like the windows goes away **only** with small bolus (around 0.2U). This time, I tried with big manual bolus and it doesn't go away. The persisting bug is the old bolus shown at first is still there.\n\nhttps://drive.google.com/file/d/16DSXmewd-8Cln1pPPdMHYEMcqf7L50K1/view?usp=drivesdk"
+  },
+  {
+   "id": 3541271338,
+   "user": "Angus-repo",
+   "created_at": "2025-11-17T11:20:17Z",
+   "body": "> Hi @Angus-repo &  @MilosKozak \n> \n> The progression bar stays always visible now but only if you use the wizard to bolus.\n> \n> There is still the issue with manual bolus (using Medtrum patch). I had sent links to videos and explained what happened.\n> \n> Do I open another issue for the manual bolus issue or do we let it stay here ?\n\n\nIf this issue only occurs with Medtrum, creating a separate dedicated issue would be more appropriate.\n\n\n"
+  },
+  {
+   "id": 3541450875,
+   "user": "robertrub",
+   "created_at": "2025-11-17T12:01:59Z",
+   "body": "The problem is present with Medtrum. Can't say if it touches other pumps.\n\nThis bug arrived after your mods for keeping the progression window open all the time and \"correction\" for the message shown for Medtrum."
+  },
+  {
+   "id": 3542965105,
+   "user": "robertrub",
+   "created_at": "2025-11-17T17:03:28Z",
+   "body": "Edit : Just sent a 0.5U bolus and the progression bar window disappered just after 0.1U or 0.2U were injected. Don't know why when I did multiple test while recording and it didn't disappear..."
+  },
+  {
+   "id": 3566860549,
+   "user": "robertrub",
+   "created_at": "2025-11-22T16:27:46Z",
+   "body": "Opened a new issue for medtrum\n\nhttps://github.com/nightscout/AndroidAPS/issues/4360\n"
+  }
+ ]
+}

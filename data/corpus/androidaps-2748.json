@@ -1,0 +1,57 @@
+{
+ "id": 1885208433,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2748,
+ "title": "[DEV] AAPSclient occasionally misses downloads",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2748",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-09-07T06:36:08Z",
+ "closed_at": "2023-09-13T11:16:17Z",
+ "comment_count": 7,
+ "body": "The data is there in NS, but not everything gets downloaded. Sometimes SGVs (entries) are missing. I'm not sure, if it's an AAPS or NS issue.\r\n\r\nThe particular case in the screenshots/log (TBR missing on the left side) has happened this morning after turning on the AAPSclient device, but in rare cases it can happen during the day, too when the device is on. Missing data won't get backfilled, even if I force close AAPSclient, delete cache and restart NSClient.\r\n\r\nAAPS 3.2.0-dev-l 5c34184723-2023.08.30 with NSClientV3+websockets\r\nNS dev v15: [d602de1](https://github.com/nightscout/cgm-remote-monitor/commit/d602de1c474c212ab8f27d17d18ce12d5679c990)\r\nLOG: [Log Export.txt](https://github.com/nightscout/AndroidAPS/files/12545451/Log.Export.txt)\r\n\r\n![Screenshot_20230907-061501_Chrome](https://github.com/nightscout/AndroidAPS/assets/64865503/c94061f4-ef34-430a-8a25-745e27304c7a)\r\n\r\n![Screenshot_20230907-061108_AAPSClient~2](https://github.com/nightscout/AndroidAPS/assets/64865503/2b6c4f57-3b2c-48fb-8eb0-ee7e78840bd7)\r\n",
+ "comments": [
+  {
+   "id": 1709940416,
+   "user": "MilosKozak",
+   "created_at": "2023-09-07T10:54:29Z",
+   "body": "what is the timestamp of missing bg?"
+  },
+  {
+   "id": 1710061119,
+   "user": "szantos",
+   "created_at": "2023-09-07T12:26:41Z",
+   "body": "Here treatments (TBR) are missing between 00:00-05:30.\r\n(But I've experienced some other cases, where some BG was missing.)"
+  },
+  {
+   "id": 1712866097,
+   "user": "MilosKozak",
+   "created_at": "2023-09-10T16:39:17Z",
+   "body": "do they backfill when you reset sync on aapsclient? provide logs from backfill if not"
+  },
+  {
+   "id": 1712870423,
+   "user": "MilosKozak",
+   "created_at": "2023-09-10T16:50:34Z",
+   "body": "and reset logging to default before"
+  },
+  {
+   "id": 1713240436,
+   "user": "szantos",
+   "created_at": "2023-09-11T06:22:29Z",
+   "body": "> do they backfill when you reset sync on aapsclient? provide logs from backfill if not\r\n\r\n@MilosKozak \r\nHow do I perform \"reset sync\"?"
+  },
+  {
+   "id": 1713246889,
+   "user": "szantos",
+   "created_at": "2023-09-11T06:28:45Z",
+   "body": "This morning it happened again:\r\n- on the left BG is missing\r\n- that 25g was a bolus wizard entry: CH and bolus wizard details got synced, but no insulin\r\n\r\n![Screenshot_20230911-081932_AAPSClient](https://github.com/nightscout/AndroidAPS/assets/64865503/e05158a1-36c5-49cd-aeb6-f3eb99647a69)\r\n\r\n[Log Export 2023-09-11_1.txt](https://github.com/nightscout/AndroidAPS/files/12572819/Log.Export.2023-09-11_1.txt)\r\n[Log Export 2023-09-11_2.txt](https://github.com/nightscout/AndroidAPS/files/12572817/Log.Export.2023-09-11_2.txt)\r\n\r\nSide note: I have a 2nd device running AAPSclient, too. This time that device got everything synced, but there are cases that this is the other way around."
+  },
+  {
+   "id": 1717430703,
+   "user": "MilosKozak",
+   "created_at": "2023-09-13T11:16:17Z",
+   "body": "resolved in https://github.com/nightscout/AndroidAPS/commit/d379b769d3739b75bb02d07d300f41871cb18c6d"
+  }
+ ]
+}

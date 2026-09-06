@@ -1,0 +1,41 @@
+{
+ "id": 1098957708,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1152,
+ "title": "[3.0beta11] Dash temporary basal rates precision: calculating plus of every 0,01 instead of 0,05",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1152",
+ "state": "closed",
+ "labels": [
+  "omnipod dash"
+ ],
+ "created_at": "2022-01-11T10:21:06Z",
+ "closed_at": "2022-01-22T10:15:57Z",
+ "comment_count": 4,
+ "body": "Dash pump insulin dosing precision is 0,05 IE. When an over 100% temporary Basal rate is running the sum of the \"plus\" insulin is being counted with the precision of 0,01 instead of 0,05. I think the \"plus\" insulin should be added only in 0,05 steps.",
+ "comments": [
+  {
+   "id": 1014797888,
+   "user": "avereha",
+   "created_at": "2022-01-17T18:22:46Z",
+   "body": "Could you please share where do you see this information(maybe with a screenshot)?"
+  },
+  {
+   "id": 1016194154,
+   "user": "filipwoz",
+   "created_at": "2022-01-19T08:25:23Z",
+   "body": "I mean a situation like here:\r\n![image](https://user-images.githubusercontent.com/20597551/150090304-6c0379d3-d3fd-4785-ae60-466818592a00.png)\r\n- A temporary higher basal has started at 17:31\r\n- It counts the IOB up in 0,01 steps although Omnipod has the precision of 0,05\r\nMight be also that I am wrongly thinking:\r\n- IOB is not the same as given insulin and the counter in the screenshot is counting both up and down at the same time (up for given insulin and down for already used insulin) so it is anyway not easy to count the expected result. But I have never something like a step going up by 0.05 thus my issue\r\n- Other wrong thinking from my side might be: it might be much more difficult to find out **when** exactly the additional 0,05 injection steps have happened in the Pod thus as a good estimation it is better to count continuously by 0,01 and on average you will be quite close to truth (under the motto: in Diabetes is nothing precise and it is always an estimation) So in this case KISS and YAGNI principles would suggest to leave it as it is.\r\n"
+  },
+  {
+   "id": 1018928273,
+   "user": "avereha",
+   "created_at": "2022-01-21T23:05:40Z",
+   "body": "I don't think this is a real bug. IOB can have lower resolution than the minimum pod delivery step."
+  },
+  {
+   "id": 1019158963,
+   "user": "MilosKozak",
+   "created_at": "2022-01-22T10:15:57Z",
+   "body": "@avereha is right"
+  }
+ ]
+}

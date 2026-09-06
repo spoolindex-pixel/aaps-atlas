@@ -1,0 +1,59 @@
+{
+ "id": 3173212147,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4042,
+ "title": "Add Juggluco to BG source list",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4042",
+ "state": "closed",
+ "labels": [
+  "for_discussion"
+ ],
+ "created_at": "2025-06-24T20:29:22Z",
+ "closed_at": "2025-10-22T11:21:39Z",
+ "comment_count": 7,
+ "body": "As Juggluco imitates xDrip communications and can be used as a BG source (if AAPS is set to xDrip), I think it would be logical to have _xDrip / Juggluco_ as a BG source (instead of just _xDrip_ )\n\n![Screenshot_20250624_222501_Discord.jpg](https://github.com/user-attachments/assets/111d1da2-7932-4957-9830-dedc97067081)\n\n",
+ "comments": [
+  {
+   "id": 3001981918,
+   "user": "Gohtraw",
+   "created_at": "2025-06-24T21:46:53Z",
+   "body": "good idea - the Juggluco documentation can be a bit hard to read.\nplugins/source/src/main/res/values/strings.xml    \n    <string name=\"source_xdrip\">xDrip+ or Juggluco BG</string>\n    <string name=\"description_source_xdrip\">Receive BG values as xDrip broadcast from xDrip+ or Juggluco.</string>"
+  },
+  {
+   "id": 3004344143,
+   "user": "olorinmaia",
+   "created_at": "2025-06-25T10:55:27Z",
+   "body": "Wiki doesn't say much about Juggluco being able to broadcast directly to AAPS. Please correct me or provide link if I'm mistaken! 😉If that is so, it makes more sense to make an own option for Juggluco. In case adjustments must be made to either xDrip or Juggluco in the future. But I'll leave that up to Milos to decide."
+  },
+  {
+   "id": 3006071562,
+   "user": "swissalpine",
+   "created_at": "2025-06-25T20:35:48Z",
+   "body": "As long as Juglucco only imitates, it doesn't need to be named, as soon as something changes here and the data is treated differently (see @olorinmaia), I am with the counter-proposal, because then there is a need for a separate plugin."
+  },
+  {
+   "id": 3006418585,
+   "user": "robertrub",
+   "created_at": "2025-06-25T22:27:09Z",
+   "body": "Adding just the name Juggluco is fast, easy to do and will help users.\n\nIf someone wants to duplicate _xDrip CGM source_ code and have another option, why not. \n\nMy option was simplicity for the devs ;)"
+  },
+  {
+   "id": 3015070949,
+   "user": "Philoul",
+   "created_at": "2025-06-28T07:41:36Z",
+   "body": "For code maintainability, we avoid (as much as we can) duplicated code.\nOne recent example with DynISF plugin which started with a seperate plugin, with 90% of identical code compared to OpenAPS SMB, and now merged within one single plugin.\n\nIf we create a new dedicated plugin now, code will be 100% duplicated... So no added value, only more difficult to maintain.\n\nIf something change in the future, then it will be time to decide on the best solution.\nIt's always a compromise between code \"complexity\" (difficult to read, understand if too many `if ... then` or things like that), and a few duplication but more simple code.\n\n"
+  },
+  {
+   "id": 3049512151,
+   "user": "Gohtraw",
+   "created_at": "2025-07-08T16:03:56Z",
+   "body": "maybe this would help already:\n`    <string name=\"source_xdrip\">xDrip broadcast</string>`\n`    <string name=\"description_source_xdrip\">Receive BG values as xDrip broadcast.</string>`\n\nIt would be worded similarly to \nxDrip: [https://xdrip.readthedocs.io/en/latest/use/interapp/](url)\nand \nJuggluco: [https://www.juggluco.nl/Jugglucohelp/exchangehelp.html?lang=en](url)"
+  },
+  {
+   "id": 3431887493,
+   "user": "MilosKozak",
+   "created_at": "2025-10-22T11:21:39Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/2bce495bca618ce43ca57a5808a2f40000f08d11"
+  }
+ ]
+}

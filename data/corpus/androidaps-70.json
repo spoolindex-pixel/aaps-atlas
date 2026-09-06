@@ -1,0 +1,27 @@
+{
+ "id": 742624939,
+ "repo": "nightscout/AndroidAPS",
+ "number": 70,
+ "title": "[2.7] [Medtronic] Reservoir change resets canula age, autosense, and basal rate",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/70",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2020-11-13T17:16:19Z",
+ "closed_at": "2020-11-24T21:34:35Z",
+ "comment_count": 2,
+ "body": "I'm currently using a Medtronic 554 which has a reservoir that is a bit too small for my insulin needs, so I have to change the reservoir quite regularly. I do not change my pump site each time I change my reservoir. Unfortunately each time I change my reservoir the canula age gets reset (the insulin age doesn't get reset, though). This means that the canula age on the main screen is wrong and autosense gets reset, which is bad, if you haven't been at 100 %. \r\n\r\nSomething else happens that's not optimal in my opinion: When I change my reservoir, I disconnect my pump for half an hour. The basal rate gets set to 0.0 U/h. Then I set up the new reservoir and the pump could be reconnected to my body. In that ready state, if AndroidAPS reads out the pump history and notices the canula/reservoir change, it displays that the canula was changed (pump site change) but for some reason also sets the 0.0 U/h basal rate to the standard basal rate although my pump is still disconnected from my body and the loop is still deactivated (I haven't checked whether the basal rate actually gets changed to the standard basal rate in the pump). I can't see a reason why a canula/reservoir change should change the basal rate. Since the pump is not yet connected to my body again, the IOB calculation most likely will be wrong. Reconnecting the pump through the circle button seems to work correctly.\r\n\r\nI think it would be better to not let AndroidAPS reset the canula age automatically just by reading out the pump history. The pump cannot differentiate between a canula and a reservoir change. I also don't like that AndroidAPS automatically makes a note of a changed pump site. I would like to manually enter a canula and a reservoir change through the Actions tab. I think this menu works correctly, meaning only if I select canula change, it also resets the autosense data. But since AndroidAPS always notices so quickly, I couldn't check that.\r\n\r\nThis screenshot shows that when I disconnect my pump the basal rate gets set to 0.0 U/h\r\n![Screenshot_20201108-045249_AndroidAPS](https://user-images.githubusercontent.com/6848629/99096478-9819f880-25d6-11eb-8518-280172c8be73.png)\r\n\r\nThis screenshot shows that as soon as AndroidAPS notices the reservoir change it sets the standard basal although I hadn't told AndroidAPS that I had reconnected my pump to my body (it happened in the grey area, so the loop was still inactive). \r\n![Screenshot_20201108-045916_AndroidAPS](https://user-images.githubusercontent.com/6848629/99096599-c1d31f80-25d6-11eb-8b48-45cdd5a17fde.png)\r\n\r\nThis screenshot shows that I manually entered the reservoir change to reset the insulin age. The pump has no way of knowing whether a canula change or reservoir change occured.\r\n![Screenshot_20201108-064039_AndroidAPS](https://user-images.githubusercontent.com/6848629/99097756-5a1dd400-25d8-11eb-9640-648ec83182a1.png)\r\n\r\nLogs:\r\n[Logs-reservoir change.zip](https://github.com/nightscout/AndroidAPS/files/5538200/Logs-reservoir.change.zip)\r\n\r\nSystem:\r\nOneplus 3T LineageOS 17.1\r\nAndroidAPS 2.7 bc43a926f\r\nMedtronic 554\r\nDexcom G6 (xDrip+)\r\n\r\n",
+ "comments": [
+  {
+   "id": 732108706,
+   "user": "andyrozman",
+   "created_at": "2020-11-23T11:41:07Z",
+   "body": "This was functionality requested by people that do not do \"Fill Canulla\" in AAPS, but directly (and only) on pump. \r\n\r\nI think it worked very good for everybody so far and you are the only person that has complained about this so far. \r\n\r\nYou could prevent TBR change by turning off the RileyLink, so AAPS couldn't make a change... There is no other way of doing this... \r\n\r\nAs for \"automatic reset the canula age\" we could probably add additional setting there that would not do this automatically from history...\r\n\r\n\r\n"
+  },
+  {
+   "id": 733282045,
+   "user": "ArthurusDent",
+   "created_at": "2020-11-24T23:00:44Z",
+   "body": "Sure, people should do this how they see fit. I was just going by what's generally said in the docs and that is: use the app.\n\nI have also only acquired a loopable pump since July, which explains why I've only come forward now and didn't voice my concerns sooner.\n\nI would be happy about an option to only manually enter a canula change. If that's possible that would be great!"
+  }
+ ]
+}

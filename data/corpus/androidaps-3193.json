@@ -1,0 +1,57 @@
+{
+ "id": 2102784858,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3193,
+ "title": "Error bolus Calculator on latest dev 3.30 take IC /ISF on inexistent profiles Active",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3193",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-01-26T19:34:15Z",
+ "closed_at": "2024-02-11T14:47:59Z",
+ "comment_count": 7,
+ "body": "I have only one profile named \"FIASP\" on nightscout and aaps latest dev.\r\nWhen i launch the Bolus Calc, if i not select manually FIASP, takes value from not existent profile named Active, with IC and ISF different from mine.\r\n\r\nNo Autotune profiles, no DynamicISF active.\r\n\r\nPay attention, with this bug many people can rise BG or experiment dangerous low BG.\r\n\r\n![photo_5881917511434354581_y](https://github.com/nightscout/AndroidAPS/assets/39415490/a329be57-548d-4d84-8e1e-bd00a032b0aa)\r\n![photo_5881917511434354583_y](https://github.com/nightscout/AndroidAPS/assets/39415490/86eedee2-65bb-4c52-a90f-040e46a84812)\r\n![photo_5881917511434354582_y](https://github.com/nightscout/AndroidAPS/assets/39415490/e6abee0c-de70-4ad9-8d0f-9197825b6950)\r\n",
+ "comments": [
+  {
+   "id": 1913020710,
+   "user": "robertrub",
+   "created_at": "2024-01-27T06:00:21Z",
+   "body": "Strange. I don't have your problem. _Active_ and my active profile give the same numbers. Using latest dev-A.\n\n![Screenshot_20240126_104919_AAPS.jpg](https://github.com/nightscout/AndroidAPS/assets/76626474/26cad149-9940-43aa-8233-a1d746a89e59)\n\nCan you stop all downloads from NS and reactivate your profile in APPS. Then check again if you have the same problem.\n"
+  },
+  {
+   "id": 1913131000,
+   "user": "lostboy86",
+   "created_at": "2024-01-27T11:48:25Z",
+   "body": "Yes i try now, also NS not had previous the Active Profiles, i have only\r\nFIASP on ns and aps.\r\n\r\nHow i can delete the Active Profiles wrong?\r\n\r\nIl giorno sab 27 gen 2024 alle ore 07:00 Robrub ***@***.***>\r\nha scritto:\r\n\r\n> Strange. I don't have your problem. and my active profile give the same\r\n> numbers. Using latest dev-A.\r\n>\r\n> Screenshot_20240126_104919_AAPS.jpg (view on web)\r\n> <https://github.com/nightscout/AndroidAPS/assets/76626474/26cad149-9940-43aa-8233-a1d746a89e59>\r\n>\r\n> Can you stop all downloads from NS and reactivate your profile in APPS.\r\n> Then check again if you have the same problem.\r\n>\r\n> —\r\n> Reply to this email directly, view it on GitHub\r\n> <https://github.com/nightscout/AndroidAPS/issues/3193#issuecomment-1913020710>,\r\n> or unsubscribe\r\n> <https://github.com/notifications/unsubscribe-auth/AJMW5QTLHCKHTRIXJHWGYO3YQSJYBAVCNFSM6AAAAABCMT7O3GVHI2DSMVQWIX3LMV43OSLTON2WKQ3PNVWWK3TUHMYTSMJTGAZDANZRGA>\r\n> .\r\n> You are receiving this because you authored the thread.Message ID:\r\n> ***@***.***>\r\n>\r\n"
+  },
+  {
+   "id": 1913144030,
+   "user": "lostboy86",
+   "created_at": "2024-01-27T12:35:21Z",
+   "body": "Now another user report to the FB group AAPS USERS same situation : \r\n\r\n[https://www.facebook.com/photo?fbid=3647468725537482&set=gm.3706718732882850&idorvanity=1900195340201874](url)"
+  },
+  {
+   "id": 1913170112,
+   "user": "robertrub",
+   "created_at": "2024-01-27T14:14:29Z",
+   "body": "There is no profile named _Active_ . I'm almost sur that the profile download from NS creates the bug.\n\nIn AAPS settings, stop all downloads **from** NS. Keep only the uploads **to** NS.\n\nCreate a new profile with a new name in AAPS. Manually, copy the settings from your _FIASP_ profile to the new one. Activate the new profile.\n\nDelete the _FIASP_ profile.\n\nCheck if you stil have the bug (difference between _Actual_ and _New_ profile when you use the bolus calculator).\n\n"
+  },
+  {
+   "id": 1913190368,
+   "user": "lostboy86",
+   "created_at": "2024-01-27T15:44:34Z",
+   "body": "I also try this option.\r\nSame bug.\r\n\r\nBUT i found a strange solution.\r\nIf i deactivated autotune circadian on-off, automation profile change\r\non-off, now Active show same Value on calc from Fiasp.\r\n\r\nPay attention : above, in the post of fb user on aaps users, she had same\r\nissue but with the latest master.\r\nThe master don't have obv autotune inside the app, like the dev.\r\n\r\nIn the previous version,i have no difference from active to my profiles, in\r\nbolus calc.\r\n\r\nIl giorno sab 27 gen 2024 alle ore 15:14 Robrub ***@***.***>\r\nha scritto:\r\n\r\n> There is no profile named *Active* . I'm almost sur that the profile\r\n> download from NS creates the bug.\r\n>\r\n> In AAPS settings, stop all downloads *from* NS. Keep only the uploads *to*\r\n> NS.\r\n>\r\n> Create a new profile with a new name in AAPS. Manually, copy the settings\r\n> from your *FIASP* profile to the new one. Activate the new profile.\r\n>\r\n> Delete the *FIASP* profile.\r\n>\r\n> Check if you stil have the bug (difference between *Actual* and *New*\r\n> profile when you use the bolus calculator.\r\n>\r\n> —\r\n> Reply to this email directly, view it on GitHub\r\n> <https://github.com/nightscout/AndroidAPS/issues/3193#issuecomment-1913170112>,\r\n> or unsubscribe\r\n> <https://github.com/notifications/unsubscribe-auth/AJMW5QWCIYXNPFL34QO7VQLYQUDVBAVCNFSM6AAAAABCMT7O3GVHI2DSMVQWIX3LMV43OSLTON2WKQ3PNVWWK3TUHMYTSMJTGE3TAMJRGI>\r\n> .\r\n> You are receiving this because you authored the thread.Message ID:\r\n> ***@***.***>\r\n>\r\n"
+  },
+  {
+   "id": 1937775252,
+   "user": "MilosKozak",
+   "created_at": "2024-02-11T14:47:59Z",
+   "body": "I see on the backgroud screen  yellow background on profile name => you are running % change on profile. thus different values"
+  },
+  {
+   "id": 1938158669,
+   "user": "lostboy86",
+   "created_at": "2024-02-12T07:19:51Z",
+   "body": "Thank you very much for help question!\r\n\r\nIl dom 11 feb 2024, 15:48 Milos Kozak ***@***.***> ha scritto:\r\n\r\n> I see on the backgroud screen yellow background on profile name => you are\r\n> running % change on profile. thus different values\r\n>\r\n> —\r\n> Reply to this email directly, view it on GitHub\r\n> <https://github.com/nightscout/AndroidAPS/issues/3193#issuecomment-1937775252>,\r\n> or unsubscribe\r\n> <https://github.com/notifications/unsubscribe-auth/AJMW5QR2IN6K6BJFA5BL3PTYTDK2XAVCNFSM6AAAAABCMT7O3GVHI2DSMVQWIX3LMV43OSLTON2WKQ3PNVWWK3TUHMYTSMZXG43TKMRVGI>\r\n> .\r\n> You are receiving this because you authored the thread.Message ID:\r\n> ***@***.***>\r\n>\r\n"
+  }
+ ]
+}

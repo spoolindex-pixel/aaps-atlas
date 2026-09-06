@@ -1,0 +1,89 @@
+{
+ "id": 1105182078,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1188,
+ "title": "Improve UI-interaction to change viewrange on overview (feature request)",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1188",
+ "state": "closed",
+ "labels": [
+  "enhancement"
+ ],
+ "created_at": "2022-01-16T20:40:38Z",
+ "closed_at": "2023-08-20T14:01:05Z",
+ "comment_count": 12,
+ "body": "**Improve UI-interaction to change view range on overview (feature request):**\r\n\r\n**Proposed solution options**\r\nI can think of several ways to make changing the view more user friendly:\r\n1. UI option on overview (popup/dropdown?) to directly select on of the 4 possible view ranges.\r\n2. Single UI action for the user to go back to a configurable default view range .\r\n3. UI automatically switching to user configurable default after NN minutes?\r\n\r\n(Personally I would prefer option 1)\r\n\r\n**Reason:**\r\nAs changing the view range obviously takes time it can never be very responsive. Mostly because of this I have grown to dislike the UI interaction method to change the view range (tab-hold-and-wait for rendering).\r\nAs is now I often find myself hunting for the desired view range: tab-hold-wait, tab-hold-wait, Oops... one to many?\r\nGo round again: tap-hold-etc.... Quite tedious sometimes!\r\n\r\n\r\n\r\n",
+ "comments": [
+  {
+   "id": 1015310881,
+   "user": "Philoul",
+   "created_at": "2022-01-18T11:14:04Z",
+   "body": "What do you think of this proposal in PR #1196 (I used existing button with a long click to show rescale menu)\r\n=> Long press on graph remains unchanged (switch from 6 to 12 to 18 to 24 hours)\r\n=> Short click on button remains for sub graphs selection\r\n=> Long press on button allow a direct selection of scale (between 6 hours and 24 hours) (in french in my screenshot)\r\n\r\n![image](https://user-images.githubusercontent.com/52934600/149926789-4f35eb38-fb00-4611-b12d-6cb8d22af8ed.png)\r\n"
+  },
+  {
+   "id": 1015415237,
+   "user": "Andries-Smit",
+   "created_at": "2022-01-18T13:31:32Z",
+   "body": "**A side note;** The `Long press` pattern is not ideal for the learning experience of AAPS, a user will not try random long-press on elements, slowing down the learning curve. Yesterday I found when browsing through the code, that there are more places. Ideal for shortcuts for power users, but new users need a good alternative through a self-explaining user interface."
+  },
+  {
+   "id": 1015671543,
+   "user": "Philoul",
+   "created_at": "2022-01-18T17:59:35Z",
+   "body": "@Andries-Smit What do you suggest here? (additional button ? something else?)"
+  },
+  {
+   "id": 1015882130,
+   "user": "vanelsberg",
+   "created_at": "2022-01-18T22:14:13Z",
+   "body": "@Philoul Agree with Andries on the long press pattern.\r\nAlso bit worried that could be affected by unresponsiveness while rescaling?\r\n\r\n**Yes**. In general: I do think the direct scale selection would be an improvement.\r\nProblem is: there is no space for another button. So maybe see how short/long press works out on usage?\r\n\r\n"
+  },
+  {
+   "id": 1015886438,
+   "user": "vanelsberg",
+   "created_at": "2022-01-18T22:20:29Z",
+   "body": "@Philoul \r\nPersonally I would love to have a simple way to get back to a (user configurable) default view range without the need to go to a menu. In general I change the view range only when looking for some \"event\", then switch back to the 6-hour view.\r\n\r\nJust dropping some ideas:\r\nAny possibility to use double-click on the overview?\r\nOr maybe switch to the default view range after some time threshold (countdown with reset on a view change?)\r\n"
+  },
+  {
+   "id": 1015893353,
+   "user": "vanelsberg",
+   "created_at": "2022-01-18T22:31:16Z",
+   "body": "Adding: all details mentioned earlier: nice-to-have?\r\n\r\nFor me: if we could have the direct viewrange menu that would be a real improvement!\r\nSo lets keep this simple to start with?"
+  },
+  {
+   "id": 1015901840,
+   "user": "Philoul",
+   "created_at": "2022-01-18T22:46:22Z",
+   "body": "I also restarted to work on PR #911 to (try to) find a solution that works for both overview and history browser 🤯"
+  },
+  {
+   "id": 1019804899,
+   "user": "Philoul",
+   "created_at": "2022-01-24T07:44:47Z",
+   "body": "Hi,\r\nIf you want to test some proposals and give me a feedback, I made 3 PR\r\nPR #1196 is independant and can be merged with PR #911 or with PR #1142\r\nbut currently if you try to merge PR #911 and #1142 together you'll get conflicts because same lines are modified in both PR\r\n=> I can make another one with all proposals together for testing (not done because I prefer working on each subject separatly)"
+  },
+  {
+   "id": 1020536003,
+   "user": "vanelsberg",
+   "created_at": "2022-01-24T20:52:22Z",
+   "body": "@Philoul Think I can do that this week.\r\nWill test 1196+911 and 1196+1142 then. Anything particular to test for?"
+  },
+  {
+   "id": 1020550269,
+   "user": "Philoul",
+   "created_at": "2022-01-24T21:11:05Z",
+   "body": "for #911, on my side graph, rescale is quicker, but I still have sometime the \"application not responding\" popup, especially just after a new BG is received... (a bit less popup than with current dev but I'm not sure).\r\nYou can also test if history browser works well for all PR.\r\nthx"
+  },
+  {
+   "id": 1020567147,
+   "user": "vanelsberg",
+   "created_at": "2022-01-24T21:29:39Z",
+   "body": "> for #911\r\nBuilding now. Think I can do some testing by Wednesday 26/01. Will let you know my findings.\r\n\r\n\r\n"
+  },
+  {
+   "id": 1685293017,
+   "user": "vanelsberg",
+   "created_at": "2023-08-20T14:01:05Z",
+   "body": "Solved for current v3.2 UI..."
+  }
+ ]
+}

@@ -1,0 +1,27 @@
+{
+ "id": 836568695,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1680,
+ "title": "bug: Setting auto configure needs to be pressed twice if Camera permission was not already enabled",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1680",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-03-20T01:37:59Z",
+ "closed_at": "2021-05-12T19:03:39Z",
+ "comment_count": 2,
+ "body": "### Setting auto configure needs to be pressed twice if Camera permission was not already enabled\r\n\r\n### Your environment\r\n- xDrip master\r\n- Android 10\r\n\r\n### Expected behavior\r\nFrom any place in xDrip where `AndroidBarcode.scan()` is called without Camera permission allowed, it should open the scanner after I allow Camera.\r\n\r\n### Actual behavior\r\nIf Camera is not allowed and `AndroidBarcode.scan()` is called, I have to repeate the action after I allow Camera permission.\r\n\r\n### Steps to reproduce the behavior:\r\n* remove Camera permission from xDrip\r\n* open Settings and select `Auto configure`\r\n* you will be asked to allow Camera permission\r\n* enable Camera permission\r\n* nothing more will happen, you will still be in Settings\r\n* click again on `Auto configure`\r\n* scanner will start\r\n\r\n### Other\r\n\r\nPartially I added handling of this problem in my [pull request](https://github.com/NightscoutFoundation/xDrip/pull/1679/files#diff-7b618eef9ca42bc5ff63192f4928b6ee56d33b5699e16e883813120e8b1daff1R3676-R3677). It handles it in main activity. Not sure if this is the best fix. \r\nIt needs to be handled also in `Preferences.java`. I tried to fix it, but `onRequestPermissionsResult()` was not fired, so I am creating this ticket.",
+ "comments": [
+  {
+   "id": 822105386,
+   "user": "Navid200",
+   "created_at": "2021-04-19T01:12:17Z",
+   "body": "Do I understand correctly that if you give camera permission, there is no issue?"
+  },
+  {
+   "id": 840026427,
+   "user": "Navid200",
+   "created_at": "2021-05-12T19:03:39Z",
+   "body": "Closing due to inactivity.\r\nPlease respond to questions before reopening."
+  }
+ ]
+}

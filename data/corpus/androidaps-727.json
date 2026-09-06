@@ -1,0 +1,21 @@
+{
+ "id": 1023106298,
+ "repo": "nightscout/AndroidAPS",
+ "number": 727,
+ "title": "[dev] Occasional Crash/Restart occurs with no obvious cause",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/727",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-10-11T20:55:18Z",
+ "closed_at": "2021-10-12T15:36:34Z",
+ "comment_count": 1,
+ "body": "I have been experiencing this problem at random intervals, a few days to a few weeks apart with various build versions over the past few months, since I started looping with the dev code.\r\n- Dana-i pump\r\n- Libre2 via patched app and xdrip+\r\n- Samsung A20e running Android 11\r\n- Currently on (new) Objective 9 trying out SMBs\r\n\r\nI rebuilt Version: 2.8.2.5-dev BuildVersion: b4e7d4b72-2021.10.07-00:30 and the failure re-occured after 3 days.  I was asleep at the time, so there were no user operations.\r\nIn the 10Oct log file, the restart is at 06:21:03.022 \r\n[AndroidAPS spontaneous restart at 10102021 0621.log](https://github.com/nightscout/AndroidAPS/files/7325161/AndroidAPS.spontaneous.restart.at.10102021.0621.log)\r\n\r\nI have an earlier log using Version: 2.8.2.2-dev BuildVersion: 15e61108d-2021.07.13-21:07\r\nIn the 19Aug log file, the restart is at 13:08:08.924\r\n[AndroidAPS spontaneous restart at 19082021 1308.log](https://github.com/nightscout/AndroidAPS/files/7325240/AndroidAPS.spontaneous.restart.at.19082021.1308.log)\r\nI was on Objective 8 using the AMA algorithm.\r\n\r\nI have been unable to identify any clues to the failures in the preceding log messages.\r\n\r\nThe recovery after the restart is successful, so I am only aware of the problem via the restart message displayed on the graph.",
+ "comments": [
+  {
+   "id": 941128851,
+   "user": "MilosKozak",
+   "created_at": "2021-10-12T15:36:34Z",
+   "body": "Fatal Exception: io.reactivex.exceptions.UndeliverableException\r\nThe exception could not be delivered to the consumer because it has already canceled/disposed the flow or the exception has nowhere to go to begin with. Further reading: https://github.com/ReactiveX/RxJava/wiki/What's-different-in-2.0#error-handling | java.lang.OutOfMemoryError: Failed to allocate a 24 byte allocation with 1777328 free bytes and 1735KB until OOM, target footprint 201326592, growth limit 201326592; failed due to fragmentation (largest possible contiguous allocation 54001664 bytes)\r\n\r\nOut of memory error is not resovable"
+  }
+ ]
+}

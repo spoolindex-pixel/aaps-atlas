@@ -1,0 +1,27 @@
+{
+ "id": 1065085703,
+ "repo": "nightscout/AndroidAPS",
+ "number": 995,
+ "title": "[3.0-beta7] MDT: Bolus Windows remains open",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/995",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-11-27T16:58:51Z",
+ "closed_at": "2021-12-14T11:10:46Z",
+ "comment_count": 2,
+ "body": "Sometimes the Bolus windows remains open.\r\n* Bolus\r\n* see the message \"waiting for disconnect\"\r\n* see the messaage \"sheduled status refresh\"\r\n* see the message \"waiting for disconnect\"\r\n* the  Bolus Window remains open until I press the stop butoon.\r\n\r\nLog send to @andyrozman \r\n\r\nMessages:\r\n![Waiting to disconnect](https://user-images.githubusercontent.com/1705174/143690158-3c7b0dc5-6f47-4824-8571-3562ef31cbc8.png)\r\n![Sheduled Status Refresh](https://user-images.githubusercontent.com/1705174/143690159-d184399c-fadc-4c58-89ca-1f4c9f27bbb4.png)\r\n\r\n",
+ "comments": [
+  {
+   "id": 983946335,
+   "user": "rustymonkey",
+   "created_at": "2021-12-01T18:37:17Z",
+   "body": "I'm able to replicate this as well (it seems to always occur in my test environment though I only tested while temp basals were active). Note that:\r\n- The dialog continues to display 'Going to bolus x U' even after the bolus has been given (and the bolus was always given in my testing--as verified directly on the pump and in the AAPS treatments tab)\r\n- The dialog continues to display indefinitely until the Android screen timeout kicks in. Upon re-activation of the display, the dialog is no longer displayed.\r\nSo it looks like it's mainly a UI issue, but a serious one since it confuses users as to whether the bolus was given or not, and since it presents a STOP button that actually does nothing (it can be clicked long after the bolus has completed, giving users the impression that a bolus has been stopped even when it's already been given).\r\n\r\nA secondary issue (I'm not sure if it would be considered a separate bug) is that the bolus status dialog always disappears as soon as the screen timeout kicks in--even when the bolus hasn't yet completed.\r\n\r\n---------\r\nTested on 2.8.2.14dev 2021.11.30 19:29 running on an S7/Android 11 | Orangelink | MDT 554"
+  },
+  {
+   "id": 993432736,
+   "user": "MilosKozak",
+   "created_at": "2021-12-14T11:10:46Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/201a04bfbf1c8e8f742931371ed23c895b800cbc#diff-d6f6ae060b7ba29e25a363d3dec215fe535f07682232a757f9209348f75ac039L642"
+  }
+ ]
+}

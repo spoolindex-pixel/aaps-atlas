@@ -1,0 +1,45 @@
+{
+ "id": 774511479,
+ "repo": "nightscout/AndroidAPS",
+ "number": 138,
+ "title": "Medtronic driver does not always retrieve the correct TBR",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/138",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2020-12-24T16:51:15Z",
+ "closed_at": "2021-03-07T17:19:37Z",
+ "comment_count": 5,
+ "body": "When AAPS sets temp basal to a higher rate, don't know the exact number yet, but it's safe to say 5 or hugher, this works as expected and the Medtronic tab will even say the correct rate until the next time it refreshes. Then it says around a third of the rate  even though the pump's screen verifies it as being what is set. \r\n\r\nIn the log attached, I purposely ran my BG up and AAPS set a TBR at 10u/hr.  The status of the pump in the Medtronic tab and the main screen shows 3.60u/hr after the next poll of the pump.  At that time the pump display itself still shows 10u/hr on the status screen.\r\n\r\nThe problem is easy to reproduce and happens reliably with any higher TBR.\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/5740167/AndroidAPS.log)\r\n\r\n\r\nI've updated my APK to the nightscout/AndroidAPS master branch.\r\nBuild bc43a926f-2020.12.24-10:45",
+ "comments": [
+  {
+   "id": 753550507,
+   "user": "andyrozman",
+   "created_at": "2021-01-03T00:54:14Z",
+   "body": "@brmcc You mean its showing 2.6 instead of 9, right?"
+  },
+  {
+   "id": 753557613,
+   "user": "ghost",
+   "created_at": "2021-01-03T02:22:46Z",
+   "body": "Unfortunately my 2 week old RileyLink completely died almost exactly when you wrote this.  Since I no longer have one to test with, and this issue has never affected anyone else, I feel that we can close this.  I'll look for another solution for AAPS in the future that doesn't involve a RileyLink.  Thanks for your time looking into this!"
+  },
+  {
+   "id": 753610182,
+   "user": "andyrozman",
+   "created_at": "2021-01-03T12:32:50Z",
+   "body": "@brmcc While you are the only person reporting this problem, we do have problem in code... If amount of basal is too high, then value is not displayed correctly. So it needs to be fixed. \r\nAbout RL, talk to Jeremy (the guy sending RL from getrileylink.org) maybe he can help you."
+  },
+  {
+   "id": 753652346,
+   "user": "ghost",
+   "created_at": "2021-01-03T17:47:49Z",
+   "body": "Thanks for your willingness to help!  I went ahead and pulled my rileylink from the trash and figured out the battery and charging circuit is bad.  I got it going temporarily, and can in the future if needed to test if needed, and set the temp basal rate manually on the pump screen, disabled the loop, then clicked refresh on the AAPS medtronic tab so it would retrieve the TBR.  It seems maybe only 4 bits of data are read? It goes essentially to 64 then repeats itself.  I can include logs if needed. \r\n\r\nHere's my results:\r\n\r\n0u/h - 6.30 u/h is correct\r\nactual setting - displayed setting\r\n-------------------------------------------\r\n6.30 - 6.30\r\n6.35 - 0.00\r\n6.4 - 0.00\r\n6.5 - 0.10\r\n7 - 0.60\r\n7.5 - 1.10\r\n8 - 1.6\r\n8.5 - 2.1\r\n9 - 2.6\r\n9.5 - 3.1\r\n10 - 3.6\r\n12.5 -  6.10\r\n12.7 - 6.3\r\n12.75 - 6.35\r\n12.8 - 0.00\r\n13 - 0.20\r\n"
+  },
+  {
+   "id": 792289475,
+   "user": "andyrozman",
+   "created_at": "2021-03-07T14:39:09Z",
+   "body": "https://github.com/nightscout/AndroidAPS/pull/400\r\nPR for this problem"
+  }
+ ]
+}

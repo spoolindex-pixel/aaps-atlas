@@ -1,0 +1,39 @@
+{
+ "id": 860720222,
+ "repo": "nightscout/AndroidAPS",
+ "number": 485,
+ "title": "Dexcom reporting high for over 45 minutes turns off loop",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/485",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-04-18T17:40:23Z",
+ "closed_at": "2021-04-18T21:26:45Z",
+ "comment_count": 4,
+ "body": "Dexcom high once reading 22.3 remains at that value.  If this continues for more than 45 minutes there is logic that kicks in to disable loop, to prevent a libre issue.\r\n\r\nThis looks to have been addressed when using the patched Dexcom app as a source, but not when using xDrip as a source.\r\n\r\nRelevant previous issue is https://github.com/nightscout/AndroidAPS/issues/35\r\n\r\nCan this same fix be put in when using the xDrip/Dexcom source please to prevent loop from turning off?\r\n\r\nThe relevant commit looks like it was https://github.com/nightscout/AndroidAPS/commit/3442e29e5c95a50edf85f838b922bb6294df7091\r\n\r\nThis  might just need an tweak to logic to check whether it's DexcomApp or xDrip with Dexcom source?\r\n",
+ "comments": [
+  {
+   "id": 822064554,
+   "user": "MilosKozak",
+   "created_at": "2021-04-18T21:26:45Z",
+   "body": "It's not planned at the moment. The reason is not technical but it's a question of trust what is real source of data.\r\nxDrip is very complex and it's possible to fake the data. Thus only Dexcom app is accepted as trusted source now"
+  },
+  {
+   "id": 822073756,
+   "user": "biwhite",
+   "created_at": "2021-04-18T22:37:40Z",
+   "body": "Can you suggest a workaround for when we know this issue has been hit?  Entering a calibration reading to try and get it looping again doesn't work.  It seems the only way currently is to keep putting bolus in until the levels come down for readings to change?\r\nTurning the loop off when BG is high, and we know is accurate is quite frustrating.\r\nIt would be great to have some method to turn loop back on when we trust the source but the app might not have that same trust.\r\n"
+  },
+  {
+   "id": 823121897,
+   "user": "MilosKozak",
+   "created_at": "2021-04-20T09:19:06Z",
+   "body": "well if you are higher than 20 mmol and insuling is not working well i'd do manual action anyway. syringe???\r\nyou can use dexcom app along with xdrip"
+  },
+  {
+   "id": 823138217,
+   "user": "biwhite",
+   "created_at": "2021-04-20T09:44:02Z",
+   "body": "There was a pod failure which didn't scream when it ran out for some reason\nso she ended up high.  First time that's happened.\nWe addressed it with some boluses, but didn't have confidence/understanding\nas to why the loop wasn't working until I dug into all the old bug reports\nlooking for similar things.\n\nAs soon as the bolus eventually got the BG on the way down and new readings\nappeared the loop was able to work again.\n\nI guess it's just scary not knowing why it's not running, and having no way\nin software to turn it back on or ignore the chunk of logic that's turned\nit off for some time frame.\nI'd be keen to understand why Dexcom app is trusted, but xDrip isn't?  My\ngirlfriend thought she'd seen some issues on various facebook groups with\nthe Dexcom patched app lately.  I'll have a dig into them and see if that's\nthe route we want to go.\n\nThanks\n\n\n\nOn Tue, 20 Apr 2021 at 10:19, Milos Kozak ***@***.***> wrote:\n\n> well if you are higher than 20 mmol and insuling is not working well i'd\n> do manual action anyway. syringe???\n> you can use dexcom app along with xdrip\n>\n> —\n> You are receiving this because you authored the thread.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/nightscout/AndroidAPS/issues/485#issuecomment-823121897>,\n> or unsubscribe\n> <https://github.com/notifications/unsubscribe-auth/AAYTN2AG3WRA5KSSZFBJ6F3TJVBJ7ANCNFSM43EODNAQ>\n> .\n>\n\n\n-- \nBen\n"
+  }
+ ]
+}

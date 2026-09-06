@@ -1,0 +1,39 @@
+{
+ "id": 1868304048,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2710,
+ "title": "\"Recalculated data used\" is incorrect; \"Calculated data used\" is the apparent intention.",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2710",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-08-27T00:10:15Z",
+ "closed_at": "2023-08-27T09:49:58Z",
+ "comment_count": 4,
+ "body": "https://discord.com/channels/629952586895851530/629954570394533889/1145146768007368724\r\n\r\nIn other words when AAPS reports \"recalculated data used\" (the warning triangle above the BG) it does not mean this at all; it means that it calculated new data because the old stuff was out of date.  This is maximally confusing since it also separately reports loss of CGM data though I assume on a different time scale.\r\n",
+ "comments": [
+  {
+   "id": 1694622450,
+   "user": "MilosKozak",
+   "created_at": "2023-08-27T09:49:58Z",
+   "body": "No. It means that original data was not in 5 min interval and AAPS approximated (recalculated) new data that match  5 min interval.\r\nIt has nothing to do with the aga of data"
+  },
+  {
+   "id": 1694763831,
+   "user": "jbowler",
+   "created_at": "2023-08-27T21:15:51Z",
+   "body": "My observation applies; that is still *calculated* data, not *recalculated*.  It may be interpolated but interpolation is a not a *re*calculation; it's an a priori calculation.  Recalculation happens if, for example, a calibration (or, indeed, recalibration) is done and this is applied to older data and likewise when the Dexcom transmitters detect sensor errors and change prior values.\r\n\r\nIt's also curious that this happens at all; the Dexcom transmitters send data at 300s intervals and I'm using xDrip+ as a collector with local broadcast, so the only thing that seems to explain it is clock drift in the transmitter (which certainly happens) but clock drift means that the transmitter and 'phone are out of step time-wise, not step wise."
+  },
+  {
+   "id": 1694767501,
+   "user": "MilosKozak",
+   "created_at": "2023-08-27T21:36:27Z",
+   "body": "with dexcom it happens usually only with transmitter change\r\nother sensors: it's common"
+  },
+  {
+   "id": 1694785867,
+   "user": "jbowler",
+   "created_at": "2023-08-27T23:06:28Z",
+   "body": "Ah!  That makes sense.  I'm using the G7, so the transmitter changes every sensor.  xDrip+, as I've learned to use it with the G7, only works reliably (it is, of course, a moving target) if I just change the transmitter pairing code, causing it to bind to the new transmitter.  Yep, the next readings will be out of sync, by up to 150s :-)\r\n\r\nWhy not re-sync?  I used the AAPS \"xDrip+ BG\" tab to check and I can see the clock drift on the transmitter for a single G7 sensor (5s in 24 hours based on the AAPS \"xDrip+ BG\" tab); neither NS nor xDrip+ itself give me /s readout.)  That's not too bad but it is a minute in 10 days (the life of the G7).  The transmitter change, however, is a crapshoot; even distribution across 300s.\r\n\r\nThey might have dropped a crystal with the G7; the G6 had to go for 90 days so unless the collector resynced it for clock drift it had to be moderately accurate.  The G7 need only last 10.  You don't control the collector so that makes things very difficult; the collector can at least sync data back to its own view of the world time.  Yep.  Tricky."
+  }
+ ]
+}

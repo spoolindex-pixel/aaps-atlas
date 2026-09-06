@@ -1,0 +1,87 @@
+{
+ "id": 2630797450,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 3749,
+ "title": "System Status - No \"Sensor Start/Age\" display after xdrip update",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/3749",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-11-02T21:11:20Z",
+ "closed_at": "2025-01-24T11:30:17Z",
+ "comment_count": 12,
+ "body": "### Discussed in https://github.com/NightscoutFoundation/xDrip/discussions/3744\r\n\r\n<div type='discussions-op-text'>\r\n\r\n<sup>Originally posted by **Teute0815** November  1, 2024</sup>\r\nI've been using\r\nLibre3 Sensor -> juggluco (410 5.1.5) broadcasting through \"Libre2 patched app\" -> xdrip (dfcbe80-2024.09.17)\r\non a\r\nSamsung S9+ Android 10\r\nfor quite some time.\r\n\r\nThe bug occured after automatic xdrip update through stable channel (dfcbe80-2024.09.17)\r\nNo other settings, versions or hardware have been changed.\r\n\r\nAfter update, the Classic Status Page didn't display the sensor start date and the sensor age anymore. While being on a running sensor, I waited for that sensor to be replaced a few days later, to see if that would fix the \"problem\". It didn't. \r\n\r\nWith my setting, xdrip doesn't display the sensor start date - and thus the sensor age (which is the quick information I'm missing most) anymore. I reinstalled the previous version again, to make sure it's an xdrip issue. It is - previous version instantly showed sensor start date and age again. It's not only a \"**Libre2**\" problem but also a \"**Nightscout Follower**\" source problem, which I tried in the meantime. (see images below) @Navid200\r\n\r\nCould that be fixed?\r\n\r\n**source \"Libre (patched App)\"**\r\n![2024-11-02 12 19 42](https://github.com/user-attachments/assets/b9ea3c24-4d3c-4cd1-ab43-55108e886a7a)\r\n\r\nIn the meantime I tried something new and got my juggluco readings via local webserver with xdrip as nightscout follower. That way I can access missed historical values, which is not possible via juggluco - libre patched.\r\n\r\nWhen using xdrip as nightscout follower, xdrip got the exact same problem:\r\n\r\n**source \"Nightscout Follower\"**\r\n![2024-11-02 12 17 15](https://github.com/user-attachments/assets/6b275904-c16c-40ad-8026-7a28e5662ec7)\r\n</div>",
+ "comments": [
+  {
+   "id": 2453137624,
+   "user": "Teute0815",
+   "created_at": "2024-11-02T21:13:39Z",
+   "body": "Nightlys involved are 06.11 (working) -> 06.25 (not working)"
+  },
+  {
+   "id": 2453268134,
+   "user": "Navid200",
+   "created_at": "2024-11-03T02:34:41Z",
+   "body": "@PhilTu This post does not directly address you.  But, since you were a part of the corresponding discussion, I would like you to see this as well.  \r\n\r\nI went ahead and opened a PR to fix this I thought.  And tested and could see a start time shown for the Nightscout follower.  \r\n\r\nBut, then I thought more about it and I don't think this is really an issue!\r\n\r\nA long time ago when we used Dexcom G5, we could use it in non-native mode.  That meant that xDrip ran the session.  Even though there was a session running on the G5 transmitter as well but, it was the session in xDrip that really mattered.  And the start time of the xDrip session was very important.  That's what the classic status page showed in that case.\r\n\r\nHow would xDrip know when a Libre session running on the Libre device started?  The session doesn't really run on xDrip, does it?"
+  },
+  {
+   "id": 2453271691,
+   "user": "Teute0815",
+   "created_at": "2024-11-03T02:52:05Z",
+   "body": "@Navid200 \r\nI hope, I understood your question in the right way.\r\nIn my (many) case(s), the data comes from juggluco, which knows exactely when the session started, because it did it or receives the data directly from the sensor (when I use the original app to start the sensor and then take over with juggluco). The start time (and age) on the status page (in the working version) in xDrip was always exactly the original start time/age of the sensor for the past years. For \"Libre patched\" source that is. But the \"Nighscout Follower\" source which I just started to try out, showed the exact same date/age. Which is no wonder, as the data is still the same - coming from juggluco, just through another channel."
+  },
+  {
+   "id": 2453273033,
+   "user": "Navid200",
+   "created_at": "2024-11-03T03:00:07Z",
+   "body": "But, I don't believe juggluco runs a CGM session.  It only reports readings coming from Libre, doesn't it?  That means the session runs on Libre."
+  },
+  {
+   "id": 2453275880,
+   "user": "Teute0815",
+   "created_at": "2024-11-03T03:12:01Z",
+   "body": "Honestly, I can't answer that and I don't even really understand the implications of the question - I'm really only a (usually very happy ;) Frontend user. The way I understood your question was, that you have concerns, if the start dates and ages displayed might be wrong (sometimes).\r\nAll I can say regarding this is: They've always been right in my case. And for me it's mostly a quick check of how old the sensor is (when I will have to replace it). It's an info I can't find that easy and quick anywhere else for my Libre3."
+  },
+  {
+   "id": 2453365085,
+   "user": "PhilTU",
+   "created_at": "2024-11-03T09:54:02Z",
+   "body": "> How would xDrip know when a Libre session running on the Libre device started? The session doesn't really run on xDrip, does it?\r\n\r\nNo it doesn't. Nightscout only knows what Juggluco (in this case) tells it. If that includes sensor start / expiry then xDrip could acquire that as a nightscout follower.\r\n\r\nJuggluco can start the Libre 2 sensor and has access to the sensor data so it knows about times / durations.\r\n\r\nI don't know if Juggluco faithfully replicates the L2 patched apo in terms of providing sensor data inti xDrip. It loiks like it dies (or did) because the OP has thst data in older versiond. \r\n\r\nI understand your issue with the xDrip connection time in these situations. I could hsve started a connection 6 months ago and had many sensord come and go because xDrip isn't involved in starting a sensor or initiating a connection to the sensor. \r\n"
+  },
+  {
+   "id": 2453403890,
+   "user": "Navid200",
+   "created_at": "2024-11-03T12:07:59Z",
+   "body": "@PhilTU Another concern I have is that I don't have any knowledge of Libre.\r\nWhy we need another app is beyond me.  There are times this happens and I am aware of possibly similar scenarios in case of Dexcom.  So, if this is similar, we cannot do much about it. But, without knowing that, I have to know why it is we don't do what that other app does before I can attempt to change xDrip.\r\n\r\n@tzachi-dar Do you have any ideas?"
+  },
+  {
+   "id": 2453405564,
+   "user": "Teute0815",
+   "created_at": "2024-11-03T12:11:49Z",
+   "body": "But isn't that something that would've had probably come up prior to 06.25 at some point, if that would've had been an issue? Just like the G7 issue did?\r\n\r\nAccording to PR #3531 there was a status/Age problem with overlapping G7 sensors. I never had those problems with a Libre.\r\nThe Libre2 runs around 14 days + 14 hrs. The Libre3 unfortunately only around 14 days + 14 minutes. So many Libre users (myself included) often overlap as well by starting a new sensor (with juggluco - it's not possible with OEM app) while the old one is still active.\r\n\r\nI never encountered the \"G7\" status problem with the setting\r\nLibre3 Sensor -> juggluco -> Patched Libre broadcast -> source \"Libre patched\" -> xDrip-> Nightscout upload\r\n\r\nI can't tell for\r\nLibre3 Sensor -> juggluco -> Local Webserver -> source \"Nightscout follower\" -> xDrip-> Nightscout upload\r\nas I just started using that.\r\n\r\nMy current sensor is quite new, so I won't start another one. But I could do that in 11 days. \r\nWhat exactly would I have to do to try and replicate the G7 issue?\r\nOr can I do anything now to try and replicate?\r\nI'm still not sure about the difference between \"xDrip connection\" and \"Sensor start\" you're reffering to. Can't I establish a new xDrip connection (how?) now and see, if I still see the correct status of my already started sensor?\r\n\r\nIf new/old \"xDrip connection\" means the time of choosing a source and receiving data for the first time. That's exactely what I've done the past days. I first used \"Libre patched\" and later \"Nightscout Follower\". I switched back and forth several times. In both scenarios at any time it showed the same start date/age (in the old working version 6.11)\r\n@Navid200 \r\n@PhilTU "
+  },
+  {
+   "id": 2453407280,
+   "user": "Navid200",
+   "created_at": "2024-11-03T12:17:01Z",
+   "body": "@Teute0815 \r\n\r\n> But isn't that something that would've had probably come up prior to 06.25\r\n\r\nYou have a point.\r\nAnd that's why I opened my submission: https://github.com/NightscoutFoundation/xDrip/pull/3750\r\n\r\nI have changed that submission to draft to ensure that our lead developer sees that I am concerned and have questions.  I would just like a conversation about it before it is merged.  If our lead developer sees this conversation and merges it, I am perfectly fine.  \r\n\r\nThanks for reporting this and thanks for your patience."
+  },
+  {
+   "id": 2453409537,
+   "user": "Teute0815",
+   "created_at": "2024-11-03T12:24:53Z",
+   "body": "Thanks again @Navid200 for your work. If I can do anything in the meantime to try and test/replicate (with 6.11) some of your concerns as an actual Libre user, just let me know."
+  },
+  {
+   "id": 2453515538,
+   "user": "PhilTU",
+   "created_at": "2024-11-03T18:08:41Z",
+   "body": "> I'm still not sure about the difference between \"xDrip connection\" and \"Sensor start\" you're reffering to. Can't I establish a new xDrip connection (how?) now and see, if I still see the correct status of my already started sensor?\r\n\r\nStop sensor / Start sensor (say \"not started today\" if asked) would be one option. Or changing hardware data source between L2 patched and Nightscout follow. Probably wise to reboot in between. "
+  },
+  {
+   "id": 2453721044,
+   "user": "Teute0815",
+   "created_at": "2024-11-04T02:27:00Z",
+   "body": "> Stop sensor / Start sensor (say \"not started today\" if asked) would be one option.\r\n\r\nIf one uses juggluco with xDrip, they never stop and/or start sensor in xDrip (don't have to). That data comes directly from juggluco. so, juggluco resets the sensor data in xDrip. I haven't stopped or started a sensor since using proper Libre patched app. As far as I remember, for \"real\" Libre2 patched I had to stop the sensor, otherwise the new data would've not been received.\r\n\r\nI \"virtually\" stopped sensor and started a new one just now with xDrip, which of course displayed the date/age of the time I picked in Status page first. With the first new value coming through source it reset to the right time (1st November).\r\n\r\n>Or changing hardware data source between L2 patched and Nightscout follow. Probably wise to reboot in between.\r\n\r\nGoing back and forth between sources I've done several times already as mentioned above. The start date and age was always the same and the right one (1st November).\r\n> If new/old \"xDrip connection\" means the time of choosing a source and receiving data for the first time. That's exactely what I've done the past days. I first used \"Libre patched\" and later \"Nightscout Follower\". I switched back and forth several times. In both scenarios at any time it showed the same start date/age (in the old working version 6.11)"
+  }
+ ]
+}

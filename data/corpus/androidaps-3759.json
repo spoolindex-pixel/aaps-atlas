@@ -1,0 +1,63 @@
+{
+ "id": 2797052985,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3759,
+ "title": "[Bug] Omnipod not pairing properly after update",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3759",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-01-18T16:07:12Z",
+ "closed_at": "2025-01-19T21:10:30Z",
+ "comment_count": 8,
+ "body": "Updated yesterday, bug started today when I changed pumps. Updated from 3.2.0.1 to 3.3.1.2, and it prompted me to pair with \"TWI Board\" which it never has before. Now after a bunch of time, every time it tries to handshake it stops abruptly and disconnects, trying again repeatedly. The only way to temporarily fix it is to unpair and repair TWI Board. \n\n https://github.com/user-attachments/assets/4ef0237e-6836-42d4-9313-76cfebc95bef\n\nI'm trying to upload logs but it isn't working\n",
+ "comments": [
+  {
+   "id": 2599790970,
+   "user": "Not-AriStienfeld",
+   "created_at": "2025-01-18T17:04:50Z",
+   "body": "Issue is with new Bluetooth bonding, I suggest making an option to use legacy or new bonding under omnipod settings"
+  },
+  {
+   "id": 2599793531,
+   "user": "vanelsberg",
+   "created_at": "2025-01-18T17:12:10Z",
+   "body": "Maybe the problem is the unpair/repair process for the TWI device ...\n"
+  },
+  {
+   "id": 2599857734,
+   "user": "jaredwhittle",
+   "created_at": "2025-01-18T19:55:27Z",
+   "body": "Is there an article or comment somewhere that talks about the new bluetooth bonding and why AAPS changed to it? Thanks!"
+  },
+  {
+   "id": 2599862263,
+   "user": "vanelsberg",
+   "created_at": "2025-01-18T20:11:34Z",
+   "body": "> Is there an article or comment somewhere that talks about the new bluetooth bonding and why AAPS changed to it? Thanks!\n\nSee [Can't connect to Omnipod DASH pods after Android 15 upgrade](https://github.com/nightscout/AndroidAPS/issues/3471#issuecomment-2599803223)\n"
+  },
+  {
+   "id": 2600404241,
+   "user": "Not-AriStienfeld",
+   "created_at": "2025-01-19T01:50:27Z",
+   "body": "> > Is there an article or comment somewhere that talks about the new bluetooth bonding and why AAPS changed to it? Thanks!\n> \n> See [Can't connect to Omnipod DASH pods after Android 15 upgrade](https://github.com/nightscout/AndroidAPS/issues/3471#issuecomment-2599803223)\n> \n\nI tried all this and it still wouldn't work, repeating the same error until eventually twi board stopped showing up in Bluetooth overall. I have a pixel 8 pro running android 15. I tried connecting in an older version but it seems like something it did made it so the pump straight up wouldn't connect anymore. I really think this new bluetooth mode should be toggleable, since I had zero issues with the normal Bluetooth mode.\n\n"
+  },
+  {
+   "id": 2600582563,
+   "user": "campbellgl",
+   "created_at": "2025-01-19T03:53:57Z",
+   "body": "Pixel 8a, Android 15. Mine worked fine with the existing pod after updating to 3.3.1.2 (asked me to bond first thing and it worked normally). Then I changed the pod, which activated fine but then never connected again (got the loud warnings, etc.). I downgraded back to 3.3.1.0 and it was fine again. (At some point I restarted phone, but can't remember if that was before or after the downgrade.) I tried updating back to 3.3.1.2 and it seems fine again."
+  },
+  {
+   "id": 2601022993,
+   "user": "MilosKozak",
+   "created_at": "2025-01-19T21:10:30Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/8abfbd51842f6f9344f5764bd93f5a78113753a0"
+  },
+  {
+   "id": 2601026416,
+   "user": "vanelsberg",
+   "created_at": "2025-01-19T21:22:17Z",
+   "body": "Can't test this as I am not on Android 15, and currently not on DASH.\nAs **bonding is now optional**, can any of you please test and report back here?"
+  }
+ ]
+}

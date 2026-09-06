@@ -1,0 +1,35 @@
+{
+ "id": 4935483977,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4990,
+ "title": "CareLevo pairing/connection fails on Android OS 13",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4990",
+ "state": "closed",
+ "labels": [
+  "carelevo"
+ ],
+ "created_at": "2026-07-21T04:41:34Z",
+ "closed_at": "2026-07-22T11:48:04Z",
+ "comment_count": 3,
+ "body": "[AndroidAPS.log](https://github.com/user-attachments/files/30210642/AndroidAPS.log)\n\n### Build version\n- 4.0.0-dev-a (d888) (branch: carelevo)\n\n### Time of issue\n- Reproduced repeatedly during testing\n\n### Environment\n- Branch: carelevo\n- Android OS version: 13\n- Comparison result: connection flow appears to work normally on Android 14 and above\n\n### Steps to reproduce\n1. Open the CareLevo plugin in AAPS\n2. Start pairing/connection with the patch\n3. Proceed through the normal pairing and connection flow\n\n### Expected behavior\n- Pairing and connection should complete successfully.\n\n### Actual behavior\n- Pairing/connection does not complete properly on Android OS 13.\n- In our testing, the same connection flow appears to work normally on Android 14 and above.\n\n### Logs\n- Full logs are attached.\n- Relevant excerpt:\n\n11:52:39.246 [DefaultDispatcher-worker-1] E/PUMPCOMM: [CarelevoPatchConnectViewModel$startConnect$1.invokeSuspend():268]: newBle.pairing FAILED\napp.aaps.pump.carelevo.ble.gatt.GattDiscoveryException: disconnected\n\tat app.aaps.pump.carelevo.ble.gatt.BleTransportGattConnection.onConnectionStateChanged(BleTransportGattConnection.kt:172)\n\tat app.aaps.pump.carelevo.ble.CarelevoBleTransportImpl$gattCallback$1.onConnectionStateChange(CarelevoBleTransportImpl.kt:83)\n\tat android.bluetooth.BluetoothGatt$1$5.run(BluetoothGatt.java:363)\n\tat android.bluetooth.BluetoothGatt.runOrQueueCallback(BluetoothGatt.java:1003)\n\tat android.bluetooth.BluetoothGatt.-$$Nest$mrunOrQueueCallback(BluetoothGatt.java:0)\n\tat android.bluetooth.BluetoothGatt$1.onClientConnectionState(BluetoothGatt.java:358)\n\tat android.bluetooth.IBluetoothGattCallback$Stub.onTransact(IBluetoothGattCallback.java:135)\n\tat android.os.Binder.execTransactInternal(Binder.java:1321)\n\tat android.os.Binder.execTransact(Binder.java:1280)\n```",
+ "comments": [
+  {
+   "id": 5033332167,
+   "user": "MilosKozak",
+   "created_at": "2026-07-21T11:23:10Z",
+   "body": "fixed by https://github.com/nightscout/AndroidAPS/commit/94db69e76baac2d4f7fddf6a730b1ef6fe7befdd\ntest please"
+  },
+  {
+   "id": 5041867620,
+   "user": "Kisu-Choi",
+   "created_at": "2026-07-22T04:29:34Z",
+   "body": "I tested it, but in our environment the isBonded change alone was not enough. I opened a PR with additional changes, including Android OS 13 handling and scan selection updates: [3f92eb1]"
+  },
+  {
+   "id": 5045400651,
+   "user": "MilosKozak",
+   "created_at": "2026-07-22T11:48:04Z",
+   "body": "merged"
+  }
+ ]
+}

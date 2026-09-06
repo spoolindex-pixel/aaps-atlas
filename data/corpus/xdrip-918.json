@@ -1,0 +1,50 @@
+{
+ "id": 457321035,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 918,
+ "title": "Problem adding treatment with more than 2 decimal ",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/918",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "duplicate",
+  "ui",
+  "carbs"
+ ],
+ "created_at": "2019-06-18T08:05:17Z",
+ "closed_at": "2021-03-15T16:39:55Z",
+ "comment_count": 5,
+ "body": "**Problem:**\r\nWhen adding a treatment with 3 or more decimal places, the last 2 or 3 are considered as units of insulin:\r\n + 3.125 » 25 units\r\n + 0.148 » 48 units\r\n + 1.2563 » 563 units\r\n(the same for carbs with specific differences)\r\n\r\n<img src=\"https://user-images.githubusercontent.com/16206915/59666375-99aa7b80-91ac-11e9-8e2e-a6d032a56333.png\" width=\"300\"/><img src=\"https://user-images.githubusercontent.com/16206915/59666377-99aa7b80-91ac-11e9-990e-4c8e5dbdac18.png\" width=\"300\"/><img src=\"https://user-images.githubusercontent.com/16206915/59666378-9a431200-91ac-11e9-9371-04f79ca9b2c3.png\" width=\"300\"/><img src=\"https://user-images.githubusercontent.com/16206915/59666379-9a431200-91ac-11e9-85c4-5ede0d1cde62.png\" width=\"300\"/>\r\n\r\nNot a major problem, but a user reported his son was instroducing values like this taking a huge imapact in what he was receiving as a follower\r\n\r\nI think the problem is at Simulation.class\r\n  `private void createTreatment(String allWords) {\r\n   allWords = allWords.replaceAll(\"([0-9].[0-9])([0-9][0-9])\", \"$1 $2\");   \r\n }`\r\n\r\n**Suggestions:**\r\n + Assuming we want a maximum of 2 decimal places (truncate)\r\n  `allWords = allWords.replaceAll(\"([0-9].[0-9]^{0,2})([0-9]?)([0-9]?)\",\"$1\")`\r\n  _or_\r\n  `allWords = allWords.replaceAll(\"([0-9].[0-9][0-9])([0-9]?)([0-9]?)\", \"$1\");`\r\n  + Accepting all decimal places\r\n    `allWords = allWords.replaceAll(\"([0-9].[0-9])([0-9]))\", \"$1\");`\r\n\r\nAll help and suggestions will be more than welcome.\r\nThank you\r\n\r\n\r\n",
+ "comments": [
+  {
+   "id": 776911834,
+   "user": "Navid200",
+   "created_at": "2021-02-10T18:18:41Z",
+   "body": "@filipedanunes Is this still the case?\r\nThanks"
+  },
+  {
+   "id": 777230852,
+   "user": "tolot27",
+   "created_at": "2021-02-11T06:31:38Z",
+   "body": "I could not reproduce this behavior with insulin units but with carbs."
+  },
+  {
+   "id": 777603871,
+   "user": "filipedanunes",
+   "created_at": "2021-02-11T16:04:24Z",
+   "body": "hello, just tested on versionb978bec-2020.11.27 and it seems solved for units. The issue remains for carbs"
+  },
+  {
+   "id": 782296000,
+   "user": "Navid200",
+   "created_at": "2021-02-19T19:36:03Z",
+   "body": "Duplicate: https://github.com/NightscoutFoundation/xDrip/issues/565"
+  },
+  {
+   "id": 799566734,
+   "user": "Navid200",
+   "created_at": "2021-03-15T16:39:55Z",
+   "body": "I am closing this because it represents the same bug reported in https://github.com/NightscoutFoundation/xDrip/issues/565.\r\nIf I  am mistaken, please let me know.\r\n\r\nYou can post in that existing issue if you like."
+  }
+ ]
+}

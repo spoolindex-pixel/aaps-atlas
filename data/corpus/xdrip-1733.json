@@ -1,0 +1,48 @@
+{
+ "id": 895027239,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1733,
+ "title": "Initiative: Better Support for Android Wear ",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1733",
+ "state": "closed",
+ "labels": [
+  "device-wear",
+  "type-discussion"
+ ],
+ "created_at": "2021-05-19T06:07:34Z",
+ "closed_at": "2023-08-14T22:15:23Z",
+ "comment_count": 5,
+ "body": "Some news coming out of Google I/O this week is that Google seems to be suggesting they will be putting effort into Android Wear/Wear OS again. There's not a ton of details yet, but the [Android Developer page on Wear](https://developer.android.com/wear) mentions \"big changes to the platform\" and \"major improvements to the core experience\" are coming. With this will likely come a new API release, new smartwatches that are more heavily promoted by Google/Samsung, and potentially more users of xDrip who wish to make use of our existing Wear support.\r\n\r\nGiven this, I think it's worth discussing how xDrip can be best prepared for upcoming changes in the Wear ecosystem. My understanding is that we currently are in violation of several best-practices and soon-to-be or even currently-enforced guidelines around building an Android app that functions on phone and watch. One of these is https://github.com/NightscoutFoundation/xDrip/issues/1648 which affects how we sync the app to wearables.\r\n\r\nWe also have some extreme code duplication that goes on between the app/src and wear/src folders which is not kept in sync very well -- essentially all development occurs in app/src and is then very infrequently backported to wear/src on an irregular basis. This seems like an area of significant concern for getting xDrip's codebase in to a more maintainable state. I wonder whether it would be possible to avoid this code duplication entirely and get everything important into shared code that can be used by both modules.\r\n\r\nThe ability for xDrip running on Wear to function as a collector is also an area that is potentially worth re-investigating. My understanding, at least back from mid-2018 when I used xDrip and Android Wear, was that only one or two specific watches functioned properly as collectors due to some Bluetooth stack related bug affecting watches. I have no clue whether a significant chunk of the xDrip community still uses that specific ~4+ year old watch today, or whether there's been any recent checks done to see whether newer watches function okay as collectors. Needless to say, it would be amazing if we could test whether new Wear devices could be workable as collectors for G5/G6.\r\n\r\nWhile I don't intend for this GitHub issue to serve as explicit tracking for some of the specific issues mentioned here, I hope this can spark a conversation around how we can improve xDrip to build a truly great wearable experience for Android Wear users in the near future.",
+ "comments": [
+  {
+   "id": 844163729,
+   "user": "tolot27",
+   "created_at": "2021-05-19T14:32:28Z",
+   "body": "@jwoglom Thank you for sharing your thoughts with us. Reducing the code redundancy is already on our list (#1522). Maybe, you can have a look on this topic?\r\n\r\nGetting more Android Wear watches as a collector would be really great."
+  },
+  {
+   "id": 844200560,
+   "user": "jwoglom",
+   "created_at": "2021-05-19T15:11:44Z",
+   "body": "@tolot27 Happy to try and collaborate on some of those tasks. If reducing the code redundancy required moving a ton of code from app/ into a shared folder, that would probably break a lot of PRs in progress. So if you're aware of a way to do that in a clean way (maybe module by module, rather than everything all in one commit?) I'd be happy to help. IMO, fixing the split between wear and app code seems like a good first step for making progress towards these goals."
+  },
+  {
+   "id": 885485614,
+   "user": "Martinspire",
+   "created_at": "2021-07-23T08:30:50Z",
+   "body": "Yeah, if I look at the current install process its not really suited for anybody but tech savy, which is a shame. I think with the WearOS 3 version, that will combine Google, Samsung and Fitbit devices to a single platform, its time to upgrade xDrip so it can run standalone on watches without the need for a phone. Reason being that it enables users to have more freedom because its easier to keep your watch around than it is your phone. Especially the ladies that never have any pockets to speak of.\r\nSince its a single platform with more constraints, it might be easier to maintain though I do expect its more difficult to set it up. But having a watch as your prime communicator would be fine for most people. Perhaps that could in turn then talk with an app or something but I think its worth to pursuit a different tactic for the watch faces. Especially seeing the major shift of the platform and the hassle of connecting it to phones continuously.\r\n\r\nRight now I wouldn't suggest xdrip on watches for anybody that isn't techsavy. I would rather suggest a Fitbit Versa + Glance Watchface since the setup for that is 10 times easier and less prone to mistakes. I would love it if xDrip is able to reach the same level of user-friendliness. I might be able to set up xDrip for my mom, but what happens if she runs into issues? Not to mention that I think the time has come that a phone is no longer needed for something like this."
+  },
+  {
+   "id": 907642682,
+   "user": "mk89pwnz",
+   "created_at": "2021-08-28T15:33:11Z",
+   "body": "Would love to see some updates to WearOS, now it's rly hard to use and compared to mi band 4 functionality vise it's worse. Loved when you got a call at night when you are low. Now its just a simple notification and vibrates 1 time and you get a repeated one after 1 min. i guess. So far WearOS 3 is looking very pure :( Pure battery life, and lack of features that really matter. "
+  },
+  {
+   "id": 1678147915,
+   "user": "Navid200",
+   "created_at": "2023-08-14T22:11:15Z",
+   "body": "It will be great if someone creates a companion app to take care of WearOS the same way as what happened with MiBand.\r\nI am going to convert this to a discussion."
+  }
+ ]
+}

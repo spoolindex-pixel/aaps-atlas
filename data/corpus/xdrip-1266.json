@@ -1,0 +1,126 @@
+{
+ "id": 578477595,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1266,
+ "title": "Ghost fingerprick calibration values entered.",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1266",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "calibration"
+ ],
+ "created_at": "2020-03-10T10:26:21Z",
+ "closed_at": "2023-08-14T21:41:05Z",
+ "comment_count": 20,
+ "body": "### Version: 1910271159\r\n### Using: MiaoMiao 2 on Libre, Samsung galaxy s9+, Android 10\r\n### Logs submitted today as of 10:20am GMT with the comment tr*****.ok****@gmail.com.\r\n\r\nAt 07:19 this morning i had a ghost fingerstick calibration added that whilst not even entered by me, was also around 4 mmol above my current reading. I was not even in the same room as my phone at the time, which is slightly worrying. \r\n\r\nI have had this happen before as well but have never caught it  to get logs etc and then forgotten about it. Each time this happens it is a value that is straight away used for calibration and then i am required to override the calibration to ensure it does not screw with my calibration curve. ",
+ "comments": [
+  {
+   "id": 597062958,
+   "user": "jamorham",
+   "created_at": "2020-03-10T12:37:09Z",
+   "body": "Are you using a bluetooth glucose meter? What timezone are you in?"
+  },
+  {
+   "id": 597084882,
+   "user": "tristanokeefe",
+   "created_at": "2020-03-10T13:27:32Z",
+   "body": "I am using no bluetooth glucose meter, i use an Accu-check mobile which doesnt have any bluetooth capability. I am in GMT"
+  },
+  {
+   "id": 597100742,
+   "user": "jamorham",
+   "created_at": "2020-03-10T13:59:18Z",
+   "body": "Are you using Sync followers or Nightscout with the treatment download facility enabled?"
+  },
+  {
+   "id": 597126799,
+   "user": "tristanokeefe",
+   "created_at": "2020-03-10T14:47:51Z",
+   "body": "I have nightscout enabled and 1 follower uses it but does not have treatment download enabled."
+  },
+  {
+   "id": 601456701,
+   "user": "okeetris",
+   "created_at": "2020-03-19T23:06:01Z",
+   "body": "Has just happened again. Have uploaded logs with same comment. This time I had recently done a blood sugar reading but not on a connect able blood meter. Had just taken my phone off a wireless charger and turned on the torch. "
+  },
+  {
+   "id": 698570908,
+   "user": "simonpickering",
+   "created_at": "2020-09-24T20:26:49Z",
+   "body": "I have the same problem, but I had assumed mine was related to using my Bluetooth Contour Next One - I get both phantom high and low readings and they are very very different to my actual blood glucose (and as I have auto-select calibration values it messes up my calibration as is the case for the OP). \r\n\r\nInterestingly I also eventually see the actual reading, but for some reason the ghost/phantom one is selected for auto-calibration. I need to double check and see if the actual reading appears at the same time as the phantom reading, but I have a feeling it doesn't appear until later/I unselect the phantom reading in the calibration readings page.\r\n\r\nI've also sent in a pair of logs over the past couple of weeks with a comment about this. My email is almost exactly my github name + gmail.com. I'm about to send in another one now (the previous two I was low and the phantom was high, this one I'm high post-exercise and the phantom was very much lower. I've now switched off auto-cal!!!)\r\n\r\nI'm happy to try to debug if you've any thoughts as to where to start."
+  },
+  {
+   "id": 715707371,
+   "user": "claresloggett",
+   "created_at": "2020-10-24T05:13:08Z",
+   "body": "I have had this issue happen too: ghost calibrations appearing when I have not entered any real fingerstick reading recently, and throwing my BGL calibration way out of whack. I've had it happen in the past but have only managed to document it properly this time. This time, there is a plausible cause: a real fingerstick reading entered some hours earlier was processed late for some reason, resulting in an apparent \"ghost\" calibration.\r\n\r\nHere is a screenshot of xDrip+ just after it (incorrectly) calibrated. The \"ghost calibration\" of 5.8mmol/L happens around 18:13 and drives my CGM BGL to 5.6mmol/L - I did not enter a fingerstick reading at this time, and I didn't know where this calibration had come from. As soon as I saw this happen, I did a real fingerstick reading, and got a value of 11.7mmol/L. So the CGM reading before the \"ghost calibration\" had been quite accurate, and the 5.8 was way off. I entered the 11.7 reading and had to use \"Override Calibration\", indicating that xDrip+ really thought there had been a recent calibration. You can also see that about 3 hours earlier, there is a fingerstick reading that looks like the same value - that one is a real entry! I entered it using the Treatments dialog.\r\n\r\n<img src=\"https://user-images.githubusercontent.com/1815107/97068274-e52b3000-1611-11eb-8681-1fa29685b7c8.png\" width=50%>\r\n\r\nHere is the event log for the same time period:\r\n\r\n<img src=\"https://user-images.githubusercontent.com/1815107/97068326-23285400-1612-11eb-820a-8b90f982eb47.png\" width=50%>\r\n\r\nThis seems to explain what happened. At 15:08 I entered a fingerstick reading of 5.8 mmol/L. I have the setting `Settings -> Less common settings -> Advanced calibration -> Use Treatment BG values` set to `Automatic`. So, this reading was queued as a calibration. But then at 18:13, about 3 hours later, it is apparently processed as a calibration and applied to the current sensor reading, not the past sensor reading. You can also see the (correct) BGL of 11.7 that"
+  },
+  {
+   "id": 717662645,
+   "user": "claresloggett",
+   "created_at": "2020-10-28T02:55:02Z",
+   "body": "Another example occurred yesterday, this time making xDrip+ and AAPS think I was high rather than low:\r\n\r\n<img src=\"https://user-images.githubusercontent.com/1815107/97384983-e9fb2700-1924-11eb-9e1a-aeaeeed966ad.png\" width=50%>\r\n\r\n<img src=\"https://user-images.githubusercontent.com/1815107/97384990-ec5d8100-1924-11eb-9d17-831f889a0cbf.png\" width=50%>\r\n\r\nAs you can see from the log the true fingerstick reading was 4.3 mmol/L.\r\n\r\nI won't post future examples, just wanted to show that the pattern in the logs seems to be consistent.\r\n\r\nAlso, here is the calibration graph - one observation here is that ghost calibration is clearly way out of line with the other readings, yet it is still strongly \"believed\" - the calibration line has been shifted way over in order to intersect it. Are previous calibrations are ignored in favour of the new one because they're too old? There is a calibration point 16 hours ago (kind of hidden behind the one 2 days ago).\r\n\r\n<img src=\"https://user-images.githubusercontent.com/1815107/97385440-c97f9c80-1925-11eb-8cc5-f9e4dd344bb3.png\" width=50%>\r\n"
+  },
+  {
+   "id": 894677014,
+   "user": "Navid200",
+   "created_at": "2021-08-07T16:41:45Z",
+   "body": "@claresloggett \r\nWhat happens if you change the setting from Automatic mode to never use them?"
+  },
+  {
+   "id": 933024734,
+   "user": "simonpickering",
+   "created_at": "2021-10-03T21:01:21Z",
+   "body": "Interestingly after a period of not having these ghost calibrations I'm now getting them quite consistently since changing phone. I've just uploaded a set of logs."
+  },
+  {
+   "id": 954989769,
+   "user": "Navid200",
+   "created_at": "2021-10-29T19:16:31Z",
+   "body": "I have never experienced this issue.  I have been using xDrip non-stop for more than 3 years now.  I started with G5 and now use G6.\r\nI don't have a Bluetooth blood glucose meter.  I don't download treatments from Nightscout or anywhere else.\r\nTo calibrate, I just do that from the top left menu button.  I never enter a blood glucose reading into the treatment menu.\r\nI always have automatic calibration disabled.\r\n\r\nIs any of you who is experiencing this problem willing to do what I do and report if you still experience the problem?\r\n\r\nIf your problem is resolved and then all of you can confirm exactly which option is the cause of this, we may have a chance of finding the cause and solving the issue.\r\n"
+  },
+  {
+   "id": 955090523,
+   "user": "simonpickering",
+   "created_at": "2021-10-29T22:55:47Z",
+   "body": "For me it comes and goes, I'd not seen any ghost points for months (with automatic calibrations turned on) and then they started again when I switched to a new phone afair. I can't see the phone having been the cause but rather (re)starting the sensor (which has afaicr been the case in the past). I disabled automatic calibrations after a few ghost points and they've not come back. I'll continue running like this and see if any occur (i.e. with Bluetooth connection but without automatic calibrations turned on) as it at least eliminates a single cause at a time.\r\n\r\nI'll have to open another ticket for this, but it would be quite useful to be able to save the logs locally to look at (at the same time as looking at the code) as at the moment the only options are to email them somewhere and/or to screenshot them which is very slow and error prone. - I've started issue #1864 for the this point."
+  },
+  {
+   "id": 969205999,
+   "user": "Navid200",
+   "created_at": "2021-11-15T18:41:37Z",
+   "body": "If you are experiencing this issue, would you please provide the required information here?\r\nhttps://github.com/Navid200/xDrip/discussions/116"
+  },
+  {
+   "id": 998816822,
+   "user": "TiredNConfused",
+   "created_at": "2021-12-21T14:19:19Z",
+   "body": "Hi, I've been having this off and on. Have just uploaded logs. I had auto calibration turned on but have now turned it off to see if that stops it."
+  },
+  {
+   "id": 1000635019,
+   "user": "claresloggett",
+   "created_at": "2021-12-24T03:43:40Z",
+   "body": "Right after I reported this issue, I switched auto-calibration off, and can\nconfirm that stops it from occurring.\n\nRecently I've been trying out Libre2 sensors and therefore not using\nxDrip+, but I've just started using xDrip+ again with different sensors so\nI'll try turning auto-calibration back on after Christmas and see if the\nissue recurs.\n\nOn Wed, 22 Dec 2021 at 01:19, TiredNConfused ***@***.***>\nwrote:\n\n> Hi, I've been having this off and on. Have just uploaded logs. I had auto\n> calibration turned on but have now turned it off to see if that stops it.\n>\n> —\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/1266#issuecomment-998816822>,\n> or unsubscribe\n> <https://github.com/notifications/unsubscribe-auth/AAN3EQ3C3U4EDGRLDSQIRMLUSCEHHANCNFSM4LE3UV7Q>\n> .\n> You are receiving this because you were mentioned.Message ID:\n> ***@***.***>\n>\n"
+  },
+  {
+   "id": 1000637271,
+   "user": "Navid200",
+   "created_at": "2021-12-24T03:53:50Z",
+   "body": "Please disable automatic calibration and let us know if the problem stops.  \r\n\r\n| User | Problem solved after disabling automatic calibration |  \r\n|------|-----------------------------------------------------------|  \r\n| @tristanokeefe | ? |  \r\n| @okeetris | ? |  \r\n| @simonpickering | Yes |  \r\n| @claresloggett | Yes |  \r\n| @TiredNConfused | ? |  "
+  },
+  {
+   "id": 1000820060,
+   "user": "simonpickering",
+   "created_at": "2021-12-24T12:24:18Z",
+   "body": "I can confirm that I've not had a problem since disabling auto-cal straight after my last post above (29 Oct) - I didn't respond as I was attempting to start digging into the code to see if I could add more than a confirmation!"
+  },
+  {
+   "id": 1678111892,
+   "user": "Navid200",
+   "created_at": "2023-08-14T21:41:05Z",
+   "body": "It seems auto-calibration is the cause."
+  }
+ ]
+}

@@ -1,0 +1,48 @@
+{
+ "id": 208755726,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 73,
+ "title": "Silence alarms with volume or power button press",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/73",
+ "state": "closed",
+ "labels": [
+  "enhancement",
+  "ux-alarm"
+ ],
+ "created_at": "2017-02-19T23:23:34Z",
+ "closed_at": "2017-03-20T13:57:54Z",
+ "comment_count": 5,
+ "body": "It would be great to silence/snooze the alarms with the press of either the volume buttons or the power button.  It would be the same as when silencing an incoming phone call.\r\n\r\nCase:  I was caught in church this morning with my xDrip+ alarm going off and in a panic trying to turn it off.  Luckily, I remembered the snooze button on my Pebble, but the ability to silence/snooze from the volume or power buttons would be great!",
+ "comments": [
+  {
+   "id": 283093211,
+   "user": "jamorham",
+   "created_at": "2017-02-28T16:40:40Z",
+   "body": "This is a very good idea in theory. But I don't know whether volume change events are easily available to us, especially as xDrip itself can be adjusting the system volume depending on the alarm profile.\r\n\r\nI did some quick googling about using `setMediaButtonReceiver` and it isn't clear to me whether this will work when xDrip is in the background. Some more research would be needed to understand if this is viable. If we did implement it I'm not sure if it should be enabled by default in case someone has their phone in their bag or something as we don't want to accidentally cancel an alarm.\r\n\r\nI myself also use the pebble snooze control button app!"
+  },
+  {
+   "id": 284073012,
+   "user": "jamorham",
+   "created_at": "2017-03-03T21:19:52Z",
+   "body": "I have been unable to reliably intercept the volume buttons on the lock screen / screen off which is where I think you need them. \r\n\r\nI can intercept the undocumented volume change action, but this doesn't work because within xDrip we set the volume to the desired alarm level and so it trips itself and I'm not sure it would be possible to make this reliable on all handsets and it would require somewhat of kludge to even work at all.\r\n\r\nI couldn't get the android media button receiver stuff to work but its not clear to me whether that even includes the volume buttons.\r\n\r\nWhat I have been able to make work is silencing the alarm by pressing the volume buttons from the app home graph screen.. This isn't ideal but it does make it that bit easier to manage at 3am etc.\r\n\r\nI will let you know when I've tested this enough to include it in a nightly release."
+  },
+  {
+   "id": 285765271,
+   "user": "jamorham",
+   "created_at": "2017-03-10T19:41:14Z",
+   "body": "You can now do this on the app home screen in the latest nightly release. \r\n\r\nAs mentioned before I haven't found a reliable way to do this when the phone is locked or outside of the app. "
+  },
+  {
+   "id": 285767921,
+   "user": "gregtcm",
+   "created_at": "2017-03-10T19:52:14Z",
+   "body": "Thank you so much for looking into this!  I wish I knew more about the\r\nAndroid platform to to help out with this.\r\n"
+  },
+  {
+   "id": 924879512,
+   "user": "Navid200",
+   "created_at": "2021-09-22T12:23:26Z",
+   "body": "One option, to avoid disturbing everyone around you in case of an alert, is to use the ascending volume profile:\r\nhttps://github.com/Navid200/xDrip/wiki/Ascending-Volume-Profile"
+  }
+ ]
+}

@@ -1,0 +1,51 @@
+{
+ "id": 1961849526,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2979,
+ "title": "[3.2.0.1] AAPSClient crash because of VirtualPump driver on NS sync",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2979",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-10-25T16:57:06Z",
+ "closed_at": "2023-10-27T19:48:56Z",
+ "comment_count": 6,
+ "body": "AAPSclient were working fine for about a day after built, but then became crashing on both my and my wife's phones.\r\nLogs shows that Pump driver error is forcing app to exit. How's that possible for aapsclient? \r\n```\r\n19:46:13.326 [Thread-8] D/PUMPQUEUE: [CommandQueueImplementation.add():184]: Adding: CommandReadStatus - READSTATUS Драйвер помпы изменен.\r\n19:46:13.331 [CommandQueueImplementationHandler] D/PUMPQUEUE: [CommandQueueImplementation.notifyAboutNewCommand$lambda$6():220]: Starting new thread\r\n19:46:13.344 [Thread-28] D/PUMPQUEUE: [QueueThread.run():123]: connection time 0s\r\n19:46:13.346 [Thread-28] D/PUMPQUEUE: [QueueThread.run():129]: performing READSTATUS Драйвер помпы изменен.\r\n19:46:13.350 [Thread-28] D/PUMPQUEUE: [CommandReadStatus.execute():25]: CommandReadStatus executed. Reason: Драйвер помпы изменен.\r\n19:46:13.452 [Thread-28] D/PUMPQUEUE: [QueueThread.run():148]: queue empty. disconnect\r\n19:46:13.455 [Thread-28] D/PUMPQUEUE: [QueueThread.run():152]: disconnected\r\n19:46:13.458 [Thread-28] D/PUMPQUEUE: [QueueThread.run():163]: thread end\r\n19:46:14.969 [main] D/CORE: [MainApp.onCreate():100]: onCreate\r\n19:46:14.996 [DefaultDispatcher-worker-1] D/CORE: [MainApp$onCreate$1.invokeSuspend():116]: Version: 3.2.0.1-aapsclient\r\n```",
+ "comments": [
+  {
+   "id": 1779707553,
+   "user": "justmara",
+   "created_at": "2023-10-25T17:08:41Z",
+   "body": " Yes, VirtualPump plugin starts invisibli for aapsclient and then at some point sends 'driver changed' event, that crashes app.\r\nThis is from aapsclient startup log\r\n```\r\n19:46:15.106 [DefaultDispatcher-worker-1] D/CORE: [PluginBase.setPluginEnabled():79]: Starting: Виртуальная помпа\r\n19:46:15.108 [DefaultDispatcher-worker-1] D/PUMP: [VirtualPumpPlugin.refreshConfiguration():396]: Pump in configuration: Accu-Chek Combo, PumpType object: ACCU_CHEK_COMBO\r\n19:46:15.109 [DefaultDispatcher-worker-1] D/PUMP: [VirtualPumpPlugin.refreshConfiguration():398]: New pump configuration found (ACCU_CHEK_COMBO), changing from previous (null)\r\n19:46:15.110 [DefaultDispatcher-worker-1] D/CONFIGBUILDER: [ConfigBuilderPlugin.loadPref():127]: Loaded: ConfigBuilder_PUMP_VirtualPumpPlugin_Enabled:true\r\n19:46:15.111 [DefaultDispatcher-worker-1] D/CONFIGBUILDER: [ConfigBuilderPlugin.loadPref():133]: Loaded: ConfigBuilder_PUMP_VirtualPumpPlugin_Visible:false\r\n```"
+  },
+  {
+   "id": 1779728753,
+   "user": "justmara",
+   "created_at": "2023-10-25T17:21:56Z",
+   "body": "ok, got it - somehow added broken record to `devicestatus` collection - this forces both aaps/aapsclient to crash on receiving it from NS"
+  },
+  {
+   "id": 1779991966,
+   "user": "olorinmaia",
+   "created_at": "2023-10-25T20:18:50Z",
+   "body": "Just curious, are you using NSClient v1 or v3 (ws on or off)?  I'm setting up an extra AAPSclient in my testrig to see if I can reproduce."
+  },
+  {
+   "id": 1780116721,
+   "user": "justmara",
+   "created_at": "2023-10-25T22:00:53Z",
+   "body": "I'm on v1 (because changing and applying profile via NS UI) WS On.\r\nReproducing is very simple: go to `/api-docs/`, there choose `POST /devicestatus`, try out, execute. It will add a devicestatus record with default values in all fields. This record will force AAPS/AAPSClient to exit on receiving it from NS.\r\nThis record wont appear in aaps app log, but it will trigger the pump changed event with immediate app close."
+  },
+  {
+   "id": 1781357506,
+   "user": "justmara",
+   "created_at": "2023-10-26T15:29:30Z",
+   "body": "seems to be it:\r\n```\r\njava.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 25955 path $[26].openaps\r\n\r\n\r\ncom.google.gson.stream.JsonReader.beginObject JsonReader.java:393\r\ncom.google.gson.internal.bind.ReflectiveTypeAdapterFactory$Adapter.read ReflectiveTypeAdapterFactory.java:386\r\ncom.google.gson.internal.bind.ReflectiveTypeAdapterFactory$1.readIntoField ReflectiveTypeAdapterFactory.java:212\r\ncom.google.gson.internal.bind.ReflectiveTypeAdapterFactory$FieldReflectionAdapter.readField ReflectiveTypeAdapterFactory.java:433\r\ncom.google.gson.internal.bind.ReflectiveTypeAdapterFactory$Adapter.read ReflectiveTypeAdapterFactory.java:393\r\ncom.google.gson.internal.bind.TypeAdapterRuntimeTypeWrapper.read TypeAdapterRuntimeTypeWrapper.java:40\r\ncom.google.gson.internal.bind.ArrayTypeAdapter.read ArrayTypeAdapter.java:72\r\ncom.google.gson.Gson.fromJson Gson.java:1227\r\ncom.google.gson.Gson.fromJson Gson.java:1137\r\ncom.google.gson.Gson.fromJson Gson.java:1047\r\ncom.google.gson.Gson.fromJson Gson.java:982\r\napp.aaps.plugins.sync.nsclient.services.NSClientService.onDataUpdate$lambda$14$lambda$13 NSClientService.kt:527\r\napp.aaps.plugins.sync.nsclient.services.NSClientService.$r8$lambda$T6uXFHeO4_jnAJPvIQh8WuxAJy4\r\napp.aaps.plugins.sync.nsclient.services.NSClientService$$ExternalSyntheticLambda0.run\r\n```"
+  },
+  {
+   "id": 1783426800,
+   "user": "MilosKozak",
+   "created_at": "2023-10-27T19:48:56Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/4dde47bc44562d5082516ca65296b92d318b7773"
+  }
+ ]
+}

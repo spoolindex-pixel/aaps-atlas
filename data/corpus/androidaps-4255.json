@@ -1,0 +1,63 @@
+{
+ "id": 3546420684,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4255,
+ "title": "Issue with dash pairing (not a known issue)",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4255",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-10-23T20:21:08Z",
+ "closed_at": "2025-11-23T22:29:43Z",
+ "comment_count": 8,
+ "body": "I just filled and paired my first Dash Pod — everything went smoothly. However, whenever a command is sent to the Pod, I get an Android toast message saying:\n\n\"Pairing from InplayBLE rejected\"\n\nThe message appears twice in a row, and then the command is executed successfully.\n\nIs this normal behavior? Everything seems to work, although each command takes about 30–60 seconds to go through.\n\nSystem:\nSamsung Galaxy S24\nAndroid 16\nAndroidAPS 3.3.2.1\n\nI attached a picture from the pod package and a screenrecord from the error. a friend told me insulet had changed the boards in the pods. I'm no expert :D \n\nhttps://github.com/user-attachments/assets/89e74789-d4f0-464e-975a-b2c8ea327d03\n![Image](https://github.com/user-attachments/assets/661eb57e-69cd-4272-9f38-a5fa5fd21796)\n \n",
+ "comments": [
+  {
+   "id": 3444468751,
+   "user": "olorinmaia",
+   "created_at": "2025-10-24T18:53:44Z",
+   "body": "Do you have the bond option enabled? If enabled, try disabling it and see if this pop-up goes away."
+  },
+  {
+   "id": 3473131268,
+   "user": "FreDiabetics",
+   "created_at": "2025-10-31T13:37:13Z",
+   "body": "@MilosKozak do you have any idea? Is there a possible way, that the new bluetooth boards causing these problems?\n@TebbeUbben  maybe you have an idea, I guess you wrote the dash hotfix for android 16.\n\n4 days ago I had different connection loop issue, pod is paired succesfully but aaps isn't able to connect or find the pod.\nI was trapped in a connection loop. \n\nI have a screenrecord to show you what I meant. Yesterday I got the same issue again, but I was able to get the pod back to work, after disabling and enabling bluetooth a few times I finally recieved a pairing request which was successful after the fourth time. I think these issues are caused by the changed bluetooth boards. \n\nhttps://github.com/user-attachments/assets/28740849-3d36-4e33-8ad0-d325bc844ded"
+  },
+  {
+   "id": 3473935634,
+   "user": "gregorybel",
+   "created_at": "2025-10-31T16:38:53Z",
+   "body": "Is there not a chance to implement similar timeouts like it is done for the accu check insight ?\n\n![Image](https://github.com/user-attachments/assets/bae472a6-6536-4fd9-9cfa-8394c64ee7fc)\n\nI often need to restart my phone to get the Bluetooth back on dash, never had such issue with the insight."
+  },
+  {
+   "id": 3482072165,
+   "user": "winni67",
+   "created_at": "2025-11-03T19:05:47Z",
+   "body": "I use AAPS 3.3.3.a+aisf3.1.0 on an Google Pixel 8a with Android 16. Since last Week I switched to the Omnipod Dash, because I was not able to connect my old Dana-R pump. There I got the message „Kommunikation mit xx:xx:xx:xx:xx:xx ist nicht möglich after inserting the right bluetooth pin. Trying a wrong pin gave the message, that the pin is wrong „Kopplung mit xx:xx:xx:xx:xx:xx nicht möglich. PIN oder Passkey fehlerhaft“. Trying the right pin again succeeds, but no pump firmware is shown in the pump tab on Android16. On my old Android11 system, there are no problems to connect the Dana-R. Now back to the Omnipod dash. Connecting it on my Android16 system,  activating the new Pod, inserting the cannula was not possible (Kanüle setzen). There I got the error message „Allgemeiner Fehler: app.aaps.pump.omnipod.dash.driver.comm.exceptions.ConnectException: Service not found: 1a7e-4024-e3ed-4464-8b7e-751e03d0dc5f“. After disabling and enabling bluetooth in the backround and then pressing „Erneut versuchen“ (Try it again), the cannula from the pod was inserted. I mean, that I had to connect to the bluetooth device „TWI BOARD“ again after disabling and enabling the bluetooth connection. Then the first pod runs the whole tree days. The second pod died today during sending a „Temporäre Basalrate abbrechen (intern über den Treiber)“ - „Fehler beim Senden des Befehls“. The pod beeped endless with some single beeps 4-5 beeps in longer intervalls and I was not able to reconnect the pod. The dash Firmware-Version was 4.10.0 / Bluetooth 1.4.0.\n\n**Problems solved**: Don‘t enable the „Bond BT device on Android 15+ …“ on Android 16. This option is for Android 15 only. The „+“ sign in the name of this option should be removed. "
+  },
+  {
+   "id": 3506120560,
+   "user": "kesslerj",
+   "created_at": "2025-11-08T07:53:06Z",
+   "body": "> [@MilosKozak](https://github.com/MilosKozak) do you have any idea? Is there a possible way, that the new bluetooth boards causing these problems? [@TebbeUbben](https://github.com/TebbeUbben) maybe you have an idea, I guess you wrote the dash hotfix for android 16.\n> \n> 4 days ago I had different connection loop issue, pod is paired succesfully but aaps isn't able to connect or find the pod. I was trapped in a connection loop.\n> \n> I have a screenrecord to show you what I meant. Yesterday I got the same issue again, but I was able to get the pod back to work, after disabling and enabling bluetooth a few times I finally recieved a pairing request which was successful after the fourth time. I think these issues are caused by the changed bluetooth boards.\n> \n>  Screen_Recording_20251029_065616_AAPS.mp4\n\nI use a Samsung Galaxy S22+ and have pretty much the same problem. Since the last two Android updates, I've been having constant connection problems with Dash. Sometimes it helps to turn Bluetooth on and off and force stop AAPS, but often I also have to restart my phone.\n\nThis is especially annoying when I want to deliver a bolus and have to restart my phone to do so (which means I sometimes forget to deliver the bolus).\n\nIn the [documentation](https://androidaps.readthedocs.io/en/latest/GettingHelp/GeneralTroubleshooting.html#samsung-phones), I found a note to turn off battery optimization for the “Bluetooth” system app. It seems to have improved things for a while.\n\nIf I can help with troubleshooting in any way, please let me know.\n\nAAPS version: 3.3.2.1\nPhone: Samsung Galaxy S22+\nAndroid version: 16"
+  },
+  {
+   "id": 3506821852,
+   "user": "Gohtraw",
+   "created_at": "2025-11-08T19:29:39Z",
+   "body": "Got Galaxy earbuds?\nI'd point my finger at some app spamming your pump with BT requests (like Mini, BMW,...).\nThe error message suggests \"InPlay BLE\" https://inplay-tech.com/ \nIn your cases specifically: auracast and the earbuds.\n"
+  },
+  {
+   "id": 3518510256,
+   "user": "winni67",
+   "created_at": "2025-11-11T19:46:21Z",
+   "body": "\n@kesslerj : Don‘t enable the Bond BT option on Android 16. It is only for Android 15. If there is a not disabled pod nearby, put it into the microwave (don’t start the microwave) to prevent connection loops. I found some helpful hint‘s on the discord WeAreNotWaiting/omnipod-dash channel.\n"
+  },
+  {
+   "id": 3521553191,
+   "user": "kesslerj",
+   "created_at": "2025-11-12T11:53:15Z",
+   "body": "> [@kesslerj](https://github.com/kesslerj) : Don‘t enable the Bond BT option on Android 16. It is only for Android 15. If there is a not disabled pod nearby, put it into the microwave (don’t start the microwave) to prevent connection loops. I found some helpful hint‘s on the discord WeAreNotWaiting/omnipod-dash channel.\n\nThanks @winni67, I hadn't activated the Bond option, but I seem to have found a solution in Discors: revoke the Nearby Devices permission for almost all other apps. It seems to be working quite well at the moment."
+  }
+ ]
+}

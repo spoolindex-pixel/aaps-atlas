@@ -1,0 +1,65 @@
+{
+ "id": 1059987524,
+ "repo": "nightscout/AndroidAPS",
+ "number": 973,
+ "title": "[3.0-beta6] EROS pod change - pod not properly disabled? ",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/973",
+ "state": "closed",
+ "labels": [
+  "omnipod eros"
+ ],
+ "created_at": "2021-11-22T10:46:26Z",
+ "closed_at": "2021-12-07T13:18:35Z",
+ "comment_count": 8,
+ "body": "Did a pod change on Saturday, eros pod to eros pod. Have seen this issue with previous pod changes on beta 4-6 as well. \r\n\r\nWhat apparently happens is the old pod is deactivated, but AAPS doesn't realize it. Every minute, the Pod history displays \"set false temp basal because pod is suspended\" . A notification pops up the first time with \"data is coming from different pump\", but doesn't come back. While this is going on, the Discard pod button shows up in Pod management, but when I tried pressing it, nothing happened except adding a Discard pod message in pod history, and then the same \"set fake basal\" message popped up again. \r\n\r\nI screen recorded everything after pressing Deactivate pod until I finished the pod change. (Edited a bit to to reduce file size) You can see pod history again at the end with several \"set fake basal\" messages ending with Initialize pod / insert cannula.\r\n\r\nhttps://user-images.githubusercontent.com/71758682/142847734-f9cccd1b-2266-49a4-8aeb-f0d4d778d840.mp4\r\n\r\n\r\n\r\n",
+ "comments": [
+  {
+   "id": 975454465,
+   "user": "samspycher",
+   "created_at": "2021-11-22T12:07:11Z",
+   "body": "Thanks for the video and clear explanation @kristinsmotz, very helpful! \r\n\r\nCould you perhaps also attach the log file for the time the video was recorded?"
+  },
+  {
+   "id": 975484567,
+   "user": "kristinsmotz",
+   "created_at": "2021-11-22T12:43:38Z",
+   "body": "I'll try to find it when the AAPS phone comes home tonight :) "
+  },
+  {
+   "id": 975980192,
+   "user": "kristinsmotz",
+   "created_at": "2021-11-22T22:40:17Z",
+   "body": "Sorry, I wasn't able to find the log file from Saturday. We do have to change the pod again tomorrow, so if the same thing happens, I'll export log then :) "
+  },
+  {
+   "id": 977239103,
+   "user": "kristinsmotz",
+   "created_at": "2021-11-23T22:41:33Z",
+   "body": "@samspycher \r\nHere are log files for today's Eros to Eros pod change. I screenrecorded again and the exact same thing happened, so I won't bore you with that video as well 😂\r\n\r\n[AndroidAPS_LOG_1637702662980.log.zip](https://github.com/nightscout/AndroidAPS/files/7591397/AndroidAPS_LOG_1637702662980.log.zip)\r\n"
+  },
+  {
+   "id": 977732281,
+   "user": "regiorunner",
+   "created_at": "2021-11-24T10:16:32Z",
+   "body": "I experience the same behavior when changing from Eros to Eros. \r\nIn addition I got a red bar on top of the AAPS screen stating the data did not match the pump (unfortunately forgot to take a screen shot).\r\nThe indicated time in the red bar was 23:54, which was after deactivating the previous Eros pod (23:52) and before activating a new Eros pod (23:56). I attached the log files around the pod change).\r\nIn my memory the red bar appeared some minutes after the new Eros pod was activated. \r\nI also attached a screenshot, indicating \"False temporary basal because insuline injection is suspende\r\n[AndroidAPS._2021-11-23_00-00-02_.2.zip](https://github.com/nightscout/AndroidAPS/files/7594717/AndroidAPS._2021-11-23_00-00-02_.2.zip)\r\n[AndroidAPS_2021-11-24_00-00_09-02.zip](https://github.com/nightscout/AndroidAPS/files/7594751/AndroidAPS_2021-11-24_00-00_09-02.zip)\r\nd\r\n![Screenshot_20211124-100158](https://user-images.githubusercontent.com/90383626/143219243-638c0c0a-5428-4287-a826-8df0f1a2521e.png)\r\n\""
+  },
+  {
+   "id": 985336096,
+   "user": "kristinsmotz",
+   "created_at": "2021-12-03T09:06:16Z",
+   "body": "@samspycher Update: moved to beta9, and had an eros to eros pod change this morning. I did NOT get this same error today. That may have been because the old pod ran out while bolusing (using the last few units for breakfast prebolus :D ). Only had one \"setting fake temp basal because pod is suspended\", followed by \"Pod Deactivated\", in pod history. I forgot to send myself the screen recording and logs before the AAPS phone went to school. But it took a good half hour between deactivating and activating new pod, and no more \"setting fake temp basal\" had shown up in Pod history during that time. So either it doesn't show up when pod has failed (024 RESERVOIR_EMPTY) or the problem was fixed in beta9. "
+  },
+  {
+   "id": 986736764,
+   "user": "kristinsmotz",
+   "created_at": "2021-12-06T12:36:37Z",
+   "body": "New update from pod change last night [beta9]. We still had the \"setting fake temp basal\" mulitiple times (every minute), and the \"data is coming from another pump\" once after deactivating pod. "
+  },
+  {
+   "id": 987918434,
+   "user": "MilosKozak",
+   "created_at": "2021-12-07T13:18:35Z",
+   "body": "this is fixed in dev and will be in beta10"
+  }
+ ]
+}

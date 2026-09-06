@@ -1,0 +1,27 @@
+{
+ "issue_id": 734,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/734",
+ "title": "Unihertz Atom Bluetooth Connection Lost Dexcom G6",
+ "symptom": "After the phone is out of range from the Dexcom G6 sensor for about 15-20 minutes, xDrip gets stuck in the 'Scanning' state and cannot reconnect; the only way to reconnect is to reboot the phone. Restarting the collector does not resolve it.",
+ "cause": "The Unihertz manufacturer's power saving additions to Android shut down xDrip (PowerSaveService forceStopThirdApp for com.eveningoutpost.dexdrip) even when background activity and battery optimization exemptions are enabled.",
+ "fix": "Use Unihertz battery optimization clean-up: set Battery Saver to off, set xDrip to 'not optimized' under Settings > Apps & Notifications > Advanced > Special app access > Battery Optimization, and under Settings > Smart Assistant > App Blocker untoggle Start Blocker, Background Blocker and Background Cleanup for xDrip.",
+ "settings_changed": [
+  "Battery Saver → off",
+  "Battery Optimization (xDrip) → not optimized",
+  "Start Blocker → untoggled",
+  "Background Blocker → untoggled",
+  "Background Cleanup → untoggled"
+ ],
+ "devices": [
+  "Unihertz Atom",
+  "Dexcom G6"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "ob1g5service",
+  "collector"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "my initial findings are that the problems are due to the manufacturers power saving additions to android which shut down xDrip."
+}

@@ -1,0 +1,101 @@
+{
+ "id": 989399438,
+ "repo": "nightscout/AndroidAPS",
+ "number": 664,
+ "title": "[Medtronic] Automation-triggered profile % changes cause lost pump connections",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/664",
+ "state": "closed",
+ "labels": [
+  "medtronic"
+ ],
+ "created_at": "2021-09-06T19:28:19Z",
+ "closed_at": "2021-11-14T00:41:34Z",
+ "comment_count": 14,
+ "body": "It's possible to trigger MDT pump connection failures that persist (until AAPS and RL are restarted), by enabling automation rules that change the profile %. \r\n\r\nTested by enabling automation rules that:\r\n- Temporarily (for 5 minutes) increase the active profile % to 120% when BG > 10mmol (if change in BG > -.3)\r\n- Temporarily (for 5 minutes) increase the active profile % to 140% when BG > 15mmol (if change in BG > -.3)\r\nThe rules would trigger quite often (e.g. for a forgotten bolus or during a persistent high), and occasionally would result in the lost pump connection. During periods that the rules didn't trigger (or if the rules were disabled), connection stability was solid.\r\n\r\nUpon changing the automation rules' duration to 10 minutes (instead of 5 minute durations), the bug still occurred (though less frequently).\r\n\r\nSince the bug doesn't occur every time the rule is triggered (nor every time that the rule is triggered and a microbolus is given), I'd guess that it's some combination of the profile change + microbolus + temp basal that triggers the issue. I've submitted a log of the problem (direct to @andyrozman and to the default log address) that hopefully reveals the trigger. Note that the log was generated immediately after the bug occurred.\r\n\r\n\r\nNotes:\r\n- Tested with https://github.com/andyrozman/AndroidAPS/tree/hotfix_mdt_2_8_2 with an MDT 554 (mysentry disabled) / Nexus 5x|Android 8 / OrangeLink fw v2.5\r\n- This issue seems to be distinct from #474 (RileyLink Initialization failures) which doesn't occur with the configuration above, but does occur if an S8 is used instead of the Nexus 5x even with automation disabled.\r\n- This issue also seems to be distinct from https://github.com/MilosKozak/AndroidAPS/issues/2121 (failed reconnect after lost MDT connection) as I was unable to replicate issue 2121 with the above build by bringing the pump and/or RileyLink out of range of the phone until a disconnection occurred and then back in range. Also, when issue 2121 did occur for me (in earlier builds) automation rules triggering profile % changes weren't required to trigger the bug.\r\n- I'm currently testing with an MDT 722 to see if the results are the same--I'll update the bug once I have enough data.",
+ "comments": [
+  {
+   "id": 915437932,
+   "user": "MilosKozak",
+   "created_at": "2021-09-08T17:38:53Z",
+   "body": "can you provide logs when this happen again?"
+  },
+  {
+   "id": 915664372,
+   "user": "rustymonkey",
+   "created_at": "2021-09-09T00:30:25Z",
+   "body": "Will do though it might take a few days (my son is currently out of town)."
+  },
+  {
+   "id": 921921491,
+   "user": "rustymonkey",
+   "created_at": "2021-09-17T16:19:09Z",
+   "body": "Update: I still don't have another good set of logs with the MDT 722 (since the original report, I've discovered that, at least with the 722, connection stability problems often arise when the OL battery starts getting low (the OL LEDs don't indicate that the battery has run out, but AAPS shows OL battery level of around 10%). I'm continuing to try to replicate the problem with the 722. If I can't, I'll try again with the 554.\r\n\r\nThat said, it might be a good idea for AAPS to improve reporting on OL battery status. i.e.:\r\n- Display the status directly on the MDT tab next to the MDT battery status (rather than forcing the user to go another level deep to view the status in the RL stats page)\r\n- Optionally display the status on the Overview page (i.e. next to pump battery, infusion set age, etc.)\r\n- Warning when battery < x (15%?) (optional) "
+  },
+  {
+   "id": 922353614,
+   "user": "Alamo04",
+   "created_at": "2021-09-18T18:39:18Z",
+   "body": "@rustymonkey \r\nThe Battery Status is shown on MDT Tab in dev versions, so I think it will come to the next Master too.\r\n![Screenshot_20210918-203846](https://user-images.githubusercontent.com/36486505/133905284-3d76a499-6936-439a-a30a-712cee170eac.png)\r\n"
+  },
+  {
+   "id": 922358625,
+   "user": "andyrozman",
+   "created_at": "2021-09-18T19:11:05Z",
+   "body": "Yeah this was added some time ago. First on Omnipod Eros driver and then few weeks later on Medtronic driver."
+  },
+  {
+   "id": 923264812,
+   "user": "rustymonkey",
+   "created_at": "2021-09-20T20:18:22Z",
+   "body": "Looks good! \r\n\r\nfyi, I sent a Debug log that hopefully illustrates the issue (to the logs email & andyrozman)\r\n"
+  },
+  {
+   "id": 924407895,
+   "user": "andyrozman",
+   "created_at": "2021-09-21T21:43:16Z",
+   "body": "Where are you testing this? Master or dev? Can you reproduce it on dev? "
+  },
+  {
+   "id": 925485862,
+   "user": "rustymonkey",
+   "created_at": "2021-09-23T03:46:08Z",
+   "body": "I'm using: https://github.com/andyrozman/AndroidAPS/tree/hotfix_mdt_2_8_2 \r\nWould you recommend a different build?\r\n\r\np.s. this problem didn't occur for a several weeks, but after it occurred once, it started recurring a couple of times over the past few days."
+  },
+  {
+   "id": 925586204,
+   "user": "Alamo04",
+   "created_at": "2021-09-23T07:59:53Z",
+   "body": "@rustymonkey \r\nDon't understand why you are using such an old fix.\r\n\r\nUse the AAPS Dev, there are all changes/fixes integrated. \r\nAttention: this one is using a new database.\r\nhttps://github.com/nightscout/AndroidAPS/tree/dev\r\n\r\nOr use the Master, that's the one that is created for DIY Loop.\r\nhttps://github.com/nightscout/AndroidAPS/tree/master"
+  },
+  {
+   "id": 925915075,
+   "user": "rustymonkey",
+   "created_at": "2021-09-23T15:20:28Z",
+   "body": "@Alamo04 \r\nAccording to github for the build I'm using \"This branch is 2 commits ahead, 1 commit behind nightscout:master. \" Unless I'm misunderstanding, it seems to include an MDT fix that isn't in the current 2.8.2 (Master) release?"
+  },
+  {
+   "id": 931437287,
+   "user": "rustymonkey",
+   "created_at": "2021-09-30T15:38:53Z",
+   "body": "Quick update re. testing on the 722. As described above, AAPS 2.8.2 (with MDT hotfix) will generally work flawlessly for a week+, but once the bug occurs, it tends to recur every day or two (I've submitted logs). \r\n\r\nWhat's I've since learned is that deleting the app cache solves the problem (so that AAPS is again working flawlessly).\r\nEDIT/CLARIFICATION: re-starting the phone / Orangelink will resolve the issue temporarily until it recurs within a day or two. Deleting the app cache solves the problem for a week+"
+  },
+  {
+   "id": 931583980,
+   "user": "MilosKozak",
+   "created_at": "2021-09-30T18:59:53Z",
+   "body": "@andyrozman do you have logs?"
+  },
+  {
+   "id": 965462921,
+   "user": "rustymonkey",
+   "created_at": "2021-11-10T15:56:08Z",
+   "body": "This issue has not occurred when testing AAPS 3.0 B3-B5 on an S7 running Android 11 (Pixel Experience) connecting to an MDT 554 via a RileyLink. The only consistently replicable disconnect with this test setup is described at #373.\r\n\r\nStill to do: test with an OrangeLink (that'll take some time since I don't have a spare)."
+  },
+  {
+   "id": 968181957,
+   "user": "rustymonkey",
+   "created_at": "2021-11-14T00:41:27Z",
+   "body": "Tested AAPS 2.8.2.10 dev build 2021-11-11 11:40am on an S7 running Android 11 (Pixel Experience) connecting to an MDT 554 via an Orangelink and am no longer able to replicate this. Closing."
+  }
+ ]
+}

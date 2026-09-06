@@ -1,0 +1,71 @@
+{
+ "id": 4165787656,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4650,
+ "title": "źle obliczany IOB",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4650",
+ "state": "closed",
+ "labels": [
+  "question - more info needed"
+ ],
+ "created_at": "2026-03-29T20:59:03Z",
+ "closed_at": "2026-04-07T10:14:51Z",
+ "comment_count": 9,
+ "body": "Cześć wszystkim, jest to mój pierwszy post tutaj więc jak będą jakieś błędy to bardzo przepraszam.\n\nproblem mój polega na tym, że  na ekranie głównym nie aktualizuje się wartość IOB \n\n![Image](https://github.com/user-attachments/assets/182e6bb2-78ca-4eaa-9049-68fa252355cf)\n\n![Image](https://github.com/user-attachments/assets/a7784052-fb7d-4a10-8277-4becc24f7724)\n\nale jak odświeżę historię pompy to wszystko się aktualizuje co widać na następnych zdjęciach\n\n![Image](https://github.com/user-attachments/assets/7a9ad41b-6cfc-4d99-8a34-9cdca51d3a0b)\n![Image](https://github.com/user-attachments/assets/9f4267d3-26ee-4575-8c0b-6dac6b55bfab)\n\n\nostatnio też zauważyłem sytuację trochę dziwną ponieważ mam ustawione ograniczenie IOBmax na 15j. a po odświeżeniu pompy okazało się że miałem IOB na poziomie 22j.\n\nsądzę, że to jest kwestia jakiś ustawień bo miałem wersję 3.3 i było to samo. teraz mam 3.4.1.0. zmieniłem też telefon na nowy i sytuacja cały czas się powtarza.\n\ntutaj jeszcze inne sytuacje\n\n\n\n![Image](https://github.com/user-attachments/assets/62e6f322-643a-4cfa-b2f6-062b32a91a41)\n![Image](https://github.com/user-attachments/assets/1d8ba58d-304d-46cb-ab89-c0deeba74e50)\n![Image](https://github.com/user-attachments/assets/224a4bf0-37e7-4cfa-827b-b6ad998be343)\n![Image](https://github.com/user-attachments/assets/cccbdbce-3936-4b12-baab-63554707c9a0)\n",
+ "comments": [
+  {
+   "id": 4162671832,
+   "user": "MilosKozak",
+   "created_at": "2026-03-31T13:31:25Z",
+   "body": "to be able to help I need screenshots + logs (1 day) from both devices"
+  },
+  {
+   "id": 4163811427,
+   "user": "karolkarol05",
+   "created_at": "2026-03-31T16:15:57Z",
+   "body": "w załączniku logi z przed chwili wraz z zrzutami ekranu\n\n[AAPS_bug.zip](https://github.com/user-attachments/files/26383608/AAPS_bug.zip)\n\npóźniej zamieszczę logi ze starego telefonu "
+  },
+  {
+   "id": 4164176296,
+   "user": "MilosKozak",
+   "created_at": "2026-03-31T17:17:21Z",
+   "body": "to be clear, screenshots and logs from both phones and from the same time"
+  },
+  {
+   "id": 4164218540,
+   "user": "karolkarol05",
+   "created_at": "2026-03-31T17:24:50Z",
+   "body": "But I only have one phone to control it (this happens on my phone, which controls the pump).\n\nWhat I see is that the data isn't being saved to the PH immediately. When I click \"refresh pump history,\" everything is saved to the PH and the actual IOB value is displayed."
+  },
+  {
+   "id": 4164231070,
+   "user": "karolkarol05",
+   "created_at": "2026-03-31T17:27:08Z",
+   "body": "Maybe the translator mistranslated my sentence because I wrote it in Polish.\n\nNow I'll describe it again in English.\n"
+  },
+  {
+   "id": 4164283537,
+   "user": "karolkarol05",
+   "created_at": "2026-03-31T17:36:31Z",
+   "body": "\nMy problem is that the IOB doesn't update after boluses. When I refresh the pump history, it updates immediately.\n\nI think the values ​​aren't being written to the PH, and when I read the pump history, the values ​​are being written to the PH (but that's just my guess).\n\nI took a screenshot of the main screen before and after refreshing the pump history, and you can see the immediate increase in IOB.\n\nWhen I noticed the problem, I was running version 3.3, but I immediately updated to the latest version. I'm now at 3.4.1.0, and I have the exact same problem. I also updated NS (even though it's just an archive for me) to version 1.5.0.6."
+  },
+  {
+   "id": 4164310209,
+   "user": "karolkarol05",
+   "created_at": "2026-03-31T17:41:08Z",
+   "body": "I also changed my phone to a new one to rule out any communication errors"
+  },
+  {
+   "id": 4182709798,
+   "user": "karolkarol05",
+   "created_at": "2026-04-03T09:26:11Z",
+   "body": "https://github.com/user-attachments/assets/928c6569-c526-409d-a891-70167b4ff42f\n\n[AndroidAPS_LOG_1775207559701.log.zip](https://github.com/user-attachments/files/26457541/AndroidAPS_LOG_1775207559701.log.zip)\n\nI've included a phone screen recording here to demonstrate the problem. As you can see, after refreshing the pump, the active insulin amount updates. Recently, AAPS delivered 22 units of insulin despite the IOBmax being set to 15 units."
+  },
+  {
+   "id": 4198237297,
+   "user": "karolkarol05",
+   "created_at": "2026-04-07T10:14:51Z",
+   "body": "I'm closing this thread. The problem was with the Medtronic driver. After an update by @andyrozman to issue number #4664, the problem was resolved. Thanks for your work."
+  }
+ ]
+}

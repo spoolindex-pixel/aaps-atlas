@@ -1,0 +1,65 @@
+{
+ "id": 1648278867,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2484,
+ "title": "[AAPS 3.2.0-beta1] Carbs get duplicated, even three times the entered amount",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2484",
+ "state": "closed",
+ "labels": [
+  "question - more info needed"
+ ],
+ "created_at": "2023-03-30T20:38:56Z",
+ "closed_at": "2023-08-16T13:07:16Z",
+ "comment_count": 8,
+ "body": "Hi,\r\n\r\nI'm using AAPS 3.2.0-beta1\r\nbuild: 616b4650ba-2023.03.07\r\nphone : Xiaomi 11T Pro\r\nAndroid version: 13 TKQ1.220829.002\r\nMIUI version: 14.0.1.0(TKDMIXM)\r\nNightscout:  15.0.0\r\n\r\nTwo consecutive day I have COB three/two times the amount I entered.\r\n\r\n29.03.2023 at 12:53 I enter **46 grams** of carbs but then I ended up with  **3 * 46g = 138g COB**\r\n30.03.2023 at 13:02 I enter **50 grams** of carbs but then I end up with **100g COB**\r\n\r\nI thing it could be related to slow internet connection and some how Nightscout, but I'm not sure. I do have launch at the same place everyday and yesterday and today are the first sim I observe this kind of issue.\r\n \r\n\r\nI am attaching log files as well as screenshots:\r\nAndroidAPS_LOG_1680084846821.log.zip is for the 29.03.2023 at 12:53\r\nAndroidAPS_LOG_1680171136301.log.zip is for the 30.03.2023 at 13:02\r\n\r\nAttachments:\r\nhttps://drive.google.com/drive/folders/1norDDVYO3Aj92GCxJceUlzSbxRXxnO90?usp=sharing\r\n\r\nKind regards,\r\nPetar Harizanov",
+ "comments": [
+  {
+   "id": 1491508950,
+   "user": "MilosKozak",
+   "created_at": "2023-03-31T08:17:45Z",
+   "body": "the crucial parts in logs around time of occurence are missing for both cases\r\ngenerealy duplication is usually caused by xdrip synchronization, turn if off and test again"
+  },
+  {
+   "id": 1495542608,
+   "user": "ledrexter",
+   "created_at": "2023-04-04T08:17:37Z",
+   "body": "I will need to check if there is a trace in the other part of the log and I will let you know.\r\nBy the way it has not happened again since then, although I have not touched the aaps/xdrip settings."
+  },
+  {
+   "id": 1501730991,
+   "user": "treebearded",
+   "created_at": "2023-04-10T11:53:40Z",
+   "body": "I see the same problem intermittenly. Sometimes double, more seldom tripple, but it has happened.\r\n I dont use xdrip.\r\n aaps dev-h\r\n NS 15.0 built on ac1a7d1bd880426b96a6acb3d594d26f1a76a730\r\n \r\n https://drive.google.com/file/d/1lfBBmNfUkQ7lr4y__pp7E9SLVkT1w9ej/view?usp=sharing"
+  },
+  {
+   "id": 1502274622,
+   "user": "MilosKozak",
+   "created_at": "2023-04-10T20:22:54Z",
+   "body": "> I see the same problem intermittenly. Sometimes double, more seldom tripple, but it has happened. I dont use xdrip. aaps dev-h NS 15.0 built on ac1a7d1bd880426b96a6acb3d594d26f1a76a730\r\n> \r\n> https://drive.google.com/file/d/1lfBBmNfUkQ7lr4y__pp7E9SLVkT1w9ej/view?usp=sharing\r\n\r\ntime? screenshots?"
+  },
+  {
+   "id": 1507193750,
+   "user": "treebearded",
+   "created_at": "2023-04-13T15:42:43Z",
+   "body": "Happened again this morning. Tripple entry at 10:33. Notice double calc\nentry and tripple carb entry.\nUpdated google drive with new log and screenshot.\n\n\n\n\nOn Mon, 10 Apr 2023, 22:23 Milos Kozak, ***@***.***> wrote:\n\n> I see the same problem intermittenly. Sometimes double, more seldom\n> tripple, but it has happened. I dont use xdrip. aaps dev-h NS 15.0 built on\n> ac1a7d1bd880426b96a6acb3d594d26f1a76a730\n>\n>\n> https://drive.google.com/file/d/1lfBBmNfUkQ7lr4y__pp7E9SLVkT1w9ej/view?usp=sharing\n>\n> time? screenshots?\n>\n> —\n> Reply to this email directly, view it on GitHub\n> <https://github.com/nightscout/AndroidAPS/issues/2484#issuecomment-1502274622>,\n> or unsubscribe\n> <https://github.com/notifications/unsubscribe-auth/AAT2J75HAS7H3OXGPDI74NTXART2RANCNFSM6AAAAAAWNZOXXI>\n> .\n> You are receiving this because you commented.Message ID:\n> ***@***.***>\n>\n"
+  },
+  {
+   "id": 1546840433,
+   "user": "MilosKozak",
+   "created_at": "2023-05-14T08:27:08Z",
+   "body": "logs don't have 10:33"
+  },
+  {
+   "id": 1549241024,
+   "user": "kristinsmotz",
+   "created_at": "2023-05-16T08:38:11Z",
+   "body": "I have seen duplicate carb entries as well, for us they happen after a bolus is cancelled partway through. Not every single time, but often enough not to be a fluke, so when I cancel a running bolus I make sure to watch for duplicate COB the next few minutes. Typically when we cancel a bolus it's because of remembering (or kid informing of) planned activity right after meal time, which tend to cause lows if we have too much IOB. \r\n\r\nMy understanding is that this is what happens: (Bolus at 17.33 in attached log, I've tried to interpret what I found in the log that seemed relevant, with my comments added).\r\n17.33.14: Bolus calculator used for 50 carbs, suggesting a bolus of 3.4U, posting insulin amount to treatment (including it in IOB). \r\n17.33.30: The bolus is cancelled. \r\n17:33:31.172: Original 50 carbs (?) posted to treatments/COB. \r\n17:33:31.181: Bolus amount updated with correct delivered amount, (original insulin treatment deleted? and new insulin treatment with correct amount posted)\r\n17:33.31.188: Extra 50 carbs posted to treatments/COB, so now COB=100g\r\nAt that point I exported logs then went back to delete one 50Carb entry so SMB wouldn't keep using 100COB for calculations, as kid was running out to play... \r\nWe are using AAPS and AAPSClient, 3.2.0-dev-i.\r\n\r\n[AndroidAPS_LOG_1683819235198.log.zip](https://github.com/nightscout/AndroidAPS/files/11485735/AndroidAPS_LOG_1683819235198.log.zip)\r\n"
+  },
+  {
+   "id": 1680573459,
+   "user": "MilosKozak",
+   "created_at": "2023-08-16T13:07:16Z",
+   "body": "resolved by https://github.com/nightscout/AndroidAPS/commit/fb94393c1c53ea72ff3c8286bcefebd1d16bd637"
+  }
+ ]
+}

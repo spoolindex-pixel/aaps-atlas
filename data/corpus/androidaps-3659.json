@@ -1,0 +1,75 @@
+{
+ "id": 2762001172,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3659,
+ "title": "3.3 rc1 stop insulin dosing below bg value doesn't work with \"tdd based sens ratio for basal and target\" enabled",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3659",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-12-28T22:29:32Z",
+ "closed_at": "2025-01-03T15:18:09Z",
+ "comment_count": 10,
+ "body": "See title. \r\n\r\nBasal kept running, while bg was below threshold.\r\nTurning of \"  tdd based sens ratio... “immediately stopt basal as expected based on bg level. ",
+ "comments": [
+  {
+   "id": 2564685742,
+   "user": "MilosKozak",
+   "created_at": "2024-12-29T10:54:23Z",
+   "body": "this is not enough information to be able check anything, provide screenshots, logs, time  etc"
+  },
+  {
+   "id": 2564761160,
+   "user": "RalfCGM",
+   "created_at": "2024-12-29T15:36:14Z",
+   "body": "`[\r\n[AndroidAPS_LOG_1735486309286.log.zip](https://github.com/user-attachments/files/18270098/AndroidAPS_LOG_1735486309286.log.zip)\r\n![Screenshot_20241229-163109~2](https://github.com/user-attachments/assets/3a2162fc-bd68-4a05-a5ed-e6fd6cf53ccb)\r\n](url)`"
+  },
+  {
+   "id": 2564767171,
+   "user": "olorinmaia",
+   "created_at": "2024-12-29T16:00:31Z",
+   "body": "@RalfCGM Can you Show IOB on the history graph in same time period. If IOB is negative Low glucose suspend can give insulin."
+  },
+  {
+   "id": 2564806229,
+   "user": "MilosKozak",
+   "created_at": "2024-12-29T18:25:39Z",
+   "body": "history is not enough, take a screenshot of overview when this happen"
+  },
+  {
+   "id": 2565565105,
+   "user": "tim2000s",
+   "created_at": "2024-12-30T14:38:28Z",
+   "body": "It's unlikely that this has overridden any threshold settings, given what it does. It's more likely that the modifications that the button makes to ISF calculation made the oref1 algorithm calculate values higher than target, with enough other factors valid, that it dosed insulin. \r\n\r\nYou'd need to provide a screenshot of the decision making to be able to understand it any further. "
+  },
+  {
+   "id": 2567031830,
+   "user": "RalfCGM",
+   "created_at": "2025-01-01T14:32:25Z",
+   "body": "Since it appeared a little dangerous, and I'm not having a lot of energy left over I descided to leave the setting off for know. Resulting in understandable behavior on low bg values.\r\n\r\nIll update to stable release soon and try to recreate te issue if I have time and energy for it. Ill keep you posted."
+  },
+  {
+   "id": 2567032789,
+   "user": "RalfCGM",
+   "created_at": "2025-01-01T14:35:24Z",
+   "body": "> @RalfCGM Can you Show IOB on the history graph in same time period. If IOB is negative Low glucose suspend can give insulin.\r\n\r\nAttached. Abs insulin was positive. [\r\n![Screenshot_20250101-153426](https://github.com/user-attachments/assets/3853e0f5-c168-4d1b-b7e1-e2daea33f990)\r\n](url)"
+  },
+  {
+   "id": 2567040177,
+   "user": "olorinmaia",
+   "created_at": "2025-01-01T14:57:47Z",
+   "body": "It's IOB graph you need to show. You can have negative IOB allthough ABS is positive"
+  },
+  {
+   "id": 2567817526,
+   "user": "RalfCGM",
+   "created_at": "2025-01-02T13:59:05Z",
+   "body": "Sorry, then Dutch translations must be a little if. The graph you need is shown as *\"opgenomen insuline\" which translates as \"included insulin\". Didnt understand that this was iob. But indeed this graph shows a really minor amount of negative iob. And as I understood from you, that could be expected bahavior? "
+  },
+  {
+   "id": 2567831060,
+   "user": "olorinmaia",
+   "created_at": "2025-01-02T14:08:59Z",
+   "body": "Yes that is the way low glucose suspend work as far as I understand it. \r\n\r\nBut once iob is positive insulin should be suspended below threshold. If you experience this again try catching screenshot of overview screen and add logs. 👍\r\n\r\nIn crowdin you can apply to join the German translation team and try to find this string so it is more precise 😉"
+  }
+ ]
+}

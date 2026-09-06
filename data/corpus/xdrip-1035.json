@@ -1,0 +1,90 @@
+{
+ "id": 499862873,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1035,
+ "title": "Nightscout URL should support tokens",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1035",
+ "state": "closed",
+ "labels": [
+  "enhancement",
+  "security"
+ ],
+ "created_at": "2019-09-29T05:51:09Z",
+ "closed_at": "2021-03-15T01:27:14Z",
+ "comment_count": 20,
+ "body": "xDrip supports nightscout uploading & following in the form:\r\n\r\n`https://API_SECRET@my.nightscout.place/api/v1`\r\n\r\nThis username is not used for HTTP basic auth, it's used as the auth token:\r\n\r\nhttps://github.com/NightscoutFoundation/xDrip/blob/f96119cf4a7911e4fef62bc510a45481ba7467d2/app/src/main/java/com/eveningoutpost/dexdrip/cgm/nsfollow/utils/NightscoutUrl.java#L83\r\n\r\nSince `API_SECRET` is too secret (and hard to revoke or principle-of-least-privilege), I initially attempted to use the token as a username instead of the `API_SECRET`, and it was rejected by `cgm-remote-monitor`\r\n\r\nIt would be neat if URLs would support token access\r\n",
+ "comments": [
+  {
+   "id": 569627356,
+   "user": "zetric",
+   "created_at": "2019-12-30T09:40:25Z",
+   "body": "I agree.\r\n\r\nIn my eyes it's a general topic with http basic auth in nightscout. This is still not supported, so your medical data is visible to the public (API key or token do not protect the dashboard).\r\n\r\nBut as there is the possibility to place a reverse proxy in front of nightscout with a .htaccess file, it would help if xDrip would also support this kind of authentication. For sure there must be also changes in nightscout as http basic auth conflicts with the bearer token.\r\n\r\nAnother approach would be to use just the token for securing the whole frontend. But that is something that has to be addressed to the nightscout platform team."
+  },
+  {
+   "id": 569683235,
+   "user": "dabear",
+   "created_at": "2019-12-30T13:48:12Z",
+   "body": "Have you guys tested with the Newest cgm-remote-monitor release? There are some changes related to auth token and secrets there. Maybe it now works. Worth a try "
+  },
+  {
+   "id": 569755811,
+   "user": "zetric",
+   "created_at": "2019-12-30T18:23:56Z",
+   "body": "Absolutely. Especially as I was trying with the docker image of nightscout before where I don't know what exactly is inside.\r\nBut unfortunately there is no difference with the nightscout current master branch on bare Ubuntu.\r\nAnd I am afraid my NodeJS language skills are to poor (near zero) to be able to contribute something here what would be my first approach in general.\r\n\r\nSo this will be my wish to the nightscout devs for the next year: Add real security 😃.\r\n\r\nHappy new year to you guys! 🎆 \r\n\r\nUPDATE:\r\nHa, found a solution by surprise: I have to set the env var AUTH_DEFAULT_ROLES to \"denied\". I really went through the possible vars but just didn't recognize it. My bad.\r\n\r\nUPDATE 2: But imho a token based access in xdrip would be very cool."
+  },
+  {
+   "id": 569901019,
+   "user": "zetric",
+   "created_at": "2019-12-31T10:00:54Z",
+   "body": "Wow...now I can also sync with nightscout if I replace the api_key with the token in xDrip. I thought I tested this...\r\nAnd It would be interesting how this works. In the dev console of the webbrowser I see a custom header field \"apikey\" for the API_KEY scenario that is not used when I access the page via token (that is sent as POST parameter).\r\nAnd I can also not see what xDrip does with a packet sniffer in Android because xDrip does something that I highly appreciate: It checks the SSL trust anchor. Most other appt still don't do this. Well done!\r\n\r\nBut well... it worksw and that's the most important thing!\r\n\r\nSo imho this issue can be closed."
+  },
+  {
+   "id": 644736669,
+   "user": "guydavies",
+   "created_at": "2020-06-16T12:39:58Z",
+   "body": "Does this really work?  I've tried with a user-specific token with the Nightscout URL in all the potential positions...\r\n\r\nhttps://<token>@<appname>.herokuapp.com/api/v1/\r\nhttps://<appname>.herokuapp.com/?token=<token>/api/v1/\r\nhttps://<appname>.herokuapp.com/api/v1/?token=<token>/\r\n\r\nNone of those worked for me.  I'm using the latest version of Nightscout master branch and the latest nightly of Xdrip+.  Any pointers would be welcome because I've been pondering the desirability (or not) of having the actual API key in another app."
+  },
+  {
+   "id": 644892417,
+   "user": "zetric",
+   "created_at": "2020-06-16T17:04:02Z",
+   "body": "I use it not on heroku but in Docker on a self-maintained rootserver.\r\nSo the path to the API might be different. But normally it should work like this:\r\n\r\nWebbrowser: https://\\<your-subdomain\\>.herokuapp.com/?token=\\<your-default-API_SECRET-or-manually-created-token\\>\r\nxDrip: https://\\<your-token\\>@\\<your-subdomain\\>.herokuapp.com/api/v1/\r\n\r\nTIPP for your comments here: To make the \"\\<\" visible, you can escape them with a leading Backslash"
+  },
+  {
+   "id": 644911925,
+   "user": "guydavies",
+   "created_at": "2020-06-16T17:44:06Z",
+   "body": "Thanks for the tip. It never occurred to me that this would be interpreted. \r\n\r\nSo I tried what your Xdrip option says and it kept erroring for me. I guess I'll stick with what's working for now. 😁"
+  },
+  {
+   "id": 781613181,
+   "user": "Navid200",
+   "created_at": "2021-02-18T20:25:00Z",
+   "body": "@thecubic Can we close this issue as it seems there is a working solution?\r\nThanks"
+  },
+  {
+   "id": 781761404,
+   "user": "thecubic",
+   "created_at": "2021-02-19T02:01:03Z",
+   "body": "I haven't used xDrip in quite a while, so I can't confirm that the issue is resolved.  Anyone that can verify that is free to close the issue"
+  },
+  {
+   "id": 781826885,
+   "user": "tolot27",
+   "created_at": "2021-02-19T05:13:58Z",
+   "body": "We should really verify if it is supported know and document it."
+  },
+  {
+   "id": 782059961,
+   "user": "Navid200",
+   "created_at": "2021-02-19T13:01:35Z",
+   "body": "So, someone can open an issue and then the xDrip team will take the task to find answers even if the person who opened the issue is no longer able to contribute to the investigation?\r\nI didn't know we had the manpower.  All along, I was under the impression I was closing issues because we had too many open issues and not enough resources and manpower to act on every single one of them."
+  },
+  {
+   "id": 799011229,
+   "user": "ChaseCarHG",
+   "created_at": "2021-03-15T00:22:38Z",
+   "body": "This issue is confirmed resolved: \r\nInside xDrip+, I successfully used a custom Access Token (created from the Admin Tools menu) before the @ symbol in my REST API URL. I don't seem to have access to update the issue though."
+  }
+ ]
+}

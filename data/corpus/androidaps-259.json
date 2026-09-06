@@ -1,0 +1,29 @@
+{
+ "id": 792837365,
+ "repo": "nightscout/AndroidAPS",
+ "number": 259,
+ "title": "Replace Skins with Configuration Qualifiers and Source-Sets",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/259",
+ "state": "closed",
+ "labels": [
+  "technical story"
+ ],
+ "created_at": "2021-01-24T16:30:28Z",
+ "closed_at": "2022-06-21T07:53:56Z",
+ "comment_count": 2,
+ "body": "### **Background:**\r\nWe use kotlin synthetics to access Views / layout elements in our Fragment.\r\nThey are deprecated now due to various reasons and the recommended way of replacing them is ViewBindings or DataBinding (special kind of ViewBinding) and access the elements via their ViewBinding properties/fields.\r\n\r\n### **Problem to solve:**\r\nViewBinding classes generated form the layout xml files might have the same names for their fields - they do not inherit from each other and don't have a common interface.\r\n\r\n### **Strategies:**\r\n\r\n\r\n1. **_Use alternative resource loading via configuration qualifiers._**\r\nhttps://developer.android.com/guide/topics/resources/providing-resources#AlternativeResources.\r\nThe qualifiers `small`, `port`, `land` can be used to distinguish the same layout for different configurations (running on a small device, in portrait, landscape, ...) similar to the language qualifiers to load resources in different languages.\r\n\r\n2. **_Use separate source sets for Fragments in NSClient and other flavors_**\r\nBy moving functionality to an abstract superclass and then having two implementations of the fragment ad glue code we can use different `OverviewFragment`s and `ActionFragment`s for different flavors that behave the same. The individual fragments responsibility would only be the glue code to lookup the appropriate views.\r\n\r\n3. **_Use Databinding & ViewModels _**\r\nIn places where a Skin affects a certain property element of a view, like `android:textSize` we can bind that to a ViewModel that asks the current Skin for the value. This is a good opportunity to introduce ViewModels as View-independent expression of view state - that we then later can amend and move functionality from our Fragments to the ViewModels.",
+ "comments": [
+  {
+   "id": 766438061,
+   "user": "rICTx-T1D",
+   "created_at": "2021-01-24T21:48:51Z",
+   "body": "I think strategie 3 is a good way to go. Binding of datasets and model is a recommended solution in many development languages."
+  },
+  {
+   "id": 1067811607,
+   "user": "Andries-Smit",
+   "created_at": "2022-03-15T10:26:28Z",
+   "body": "Related change https://github.com/nightscout/AndroidAPS/pull/1432\r\n> Clean up code by using binding in actions and overview skins. This removes the need for duplicate layouts for low resolution, making skins and actions type-safe."
+  }
+ ]
+}

@@ -1,0 +1,27 @@
+{
+ "id": 844435998,
+ "repo": "nightscout/AndroidAPS",
+ "number": 450,
+ "title": "combination of (AND + OR) is not possible in automation",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/450",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-03-30T12:01:28Z",
+ "closed_at": "2021-05-15T12:42:48Z",
+ "comment_count": 2,
+ "body": "Reporting bugs\r\n--------------\r\n- **Note the precise time the problem occurred** and describe the circumstances and steps that caused\r\n  the problem:\r\n  I am trying to set this event in automation: IF ((bg >= 7 AND delta >= 0.3) OR bg >= 10)\r\n\r\nSetup\r\n![setup](https://cdn.discordapp.com/attachments/629954570394533889/826420168178663484/Screenshot_20210330-133706.jpg)\r\n\r\nFirst result\r\n![result](https://cdn.discordapp.com/attachments/629954570394533889/826420219420475402/Screenshot_20210330-133715.jpg)\r\n\r\nTrying the other way around\r\n![flipped AND and OR](https://cdn.discordapp.com/attachments/629954570394533889/826420282507788318/Screenshot_20210330-133735.jpg)\r\n\r\nSecond result\r\n![second result](https://cdn.discordapp.com/attachments/629954570394533889/826420333238026260/Screenshot_20210330-133741.jpg)\r\n\r\nI expected the inner clause and outer clause to have different operators (AND/OR) but they are the same.\r\nSo only the outer AND/OR selector seems to work and it sets all operators and not just the one on the outer clause\r\n\r\n- Build Version: \r\n  AAPS 2.8.2\r\n  14559a01f-2021.03.25-12:57\r\n\r\n- Logs:\r\n  Will add shortly when I have access to a computer",
+ "comments": [
+  {
+   "id": 811253709,
+   "user": "robertrub",
+   "created_at": "2021-03-31T17:00:39Z",
+   "body": "I confirm. I couldn't create a mix of *and* + *or* conditions."
+  },
+  {
+   "id": 841654110,
+   "user": "TranceCake",
+   "created_at": "2021-05-15T12:47:07Z",
+   "body": "it was brought to my attention that you can achieve this if you first select all condition and then fill in the values. This is not intuitive, it took me 3 tries to understand it. This could maybe use a UX pass, to which I'm happy to contribute!"
+  }
+ ]
+}

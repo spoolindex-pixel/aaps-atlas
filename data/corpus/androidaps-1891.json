@@ -1,0 +1,99 @@
+{
+ "id": 1295085843,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1891,
+ "title": "AAPS 3.0.0.2 Dash Pod Activation problem",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1891",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-07-06T03:55:16Z",
+ "closed_at": "2022-12-15T21:52:29Z",
+ "comment_count": 14,
+ "body": "Problem occurred: July 5, 1400 PST\r\n\r\nI have a Samsung A21 phone, Dexcom G6, using BYODA which feeds NS and XDrip. I activated my first Dash pod about a week ago, no problem. I was unable to activate the second pod 3 days ago. Today (July 5, 1400 PST) I tried a third pod with no success.  Today I successfully deactivated the used pod and put it far away from me (in another building).  I powered off my Omni pdm. I retried activation using AAPS on my phone about 10 times (pressing Retry button), until I got this error (screenshot above):  \"Generic error: java.lang.illegalStateException: Trying to set Bluetooth Address to E2:D9:61:24:51:E0, but it is already set to CA:C8:61:24:51:E0\" .  I have several  Bluetooth devices paired to my phone, but as far as I know none were on when I was trying to activate. \r\n\r\nWould much appreciate any help someone can offer. Apologies I can't figure out how to paste my log file here.\r\n\r\nReporting bugs\r\n--------------\r\n![Screenshot_20220705-140518_AndroidAPS (1)](https://user-images.githubusercontent.com/64743657/177461453-453e30eb-fe83-4d5c-a1c3-0607189003b3.jpg)\r\n\r\n\r\n\r\n- **Note the precise time the problem occurred** and describe the circumstances and steps that caused\r\n  the problem\r\n- Note the Build version (found in the About dialog in the app, when pressing the three dots in the\r\n  upper-right corner).\r\n- Obtain the app's log files, which can be found on the phone in\r\n  _/storage/emulated/0/Android/data/info.nightscout.androidaps/_\r\n  See https://androidaps.readthedocs.io/en/latest/EN/Usage/Accessing-logfiles.html\r\n- Open an issue at https://github.com/nightscout/AndroidAPS/issues/new\r\n",
+ "comments": [
+  {
+   "id": 1176086264,
+   "user": "vanelsberg",
+   "created_at": "2022-07-06T11:02:25Z",
+   "body": "Could you please add logfile from the time this problem occurred?\r\n\r\n- The error message suggests AAPS is seeing an unknown DASH Pod in the neighborhood of your phone (using the BT address CA:C8:61:24:51:E0). Could that be?\r\n- Your first Pod: did in de-activate without errors?\r\n- Is the AAPS DASH tab reporting \"no active Pod\", no address assigned?\r\n\r\nMake absolutely sure there is no DASH Pod around that is activated (or waiting for activation)\r\nTry resetting your BT system app (settings->app (show system apps) -> clear cache+memory, force close - then reboot the phone). \r\n\r\n\r\n"
+  },
+  {
+   "id": 1176087437,
+   "user": "vanelsberg",
+   "created_at": "2022-07-06T11:03:41Z",
+   "body": "Q: What Android version is your phone running? \r\n"
+  },
+  {
+   "id": 1176093811,
+   "user": "vanelsberg",
+   "created_at": "2022-07-06T11:11:37Z",
+   "body": "On some phones permissions are reset after not using an app for some time.\r\nCheck permissions on the AndroidAPS app:\r\n![AAPSpermissions](https://user-images.githubusercontent.com/45144129/177537469-75d50a8f-fda3-49c3-9094-1e1e43d624ea.jpg)\r\n\r\n_Additional permissions_ are for accesing the DexCom App (when using BYODA)\r\n\r\n"
+  },
+  {
+   "id": 1176327096,
+   "user": "reach07steve",
+   "created_at": "2022-07-06T14:57:08Z",
+   "body": "Android Version 12\n\n \n\nRegards, Steve\n\n \n\nCONFIDENTIALITY NOTICE\n\nThis email may be privileged and confidential.  Any use or dissemination of this information by a person other than the intended recipient is not authorized.  If you have received this message in error, please notify the sender immediately by reply email and delete the message from your system.  Thank you.\n\n \n\n \n\nFrom: Theodoor ***@***.*** \nSent: July 6, 2022 4:04 AM\nTo: nightscout/AndroidAPS\nCc: reach07steve; Author\nSubject: Re: [nightscout/AndroidAPS] AAPS 3.0.0.2 Dash Pod Activation problem (Issue #1891)\n\n \n\nQ: What Android version is your phone running?\n\n—\nReply to this email directly, view it on GitHub <https://github.com/nightscout/AndroidAPS/issues/1891#issuecomment-1176087437> , or unsubscribe <https://github.com/notifications/unsubscribe-auth/APN6R2OMJTBVT6X4MHZZAPLVSVRZRANCNFSM52YG4TJA> .\nYou are receiving this because you authored the thread.Image removed by sender.Message ID: ***@***.***>\n\n"
+  },
+  {
+   "id": 1176348504,
+   "user": "reach07steve",
+   "created_at": "2022-07-06T15:14:48Z",
+   "body": "Thank you, your assessment of “an unknown DASH Pod in the neighborhood of your phone (using the BT address CA:C8:61:24:51:E0)”   is a good start.\n\n \n\nNext activation in 2 days I will follow your instructions and make sure I am isolated from any other Bluetooth devices. When I got this error I had put the deactivated pod about 20 feet away inside my microwave. \n\n \n\nApparently since Android 12 it is hard to find the system apps settings. Still trying to figure that out so I can clear the BT cache.\n\n \n\nI am having difficulty handling the log file. I have it, but it is in “.0” format. Can I email that to you ?\n\n \n\n \n\n \n\nRegards, Steve\n\n \n\nCONFIDENTIALITY NOTICE\n\nThis email may be privileged and confidential.  Any use or dissemination of this information by a person other than the intended recipient is not authorized.  If you have received this message in error, please notify the sender immediately by reply email and delete the message from your system.  Thank you.\n\n \n\n \n\nFrom: Theodoor ***@***.*** \nSent: July 6, 2022 4:03 AM\nTo: nightscout/AndroidAPS\nCc: reach07steve; Author\nSubject: Re: [nightscout/AndroidAPS] AAPS 3.0.0.2 Dash Pod Activation problem (Issue #1891)\n\n \n\nCould you please add logfile from the time this problem occurred?\n\nThe error message suggests AAPS is seeing an unknown DASH Pod in the neighborhood of your phone (using the BT address CA:C8:61:24:51:E0). Could that be?\n\nMake absolutely sure there is no DASH Pod around that is activated (or waiting for activation)\nTry resetting your BT system app (settings->app (show system apps) -> clear cache+memory, force close - then reboot the phone).\n\n—\nReply to this email directly, view it on GitHub <https://github.com/nightscout/AndroidAPS/issues/1891#issuecomment-1176086264> , or unsubscribe <https://github.com/notifications/unsubscribe-auth/APN6R2NCSJWI75HXCX7AA4LVSVRUZANCNFSM52YG4TJA> .\nYou are receiving this because you authored the thread.Image removed by sender.Message ID: ***@***.***>\n\n"
+  },
+  {
+   "id": 1176376440,
+   "user": "reach07steve",
+   "created_at": "2022-07-06T15:39:54Z",
+   "body": "Many thanks for your help. Attached is the log file from July 5. I tried to make the activation around 1400.\r\n\r\nRegarding your other questions: \r\nAndroid version 12.\r\nWhen I got the activation error I had put the deactivated pod about 20 feet away inside my microwave.\r\nChecked AAPS permissions and all looks good. \r\nSince Android 12 it is harder to find the system apps to clear the BT cache. Still trying to figure that out. \r\n\r\n\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/9056168/AndroidAPS.log)\r\n"
+  },
+  {
+   "id": 1176541836,
+   "user": "reach07steve",
+   "created_at": "2022-07-06T18:28:41Z",
+   "body": "Theodoor, here is the log file. I tried the activation at about 1400 hrs. \n\n \n\nRegards, Steve\n\n \n\nCONFIDENTIALITY NOTICE\n\nThis email may be privileged and confidential.  Any use or dissemination of this information by a person other than the intended recipient is not authorized.  If you have received this message in error, please notify the sender immediately by reply email and delete the message from your system.  Thank you.\n\n \n\n \n\nFrom: Theodoor ***@***.*** \nSent: July 6, 2022 4:03 AM\nTo: nightscout/AndroidAPS\nCc: reach07steve; Author\nSubject: Re: [nightscout/AndroidAPS] AAPS 3.0.0.2 Dash Pod Activation problem (Issue #1891)\n\n \n\nCould you please add logfile from the time this problem occurred?\n\nThe error message suggests AAPS is seeing an unknown DASH Pod in the neighborhood of your phone (using the BT address CA:C8:61:24:51:E0). Could that be?\n\nMake absolutely sure there is no DASH Pod around that is activated (or waiting for activation)\nTry resetting your BT system app (settings->app (show system apps) -> clear cache+memory, force close - then reboot the phone).\n\n—\nReply to this email directly, view it on GitHub <https://github.com/nightscout/AndroidAPS/issues/1891#issuecomment-1176086264> , or unsubscribe <https://github.com/notifications/unsubscribe-auth/APN6R2NCSJWI75HXCX7AA4LVSVRUZANCNFSM52YG4TJA> .\nYou are receiving this because you authored the thread.Image removed by sender.Message ID: ***@***.***>\n\n"
+  },
+  {
+   "id": 1179303006,
+   "user": "vanelsberg",
+   "created_at": "2022-07-08T19:32:51Z",
+   "body": "According to the logs AAPS could not \"see\" the new Pod when trying to activate.\r\nDo try resetting the Bluetooth app and reboot the phone.\r\n\r\nWhat region are you in?\r\nWe found Pods running older Firmware versions are still distributed in CA and the US. We have reports from users running Android version 11 and/or 12 experiencing the problem where specific phones are unable to \"see\" the DASH Pod.\r\n\r\n(see also my remarks on Discord?)"
+  },
+  {
+   "id": 1179308042,
+   "user": "reach07steve",
+   "created_at": "2022-07-08T19:40:56Z",
+   "body": "Thanks again Theodoor. Your message is timely, I am just about ready to change my pod. I am in BC, Canada.  I am on a Samsung A51, Android 12. Rebooting the phone, not a problem. Not sure what you mean by “resetting the Bluetooth app”.\n\n \n\nRegards, Steve\n\n \n\nCONFIDENTIALITY NOTICE\n\nThis email may be privileged and confidential.  Any use or dissemination of this information by a person other than the intended recipient is not authorized.  If you have received this message in error, please notify the sender immediately by reply email and delete the message from your system.  Thank you.\n\n \n\n \n\nFrom: Theodoor ***@***.*** \nSent: July 8, 2022 12:33 PM\nTo: nightscout/AndroidAPS\nCc: reach07steve; Author\nSubject: Re: [nightscout/AndroidAPS] AAPS 3.0.0.2 Dash Pod Activation problem (Issue #1891)\n\n \n\nAccording to the logs AAPS could not \"see\" the new Pod when trying to activate.\nDo try resetting the Bluetooth app and reboot the phone.\n\nWhat region are you in?\nWe found Pods running older Firmware versions are still distributed in CA and the US. We have reports from users running Android version 11 and/or 12 experiencing the problem where specific phones are unable to \"see\" the DASH Pod.\n\n—\nReply to this email directly, view it on GitHub <https://github.com/nightscout/AndroidAPS/issues/1891#issuecomment-1179303006> , or unsubscribe <https://github.com/notifications/unsubscribe-auth/APN6R2MBU4YJZQF5ZWBNQ73VTB667ANCNFSM52YG4TJA> .\nYou are receiving this because you authored the thread.Image removed by sender.Message ID: ***@***.***>\n\n"
+  },
+  {
+   "id": 1183552359,
+   "user": "reach07steve",
+   "created_at": "2022-07-13T18:37:15Z",
+   "body": "Theodoor, on my last pod change, July 11 I had the same problem with the same error. I followed all of your instructions (see below)  except I was not able to clear the Bluetooth cache. They have made finding system apps more difficult in Android 12, and I can't figure out how to get there.   I am assuming that I am experiencing what you suggested earlier:  \"We found Pods running older Firmware versions are still distributed in CA and the US. We have reports from users running Android version 11 and/or 12 experiencing the problem where specific phones are unable to \"see\" the DASH Pod.\"  \r\n\r\nAny suggestions on how to resolve this ?  I am considering buying a new phone but I am concerned that the combo of old Firmware and Android 12 may still cause me problems.\r\n\r\nActivation process, July 11:\r\n\r\n1 Deactivated old pod with pdm (because it was started with pdm)\r\n2 Went to another building 40 feet away from the deactivated pod and pdm. \r\n3 Ensured there were no active Bluetooth devices or pods (old or new) in this building, except for my sensor.\r\n4 Rebooted phone (Samsung A21)\r\n5 Started activation using AAPS\r\n6 Filled pod\r\n7 AAPS could not locate a pod to activate\r\n8 Pressed Retry about 10 times until I got the same error as in my previous, failed activation (see below)\r\n9 Rebooted phone again and retried activation in AAPS. Retried about 10 times until I got the same error: \"Generic error: java.lang.illegalStateException: Trying to set Bluetooth Address to E2:D9:61:24:51:E0, but it is already set to CA:C8:61:24:51:E0\""
+  },
+  {
+   "id": 1183592314,
+   "user": "vanelsberg",
+   "created_at": "2022-07-13T19:23:35Z",
+   "body": "> ... I was not able to clear the Bluetooth cache. They have made finding system apps more difficult in Android 12, and I can't figure out how to get there. \r\n\r\nSystem->apps: Look for something like this:?\r\n![yourapps](https://user-images.githubusercontent.com/45144129/178814787-e2c0b6a5-0d03-4184-ac0c-6eef5da95a06.jpg)\r\n![sysapps](https://user-images.githubusercontent.com/45144129/178814786-1a93a2bd-f495-401b-ad1f-837444cfdf04.jpg)\r\n\r\n"
+  },
+  {
+   "id": 1183622903,
+   "user": "reach07steve",
+   "created_at": "2022-07-13T20:00:18Z",
+   "body": "Thanks again. I am making some progress but apologies if I am being thick headed here. When I Show system apps I see 3 BT items as shown in the screen shot. None of them has an option to \"clear cache\". I can Force Stop on any of them. I must be missing something. Please let me know what I should be looking for. \r\n\r\n![Screenshot_20220713-125254_Settings](https://user-images.githubusercontent.com/64743657/178822512-a1ec99c6-432e-494c-a71e-557f52d5a278.jpg)\r\n"
+  },
+  {
+   "id": 1183662829,
+   "user": "vanelsberg",
+   "created_at": "2022-07-13T20:47:35Z",
+   "body": "Github is not the proper place for discussing this, please see my reply/addtional comments on the Discord channel?"
+  },
+  {
+   "id": 1183666164,
+   "user": "vanelsberg",
+   "created_at": "2022-07-13T20:51:31Z",
+   "body": "> I am assuming that I am experiencing what you suggested earlier: \"We found Pods running older Firmware versions are still distributed in CA and the US. \r\n\r\nLooks like it (unless restting the BT app solves...)\r\nUnfortunately this is Pod/Phone hardware related and we have no solution for this problem. Sorry...\r\n\r\nYou could try other phone hardware (brand/type) to see if it does recognize your Pods."
+  }
+ ]
+}

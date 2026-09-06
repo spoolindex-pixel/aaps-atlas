@@ -1,0 +1,96 @@
+{
+ "id": 493591420,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1012,
+ "title": "Project doesn't build",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1012",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "code:quality"
+ ],
+ "created_at": "2019-09-14T06:44:30Z",
+ "closed_at": "2020-12-14T21:52:41Z",
+ "comment_count": 15,
+ "body": "Can someone please update the project setup so that it builds?\r\nI tried that myself for the past 2 days with Andorid Studio 3.5, and incrementally fixing errors that occured and causing other errors, updating gradle dependencies - to no avail....\r\nWould really like test some of my ideas with this wonderful project.",
+ "comments": [
+  {
+   "id": 531461714,
+   "user": "MasterPlexus",
+   "created_at": "2019-09-14T08:31:43Z",
+   "body": "At the moment, please stay at Android studio 3.4, there are several projects which have problems with the newest version. With 3.4 everything works smooth."
+  },
+  {
+   "id": 531503541,
+   "user": "jsPl",
+   "created_at": "2019-09-14T18:36:06Z",
+   "body": "Ok, tried with 3.4.\r\nCloned the project, first build failure is that the dependencies in wear:\r\n```\r\n    compileOnly 'com.google.android.wearable:wearable:2.0.1'\r\n    implementation 'com.google.android.support:wearable:2.0.1'\r\n```\r\nno longer exist in any declared repository. So I changed it to 2.1.0.\r\nThen there's another build error in wear manifest:\r\n\r\n```\r\nExecution failed for task ':wear:processDebugManifest'.\r\n> Manifest merger failed : Attribute meta-data#android.support.VERSION@value value=(26.0.2) from [com.android.support:support-v4:26.0.2] AndroidManifest.xml:28:13-35 is also present at [com.android.support:support-core-utils:26.1.0] AndroidManifest.xml:28:13-35 value=(26.1.0).\r\nSuggestion: add 'tools:replace=\"android:value\"' to <meta-data> element at AndroidManifest.xml:26:9-28:38 to override.\r\n```\r\nThis suggestion doesn't really help... Is something wrong with the manifest file?\r\n\r\nEdit: Ok, found wearable-2.0.1.jar, put it into wear/libs and this went wrong:\r\n```\r\nExecution failed for task ':wear:processDebugResources'.\r\nAGPBI: {\"kind\":\"error\",\"text\":\"error: attribute \\u0027com.eveningoutpost.dexdrip:rectLayout\\u0027 not found.\",\"sources\":[{\"file\":\"D:\\\\Android\\\\StudioProjects\\\\xDrip3\\\\wear\\\\src\\\\main\\\\res\\\\layout\\\\activity_bigchart.xml\",\"position\":{\"startLine\":1}}],\"original\":\"\",\"tool\":\"AAPT\"}\r\n```\r\nand the list of similar errors goes on.\r\nReally, building an android project is a big challange..."
+  },
+  {
+   "id": 531593750,
+   "user": "jamorham",
+   "created_at": "2019-09-15T19:46:00Z",
+   "body": "It isn't a problem with manifest file. It is regressions introduced by Android Studio and poor stewardship of the maven repositories by google. "
+  },
+  {
+   "id": 531602989,
+   "user": "jamorham",
+   "created_at": "2019-09-15T21:58:50Z",
+   "body": "There are a couple of ways to work around this. I will see if I can integrate one of them."
+  },
+  {
+   "id": 536726938,
+   "user": "RudieKat",
+   "created_at": "2019-09-30T20:00:00Z",
+   "body": "Managed to get things working (Note, below info is related to OS X so locations will vary)\r\n\r\nUninstall previous versions and remove all related stuff in \r\n~/Library/Application Support/AndroidStudio3.*\r\n~/Library/Preferences/AndroidStudio3.*\r\n~/Library/Caches/AndroidStudio3.*\r\n~/Library/Logs/AndroidStudio3.*\r\n\r\nalso rm -rf ~/.android for good measure.\r\n3.4.2 didn't work, 3.4.1 did so there is that too."
+  },
+  {
+   "id": 552213356,
+   "user": "wkochFPV",
+   "created_at": "2019-11-10T17:05:17Z",
+   "body": "These are my first steps in android development... I managed to build the app using the current android studio version, based on tipps found on various  pages on the internet. This is what I have done:\r\n\r\n1. I did not update  Gradle Plugin\r\n\r\n2. File -> Settings -> Experimental -> UNCHECK \"Only sync the active variant\"\r\n\r\n2. Add\r\n\r\n<meta-data\r\n            tools:replace=\"android:value\"\r\n            android:name=\"android.support.VERSION\"\r\n            android:value=\"26.0.2\" />\r\n\t\t\t\r\nto file wear/manifests/AndroidManifest.xml directly below the existing text\r\n<uses-library\r\n            android:name=\"com.google.android.wearable\"\r\n            android:required=\"false\" />\r\n\t\t\t\r\n3. Gradle Script/build.gradle(Project: xDrip)\r\n\tChange classpath line for google-services to\r\n\tclasspath 'com.google.gms:google-services:3.2.0'\r\n\r\nWith these changes, the apk builds without errors.\r\n\r\nHope this helps.\r\n\r\nBest regards, Walter"
+  },
+  {
+   "id": 569198972,
+   "user": "stephencmorton",
+   "created_at": "2019-12-27T06:16:00Z",
+   "body": "I can't get xDrip to build. I tried with the Android Studio 3.5, and then with 3.4 based on the above comments.\r\n\r\nI wanted to build xDrip based on the `insulin-types-merge` branch.\r\n\r\nI keep getting the gradle error for `app/build.gradle`\r\n\r\n> WARNING: Configuration 'compile' is obsolete and has been replaced with 'implementation' and 'api'.\r\nIt will be removed at the end of 2018. For more information see: http://d.android.com/r/tools/update-dependency-configurations.html\r\nAffected Modules: app\r\n\r\nWhich _looks_ completely easy to fix: just replace 'compile' with 'implemetation' or 'api', and that's what googling indicates. The problem is there is no 'compile' anywhere that I can find, so I'm stumped.  \r\n\r\n```\r\n$master >\r\ngit describe --tags\r\n2019.12.22\r\n$ insulin-types-merge > \r\ngit describe --tags\r\n2019.11.02-1-g62157698\r\n\r\n````\r\n\r\n_(I am not an Android developer and am not familiar with Android Studio and Gradle and all this business, but I have previously successfully built AndroidAPS and am a programmer by trade.)_"
+  },
+  {
+   "id": 569204173,
+   "user": "MasterPlexus",
+   "created_at": "2019-12-27T06:48:22Z",
+   "body": "Normally you could ignore a warning, the apks should build anyway. Are there other messages with errors?"
+  },
+  {
+   "id": 569332091,
+   "user": "stephencmorton",
+   "created_at": "2019-12-27T19:35:24Z",
+   "body": "@MasterPlexus  After more retries from scratch I got it working in 3.4. (I never tried again on 3.5)I think it was a combination of needing to download some `wear` dependencies (that were necessary even though I only wanted to build `app`) that I didn't previously realize was possible to do and a keystore problem that was just my mistake. \r\n\r\nIf you want I can delete my questions, to reduce the noise on this issue."
+  },
+  {
+   "id": 569359899,
+   "user": "MasterPlexus",
+   "created_at": "2019-12-27T22:55:10Z",
+   "body": "I would say, let it be, as it could help others, even that it does not link to the main topic directly.\r\n\r\nAnyhow not sure if this issue could be closed. @jsPl : is there still a problem? Otherwise I would think it is a good idea to close it."
+  },
+  {
+   "id": 572807319,
+   "user": "jeromecc",
+   "created_at": "2020-01-09T23:40:19Z",
+   "body": "This PR introduces minimal changes that allow xDrip to be built with Android Studio 3.5 (after commenting out one line about signingConfig, see my comment on the PR), which is the current stable version of Android Studio.\r\nIt would be great to merge it.\r\nHaving to download stale versions of an IDE to start working on a project could prevent contributions.\r\nhttps://github.com/NightscoutFoundation/xDrip/pull/1160\r\nThanks!"
+  },
+  {
+   "id": 604683871,
+   "user": "asavageiv",
+   "created_at": "2020-03-26T21:01:41Z",
+   "body": "I was able to build the most recent master today from a clean clone using Android Studio 3.6.1 as long as I didn't upgrade the Android Gradle Plugin (AGP). It would be nice to be able to upgrade the plugin because builds are currently non-incremental due to the use of android.databinding and the age of the plugin. Per [this issue](https://issuetracker.google.com/issues/110061530) 3.6+ has incremental builds enabled by default.\r\n\r\nShould we close this issue and open a new one?"
+  },
+  {
+   "id": 744733604,
+   "user": "tolot27",
+   "created_at": "2020-12-14T21:52:41Z",
+   "body": "The project builds now and there is a new issue addressing code review and incremental builds: #1522. Hence, closing this issue."
+  }
+ ]
+}

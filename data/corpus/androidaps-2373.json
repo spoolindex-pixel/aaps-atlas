@@ -1,0 +1,27 @@
+{
+ "id": 1556772602,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2373,
+ "title": "dev-g (and several previous versions) - missing carbs after app restart during bolus",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2373",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-01-25T14:42:47Z",
+ "closed_at": "2023-01-27T17:43:03Z",
+ "comment_count": 2,
+ "body": "I've noticed a few times that this can happen. At some point there was a development decision to delay posting carbs until after insulin is delivered when bolusing with the bolus calculator. As I understood, the reasoning was to remove risk of a failed bolus causing user to enter the carbs twice and confusing the algorithm. However there is a sideeffect that if the phone or app restarts during a running bolus, we not only lose the Cancel button so can't cancel the bolus, but also the carbs are never posted. \r\n\r\nMy daughter bolused to 30 carbs this afternoon when she got home from school (bolus at 14:16). She closed (Flip3) and put away her phone after confirming the bolus (I watched her bolus). After about 30 minutes I noticed an AAPS restarted note in the graph area on my AAPSClient phone, but couldn't see the 30 carbs. Checked her phone and mine in the Treatments tab, and the carb entry was nowhere to be found. The bolus calc record in treatments showed the carbs there. Since I've seen this previously, I concluded that it must be the same error/side effect of design decision. Just wanted to highlight this in case there is a possible solution that takes both risks into consideration (double carbs for missed bolus if user enters again in calculator vs missing carb entry if app is restarted during bolus). \r\n\r\nI would personally prefer some middleway like delaying carb entry until pump confirms bolus is started, instead of until pump confirms bolus is finished. I assume most users will verify bolus being started, then put away phone and start eating. If a bolus is interrupted after being started, it is more likely users will pay extra attention if using the calculator again, and or let SMB handle calculation. If bolus fails to start I would think it's more likely to be caused by a pump failure/disconnection of some sort which most people would handle before eating, and in those cases it makes sense to not post the carbs as no insulin has been given.\r\n\r\n[AndroidAPS_LOG_1674657625281.log.zip](https://github.com/nightscout/AndroidAPS/files/10500343/AndroidAPS_LOG_1674657625281.log.zip)",
+ "comments": [
+  {
+   "id": 1406550133,
+   "user": "kristinsmotz",
+   "created_at": "2023-01-27T14:03:59Z",
+   "body": "https://www.facebook.com/groups/AndroidAPSUsers/posts/3488511644703561/ \r\nAn example of the same thing happening for another user where there are frequent AndroidAPS started messages both before and right after bolusing, possibly while bolus is still running. "
+  },
+  {
+   "id": 1406854946,
+   "user": "MilosKozak",
+   "created_at": "2023-01-27T17:43:03Z",
+   "body": "Nothing is perfect. We choosed this solution as safer in most cases. Your solution would not work because drivers provide only information regarding finished/failed bolus.\r\nGeneral recommendation is to use only phone on which you can relly on communication with pump and stability.\r\nIn my case I always get alarm when bolus fail and I'm using dev versions in early stage of development"
+  }
+ ]
+}

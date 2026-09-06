@@ -1,0 +1,23 @@
+{
+ "id": 1110608780,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1209,
+ "title": "Omnipod Dash trying to reconnect and possibly blocking the bluetooth device (preventing Dexcom boyda to fetch data)",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1209",
+ "state": "closed",
+ "labels": [
+  "omnipod dash"
+ ],
+ "created_at": "2022-01-21T15:40:27Z",
+ "closed_at": "2022-06-19T19:51:30Z",
+ "comment_count": 1,
+ "body": "Just recently connected my first Dash pod to a Oneplus 8T device running aaps 3.0-rc3 (getting cgm data from BOYDA broadcast). \r\n\r\nI had changed the standard Profile to run at 150% for a few hours but when the timer expired a communications error occured. At the same time AAPS stopped getting data from the BOYDA broadcast. This resulted in AAPS not getting any cgm data, while stuck in a loop trying to reconnect to Dash. I woke up at around 06.00 realising the pump had been going at 150% during the entire night.\r\n\r\nLooking at the logs there is repeated connection retry pattern with exceptions occurring once every second. It appears as if the bluetooth device is being hammered with retries, possible preventing BOYDA to communicate on bluetooth with the cgm sensor? Shouldn't there be some sort of back off logic when trying to reconnect (1s, 5s, 30s, 90s, ..)? \r\n\r\nI've uploaded my logs on my Google Drive and this error pattern can be found directly in `AndroidAPS._2022-01-21_00-00-00_.1` The problems started sometime after midnight and was recovered when I manually reset the Profile at around 6am. The phone was well within range (1-1.5m) without obstacles in the way.\r\n\r\nhttps://drive.google.com/drive/folders/1ilK0hbdkXGnyXljvAw2iTELHuHSmL_pp\r\n\r\n```\r\n03:10:49.221 [RxCachedThreadScheduler-141] D/PUMPBTCOMM: [BleCommCallbacks.resetConnection():213]: Reset connection\r\n03:10:49.222 [RxCachedThreadScheduler-141] W/PUMPBTCOMM: [OmnipodDashManagerImpl.observeConnectToPodWithStop$lambda-5$lambda-4():98]: observeConnectToPodWithStop error=java.lang.NullPointerException: Attempt to invoke virtual method 'boolean android.bluetooth.BluetoothGatt.connect()' on a null object reference\r\n03:10:49.222 [RxCachedThreadScheduler-141] D/PUMP: [OmnipodDashManagerImpl$ErrorInterceptor.accept():745]: Intercepted error in OmnipodDashManagerImpl: java.lang.NullPointerException: Attempt to invoke virtual method 'boolean android.bluetooth.BluetoothGatt.connect()' on a null object reference\r\n03:10:49.223 [ConnectionThread] I/PUMPCOMM: [OmnipodDashPumpPlugin$connect$2.invoke():252]: connect error=java.lang.NullPointerException: Attempt to invoke virtual method 'boolean android.bluetooth.BluetoothGatt.connect()' on a null object reference\r\n03:10:50.218 [Thread-24322] D/PUMPQUEUE: [QueueThread.run():113]: connect\r\n03:10:50.223 [Thread-24322] I/PUMP: [OmnipodDashPumpPlugin.connect():235]: connect reason=Connection needed\r\n03:10:50.227 [RxCachedThreadScheduler-141] D/PUMP: [OmnipodDashManagerImpl$PodEventInterceptor.accept():667]: Intercepted PodEvent in OmnipodDashManagerImpl: BluetoothConnecting\r\n03:10:50.230 [RxCachedThreadScheduler-141] D/PUMPBTCOMM: [Connection.connectionState():152]: GATT connection state: 0\r\n03:10:50.231 [RxCachedThreadScheduler-141] D/CORE: [Connection.connect():65]: Connecting connectionWaitCond=ConnectionWaitCondition(timeoutMs=null, stopConnection=java.util.concurrent.CountDownLatch@9618a4b[Count = 1])\r\n03:10:50.233 [RxCachedThreadScheduler-141] D/PUMPBTCOMM: [Connection.disconnect():117]: Disconnecting closeGatt=false\r\n03:10:50.234 [RxCachedThreadScheduler-141] D/PUMPBTCOMM: [BleCommCallbacks.resetConnection():213]: Reset connection\r\n```\r\n",
+ "comments": [
+  {
+   "id": 1018900867,
+   "user": "avereha",
+   "created_at": "2022-01-21T22:10:29Z",
+   "body": "Added a check for Null and sleep if connect fails\r\n\r\nFrom what I can see in the logs, connect() failed to even start. This change will not fix the fact that connect() fails to start. It just retries less often."
+  }
+ ]
+}

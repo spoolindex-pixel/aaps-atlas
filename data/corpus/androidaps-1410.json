@@ -1,0 +1,33 @@
+{
+ "id": 1159863679,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1410,
+ "title": "[DEV 3.0.0.1- E] After 51 minutes without bg values - TT was still on 0% and must be canceled manually. ",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1410",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-03-04T17:10:49Z",
+ "closed_at": "2022-04-21T19:20:16Z",
+ "comment_count": 3,
+ "body": "DEV-E,, Pixel 5, Combo, Dexcom G6, Boyda.\r\n\r\nMy Dexcom Sensor Failed, shows 47 and my bg was at 110. So I stopped the sensor.\r\nAfter 51 minutes without values, AAPS didn't cancel his zero temp, so I must do that manually. \r\n\r\nThe bg was rising up to 210 in that time.\r\n\r\n![Screenshot_20220304-180053](https://user-images.githubusercontent.com/36486505/156810634-4c0cc7b5-2cb8-48f1-90be-fc19777fd53f.png)\r\n",
+ "comments": [
+  {
+   "id": 1073233161,
+   "user": "yhonatanb20",
+   "created_at": "2022-03-20T11:44:19Z",
+   "body": "Experiencing same issue, starnge that the algorithm doesn't suspend itself when there are no BG values."
+  },
+  {
+   "id": 1079697391,
+   "user": "philipgo",
+   "created_at": "2022-03-26T13:44:40Z",
+   "body": "IIRC zero temps should be limited to 30 minutes when blood glucose values are missing: https://github.com/openaps/oref0/blob/acb0150021e7bf284b6741a9510076a13f690747/lib/determine-basal/determine-basal.js#L161"
+  },
+  {
+   "id": 1105622693,
+   "user": "jotomo",
+   "created_at": "2022-04-21T18:38:55Z",
+   "body": "OpenAPS is only invoked when a new glucose value arrives and can manually be invoked only for glucose values max 7 minutes old. Hence the code mentioned above isn't invoked and the active temp runs until finished (I'm guessing in an OpenAPS setup, the algo is triggered periodically, so it runs even if no new glucose values have arrived?)\r\nGiven the last inputs to OpenAPS in this case a long zero temp seems like an appropriate defensive action.\r\nWith a failing sensor like that the user needs to take over control and take appropriate action I'd say.\r\n"
+  }
+ ]
+}

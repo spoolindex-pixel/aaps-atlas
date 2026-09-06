@@ -1,0 +1,113 @@
+{
+ "id": 978452469,
+ "repo": "nightscout/AndroidAPS",
+ "number": 645,
+ "title": "[2.8.2.2 Dev] Sometimes manual bolus are not correctly recorded in database",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/645",
+ "state": "closed",
+ "labels": [
+  "question - more info needed"
+ ],
+ "created_at": "2021-08-24T20:20:28Z",
+ "closed_at": "2021-10-01T22:20:16Z",
+ "comment_count": 16,
+ "body": "After several month of tests, I found about one week ago a very strange bug with manual bolus (done with \"Insulin Button\" on main screen). I saw this bug 3 times, 2 times last week, and last time this morning at 9h59.\r\n(Hopefully the great majority of boluses are correctly recorded)\r\n\r\nThis morning at 9:59, I made a manual bolus with Insulin button, this bolus was correctly delivered (I saw the Pop Up with the bar graph), but later when I wanted to make another bolus, I saw that previous bolus made at 9h59 was missing in IOB graph and in Treatment tab, I could only see it in User Entry and in the history of my Pump ???\r\n- I tried to analyse Log, but and don't see anything that could explain why this bolus is missing in treatments and IOB calculation\r\n- In NS/Synchronization, I have only \"Upload data to NS\" enabled, all other settings are disabled\r\n- Pump Accu-Check Insight\r\n\r\n![BugManualBolus](https://user-images.githubusercontent.com/52934600/130680605-6697a7a0-5b18-42f0-a906-303efec61c3a.jpg)\r\n\r\nI attached an Excel file with concatenation of log files and extract of each on of the 3 boluses made this morning:\r\n- First tab with complete log (I only removed D/GLUCOSE and D/AUTOMATION to limit the number of lines)\r\n- Second Tab Bolus 10.51U made at 08:04 with QuickWizard, (everything is OK)\r\n- Third Tab Bolus 4U made at 09:59 with Insulin Button, correctly delivered in pump but not shown in Treatments, IOB calculation and IOB graph\r\n- Fourth Tab Bolus 4U made at 11:15 with Insulin Button (everything is OK)\r\n\r\n[LogBolusKO.xlsx](https://github.com/nightscout/AndroidAPS/files/7041758/LogBolusKO.xlsx)\r\n",
+ "comments": [
+  {
+   "id": 904959110,
+   "user": "overfrenk",
+   "created_at": "2021-08-24T20:40:48Z",
+   "body": "It happened to me 2 times too! I had lunch and I used the insulin and carbohydrate button, the bolus was correctly delivered and the carbohydrates were correctly registered but the insulin was not! In fact aaps had started doing 1U boluses via SMB and I noticed it. To solve the problem I then did a no delivery bolus to block SMB."
+  },
+  {
+   "id": 905027273,
+   "user": "Philoul",
+   "created_at": "2021-08-24T22:50:09Z",
+   "body": "@overfrenk which pump?"
+  },
+  {
+   "id": 905129308,
+   "user": "overfrenk",
+   "created_at": "2021-08-25T02:32:04Z",
+   "body": "@Philoul accu-check insight"
+  },
+  {
+   "id": 905239835,
+   "user": "Philoul",
+   "created_at": "2021-08-25T07:05:46Z",
+   "body": "Thank's\r\nI don't know if it's in the driver or not but I also have an Insight pump...\r\nI propose to add logs and database verification in driver to help me..."
+  },
+  {
+   "id": 920429291,
+   "user": "MilosKozak",
+   "created_at": "2021-09-15T22:26:27Z",
+   "body": "@Philoul all database records (pump sync) are logged in dev version\r\n@overfrenk @Philoul can you check logs when this happen again?\r\ni didn't see this issue with Dana pumps"
+  },
+  {
+   "id": 920594754,
+   "user": "Philoul",
+   "created_at": "2021-09-16T05:41:28Z",
+   "body": "@MilosKozak the log is in the first tab of attached Excel file (it includes the bolus not recorded surounded by 2 boluses Ok, and a pre analysis on different tabs). It's easier for me to filter in excel, but I didn't find what could be wrong.\r\nI'll try to look deeper in log with D/DATABASE records and pumpsync."
+  },
+  {
+   "id": 922370862,
+   "user": "Philoul",
+   "created_at": "2021-09-18T20:42:32Z",
+   "body": "@MilosKozak See below the 3 log of Database record (extract from attached Excel File) corresponding to the 3 Bolus made\r\n=> In the middle the missing Bolus in my screenshot (I don't see any differences in these lines...)\r\n\r\n08:05:27.828 [Thread-8135] D/DATABASE: [PumpSyncImplementation.syncBolusWithPumpId():175]: Updated Bolus Bolus(id=1362, version=2, dateCreated=1629785127809, isValid=true, referenceId=null, interfaceIDs_backing=InterfaceIDs(nightscoutSystemId=null, nightscoutId=61248bfc60a0750004199cd4, pumpType=ACCU_CHEK_INSIGHT_BLUETOOTH, pumpSerial=33013206, temporaryId=null, pumpId=7226, startId=null, endId=null), timestamp=1629785074781, utcOffset=7200000, amount=10.51, type=NORMAL, isBasalInsulin=false, insulinConfiguration=null)\r\n\r\n10:00:07.340 [Thread-10905] D/DATABASE: [PumpSyncImplementation.syncBolusWithPumpId():175]: Updated Bolus Bolus(id=1410, version=2, dateCreated=1629792007310, isValid=true, referenceId=null, interfaceIDs_backing=InterfaceIDs(nightscoutSystemId=null, nightscoutId=6124a70360a0750004199d1b, pumpType=ACCU_CHEK_INSIGHT_BLUETOOTH, pumpSerial=33013206, temporaryId=null, pumpId=7242, startId=null, endId=null), timestamp=1629705586292, utcOffset=7200000, amount=4.0, type=NORMAL, isBasalInsulin=false, insulinConfiguration=null)\r\n\r\n11:16:05.058 [Thread-91] D/DATABASE: [PumpSyncImplementation.syncBolusWithPumpId():175]: Updated Bolus Bolus(id=1431, version=2, dateCreated=1629796565023, isValid=true, referenceId=null, interfaceIDs_backing=InterfaceIDs(nightscoutSystemId=null, nightscoutId=6124b8cf60a0750004199d4a, pumpType=ACCU_CHEK_INSIGHT_BLUETOOTH, pumpSerial=33013206, temporaryId=null, pumpId=7251, startId=null, endId=null), timestamp=1629796543002, utcOffset=7200000, amount=4.0, type=NORMAL, isBasalInsulin=false, insulinConfiguration=null)\r\n\r\nExcel file containing the log containing the 3 boluses (filtered with pumpsync event, bolus OK in green, bolus KO in orange)\r\n[LogBolusKO.xlsx](https://github.com/nightscout/AndroidAPS/files/719061"
+  },
+  {
+   "id": 922385447,
+   "user": "Philoul",
+   "created_at": "2021-09-18T22:57:45Z",
+   "body": "@MilosKozak I had this issue again today just after midnight\r\n\r\nSee attached log (between 23:52 and 00:11)\r\n=> The Bolus and the two SMB after are recorded in User Entries and in my pump history, but not recorded in meal/bolus tab and not shown in overview graphs\r\n=> In log the 2 boluses (8U and 0.70U) seems to be correctly recorded in database (the last one (0.25U) is after the end of the log file\r\n=> Previously I only noticed this bug with Insulin button, but we see that we can also miss some SMB too\r\n\r\n![Screenshot_20210919-001000_AndroidAPS](https://user-images.githubusercontent.com/52934600/133910310-a4aef101-9efd-406b-8764-25044febbba9.jpg)\r\n\r\n[AndroidAPS._2021-09-18_14-05-04_.zip](https://github.com/nightscout/AndroidAPS/files/7190742/AndroidAPS._2021-09-18_14-05-04_.zip)\r\n\r\n\r\n"
+  },
+  {
+   "id": 922718309,
+   "user": "MilosKozak",
+   "created_at": "2021-09-20T08:17:06Z",
+   "body": "```\r\n00:01:28.991 [Thread-9389] D/DATABASE: [PumpSyncImplementation.syncBolusWithPumpId():174]: Inserted Bolus Bolus(id=6009, version=0, dateCreated=1632002488948, isValid=true, referenceId=null, interfaceIDs_backing=InterfaceIDs(nightscoutSystemId=null, nightscoutId=null, pumpType=ACCU_CHEK_INSIGHT_BLUETOOTH, pumpSerial=33013206, temporaryId=null, pumpId=9072, startId=null, endId=null), timestamp=1632002488746, utcOffset=7200000, amount=8.0, type=NORMAL, isBasalInsulin=false, insulinConfiguration=null)\r\n\r\n....\r\n....\r\n\r\n00:01:44.871 [main] D/UI: [BolusProgressDialog.onResume$lambda-4():132]: Status: 3,20 U / 8,00 U délivrés Percent: 40\r\n00:01:44.978 [RxCachedThreadScheduler-62] D/CORE: [DataBroadcastPlugin.sendBroadcast():203]: Sending broadcast info.nightscout.androidaps.status to: sk.trupici.g_watch\r\n00:01:46.853 [main] D/UI: [ActivityMonitor.onActivityPaused():36]: onActivityPaused: BolusProgressHelperActivity elapsed=26216 total=13889116\r\n00:01:46.860 [main] D/UI: [BolusProgressDialog.onPause():159]: onPause\r\n00:01:46.946 [RxCachedThreadScheduler-67] D/DATABASE: [CompatDBHelper.dbChangeDisposable$lambda-18():70]: Firing EventTherapyEventChange\r\n00:01:46.959 [Thread-9389] D/DATABASE: [PumpSyncImplementation.insertTherapyEventIfNewWithTimestamp():222]: Inserted TherapyEvent TherapyEvent(id=1118, version=0, dateCreated=1632002506861, isValid=true, referenceId=null, interfaceIDs_backing=InterfaceIDs(nightscoutSystemId=null, nightscoutId=null, pumpType=ACCU_CHEK_INSIGHT_BLUETOOTH, pumpSerial=33013206, temporaryId=null, pumpId=null, startId=null, endId=null), timestamp=1632002505849, utcOffset=7200000, duration=0, type=NOTE, note=Pompe suspendue, enteredBy=AndroidAPS, glucose=null, glucoseType=null, glucoseUnit=MGDL)\r\n00:01:46.984 [RxCachedThreadScheduler-48] D/DATABASE: [CompatDBHelper.dbChangeDisposable$lambda-18():70]: Firing EventTherapyEventChange\r\n00:01:46.985 [Thread-9389] D/DATABASE: [PumpSyncImplementation.insertTherapyEventIfNewWithTimestamp():222]: Inserted"
+  },
+  {
+   "id": 922720706,
+   "user": "MilosKozak",
+   "created_at": "2021-09-20T08:20:38Z",
+   "body": "And Insight driver should not report `Result success: true` in this case"
+  },
+  {
+   "id": 923096146,
+   "user": "Philoul",
+   "created_at": "2021-09-20T16:43:26Z",
+   "body": "Concerning the bolus of 8U, it started before the cartridge replacement, (less than 8U remaing in reservoir) and finished after pump resume.\r\nThe 8U are correctly administered in my pump history.. \r\nI'll continue analysis hope I still have later log"
+  },
+  {
+   "id": 926961362,
+   "user": "Philoul",
+   "created_at": "2021-09-24T23:02:40Z",
+   "body": "I can now catch a bit more information with my additionnal logs and Notification (cf #688) \r\n\r\n\r\n![Screenshot_20210925-000512_AndroidAPS](https://user-images.githubusercontent.com/52934600/134745521-0d344a80-1c45-4222-915c-133933dedd03.jpg)\r\n```\r\npumpSync.syncBolusWithPumpId(\r\n        startTimestamp,\r\n        event.getImmediateAmount(),\r\n        null,\r\n        bolusID.getId(),\r\n        PumpType.ACCU_CHEK_INSIGHT,\r\n        serial);\r\naapsLogger.debug(LTag.PUMP, \"XXXX Last bolus delivered \" + bolusID.getId() + \" Update database sent\");\r\nif (!checkLastBolusRecorded(startTimestamp, event.getImmediateAmount())) {\r\n    aapsLogger.error(LTag.PUMP, \"XXXX Last bolus delevered \" + bolusID.getId() + \" not recorded in database\");\r\n    Notification notification = new Notification(Notification.INFO, \"Last Bolus delevered \" + event.getImmediateAmount() + \" not recorded in database\", Notification.URGENT);\r\n    rxBus.send(new EventNewNotification(notification));\r\n}\r\n```\r\n\r\n```\r\nprivate boolean checkLastBolusRecorded(long startTimestamp, double immediateAmount) {\r\n    PumpSync.PumpState.Bolus lastRecordedBolus = pumpSync.expectedPumpState().getBolus();\r\n    return lastRecordedBolus == null ? false : lastRecordedBolus.getTimestamp() == startTimestamp && lastRecordedBolus.getAmount() == immediateAmount;\r\n}\r\n```\r\n\r\nAnd see extract of the SMB OK and SMB KO, everything seems to be the same except that `checkLastBolusRecorded` returns false\r\n\r\n```\r\n23:34:00.833 [Thread-9616] D/DATABASE: [PumpSyncImplementation.syncBolusWithPumpId():176]: Inserted Bolus Bolus(id=6727, version=0, dateCreated=1632519240769, isValid=true, referenceId=null, interfaceIDs_backing=InterfaceIDs(nightscoutSystemId=null, nightscoutId=null, pumpType=ACCU_CHEK_INSIGHT_BLUETOOTH, pumpSerial=33013206, temporaryId=null, pumpId=9359, startId=null, endId=null), timestamp=1632519240577, utcOffset=7200000, amount=0.11, type=SMB, isBasalInsulin=false, insulinConfiguration=null)\r\n23:34:02.598 [Thread-9616] D/PUMP: [LocalInsightP"
+  },
+  {
+   "id": 926965064,
+   "user": "Philoul",
+   "created_at": "2021-09-24T23:15:21Z",
+   "body": "I got 5 missing SMB between midnight and 1:00, then after a stop and restart of AAPS, next SMB was correctly recorded.\r\n![Screenshot_20210925-010951_AndroidAPS](https://user-images.githubusercontent.com/52934600/134748441-febf7ec7-a78f-4d1a-8b0d-2b86813f0588.jpg)\r\n\r\n"
+  },
+  {
+   "id": 931566162,
+   "user": "MilosKozak",
+   "created_at": "2021-09-30T18:33:29Z",
+   "body": "@Philoul so where is the problem?"
+  },
+  {
+   "id": 931615625,
+   "user": "Philoul",
+   "created_at": "2021-09-30T19:49:31Z",
+   "body": "It seems that sometimes Database is not updated correctly after pumpSync.syncBolusWithPumpId.\r\n(I added an alert each time the lastrecorded bolus is not the same than the one updated by syncBolusWithPumpId immediatly, this alert should never occurs, but I got it several times, and each time a SMB delivered by the pump was not recorded in database)\r\n\r\nI recently added new debugs to get more informations and continue analysis, but everything seems to be ok in Insight plugin (I suspect an issue difficult to catch because rare, in pumpsync implementation or in database).\r\n\r\nUntil now I only got this alert on my loop phone (never on my dev phone running in parallel), and I can have several days without any missing records, and 2 or 3 following days with one to 3 missing SMB (no more)..."
+  },
+  {
+   "id": 931955565,
+   "user": "Philoul",
+   "created_at": "2021-10-01T06:47:26Z",
+   "body": "I think I got it with my latest debug:\r\n```\r\n00:02:38.121 [Thread-28694] D/PUMP: [LocalInsightPlugin.deliverTreatment():610]: XXXX deliverTreatment 9685 Update database sent: 01/10/2021 00:02 amount: 0.11 Result: true\r\n00:02:39.805 [Thread-28694] D/PUMP: [LocalInsightPlugin.processBolusDeliveredEvent():1451]: XXXX Delivered Bolus 9685!=35109/329906 already recorded in Insight database\r\n00:02:39.867 [Thread-28694] E/PUMP: [LocalInsightPlugin.processBolusDeliveredEvent():1458]: XXXX Last bolus in Database before update 01/10/2021 00:02 amount: 0.11\r\n00:02:39.887 [Thread-28694] D/PUMP: [LocalInsightPlugin.processBolusDeliveredEvent():1466]: XXXX Last bolus delivered 9685 Update database sent: 30/09/2021 00:02 amount: 0.11 Result: false\r\n00:02:39.951 [Thread-28694] E/PUMP: [LocalInsightPlugin.processBolusDeliveredEvent():1468]: XXXX Last bolus in Database after update 30/09/2021 22:57 amount: 0.12\r\n00:02:40.019 [Thread-28694] E/PUMP: [LocalInsightPlugin.processBolusDeliveredEvent():1470]: XXXX Last bolus delevered 9685 not recorded in database\r\n00:02:40.031 [Thread-28694] D/PUMP: [LocalInsightPlugin.processBolusProgrammedEvent():1381]: XXXX Bolus Programmed 9685/329905/329906 already recorded in Insight database\r\n```\r\nSMB correctly recorded in deliverTreatment\r\nID is found in readHistory during the process of processBolusDeliveredEvent from pump, but the calculated date from pump event is shifted one day before compared to real timestamp (strange because this calculation was not modified during update of the plugin for new database)\r\n\r\n=> I'll fix this bug very quickly."
+  }
+ ]
+}

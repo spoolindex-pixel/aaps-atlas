@@ -1,0 +1,237 @@
+{
+ "id": 288068793,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 267,
+ "title": "How to track/monitor more than one persons with one one smartphone (xDrip+ app)?",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/267",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2018-01-12T10:11:59Z",
+ "closed_at": "2021-02-26T16:47:39Z",
+ "comment_count": 41,
+ "body": "Is there any good way to achieve that I can follow more than one (2) persons (two dexcom G4) with one phone? For example - one xDrip Parakeet (person1) and one xDrip Bluetooth (or other xDrip Parakeet) for person2. Is there a way to install multiple instances of the app, each following one person, or some other way? The goal is to be able to wear only one smartphone while monitoring two persons (one is the owner of the phone (for example T1D parent) while the other is remote (for example T1D child)? I can not figure it out how to achieve this.",
+ "comments": [
+  {
+   "id": 357232529,
+   "user": "tzachi-dar",
+   "created_at": "2018-01-12T13:01:28Z",
+   "body": "One phone can run two instances of xDrip.\r\nOne can be a normal xDrip installation using BT.\r\nThe second one can read data from another xDrip (that is be an xDrip follower) or read data from a parakeet.\r\nIn order to install the second application you need to make a small change when building xDrip. I can do that for you but in that case, you will not be able to build and install xDrip yourself anymore.\r\n\r\nSo, do you want me to build it for you, or do you build your own version?"
+  },
+  {
+   "id": 357278003,
+   "user": "bordeb",
+   "created_at": "2018-01-12T16:01:34Z",
+   "body": "OMG how cooperative and helpful community here!  @tzachi-dar thak you very much! I would like to try myself because I don't want to bother more than necessary. Also life long learning is a beautiful thing. I did not completely understand your sentence that if you build it I will not be able to build and install xDrip myself. Could you please provide some more info? Did you mean on updating, or maybe...?\r\nCan you also point me in some direction where to start reading in order to try to build this myself?\r\nThank you once again!!"
+  },
+  {
+   "id": 357368480,
+   "user": "jamorham",
+   "created_at": "2018-01-12T22:10:35Z",
+   "body": "I can start providing variant builds again but previously they have only been used for testing."
+  },
+  {
+   "id": 357392709,
+   "user": "bordeb",
+   "created_at": "2018-01-13T00:35:23Z",
+   "body": "Thanks for joining in this discussion @jamorham . I am getting pure experts support here! tnx :-)\r\nIs it maybe insecure in some way (unreliable) to use \"unofficial\" builds compiled in order to be able to have multiple instances of the same app? Is it good, feasible and safe solution or the person tracked with unofficial build is in some unfavorable position? Am I aiming something too much, should I maybe give up on that idea? Hopefully not!"
+  },
+  {
+   "id": 357438938,
+   "user": "doc77",
+   "created_at": "2018-01-13T14:20:06Z",
+   "body": "There are several apps on Google Play that allow you to create an app copy to run multiple accounts of the same app. Just search \"parallel space\" or \"app clone\" and you'll find them. Perhaps one of them will work for you."
+  },
+  {
+   "id": 357446693,
+   "user": "bordeb",
+   "created_at": "2018-01-13T16:13:39Z",
+   "body": "Tnx man ! Yes, I already googled similar and found several apps, but I wanted to ask here because altruism driven gurus always know better than google etc..., and I also thought that it is better to rely on open source directly (even if it is customized) than some closed code apps etc... This is of great importance and very ensitive issue to all of us here :-) , so I prefered to ask community experts first. @tzachi-dar and @jamorham provided excellent suggestions and great help, so I will stick to that! "
+  },
+  {
+   "id": 357447958,
+   "user": "tzachi-dar",
+   "created_at": "2018-01-13T16:33:35Z",
+   "body": "I think that creating an official variant can be a good idea. (at least for the stable versions).\r\n\r\nbordeb - you can see example branches that run as variants, for example:\r\non the branch tzachi-readnfc there a commit called \"Updated version of running as variant 1.\" with sha-1 56acf8b61a3d638983d52567ea182cade4132ccd\r\n\r\n"
+  },
+  {
+   "id": 357448946,
+   "user": "bordeb",
+   "created_at": "2018-01-13T16:48:50Z",
+   "body": "> I think that creating an official variant can be a good idea. (at least for the stable versions).\r\n\r\nThat would be great idea, if it is not a big hassle for developers! That would be very beneficial for lots of us users that do not posses such extremely high level of IT expertise and knowhow as main developers have - the app is so overwhelming and usefull. Also it would be great because it would be much safer for non-experts.\r\nxDrip app is so powerful and useful app that it will be great to have additional version if one needs more than 1 instance of the app!! To argument this, just a small anecdote: yesterday my wife and I just discussed how excited and happy we are in a last couple of months when we implemented xDrip app, Nightscout, Parakeet, python RPi receiver - it is the same level of joy (and improvements) as it was a year ago when we first started to use dexcom... TNX to all."
+  },
+  {
+   "id": 358458828,
+   "user": "bordeb",
+   "created_at": "2018-01-17T21:48:59Z",
+   "body": "> tzachi-dar qute: ...In order to install the second application you need to make a small change when building xDrip. I can do that for you but in that case, you will not be able to build and install xDrip yourself anymore...\r\n\r\n@tzachi-dar would you be so kind and provide some more info insight about that. I would really like to understand the connection/limitations of building and installing xDrip myself if someone else (like you in the example) does it for me at first. It is very interesting for me so I would like to learn what you were thinking saying this. Maybe it would be also interesting for others. TNX in advance!"
+  },
+  {
+   "id": 358983378,
+   "user": "tzachi-dar",
+   "created_at": "2018-01-19T14:39:05Z",
+   "body": "So, the main issue is that after one builds an android application it is being signed by a key.\r\nUsually, this key is created by android studio and should be kept secret.\r\nOne who does not have the original key will not be able to build and install the exact same application.\r\n\r\nThat said, you can always export the data from xDrip, uninstall it, and then install the one that you have built yourself."
+  },
+  {
+   "id": 359250870,
+   "user": "bordeb",
+   "created_at": "2018-01-21T14:05:32Z",
+   "body": "Dear @tzachi-dar thank You very much on your kind explanation and your time spent here to help! Now I understand more thoroughly after reading your post. \r\n@jamorham said that he will build the official \"variant\" version so I will joyfully wait for it (keeping my finger crossed :-) ) and than install this variant app so I can be assured that my variant app is built by an pro expert and not me. I think that this is going to be a great thing and tzachi-dars suggestion that official variant build can be focused just to stable versions is very good in respect to utilization of developers time.\r\nIn the meantime while joyfully waiting for official variant build I will try to train myself and practice using Android Studio..."
+  },
+  {
+   "id": 362348211,
+   "user": "bordeb",
+   "created_at": "2018-02-01T17:52:48Z",
+   "body": "Hi! Just wanted to ask some additional questions raised in my head anticipating real life situations while happily waiting for official variant build:\r\n- when official variant version is released, is it going to be possible to update it in the same/similar manner as standard version - through integrated updater? I am afraid not because different channels (but that would not be a problem) and just asking to be prepared.\r\n- would the variant version as a master require that the follower devices also have the variant version or followers can have standard version while following the variant version master\r\n\r\n- And last but not least :-) , @jamorham is there any approximate forecast when the variant version would be available?\r\n\r\nThank you!"
+  },
+  {
+   "id": 371077145,
+   "user": "jamorham",
+   "created_at": "2018-03-07T09:27:00Z",
+   "body": "@bordeb You can download nightly variants here: https://drive.google.com/open?id=0B6mvYVNVC-fOWkxnVF80dlFabjQ please let me know if that works ok for you. I would suggest getting the most recent variant nightly. (View as list -> sort by last modified)"
+  },
+  {
+   "id": 371289086,
+   "user": "bordeb",
+   "created_at": "2018-03-07T21:22:08Z",
+   "body": "@jamorham thank you very much! You are so kind and helpful! It is great! Can you please explain me a little bit what is the \"variant number\" , I mean xDrip-plus-variant4... vs. ...variant3... ?\r\nI will test it on spear phones and report here."
+  },
+  {
+   "id": 377871416,
+   "user": "bordeb",
+   "created_at": "2018-04-02T07:08:27Z",
+   "body": "Hello! Just want to give some feedback. I am using the variant builds now for almost a month. Its big deal, great thing and big THANK YOU again.\r\nI started with early build xDrip-plus-variant1-20180122-d8e7097 thinking that it will be stable as for now latest stable regular (non variant) release 20180122-d8e7097 but found the variant release buggy (although regular relase is great).\r\nThen I updated to xDrip-plus-variant1-20180315-3f52aa5 and it was great, no problems detected\r\nAt the moment I have latest available xDrip-plus-variant1-20180330-5b7b3c7 that is also great.\r\n\r\nBetween, dear @jamorham & @tzachi-dar what would be your suggestions regarding the update approach for variant builds. Now that the variant builds are stable and mature (that is my opinion and experience), in order to be max on the safe side -bug free, in the future should I choose builds that would correspond to the regular stable builds or always choose the latest variant release? TNX in advance for your opinions.\r\nAlso, maybe it would be great (my apologies if I omitted the info already published somewhere) to put some links/explanation about availability of variant builds, so someone can more easily find this info if needed. For me personally, this is extremely valuable and big big thank you once more! I promise, I will stop now with those \"thank you\" :-) \r\n"
+  },
+  {
+   "id": 417387503,
+   "user": "bordeb",
+   "created_at": "2018-08-30T16:45:51Z",
+   "body": "hi dear xdrip team members. I closed this issue yesterday and now still waiting for 20180828-1603270 variant builds for 2 days and I am not sure if this has maybe stooped the production of variant builds so reopening this just in case.Those variants are so valuable especially for us that need more than one installations!"
+  },
+  {
+   "id": 417770396,
+   "user": "bordeb",
+   "created_at": "2018-08-31T19:43:16Z",
+   "body": "Hi @jamorham ! Did maybe something go wrong with production of variant builds when I closed this issue couple of days ago? I am warring that I messed up something, as I can not any more see new variant releases in the Google Drive: https://drive.google.com/open?id=0B6mvYVNVC-fOWkxnVF80dlFabjQ\r\nTnx in advance!"
+  },
+  {
+   "id": 461925156,
+   "user": "Colingroovey",
+   "created_at": "2019-02-08T19:50:00Z",
+   "body": "Sorry to open up an old thread, but I am in the same position as @Bordeb, in as much as I want to have two instances of xdrip running on 1 phone. 1 for myself reading my own miaomiao locally, and the second version set up as a follower, (which is already set up following my son). \r\n\r\nAre these options now available ?"
+  },
+  {
+   "id": 461931881,
+   "user": "bordeb",
+   "created_at": "2019-02-08T20:12:26Z",
+   "body": "yes @Colingroovey  it works perfect thanks to @jamorham who provides automatic variant builds following above gdrive link: https://drive.google.com/open?id=0B6mvYVNVC-fOWkxnVF80dlFabjQ\r\nYou just need to install for example standard release for one person then variant1 for another etc... "
+  },
+  {
+   "id": 461954762,
+   "user": "Colingroovey",
+   "created_at": "2019-02-08T21:35:17Z",
+   "body": "Fantastic, I eventually worked it out when I read the piece in full. I've got a second version installed, just waiting for the new miaomiao.Many thanksOn 8 Feb 2019 20:12, bordeb <notifications@github.com> wrote:yes @Colingroovey  it works perfect thanks to @jamorham who provides automatic variant builds following above gdrive link: https://drive.google.com/open?id=0B6mvYVNVC-fOWkxnVF80dlFabjQ\r\nYou just need to install for example standard release for one person then variant1 for another etc...\r\n\r\n—You are receiving this because you were mentioned.Reply to this email directly, view it on GitHub, or mute the thread."
+  },
+  {
+   "id": 461957144,
+   "user": "bordeb",
+   "created_at": "2019-02-08T21:43:44Z",
+   "body": "great! You are very welcome. This xdrip is fabulous piece of software. One note regarding updates: Regular version can be auto updated but variant builds require manual updating after downloading new version from @jamorham 's gdrive"
+  },
+  {
+   "id": 461959496,
+   "user": "jamorham",
+   "created_at": "2019-02-08T21:52:17Z",
+   "body": "Pro tip is to change the flair colors on one of the xDrip instances, for example I have my navigation bar bright purple. That way it is much much harder to get mixed up which xDrip you have open. You can find those settings in the xDrip+ Display Settings.\r\n\r\nI also have renamed the alarms with the name of the person handled by that xDrip instance so that when I get an alarm I know who it is for.\r\n\r\nYou also can attach multiple widgets to the home-screen."
+  },
+  {
+   "id": 462028197,
+   "user": "Colingroovey",
+   "created_at": "2019-02-09T09:17:36Z",
+   "body": "Great tips, thank you .On 8 Feb 2019 21:52, JamOrHam <notifications@github.com> wrote:Pro tip is to change the flair colors on one of the xDrip instances, for example I have my navigation bar bright purple. That way it is much much harder to get mixed up which xDrip you have open. You can find those settings in the xDrip+ Display Settings.\r\nI also have renamed the alarms with the name of the person handled by that xDrip instance so that when I get an alarm I know who it is for.\r\nYou also can attach multiple widgets to the home-screen.\r\n\r\n—You are receiving this because you were mentioned.Reply to this email directly, view it on GitHub, or mute the thread."
+  },
+  {
+   "id": 464913570,
+   "user": "TecMunky",
+   "created_at": "2019-02-18T22:58:08Z",
+   "body": "I would like to see the current code for the variants.  I can't find it on github.  could someone please point me to the repository so I can look at it?\r\n\r\nthanks in advance.\r\n"
+  },
+  {
+   "id": 464969959,
+   "user": "tzachi-dar",
+   "created_at": "2019-02-19T03:46:54Z",
+   "body": "@TecMunky I'm using https://github.com/NightscoutFoundation/xDrip/commit/fdbb30210208a62a6606dc2e9dfaefcdeca62b1b"
+  },
+  {
+   "id": 465366817,
+   "user": "TecMunky",
+   "created_at": "2019-02-20T00:21:23Z",
+   "body": "So I made the same changes in that commit to a new branch in my local repository, and got the following error during the build process (this is the same error I got when I tried before):\r\n\r\n>:app:handleReleaseMicroApk FAILED\r\n>\r\n>FAILURE: Build failed with an exception.\r\n>\r\n>* What went wrong:\r\n>Execution failed for task ':app:handleReleaseMicroApk'.\r\n> The main and the micro apps do not have the same package name.\r\n>\r\n>* Try:\r\n>Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output. Run with --scan to get full insights.\r\n>\r\n>* Get more help at https://help.gradle.org\r\n>\r\n>BUILD FAILED in 1m 6s\r\n>44 actionable tasks: 15 executed, 29 up-to-date`\r\n"
+  },
+  {
+   "id": 465372810,
+   "user": "tzachi-dar",
+   "created_at": "2019-02-20T00:49:47Z",
+   "body": "Did you run\nGradlew assembledebug from command line?\n\nבתאריך יום ד׳, 20 בפבר׳ 2019, 02:21, מאת TecMunky <notifications@github.com\n>:\n\n> So I made the same changes in that commit to a new branch in my local\n> repository, and got the following error during the build process (this is\n> the same error I got when I tried before):\n>\n> `:app:handleReleaseMicroApk FAILED\n>\n> FAILURE: Build failed with an exception.\n>\n>    - What went wrong:\n>    Execution failed for task ':app:handleReleaseMicroApk'.\n>\n> The main and the micro apps do not have the same package name.\n>\n>\n>    -\n>\n>    Try:\n>    Run with --stacktrace option to get the stack trace. Run with --info\n>    or --debug option to get more log output. Run with --scan to get full\n>    insights.\n>    -\n>\n>    Get more help at https://help.gradle.org\n>\n> BUILD FAILED in 1m 6s\n> 44 actionable tasks: 15 executed, 29 up-to-date`\n>\n> —\n> You are receiving this because you were mentioned.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/267#issuecomment-465366817>,\n> or mute the thread\n> <https://github.com/notifications/unsubscribe-auth/AHkw5I7eftIWtlM5LTJTCiW0s6ymNk1hks5vPJUEgaJpZM4RcEzU>\n> .\n>\n"
+  },
+  {
+   "id": 465377403,
+   "user": "TecMunky",
+   "created_at": "2019-02-20T01:10:28Z",
+   "body": "I ran gradlew assembleRelease.  \r\nActually, I am using linux so my script copies gradlew to gradlew.sh, then gives gradlew.sh execute priviledge, then runs 'gradlew.sh assembleRelease'\r\nspecifically:\r\n>cpulimit -l 10 ./gradlew.sh assembleRelease >${logpath}/assembleRelease-${1}.log 2>&1\r\n\r\n\r\nI am running it with assembleDebug now - will report results\r\n"
+  },
+  {
+   "id": 465380416,
+   "user": "TecMunky",
+   "created_at": "2019-02-20T01:23:37Z",
+   "body": "OK - assembleDebug builds successful - what does it do different and how can I build the release version?\r\n\r\nIs it because the 'wear' build.gradle does not have a debug option?\r\nYes - I think so.\r\n\r\nI am going to try a couple things -- be right back"
+  },
+  {
+   "id": 465387450,
+   "user": "TecMunky",
+   "created_at": "2019-02-20T01:54:59Z",
+   "body": "OK -- fixed it ---\r\n\r\nin /wear/build.gradle -- two places change \"com.eveningoutpost.dexdrip\" to variant name\r\nAlthough I don't know why it is in 2 places in the same function. (yes i see the '=')\r\n\r\n>    defaultConfig {\r\n>  >      applicationId \"com.eveningoutpost.dexdrip\"\r\n>        minSdkVersion 21\r\n>        targetSdkVersion 23\r\n>        versionCode 1\r\n>        versionName generateVersionName()\r\n>        buildConfigField \"int\", \"buildVersion\", generateVersionNumberString()\r\n>        buildConfigField \"String\", \"buildUUID\", generateRandomUUID()\r\n>        buildConfigField \"long\", \"buildTimestamp\", generateTimestamp()\r\n>        buildConfigField \"int\", \"targetSDK\", targetSdkVersion.mApiLevel.toString()\r\n>\r\n>>        applicationId = \"com.eveningoutpost.dexdrip\"\r\n>        resValue \"string\", \"label_xdrip\", \"XDrip\"\r\n>        resValue \"string\", \"label_xdrip_large\", \"XDrip(Large)\"\r\n>        resValue \"string\", \"label_xdrip_big_chart\", \"XDrip(BigChart)\"\r\n>        resValue \"string\", \"label_xdrip_circle\", \"XDrip(Circle)\"\r\n>        resValue \"string\", \"label_xdrip_activity\", \"XDrip Prefs.\"\r\n>        resValue \"string\", \"app_settings\", \"XDrip Settings\"\r\n>        signingConfig signingConfigs.config\r\n>\r\n>    }\r\n\r\n"
+  },
+  {
+   "id": 465390238,
+   "user": "TecMunky",
+   "created_at": "2019-02-20T02:08:05Z",
+   "body": "which begs the question - why isn't the name a variable that only has to be changed in ONE PLACE ???"
+  },
+  {
+   "id": 465390954,
+   "user": "TecMunky",
+   "created_at": "2019-02-20T02:11:24Z",
+   "body": "Also, maybe I should be building the debug version - will installing the variant release version cause the variant to try to push the wear app to the watch and cause problems???\r\n"
+  },
+  {
+   "id": 465570095,
+   "user": "tzachi-dar",
+   "created_at": "2019-02-20T13:18:40Z",
+   "body": "I have never tried using the collector as a variant, I believe that this requires much more work, then just xdrip on the phone.\r\n"
+  },
+  {
+   "id": 467189757,
+   "user": "bordeb",
+   "created_at": "2019-02-25T21:26:27Z",
+   "body": "> \r\n> \r\n> Also, maybe I should be building the debug version - will installing the variant release version cause the variant to try to push the wear app to the watch and cause problems???\r\n\r\nI have official release as well as official variant build on the same phone. No problem. You can choose whatever version (official or variant...) you want to be installed on the watch."
+  },
+  {
+   "id": 467190220,
+   "user": "bordeb",
+   "created_at": "2019-02-25T21:27:40Z",
+   "body": "> \r\n> \r\n> I have never tried using the collector as a variant, I believe that this requires much more work, then just xdrip on the phone.\r\n\r\nI am using jamorhams variant build as collector for Libre+miaomiao (previously G4) and it works great, without any problems. "
+  },
+  {
+   "id": 785380698,
+   "user": "Navid200",
+   "created_at": "2021-02-24T21:00:03Z",
+   "body": "There is a lot of useful info here.  Thanks.\r\nCan we close the issue though?  The info can still be accessed even after it is closed.  \r\nI think we should have an issue open if it means some work is required to be done to close it."
+  },
+  {
+   "id": 786762337,
+   "user": "Navid200",
+   "created_at": "2021-02-26T16:47:39Z",
+   "body": "Closing due to inactivity"
+  }
+ ]
+}

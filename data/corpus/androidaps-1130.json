@@ -1,0 +1,57 @@
+{
+ "id": 1094386980,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1130,
+ "title": "[3.0-beta11] Wear watchfaces do not open",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1130",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-01-05T14:04:55Z",
+ "closed_at": "2022-01-07T16:57:26Z",
+ "comment_count": 7,
+ "body": "3.0-beta11 and dev version afterr it\r\nTicWatch Pro\r\n\r\nWhen trying to select some of AAPS watchfaces, they typically does not open but are cloasedf or crashed\r\nand only grey display with time is shown.\r\n\r\nIn earlier beta versions (at least in 3.0-beta8) watchfaces work normally.\r\n",
+ "comments": [
+  {
+   "id": 1005719051,
+   "user": "AdrianLxM",
+   "created_at": "2022-01-05T14:12:30Z",
+   "body": "Possible duplicate of https://github.com/nightscout/AndroidAPS/issues/1122"
+  },
+  {
+   "id": 1005747928,
+   "user": "reijoahola-nightscout",
+   "created_at": "2022-01-05T14:46:14Z",
+   "body": "I started a new project from a clean table and compiled the latest dev version 2.8.2.18-dev.\r\nStill the same problem when trying to select AAPS watchfaces."
+  },
+  {
+   "id": 1005869524,
+   "user": "Andries-Smit",
+   "created_at": "2022-01-05T16:18:10Z",
+   "body": "Do you have some log details? https://developer.android.com/training/wearables/get-started/debugging "
+  },
+  {
+   "id": 1005929670,
+   "user": "reijoahola-nightscout",
+   "created_at": "2022-01-05T17:31:20Z",
+   "body": "Oops, this \"Debug a Wear OS app\" is something new for me. I have to study this.\r\nI will send logs later if I can achieve something useful. May be tomorrow I have time to concentrate on this\r\n\r\nIs it so that others cannot reproduce this, I thought that this must be very common problem because\r\nwatchfaces work when I install the older version into the watch (wear-full-release-3.0-beta8) so it should\r\nindicate that my watch is not broken or something like that.\r\n"
+  },
+  {
+   "id": 1006478984,
+   "user": "reijoahola-nightscout",
+   "created_at": "2022-01-06T11:01:09Z",
+   "body": "Not yet successful with \"Debug a Wear OS app\" but I found one clue about possible reason.\r\nI had one watchface (3100 Crucial) that had selected \"Complaint\" from AAPS COB and as it is not working (Issue #1123) it showed only -. When I turned off this Complaint selection then all AAPS watchfaces started to work. Probably Complaints-bug somehow disturbs also AAPS watchfaces if some watchface/Complaint try to read AAPS Complaints."
+  },
+  {
+   "id": 1006553853,
+   "user": "reijoahola-nightscout",
+   "created_at": "2022-01-06T12:38:33Z",
+   "body": "[wear-2.8.2.18-dev_2022_01_06_log.txt](https://github.com/nightscout/AndroidAPS/files/7821780/wear-2.8.2.18-dev_2022_01_06_log.txt)\r\nHere is log from a situation (around time 14:20 ... 14:21) where I at first enabled again \"3100 Crucial\" watchface Compliant from AAPS IOB. Then selected AAPS watchface \"Digital Style\" and it was not successful and gave grey screen with time. Then I again disabled \"3100 Crucial\" watchface problem Compliant and could after some watchface selection again have AAPS \"Digital Stye\" watchface. I hope this logreport helps to solve the problem."
+  },
+  {
+   "id": 1007568650,
+   "user": "MilosKozak",
+   "created_at": "2022-01-07T16:57:26Z",
+   "body": "fixed by https://github.com/nightscout/AndroidAPS/commit/fd814baa601f954baf5d251a4959f744598fa791"
+  }
+ ]
+}

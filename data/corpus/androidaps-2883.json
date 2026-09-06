@@ -1,0 +1,75 @@
+{
+ "id": 1931793682,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2883,
+ "title": "AAPS back-fills BG gaps with interpolated values (dangerous)",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2883",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-10-08T12:48:53Z",
+ "closed_at": "2023-10-11T19:11:59Z",
+ "comment_count": 12,
+ "body": "Today I were changing sensor for my kid and got bad calibration from first attemp, so there was a noticeable gap between last and new BG values. First screenshot shows how (original) Tsunami smoothing that I've shown in that [PR](https://github.com/nightscout/AndroidAPS/pull/2141) handled that on 3.1.0.3 and second one shows how the same gap were handled in 3.2-dev-m with exponential smoothing on my test phone.\r\n\r\nAs you can see original algorithm simply ignores missing values, while exponential smoothing fills it with non-existing values. That could possibly lead to very dangerous behaviour.\r\n\r\nIt is clear on first screenshot that BG were going down and original algorithm handled that well. While exponential smoothing replaced it with raise.\r\n\r\n![Screenshot_20231008_153506_NSClient](https://github.com/nightscout/AndroidAPS/assets/4157587/f04b9fd0-326d-4d09-aa8b-c2fbcc15440d)\r\n\r\n![Screenshot_20231008_153518_AAPS](https://github.com/nightscout/AndroidAPS/assets/4157587/bab8d565-0538-48ba-8f6b-a462a4ed0099)\r\n\r\n\r\nupd: Even with smoothing disabled AAPS fills gaps with interpolated values. This behavior is unintended and can lead to dangerous scenarios.",
+ "comments": [
+  {
+   "id": 1752026116,
+   "user": "ga-zelle",
+   "created_at": "2023-10-08T13:15:52Z",
+   "body": "Agreed; glucose data gaps should never be filled be it linearly interpolated or anything else. The fact of the gap is an important bit of information that should be kept in mind. For instance, SMB should be disabled for 10-15 minutes until a new trend is clear."
+  },
+  {
+   "id": 1752044019,
+   "user": "ga-zelle",
+   "created_at": "2023-10-08T14:38:53Z",
+   "body": "That gap filling also happens without using any smoothing option inside AAPS3.2rc1"
+  },
+  {
+   "id": 1752844393,
+   "user": "MilosKozak",
+   "created_at": "2023-10-09T11:38:01Z",
+   "body": "filling the gap was always there. in older versions this was not displayed\r\nwithout interpolation COB calculation would not be working"
+  },
+  {
+   "id": 1752879392,
+   "user": "TranceCake",
+   "created_at": "2023-10-09T12:02:29Z",
+   "body": "Isn't it good practise to disable the loop if you don't trust the accuracy of the BG anyway?"
+  },
+  {
+   "id": 1753327862,
+   "user": "Alamo04",
+   "created_at": "2023-10-09T16:35:09Z",
+   "body": "For Dexcom G6/G7 it's realy dangerous,  if you are using AAPS in the first 10-12h after sensor change.\r\nThe values can be way off your real BG and they can have extreme jumps..\r\n\r\nI recommend to pause AAPS for min. 10h after that and use your normal Basalrate."
+  },
+  {
+   "id": 1758419997,
+   "user": "justmara",
+   "created_at": "2023-10-11T19:44:13Z",
+   "body": "Completed? You've made really scary behaviour and only because noone ever knew It existed before - it is considered _safe_? Wtf?\r\nAAPS must NOT auto-fill gaps with fake BG values. Thats unacceptable.\r\nIt can allign existing values to 5-min intervals with interpolation for calculation purpose, but NOT add non-existing values.\r\nHere is an example how BG fall IS interpreted as raise because this fake backfill."
+  },
+  {
+   "id": 1758449205,
+   "user": "MilosKozak",
+   "created_at": "2023-10-11T20:02:45Z",
+   "body": "this behavior is there the since 1st version of AAPS so i'd mark it time proved\r\nand it's there only for calculation purposes, no BG is added\r\n"
+  },
+  {
+   "id": 1783049402,
+   "user": "blaqone",
+   "created_at": "2023-10-27T14:50:28Z",
+   "body": "> this behavior is there the since 1st version of AAPS so i'd mark it time proved\r\n> and it's there only for calculation purposes, no BG is added\r\n\r\nThis is not true - it’s there since exp smoothing. And there seem to be a few bad implementations we NEED to talk about!!"
+  },
+  {
+   "id": 1862256457,
+   "user": "sennierer",
+   "created_at": "2023-12-19T07:33:18Z",
+   "body": "I realized that in the second graph there seem to be some interpolated data points (around 11) that are real data points in the first graph. Is that intended behavior @MilosKozak ? I realized that in my case (G7, xdrip+ and AAPS 3.2.0.2+autoISF3.0) AAPS seems to replace some of the xdrip values with interpolated ones (at least they appear in the light green color) and its also changing on every loop run which data points are exchanged for interpolated ones."
+  },
+  {
+   "id": 1862323303,
+   "user": "MilosKozak",
+   "created_at": "2023-12-19T08:29:25Z",
+   "body": "@sennierer screenshot?"
+  }
+ ]
+}

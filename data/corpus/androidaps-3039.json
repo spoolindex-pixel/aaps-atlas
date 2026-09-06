@@ -1,0 +1,119 @@
+{
+ "id": 1980266262,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3039,
+ "title": "After upgrading to 3.2.0.1 it is not possible to connect to a new pod (Omnipod Dash)",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3039",
+ "state": "closed",
+ "labels": [
+  "omnipod dash"
+ ],
+ "created_at": "2023-11-06T23:34:18Z",
+ "closed_at": "2024-01-01T21:42:14Z",
+ "comment_count": 17,
+ "body": "getting the following error\r\nGeneric error: java.security.InvalidKeyException: Banned public key: 0000000000000............\r\n![Screenshot_20231107-002749](https://github.com/nightscout/AndroidAPS/assets/148657741/5e46a5c9-1ddf-421e-bc2f-74a24fc08974)\r\n![Screenshot_20231106-225212](https://github.com/nightscout/AndroidAPS/assets/148657741/42c88b37-0bad-44f5-854c-258170c7582f)\r\n![Screenshot_20231106-224843](https://github.com/nightscout/AndroidAPS/assets/148657741/3e8298bb-58f5-49ce-b90d-e1e452b66800)\r\n\r\nWhen I go back to my previous version (3.1.0.3) I manage to connect to the new pod and then again I upgrade to 3.2.0.1 and then everything works fine. But the connection itself with 3.2.0.1 failed\r\nI tried resetting bluetooth, turning the phone off and on, reinstalling, clearing cache and storage, nothing helped. All I have left to do is go back to the previous version to connect and then go back to the new version.\r\nAttached is the log in which the error occurred several times starting at 22:51:49.573\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/13273534/AndroidAPS.log)\r\n\r\n",
+ "comments": [
+  {
+   "id": 1799641940,
+   "user": "jbr7rr",
+   "created_at": "2023-11-07T19:11:07Z",
+   "body": "So I understand correctly that you can pair a pod with 3.1.0.x and then update to 3.2 and pod works but if you try to pair new pod with 3.2.x it fails with this error?\r\n\r\nCan you give me your phone type and android version?\r\nAlso a log of successful pairing with 3.1.0.x would be helpful"
+  },
+  {
+   "id": 1799798089,
+   "user": "vanelsberg",
+   "created_at": "2023-11-07T19:54:41Z",
+   "body": "@jbr7rr / FYI: I'v experienced not a single problem activating DASH using latest 3.2 dev versions...\r\nCould this be a faulty update i.e. wrong build key for new version?"
+  },
+  {
+   "id": 1800224669,
+   "user": "Yash907127",
+   "created_at": "2023-11-07T21:44:09Z",
+   "body": "> So I understand correctly that you can pair a pod with 3.1.0.x and then update to 3.2 and pod works but if you try to pair new pod with 3.2.x it fails with this error?\r\n> \r\n> Can you give me your phone type and android version? Also a log of successful pairing with 3.1.0.x would be helpful\r\n\r\nYou got it right\r\nMy phone is Xiaomi F21pro Android 11\r\nThe attached log should also show the link I created with version 3.1.0.3, then reverted to 3.2.0.1\r\nThe last failed connection attempt was at 22:58:35.645, then I went back to version 3.1.0.3, connected and upgraded again to version 3.2.0.1. It should appear in the attached log as well"
+  },
+  {
+   "id": 1800225992,
+   "user": "Yash907127",
+   "created_at": "2023-11-07T21:44:33Z",
+   "body": "> @jbr7rr / FYI: I'v experienced not a single problem activating DASH using latest 3.2 dev versions... Could this be a faulty update i.e. wrong build key for new version?\r\n\r\nHow can I check it?"
+  },
+  {
+   "id": 1800237766,
+   "user": "vanelsberg",
+   "created_at": "2023-11-07T21:50:53Z",
+   "body": "> How can I check it?\r\n\r\nYou probably did, but just to make sure:\r\nVerify your new version 3.2 was build with the same keyfile used to build your previous version 3.1.0.3\r\n\r\n- When _updating_ version 3.1.0.3 to 3.2 by starting the .apk it should say \"update\" and after updating all your settings should still be there and AAPS running without you needing to do any additional configuration.\r\n- Verify there is only one single AAPS app installed on the phone.\r\n\r\n"
+  },
+  {
+   "id": 1800244796,
+   "user": "Yash907127",
+   "created_at": "2023-11-07T21:55:41Z",
+   "body": "Yes\r\nAfter updating to 3.2, there is no need to reconfigure, everything remains as it was in 3.1\r\nAnd only one AAPS is installed on the phone"
+  },
+  {
+   "id": 1800271485,
+   "user": "Yash907127",
+   "created_at": "2023-11-07T22:11:13Z",
+   "body": "> Also a log of successful pairing with 3.1.0.x would be helpful\r\n\r\nI found in the log the trace of the downgrade to 3.1.0.3\r\n22:59:24.920 [main] D/CORE: [MainApp.onCreate():107]: Version: 3.1.0.3\r\nRight after, the connection should appear"
+  },
+  {
+   "id": 1804207085,
+   "user": "jbr7rr",
+   "created_at": "2023-11-09T16:58:52Z",
+   "body": "The concerning part of the code is hard to understand for me, but it looks like there goes something wrong with either a call to secure.random() or another java.secure related call. Maybe @avereha can also have a look ?\r\n\r\nIdeally we would need a stracktrace (can be generated using AndroidStudio and your phone connected to USB), if you are willing to do that contact me on discord and I can walk you trough it.\r\n\r\n"
+  },
+  {
+   "id": 1806914782,
+   "user": "Yash907127",
+   "created_at": "2023-11-11T20:54:13Z",
+   "body": "i did your insructions.\r\ni saved the log in adb mode (cmd line)\r\nis the saved file enough for you? \r\nif not - please let me know how to output the logcat in a better way ,,,\r\nthe error message is around 2:50\\2:51 \r\n[filename2.txt](https://github.com/nightscout/AndroidAPS/files/13326469/filename2.txt)\r\n\r\n"
+  },
+  {
+   "id": 1807898546,
+   "user": "millerachel",
+   "created_at": "2023-11-13T10:36:21Z",
+   "body": "does anyone has an idea how to help me?"
+  },
+  {
+   "id": 1808206296,
+   "user": "MilosKozak",
+   "created_at": "2023-11-13T13:53:11Z",
+   "body": "as you are the only one so far I expect it's phone issue\r\nI'd try reset to factory state"
+  },
+  {
+   "id": 1815617328,
+   "user": "CeDoMain",
+   "created_at": "2023-11-17T01:47:09Z",
+   "body": "Do ypu have GPS enabled when entering the connect dialog? Try removing permissions and then gain them again to aaps. I have no issues."
+  },
+  {
+   "id": 1871645392,
+   "user": "mordechi-david",
+   "created_at": "2023-12-29T00:34:30Z",
+   "body": "To my lenders too it happened to attach a log\r\nIf there is a solution I would love\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/13790228/AndroidAPS.log)\r\nAlso with F21"
+  },
+  {
+   "id": 1871831017,
+   "user": "vanelsberg",
+   "created_at": "2023-12-29T08:17:49Z",
+   "body": "> My phone is Xiaomi F21pro Android 11\r\n\r\nThis phone is not on the list of tested phones, known to work. Also, compatibility problems were reported with some Xiaomi phones in the past (Poco, Redmi).  As the F12pro is not on the list of tested phones this is likely is a phone specific problem or an issue with latest OS update.\r\n\r\nDid you check with other users running the F21pro? Are they successfully connecting to DASH running AAPS 3.2?\r\n\r\nThe fact that AAPS version 3.2 was built on latest OS platform libraries libraries which could explain new compatibility problems with the newer version of AAPS.\r\n\r\n**You can try:**\r\n1. When activating a new Pod, disconnect all (!) BT devices (except for BYODA)\r\n2. Disable any backgrond application that might use BT, disable any antivirus apps.\r\n3. Uninstall AAPS, restart the phone, then re-install AAPS\r\n4. Factory reset the phone to make sure there are no OS inconsistencies\r\n(YMMV)\r\n\r\nIf none of the above solves your problem:\r\nI's suggest to move to a different phone/brand that is known to work successfully with Omnipod DASH.\r\n\r\n_Additional note:_\r\nOmnipod DASH was designed and tested for the Omnipod PDM only. \r\nA lot of phones brands and OS's are able to connect and successfully operate with DASH, others don not. This is the why we have the list of tested phones: https://docs.google.com/spreadsheets/d/1zO-Vf3wv0jji5Gflk6pe48oi348ApF5RvMcI6NG5TnY\r\nBut even then: there is a chance a tested phone will start gving problems because of an OS of driver update"
+  },
+  {
+   "id": 1872638210,
+   "user": "mordechi-david",
+   "created_at": "2023-12-31T00:49:50Z",
+   "body": "Hi, thanks for the detailed answer, I personally know a few dozen people with a Xiaomi F21 that works fine for them with Omnipod Dash even with the new version so it can certainly be on the list of compatible phones, (I can also point out that some models of other phones that I know took the version 3.1 takes between 30 seconds and a minute to connect to the pod every time since 3.2 connects in 3/4 seconds) but it's probably a specific operating system version that causes this problem, I tried resetting AAPS as well as removing bluetooth devices and it didn't help."
+  },
+  {
+   "id": 1873009753,
+   "user": "Yash907127",
+   "created_at": "2023-12-31T18:13:35Z",
+   "body": "Hi Mordechai\r\nThis is a problem with one of the running versions of F21 PRO\r\nEach store sells this device with a different version\r\nThe solution is to burn a new version to the device\r\nThe Russian version and all based on it work without problems (if you know what I mean about the Russian version)\r\nThere are people who burn versions, contact me privately and I can refer you to them"
+  },
+  {
+   "id": 1873011117,
+   "user": "mordechi-david",
+   "created_at": "2023-12-31T18:20:25Z",
+   "body": "I know and have already recognized this matter today for testing, the older Russian version does not only work newer, but you are indeed right that it is not a bug that should be handled because it is also repaired on the above device in the following versions so that this problem can be closed"
+  }
+ ]
+}

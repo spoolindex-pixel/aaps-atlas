@@ -1,0 +1,39 @@
+{
+ "id": 837091760,
+ "repo": "nightscout/AndroidAPS",
+ "number": 433,
+ "title": "[v2.8.2.1-dev-d] Overview and Treatment tab not updated with TBR",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/433",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-03-21T14:24:27Z",
+ "closed_at": "2021-05-09T15:44:22Z",
+ "comment_count": 4,
+ "body": "Strange issue this morning, just before 11:00 basal shown on overview stopped to be updated (profile basal shown)\r\n- between 10:55 and 13:00 loop worked and several 0% TBR was set continuously by loop plugin (verified on my pump and on Loop plugin)\r\n- in Treatment tab, no records was visible after 10:55\r\n- I tried to set manually 0% TBR from action tab (recorded in UserEntry, but not visible in overview, Action tab and Treatments tab)\r\n- I tried to restart AAPS, reboot my phone, synchronize pump several times without success (no new TBR records in treatment tab and profile basal rate visible in overview)\r\n\r\nFinaly I downgraded AAPS to a previous version (2.8.2.1-dev) at about 13:13 and after the pump connexion all informations was updated (see lower right screenshot) (and all TBR done between 10:55 and 13:00 were added in treatment tab)\r\nBack again in dev-d version, now it works.\r\n\r\nSee screenshots below and log files (beginning and end of issue)\r\n\r\n![Screenshot_AndroidAPS](https://user-images.githubusercontent.com/52934600/111907464-b8126a80-8a55-11eb-83a5-427deb213b6f.jpg)\r\n\r\nWhen problem started\r\n[AndroidAPS._2021-03-21_00-00-07_.14.zip](https://github.com/nightscout/AndroidAPS/files/6177542/AndroidAPS._2021-03-21_00-00-07_.14.zip)\r\n\r\nWhen problem disappeared\r\n[AndroidAPS._2021-03-21_13-17-45_.0.zip](https://github.com/nightscout/AndroidAPS/files/6177562/AndroidAPS._2021-03-21_13-17-45_.0.zip)\r\n\r\n",
+ "comments": [
+  {
+   "id": 803649288,
+   "user": "Philoul",
+   "created_at": "2021-03-21T19:51:55Z",
+   "body": "Same issue a few hours later (2.8.2.1-dev-d)\r\n\r\nLoop still work, but I don't know if basalIOB is calculated with wrong displayed basal rate or with real one...\r\n\r\n![Screenshot_20210321-202554_AndroidAPS](https://user-images.githubusercontent.com/52934600/111918233-6b925380-8a84-11eb-97f2-043e5e153679.jpg)\r\n\r\n[AndroidAPS._2021-03-21_13-39-31_.5.zip](https://github.com/nightscout/AndroidAPS/files/6178196/AndroidAPS._2021-03-21_13-39-31_.5.zip)\r\n[AndroidAPS._2021-03-21_13-39-31_.6.zip](https://github.com/nightscout/AndroidAPS/files/6178197/AndroidAPS._2021-03-21_13-39-31_.6.zip)\r\n"
+  },
+  {
+   "id": 804697934,
+   "user": "Philoul",
+   "created_at": "2021-03-23T07:57:43Z",
+   "body": "Third sequence of bug (yesterday at about 10:00 PM until this morning)\r\nPump Insight v3\r\nCGM : G6 with Dexcom Patched App\r\n\r\nI can help to find the bug but I need guidance to know where searching. (migration of Insight plugin to module ? database ?)\r\n\r\nWhen the issue starts with dev-d version, it remains with the bug (reboot or restart of AAPS don't solve it)\r\nTo recover data the sequence tested is:\r\n- Downgrade to dev version (not tested with intermediate versions from dev-a to dev-c)\r\n- wait for pump synchronization (see screenshots below)\r\n- Update again to 2.8.2.1-dev-d (then it works again for \"a while\"\r\n\r\n![Bug_dev-d](https://user-images.githubusercontent.com/52934600/112111097-06d61680-8bb4-11eb-9522-f763e0d58392.jpg)\r\n"
+  },
+  {
+   "id": 821855798,
+   "user": "Philoul",
+   "created_at": "2021-04-17T17:13:00Z",
+   "body": "this regression appeared between the dev-c (OK) of March 01 and the dev-d (KO) of March 17... (I hope that update of Insight Driver with room will solve if...)"
+  },
+  {
+   "id": 835831435,
+   "user": "Philoul",
+   "created_at": "2021-05-09T15:44:22Z",
+   "body": "Fixed by Insight driver and database"
+  }
+ ]
+}

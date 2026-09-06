@@ -1,0 +1,48 @@
+{
+ "id": 3476990359,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4192,
+ "title": "Preselection of hypo TT in carb UI",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4192",
+ "state": "closed",
+ "labels": [
+  "enhancement",
+  "for_discussion"
+ ],
+ "created_at": "2025-10-02T10:34:56Z",
+ "closed_at": "2025-11-24T12:23:15Z",
+ "comment_count": 5,
+ "body": "Recently, I went on a day-long cycling tour and set a 70% profile with an activity TT for 10 hours. After two hours I got slightly low, so I ate some carbs, and entered them. Unfortunately, I didn't notice the preselected \"start hypo TT\". There was no problem for the next hour, but then the target was reset to the default (instead of activity TT). The loop gave me too much insulin, and I had a severe hypo.\n\nSuggestion: Do not preselect \"Start hypo TT\" if the currently set TT is *higher and longer* than the hypo TT would be.",
+ "comments": [
+  {
+   "id": 3435404199,
+   "user": "gerison77",
+   "created_at": "2025-10-23T06:43:43Z",
+   "body": "I recently encountered the same issue. In a caretaker configuration, a low profile combined with a high temporary target (TT) set 1.5 hours prior to exercise caused an interaction problem.\nThe caretaker treated the low with carbohydrates, which effectively shortened the TT duration. When the TT expired, the system reverted to the default target, thereby blocking the expected automation from being triggered."
+  },
+  {
+   "id": 3555016491,
+   "user": "olorinmaia",
+   "created_at": "2025-11-19T23:10:21Z",
+   "body": "When low, I think Hypo TT should automatically be selected when entering carbs, unless:\nThere is already a high TT > 100 mg/dl or 5,5 mmol/L with a duration longer than preset Hypo TT duration.\n\nThis will avoid Hypo TT cancelling out Activity TT or custom high TT with a longer duration than preset Hypo TT. \n\nWe experience this issue from time to time with Hypo TT cancelling out Activity TT when entering carbs when low. I think this proposal will fix issue as described in this ticket and other scenarios. It's recommended to not allow SMB when a high TT is set (above 100mg/dl)"
+  },
+  {
+   "id": 3566662651,
+   "user": "olorinmaia",
+   "created_at": "2025-11-22T12:11:32Z",
+   "body": "@MilosKozak @widmann this issue can be closed due to merging of https://github.com/nightscout/AndroidAPS/pull/4339\n\n"
+  },
+  {
+   "id": 3570310289,
+   "user": "widmann",
+   "created_at": "2025-11-24T11:29:04Z",
+   "body": "Thank you for providing the patch! It is much appreciated."
+  },
+  {
+   "id": 3570504830,
+   "user": "olorinmaia",
+   "created_at": "2025-11-24T12:15:10Z",
+   "body": "> Thank you for providing the patch! It is much appreciated.\n\nYou are welcome and thanks for reporting this issue. I also helped myself as we experience this from time to time.\n\nFeel free to close the issue 😉"
+  }
+ ]
+}

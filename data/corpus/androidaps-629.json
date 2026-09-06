@@ -1,0 +1,33 @@
+{
+ "id": 966083663,
+ "repo": "nightscout/AndroidAPS",
+ "number": 629,
+ "title": "BT connection lost when screen turns off and AAPS is not on the front screen",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/629",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-08-11T06:58:59Z",
+ "closed_at": "2021-08-11T16:24:55Z",
+ "comment_count": 3,
+ "body": "Preconditions:\r\n- AAPS 2.8.2\r\n- Nightscout 14.0\r\n- Phone: Unihertz Jelly 2\r\n- All battery optimiztations is turned off\r\n- All required requests has been granted\r\n\r\nWhen this happens: consistently and reprodusible\r\nWhat is the circumstances: AAPS is on not \"on top/front screen\", click the \"turn off screen\" physical button\r\nWhat happen: AAPS looses the BT connection to Orange/Rileylink, and the AAPS app is closed. When the screen is turned on again, you pass through the lock screen the AAPS app needs full start up, connect to BT and get Nightscout data.\r\n\r\nApps this does not happen with: Xdrip+\r\nApp can ble in the \"background\" but still have the BT connection open when the physical \"turn off screen\" is pressed\r\n\r\nI have added a video of producing the behaviour. I have to add logs etc when I have access to the phone.\r\n\r\nVideo of behaviour: https://youtu.be/BMEsYWf_RHE\r\n",
+ "comments": [
+  {
+   "id": 896936643,
+   "user": "swissalpine",
+   "created_at": "2021-08-11T15:43:26Z",
+   "body": "Unfortunately, this is a problem of the Jelly 2's energy-saving measures.\r\nI actually have this problem well under control when I set the cleaning time to 5 minutes under \"App Restriction\" (Smart Help) or completely disable the \"App Restriction\" function."
+  },
+  {
+   "id": 896944363,
+   "user": "Technixx",
+   "created_at": "2021-08-11T15:53:26Z",
+   "body": "I will double check the app restrictions, but I also see that XDrip+ is functioning even when it is in the background and the screen is off. Maybe there are workarounds or lessons learned from xdrip+? "
+  },
+  {
+   "id": 896972860,
+   "user": "Technixx",
+   "created_at": "2021-08-11T16:30:06Z",
+   "body": "@swissalpine's workaround should be sufficient for utilizing AAPS on Unihertz Jelly2. Thanks 👏\r\n\r\nWorkaround:  Find 'Smart assistant' - 'App blocker' menu. Remove the 'Background cleanup' (or any other) restrictions.\r\n\r\nThis way AAPS behaviour is as expected and BT connection kept open even in lock screen and when the screen is turned off. "
+  }
+ ]
+}

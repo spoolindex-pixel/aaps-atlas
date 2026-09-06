@@ -1,0 +1,57 @@
+{
+ "id": 1475100004,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2252,
+ "title": "profile not working for me in 3.1.0.3 app",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2252",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-12-04T19:15:17Z",
+ "closed_at": "2022-12-06T18:20:02Z",
+ "comment_count": 7,
+ "body": "I'm having a tough time with profiles in AndroidAPS and NSClient (3.1.0.3).\r\n1. I'm unable to download profiles from NS web. (\"invalid profile default not accepted from NS\" then the \"Error\" popup is empty)\r\n2. I can't upload new profiles from the 3.1.0.3 apps to NS web\r\n3. The NSClient app keeps saying \"No profile set\" even after I create and attempt to activate one.\r\n\r\nAny tips for how I can begin investigating/solving this would be greatly appreciated. I'm happy to share information about our setup and I'll use NSClient app to email logs shortly",
+ "comments": [
+  {
+   "id": 1336496509,
+   "user": "MilosKozak",
+   "created_at": "2022-12-04T19:22:06Z",
+   "body": "PM me your NS address"
+  },
+  {
+   "id": 1336498264,
+   "user": "sdolenc",
+   "created_at": "2022-12-04T19:30:53Z",
+   "body": "I just emailed the url to logs@androidaps.org . Let me know if there's a better method of PM'ing you\r\n\r\nI'm also comfortable putting this url in this public issue if that's easier"
+  },
+  {
+   "id": 1337796184,
+   "user": "MilosKozak",
+   "created_at": "2022-12-05T17:31:35Z",
+   "body": "new valid address is logs@aaps.app but better attach logs here directly\r\nsend me your NS address"
+  },
+  {
+   "id": 1337945742,
+   "user": "sdolenc",
+   "created_at": "2022-12-05T18:49:16Z",
+   "body": "https://ns.stephener.in/ <-- we plan to eventually change this url so i don't mind it being public until then\r\n\r\nnote: nightscout is dev branch, deployed to a win server 2022 hosted in azure, iis as the reverse proxy, mongo 4.4, node16\r\n\r\nlogs reproducing the profile issue from nsclient app\r\n[AndroidAPS_LOG_1670180966442.log.zip](https://github.com/nightscout/AndroidAPS/files/10157029/AndroidAPS_LOG_1670180966442.log.zip)\r\n\r\nthanks!"
+  },
+  {
+   "id": 1338522209,
+   "user": "sdolenc",
+   "created_at": "2022-12-06T01:15:50Z",
+   "body": "Things are getting better! I can now synchronize profile edits from NSClient app to NS web and vice-versa! (not sure if this fixed it: I temporarily pointed NSClient to a new NS web deployment on ubuntu 20.04 and then back to the original NS web)\r\n\r\nHowever, NSClient keeps saying \"No profile set\" in the app and notifications. This happens regardless of which NS website deployment I use.\r\n\r\nPlease let me know if there's more info I can provide (NS web settings, etc)"
+  },
+  {
+   "id": 1339501608,
+   "user": "MilosKozak",
+   "created_at": "2022-12-06T14:51:32Z",
+   "body": "just do in AAPS new profile switch"
+  },
+  {
+   "id": 1339788878,
+   "user": "sdolenc",
+   "created_at": "2022-12-06T18:20:02Z",
+   "body": "Everything's working now!\r\n- per your advice: I attempted profile changes with AAPS full app again instead of NSClient\r\n- I also created a new access token in NS web. I gave it every role I could think of:\r\n- ```*, admin, api, create, devicestatus-upload```\r\n- AAPS switched the active profile successfully and now NSClient can do it too.\r\n\r\nThank you for your time and help :+1: "
+  }
+ ]
+}

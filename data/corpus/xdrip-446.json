@@ -1,0 +1,63 @@
+{
+ "id": 324664183,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 446,
+ "title": "Broadcast of CGM-values from AAPS to xDrip not working",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/446",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2018-05-19T22:10:55Z",
+ "closed_at": "2018-07-10T20:30:04Z",
+ "comment_count": 8,
+ "body": "[AAPS 20 RC3, xDrip Feb 11, modified Dexcom App]\r\nMany AAPS users use the modified [Dexcom App](https://github.com/dexcomapp/dexcomapp). This app is  modified so it broadcasts CGM values to AAPS. AAPS in turn can broadcast CGM values to xDrip - for example to make use of the great alarm features or combine the NS upload with Bluetooth meter values.\r\n\r\nThis feature completely stopped working with the Feb 13 nightly, it still works with the Feb 11 nightly. However, with the Feb 11 nightly, xDrip displays the proper direction arrow but always uploads direction=flat to Nightscout.\r\n\r\nUpload created by AAPS:\r\n```\r\n{ \r\n    \"_id\" : ObjectId(\"5affdd0be1ecc30013a19be6\"), \r\n    \"device\" : \"AndroidAPS-DexcomG5\", \r\n    \"date\" : 1526717691000.0, \r\n    \"dateString\" : \"2018-05-19T08:14:51Z\", \r\n    \"sgv\" : NumberInt(148), \r\n    \"direction\" : \"SingleUp\", \r\n    \"type\" : \"sgv\", \r\n    \"NSCLIENT_ID\" : 1526717707080.0, \r\n    \"created_at\" : \"2018-05-19T08:15:07.964Z\"\r\n}\r\n```\r\n\r\nSame value when uploaded by xDrip after receiving the broadcast from AAPS:\r\n```\r\n{ \r\n    \"_id\" : ObjectId(\"5affdd0cd13d101efcc8b76a\"), \r\n    \"device\" : \"xDrip-NSEmulator\", \r\n    \"date\" : 1526717691000.0, \r\n    \"dateString\" : \"2018-05-19T10:14:51.000+0200\", \r\n    \"sgv\" : NumberInt(148), \r\n    \"delta\" : 9.967, \r\n    \"direction\" : \"Flat\", \r\n    \"type\" : \"sgv\", \r\n    \"filtered\" : NumberInt(148000), \r\n    \"unfiltered\" : NumberInt(148000), \r\n    \"rssi\" : NumberInt(100), \r\n    \"noise\" : NumberInt(1), \r\n    \"sysTime\" : \"2018-05-19T10:14:51.000+0200\"\r\n}\r\n```",
+ "comments": [
+  {
+   "id": 390505244,
+   "user": "jamorham",
+   "created_at": "2018-05-20T19:27:05Z",
+   "body": "Thanks for the detailed bug report. Please can you test the May 20th Nightly and let me know if it resolves both these reported issues.\r\n"
+  },
+  {
+   "id": 390756469,
+   "user": "philipgo",
+   "created_at": "2018-05-21T19:25:55Z",
+   "body": "After one day of testing I can say that:\r\n- Broadcast of the value from AAPS to xDrip now always works\r\n- xDrip mostly (but not always) shows the same direction arrow as AAPS. Does xDrip calculate the direction from the delta? Would it be possible to use the same direction as AAPS?\r\n- xDrip never uploads the correct direction to Nightscout, the uploaded direction is always \"Flat\"\r\n\r\nThank you!"
+  },
+  {
+   "id": 395144464,
+   "user": "philipgo",
+   "created_at": "2018-06-06T17:11:23Z",
+   "body": "@jamorham If the direction arrow error proves hard to fix, an alternative would be to allow for an option to drop upload of CGM values while still uploading Bluetooth meter values."
+  },
+  {
+   "id": 402551770,
+   "user": "jamorham",
+   "created_at": "2018-07-04T20:04:53Z",
+   "body": "I believe a fix for this will be in the next nightly"
+  },
+  {
+   "id": 402568210,
+   "user": "jamorham",
+   "created_at": "2018-07-04T22:41:19Z",
+   "body": "https://github.com/NightscoutFoundation/xDrip/commit/dd677e7db2c0c9e607d9eeda5548a67b4256de2d\r\n\r\nPlease let me know if this resolves it"
+  },
+  {
+   "id": 402651372,
+   "user": "philipgo",
+   "created_at": "2018-07-05T08:49:00Z",
+   "body": "Nice, that appears to have fixed it. Thank you so much! I will do some more testing and report again in a few days."
+  },
+  {
+   "id": 403952311,
+   "user": "jamorham",
+   "created_at": "2018-07-10T20:18:33Z",
+   "body": "If everything is okay now please report success and close the ticket. Thanks!"
+  },
+  {
+   "id": 403955483,
+   "user": "philipgo",
+   "created_at": "2018-07-10T20:29:49Z",
+   "body": "Both broadcast and direction arrows now work as expected. Thank you for the fix!"
+  }
+ ]
+}

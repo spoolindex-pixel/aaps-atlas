@@ -1,0 +1,90 @@
+{
+ "id": 958228087,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1797,
+ "title": "Tasker plugin vanished",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1797",
+ "state": "closed",
+ "labels": [
+  "build-nightly",
+  "tasker"
+ ],
+ "created_at": "2021-08-02T14:54:50Z",
+ "closed_at": "2021-08-03T04:21:05Z",
+ "comment_count": 12,
+ "body": "2021.08.02 seems to have wiped out the tasker plugin. Reinstalling 2021.07.31 restores the plugin.",
+ "comments": [
+  {
+   "id": 891095591,
+   "user": "Navid200",
+   "created_at": "2021-08-02T14:58:34Z",
+   "body": "The developers are aware.\r\nWould you please use the existing open issue to communicate with the developers?\r\nhttps://github.com/NightscoutFoundation/xDrip/issues/1796"
+  },
+  {
+   "id": 891134536,
+   "user": "jamorham",
+   "created_at": "2021-08-02T15:50:42Z",
+   "body": "@doc77 can you try: https://github.com/NightscoutFoundation/xDrip/releases/download/2021.08.02b/xDrip-plus-20210802-a8bca99.apk does this resolve the issue?"
+  },
+  {
+   "id": 891139840,
+   "user": "doc77",
+   "created_at": "2021-08-02T15:58:11Z",
+   "body": "@jamorham  No, tasker still has not received the plugin. It shows in my task as \"unknown plugin\""
+  },
+  {
+   "id": 891174549,
+   "user": "jamorham",
+   "created_at": "2021-08-02T16:48:12Z",
+   "body": "@doc77 okay I will try something else and revert to you with another update."
+  },
+  {
+   "id": 891183405,
+   "user": "jamorham",
+   "created_at": "2021-08-02T17:02:18Z",
+   "body": "@doc77 can you briefly describe what your tasker action that is having problems does? I'm trying to figure out which part of the interface you are using. "
+  },
+  {
+   "id": 891193463,
+   "user": "doc77",
+   "created_at": "2021-08-02T17:14:51Z",
+   "body": "@jamorham  The actions  I use in the plugin are Snooze, Speak On, Speak Off, and Restart App.  But the whole plugin does not register with Tasker in 2021.08.02 a or b.  Tasker fires the \"Missing Plugin\" notification every time a task is called using xDrip+, and the task does not fire.  I use them in Profiles that continue to work fine except for the xDrip actions contained within them.\r\n\r\nCertainly not a pressing problem, as I have reverted to 2021.07.31 and everything works fine."
+  },
+  {
+   "id": 891270603,
+   "user": "tolot27",
+   "created_at": "2021-08-02T19:18:34Z",
+   "body": "@jwoglom Do you have any idea what the cause of the problem could be? IMHO, we need more unit tests."
+  },
+  {
+   "id": 891301272,
+   "user": "jwoglom",
+   "created_at": "2021-08-02T20:12:02Z",
+   "body": "Just from looking at the xDrip commit history between 7/31 and 8/2, I have no idea why this would've been broken, unfortunately. Nor am I incredibly familiar with the lifecycle of how xDrip registers as a tasker plugin. \n\nShot in the dark, could the token preprocessor changes by @jamorham from August 1st have implicitly changed an identifier which tasker uses to identify the xDrip plugin? My understanding from looking at the commit is that it adjusted a large number of package names. If the java class inside xDrip which implements the tasker plugin was used as an external identifier then changing these package names could've broken an already set-up tasker configuration. "
+  },
+  {
+   "id": 891334189,
+   "user": "jamorham",
+   "created_at": "2021-08-02T21:08:32Z",
+   "body": "@doc77 it is a significant issue because we need to resolve any regressions introduced by changes. I think there is a good chance that the issue is due to the package renaming which could affect inbound intents from Tasker. I'm slightly surprised though as mine have been working fine but there are a few different ways tasker can be set up so that could be it. \r\n\r\nI don't think we need package renaming for the tasker interface as it isn't used with databinding afaik (which is why the packages names are being lowercased) - so I have reverted that and will roll another build that you can try out."
+  },
+  {
+   "id": 891340888,
+   "user": "jamorham",
+   "created_at": "2021-08-02T21:19:28Z",
+   "body": "@doc77 does this version resolve the issue for you: https://github.com/NightscoutFoundation/xDrip/releases/download/2021.08.02c/xDrip-plus-20210802-053ad95.apk ?"
+  },
+  {
+   "id": 891475394,
+   "user": "doc77",
+   "created_at": "2021-08-03T02:51:43Z",
+   "body": "@jamorham  Thank you so much. This seems to do the trick. I appreciate all of your hard work on this project."
+  },
+  {
+   "id": 891510887,
+   "user": "tolot27",
+   "created_at": "2021-08-03T04:20:58Z",
+   "body": "Issue is solved by excluding Tasker from package renaming. Nevertheless, we need Tasker unit tests."
+  }
+ ]
+}

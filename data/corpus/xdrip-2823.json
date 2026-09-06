@@ -1,0 +1,75 @@
+{
+ "id": 1701907518,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 2823,
+ "title": "Carelink login not working with xdrip",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/2823",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-05-09T12:13:34Z",
+ "closed_at": "2023-05-26T15:18:38Z",
+ "comment_count": 16,
+ "body": "### Discussed in https://github.com/NightscoutFoundation/xDrip/discussions/2821\r\n\r\n<div type='discussions-op-text'>\r\n\r\n<sup>Originally posted by **iwascu** May  8, 2023</sup>\r\nthe carelink server only works with medtronic applications. xdrip can no longer connect to the server. do you have the same problem? (server is carelink.minimed.eu)</div>",
+ "comments": [
+  {
+   "id": 1560967043,
+   "user": "cagito",
+   "created_at": "2023-05-24T11:44:33Z",
+   "body": "Same problem.   \r\n1. I changed username and password.  but same problem. \r\n2. Old XDrip+ version and new version.  same problem.  400 error\r\n3. Working well in \"CareLink Connect\" App with same username and password(Korea).\r\n\r\nXDrip+ Error Message \r\n  \"CareLink download error! Response code:400\"\r\n\r\nHelp me.\r\n\r\n![image](https://github.com/NightscoutFoundation/xDrip/assets/23023191/2ec1b80c-df30-4858-ab0f-b44c45134d25)\r\n"
+  },
+  {
+   "id": 1560986146,
+   "user": "Navid200",
+   "created_at": "2023-05-24T11:58:22Z",
+   "body": "@cagito \r\nWould you please use the patient account instead of the care partner account?\r\nThat should fix it for now.\r\n@benceszasz can open a PR to address this in a different way hopefully soon."
+  },
+  {
+   "id": 1562998754,
+   "user": "DanielFinestrat",
+   "created_at": "2023-05-25T14:21:25Z",
+   "body": "@Navid200 Hey there, I'm having the same 400 download error when using my care partner account (Spain). I've changed my settings to use my patient account but apparently I'm getting a nullptr error when using that account. Any idea what I may be doing wrong?\r\n\r\n![Screenshot_2023-05-25-16-17-18-33_2dd2c1bcb8f659cd696bcba2072f751b](https://github.com/NightscoutFoundation/xDrip/assets/8960119/213081e2-6863-4286-9590-fdea533df7ab)\r\n"
+  },
+  {
+   "id": 1563024954,
+   "user": "Navid200",
+   "created_at": "2023-05-25T14:37:12Z",
+   "body": "@DanielFinestrat Do you have two-factor authentication enabled on the patient account?\r\nIf yes, that may be the cause of the problem.\r\n\r\n @benceszasz needs time to create a fix.  When he does that, this problem will be completely addressed."
+  },
+  {
+   "id": 1563028486,
+   "user": "DanielFinestrat",
+   "created_at": "2023-05-25T14:39:16Z",
+   "body": "@Navid200 no 2FA here! I did not realize a fix was being worked on, no pressure at all! Thanks for the hard work!"
+  },
+  {
+   "id": 1563208005,
+   "user": "sedy89",
+   "created_at": "2023-05-25T16:42:58Z",
+   "body": "carelink now requries the information about the patient.\r\n\r\nPreviously the content of the payload was the username and the role,\r\n\r\n`\r\n05-25 18:18:02.144  9788 21467 I flutter : | OAuth | D | 2023-05-25 18:18:02.144481 | Request URL: POST: https://clcloud.minimed.eu//connect/carepartner/v6/display/message?{}\r\n05-25 18:18:02.144  9788 21467 I flutter : | OAuth | D | 2023-05-25 18:18:02.144704 | Request Headers: {Accept: application/json, Content-Type: application/json}\r\n05-25 18:18:02.144  9788 21467 I flutter : | OAuth | D | 2023-05-25 18:18:02.144770 | Request Payload: {\"username\":this_is_my_carelink_acc,\"role\":\"carepartner\"}\r\n05-25 18:18:02.144  9788 21467 I flutter : | OAuth | D | 2023-05-25 18:18:02.144832 | Public: false\r\n`\r\n\r\n but after the update the payload got extended by the patient.\r\n\r\n`\r\n05-25 18:18:02.144  9788 21467 I flutter : | OAuth | D | 2023-05-25 18:18:02.144481 | Request URL: POST: https://clcloud.minimed.eu//connect/carepartner/v6/display/message?{}\r\n05-25 18:18:02.144  9788 21467 I flutter : | OAuth | D | 2023-05-25 18:18:02.144704 | Request Headers: {Accept: application/json, Content-Type: application/json}\r\n05-25 18:18:02.144  9788 21467 I flutter : | OAuth | D | 2023-05-25 18:18:02.144770 | Request Payload: {\"username\":this_is_my_carelink_user,\"role\":\"carepartner\",\"patientId\":patient_user_name}\r\n05-25 18:18:02.144  9788 21467 I flutter : | OAuth | D | 2023-05-25 18:18:02.144832 | Public: false\r\n`\r\n![grafik](https://github.com/NightscoutFoundation/xDrip/assets/65983953/9b154d70-ac42-41c2-8ff5-e1617845c828)\r\n\r\nI tested this change in the carelink python api and I got the restuls back.\r\nXdrip requires an option to select/set the patient in the settings and the payload of the request needs to get updated.\r\n\r\nI got the log by using \"adb logcat | findstr flutter \" and opening the carelink app until it updated the values.\r\n"
+  },
+  {
+   "id": 1563495739,
+   "user": "benceszasz",
+   "created_at": "2023-05-25T20:55:29Z",
+   "body": "@sedy89 I am already working on it. The BLE endpoint API change still only works with 7xxG pumps, but this change also affects standalone CGM users. For them there is a new API when using care partner account, which must be also implemented:\r\n`GET /patient/m2m/connect/data/gc/patients/$patientUsername`\r\nFor patient accounts the old API is still good.\r\nThe multi patient follow API changes only affects CareLink servers on which the multi follow option is enabled:\r\n`GET /patient/configuration/system/personal.cp.m2m.enabled`\r\nMulti follow was enabled on the US server last week and on the EU server a few days ago.\r\nI already have a working private version, which I am testing for every scenario and after that I will create a PR for the official xDrip.\r\nBy the way I am working on a little bit more user friendly version, where the patient only needs to be provided if multiple patients are followed by the care partner, because there is new an API for patients if multi follow is enabled:\r\n`GET patient/m2m/links/patients`"
+  },
+  {
+   "id": 1564496767,
+   "user": "Navid200",
+   "created_at": "2023-05-26T14:39:44Z",
+   "body": "Please try the latest release:  https://github.com/NightscoutFoundation/xDrip/releases/tag/2023.05.26"
+  },
+  {
+   "id": 1564545354,
+   "user": "sedy89",
+   "created_at": "2023-05-26T15:15:24Z",
+   "body": "wow... that was fast :) Thank you very much, it is working fine for me!"
+  },
+  {
+   "id": 1564549413,
+   "user": "Navid200",
+   "created_at": "2023-05-26T15:18:38Z",
+   "body": "The latest Nightly seems to address this issue.  \r\nWe can always reopen if needed."
+  }
+ ]
+}

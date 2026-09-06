@@ -1,0 +1,123 @@
+{
+ "id": 1314950716,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1947,
+ "title": "max_iob = 0 after upgrading to AAPS 3.1.0? Maybe due to new objectives questions?",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1947",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-07-22T12:32:37Z",
+ "closed_at": "2022-08-01T18:49:19Z",
+ "comment_count": 18,
+ "body": "Looks like there are new objectives questions. After upgrading to 3.1.0 they showed up:\r\n\r\n![aaps-objectives](https://user-images.githubusercontent.com/3207317/180439344-37b3ff2a-d8ef-4713-b93d-085f45431cbe.png)\r\n\r\nAnd I noticed that the restriction to max_iob = 0 seems to apply:\r\n![loop](https://user-images.githubusercontent.com/3207317/180439512-df1349af-8f30-4239-aefd-684d7376fcec.png)\r\n![smb](https://user-images.githubusercontent.com/3207317/180439541-e7334f63-2ac1-4a52-bab6-90b1f6423eeb.png)\r\n\r\nI already noticed that when upgrading to 3.0.0.2. Answered the questions correctly. But that didn't seem to remove the max_iob restriction. \r\n\r\nNow after upgrading to 3.1.0 there are more new questions.\r\nBut I fear that even after answering them correctly, the restriction will still persist.\r\n\r\nAny thoughts?\r\n",
+ "comments": [
+  {
+   "id": 1192787152,
+   "user": "MilosKozak",
+   "created_at": "2022-07-22T17:23:50Z",
+   "body": "what do you have in preferences?"
+  },
+  {
+   "id": 1192930835,
+   "user": "dhermanns",
+   "created_at": "2022-07-22T20:59:37Z",
+   "body": "Hi Milos! In preferences a max IOB of 9 is configured.\n\nI answered all questions. Tried to uninstall/reinstall the version 3.1.0. Reimported the preferences.\n\nAll questions now stay as answered. But max_iob is still always 0 under the loop tab."
+  },
+  {
+   "id": 1193100607,
+   "user": "agniabakush",
+   "created_at": "2022-07-23T10:13:15Z",
+   "body": "You should chech max iob value in AMA module. It seems APS apply min value even module is inactive "
+  },
+  {
+   "id": 1193111065,
+   "user": "dhermanns",
+   "created_at": "2022-07-23T11:36:32Z",
+   "body": "Thanks - this is configured to 9 too:\n\n![image](https://user-images.githubusercontent.com/3207317/180603271-168a030e-81cb-4120-8499-ec6ae5f32885.png)"
+  },
+  {
+   "id": 1193143859,
+   "user": "Chikibai",
+   "created_at": "2022-07-23T15:36:25Z",
+   "body": "Autosens ist not checked on.\r\n\r\nIn objectives 3 (Ver. 3.1)there are new questions (not translated). I remember in Ver. 3.0.02 this questions are I:C Verhältnis...now splitted in Ver. 3.1"
+  },
+  {
+   "id": 1193149104,
+   "user": "dhermanns",
+   "created_at": "2022-07-23T16:12:36Z",
+   "body": "Double checked the objectives and turns out the COB questions are once more marked as unsolved :-/\n\nDid a export/import after reinstalling. But looks like that doesn't run smoothly.\n"
+  },
+  {
+   "id": 1193150268,
+   "user": "Chikibai",
+   "created_at": "2022-07-23T16:20:31Z",
+   "body": "Are you on latest 3.1.0.2 Ver. 3.1.0 have bugs"
+  },
+  {
+   "id": 1193172161,
+   "user": "dhermanns",
+   "created_at": "2022-07-23T18:52:50Z",
+   "body": "Missed the new version yesterday ;-) . Now I updated. But still the same behavior. All questions still answered. But max_iob seems still stay at zero. Tried to update it both in AMA and SMB settings. But no change.\r\n\r\nLooks like its still disabled as if the objective 3 questions still unsolved."
+  },
+  {
+   "id": 1193378631,
+   "user": "dhermanns",
+   "created_at": "2022-07-24T19:21:40Z",
+   "body": "Looks like the LGS constraint seems to set my max_iob to 0:\r\n\r\n![Screenshot_20220724-205250](https://user-images.githubusercontent.com/3207317/180662516-6277b02a-8c83-447d-8127-4ca30358f809.png)\r\n\r\nThinking about disabling this constraint completely to see whether this helps. \r\n\r\nThinking of setting the MAX_IOB_LGS to 9.0 in the HardLimits.kt:\r\n\r\n```\r\n        //LGS Hard limits\r\n        //No IOB at all\r\n        const val MAX_IOB_LGS = 9.0\r\n```\r\n\r\nWould this have any bad side-effects?"
+  },
+  {
+   "id": 1194311060,
+   "user": "dhermanns",
+   "created_at": "2022-07-25T16:21:22Z",
+   "body": "I switched MAX_IOB_LGS to 9.0. Closed Loops seem to work as expected now.\r\n\r\nOne-million-dollar question is: Why thinks AAPS that the Loop should be in LGS Mode?\r\nLooks like a bug to me..."
+  },
+  {
+   "id": 1194395106,
+   "user": "Chikibai",
+   "created_at": "2022-07-25T17:35:08Z",
+   "body": "max_iob = 0  and LGS is part/target of objectives 6"
+  },
+  {
+   "id": 1194399712,
+   "user": "dhermanns",
+   "created_at": "2022-07-25T17:39:37Z",
+   "body": "Hm - maybe I should restart and reanswer objectives 6 then?\n\nWhich code does the objectives 6 check? I could try to deactivate it there and try to drilldown the real cause..."
+  },
+  {
+   "id": 1198904991,
+   "user": "Sabr1naT1",
+   "created_at": "2022-07-29T05:50:12Z",
+   "body": "Hi @dhermanns, \r\nI have the same issue with max_iob, could you please give an update whether restarting objective 6 fixed it?"
+  },
+  {
+   "id": 1198928436,
+   "user": "dhermanns",
+   "created_at": "2022-07-29T06:31:50Z",
+   "body": "Hi! No, not yet. We need the closed loop badly right now. So it will take some time for me to reset objectives 6.\n\nDid you had unanswered questions too before updating to a newer version?"
+  },
+  {
+   "id": 1199169068,
+   "user": "Sabr1naT1",
+   "created_at": "2022-07-29T11:26:30Z",
+   "body": "Currently I'm on version 3.0.0.2. I did not update the app, just installed and did the objectives one after the other and I'm stuck at objective 7 right now, because max_iob is 0 no matter what i'm changing in the settings.\r\nI want to update on 3.1 on sunday and if this will not fix objective 7, then I'm going to restart objective 6"
+  },
+  {
+   "id": 1199177874,
+   "user": "dhermanns",
+   "created_at": "2022-07-29T11:38:04Z",
+   "body": "So you did a fresh answer of all questions using 3.0.0.2? Then my wild guess seems to be wrong and restarting objectives 6 won't help.\n\nAt least it would surprise me ;-). You could try make workaround. Works fine for me, but sure this is dangerous and comes with no warranty ;-)"
+  },
+  {
+   "id": 1201559240,
+   "user": "Sabr1naT1",
+   "created_at": "2022-08-01T18:27:53Z",
+   "body": "Hi, after installing 3.1.0.2 today and importing my settings, I also had 3 unanswered questions in objective 3 (about COB, see screenshot). After answering them, I tried to finish objective 7. Additonal to \"max IOB\" appeared the point \"Closed mode activated\". And in the settings about Loop APS mode, I found the setting to change it from LGS to Closed Loop and - et voîla - objective 7 is green \\o/\r\n![Screenshot_20220801-195639](https://user-images.githubusercontent.com/109147046/182218430-cf376d27-4866-48e7-970c-258b11f9efb5.png)\r\n![Screenshot_20220801-201805](https://user-images.githubusercontent.com/109147046/182218436-8d45acf4-956e-44b0-b358-a2c316918bba.png)"
+  },
+  {
+   "id": 1201579802,
+   "user": "dhermanns",
+   "created_at": "2022-08-01T18:48:49Z",
+   "body": "Great - thanks. I checked your last setting and totally missed that one. Didn't remember that you could completely deactivate the closed loop here, too.\n\nSo the missing objectives haven't been the cause.\nCase can be closed. Misconfiguration on my side ;-)."
+  }
+ ]
+}

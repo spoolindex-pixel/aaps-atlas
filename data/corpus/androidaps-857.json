@@ -1,0 +1,51 @@
+{
+ "id": 1046520780,
+ "repo": "nightscout/AndroidAPS",
+ "number": 857,
+ "title": "Loop Disabled due to constraints",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/857",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-11-06T14:26:45Z",
+ "closed_at": "2021-12-07T21:01:16Z",
+ "comment_count": 6,
+ "body": "**AndroidAPS 2.8.2.9-dev**\r\nBuild: 2b021ffa\r\nFlavor: Fullrelease\r\n\r\n**Problem description:**\r\nGetting RED warning icon in overview\r\nLoop displays on the \"Last run\" field: LOOP DISABLED BY CONSTRAIMTS BgQualityCheck: Doubled values in BGSource\r\n\r\nPer configuration, AAPS should ignore BG values from NS. _Only BG sources is xDrip as per configuration_\r\n\r\n**Additional information**\r\n\r\n- AAPS/NSClient is set to \"Upload data to NS\" (all other options switched \"off\")\r\n- AAPS BG Source is set to xDrip+ (release version 2021.03.30, G6-client).\r\n- xDrip+ is synchronizing with Nightscout, also sending BG values.\r\n- No other sources are uploading to Nightscout\r\n\r\nThis configuration has been working for a long time.\r\n_As BG sources for AAPS is set to \"xDrip\" I expect it to ignore BG values from NS (nor should it download anything else)_\r\n\r\nBut with the latest QulityCheckPlugin update (commit#2b021ffafc0c4f01df65b7dfe28c3d0e51cc088f) something changed making AAPS to decide disablling loop due to _BG values from NS_?\r\n\r\n**Logfile:**\r\n[AndroidAPS_LOG_1636205974971.log.zip](https://github.com/nightscout/AndroidAPS/files/7490608/AndroidAPS_LOG_1636205974971.log.zip)\r\n\r\n**Screen-prints:**\r\n![loop disabled](https://user-images.githubusercontent.com/45144129/140612793-968de1d9-9556-490e-874e-f6fd2ed139aa.png)\r\n\r\n![urgent](https://user-images.githubusercontent.com/45144129/140612983-611d25db-3d29-4bee-97e2-17081e13cacc.png)\r\n\r\n\r\n",
+ "comments": [
+  {
+   "id": 962462349,
+   "user": "vanelsberg",
+   "created_at": "2021-11-06T14:48:48Z",
+   "body": "Please also see my comments on\r\nhttps://github.com/nightscout/AndroidAPS/issues/689?"
+  },
+  {
+   "id": 962462474,
+   "user": "robertrub",
+   "created_at": "2021-11-06T14:49:44Z",
+   "body": "And the red triangle stays there even when _Backfill BGs from NS_ has been turned off. Closing AAPS, clearing cache memory doesn't get rid of the red triangle."
+  },
+  {
+   "id": 962479801,
+   "user": "Alamo04",
+   "created_at": "2021-11-06T17:01:06Z",
+   "body": "If that is an issue with latest dev, then the new BG Quality Check is possible the reason ?\r\nhttps://github.com/nightscout/AndroidAPS/commit/2b021ffafc0c4f01df65b7dfe28c3d0e51cc088f\r\n"
+  },
+  {
+   "id": 962505033,
+   "user": "RalfCGM",
+   "created_at": "2021-11-06T20:21:09Z",
+   "body": "Ive got the same issue. (xdrip, aaps, g6) Loops isn't able to run. Data coming from xdrip. Bg Data table in xdrip and, bg data table in aaps doesn't show doubles."
+  },
+  {
+   "id": 962511243,
+   "user": "MilosKozak",
+   "created_at": "2021-11-06T21:18:01Z",
+   "body": "i made the triangel clickable in dev branch"
+  },
+  {
+   "id": 962681404,
+   "user": "MilosKozak",
+   "created_at": "2021-11-07T21:11:58Z",
+   "body": "you may try update to latest dev and clear db"
+  }
+ ]
+}

@@ -1,0 +1,75 @@
+{
+ "id": 421463264,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 830,
+ "title": "xdrip api-secret correct url syntax",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/830",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2019-03-15T10:59:45Z",
+ "closed_at": "2019-03-18T17:25:41Z",
+ "comment_count": 12,
+ "body": "Hello\r\nI try to use xdrip open web service with secret.\r\n\r\nIt perfectly work without the secret.\r\nFor example:\r\nhttp://127.0.0.1:17580/status.json\r\nBut whenever the secret is set the result is like this:\r\nAuthentication failed - check api-secret\r\nsecret is required \r\nno secret supplied\r\n\r\nCan you simply pass the api secret key in url header ?\r\nAs I understand the api key should be pass as sha1 like the manual says for Abc: \r\n915858AFA2278F25527F192038108346164B47F2\r\nFor example:\r\nhttp:// 915858AFA2278F25527F192038108346164B47F2@127.0.0.1:17580/status.json\r\nBut above don’t work.\r\nDoes anyone have any suggestions how the syntax should look like ?\r\n",
+ "comments": [
+  {
+   "id": 473250005,
+   "user": "MasterPlexus",
+   "created_at": "2019-03-15T11:22:04Z",
+   "body": "Normally I would expect not to build the hash from the secret. Normally the secret itself should be placed in the link ... Anyway, take care that you did not add a space in the link (I see one in your example after the Doubleline)"
+  },
+  {
+   "id": 473277038,
+   "user": "ghost",
+   "created_at": "2019-03-15T13:01:46Z",
+   "body": "1. It doesn't matter if you place the sercet itself (Abc) or hash in the url it doesn't work.\r\n2. Normally there is no space, just a typo in the example. (my mistake)\r\n3. can someone provide a proper url how it should look like ?"
+  },
+  {
+   "id": 473286128,
+   "user": "MasterPlexus",
+   "created_at": "2019-03-15T13:30:05Z",
+   "body": "Ok, now it looks like more clear for me. Where did you try to use the URL? The point is, that the tool (for example the smartwatches whatchface) needs the ability how to send the header back to the Webinterface of xdrip.\r\n"
+  },
+  {
+   "id": 473291158,
+   "user": "ghost",
+   "created_at": "2019-03-15T13:44:46Z",
+   "body": "it is used on desktop pc (for example chrome browser).\r\nI did it to watch extracted information from json in local network on my pc and it perfectly work without the api secret.\r\nNow i want to secure it by adding the api secret, and I can’t managed to make a proper header in the browser because the syntax don’t work like it should be and I can’t find the answer in the google either.\r\n"
+  },
+  {
+   "id": 473293806,
+   "user": "tzachi-dar",
+   "created_at": "2019-03-15T13:52:09Z",
+   "body": "Two things: not sure that it will help, but doing my best:\r\n\r\n1) The has should be the lower case, not the upper case.\r\n2) I'm not sure how you are sending the requests, but I have played a little bit with the nightscout, and there I had to send something like:\r\n\r\ncurl.exe -X DELETE -H \"api-secret: 911eea185f5c758ac275687da8b7eab50ad720e5\"  -g https://snirdr-dev.herokuapp.com/api/v1/devicestatus/5c8aed34cc32420004e029ae\r\n\r\nSo, the api secret should be part of the header.\r\nI'm not sure how you are sending the requests, but something has to put the api-secret in the header.\r\nAnd again, I have tried this with nightscout, might be different with xdrip."
+  },
+  {
+   "id": 473308520,
+   "user": "MasterPlexus",
+   "created_at": "2019-03-15T14:31:57Z",
+   "body": "As far as I can see in xdrip it is handled in the same way (see docu u der the link https://github.com/NightscoutFoundation/xDrip/blob/master/Documentation/technical/Local_Web_Services.md)\r\nWhat you can try is to use an ajax-request with a JavaScript framework like jQuery, to set the header. But this then has to be set within a HTML page/app..."
+  },
+  {
+   "id": 473318693,
+   "user": "ghost",
+   "created_at": "2019-03-15T14:57:46Z",
+   "body": "I was referring to that page too,\r\nMy understanding was that it can be made by simple (http syntax) where you can put your secret like login and password and it will be working.\r\nExample: http://user:password@host...\r\nhttp://apikey@host...\r\nBut is doesn’t work. "
+  },
+  {
+   "id": 473320961,
+   "user": "MasterPlexus",
+   "created_at": "2019-03-15T15:03:18Z",
+   "body": "Unfortunately it will not work, because an Api-secret is not an authorisation protocol which could be handled directly in the browser .. so you need a layer in between, which set the header in the right way (I did not know up to now a other way).\r\n\r\nAnyway, did you have a nightscout instance? If not, you could try https://ns.10be.de which provides an easy setup for that, and you will have an secure access to your data from every internet PC/mobile..."
+  },
+  {
+   "id": 473327544,
+   "user": "ghost",
+   "created_at": "2019-03-15T15:20:25Z",
+   "body": "i will check it thankyou"
+  },
+  {
+   "id": 1763396451,
+   "user": "dinizmauricio",
+   "created_at": "2023-10-15T13:54:29Z",
+   "body": "@mir3k, Did you manage to complete the work? I want to send the amount of carbohydrates to Xdrip via webservice and I can't because it needs to be authenticated."
+  }
+ ]
+}

@@ -1,0 +1,39 @@
+{
+ "id": 787801631,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1613,
+ "title": "xDrip+ Does not ask for the sensor insertion time - I have to wait the full warmup time",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1613",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-01-17T21:44:36Z",
+ "closed_at": "2021-02-12T07:51:49Z",
+ "comment_count": 4,
+ "body": "### Subject of the issue\r\nI tried to start an already started Dexcom G6 sensor session in xDrip+.\r\nIn xDrip+ I start the sensor, but xDrip+ doesn’t ask me for the sensor insertion time.\r\nTherefore I have to wait the full G6 warmup time.\r\nXdrip+ is receiving the G6 glucose data and broadcasts it to other apps like AndroidAPS, but in xDrip+ themselves, you have to wait the full 2 hours for the first glucose data shown to you. In my opinion, this is a bug.\r\n\r\n### Your environment\r\n\"Nightly build 13th Jan 2021\".\r\nG6 Native\r\n- Is your issue specific to a device like and Android phone or a smartwatch? No. Same on a second smartphone.\r\n\r\n### Actual behavior\r\nI tried to start an already started sensor session in xDrip+. XDrip+ asks me for the calibration code and directly starts the warmup phase. XDrip+ never shows a glucose value. But the Dexcom reader and AndroidAPS shows glucose values. xDrip+ only shows on the Home Screen „Please wait while sensor warms up! (120 minutes) and counts down, bofore the first value is shown.\r\nBut the sensor session was already started by another device and xDrip+ receives the Glucose values and broadcasts them to AndroidAPS, but xDrip+ doesn‘t show them on the Home Screen.\r\nWith the Dexcom App, it‘s no problem to start an already startet sensor. There after a few minutes, the values are shown.\r\n\r\n### Steps to reproduce the behavior:\r\nFor example:\r\n1. Stop Sensor\r\n2. clear transmitter queue (I work with two sensors for a while and don‘t want to stop the old sensor session, that sends the data to a second device - here the dexcom reader)\r\n3. change transmitter id to the transmitter on the already started sensor (I startet the new sensor with xDrip+ on a second smartphone)\r\n4. Wait to the first connects to this new transmitter\r\n5. Start Sensor\r\n6. Enter the G6 calibration code\r\n7. Missing the question for the sensor insertion time\r\n8. Wondering about the 120 minutes to wait for the first glucose value shown on the Home Screen\r\n9. I can see the glucose values in AndroidAPS\r\n",
+ "comments": [
+  {
+   "id": 761896706,
+   "user": "Navid200",
+   "created_at": "2021-01-17T23:04:46Z",
+   "body": "You don't need to \"start\" if you have an active session.  All you need to do is to establish connectivity and the readings will start showing.\r\n\r\nThe request for insertion time was removed from Native-mode G6 intentionally because you cannot enter any time other than now when you start a G6 sensor."
+  },
+  {
+   "id": 761897161,
+   "user": "Navid200",
+   "created_at": "2021-01-17T23:08:24Z",
+   "body": "Please note that with a G5, if the sensor has been on you more than 2 hours, you can start and enter a time prior to now and the warm-up will end sooner than 2 hours accordingly.\r\n\r\nBut, you cannot do soaking with Native G6.  It would interfere with factory calibration, which G5 did not have.  You are supposed to start sensor as soon as you insert sensor, with Native G6, for best accuracy benefitting from factory calibration."
+  },
+  {
+   "id": 762365212,
+   "user": "winni67",
+   "created_at": "2021-01-18T16:50:19Z",
+   "body": "Yes I started the G6 one day before yesterday with another device than my loop smartphone. Yesterday I only wanted to switch the running G6 session to my loop smartphone. But I didn‘t find any documentation on the AAPS website how to do this. This case seems not to be documented. Thanks for the hint to not press „Start Sensor“. I will try it the next time and report my experience here. Do you know how long I have to wait then for the first values? Kind regards."
+  },
+  {
+   "id": 762368412,
+   "user": "Navid200",
+   "created_at": "2021-01-18T16:56:22Z",
+   "body": "@winni67 \r\nThere is some documentation on facebook.\r\nhttps://www.facebook.com/groups/xDripG5/permalink/4838757582864365/\r\nThat is the best place for having questions and answers to gain and share experience.\r\n\r\nIf everything is set up correctly, xDrip will pick up a session in progress in 10 to 15 minutes.  It may take a few more read cycles (5 minutes each) to also populate the battery information."
+  }
+ ]
+}

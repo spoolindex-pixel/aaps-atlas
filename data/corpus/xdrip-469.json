@@ -1,0 +1,71 @@
+{
+ "id": 329462120,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 469,
+ "title": "meter as a sensor",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/469",
+ "state": "closed",
+ "labels": [
+  "question"
+ ],
+ "created_at": "2018-06-05T13:41:54Z",
+ "closed_at": "2021-03-14T19:07:42Z",
+ "comment_count": 9,
+ "body": "xdrip and nightscout are so incredibly useful even without data every 5 minutes from a true CGM. Would it be possible to add a setting to allow meter data to be used as sensor readings rather than just calibrations?",
+ "comments": [
+  {
+   "id": 394798570,
+   "user": "jamorham",
+   "created_at": "2018-06-05T17:43:06Z",
+   "body": "What happens if you select `Disable Collection` as the data source and use with just a meter?"
+  },
+  {
+   "id": 394912164,
+   "user": "getut",
+   "created_at": "2018-06-06T01:38:04Z",
+   "body": "Unless I'm doing something wrong, it isn't exporting from xdrip as a blood glucose reading in the csv file and it isn't uploading to nightscout as a reading either. \r\n\r\nEdit: Playing with it... looks like it is getting it now. I'll have to run tonight and tomorrow to see if it get my readings."
+  },
+  {
+   "id": 395033359,
+   "user": "getut",
+   "created_at": "2018-06-06T11:17:44Z",
+   "body": "After running it last night and today, it does show on the nightscout reports as a red dot just like it does in xdrip, but still won't use it in raw data exports or in any calculations or displays such as the current bg number showing on the nightscout page. It also won't auto populate on the bolus wizard even if the last bg reading with the meter was less than 5 minutes ago. So it appears like it is still tagging it as meter or calibration data instead of actual bg readings from a sensor both in xdrip and after it uploads to nightscout."
+  },
+  {
+   "id": 397622421,
+   "user": "getut",
+   "created_at": "2018-06-15T13:36:54Z",
+   "body": "Jamorham... hopefully you see the question... any more ideas on how to get meter data showing up as actual BG readings?"
+  },
+  {
+   "id": 397655038,
+   "user": "jnharmon",
+   "created_at": "2018-06-15T15:19:16Z",
+   "body": "I think I basically have the same question in issue 453.  My meter readings from a Onetouch Verio Flex are going into xDrip, but are not being pushed to my Nightscout MongoDB database.  The strange this is that the battery status from the Verio Flex is going to MongoDB, but the actual meter readings are not."
+  },
+  {
+   "id": 397700033,
+   "user": "getut",
+   "created_at": "2018-06-15T18:05:43Z",
+   "body": "I'm using a contour next one bluetooth meter. My readings go into both xdrip and nightscout, but don't show up on either graph because I believe both xdrip and nightscout are tagging them calibrations not glucose readings. I came to this hypothesis based on the fact that using data export from xdrip to csv does not show any BG readings at all. The CSV is in the format Day, Time, UDT_CGMS,BG_Level,CH_GR,Bolus, Remark. BG_level is always an empty field even when I can run a report in nightscout and see red dots for each meter reading.\r\n![selection_044](https://user-images.githubusercontent.com/1457587/41482933-2cbc617e-70a5-11e8-8a51-23503f9c98f7.png) But the thing is that the regular graph on the main view of xdrip, and the main view of nightscout dont show any graph at all if the only data comes from meter readings. Also all nightscout reports other than the 1st tab (Day to Day) all fail to generate anything. I'm not a programmer but it seems like it would be easy just to create a dummy sensor that duplicates calibrations as sensor readings... hehe isn't that what all non-programmers say!\r\n"
+  },
+  {
+   "id": 399167908,
+   "user": "getut",
+   "created_at": "2018-06-21T16:39:42Z",
+   "body": "Sorry to keep harping on this one, but jamorham, who I believe is a dev asked me a question about disabling collection and if it gets meter readings to function as real bg tests as if from a meter. This leads me to believe that HE thinks this should be working. Does anyone have any idea as to what could be configured incorrectly that it isn't working that way? If this is a feature request that simply isn't implemented, I'll shut up and wait patiently. But if this is in fact something that should already be working, then any more ideas?"
+  },
+  {
+   "id": 786065580,
+   "user": "Navid200",
+   "created_at": "2021-02-25T17:19:23Z",
+   "body": "If you disable automatic calibrations, the readings from the Bluetooth meter should still show in the graph but not be used for calibration."
+  },
+  {
+   "id": 798961608,
+   "user": "Navid200",
+   "created_at": "2021-03-14T19:07:42Z",
+   "body": "I am closing this issue for now.\r\nWould you please update as to if you are still experiencing this with newer releases of xDrip?\r\nThanks"
+  }
+ ]
+}

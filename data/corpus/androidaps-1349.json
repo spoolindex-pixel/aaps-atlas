@@ -1,0 +1,57 @@
+{
+ "id": 1144969685,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1349,
+ "title": "DynamicISF safety limiter bug",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1349",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-02-20T09:42:45Z",
+ "closed_at": "2022-02-20T17:26:07Z",
+ "comment_count": 7,
+ "body": "@MilosKozak If I select the DynamicISF option, I have a safety limiter at 1.5 (mine is 10U) which may (or may not) come from my basal rate (0.5) x max multiplier (3).\n\n![Screenshot_20220220-100849_AndroidAPS.jpg](https://user-images.githubusercontent.com/76626474/154836862-3db20f8e-1651-4171-bb06-57bccb451132.jpg)\n\nThis is a game stopper of course ;) No more SMBs, no more high basals etc.\n\nIf I select OpenSMB, the same limiter goes to 22.\n\n![Screenshot_20220220-102857_AndroidAPS.jpg](https://user-images.githubusercontent.com/76626474/154836921-c6e01ea1-6bb9-41a1-97e2-fe80f516b774.jpg)\n",
+ "comments": [
+  {
+   "id": 1046202949,
+   "user": "philipgo",
+   "created_at": "2022-02-20T10:03:36Z",
+   "body": "Same problem with latest dev and AutoISF here."
+  },
+  {
+   "id": 1046206835,
+   "user": "bchris21",
+   "created_at": "2022-02-20T10:25:59Z",
+   "body": "Same here (3.0.0.1-dev-a) but with different value, maybe because it refers to \"child\" profile.\n\nScreenshot with SMB last run on 10:56 is with Dynamic ISF\n\n![Screenshot_20220220_112134.jpg](https://user-images.githubusercontent.com/4725280/154838234-b350529c-a3da-42b3-a090-8a869dd74b1a.jpg)\n\nScreenshot with SMB last run on 11:00 is with OpenAPS SMB plugin.\n\n![Screenshot_20220220_112154.jpg](https://user-images.githubusercontent.com/4725280/154838254-bff588ff-63df-4a44-aa04-3bd6af3b3e2c.jpg)"
+  },
+  {
+   "id": 1046213839,
+   "user": "Alamo04",
+   "created_at": "2022-02-20T11:11:41Z",
+   "body": "Confirm, same here."
+  },
+  {
+   "id": 1046229834,
+   "user": "elgrupo123",
+   "created_at": "2022-02-20T12:44:01Z",
+   "body": "unfortunately also here.  IOB max 4IU"
+  },
+  {
+   "id": 1046240436,
+   "user": "vanelsberg",
+   "created_at": "2022-02-20T13:39:17Z",
+   "body": "Confirming,\r\nDuplicate of https://github.com/nightscout/AndroidAPS/issues/1346"
+  },
+  {
+   "id": 1046274371,
+   "user": "swissalpine",
+   "created_at": "2022-02-20T16:34:24Z",
+   "body": "Please note: The first commit (https://github.com/swissalpine/AndroidAPS-1/commit/a0c3fad06ea3dad73e3819794e7889e427ccb664) is wrong, the second works for me:\r\nhttps://github.com/swissalpine/AndroidAPS-1/commit/6a961eb4d8b949ff8564bcd17f0f3b2469e0beda"
+  },
+  {
+   "id": 1046289611,
+   "user": "Alamo04",
+   "created_at": "2022-02-20T17:56:22Z",
+   "body": "@MilosKozak @swissalpine \r\nThere are 2 DynamicISF errors in building the App, looks like kotlin errors.\r\nThink they are not importand and self fixed in this version.\r\n![Unbenannt](https://user-images.githubusercontent.com/36486505/154856684-aeb75d67-a6c3-4c80-b4aa-2d959cab56a8.PNG)\r\n\r\n"
+  }
+ ]
+}

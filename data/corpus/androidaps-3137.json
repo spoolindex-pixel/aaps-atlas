@@ -1,0 +1,51 @@
+{
+ "id": 2054537525,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3137,
+ "title": "AAPS Wear, latest dev commit#041d0f0: Ongoing bolus notification that can not be cleared.",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3137",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-12-22T22:00:55Z",
+ "closed_at": "2023-12-26T17:47:25Z",
+ "comment_count": 6,
+ "body": "**AndroidAPS 3.3.0-dev Wear application**\r\nBuild: https://github.com/nightscout/AndroidAPS/commit/041d0f0b7bd43042dbf201f442c1a48433eb22cd\r\nFlavor: Fullrelease\r\n\r\n**Problem description:**\r\n\r\nLatest dev commit https://github.com/nightscout/AndroidAPS/commit/041d0f0b7bd43042dbf201f442c1a48433eb22cd (Wear: create notification channel) introduces a problem for my Samsung Watch 4 running the AAPS watchface (both stock or custom):\r\n\r\nThe watch now continuesly shows an \"ongoing notification\" that can not be cleared.\r\nForcefully clearing the notification is not possible (it immediately reopens after clearing)\r\n\r\n![ogn](https://github.com/nightscout/AndroidAPS/assets/45144129/9cebe95c-054e-4fdf-99df-610351bc241f)\r\n",
+ "comments": [
+  {
+   "id": 1868124194,
+   "user": "vanelsberg",
+   "created_at": "2023-12-22T23:15:50Z",
+   "body": "**Additional note:**\r\nLooks like this problem is only for bolus notifications. They stay open at 100% - Success (see screenschot)\r\n(_Bolus notification not properly closed when bolus finishes?_)\r\n\r\nCarbs notification for instance are not affected."
+  },
+  {
+   "id": 1868138693,
+   "user": "vanelsberg",
+   "created_at": "2023-12-22T23:56:32Z",
+   "body": "**Additional note:**\r\n@MilosKozak Tested with previous commit f3be1bbfe1fe78aee30d791ae5f5e6dadab579b1\r\nProblem is not in this commit."
+  },
+  {
+   "id": 1868480390,
+   "user": "MilosKozak",
+   "created_at": "2023-12-24T10:07:09Z",
+   "body": "ongoing notification channel is necessary to keep app running on background\r\nyou have to hide it https://www.reddit.com/r/tasker/comments/rf7369/protip_disable_specific_notification_channels_on/"
+  },
+  {
+   "id": 1868514147,
+   "user": "vanelsberg",
+   "created_at": "2023-12-24T13:11:27Z",
+   "body": "> ongoing notification channel is necessary to keep app running on background you have to hide it https://www.reddit.com/r/tasker/comments/rf7369/protip_disable_specific_notification_channels_on/\r\n\r\nNope, tested this but does not solve the problem? :-(\r\nFrom developer mode on the watch I can disable some or all of the notification types, but as soon as there is a (bolus) notification it is an \"ongoing notification\" which cannot be cleared. I can disable \"all\", but then I do not get any notifications at all :-|\r\n\r\n**My conclusion:**\r\n1) User being unable to clear (any) notification on the watch UI is unwanted behavior.\r\n2) Hiding only works when disabling _all AAPS notifications_ on the watch, which would disable important functionality.\r\n3) It is rather odd to expect AAPS users to go into developer mode to hide/prevent such unexpected and unwanted behavior?\r\n\r\n**Proposed solution:**\r\n\r\nMake activating the ongoing channel a user configurable option:\r\nAs far as I know the ongoing notification channel is unexpected/unwanted behavior only necessary (as a work around?) for users running non-AAPS watchfaces.\r\n\r\n@MilosKozak Let me know if you'd like this prosed solution moved to a separate issue.\r\n"
+  },
+  {
+   "id": 1869151662,
+   "user": "vanelsberg",
+   "created_at": "2023-12-25T23:33:14Z",
+   "body": "@MilosKozak Did some local testing,\r\nenabling the (ongoing) [Wear: create notification channel](https://github.com/nightscout/AndroidAPS/commit/041d0f0b7bd43042dbf201f442c1a48433eb22cd) as a user option through the wear app settings. \r\n\r\nCode is still QAD, but could do a PR for dev's to test?"
+  },
+  {
+   "id": 1870350905,
+   "user": "vanelsberg",
+   "created_at": "2023-12-27T14:21:47Z",
+   "body": "Confirming my problem https://github.com/nightscout/AndroidAPS/issues/3137 was partly fixed through #3141\r\n\r\n**Additional info**:\r\nStill getting \"Datalayer Foreground Service Channel\" notification that can't be cleared (Samsung Watch4).\r\n\r\n**Solution**:\r\nSwitch off this notification from watch developer options:\r\n`App Notifications -> All watch apps -> AAPS -> Data layer Foreground Service Channel: OFF`\r\n\r\nRather odd that users should go to watch's developer mode to fully fix te problem?\r\n"
+  }
+ ]
+}

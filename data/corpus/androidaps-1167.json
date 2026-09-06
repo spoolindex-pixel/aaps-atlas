@@ -1,0 +1,33 @@
+{
+ "id": 1101532926,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1167,
+ "title": "Safety: increasing profile % without updating basal profile in pump !?",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1167",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-01-13T10:50:51Z",
+ "closed_at": "2022-01-13T13:15:06Z",
+ "comment_count": 3,
+ "body": "It should be considered, whether a profile increase with duration should update the basal profile in the pump.\r\n\r\nA safety issue can occur if the duration ends, and the basal profile can't be set back to lower levels (due to connection issues for example). The notification \"Failed to update basal profile\" helps a bit, but it won't stop administartion. If the phone is not by the user, the user is not even notified. If using automation for increasing profile the opportunity is higher for this scenario (even if 130% is the limit).\r\n\r\nRegardless of the basal profile stored in the pump the algorithm could treat the increased basal profile as 100% for the loop calculations.\r\n\r\nAlso see:\r\n[https://github.com/nightscout/AndroidAPS/issues/59](url)",
+ "comments": [
+  {
+   "id": 1012058798,
+   "user": "MilosKozak",
+   "created_at": "2022-01-13T11:41:33Z",
+   "body": "If there is no connection to the pump loop cannot do anything as well"
+  },
+  {
+   "id": 1012071368,
+   "user": "szantos",
+   "created_at": "2022-01-13T11:59:53Z",
+   "body": "Yes, and the increased! basal profile of the pump will run along and dose more than expected (and needed)."
+  },
+  {
+   "id": 1012126040,
+   "user": "MilosKozak",
+   "created_at": "2022-01-13T13:15:06Z",
+   "body": "well this would not increase safety because you are only looking at single point (reverting to previous basal profile) and some time after. but people are running profile with duration for many hours too where wrong set profile would have much higher (and wrong) impact"
+  }
+ ]
+}

@@ -1,0 +1,51 @@
+{
+ "id": 3071966079,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3988,
+ "title": "no prediction lines on watch with aaps-client",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3988",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-05-18T18:11:57Z",
+ "closed_at": "2025-06-05T11:42:06Z",
+ "comment_count": 6,
+ "body": "no prediction lines in CGM graph on watchface with aaps-client\n\nTested on version AAPS master/client verson 3.3.2.0 with Suunto 7 and Samsung Watch.\n\nOn both (master and client) app in the mobile phone prediction lines are present.\n\n![Image](https://github.com/user-attachments/assets/77bbb43a-4eab-4720-9b0b-335c5f4ad1b6)",
+ "comments": [
+  {
+   "id": 2898460362,
+   "user": "olorinmaia",
+   "created_at": "2025-05-21T15:53:08Z",
+   "body": "Hi! I think it's always been like this. Is there a reason for it @Philoul ?"
+  },
+  {
+   "id": 2898520380,
+   "user": "Philoul",
+   "created_at": "2025-05-21T16:13:31Z",
+   "body": "User should check within Watch, AAPS Settings, Graphical parameter if \"Show Predictions\" is enabled or not...\n![Screenshot_20250521_181057_androidaps.png](https://github.com/user-attachments/assets/3a52019b-947c-454e-a4de-096151ff1ba2)\n\n![Screenshot_20250521_181050_androidaps.png](https://github.com/user-attachments/assets/a0b2f39f-0860-4208-8d17-7d005f86c4a4)\n\n![Screenshot_20250521_180927_androidaps.png](https://github.com/user-attachments/assets/1c2df325-8c6d-4c41-83c5-012447861814)\n\nIf predictions are available within AAPSClient app on phone, they should be available within watch (but never tested myself)\n- this parameter has been included to allow simplication of graph view into the watch (screen is much smaller compared to phone screen)"
+  },
+  {
+   "id": 2898532403,
+   "user": "maskac",
+   "created_at": "2025-05-21T16:18:07Z",
+   "body": "> User should check within Watch, AAPS Settings, Graphical parameter if predictions is enabled or not... !\n> If predictions are available within AAPSClient app on phone, they should be available within watch (but never tested myself)\n\n\nAs i wrote in incial post, in aapsclient app is prediction visibile. \n\nI have got reported problem from parent of T1D child and replicate  it self the problem on other 2 watches/phones.\n\nSetting on watch checked double.   \n"
+  },
+  {
+   "id": 2898534783,
+   "user": "olorinmaia",
+   "created_at": "2025-05-21T16:18:57Z",
+   "body": "I checked on my watch connected to AAPSClient app and show predictions is turned on. There is no predictions on cwf. "
+  },
+  {
+   "id": 2898547256,
+   "user": "Philoul",
+   "created_at": "2025-05-21T16:23:19Z",
+   "body": "Ok, so it's an issue 😉\nI will try to see the trigger/information used to send predictions to the watch to understand why they are not included.\n\nMaybe @olorinmaia you can help me if you have a test conf where you can reproduce the issue."
+  },
+  {
+   "id": 2904534942,
+   "user": "olorinmaia",
+   "created_at": "2025-05-23T14:02:55Z",
+   "body": "Fixed in dev with commit 7011790\n@MilosKozak this issue can be closed. "
+  }
+ ]
+}

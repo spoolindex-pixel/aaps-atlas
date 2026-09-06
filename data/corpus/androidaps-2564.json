@@ -1,0 +1,51 @@
+{
+ "id": 1735495053,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2564,
+ "title": "Profile timezone in Profile Switch treatments sent to Nightscout is off-by-one",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2564",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-06-01T05:30:04Z",
+ "closed_at": "2023-08-03T15:10:17Z",
+ "comment_count": 6,
+ "body": "It seems that Profile Switch treatments created by AndroidAPS have incorrect timezone in the `timezone` field of the JSON included in the `profileJson` field. More specifically, the timezone seems to be off-by-one - for me, that means that I get `Africa/Cairo` (UTC+3) rather than my actual timezone which is `Europe/Warsaw` (UTC+2).\r\n\r\nThe relevant Nightscout API call where I've noticed that Nightscout returns the wrong data is:\r\n```\r\nhttps://[nightscout-url]/api/v1/treatments.json?find[eventType][$eq]=Profile%20Switch&count=1\r\n```\r\n\r\nRelevant log: [AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/11621304/AndroidAPS.log)\r\n\r\n\"Profile Switch\" treatment dates from Nightscout (the times are in my timezone which should match the logs):\r\n```\r\n2023-05-31 06:26:28\r\n2023-05-31 06:26:21\r\n2023-05-31 06:26:05\r\n2023-05-31 06:25:46\r\n2023-05-31 06:25:11\r\n2023-05-31 02:39:35\r\n2023-05-31 02:25:38\r\n2023-05-31 02:25:30\r\n2023-05-31 02:25:23\r\n2023-05-31 02:15:48\r\n```\r\n\r\nI'm getting this on build version: 1de236a-2023.05.30-23:35\r\nBoth my Nightscout profile timezone and my phone's timezone are set to Europe/Warsaw.\r\nI'm currently on a virtual pump with NSClient providing the BG data.",
+ "comments": [
+  {
+   "id": 1571599648,
+   "user": "MilosKozak",
+   "created_at": "2023-06-01T08:32:31Z",
+   "body": "are they shifted on NS graph too?"
+  },
+  {
+   "id": 1571627263,
+   "user": "Jackenmen",
+   "created_at": "2023-06-01T08:52:54Z",
+   "body": "It's only about the Profile Switch treatment having incorrect \"profileJson\" - \"created_at\" field of the treatment (and therefore the position of the treatment on the graph) is correct. I'm not sure if there's something else that could appear shifted but I can't really see anything that is. My problem is with the incorrect data being stored in the treatment which is problematic when working with the data from the API."
+  },
+  {
+   "id": 1573238293,
+   "user": "MilosKozak",
+   "created_at": "2023-06-02T06:48:05Z",
+   "body": "can you provide example of such wrong json?"
+  },
+  {
+   "id": 1573252113,
+   "user": "Jackenmen",
+   "created_at": "2023-06-02T07:01:40Z",
+   "body": "Huh, I thought I already did, sorry about that... Here's how the output from the `https://[nightscout-url]/api/v1/treatments.json?find[eventType][$eq]=Profile%20Switch&count=1` endpoint that I mention in issue description looks:\r\n\r\n<details>\r\n<summary>Full output from the API endpoint</summary>\r\n\r\n```json\r\n[\r\n    {\r\n        \"_id\": \"64786280c846250208181aca\",\r\n        \"timeshift\": 0,\r\n        \"percentage\": 100,\r\n        \"profile\": \"Workday\",\r\n        \"originalProfileName\": \"Workday\",\r\n        \"created_at\": \"2023-06-01T09:18:23.000Z\",\r\n        \"enteredBy\": \"openaps://AndroidAPS\",\r\n        \"isValid\": true,\r\n        \"eventType\": \"Profile Switch\",\r\n        \"duration\": 0,\r\n        \"profileJson\": \"{\\\"units\\\":\\\"mg\\\\/dl\\\",\\\"dia\\\":5,\\\"timezone\\\":\\\"Africa\\\\/Cairo\\\",\\\"sens\\\":[{\\\"time\\\":\\\"00:00\\\",\\\"timeAsSeconds\\\":0,\\\"value\\\":80},{\\\"time\\\":\\\"05:00\\\",\\\"timeAsSeconds\\\":18000,\\\"value\\\":50},{\\\"time\\\":\\\"22:00\\\",\\\"timeAsSeconds\\\":79200,\\\"value\\\":80}],\\\"carbratio\\\":[{\\\"time\\\":\\\"00:00\\\",\\\"timeAsSeconds\\\":0,\\\"value\\\":6.2},{\\\"time\\\":\\\"05:00\\\",\\\"timeAsSeconds\\\":18000,\\\"value\\\":4.7},{\\\"time\\\":\\\"10:00\\\",\\\"timeAsSeconds\\\":36000,\\\"value\\\":4.7},{\\\"time\\\":\\\"13:00\\\",\\\"timeAsSeconds\\\":46800,\\\"value\\\":5.5},{\\\"time\\\":\\\"15:00\\\",\\\"timeAsSeconds\\\":54000,\\\"value\\\":6}],\\\"basal\\\":[{\\\"time\\\":\\\"00:00\\\",\\\"timeAsSeconds\\\":0,\\\"value\\\":0.15},{\\\"time\\\":\\\"01:00\\\",\\\"timeAsSeconds\\\":3600,\\\"value\\\":0.2},{\\\"time\\\":\\\"02:00\\\",\\\"timeAsSeconds\\\":7200,\\\"value\\\":0.3},{\\\"time\\\":\\\"03:00\\\",\\\"timeAsSeconds\\\":10800,\\\"value\\\":0.5},{\\\"time\\\":\\\"04:00\\\",\\\"timeAsSeconds\\\":14400,\\\"value\\\":0.6},{\\\"time\\\":\\\"07:00\\\",\\\"timeAsSeconds\\\":25200,\\\"value\\\":0.7},{\\\"time\\\":\\\"08:00\\\",\\\"timeAsSeconds\\\":28800,\\\"value\\\":0.85},{\\\"time\\\":\\\"09:00\\\",\\\"timeAsSeconds\\\":32400,\\\"value\\\":0.8},{\\\"time\\\":\\\"11:00\\\",\\\"timeAsSeconds\\\":39600,\\\"value\\\":0.7},{\\\"time\\\":\\\"14:00\\\",\\\"timeAsSeconds\\\":50400,\\\"value\\\":0.35},{\\\"time\\\":\\\"20:00\\\",\\\"timeAsSeconds\\\":72000,\\\"value\\\":0.3},{\\\"time\\\":\\\"22:00\\\",\\\"timeAsSeconds\\\":79200,\\\"value\\\":0.2},{\\\"time\\\":\\\"23:00\\\",\\\"timeAsSecon"
+  },
+  {
+   "id": 1664166720,
+   "user": "MilosKozak",
+   "created_at": "2023-08-03T15:10:17Z",
+   "body": "I checked it and it doesn't have good solution because data in AAPS is stored as an offset to UTC. it's mapped to TZ string only because of NS requiremt.\r\nI'd recommend use only unix timestamp and ignore zones at all"
+  },
+  {
+   "id": 1712665460,
+   "user": "Jackenmen",
+   "created_at": "2023-09-10T00:01:12Z",
+   "body": "> I checked it and it doesn't have good solution because data in AAPS is stored as an offset to UTC. it's mapped to TZ string only because of NS requiremt.\r\n\r\nThe problem here was that it's off by one hour (right now, `Africa/Cairo` is UTC+3, `Europe/Warsaw` is UTC+2), not so much that it's mapping to the wrong timezone name. I decided to look into it and apparently, this is an external problem - all the calculations are correct *but* `Africa/Cairo`'s offset on my phone was 2 hours instead of 3 hours which, toppled with it being the first matching item in the collection, ended up with AAPS choosing this timezone even though it's incorrect:\r\n![image](https://github.com/nightscout/AndroidAPS/assets/6032823/54d9375d-82eb-4739-b509-07e0769bcec8)\r\n\r\nThe fix was to perform Google Play security update which, for whatever reason, my phone doesn't notify me about...\r\n\r\nI do feel it would be better to instead map to `Etc/GMT*` timezones, e.g. `Etc/GMT-2` for UTC+2, `Etc/GMT-3` for UTC-3, and `Etc/GMT` (or `Etc/UTC`) for UTC since it would be less confusing but in the end, it doesn't really matter for me since with the updated tzdata, the timezone on the profile switch now at least gets set to a UTC+2 timezone, even if it's `Africa/Mbabane` rather than `Europe/Warsaw`."
+  }
+ ]
+}

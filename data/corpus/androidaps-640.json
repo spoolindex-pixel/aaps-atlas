@@ -1,0 +1,39 @@
+{
+ "id": 976339998,
+ "repo": "nightscout/AndroidAPS",
+ "number": 640,
+ "title": "[2.8.2.2 - dev] ISF lower than 2 mmol/l results in invalid profile",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/640",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-08-22T10:18:47Z",
+ "closed_at": "2021-09-15T22:18:36Z",
+ "comment_count": 4,
+ "body": "When setting the ISF lower than 2. it will not validate the profile.\r\n\r\n![image](https://user-images.githubusercontent.com/35005706/130351535-43903f64-4ab1-447b-a977-ba9931d655e1.png)\r\n![image](https://user-images.githubusercontent.com/35005706/130351620-3b47560f-0b7a-4ffb-93bd-939239089a66.png)\r\n\r\n\r\nIt was still working correctly in 2.8.2 main.\r\n\r\nCouldn't find the exact build where it goes wrong.\r\nMultiple people on discord could validate this issue.",
+ "comments": [
+  {
+   "id": 904539609,
+   "user": "DM-LTR",
+   "created_at": "2021-08-24T11:01:06Z",
+   "body": "Same issue here with 2.8.2.2 dev - when ISF is set below 2.0, profile cannot be saved."
+  },
+  {
+   "id": 907335922,
+   "user": "smokkelaar",
+   "created_at": "2021-08-27T16:47:33Z",
+   "body": "part of the bug is in this place:\r\napp/src/main/java/info/nightscout/androidaps/utils/HardLimits.kt\r\n\r\n\r\n        const val MIN_ISF = 2.0 // mgdl\r\n        const val MAX_ISF = 720.0 // mgdl\r\n        \r\n Apperently it is never translated to mmol/l.\r\n setting this limit on something lower, fixes the problem. \r\n Real root cause still needs to be found.\r\n Maybe something to do with the refactoring in the last round."
+  },
+  {
+   "id": 907394828,
+   "user": "smokkelaar",
+   "created_at": "2021-08-27T18:32:38Z",
+   "body": "Did a real fix now, added a check if it is in mgdl or mmol.\r\nSo changed the function in this. Did a little test, everything seems to work.\r\nPlease double check! and add it to the code base.\r\n\r\n    fun isValidEditState(): Boolean {\r\n        val pumpDescription = activePlugin.activePump.pumpDescription\r\n        with(profiles[currentProfileIndex]) {\r\n            if (dia < hardLimits.minDia() || dia > hardLimits.maxDia()) return false\r\n            if (name.isNullOrEmpty()) return false\r\n            if (blockFromJsonArray(ic, dateUtil)?.any { it.amount < hardLimits.minIC() || it.amount > hardLimits.maxIC() } != false) return false\r\n            if (blockFromJsonArray(basal, dateUtil)?.any { it.amount < pumpDescription.basalMinimumRate || it.amount > 10.0 } != false) return false\r\n            val low = blockFromJsonArray(targetLow, dateUtil)\r\n            val high = blockFromJsonArray(targetHigh, dateUtil)\r\n            if (profileFunction.getUnits() == GlucoseUnit.MGDL) {\r\n                if (low?.any { it.amount < HardLimits.VERY_HARD_LIMIT_TARGET_BG[0].toDouble() || it.amount > HardLimits.VERY_HARD_LIMIT_TARGET_BG[1].toDouble() } != false) return false\r\n                if (high?.any { it.amount < HardLimits.VERY_HARD_LIMIT_TARGET_BG[0].toDouble() || it.amount > HardLimits.VERY_HARD_LIMIT_TARGET_BG[1].toDouble() } != false) return false\r\n                if (blockFromJsonArray(isf, dateUtil)?.any { it.amount < HardLimits.MIN_ISF || it.amount > HardLimits.MAX_ISF } != false) return false\r\n            } else {\r\n                if (low?.any { it.amount < Profile.fromMgdlToUnits(HardLimits.VERY_HARD_LIMIT_TARGET_BG[0].toDouble(), GlucoseUnit.MMOL) || it.amount > Profile.fromMgdlToUnits(HardLimits.VERY_HARD_LIMIT_TARGET_BG[1].toDouble(), GlucoseUnit.MMOL) } != false) return false\r\n                if (high?.any { it.amount < Profile.fromMgdlToUnits(HardLimits.VERY_HARD_LIMIT_TARGET_BG[0].toDouble(), GlucoseUnit.MMOL) || it.amount > Profile.fromMgdlToUnits(HardLimits.VERY_HARD_LIM"
+  },
+  {
+   "id": 920425869,
+   "user": "MilosKozak",
+   "created_at": "2021-09-15T22:18:36Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/a448efe09cfeb7c54e28c5d4c67783d30fc6d918"
+  }
+ ]
+}

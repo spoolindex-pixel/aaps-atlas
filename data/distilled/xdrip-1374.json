@@ -1,0 +1,28 @@
+{
+ "issue_id": 1374,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/1374",
+ "title": "Decreased G6 capture rate due to Corona/Covid 19 exposure API",
+ "symptom": "After installing Germany's official Covid 19 exposure notification app, capture rate has decreased significantly down to from 1 reading in 20 minutes at best, though it's usually at 1 reading per hour. The logs imply multiple things not working: unable to connect, invalid authentication, or invalid keep alive requests.",
+ "cause": "The issue is likely caused by time sensitive interference with Google's exposure notification framework, as suggested by the user and the German Corona App developers. However, the exact root cause is not definitively established; it appears to be related to the Bluetooth changes introduced by Google for the Corona App.",
+ "fix": "The issue may be resolved by updating to the November 15, 2020 nightly build (fixing #1494) as reported by t1dast, or by enabling both 'minimize scanning' and 'avoid scanning' options in xDrip settings as suggested by jamorham. However, Gimbli74 reported that the November 15 build did not work for them, and the issue was closed due to inactivity.",
+ "settings_changed": [
+  "Minimize Scanning → off (tried, reduced problem)",
+  "minimize scanning → on (suggested)",
+  "avoid scanning → on (suggested)"
+ ],
+ "devices": [
+  "Dexcom G6"
+ ],
+ "android_versions": [
+  "Android 10",
+  "Android 8",
+  "Android 9"
+ ],
+ "driver_tags": [
+  "patched G6 app",
+  "companion app"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "After the November 15 update fixing #1494, I turned on the tracing again and it has not caused any trouble with the capture rate for 15 hrs, as opposed to my previous test three weeks ago. Finally, I think the problem might be solved :)"
+}

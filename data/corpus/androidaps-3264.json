@@ -1,0 +1,102 @@
+{
+ "id": 2183935650,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3264,
+ "title": "History Browser date picker substracts one day (Android 14)",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3264",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "impossible now"
+ ],
+ "created_at": "2024-03-13T12:47:43Z",
+ "closed_at": "2025-04-24T14:51:21Z",
+ "comment_count": 14,
+ "body": "Hey everyone. Noticing that when browsing historical data using the History Browser from the preferences dropdown, the date selection menu will subtract one day from the highlighted day after pressing \"OK\".\r\n\r\nBuild: c31617fd2c-2023.12.15 (3.2.0.2)\r\nAndroid Version 14 (UQ1A.240205.002, February 5th)\r\n\r\n1. Open top-right dropdown\r\n2. Select History browser\r\n3. Select a date\r\n4. Tap \"OK\"\r\n\r\nWhat should happen: Date selected is presented\r\nWhat actually happens: One day prior to the selected date is presented\r\n\r\nLet me know if further information is needed.\r\n\r\nExample:\r\n![1](https://github.com/nightscout/AndroidAPS/assets/50091069/4252dc3a-7412-41f2-9037-3ac5f0c70b07)\r\n![2](https://github.com/nightscout/AndroidAPS/assets/50091069/07ef69de-1518-4ebd-a2aa-07b742e9197f)\r\n",
+ "comments": [
+  {
+   "id": 2108499698,
+   "user": "vanelsberg",
+   "created_at": "2024-05-13T18:11:28Z",
+   "body": "Can't reproduce this problem on AAPS version 3.2.0.4 or current v3.3 dev builds.\r\nSo, either the problem was fixed or what you are seeing is specific to your setup?\r\n\r\nSuggest upgrading to AAPS release version 3.2.0.4 to see if this solves your problem."
+  },
+  {
+   "id": 2108509136,
+   "user": "Jared-Is-Coding",
+   "created_at": "2024-05-13T18:15:37Z",
+   "body": "> Can't reproduce this problem on AAPS version 3.2.0.4 or current v3.3 dev builds. So, either the problem was fixed or what you are seeing is specific to your setup?\r\n> \r\n> Suggest upgrading to AAPS release version 3.2.0.4 to see if this solves your problem.\r\n\r\nWill attempt now."
+  },
+  {
+   "id": 2108544874,
+   "user": "Jared-Is-Coding",
+   "created_at": "2024-05-13T18:35:38Z",
+   "body": "> Can't reproduce this problem on AAPS version 3.2.0.4 or current v3.3 dev builds. So, either the problem was fixed or what you are seeing is specific to your setup?\r\n> \r\n> Suggest upgrading to AAPS release version 3.2.0.4 to see if this solves your problem.\r\n\r\nNow on the latest master (3.2.0.4) and still seeing this issue. Additional information: Pixel 7a, Android 14.\r\n\r\nIn addition to the initial bug report repro steps, I'm also able to produce the issue with these steps:\r\n\r\n1. Open Action tab\r\n2. Select CGM Sensor Insert\r\n3. Open date picker\r\n4. Tap \"OK\"\r\n\r\nThe resulting selected date is one less than the one that was selected (e.g. I select today, the 13th, and it then has picked the 12th). It appears to happen in any date picker."
+  },
+  {
+   "id": 2108572663,
+   "user": "vanelsberg",
+   "created_at": "2024-05-13T18:51:36Z",
+   "body": "> In addition to the initial bug report repro steps\r\n\r\nStill no repro on my side (Samsung S22 Ultra, Android 14, TZ=CEST)\r\nDid you check your phones date/time settings (region, Timezone, automatic date-time), anything unusual?\r\n"
+  },
+  {
+   "id": 2108649906,
+   "user": "Jared-Is-Coding",
+   "created_at": "2024-05-13T19:32:09Z",
+   "body": "> > In addition to the initial bug report repro steps\r\n> \r\n> Still no repro on my side (Samsung S22 Ultra, Android 14, TZ=CEST) Did you check your phones date/time settings (region, Timezone, automatic date-time), anything unusual?\r\n\r\nNothing out of place that I notice. The time of day has no effect on this selection bug, either, so I don't think it's a timezone thing."
+  },
+  {
+   "id": 2132192623,
+   "user": "happygirlnyc70",
+   "created_at": "2024-05-26T11:56:27Z",
+   "body": "I can confirm this behavior.on Pixel 4a 5G.  Also same thing happens with insert CGM see issue 3041. I'm currently on AAPS 3.2.0.4."
+  },
+  {
+   "id": 2167085026,
+   "user": "Knighth4wk",
+   "created_at": "2024-06-14T02:14:25Z",
+   "body": "I have this issue as well. It is happening everywhere the date can be picked. I have tested with date on history browser and careportal buttons on action tab.\r\n\r\nWhaterver date I pick in date picker popup. After pressing OK, the date is changed to one day before.\r\n\r\nUsing Samaung S24 Ultra Android 14 with AAPS 3.2.0.4"
+  },
+  {
+   "id": 2473574808,
+   "user": "MilosKozak",
+   "created_at": "2024-11-13T13:08:47Z",
+   "body": "What is your timezone/language setting? I cannot replicate the issue"
+  },
+  {
+   "id": 2473652020,
+   "user": "Jared-Is-Coding",
+   "created_at": "2024-11-13T13:39:45Z",
+   "body": "> What is your timezone/language setting? I cannot replicate the issue\r\n\r\nTimezone is EST/GMT-5. Language is en-US."
+  },
+  {
+   "id": 2473669606,
+   "user": "MilosKozak",
+   "created_at": "2024-11-13T13:47:01Z",
+   "body": "OK, I see the issue when I set GMT-5 on phone"
+  },
+  {
+   "id": 2473677877,
+   "user": "Jared-Is-Coding",
+   "created_at": "2024-11-13T13:50:30Z",
+   "body": "> OK, I see the issue when I set GMT-5 on phone\r\n\r\nExcellent. Any more information needed to reproduce, or do you have it happening consistently? "
+  },
+  {
+   "id": 2473756048,
+   "user": "happygirlnyc70",
+   "created_at": "2024-11-13T14:19:01Z",
+   "body": "I am also GMT-5\r\n\r\nOn Wed, Nov 13, 2024, 08:50 Jared Harrison ***@***.***> wrote:\r\n\r\n> OK, I see the issue when I set GMT-5 on phone\r\n>\r\n> Excellent. Any more information needed to reproduce, or do you have it\r\n> happening consistently?\r\n>\r\n> —\r\n> Reply to this email directly, view it on GitHub\r\n> <https://github.com/nightscout/AndroidAPS/issues/3264#issuecomment-2473677877>,\r\n> or unsubscribe\r\n> <https://github.com/notifications/unsubscribe-auth/APWGZJXQM3CKWDJGBND4IAL2ANKLZAVCNFSM6AAAAABEUC74RSVHI2DSMVQWIX3LMV43OSLTON2WKQ3PNVWWK3TUHMZDINZTGY3TOOBXG4>\r\n> .\r\n> You are receiving this because you commented.Message ID:\r\n> ***@***.***>\r\n>\r\n"
+  },
+  {
+   "id": 2473885867,
+   "user": "MilosKozak",
+   "created_at": "2024-11-13T15:06:44Z",
+   "body": "it seems to be a bug in google's library. Reported https://github.com/material-components/material-components-android/issues/4373"
+  },
+  {
+   "id": 2827929102,
+   "user": "MilosKozak",
+   "created_at": "2025-04-24T14:51:21Z",
+   "body": "workaround in https://github.com/nightscout/AndroidAPS/commit/50a3fe0f5ef367b1ad1c8cc700ab6d439623b217"
+  }
+ ]
+}

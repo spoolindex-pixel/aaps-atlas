@@ -1,0 +1,24 @@
+{
+ "id": 1751599012,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 2883,
+ "title": "Allow calibrations to be transferred to/from xDrip variants",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/2883",
+ "state": "closed",
+ "labels": [
+  "enhancement",
+  "calibration"
+ ],
+ "created_at": "2023-06-11T20:50:57Z",
+ "closed_at": "2025-09-06T16:08:07Z",
+ "comment_count": 1,
+ "body": "Link to the discussion thread:  https://github.com/NightscoutFoundation/xDrip/discussions/2859?fbclid=IwAR2lfLtmX719BE16lnVHyG0LW1SEKl4OG8HYfHrrgxV76TQfVw4vhG8a26M#discussioncomment-6145804\r\n\r\nIn our country (Argentina) we only have access (for now) to fsl 1 sensors. To warm up and calibrate a new sensor, I start it in xdrip variant and after 24 hours, and calibrations achieved,  I disable the connection of the main xdrip+, and then I have Xdrip variant transmit to aaps and to nightscout. I cannot simply switch the new sensor from the variant to xdrip+, b/c I lose the calibration and thus the accuracy of the fsl1. I have to disable the connection of xdrip+ and enable the connection/transmission of xdrip variant. \r\n\r\nWe are using Xdrip+ e50dfdf-2023.05.03\r\nand xDrip-plus-variant4-20230525-2e4954e.apk\r\n\r\nWe use a bubble and a miaomiao1 with fsl1 to upload BG data to Xdrip. Xdrip transmits to AAPS and NS. \r\nXiaomi Mi A4 lite phone, Android 10. \r\n\r\nThe complication for us with using the xdrip variant as a transmitter to AAPS and NS is that we lose our daughter's MiBand5 connection with the Xdrip variant. The Watch Drip app will only connect to the main Xdrip+. Also, for the AAPS version we use, we have to use the dev version 15 of NS, and there is (also) a bug there in that the BG display in nightscout has about 20 digits. Which means that the 2 weeks the sensor is on the xdrip variant, neither I nor my daughter can use our smartwatches to follow BGs. (On my fitbit, the 20+ BG display does not fit on the screen.) \r\n\r\nIf the calibrations could also be transferred from Xdrip variant to Xdrip+, we could simply transfer the connection in Xdrip+ from sensor 1 to sensor 2 when the 2nd sensor was warmed up, calibrated, and ready to go. And we'd both (my daughter and I) have smart watches showing BG data, and no issues with BG display via dev version of NS. \r\n\r\nMight not be possible! But thanks so much for looking at it. Would be a big help. Looping with fsl1 is a challenge, but we're going on 3 years of making it happen. The hardest days are the sensor change days, and the variant really helps make the transition easier! But having to use the Xdrip variant for transmission has presented some other glitches we're trying to smooth out. And so, here we are. Thanks so much to Navid for creating the bridge to being able to open the issue. Fingers crossed it's something that can be done easily! \r\n\r\n\r\n",
+ "comments": [
+  {
+   "id": 3262508980,
+   "user": "Navid200",
+   "created_at": "2025-09-06T16:08:07Z",
+   "body": "I don't think the ability to transfer calibrations from one xDrip to another is a good idea.\nLooking at the entire conversation, I see that the intent is to allow a sensor to age a little bit before switching to it while continuing to use the previous sensor.\nThat can be done without losing calibrations.  \n\nWhen the time comes to start a new sensor, use a variant to start it.  Calibrate the new sensor on the variant as needed.\nWhen the old sensor reaches end of life, stop using the main xDrip and start using the variant.\nSet up the variant to broadcast to AAPS and stop the main one from doing that.\nIf you upload to Nightscout, enable uploading to Nightscout now in the variant and disable in the main xDrip.\n\nWhen the time comes to start the next sensor, start it on main xDrip while continuing to use the variant with the previous sensor until it reaches end of life.  \n\nSo, you keep going back and forth between the variant and the main xDrip.  At any point, you use the more mature sensor to broadcast to AAPS or to upload to Nightscout or Tidepool.  \nThis way, you will always be using the sensor with the app that calibrated it and there will never be a need to transfer calibrations to another app.\n\nI am going to close this issue because I don't believe there is a need for this.\nPlease ask any questions you may have.\nAnd if needed, we can reopen.  "
+  }
+ ]
+}

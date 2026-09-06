@@ -1,0 +1,51 @@
+{
+ "id": 2367359916,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3372,
+ "title": "Loop gets kinda sleep mode.",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3372",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-06-21T23:37:21Z",
+ "closed_at": "2024-07-01T11:24:24Z",
+ "comment_count": 6,
+ "body": "What could be the reason that Loop goes sometime into kinda sleep mode, so it doesn't really update basal rate or do SMB. t is also not disabling basal on low BG. AAPS application in general works fine (but in background, phone is locked). Connection with pump (omnipod) is fine. It respond to sms commands and applies them. I can execute bonuses, change basal etc. But OAPS last action time is just growing red. To get it back from this state I need to unlock the phone and reveal AAPS app. Phone: Samsung Galaxy S21. AAPS version 3.2.0.3.\r\n![Screenshot_20240622_012345_AAPSClient](https://github.com/nightscout/AndroidAPS/assets/4493100/a9ca85f8-6cf5-4389-9e44-4a005b949247)\r\n![Screenshot_20240621_053034_AAPSClient](https://github.com/nightscout/AndroidAPS/assets/4493100/ec411435-4d28-4e3e-a6c9-a27ba65ed999)\r\n",
+ "comments": [
+  {
+   "id": 2186095110,
+   "user": "MilosKozak",
+   "created_at": "2024-06-24T09:55:36Z",
+   "body": "you must look at main phone, not AAPSClient"
+  },
+  {
+   "id": 2190742690,
+   "user": "zibra",
+   "created_at": "2024-06-26T05:29:58Z",
+   "body": "Look for what? It's same there. OAPS is frozen. When I look on main phone it unfreezes. My question is why it freezes sometime when mine phone is locked at night."
+  },
+  {
+   "id": 2195721213,
+   "user": "olorinmaia",
+   "created_at": "2024-06-27T21:53:29Z",
+   "body": "Check battery settings and turn off play protect\r\n\r\nhttps://androidaps.readthedocs.io/en/latest/Getting-Started/FAQ.html#how-to-configure-battery-savings\r\n\r\nhttps://androidaps.readthedocs.io/en/latest/Getting-Started/FAQ.html#aaps-stops-everyday-around-the-same-time"
+  },
+  {
+   "id": 2207305914,
+   "user": "zibra",
+   "created_at": "2024-07-03T21:11:20Z",
+   "body": "I've double checked all settings. Updated some, but no change. OpenAPS is still hanging. Is there any way to debug it / check the logo to understand why?"
+  },
+  {
+   "id": 2207372855,
+   "user": "olorinmaia",
+   "created_at": "2024-07-03T21:50:51Z",
+   "body": "AAPS and AAPSClient both use same version of NSClient? "
+  },
+  {
+   "id": 2207400540,
+   "user": "zibra",
+   "created_at": "2024-07-03T22:18:20Z",
+   "body": "What do you mean by NSClient version?\r\nI've built them (AAPS and AAPSClient) together from same commit, so probably yes but cant find NSClient version info.\r\n\r\nI've checked the logs from AAPS and noticed that when all is fine, logs from: `OpenAPSSMBPlugin.invoke()` appears every minute / max every 2 minutes.\r\nWhen OpenAPS is hanged, these log lines are missing.\r\n\r\nOther logs (from other plugins like NSClientPlugin or AutomationPlugin) are still appearing every minute when OAPS is frozen, so I don't think it's something with my phone blocking AAPS in general but something with `OpenAPSSMBPlugin`...?\r\n"
+  }
+ ]
+}

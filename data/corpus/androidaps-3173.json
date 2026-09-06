@@ -1,0 +1,117 @@
+{
+ "id": 2082879691,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3173,
+ "title": "Error in dynamicISF algorithm",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3173",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-01-16T01:38:29Z",
+ "closed_at": "2024-01-22T12:28:56Z",
+ "comment_count": 17,
+ "body": "In version dev3.3.0 build on 14.01.24 the dynamicISF gives an abnormal result Attached is a picture I don't find the log something strange in this version I don't have recent logs\r\n![Screenshot_20240116-033118](https://github.com/nightscout/AndroidAPS/assets/73236490/e4c87fb0-6568-4328-bbc1-ba1b8f377a58)\r\n",
+ "comments": [
+  {
+   "id": 1893228707,
+   "user": "MilosKozak",
+   "created_at": "2024-01-16T07:57:30Z",
+   "body": "what is your dynisf factor? what it one time?"
+  },
+  {
+   "id": 1893386160,
+   "user": "parapenT1sta",
+   "created_at": "2024-01-16T09:41:38Z",
+   "body": "@mordechi-david About the logs: https://github.com/nightscout/AndroidAPS/issues/3151#issuecomment-1873488139"
+  },
+  {
+   "id": 1893582916,
+   "user": "parapenT1sta",
+   "created_at": "2024-01-16T11:46:15Z",
+   "body": "Same issue?\r\n https://github.com/nightscout/AndroidAPS/issues/3153"
+  },
+  {
+   "id": 1893667634,
+   "user": "mordechi-david",
+   "created_at": "2024-01-16T12:43:23Z",
+   "body": "Thanks @MilosKozak indeed this is the problem the factor changes to 0 as reported in issue #3153 (I did not change)"
+  },
+  {
+   "id": 1894390817,
+   "user": "MilosKozak",
+   "created_at": "2024-01-16T19:36:24Z",
+   "body": "you had to set it back to previous value manually?\r\n"
+  },
+  {
+   "id": 1894448983,
+   "user": "mordechi-david",
+   "created_at": "2024-01-16T20:17:13Z",
+   "body": "Yes, I restored it manually and it worked"
+  },
+  {
+   "id": 1895398131,
+   "user": "MilosKozak",
+   "created_at": "2024-01-17T09:16:50Z",
+   "body": "I checked the code. The code itself only reads the value. So, to modify you have to:\r\n* either enter preferences and change it\r\n* or import another settings\r\nIf this is not your case you phone must be malfunctioning and I'd reset it to factory setting or replace at all"
+  },
+  {
+   "id": 1895801207,
+   "user": "olorinmaia",
+   "created_at": "2024-01-17T13:21:17Z",
+   "body": "@MilosKozak It happend on my test-rig now after updating to latest dev. I haven't touched the setting ofc. attaching screenshots and logs. Can you check if there is something in the logs that can be helpful if this can be improved?\r\n\r\nProbably around 14:00 - 14:10\r\n\r\n[AndroidAPS_LOG_1705497291262.log.zip](https://github.com/nightscout/AndroidAPS/files/13963697/AndroidAPS_LOG_1705497291262.log.zip)\r\n\r\n![image](https://github.com/nightscout/AndroidAPS/assets/114103483/4fdfe349-87ef-4a49-81ce-3ddb3291d33b)\r\n![image](https://github.com/nightscout/AndroidAPS/assets/114103483/3a65e343-543d-4e49-864d-3b5a35e9c70b)\r\n\r\n"
+  },
+  {
+   "id": 1895835519,
+   "user": "mordechi-david",
+   "created_at": "2024-01-17T13:40:05Z",
+   "body": "@MilosKozak I did change the preferences and it works fine\r\nThe only question is how it changed to 0 without me touching it"
+  },
+  {
+   "id": 1895953664,
+   "user": "MilosKozak",
+   "created_at": "2024-01-17T14:42:26Z",
+   "body": "app was started at 14:08 and then restarted \r\nfirst run was already wrong\r\nlast run during night was ok\r\nsomthing happened between"
+  },
+  {
+   "id": 1902086617,
+   "user": "idalioreis",
+   "created_at": "2024-01-20T12:51:35Z",
+   "body": "i think the dynamicISF factor is by default 0%, so cause this error, if update to value that i define it works."
+  },
+  {
+   "id": 1902250386,
+   "user": "olorinmaia",
+   "created_at": "2024-01-20T19:49:25Z",
+   "body": "> i think the dynamicISF factor is by default 0%, so cause this error, if update to value that i define it works.\r\n\r\ndefault value is 100\r\n\r\n`ApsDynIsfAdjustmentFactor(R.string.key_dynamic_isf_adjustment_factor, 100, 1, 300),`"
+  },
+  {
+   "id": 1902262798,
+   "user": "idalioreis",
+   "created_at": "2024-01-20T20:53:34Z",
+   "body": "> > i think the dynamicISF factor is by default 0%, so cause this error, if update to value that i define it works.\r\n> \r\n> default value is 100\r\n> \r\n> `ApsDynIsfAdjustmentFactor(R.string.key_dynamic_isf_adjustment_factor, 100, 1, 300),`\r\n\r\ni understand, but i never change this value, only choose dynamicISF and was 0%.  \r\n\r\ni put 100% after, and work fine.\r\n"
+  },
+  {
+   "id": 1903616864,
+   "user": "szantos",
+   "created_at": "2024-01-22T09:48:06Z",
+   "body": "I've entered preferences to check the value (did not edit it), and it was zero. I've set it back to the normal value, but 1 loop run was affected, and I had a similar high ISF. Unable to provide logs."
+  },
+  {
+   "id": 1903654620,
+   "user": "MilosKozak",
+   "created_at": "2024-01-22T10:08:02Z",
+   "body": "what was the value before?"
+  },
+  {
+   "id": 1903691314,
+   "user": "szantos",
+   "created_at": "2024-01-22T10:29:56Z",
+   "body": "80"
+  },
+  {
+   "id": 1903904692,
+   "user": "MilosKozak",
+   "created_at": "2024-01-22T12:28:56Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/bc0eac0eb4900c401753cd514f3d2ea683e6de69"
+  }
+ ]
+}

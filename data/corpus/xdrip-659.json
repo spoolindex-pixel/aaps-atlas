@@ -1,0 +1,77 @@
+{
+ "id": 376028296,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 659,
+ "title": "Pebble delta disappears on refresh",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/659",
+ "state": "closed",
+ "labels": [
+  "device-watch"
+ ],
+ "created_at": "2018-10-31T15:42:23Z",
+ "closed_at": "2021-08-06T15:35:58Z",
+ "comment_count": 13,
+ "body": "Using the \"Pebble Trend Clay Version\", if I have \"display delta\" enabled under Pebble Integration in xDrip then it will initially appear on the watchface:\r\n<img src=\"https://user-images.githubusercontent.com/192620/47799745-452bbc00-dd01-11e8-8d42-925b4e92d667.png\" width=250>\r\n\r\nBut whenever the pebble watchface next refreshes (such as once a minute has passed since the last reading, or the time changes) it disappears:\r\n<img src=\"https://user-images.githubusercontent.com/192620/47799760-4ceb6080-dd01-11e8-9345-2336ed73a575.png\" width=250>\r\n\r\nIf I go into the \"xDrip Pebble Watchface\" settings in the Pebble app and hit \"save settings\" at the bottom, then until the next refresh the delta will reappear.\r\n",
+ "comments": [
+  {
+   "id": 434737992,
+   "user": "jwoglom",
+   "created_at": "2018-10-31T15:44:07Z",
+   "body": "Looks as though @jstevensog is the creator of this watchface so pinging them here."
+  },
+  {
+   "id": 435714213,
+   "user": "jstevensog",
+   "created_at": "2018-11-04T22:29:12Z",
+   "body": "Hi James,\nWorking on some other fixes, so I will add this to it.\nRight now, I am having issues building xDrip, so until I get those sorted\nit might be a while.\nI do know there are some issues on the xDrip side where the messages to the\npebble are built, so I need to get that sorted.\nCheers\n\nOn Thu, Nov 1, 2018 at 2:52 AM James Woglom <notifications@github.com>\nwrote:\n\n> Looks as though @jstevensog <https://github.com/jstevensog> is the\n> creator of this watchface so pinging them here.\n>\n> —\n> You are receiving this because you were mentioned.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/659#issuecomment-434737992>,\n> or mute the thread\n> <https://github.com/notifications/unsubscribe-auth/AIQs841YR4-M1ACVEVX__E-mw0ayWhImks5uqccggaJpZM4YEXuN>\n> .\n>\n\n\n-- \nJohn Stevens\n\"You are how you live, not what you have.\"\n"
+  },
+  {
+   "id": 435719362,
+   "user": "jwoglom",
+   "created_at": "2018-11-04T23:36:13Z",
+   "body": "@jstevensog is https://github.com/jstevensog/xDrip-pebble the current repo for this? If not, where could i look if I wanted to enhance the code?"
+  },
+  {
+   "id": 436788628,
+   "user": "jstevensog",
+   "created_at": "2018-11-07T21:45:14Z",
+   "body": "Hi James,\nUse https://github.com/jstevensog/xDrip-Pebble-E, and please contribute\nback to the repo.  In the past when people have made enhancements, they\nhave not contributed back and I have struggled to merge their changes back\nin to get new features I have been working on into xDrip.  Especially when\ntheir IDE refactors the code to suit how they like to see things, and\ntherefore the entire code changes, and real diffs cannot be easily\ndetermined..\n\nThe main issue I am working on at the moment is the Classic Pebble support\nin the Clay Watch face.  The \"platform\" dictionary entry was not understood\nby those that refactored the Pebble-Sync into the new muli Pebble\nabstraction code, and right now the trend image being built on xdrip is\nblowing out the available memory on the Classic watch.  That is an xDrip\nside issue that I am working on.  Otherwise the watch face is stable.\nCheers\n\n\nOn Mon, Nov 5, 2018 at 10:36 AM James Woglom <notifications@github.com>\nwrote:\n\n> @jstevensog <https://github.com/jstevensog> is\n> https://github.com/jstevensog/xDrip-pebble the current repo for this? If\n> not, where could i look if I wanted to enhance the code?\n>\n> —\n> You are receiving this because you were mentioned.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/659#issuecomment-435719362>,\n> or mute the thread\n> <https://github.com/notifications/unsubscribe-auth/AIQs81CosPXE8S_M4xCD-BCfXCjHpeDwks5ur3nugaJpZM4YEXuN>\n> .\n>\n\n\n-- \nJohn Stevens\n\"You are how you live, not what you have.\"\n"
+  },
+  {
+   "id": 437535166,
+   "user": "jstevensog",
+   "created_at": "2018-11-10T00:19:48Z",
+   "body": "BTW, I forgot to mention.  Use the \"new\" branch.  That has the latest code.\nCheers\n\nOn Thu, Nov 8, 2018 at 8:44 AM John Stevens <jstevensog@gmail.com> wrote:\n\n> Hi James,\n> Use https://github.com/jstevensog/xDrip-Pebble-E, and please contribute\n> back to the repo.  In the past when people have made enhancements, they\n> have not contributed back and I have struggled to merge their changes back\n> in to get new features I have been working on into xDrip.  Especially when\n> their IDE refactors the code to suit how they like to see things, and\n> therefore the entire code changes, and real diffs cannot be easily\n> determined..\n>\n> The main issue I am working on at the moment is the Classic Pebble support\n> in the Clay Watch face.  The \"platform\" dictionary entry was not understood\n> by those that refactored the Pebble-Sync into the new muli Pebble\n> abstraction code, and right now the trend image being built on xdrip is\n> blowing out the available memory on the Classic watch.  That is an xDrip\n> side issue that I am working on.  Otherwise the watch face is stable.\n> Cheers\n>\n>\n> On Mon, Nov 5, 2018 at 10:36 AM James Woglom <notifications@github.com>\n> wrote:\n>\n>> @jstevensog <https://github.com/jstevensog> is\n>> https://github.com/jstevensog/xDrip-pebble the current repo for this? If\n>> not, where could i look if I wanted to enhance the code?\n>>\n>> —\n>> You are receiving this because you were mentioned.\n>> Reply to this email directly, view it on GitHub\n>> <https://github.com/NightscoutFoundation/xDrip/issues/659#issuecomment-435719362>,\n>> or mute the thread\n>> <https://github.com/notifications/unsubscribe-auth/AIQs81CosPXE8S_M4xCD-BCfXCjHpeDwks5ur3nugaJpZM4YEXuN>\n>> .\n>>\n>\n>\n> --\n> John Stevens\n> \"You are how you live, not what you have.\"\n>\n\n\n-- \nJohn Stevens\n\"You are how you live, not what you have.\"\n"
+  },
+  {
+   "id": 894280636,
+   "user": "Navid200",
+   "created_at": "2021-08-06T13:59:59Z",
+   "body": "@jwoglom Can we close this issue?\r\nIf not, would you please update as the last posts are not yours.\r\nThanks"
+  },
+  {
+   "id": 894342623,
+   "user": "jwoglom",
+   "created_at": "2021-08-06T15:35:54Z",
+   "body": "I am okay with closing this issue given how much time has elapsed. I never fixed the bug as I ended up switching to https://github.com/mddub/urchin-cgm instead which was more customizable."
+  },
+  {
+   "id": 894910630,
+   "user": "jstevensog",
+   "created_at": "2021-08-09T02:12:03Z",
+   "body": "All,\nThanks for cutting my work out of the project.\nRegards\n\nOn Sat, 7 Aug 2021 at 01:36, James Woglom ***@***.***> wrote:\n\n> Closed #659 <https://github.com/NightscoutFoundation/xDrip/issues/659>.\n>\n> —\n> You are receiving this because you were mentioned.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/659#event-5123563810>,\n> or unsubscribe\n> <https://github.com/notifications/unsubscribe-auth/ACCCZ424CQAI5DFF5OFHJPDT3P6ORANCNFSM4GARPOGQ>\n> .\n> Triage notifications on the go with GitHub Mobile for iOS\n> <https://apps.apple.com/app/apple-store/id1477376905?ct=notification-email&mt=8&pt=524675>\n> or Android\n> <https://play.google.com/store/apps/details?id=com.github.android&utm_campaign=notification-email>\n> .\n>\n\n\n-- \nJohn Stevens\n\"You are how you live, not what you have.\"\n"
+  },
+  {
+   "id": 894913484,
+   "user": "Navid200",
+   "created_at": "2021-08-09T02:22:50Z",
+   "body": "@jstevensog No one is cutting you out of the project.\r\n\r\nThere are too many open issues.  Having hundreds of open issues removes the significance from all of them.\r\nWe are organizing the issues so that we can manage and prioritize them better.\r\n\r\nClosing an issue does not delete anything from it.  Any closed issue can always be reopened.\r\n\r\nIf you can think of a better way of accomplishing this, providing a clear view to the developers what issue needs their attention the most, I am all ears."
+  },
+  {
+   "id": 895631446,
+   "user": "jstevensog",
+   "created_at": "2021-08-10T00:05:16Z",
+   "body": "HI Navid,\nI sent through a pull request that fixed these issues over two years ago.\nIt is yet to be merged into the mainstream.\nYes, there is an outstanding issue with the Pebble Classic (I don't have a\nworking one anymore to investigate and fix it), but that should not have\nprevented the merge.\nThis has been my experience over the many years I have been involved, even\nfrom the original xDrip.\n\nI have no concern with closing off old issues.  My issue is with how us old\nguard or outlier contributors are treated.\nAs a T1D of 41 years, and someone who is NOT a modern programmer, I feel\nour inputs to the project are less valued.\nRegards\n\nOn Mon, 9 Aug 2021 at 12:23, Navid ***@***.***> wrote:\n\n> @jstevensog <https://github.com/jstevensog> No one is cutting you out of\n> the project.\n>\n> There are too many open issues. Having hundreds of open issues removes the\n> significance from all of them.\n> We are organizing the issues so that we can manage and prioritize them\n> better.\n>\n> Closing an issue does not delete anything from it. Any closed issue can\n> always be reopened.\n>\n> If you can think of a better way of accomplishing this, providing a clear\n> view to the developers what issue needs their attention the most, I am all\n> ears.\n>\n> —\n> You are receiving this because you were mentioned.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/659#issuecomment-894913484>,\n> or unsubscribe\n> <https://github.com/notifications/unsubscribe-auth/ACCCZ43SVQAH5ZM4VKD3HFTT343YLANCNFSM4GARPOGQ>\n> .\n> Triage notifications on the go with GitHub Mobile for iOS\n> <https://apps.apple.com/app/apple-store/id1477376905?ct=notification-email&mt=8&pt=524675>\n> or Android\n> <https://play.google.com/store/apps/details?id=com.github.android&utm_campaign=notification-email>\n> .\n>\n\n\n-- \nJohn Stevens\n\"You are how you live, not what you have.\"\n"
+  }
+ ]
+}

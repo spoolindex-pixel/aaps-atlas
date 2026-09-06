@@ -1,0 +1,27 @@
+{
+ "id": 828479390,
+ "repo": "nightscout/AndroidAPS",
+ "number": 411,
+ "title": "Minimal request change active during closed loop",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/411",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-03-10T23:37:39Z",
+ "closed_at": "2021-03-11T09:46:16Z",
+ "comment_count": 2,
+ "body": "Tiny change, but minimal change request setting is active during closed loop operations even though it has no effect and should not be used. \r\n\r\n![Screenshot_2021-03-11-00-36-14-526_info nightscout androidaps](https://user-images.githubusercontent.com/60351810/110713290-f4e29400-8201-11eb-8567-fe3cdfc76f71.jpg)\r\n",
+ "comments": [
+  {
+   "id": 796337352,
+   "user": "andyrozman",
+   "created_at": "2021-03-11T00:58:21Z",
+   "body": "This setting is always used... And its logical that its here... It tells how much the value must change, to be sent to pump. So for example, If your TBR is 120% and on next calculation requested TBR would be 130%, this change won't be sent to pump, until requested change is over 15%... So when AAPS determines that TBR needs to be 140%, then it will be sent to pump. Default value is 20% though... If your pump supports increment by 10, having value at 15 is useless... "
+  },
+  {
+   "id": 796608789,
+   "user": "larsqvd",
+   "created_at": "2021-03-11T09:46:16Z",
+   "body": "Ah thanks for explaining Andy, I will check for adapting the guide then as it is described as open loop only feature and because of my 15% it was not functional in my closed loop ;-)"
+  }
+ ]
+}

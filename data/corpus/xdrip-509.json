@@ -1,0 +1,111 @@
+{
+ "id": 341262730,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 509,
+ "title": "Miaomiao connected but no data received",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/509",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2018-07-14T19:50:41Z",
+ "closed_at": "2021-02-25T06:09:03Z",
+ "comment_count": 16,
+ "body": "Hi there,\r\n\r\nI recceived my Miaomiao reader  the last weeks and it connects easily to xDrip+ (xDrip-plus-20180709-73cfa6d) but there is not data transfered. At system status the Tomato Battery, Tomato Hardware, Tomato Firmware and Libre SN are empty and there are not glucose values available.\r\n\r\nNow I tried the chinese tomato app and it establish a working connection. When I now run xDrip+ in parallel there are now also some readings available in xDrip+... I suppose, the requests of both programs have to be synced to get data to xDrip+.\r\n\r\nIn the system status now the following values are shown.\r\n\r\nField  | Value\r\n------------ | -------------\r\nTomato Battery | 100\r\nTomato Hardware | 0001\r\nTomato Firmware | 0036\r\nLibre SN | [11 digit serial number]\r\n\r\nI tried different setting for the settings in xDrip+ but without any luck.\r\n\r\nDid they change anything on the communication of the Miaomiao?\r\n\r\nHere is the log with DexCollectionService:d as option set. The collector is restarted at 21:13 (Service stopped).\r\n\r\n![log](https://user-images.githubusercontent.com/9384633/42727924-748d9dee-87af-11e8-85ef-a60c3bade40e.png)\r\n\r\n\r\nI can also provide the sniffed BLE communication from the tomato app of the celluar phone if it's usefull.\r\n\r\n\r\n",
+ "comments": [
+  {
+   "id": 405296583,
+   "user": "klettervirus",
+   "created_at": "2018-07-16T15:58:50Z",
+   "body": "I am having the same (similar) issue. My samsung s7 edge (oreo) can find the miaomiao via xdrip (bluetooth scan), connects and gives one to about five readings, then quits giving any readings. \r\n\"Status\" says it´s connected, no complaints in \"BT Device\", but no readings. When I do bluetooth scan at that time it does not see the miaomiao, but when I tap \"forget device\" it immediately sees and connects to miaomiao, transmitting about one reading.\r\n\r\nI was watching #440 where the issue seems to be connecting to the miaomiao at all. I have played with the BT settings to no avail, but I fear I have messed them all up. Can I reset them to default? Or what else could be the cause of this funny behaviour?\r\n"
+  },
+  {
+   "id": 405359407,
+   "user": "Tapiocapioca",
+   "created_at": "2018-07-16T19:46:14Z",
+   "body": "I have the same problem. Me also S7 Edge with Oreo."
+  },
+  {
+   "id": 405359643,
+   "user": "klettervirus",
+   "created_at": "2018-07-16T19:47:06Z",
+   "body": "OK, I have found the solution to my Problem: I managed to install the \"libreOOPAlgorithm\" to make the values shown match the readings of the libre-handheld more closely. While that worked quite well it obviously messed up the connection with my miaomiao. After deactivating the libreOOPAlgorithm it went back to work! So whoever has similar problems, check for that too!"
+  },
+  {
+   "id": 405364577,
+   "user": "Tapiocapioca",
+   "created_at": "2018-07-16T20:04:48Z",
+   "body": "I think you found the problem, me also have libreOOPAlgorithm, I will try to follow your solution!"
+  },
+  {
+   "id": 405385040,
+   "user": "fmoess",
+   "created_at": "2018-07-16T21:17:41Z",
+   "body": "I did not install or use the libreOOPAlgorithm and I think my problem is different:\r\nxDrip+ finds the miaomiao and connects to it. \r\nThe DexCollectionService gives entries in the error list (different to log in the screenshot above): \"Failed to discover services!\", \"Got null pointer trying to set CCCD descriptor\", \"Error: mCharacteristic was null in sentBtMessage\", \"Error writing characteristic\" (e.g. ...F0, ...D105), and lots of \"Stale data so requesting backfill\".\r\nIf I now start the tomato app in parallel on the same phone (BQ Aquarius with Android 7.1.1), xDrip+ receives data. I assume, it's the result of the tomato app requesting the data and xDrip+ receiving it in parallel to the tomato app."
+  },
+  {
+   "id": 405746631,
+   "user": "tzachi-dar",
+   "created_at": "2018-07-17T22:18:19Z",
+   "body": "I think that the issue can come from 2 things:\r\n1) the tomato is not connected well to the sensor.\r\n2) A problem with oop algorithm.\r\n\r\n#2 can be checked easily by going to settings->less common seting->other misc options, disable oop algorithm.\r\nI'll be very happy if someone who has the issue will connect the phone to the computer and run\r\nadb logcat > file.\r\n\r\nThen upload the file, this will help me debug the issue."
+  },
+  {
+   "id": 405855632,
+   "user": "fmoess",
+   "created_at": "2018-07-18T08:39:28Z",
+   "body": "I will upload the file today evening. Thanks for your help!"
+  },
+  {
+   "id": 406053696,
+   "user": "fmoess",
+   "created_at": "2018-07-18T19:53:19Z",
+   "body": "Here is the logfile as requested. The SSIDs of the wifi networks were removed from the logfile.\r\n\r\nAt first only xDrip+ is running. The cache and data was cleared before the restart of the celluar phone. The settings were done with the connection wizard. After 5 minutes and the first reconnect, no data was received. Then I started the tomato app (timestamp roughly 21:14) in parallel and both apps were receiving data after some minutes. After that also the battery status, hardware and software version and Libre SN is filled in the xDrip+ system status.\r\n\r\n[logfile_xdrip_tomato-app.log](https://github.com/NightscoutFoundation/xDrip/files/2207137/logfile_xdrip_tomato-app.log)\r\n\r\nxDrip+ only running:\r\n![screenshot_20180718-211118](https://user-images.githubusercontent.com/9384633/42904189-86df1e32-8ad4-11e8-96b7-f7e367642598.png)\r\n![screenshot_20180718-211122](https://user-images.githubusercontent.com/9384633/42904197-88e3ad88-8ad4-11e8-987e-fe9d250e60ac.png)\r\n\r\nxDrip+ and tomato app running in parallel:\r\n![screenshot_20180718-211410](https://user-images.githubusercontent.com/9384633/42904198-8a2e88fc-8ad4-11e8-93c2-af874e165254.png)\r\n![screenshot_20180718-211414](https://user-images.githubusercontent.com/9384633/42904199-8b9d11b8-8ad4-11e8-86c8-a4b14dc507ed.png)\r\n\r\nOOP algorithm is disabled:\r\n![screenshot_20180718-213604](https://user-images.githubusercontent.com/9384633/42904241-ad142368-8ad4-11e8-93ae-18439d6e1902.png)\r\n\r\n"
+  },
+  {
+   "id": 408688912,
+   "user": "Itja",
+   "created_at": "2018-07-29T16:26:01Z",
+   "body": "@Hornedar Does it work with OOP disabled? "
+  },
+  {
+   "id": 415491855,
+   "user": "fmoess",
+   "created_at": "2018-08-23T16:58:45Z",
+   "body": "Hi there,\r\n\r\nsorry for the late response, I was on vacation.\r\n\r\nThere is no data received with and without OOP activated. The log above was done without OOP enabled.\r\n\r\nAttached to this post you find the btsnoop_hci.log with the xDrip+ version 55dcd85-2018.08.21 (currrent nightly build) used. The following tasks were done at the approximated timestamps.\r\n\r\n0.000 | btsnoop.log started\r\n-- | --\r\n0.000 | xDrip+: started\r\n22.642 | xDrip+: configured\r\n67.014 | xDrip+: connection established\r\n426.735 | xDrip+: wake up\r\n535.244 | xDrip+: restart collector with polling mode\r\n568.979 | Tomato:  app started\r\n587.712 | Tomato:  logged in\r\n683.189 | Tomato:  update installation done\r\n715.500 | Tomato: first readings aquired\r\n715.500 | xDrip+: first readings aquired\r\n\r\nPerhaps someone can judge or debug the differences in the communication of the xDrip+ and the tomato app.\r\n\r\n[btsnoop_hci.log](https://github.com/NightscoutFoundation/xDrip/files/2315439/btsnoop_hci.log)\r\n\r\n"
+  },
+  {
+   "id": 489463799,
+   "user": "SpeedoPasanen",
+   "created_at": "2019-05-05T21:12:05Z",
+   "body": "My P20 pro stopped connecting to miaomiao after an android update / reboot. Nothing seemed to work - reset miamiao, reboot phone several times, forget and re-search BT device,... Then I installed Tomato and bound to miaomiao using that. Instantly works, somehow xdrip piggybacks the connection made by tomato?\r\n\r\nError i saw in the log was \"Task Deadlock on: sendData\" (if that's an error...)"
+  },
+  {
+   "id": 526813021,
+   "user": "comflow",
+   "created_at": "2019-08-31T08:44:24Z",
+   "body": "Same problem arised here. The auto-disable functionality of my Samsung Galaxy S8 disabled, i.e. put to sleep, the libreOOPalgorithm app, causing xDrip to no longer receive readings. \r\nSolved it by either: \r\n- disabling OOP in xDrip\r\n- restarting the libreOOPalgorithm app"
+  },
+  {
+   "id": 537387026,
+   "user": "Stuggesjoerd",
+   "created_at": "2019-10-02T08:14:24Z",
+   "body": "> Hi there,\r\n> \r\n> sorry for the late response, I was on vacation.\r\n> \r\n> There is no data received with and without OOP activated. The log above was done without OOP enabled.\r\n> \r\n> Attached to this post you find the btsnoop_hci.log with the xDrip+ version [55dcd85](https://github.com/NightscoutFoundation/xDrip/commit/55dcd855a709d12ec6c2a68906183da276061525)-2018.08.21 (currrent nightly build) used. The following tasks were done at the approximated timestamps.\r\n> \r\n> 0.000\tbtsnoop.log started\r\n> 0.000\txDrip+: started\r\n> 22.642\txDrip+: configured\r\n> 67.014\txDrip+: connection established\r\n> 426.735\txDrip+: wake up\r\n> 535.244\txDrip+: restart collector with polling mode\r\n> 568.979\tTomato:  app started\r\n> 587.712\tTomato:  logged in\r\n> 683.189\tTomato:  update installation done\r\n> 715.500\tTomato: first readings aquired\r\n> 715.500\txDrip+: first readings aquired\r\n> Perhaps someone can judge or debug the differences in the communication of the xDrip+ and the tomato app.\r\n> \r\n> [btsnoop_hci.log](https://github.com/NightscoutFoundation/xDrip/files/2315439/btsnoop_hci.log)\r\n\r\nAny updates on this so far?"
+  },
+  {
+   "id": 642963589,
+   "user": "bolattleubayev",
+   "created_at": "2020-06-11T22:30:41Z",
+   "body": "Hey there! I just had the same issue, wanted to share what helped me, maybe it will help someone else too\r\n\r\nWe have set up a new Libre sensor, set up a bunch of calibrations (did not remove previous) at this point. Then after one more calibration my phone (Huawei P20 Lite) in Bluetooth Scan could find the miaomiao, however on the main screen there was a little gray bubble at the bottom \"Sensor clock signal missing\" or something like this and no updates. Also, the difference between the actual measured value and the one shown on screen was big (9.0 mmol/l and 4.5 mmol/l respectively)\r\n\r\nFollowing advices in this thread I checked OOP status, it was off. Then we restarted the miaomiao manually (using little button in the hole) and reset all previous calibrations (I suspect this was the step that fixed it).\r\n\r\nAfter that all was fine\r\n"
+  },
+  {
+   "id": 785489922,
+   "user": "Navid200",
+   "created_at": "2021-02-25T00:38:41Z",
+   "body": "@Hornedar Would you please close this issue if your problem has been resolved?\r\nYou can use the support channels to find out what other users do in a similar situation.  \r\nhttps://www.facebook.com/groups/xDripG5\r\nhttps://gitter.im/jamorham/xDrip-plus\r\nIf you have done and this problem persists, please update.\r\nThanks"
+  },
+  {
+   "id": 785640354,
+   "user": "fmoess",
+   "created_at": "2021-02-25T06:09:03Z",
+   "body": "This issue has not been solved. After changing to the Libre 2 sensor I'm not using the MioaMioa reader any more. Therefor this issue will be closed."
+  }
+ ]
+}

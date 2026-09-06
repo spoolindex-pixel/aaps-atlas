@@ -1,0 +1,51 @@
+{
+ "id": 3246316658,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4064,
+ "title": "Question about delta calculations - is it weighted average?",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4064",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-07-20T12:23:55Z",
+ "closed_at": "2025-09-24T11:14:56Z",
+ "comment_count": 6,
+ "body": "Hi, I have a question about 15 min delta calculations (and the same about 40 min).\nInitially, according to [docs](https://androidaps.readthedocs.io/en/latest/DailyLifeWithAaps/AapsScreens.html#current-blood-glucose)  I understood is as:\n15Δ = average of three Δ in last 15 minutes.\nIn other words, difference between current reading and 15 min ago divided by 3.\n\nBut from what I see, it's average of averages? Consider following (real) example from logs\n```\n12:26:15.983 [main] D/GLUCOSE: [GlucoseStatusProviderImpl.getGlucoseStatusData():79]: InMemoryGlucoseValue(timestamp=1753006823113, value=144.0, trendArrow=NONE, smoothed=null, filledGap=false, sourceSensor=LIBRE_2) minutesAgo=5 avgDelta=-4.0\n12:26:15.983 [main] D/GLUCOSE: [GlucoseStatusProviderImpl.getGlucoseStatusData():79]: InMemoryGlucoseValue(timestamp=1753006523113, value=144.0, trendArrow=NONE, smoothed=null, filledGap=false, sourceSensor=LIBRE_2) minutesAgo=10 avgDelta=-2.0\n12:26:15.984 [main] D/GLUCOSE: [GlucoseStatusProviderImpl.getGlucoseStatusData():79]: InMemoryGlucoseValue(timestamp=1753006223113, value=145.0, trendArrow=NONE, smoothed=null, filledGap=false, sourceSensor=LIBRE_2) minutesAgo=15 avgDelta=-1.6666666666666665\n12:26:15.984 [main] D/GLUCOSE: [GlucoseStatusProviderImpl.getGlucoseStatusData():79]: InMemoryGlucoseValue(timestamp=1753005923113, value=142.0, trendArrow=NONE, smoothed=null, filledGap=false, sourceSensor=LIBRE_2) minutesAgo=20 avgDelta=-0.5\n12:26:15.984 [main] D/GLUCOSE: [GlucoseStatusProviderImpl.getGlucoseStatusData():79]: InMemoryGlucoseValue(timestamp=1753005623113, value=144.0, trendArrow=NONE, smoothed=null, filledGap=false, sourceSensor=LIBRE_2) minutesAgo=25 avgDelta=-0.8\n12:26:15.984 [main] D/GLUCOSE: [GlucoseStatusProviderImpl.getGlucoseStatusData():79]: InMemoryGlucoseValue(timestamp=1753005323113, value=144.0, trendArrow=NONE, smoothed=null, filledGap=false, sourceSensor=LIBRE_2) minutesAgo=30 avgDelta=-0.6666666666666666\n12:26:15.984 [main] D/GLUCOSE: [GlucoseStatusProviderImpl.getGlucoseStatusData():79]: InMemoryGlucoseValue(timestamp=1753005023113, value=143.0, trendArrow=NONE, smoothed=null, filledGap=false, sourceSensor=LIBRE_2) minutesAgo=35 avgDelta=-0.4285714285714286\n12:26:15.984 [main] D/GLUCOSE: [GlucoseStatusProviderImpl.getGlucoseStatusData():79]: InMemoryGlucoseValue(timestamp=1753004723113, value=142.0, trendArrow=NONE, smoothed=null, filledGap=false, sourceSensor=LIBRE_2) minutesAgo=40 avgDelta=-0.25\n12:26:15.984 [main] D/GLUCOSE: [GlucoseStatusProviderImpl.getGlucoseStatusData():79]: InMemoryGlucoseValue(timestamp=1753004423113, value=139.0, trendArrow=NONE, smoothed=null, filledGap=false, sourceSensor=LIBRE_2) minutesAgo=45 avgDelta=0.11111111111111112\n12:26:15.984 [main] D/GLUCOSE: [GlucoseStatusProviderImpl.getGlucoseStatusData():264]: Glucose: 140 mg/dl Noise: 0 Delta: -4 mg/dlShort avg. delta:  -2,56 mg/dl Long avg. delta: -0,53 mg/dl Dura ISF minutes: 45,00 m Dura ISF average: 142,70 mg/dl Parabola minutes: 15,00 m Parabola correlation: 0,92 Parabola fit a0: 140,25 mg/dl Parabola fit a1: -3,75 mg/dl/5m Parabola fit a2: -0,75 mg/dl/(5m)^2\n```\nWe have BG:\nBG0 (0min)=140\nBG1 (5min)=144\nBG2 (10min)=144\nBG3 (15min)=145\n\nAccording to logs, we have avgDelta 5min=-4, avgDelta 10min=-2, avgDelta 15min=-1.66.\nBut then 15Δ displayed on screen is =-2.56 (from logs: Short avg. delta:  -2,56)? Which is average of those three avgDelta? While initially I would expect -1.66.\n\n\nSo it basically functions as weighted average, where delta from BG1-BG0 has weight 3, BG2-BG1 weight 2, and BG4-BG3 weight 1? It seems to be the case from quick look at [code](https://github.com/nightscout/AndroidAPS/blob/master/implementation/src/main/kotlin/app/aaps/implementation/iob/GlucoseStatusProviderImpl.kt#L78).\n \nI'm just curious if this is intentional?\n\n",
+ "comments": [
+  {
+   "id": 3133788071,
+   "user": "sanderrenes",
+   "created_at": "2025-07-29T19:34:09Z",
+   "body": "The short answer, it is taking the average over calculated deltas. This is an open issue:\n\nhttps://github.com/nightscout/AndroidAPS/issues/3933\n\n"
+  },
+  {
+   "id": 3327879831,
+   "user": "MilosKozak",
+   "created_at": "2025-09-24T11:14:56Z",
+   "body": "It's like you see. The value means probably something else than you are expecting.\nThis is how oref has been designed"
+  },
+  {
+   "id": 3327893740,
+   "user": "MilosKozak",
+   "created_at": "2025-09-24T11:16:48Z",
+   "body": "https://github.com/openaps/oref0/blob/master/lib/glucose-get-last.js"
+  },
+  {
+   "id": 3327899030,
+   "user": "MilosKozak",
+   "created_at": "2025-09-24T11:17:55Z",
+   "body": "You can discuss it with @scottleibrand "
+  },
+  {
+   "id": 3330771879,
+   "user": "scottleibrand",
+   "created_at": "2025-09-24T21:26:53Z",
+   "body": "If you wanted to use the 1.66 value, you would be throwing away the information from the intermediate readings. By doing the average of average deltas, those readings do actually influence the result. \n\nThe method we used for coming up with these algorithms was extremely iterative and empirical: we would try something simple, see if it worked well, and if necessary add additional data to cover corner cases. I don't remember the specifics of this one from 10 years ago, but most likely we averaged the multiple readings to get smoother behavior while avoiding under-reacting to BG drops or over-reacting to short spikes upward. \n\nFor your purpose of extending the algorithm to every-minute CGM readings, you'll probably need to consider how jumpy the every-minute data is, and whether you'll get better results from using the more granular data, or if it's sufficient to use it to create sliding 5m windows of data that update slightly every minute (and then apply the current algorithms to the 5m-bucketed data)."
+  },
+  {
+   "id": 3333286691,
+   "user": "sanderrenes",
+   "created_at": "2025-09-25T10:21:52Z",
+   "body": "@scottleibrand I don't think the issue is in early development — I’m still using a version of the algorithm so it works and is well. \nBut as sensors become more frequent and more precise, the trade‑offs change. What worked well when data came every 5 minutes may no longer be optimal now.\n\nMy worry is that the delta algorithm makes implicit assumptions about the underlying data that don’t hold with newer sensors / xDrip+ setups. You mention 5‑minute buckets, but my data comes in every 2 minutes, meaning bucket sizes are irregular (and newer sensors can go to 1 min or even faster). With varying intervals, the way timing is handled requires rethinking.\n\nHere’s how I interpret the current delta logic, and why it can misbehave with uneven sampling:\n\n**Current approach (as I understand it):**\n \n1. For each measurement, compute its change (delta) relative to “now.”\n2. Normalize that change to a 5‑minute equivalent (i.e. scale by the time difference). \n3. Then average those normalized deltas within time buckets (5, 15, 40 min).\n\n**Why that is problematic with variable intervals:**\n\nIf you sample every minute, you’ll get ~5 deltas within a 5‑min bucket. If instead you sample every 5 minutes, you only get one. Averaging normalized deltas is not the same as computing the delta of averaged glucose levels (unless the trend is linear).\nIn real glucose curves (which are nonlinear), the average of individual deltas can misrepresent direction and magnitude of change. The sign of the delta may even flip depending on which sensor /sampling intervals the person is using, regardless of the actual glucose level.\n\n**Better conceptual alternative:**\n\nRather than averaging per‑measurement deltas, a cleaner way is:\na) Estimate the glucose value at the desired moments (e.g., then = {5,15, 40} minutes ago and now) using all relevant measurements.\nb) Compute delta = (glucose_now ‑ glucose_then) normalized to 5 minutes.\n\nThis way, more frequent measurement improves precision without biasing the "
+  }
+ ]
+}

@@ -1,0 +1,21 @@
+{
+ "id": 1177757480,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1488,
+ "title": "[dev] ProfileSwitch dialog from Local Profile can crash if a wrong profil is in Local Profile list...",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1488",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-03-23T08:08:03Z",
+ "closed_at": "2022-03-26T21:24:54Z",
+ "comment_count": 1,
+ "body": "To reproduce this bug first create in Local profile plugin a new empty profile (+ button), but keep this profile \"not valid\" (LocalProfile1 is created with red background)\r\n\r\nThen create one or several valid profiles after this \"Wrong entry\"\r\n\r\nBecause of one wrong profile included in profileStore, if you select the latest profile in Local Profile list and you click on \"Activate Profile\" button, AAPS will crash here (`ProfileSwitchDialog.kt` line 135)\r\n`binding.profileList.setText(profileList[profileIndex as Int], false)`\r\n\r\nwith this in Logcat\r\n```\r\n    java.lang.IndexOutOfBoundsException: Index: 8, Size: 8\r\n        at java.util.ArrayList.get(ArrayList.java:437)\r\n        at info.nightscout.androidaps.dialogs.ProfileSwitchDialog.onViewCreated(ProfileSwitchDialog.kt:135)\r\n```\r\n\r\nI think it's because when you fill profileIndex list, the wrong profile is not added in profileIndex because of test line 125 (size of profileStore and size of profileIndex are different...)\r\n```\r\n            for (profileName in profileListToCheck) {\r\n                val profileToCheck = activePlugin.activeProfileSource.profile?.getSpecificProfile(profileName.toString())\r\n                if (profileToCheck != null && ProfileSealed.Pure(profileToCheck).isValid(\"ProfileSwitch\", activePlugin.activePump, config, rh, rxBus, hardLimits, false).isValid)\r\n                    profileList.add(profileName)\r\n            }\r\n```\r\n",
+ "comments": [
+  {
+   "id": 1079777458,
+   "user": "MilosKozak",
+   "created_at": "2022-03-26T21:24:54Z",
+   "body": "fixed by https://github.com/nightscout/AndroidAPS/commit/26c1652bba8fced140e4e708c3a03b92e90ae6ac\r\ngood catch!"
+  }
+ ]
+}

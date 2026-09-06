@@ -1,0 +1,61 @@
+{
+ "id": 681814497,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1412,
+ "title": "Starting a new sensor without queueing a \"stop sensor\" first",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1412",
+ "state": "closed",
+ "labels": [
+  "duplicate",
+  "enhancement",
+  "device-dexcom"
+ ],
+ "created_at": "2020-08-19T12:50:37Z",
+ "closed_at": "2020-11-06T19:57:34Z",
+ "comment_count": 7,
+ "body": "Hi!\r\n\r\nWe are using xDrip with a G6 Sensor. Our case is:\r\n\r\n1) An old sensor has been stopped.\r\n2) the xDrip UI is still in \"running\" State\r\n3) We place a new sensor and forget to stop the xDrip UI BEFORE placing the transmitter\r\n\r\nThe effect for us was:\r\n4) Before we can start the new sensor with xDrip, we have to press \"Stop Sensor\" in the xDrip UI.\r\n5) In the above case our newly placed sensor gets the \"stopped\" event.\r\n6) Result: The newly placed sensor can't be started anymore.\r\n\r\nSolution 1): It should be possible to reset the xDrip UI and issue a \"Sensor Start\" Queue Item with sending a \"Sensor Stop\" Item before.\r\nSolution 2): Maybe #1376 would be another solution to simply delete a queued \"Sensor Stop\" item before it is send to the new Transmitter.\r\n\r\nBut maybe there is already another solution that I have missed so far?\r\n\r\nThx!",
+ "comments": [
+  {
+   "id": 676315552,
+   "user": "nsghub",
+   "created_at": "2020-08-19T13:00:04Z",
+   "body": "The sensor itself is \"dumb\" and you can restart it. You need to remove the transmitter (I use a guitar pick) and let it unconnected for maybe 30 minutes or short cut the two sensor pins.\r\n\r\nBut I'm with you, the problem could be solved in xDrip. The issue exists even if xDrip already reports \"sensor stopped\"."
+  },
+  {
+   "id": 676345073,
+   "user": "dhermanns",
+   "created_at": "2020-08-19T13:19:46Z",
+   "body": "Good hint - thx! Yes even if you stop the sensor you would have to take care that the queued item has been really send to the transmitter. Otherwise you would have the same problem. So #1376 would help there, too, right?"
+  },
+  {
+   "id": 676350004,
+   "user": "nsghub",
+   "created_at": "2020-08-19T13:23:05Z",
+   "body": "Yes, deleting queued items would be nice."
+  },
+  {
+   "id": 723271704,
+   "user": "tolot27",
+   "created_at": "2020-11-06T19:57:34Z",
+   "body": "Closing it in favour of #1118."
+  },
+  {
+   "id": 2047864077,
+   "user": "serafinimc",
+   "created_at": "2024-04-10T15:29:38Z",
+   "body": "Hi! I found this thread while encountering a similar issue as the initial one and the queue solution does not help in my case. The transmitter is working fine and the sensor shows as \"stopped\" but for some reason the UI still shows the \"stop sensor\" option and not the \"start sensor\" one. Is there a way to send a Start Sensor command or showing the button for Starting the Sensor? If I use Stop Sensor I will loose this one and its a brand new one."
+  },
+  {
+   "id": 2047995163,
+   "user": "Navid200",
+   "created_at": "2024-04-10T16:26:59Z",
+   "body": "@serafinimc \r\n\r\nThis is a brute force method to fix this.\r\nPlease read it all before attempting.\r\n\r\nFirst, have a look at the following to know how to clear the queue.  You will need to do this reasonably fast.\r\nhttps://navid200.github.io/xDrip/docs/Clear-queue.html\r\n\r\nNow, go to the status page, where you can see last connected.  The valve keeps increasing and just before reaching 5 minutes, it goes back to 0.\r\nTell me if you don't see it.\r\n\r\nWait for it to reset to 0.  Then, wait 10 seconds.  Now, stop sensor.\r\nAs soon as you approve stopping sensor, clear the queue.\r\n\r\nIf you do that exactly as I have explained, you will stop the xDrip session without stopping the session on the transmitter.\r\n\r\nNow, restart the phone.  If you are using a G6, after connectivity is established again, xDrip will auto start its session.\r\n\r\nPlease ask me any questions you may have before attempting this.\r\nIf you stop the sensor and fail to clear the queue in less than 4 minutes, you may stop the session on the transmitter, which is not good."
+  },
+  {
+   "id": 2048073903,
+   "user": "serafinimc",
+   "created_at": "2024-04-10T17:09:50Z",
+   "body": "That's awesome and it worked perfectly, thank you!"
+  }
+ ]
+}

@@ -1,0 +1,27 @@
+{
+ "id": 2467864343,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3404,
+ "title": "Insulin or carbs not being sent to Nightscout using Bolus Calculator",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3404",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-08-15T11:14:57Z",
+ "closed_at": "2024-11-13T12:52:04Z",
+ "comment_count": 2,
+ "body": "This is a persistent issue I'm experiencing with AndroidAPS on both NSClientV1 and NSClientV3, with the former only sending the bolus insulin, and the latter only sending carbs. [AndroidAPS.log](https://github.com/user-attachments/files/16624490/AndroidAPS.log) - This log file is a snippet from when I calculated a bolus of 50g carbs and 9.60U insulin bolus using the Bolus Calculator at 20:57, where only the 50g carbs appeared on Nightscout.\r\n![nightscout](https://i.flowinity.com/i/540b0e9f5be2.png)\r\n![AAPS](https://i.flowinity.com/i/0e6139a88874.png)\r\n\r\nI've temporarily worked around this problem by emitting the treatments to xDrip+ which then sends to Nightscout, the carbs are duplicated within xDrip+ and it's not a perfect solution as in the documentation I believe it's mentioned that you should disable xDrip+ Nightscout uploading.\r\n\r\nAAPS Build:\r\n  Version: 3.2.0.4\r\n  Build: 3df83535f9-2024.05.29\r\n  Flavor: fullrelease\r\n  Nightscout version: 15.0.2\r\n\r\nIf you need any extra information or I'm simply missing something, please let me know. I've enabled the treatment upload option for the Nightscout client within the AAPS settings.\r\n\r\nI'm unsure if this is a Nightscout or AAPS issue either, it appears to send the WebSocket event from what I can see in the logs, it just doesn't appear. xDrip+ has had zero issues in the past emitting carbs and insulin and having them recorded in NS.",
+ "comments": [
+  {
+   "id": 2473491262,
+   "user": "MilosKozak",
+   "created_at": "2024-11-13T12:35:56Z",
+   "body": "can you re-test with 3.3 dev?\r\nthis is not happening to me"
+  },
+  {
+   "id": 2473534424,
+   "user": "Troplo",
+   "created_at": "2024-11-13T12:52:05Z",
+   "body": "> can you re-test with 3.3 dev? this is not happening to me\r\n\r\nI'm going to close this issue since I can't reproduce it either now, it stopped happening about a month ago when I decided to disable the xDrip+ uploading due to an unrelated issue (I originally enabled xDrip+ uploading to circumvent this issue). I have absolutely zero idea what changed, I don't think I updated NS and definitely haven't updated AAPS since."
+  }
+ ]
+}

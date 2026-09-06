@@ -1,0 +1,75 @@
+{
+ "id": 817965958,
+ "repo": "nightscout/AndroidAPS",
+ "number": 380,
+ "title": "AAPS SMB Mode: doesn't work with XDrip anymore - in latest Dev Versions",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/380",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-02-27T16:37:24Z",
+ "closed_at": "2021-03-03T13:14:25Z",
+ "comment_count": 10,
+ "body": "From time to time I test the SMB Algo and the SMB options. Had never a problem to activate SMB with XDrip as BG source in the past. In the lasts dev version's XDrip, with Dexcom G6 Transmitter in Native Mode, was not longer accepted as BG Source for SMB\r\n\r\nAre there some changes in the Dev versions, that XDrip will not longer work for SMB Mode ?\r\n\r\nDid a lot tests to check whats wrong, but found nothing, so I think it's the Dev version that cause this problem.\r\n\r\n**Test Versions:**\r\nAAPS Master 2.8.2 - SMB works\r\nAAPS DEV 2.8.2.x - SMB didn't work see Screenshot (it is in German, sorry)\r\n\r\n**Also incl. the Log file.**\r\n\r\nNormaly I use the Dark Mode Version from Rig22, but have tested it also with 3 different orig. Dev Versions, only the Master works.\r\n\r\n![Screenshot_20210227-170839](https://user-images.githubusercontent.com/36486505/109393420-cde2b300-7921-11eb-9894-552f0ac6b73b.png)\r\n[AndroidAPS_LOG_1614443052570.log.zip](https://github.com/nightscout/AndroidAPS/files/6054929/AndroidAPS_LOG_1614443052570.log.zip)\r\n\r\n",
+ "comments": [
+  {
+   "id": 787534417,
+   "user": "mick711",
+   "created_at": "2021-02-28T22:21:53Z",
+   "body": "Dith built e48200, 2.8.2.1dev b , omnipod with xdrip and g6 smb work for me"
+  },
+  {
+   "id": 787823088,
+   "user": "Alamo04",
+   "created_at": "2021-03-01T10:02:51Z",
+   "body": "@mick711\r\nThat is a thing that I can't understand, my version is also 2.8.2.1b, Medtronic with XDrip and Dexcom G6.\r\n\r\nBut if I want to use SMB, than AAPS reports (try to translate):\r\nSafety: SMB will ever and after carbs deactivated,  because selected BG Source doesn't support trusted filtering of the values.\r\n\r\n**The Master Version work's fine with the same setting and SMB.**\r\n\r\nAlso:\r\nIt looks like that there are many changes in xdrip plugin."
+  },
+  {
+   "id": 787923614,
+   "user": "TwistaTim",
+   "created_at": "2021-03-01T12:47:59Z",
+   "body": "If you are using the G6 with Xdrip algorithim this is normal and has been for some time.\r\n\r\nYou need to run a native session to enable the full SMB stack."
+  },
+  {
+   "id": 787998028,
+   "user": "Alamo04",
+   "created_at": "2021-03-01T14:38:55Z",
+   "body": "I never run the G6 without Native mode in XDrip, this also wouldn't work in master."
+  },
+  {
+   "id": 788912984,
+   "user": "mick711",
+   "created_at": "2021-03-02T13:34:59Z",
+   "body": "I verify and yes smb Always can't run . I'm like you and use native algorithme."
+  },
+  {
+   "id": 789244234,
+   "user": "swissalpine",
+   "created_at": "2021-03-02T21:48:55Z",
+   "body": "I see this safety comment too (xDrip with G6 native), but all SMB are delivered as expected ... "
+  },
+  {
+   "id": 789252125,
+   "user": "Alamo04",
+   "created_at": "2021-03-02T22:03:11Z",
+   "body": "@swissalpine \r\nSMB with Carbs and with TTs are working, if enabled.\r\nSmB allways and SMB after Carbs are deactivated.\r\n\r\nBut this is a dev version, perhaps they are working on something.\r\nWanted only to be sure if that is a bug and let them know that. Or is it intend in this version, than everything was fine."
+  },
+  {
+   "id": 789564593,
+   "user": "swissalpine",
+   "created_at": "2021-03-03T09:17:02Z",
+   "body": "Yes. I see it now. This seems to be buggy."
+  },
+  {
+   "id": 789650994,
+   "user": "swissalpine",
+   "created_at": "2021-03-03T11:35:47Z",
+   "body": "At first moment I thought the fix won't help. But after the first new blood glucose value comes in, the security notice that SMB was disabled disappeared on SMB tab."
+  },
+  {
+   "id": 790060301,
+   "user": "Alamo04",
+   "created_at": "2021-03-03T21:16:09Z",
+   "body": "@swissalpine \r\nconfirmed, works now.  :)"
+  }
+ ]
+}

@@ -1,0 +1,18 @@
+{
+ "issue_id": 2966,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/2966",
+ "title": "[RC2] NSClientV3 FullSync only gets 2 days of TDD.",
+ "symptom": "Fresh install of AAPS 3.2, NSClientV3, all checkboxes to 'download data from NS', made Full sync. Loaded BG data, treatments, etc, but statistics shows only 2 days of TDD. So DynISF does not work correctly right from start and needs another 5 days to fill the required tdd7 data. While it exists in NS and simply must be downloaded on full sync. History browser shows BG values, TT changes, notes and sensor change/cannula replacement events for these days, but not bolus/carbs treatments.",
+ "cause": "The thread identifies that the issue is related to how treatments are sent to NS. Specifically, a request using 'created_at'$gt returns only TempBasals and TempTargets, while a request using 'date'$gt returns Boluses. This suggests that the sync is not fetching bolus data correctly due to the query parameter used.",
+ "fix": "The fix is a commit referenced by MilosKozak: https://github.com/nightscout/AndroidAPS/commit/9b4d9b788b1715c7fc662596ceade69e2862ef8a. The thread does not describe the exact change, but it is the resolution.",
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [
+  "NSClientV3",
+  "full sync"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "Seems that I've found the reason. This request returns ONLY TempBasals and TempTargets api/v3/treatments?sort=date&**created_at**$gt=2023-10-21T04:28:26.411Z&limit=500 This requests returns Boluses api/v3/treatments?sort=date&**date**$gt=2023-10-21T04:28:26.411Z&limit=500 Seems to be related to how treatments are sent to NS."
+}

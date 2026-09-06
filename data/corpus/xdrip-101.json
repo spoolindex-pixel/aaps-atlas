@@ -1,0 +1,255 @@
+{
+ "id": 220500041,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 101,
+ "title": "Support for Android Wear 2.0 Complications",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/101",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2017-04-09T21:22:03Z",
+ "closed_at": "2017-09-29T22:40:13Z",
+ "comment_count": 88,
+ "body": "Hi,\r\n\r\nAndroid Wear 2.0 is coming very soon for many smart watch owners and it has one pretty cool API to use with xDrip+: the Watch Face Complications[0]. I already branched and started working on it, thinking that it would be quite easy: the class just needs to extend the `ComplicationProviderService` and implement an asynchronious method `onComplicationUpdate`, allowing the user to display xDrip data on any Android watchface, basically removing the need for separate watchfaces only for xDrip.\r\n\r\nI realized the current watchfaces take the value updates as callbacks from the xDrip running on the mobile phone, but here the watchface itself should trigger the updates and the new provider should reply with the values the watchface wants to display. This made me think for a while... I either need:\r\n\r\n* A class that gets the updates from the phone, caches them and reports to the watchface. Sounds kind of wrong to me, because I don't have control over the instances and if I cache the updates, I need to keep them in a global variable; no good.\r\n* A class that when the watchface asks for data, the class asks the latest value(s) from the xDrip running on the phone and reports them back. This eats a bit more battery but makes the code design nicer.\r\n\r\nBoth of the options mean the values are a bit older than the ones on the phone or the watch is using more battery if it asks for new data too often.\r\n\r\nI'd like to hear some ideas how to move forward and if any of these two options is the way to go, some hints how on earth the value update works between the watch and the phone. The prize is basically to create infinite amount of different possibilities how the watch looks like while still having the most important information visible.\r\n\r\nRegards,\r\nJulius\r\n\r\n[0] https://developer.android.com/wear/preview/features/complications.html",
+ "comments": [
+  {
+   "id": 293065329,
+   "user": "jamorham",
+   "created_at": "2017-04-10T20:14:02Z",
+   "body": "Any thoughts about this @kskandispersonal ?"
+  },
+  {
+   "id": 293134889,
+   "user": "kskandispersonal",
+   "created_at": "2017-04-11T02:50:41Z",
+   "body": "The main code  you'd want to look at is in ListenerService.java if you are interested in data being exchanged between phone and watch.  The ListenerService sends a LocalBroadcast of the BG data received from the phone to the Watchface in the onDataChanged method.  The xdrip Watchface, for eg., BaseWatchFace.jave, onReceive method processes this data for display on the watch.  The data received from the phone is triggered in a number of ways, including by the phone itself when it receives a bg reading from the transmitter, via request from the phone menu \"Resend glucose to watch\" request, a request from the watch, etc.  This \"request\" is similar to what you describe in your 2nd bullet.  So XDrip+ already supports such a request to integrate in a complication.  Again, see the methods I mentioned above.  \r\nAlso, if the collector runs on the watch, there is no need to request the data from the phone. The watch maintains its own database on the watch when running the collector (i.e., when Force Wear is enabled).  \r\nI haven't looked into supporting Complications yet.  Unfortunately, my watch, the Sony Smartwatch 3, does not support Android 2.0.  Hwr, I think it is just a matter of \"Exposing Data to Complications\"), as described in your link.  In our case, the BG data, perhaps other data such as BG delta, time delta, and other optional status fields should be exposed.  Then it is up to the Watchface user to add whatever fields they want to display.\r\nDo you have a watch which supports Android 2.0?  If so, we could try exposing such data and you could test it out."
+  },
+  {
+   "id": 293213857,
+   "user": "pimeys",
+   "created_at": "2017-04-11T10:13:58Z",
+   "body": "I'm having a Sony Smartwatch 3 wrapped over the Freestyle Libre and then Huawei Watch on my wrist to show the glucose values. The Huawei will get the 2.0 update and right now I'm able to install a developer preview to test things out.\r\n\r\nThanks for the tips. I think I'll try to write the code myself, with the info you provided and what I already thought of writing I think it's doable in a couple of nights for code review. I have a working development environment for xDrip and I already did the InfluxDB support before, so I know a bit how to navigate in this codebase.\r\n\r\nI'm a Rust/Clojure developer during my work hours, so please bear with me if my Java is not always following the best practices :)"
+  },
+  {
+   "id": 294233020,
+   "user": "chrisprad",
+   "created_at": "2017-04-14T20:43:59Z",
+   "body": "Was there anything in particular that you had to do to get the watch face to load on AW 2.0? I cannot seem to install the watch face now that my LG Urbane 1st edition has upgraded to it. \r\n\r\n\r\nEDIT:\r\nI was able to get this working by following various stackoverflow guides and upgrading the min/compileSdkVersion and tweaking a few other settings. If anyone is interested I can submit a pull request, but I'm guessing that pimeys work would be a better place to source it from at this point."
+  },
+  {
+   "id": 294349622,
+   "user": "pimeys",
+   "created_at": "2017-04-16T12:39:05Z",
+   "body": "I haven't tried the new API yet, had a super busy week at work and completely tired now... My Huawei Watch didn't get the update yet, so I either need to install the preview edition or wait. Of course I can start the development with the API, but it would be very nice to see it working and see is this new API useful at all.\r\n\r\n@chrisprad I guess it would be good to provide a patch now so people's systems will not get broken when they get the AW 2.0 update."
+  },
+  {
+   "id": 294353116,
+   "user": "pimeys",
+   "created_at": "2017-04-16T13:57:34Z",
+   "body": "I started writing the code today and it should be pretty straightforward. So I have my listener service providing only the BG values for testing (extending it with subclasses for other information when I get this working). The complication data is going to be the BG value as `SHORT_TEXT` with an optional title, which would be the unit (mmo/l or mg/dl).\r\n\r\nSome questions. because I can't really test this with real device yet:\r\n\r\n* I store the latest `sgvLevel`, `sgvString`, `rawString`, `delta` and `timestamp` from the update callback. I kind of know what each of these are, but could somebody provide me information what they contain. Like, I THINK `sgvString` might be the blood glucose in the configured format (which is set in xDrip), but I'm not sure. Is the value just the number as a string or is there the unit also included?\r\n\r\nAnd if the unit is not included, it would be nice to get it somehow. The `SHORT_TEXT` accepts maximum of seven characters as a value, so adding the unit directly in there is not possible, but doabie in the optional title field.\r\n\r\nThe other option would be to use the `RANGED_VALUE`, where again we need to check the configured unit from xDrip, set the minimum (in my case 2.2 mmol/l) and maximum (22.2 mmol/l). With this type of field it is also possible to set a title, which would be the unit, but the watchface don't have to show it.\r\n\r\nNow what I'm looking for is that exact current BG value what I see in xDrip right now. In that format and an indication of the value unit, so I can build this service for both units."
+  },
+  {
+   "id": 294479829,
+   "user": "pimeys",
+   "created_at": "2017-04-17T12:47:54Z",
+   "body": "Another update: you can actually set the complications to work in push style, so when the `BroadcastReceiver` `onReceive()` is called, you can call `requestUpdate` which will trigger updates to defined complication providers.\r\n\r\nBasically what I want to do for the first test branch is a provider for blood glucose values, where we have three different types for data:\r\n\r\n* `RANGED_VALUE` between 2.2 and 22.2 (or 40 and 400), having an optional title of the unit (mmol/l, mg/dl).\r\n* `SHORT_TEXT` the text value and the unit as an optional title\r\n* `LONG_TEXT` the text value with unit, delta and minutes, e.g. `5.5 mmol/l +0.01 1'`, `LOW` or `HIGH`\r\n\r\nIf I don't get the AW 2.0 update next week, it would be nice if somebody like @chrisprad would test the change with a proper device. I could install the preview, but I seriously want to wait the OTA."
+  },
+  {
+   "id": 294497749,
+   "user": "pimeys",
+   "created_at": "2017-04-17T14:36:40Z",
+   "body": "Here's the first draft:\r\n\r\nhttps://github.com/pimeys/xDrip-plus/tree/watch_complications\r\n\r\nI have no clue if it works yet, but when I get the AW2 update I'm very eager to test this. Meanwhile if somebody wants to test this and maybe even finish/extend it before I get my hands to the new OS, I would be very happy. :)"
+  },
+  {
+   "id": 295032557,
+   "user": "chrisprad",
+   "created_at": "2017-04-19T01:14:44Z",
+   "body": "pimeys,\r\n\r\nWhen I get a chance I'll try to demo your changes.\r\n\r\nOne thing to consider:  I think you have to use \"flavors\" to create both wear 1.x compatible xDrip release apks as well as standalone 2.0 wear projects. At least that's what developers on stack overflow seem to think. It's also kind of a pain to install, since the watch only accepts apps from the play store or side loaded through adb. \r\n\r\nHopefully this weekend I'll be able to load your changes up and give them a spin. \r\n\r\n"
+  },
+  {
+   "id": 295123678,
+   "user": "pimeys",
+   "created_at": "2017-04-19T06:43:46Z",
+   "body": "@chrisprad Is there a good documentation somewhere how much work this would be? I'll try to get some time on next week again for writing this."
+  },
+  {
+   "id": 295477245,
+   "user": "chrisprad",
+   "created_at": "2017-04-19T22:41:07Z",
+   "body": "@pimeys \r\n\r\nYep, this is a relatively short document and mirrors my experience locally:\r\n\r\nhttps://developer.android.com/training/wearables/apps/packaging.html\r\n\r\nFor a quick explanation just scroll down to the gradle section to see how it's setup. For xDrip I did the following (probably badly named):\r\n\r\n```\r\nandroid {\r\n ...\r\n    compileSdkVersion 25\r\n    buildToolsVersion '25.0.2'\r\n...\r\n    defaultConfig {\r\n        applicationId \"com.eveningoutpost.dexdrip\"\r\n        minSdkVersion 20\r\n        targetSdkVersion 25\r\n        versionCode 1\r\n        versionName \"1.0\"\r\n...\r\n    }\r\n...\r\n    productFlavors {\r\n        wear2x {\r\n            minSdkVersion 24\r\n            versionCode 2\r\n        }\r\n        wear1x {\r\n        }\r\n\r\n    }\r\n}\r\n```"
+  },
+  {
+   "id": 295705490,
+   "user": "jamorham",
+   "created_at": "2017-04-20T11:57:09Z",
+   "body": "Is there really no way to install the existing wear 1.x micro apk on wear 2.0 using the menus?\r\n\r\nI heard that play store on the watch did allow it but through some obscure slightly hidden option? I also heard that when upgrading a watch to wear 2.0, if the xdrip watchface was already on there then it remained. If it is compatible then it seems odd if there isn't a menu driven way to allow the installation.\r\n\r\nI don't have any devices which work with wear 2.0 and its going to be very awkward if debug based side loading is the only way to do it."
+  },
+  {
+   "id": 295871478,
+   "user": "chrisprad",
+   "created_at": "2017-04-20T19:30:57Z",
+   "body": "@jamorham  There may be some way I'm not aware of, but I was unable to find it. \r\n\r\nI have been unable to open the play store on my watch since I don't connect using wifi and bluetooth doesn't seem to work. I just get a \"Retry connection\" over and over.  Wear 2.0 seems completely focused on the standalone watch experience, which my watch is only sorta-kinda capable of (LG Urbane 1x). \r\n\r\nIt IS true that your 1.x watch face remains. I made the mistake of uninstalling it when trying to get newer versions installed, and after that I was unable to install the old version. The system did seem to run it, so you may be right that it's simply a software barrier in the way. \r\n\r\nThey seem to be attempting to make a hard line in the sand between wear 1.x and 2.x, so I do think it will be difficult/annoying to debug without a wear 2.x device. I'm willing to do some debugging over the weekend since it seems like I'm the only person with a wear 2.x device currently. \r\n\r\n"
+  },
+  {
+   "id": 298574585,
+   "user": "Mondelman",
+   "created_at": "2017-05-02T09:25:39Z",
+   "body": "I've used for a couple of days a Huawei Smartwatch 2, using Wear 2.0 and it works, but not as collector.\r\nIt means you can see std xDrip screen, any of the 4 options, but it can't work as Sony SW3, that is the one I use today.\r\nYou install the app via PlayStore in the watch, but it seems to be working as a watchface only. \r\nApologies for not being able to bring more to this topic, I sent the watch back to Amazon."
+  },
+  {
+   "id": 302317320,
+   "user": "pimeys",
+   "created_at": "2017-05-18T06:53:20Z",
+   "body": "Sorry for being quiet for a while, but I got a new Dexcom system that I run now with xDrip and finally the AW2 update to my Huawei, so I guess I'll be testing this through the weekend."
+  },
+  {
+   "id": 329832989,
+   "user": "heygar",
+   "created_at": "2017-09-15T16:31:53Z",
+   "body": "Tapping the complication had no effect. I tried restarting the watch thinking maybe some stuff just needed to gel. And we should always try turning it off and back on again. Now, both data points read old/null and refuse to update :(. But, it is getting warmer!\r\n\r\nI'm using G4 with the xBridge Wixel.\r\n![screen](https://user-images.githubusercontent.com/16446666/30493347-5c3fedb2-9a09-11e7-9a07-83a4d36d83e6.png)\r\n\r\n"
+  },
+  {
+   "id": 329833418,
+   "user": "recursive-descent",
+   "created_at": "2017-09-15T16:33:39Z",
+   "body": "Here's a screen print of mine.[image: Inline image 1]\n\nOn Fri, Sep 15, 2017 at 11:31 AM, Gar <notifications@github.com> wrote:\n\n> Tapping the complication had no effect. I tried restarting the watch\n> thinking maybe some stuff just needed to gel. And we should always try\n> turning it off and back on again. Now, both data points read old/null and\n> refuse to update :(. But, it is getting warmer!\n>\n> I'm using G4 with the xBridge Wixel.\n> [image: screen]\n> <https://user-images.githubusercontent.com/16446666/30493347-5c3fedb2-9a09-11e7-9a07-83a4d36d83e6.png>\n>\n> —\n> You are receiving this because you were mentioned.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/101#issuecomment-329832989>,\n> or mute the thread\n> <https://github.com/notifications/unsubscribe-auth/AZ_4SJPMZJn4HNw7_2MSVrxLukv_Htseks5siqZ7gaJpZM4M4KE6>\n> .\n>\n"
+  },
+  {
+   "id": 329842049,
+   "user": "tswire",
+   "created_at": "2017-09-15T17:09:14Z",
+   "body": "Something I noticed is that when the collector (my phone) has stopped getting readings (which happens a lot on Galaxy S8 due to bluetooth turning off) the complication showed old/null.  Once I got my phone getting readings again, the complication immediately updated.  So not sure if this is related or not but definitely something to look at.  Also, a bit off topic but I cannot find the \"correct\" bluetooth/xdrip settings that work best for Samsung Galaxy S8+....still getting random disconnects and capture rate has never been that good.  Any ideas?"
+  },
+  {
+   "id": 329844991,
+   "user": "recursive-descent",
+   "created_at": "2017-09-15T17:21:22Z",
+   "body": "More info.\nThe xdrip+ app on the phone \"always\" receives the G5 and updates\naccordingly.\n\nOn Fri, Sep 15, 2017 at 12:09 PM, tswire <notifications@github.com> wrote:\n\n> Something I noticed is that when the collector (my phone) has stopped\n> getting readings (which happens a lot on Galaxy S8 due to bluetooth turning\n> off) the complication showed old/null. Once I got my phone getting readings\n> again, the complication immediately updated. So not sure if this is related\n> or not but definitely something to look at. Also, a bit off topic but I\n> cannot find the \"correct\" bluetooth/xdrip settings that work best for\n> Samsung Galaxy S8+....still getting random disconnects and capture rate has\n> never been that good. Any ideas?\n>\n> —\n> You are receiving this because you were mentioned.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/101#issuecomment-329842049>,\n> or mute the thread\n> <https://github.com/notifications/unsubscribe-auth/AZ_4SHZDc17s3P2SBlsj0EeE0KNYyR0_ks5siq88gaJpZM4M4KE6>\n> .\n>\n"
+  },
+  {
+   "id": 329892567,
+   "user": "apabari",
+   "created_at": "2017-09-15T20:24:43Z",
+   "body": "Just doing some reading on this and came across this thread.  Wish I had a better knowledge of android development to lend more technical support in this area.\r\n\r\n@tswire  - It's not clear to me from this thread, but did you find the answer to what you were looking for?\r\n\r\nI know a few people who would be very interested in connecting an android watch to an ios device, and them using a simple watchface (something like NightWatch) to 'follow' the blood sugars of someone else.\r\n\r\nPlease let me know if this is now possible, and if so, any guidance on how to set this up would be much appreciated.... thank you!\r\n"
+  },
+  {
+   "id": 329893998,
+   "user": "tswire",
+   "created_at": "2017-09-15T20:31:16Z",
+   "body": "@apabari - Sorry, I know it's not clear because I was using an iOS device with Android Wear watch and was hoping for a solution to have something work on AW2 while paired to iPhone...however, I switched to Samsung Galaxy S8+.....so now I am just testing the complication implementation by these awesome guys!!!  FYI, working ALL day with no hiccups on my watch....updates as the phone app updates and been great.  Was able to work with PujiBlack watch face and customized it to show complication of my sugars!!  yes...12.9 mmol is a bit high so no comments :-)\r\n![20170915_162807 002](https://user-images.githubusercontent.com/30097654/30502189-33b74438-9a33-11e7-8544-21ac375f79b9.jpg)\r\n"
+  },
+  {
+   "id": 329897262,
+   "user": "heygar",
+   "created_at": "2017-09-15T20:46:09Z",
+   "body": "Not sure if it helps in your debugging, but if my phone has a valid value and my watch reads old/null, tapping on the complication does nothing.\r\nIf my watch has a valid value, but from a long time ago (greater than 5 minutes) and my phone has also timed out has a line through the value, then tapping on the complication changes the watch to read old/null.\r\nSo tapping on the complication is having some effect. I just don't know what it's doing. It won't update to the correct value, but it will tell me that the value is old. Very odd. I blame it on Android Wear.\r\n"
+  },
+  {
+   "id": 329908985,
+   "user": "heygar",
+   "created_at": "2017-09-15T21:31:05Z",
+   "body": "To further obfuscate things, I can get the complication to update by disabling, then enabling the \"Enable Wear Collection Service\" on the phone.\r\nIf I leave it disabled, it doesn't update and if I leave it enabled, it doesn't work.\r\nThe only time it updates is if it's disabled (no check mark) and I enable it (check mark added). \r\n\r\nI can set myself I reminder to disable and enable every 5 minutes :)"
+  },
+  {
+   "id": 329938415,
+   "user": "apabari",
+   "created_at": "2017-09-16T02:11:16Z",
+   "body": "@tswire - Thanks.  That's disappointing for me, but I am glad you now have a working solution.\r\n\r\nI do hope someone is able to come up with a working solution for iPhone users with Android watches though. "
+  },
+  {
+   "id": 330163221,
+   "user": "pimeys",
+   "created_at": "2017-09-18T08:59:58Z",
+   "body": "Can confirm the issues. Started a new G4 sensor today morning, and after the two hour wait\r\n\r\n* I couldn't get anything else than `old/null` as the complication value\r\n* When reseted the wear database, the values suddenly became visible\r\n* The values don't update anymore though. When tapping the values I get the `old/null` again\r\n\r\nI need to say that with the old sensor, before having a two-hour pause with the measurements, all was working perfectly."
+  },
+  {
+   "id": 330340343,
+   "user": "recursive-descent",
+   "created_at": "2017-09-18T20:05:28Z",
+   "body": "As of release \"build 18th Sep 2017\" I'm getting complication updates for\nevery transmission.\n\n[image: Inline image 1][image: Inline image 2]\n"
+  },
+  {
+   "id": 330548934,
+   "user": "heygar",
+   "created_at": "2017-09-19T14:01:39Z",
+   "body": "Updated today to today's build Sep 19. Really like the old/39 display. I assume that's the minutes since the last read.\r\n![screen](https://user-images.githubusercontent.com/16446666/30595895-2d9f1fa2-9d18-11e7-934d-f5c6d0d727bd.png)\r\n\r\nUnfortunately, I watched the watch face change from old/34 to old/39 while my phone said, \"91 1 minute ago\". \r\nGood news is the watch face complication is updating! Bad news is it's not grabbing the actual blood sugar value. I verified I can still get it to update by turning off/on the \"Enable Wear Collection Service\" (most of the time).\r\n\r\n-- Right after I finished clicking the Add Comment button, my watch face successfully updated without intervention! Maybe is just needed all the bit fluxes to work themselves out.\r\n"
+  },
+  {
+   "id": 330555246,
+   "user": "pimeys",
+   "created_at": "2017-09-19T14:20:22Z",
+   "body": "@heygar That value is minutes since the last read, yes. It's for debugging purposes for now, we actually have no idea why the complication provider can't get the new values from the database. Feel free to join in Gitter if you want to help..."
+  },
+  {
+   "id": 330555708,
+   "user": "tswire",
+   "created_at": "2017-09-19T14:21:50Z",
+   "body": "Awesome work here guys.  Not sure if each watch is different in terms of complications and/or bluetooth connection to phone but I have had no issues from the first build that included complications.  Each build after I had no changes and watchface complication always has data.  The ONLY time it did not is when the actual collection service on phone was not working with G5 for a bit.  I have Tag Connected 45 with Samsung G8+ and working very very well."
+  },
+  {
+   "id": 330556396,
+   "user": "pimeys",
+   "created_at": "2017-09-19T14:24:05Z",
+   "body": "My problems started when I changed a new sensor for G4 and waited that two hours warm-up. After that the value doesn't update anymore. The only way to get the latest value is by tapping `Reset Wear DB` from the phone."
+  },
+  {
+   "id": 330574066,
+   "user": "tswire",
+   "created_at": "2017-09-19T15:19:22Z",
+   "body": "@pimeys where is the Gitter site you mentioned a couple posts back?\r\n"
+  },
+  {
+   "id": 330574642,
+   "user": "pimeys",
+   "created_at": "2017-09-19T15:21:07Z",
+   "body": "@tswire https://gitter.im/jamorham/xDrip-plus"
+  },
+  {
+   "id": 330706094,
+   "user": "tswire",
+   "created_at": "2017-09-19T23:55:36Z",
+   "body": "Thanks.\n\nFor those working on this can you see if you can add the decimal with a 0\nafter any reading showing that is even (ie 8.0 or 7.0 rather than 8 or 7)?\n\nOn Sep 19, 2017 11:27 AM, \"Julius de Bruijn\" <notifications@github.com>\nwrote:\n\n> @tswire <https://github.com/tswire> https://gitter.im/jamorham/xDrip-plus\n>\n> —\n> You are receiving this because you were mentioned.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/101#issuecomment-330574642>,\n> or mute the thread\n> <https://github.com/notifications/unsubscribe-auth/ActA9p3kDIU8UQMiOZIVhCJF3m7PKTonks5sj9vlgaJpZM4M4KE6>\n> .\n>\n"
+  },
+  {
+   "id": 330837978,
+   "user": "tswire",
+   "created_at": "2017-09-20T12:36:49Z",
+   "body": "Well crap, spoke too soon.  Firmware updated on my Tag last night and now I am getting exact same issues of NULL XXX unless I force something with resetting Wear DB or uncheck and check wear collector."
+  },
+  {
+   "id": 333180727,
+   "user": "jamorham",
+   "created_at": "2017-09-29T16:57:35Z",
+   "body": "Please everyone test the 29th Sept nightly. We believe this resolves the issue with complications failing to update."
+  },
+  {
+   "id": 333187837,
+   "user": "recursive-descent",
+   "created_at": "2017-09-29T17:28:01Z",
+   "body": "It is working flawlessly now. Readings always update. Direction arrows\nworking as well.\n\nOn Sep 29, 2017 11:57 AM, \"Jamorham\" <notifications@github.com> wrote:\n\n> Please everyone test the 29th Sept nightly. We believe this resolves the\n> issue with complications failing to update.\n>\n> —\n> You are receiving this because you were mentioned.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/101#issuecomment-333180727>,\n> or mute the thread\n> <https://github.com/notifications/unsubscribe-auth/AZ_4SAV1ZM8-m9gI-H5KrFFOpQ3yaXkqks5snSGBgaJpZM4M4KE6>\n> .\n>\n"
+  },
+  {
+   "id": 333198787,
+   "user": "pimeys",
+   "created_at": "2017-09-29T18:10:56Z",
+   "body": "Working like a charm here too. Just would like some idea what does different shortenings mean now. I get sometimes for the bottom part stuff like `2S` or `1S` instead of a delta. "
+  },
+  {
+   "id": 333211971,
+   "user": "jamorham",
+   "created_at": "2017-09-29T19:05:14Z",
+   "body": "Okay so the way it currently works is there are two different views of the complication. \r\n\r\n* The first view shows the glucose number and the delta. \r\n* The second view shows the glucose number and the time since the reading.\r\n\r\nBy tapping slowly on these you can alternate between them. I think all complications will update to reflect the last change you had. So if you have multiple on a watchface and you change one, the other(s) will switch to that mode as well on the next update.\r\n\r\nIf you tap twice within one second (but not too fast) then it will bring up the treatment entry keypad and the complication should stay on the mode it was on.\r\n\r\nThere may be more useful modes possible in the future. It should be relatively easy for someone else to modify the `CustomComplicationProviderService` class now that the core functionality is working. The time since information may not be *that* useful because the complication doesn't update that frequently. But I used it for debugging mainly.\r\n"
+  },
+  {
+   "id": 333244748,
+   "user": "pimeys",
+   "created_at": "2017-09-29T21:35:12Z",
+   "body": "Alles gut! Been working like a charm today. Thanks for finding a nice solution."
+  },
+  {
+   "id": 333255428,
+   "user": "jamorham",
+   "created_at": "2017-09-29T22:40:12Z",
+   "body": "Marking as resolved."
+  }
+ ]
+}

@@ -1,0 +1,47 @@
+{
+ "id": 1233157580,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 2119,
+ "title": "OOP1new and Libre 2 with Sync followers",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/2119",
+ "state": "closed",
+ "labels": [
+  "device-libre"
+ ],
+ "created_at": "2022-05-11T20:33:20Z",
+ "closed_at": "2022-05-16T12:02:02Z",
+ "comment_count": 5,
+ "body": "### Subject of the issue\r\nOn a non NFC master phone (KingKong Mini 2), when using a Libre 2 EU with OOP1new (fa218ef 2019-11-22) , versions above https://github.com/NightscoutFoundation/xDrip/releases/tag/2022.03.26 do not allow followers to receive data.\r\nVersions above https://github.com/NightscoutFoundation/xDrip/releases/tag/2021.10.13 start showing NFC block errors in master and follower.\r\n\r\n### Environment\r\n- Master above 2022.03.26\r\n- Master KingKong Mini 2, NSClient\r\n- Bubble bridge\r\n- All followers (various Android versions from 6 to 12) in Sync follower\r\n- Master using OOP1 enabled\r\n\r\n### Expected behavior\r\nFollowers should display BG.\r\n\r\n### Actual behavior\r\nLibre blocks are received but ignored.\r\n\r\n### Screenshots\r\nScreenshots won't add value, what's the best way to share some logs?",
+ "comments": [
+  {
+   "id": 1124641967,
+   "user": "tzachi-dar",
+   "created_at": "2022-05-12T07:42:32Z",
+   "body": "As far as I can say, when using OOP1 there was no way to interrupt the block data. So, I'm not surprised that there are errors regarding them.\r\nThat said, the BG values that are being sent from the master should be displayed on the follower as well.\r\n\r\nIf you can connect the follower phone to a pc and run \r\nadb logcat > file\r\nfor about 15 minutes and send this file, that would be great. "
+  },
+  {
+   "id": 1126367424,
+   "user": "psonnera",
+   "created_at": "2022-05-13T19:15:15Z",
+   "body": "Here you go, using May 12th 2022 on both. Logcats at different moments. Follower on a Samsung Galaxy 5 but had same results on other followers with Android 9 and 12.\r\n[master+follower.zip](https://github.com/NightscoutFoundation/xDrip/files/8690735/master%2Bfollower.zip)\r\n."
+  },
+  {
+   "id": 1126815132,
+   "user": "tzachi-dar",
+   "created_at": "2022-05-14T21:37:53Z",
+   "body": "Strange, the issue seems to happen on the master code.\r\n\r\nPlease try this version:\r\nhttps://drive.google.com/file/d/1gf2RAlpbl-YuyfgrQ8-n_zpj8sz-Ogii/view?usp=sharing\r\n\r\nHere is the log:\r\n\r\n05-13 20:54:27.013  3147  5534 I jamorham graph: Noise: Not enough data to get sensible noise value\r\n05-13 20:54:27.014  3147  3147 D BestGlucose: No noise option slope by minute: -.04732\r\n05-13 20:54:27.014  3147  5534 D BestGlucose: No noise option slope by minute: -.04732\r\n05-13 20:54:27.014  3147  5533 E BgReading: Could not save BGR: \r\n05-13 20:54:27.014  3147  5533 E BgReading: java.lang.NullPointerException: Attempt to invoke virtual method 'java.lang.Class java.lang.Object.getClass()' on a null object reference\r\n05-13 20:54:27.014  3147  5533 E BgReading: \tat java.util.Collections.sort(Collections.java:204)\r\n05-13 20:54:27.014  3147  5533 E BgReading: \tat java.util.Collections.sort(Collections.java:156)\r\n05-13 20:54:27.014  3147  5533 E BgReading: \tat com.eveningoutpost.dexdrip.NFCReaderX.parseData(NFCReaderX.java:947)\r\n05-13 20:54:27.014  3147  5533 E BgReading: \tat com.eveningoutpost.dexdrip.NFCReaderX.getLibreTrend(NFCReaderX.java:1075)\r\n05-13 20:54:27.014  3147  5533 E BgReading: \tat com.eveningoutpost.dexdrip.utils.LibreTrendUtil.AddLibreblock(LibreTrendUtil.java:188)\r\n05-13 20:54:27.014  3147  5533 E BgReading: \tat com.eveningoutpost.dexdrip.utils.LibreTrendUtil.getData(LibreTrendUtil.java:160)\r\n05-13 20:54:27.014  3147  5533 E BgReading: \tat com.eveningoutpost.dexdrip.utils.LibreTrendUtil.updateLastReading(LibreTrendUtil.java:111)\r\n05-13 20:54:27.014  3147  5533 E BgReading: \tat com.eveningoutpost.dexdrip.models.LibreBlock.UpdateBgVal(LibreBlock.java:213)\r\n05-13 20:54:27.014  3147  5533 E BgReading: \tat com.eveningoutpost.dexdrip.NewDataObserver.newBgReading(NewDataObserver.java:57)\r\n05-13 20:54:27.014  3147  5533 E BgReading: \tat com.eveningoutpost.dexdrip.utilitymodels.BgSendQueue.handleNewBgReading(BgSendQueue.java:147)\r\n05-13 20:54:27.014  3147  5533 E BgReadin"
+  },
+  {
+   "id": 1126887221,
+   "user": "psonnera",
+   "created_at": "2022-05-15T08:37:03Z",
+   "body": "@tzachi-dar working fine! No backfill occured on the follower after first reading so I guess the whole first history blocks wasn't transferred but this is working nicely (follower is https://github.com/NightscoutFoundation/xDrip/releases/tag/2022.05.12)."
+  },
+  {
+   "id": 1127300782,
+   "user": "tzachi-dar",
+   "created_at": "2022-05-16T07:04:06Z",
+   "body": "This should be fixed by: https://github.com/NightscoutFoundation/xDrip/pull/2127"
+  }
+ ]
+}

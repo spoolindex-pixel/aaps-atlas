@@ -1,0 +1,71 @@
+{
+ "id": 521621823,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1088,
+ "title": "NS follower update 10 minutes late",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1088",
+ "state": "closed",
+ "labels": [
+  "duplicate"
+ ],
+ "created_at": "2019-11-12T15:30:00Z",
+ "closed_at": "2021-07-19T12:08:46Z",
+ "comment_count": 9,
+ "body": "It's been reported by Medtronic 600 Series users that xDrip follower is updating every 10 minutes.\r\n\r\nWhen using the Nightscout follower mode it syncs it's update time to the last glucose entry + 5 minutes. This will mean that xDrip checks NS before the most current reading is available, if it's not there it checks again in 5 minutes.\r\n\r\nThe 600 uploader posts the time of the reading as on the pump and this will be posted to NS at least 30+ seconds after that. This means that xDrip is syncing to the pump reading time and not the nightscout update time and causes xDrip to be up to 10 minutes behind.   ",
+ "comments": [
+  {
+   "id": 799842253,
+   "user": "psit",
+   "created_at": "2021-03-16T00:03:53Z",
+   "body": "I think this could easily be fixed by adding a (possibly customizable) delay to xdrips poll time. \r\nE.g: If the last BG value has a timestamp of `00:52:23`, the next poll should be at `00:57:53`, (+5:30) not at `00:57:23`, because at that time the value is read from the sensor by the pump. It has not been processed by the uploader or NS by then."
+  },
+  {
+   "id": 800724368,
+   "user": "Navid200",
+   "created_at": "2021-03-17T01:28:27Z",
+   "body": "@Pogman Do I understand correctly that the uploader creates a discrepancy between the real upload time to Nightscout and the time value it gives it?\r\n\r\nHow can we fix this in xDrip?\r\n\r\nxDrip can be used as a follower of Nightscout.  And it works perfectly fine for example if the uploader is another xDrip collecting from a G6 transmitter.\r\n\r\nIf we add a delay to when xDrip collects data from Nightscout, we will be delaying every follower even if they are working fine right now.\r\n\r\nShouldn't this problem be addressed at the uploader side?"
+  },
+  {
+   "id": 800741956,
+   "user": "Pogman",
+   "created_at": "2021-03-17T02:21:19Z",
+   "body": "The uploader reads sg data from the pump at around 30 secs after the pump has received them from the sensor. The entry sent to NS contains the time of the sg reading i.e. a reading at 12:00:10 will contain this timestamp while it may have been sent to NS at 12:00:40 (or even later).\r\n\r\nI don't know what xDrip is doing precisely but it looks to be using the actual timestamp of the sg reading to base it's next check in time on causing this reporting delay.\r\n\r\nDue to the nature of error handling and backfill etc, sg data may be sent at variable times but mostly at the usual 5 min cadence but always with the exact sg timestamp.\r\n\r\nI don't see what the uploader can do about how a follower reads the data back from NS?\r\n\r\nA suggestion would be to read NS at the current 5 min interval and if no new reading then at 1 min intervals until available. \r\n\r\n"
+  },
+  {
+   "id": 800743891,
+   "user": "Navid200",
+   "created_at": "2021-03-17T02:27:28Z",
+   "body": "I wonder how this is done when the collector is xDrip directly from a G6.\r\nIn that case, this problem does not occur.\r\n\r\n@tolot27 Do you know what makes the difference in behavior between the two cases?"
+  },
+  {
+   "id": 800826043,
+   "user": "tolot27",
+   "created_at": "2021-03-17T06:15:50Z",
+   "body": "Likely a duplicate of #929 and PR #1307 tries to address this."
+  },
+  {
+   "id": 800868118,
+   "user": "psit",
+   "created_at": "2021-03-17T07:40:12Z",
+   "body": "If someone can provide me an APK, I would happily test the PR. Just drop me a link."
+  },
+  {
+   "id": 801113033,
+   "user": "Navid200",
+   "created_at": "2021-03-17T14:11:23Z",
+   "body": "@tolot27 Are there instructions somewhere for compiling an apk from a pull request?"
+  },
+  {
+   "id": 801129127,
+   "user": "tolot27",
+   "created_at": "2021-03-17T14:28:03Z",
+   "body": "> @tolot27 Are there instructions somewhere for compiling an apk from a pull request?\r\n\r\nGoogle?\r\n\r\nI do not recommend applying #1307 because it introduces another settings variable. The underlying problem should be solved in `Anticipate.java`."
+  },
+  {
+   "id": 882495586,
+   "user": "Navid200",
+   "created_at": "2021-07-19T12:08:46Z",
+   "body": "There is an existing issue regarding this: https://github.com/NightscoutFoundation/xDrip/issues/929\r\n\r\nWould you please refer to that and add comments there if/when needed?"
+  }
+ ]
+}

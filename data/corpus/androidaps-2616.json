@@ -1,0 +1,21 @@
+{
+ "id": 1794760454,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2616,
+ "title": "Strange data transfer logic with xDrip",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2616",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-07-08T04:50:53Z",
+ "closed_at": "2023-08-21T14:40:10Z",
+ "comment_count": 1,
+ "body": "Probably not a bug but I can't understand how it is supposed to work.\n\nBG source is xDrip\n![Screenshot_20230708_064146_AAPS.jpg](https://github.com/nightscout/AndroidAPS/assets/76626474/1e205588-b86a-4a9d-8dee-4ac7b5ab1960)\n\nBut if I select xDrip as receiving data from AAPS\n![Screenshot_20230708_064226_AAPS.jpg](https://github.com/nightscout/AndroidAPS/assets/76626474/f0ad4b10-b3e2-4254-8405-4d52394ea3a7)\n\nThe option that activates sending data from APPS to xDrip\n![Screenshot_20230708_064257_AAPS.jpg](https://github.com/nightscout/AndroidAPS/assets/76626474/3c7e67fb-65c7-49dd-bb15-9bec0cff6c37)\n\nsays that BGs will be sent **from** AAPS to xDrip... \n\nDoesn't that logic create a loop, BGs coming from xDrip to AAPS and then getting sent back to xDrip? \n\nDoes only _xDrip follower_ gets all those data ?",
+ "comments": [
+  {
+   "id": 1665325202,
+   "user": "vanelsberg",
+   "created_at": "2023-08-04T09:38:15Z",
+   "body": "As far as I understand:\r\n1. BG source (in your case xDrip+) is only receiving BG values.\r\n2. AAPS is synchronizing (write only) to the selected targets (NSv1, NSv3, Tidepool, and/or xDrip+)\r\n3. Synchronizing never uploads BG values when the target is the BG source.\r\n\r\nSame goes when selecting NS as BG datasource: AAPS only receives BG values and only uploads treatments (when configured for synchronization). \r\n\r\n(Btw: _I can however select a additional/separate NS site for synchronizing, including BG values_)\r\n\r\n"
+  }
+ ]
+}

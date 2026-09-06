@@ -1,0 +1,42 @@
+{
+ "id": 797820437,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1630,
+ "title": "NewRelic Crash Reporting is buggy and causes frequent app restarts",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1630",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "code:quality"
+ ],
+ "created_at": "2021-01-31T21:49:35Z",
+ "closed_at": "2024-03-05T14:56:23Z",
+ "comment_count": 4,
+ "body": "Commit c6c289d changed the crash reporting from Fabric to NewRelic. \r\n\r\nUnfortunately, this causes frequent app restarts on various devices and Android versions (see #1629 for instance), increases battery consumption and produces the following error in the log:\r\n\r\n![image](https://user-images.githubusercontent.com/1370732/106398811-46368100-6415-11eb-9b62-2d35a277986d.png)\r\n\r\nLogcat shows restart of the whole app and tries to recreate the database tables frequently. Rarely the following is logged:\r\n\r\n```\r\n2021-01-31 00:40:33.841 28471-28471/com.eveningoutpost.dexdrip I/FirebaseInitProvider: FirebaseApp initialization successful\r\n2021-01-31 00:40:35.166 28471-28471/com.eveningoutpost.dexdrip E/xdrip.java: java.lang.NullPointerException: Attempt to invoke virtual method 'void com.newrelic.agent.android.harvest.HarvestTimer.setPeriod(long)' on a null object reference\r\n2021-01-31 00:40:37.206 28471-28471/com.eveningoutpost.dexdrip E/SQLiteLog: (1) duplicate column name: dg_mgdl\r\n```",
+ "comments": [
+  {
+   "id": 771521062,
+   "user": "jamorham",
+   "created_at": "2021-02-02T10:04:55Z",
+   "body": "Did you see this logcat message on a release version of xDrip or on a private development version?"
+  },
+  {
+   "id": 771552861,
+   "user": "tolot27",
+   "created_at": "2021-02-02T10:58:24Z",
+   "body": "The logcat output is from the most recent debug build but the screenshot from nightly release. Hence, the underlying problem persists in both versions. At LineageOS 17.1 I even get a message appearing about every minute that xDrip is not responding, wait or close the app. If I disable \"Automatic Crash Reporting\", messages disappear but the app still restarts frequently. I'm still investigating this."
+  },
+  {
+   "id": 1153499119,
+   "user": "tolot27",
+   "created_at": "2022-06-13T05:49:05Z",
+   "body": "We have to check whether ebba2d8 fixes this problem."
+  },
+  {
+   "id": 1978959512,
+   "user": "Navid200",
+   "created_at": "2024-03-05T14:56:23Z",
+   "body": "I am told this should not happen unless the app is being installed frequently.\r\nWe can reopen if needed."
+  }
+ ]
+}

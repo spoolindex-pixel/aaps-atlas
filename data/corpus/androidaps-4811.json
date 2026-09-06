@@ -1,0 +1,75 @@
+{
+ "id": 4417264739,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4811,
+ "title": "Omnipod Dash just stopped working",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4811",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2026-05-11T00:23:36Z",
+ "closed_at": "2026-05-11T15:04:25Z",
+ "comment_count": 10,
+ "body": "3.4.2.2\n\nPixel 6a Android 16\n\nThe pod worked fine for about 12 hours.  \nAfter it delivered a bolus, a few minutes after, it started beeping.  AAPS showed  that it could not connect to the pod.\n\nWould logs help?\nWhat's the best way for submitting them?",
+ "comments": [
+  {
+   "id": 4420801921,
+   "user": "MilosKozak",
+   "created_at": "2026-05-11T12:45:48Z",
+   "body": "you can provide logs\n"
+  },
+  {
+   "id": 4420822348,
+   "user": "Navid200",
+   "created_at": "2026-05-11T12:48:37Z",
+   "body": "I have saved the logs.  \nMy question is, is there an email I can send the logs to?\n\nIf not, I will have to take time to go through all the content to make sure no password or ID is in it before pasting here."
+  },
+  {
+   "id": 4420962336,
+   "user": "MilosKozak",
+   "created_at": "2026-05-11T13:06:32Z",
+   "body": "logs@aaps.app\nnotify me, you did it"
+  },
+  {
+   "id": 4421044582,
+   "user": "Navid200",
+   "created_at": "2026-05-11T13:16:45Z",
+   "body": "I just emailed the logs.\nThe email subject is:\nOmnipod Dash fail 2026_05_10 Navid\n\nThanks"
+  },
+  {
+   "id": 4421286171,
+   "user": "MilosKozak",
+   "created_at": "2026-05-11T13:45:49Z",
+   "body": "@Navid200 and time to search for?\n"
+  },
+  {
+   "id": 4421308502,
+   "user": "Navid200",
+   "created_at": "2026-05-11T13:48:32Z",
+   "body": "> [@Navid200](https://github.com/Navid200) and time to search for?\n\nSorry, I don't understand what you mean by that.  "
+  },
+  {
+   "id": 4421858985,
+   "user": "MilosKozak",
+   "created_at": "2026-05-11T14:56:18Z",
+   "body": "time of occurrence"
+  },
+  {
+   "id": 4421930081,
+   "user": "MilosKozak",
+   "created_at": "2026-05-11T15:04:25Z",
+   "body": "Nevermind. I found it:\n```\n19:15:17.986 [DefaultDispatcher-worker-1] E/PUMP: [OmnipodDashPumpPlugin.getPumpStatus():324]: Error in getPumpStatus\njava.lang.RuntimeException: app.aaps.pump.omnipod.common.bledriver.comm.exceptions.FailedToConnectException: Failed to connect: BC:B4:FD:A1:AC:6E\n\tat io.reactivex.rxjava3.internal.util.ExceptionHelper.wrapOrThrow(ExceptionHelper.java:46)\n\tat io.reactivex.rxjava3.internal.observers.BlockingMultiObserver.blockingGet(BlockingMultiObserver.java:94)\n\tat io.reactivex.rxjava3.core.Completable.blockingAwait(Completable.java:1469)\n\tat app.aaps.pump.omnipod.dash.OmnipodDashPumpPlugin.getPumpStatus(OmnipodDashPumpPlugin.kt:322)\n\tat app.aaps.implementation.queue.commands.CommandReadStatus.execute(CommandReadStatus.kt:36)\n\tat app.aaps.implementation.queue.QueueWorker.doWorkAndLog(QueueWorker.kt:143)\n\tat app.aaps.core.objects.workflow.LoggingWorker$doWork$2.invokeSuspend(LoggingWorker.kt:25)\n\tat kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)\n\tat kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)\n\tat kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:124)\n\tat kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:89)\n\tat kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:586)\n\tat kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:820)\n\tat kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:717)\n\tat kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:704)\nCaused by: app.aaps.pump.omnipod.common.bledriver.comm.exceptions.FailedToConnectException: Failed to connect: BC:B4:FD:A1:AC:6E\n\tat app.aaps.pump.omnipod.common.bledriver.comm.legacy.session.Connection.connect(Connection.kt:83)\n\tat app.aaps.pump.omnipod.common.bledriver.comm.OmnipodDashBleManagerImpl.connect$lambda$0(OmnipodDashBleManagerImpl.kt:160)\n\tat app.aaps.pump.omnipod.common"
+  },
+  {
+   "id": 4421989821,
+   "user": "Navid200",
+   "created_at": "2026-05-11T15:11:23Z",
+   "body": "I'm sorry.  I don't know how I forgot to include that.\n\nAccording to treatments, at 7:03, I used the calculator to enter carbs and get bolus.  I have drawn a line on the following image to highlight that:\n\n<img width=\"324\" height=\"720\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/5f9c72bd-b8ad-4073-b0f1-e27a702db663\" />  \n\nI always wait to hear the clicking on the pod to be sure that the pod received the command.  I did that this time as well.\n\nAnd while I was eating after that, all of a sudden the pod started beeping."
+  },
+  {
+   "id": 4421994990,
+   "user": "Navid200",
+   "created_at": "2026-05-11T15:12:01Z",
+   "body": "OK,\n\nThanks"
+  }
+ ]
+}

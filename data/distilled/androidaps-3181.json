@@ -1,0 +1,22 @@
+{
+ "issue_id": 3181,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/3181",
+ "title": "UAM SMBs with Libre 2",
+ "symptom": "Users of Libre 2 and Libre 3 cannot enable SMB options such as Enable SMB Always, Enable SMB After Carbs, and Enable UAM because AndroidAPS has these options disabled for Libre CGM users, even when smoothing is enabled. The issue requests that these limitations be lifted or made overridable by the user after acknowledging risks.",
+ "cause": "The restriction is tied to an old Libre 1 issue where a MiaoMiao or similar Bluetooth interface could report flat BG values instead of an error during signal loss; this led to SMB features being gated for Libre-family sensors. For newer Libre sensors, the remaining blocker is that AAPS only allows these features when the BG source provides proper sensor identification.",
+ "fix": "MilosKozak committed change 0771b6d which makes Libre 2 and Libre 3 work with SMB Always once the BG source provides proper identification.",
+ "settings_changed": [],
+ "devices": [
+  "Libre 2",
+  "Libre 3"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "xdrip",
+  "juggluco",
+  "miaomiao"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "this https://github.com/nightscout/AndroidAPS/commit/0771b6d8fa1acda6c15a46fa675718db29c12dc6 makes libre 2&3 working with SMB always once BG source provide proper identification"
+}
