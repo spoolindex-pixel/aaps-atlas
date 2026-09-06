@@ -1,0 +1,24 @@
+{
+ "issue_id": 2881,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/2881",
+ "title": "Medtrum pump driver default setting and concerns",
+ "symptom": "The Medtrum Nano pump driver does not default to the pump standard settings (terminate after three days and 8 hours grace period) and does not support low reservoir and empty alerts, which can cause issues overnight and when out for the day.",
+ "cause": "The driver's default settings and lack of support for low reservoir and empty alerts were not aligned with pump standard behavior.",
+ "fix": "The driver was updated to enable patch expiration by default and add an option to show non-critical pump alerts including low reservoir warning at 20 units. Also, the no connection alarm is forced to enabled with 30 minutes threshold for the Medtrum driver.",
+ "settings_changed": [
+  "Patch expiration → enabled by default",
+  "Option to show non critical pump alerts → enabled by default",
+  "key_enable_pump_unreachable_alert → true",
+  "key_pump_unreachable_threshold_minutes → 30"
+ ],
+ "devices": [
+  "Medtrum Nano"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "medtrum"
+ ],
+ "confidence": "high",
+ "evidence_quote": "Patch expiration enabled by default\n- Option to show non critical pump alerts (enabled by default) including low reservoir warning at 20units."
+}

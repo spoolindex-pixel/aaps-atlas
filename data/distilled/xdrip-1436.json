@@ -1,0 +1,19 @@
+{
+ "issue_id": 1436,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/1436",
+ "title": "problems writing to influxDB",
+ "symptom": "Writing to InfluxDB on a Raspberry Pi 4 with authentication fails with a NullPointerException about okhttpUrl.host() on a null object reference, despite entering the IP address, port, and auth.",
+ "cause": "The InfluxDB URI was entered with curly braces around the IP and port (e.g., http://{192.168.1.xxx}:{8086}), which is not a valid URL and causes a parsing problem.",
+ "fix": "Remove the curly braces from the InfluxDB URI so it is a valid URL (e.g., http://192.168.1.xxx:8086).",
+ "settings_changed": [
+  "InfluxDB URI → http://192.168.1.xxx:8086 (curly braces removed)"
+ ],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [
+  "influxdb"
+ ],
+ "confidence": "high",
+ "evidence_quote": "`http://{192.168.1.xxx}:{8086}` is not a valid URL. Please remove the curly brackets (`{`, `}`) and try it again."
+}

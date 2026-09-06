@@ -1,0 +1,21 @@
+{
+ "issue_id": 483,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/483",
+ "title": "Issues when doing profile switch on DANA R",
+ "symptom": "Performing a profile switch often leads to problems: multiple notifications that profile was updated, lots of communication with pump, and sometimes unable to properly connect and update basal in the pump. Logs show multiple threads trying to connect to pump simultaneously.",
+ "cause": "Multiple instances of CommandQueue are created, each registering to handle profile switches, leading to concurrent handling. The independentConnect method creates new CommandQueue instances that are not properly disposed, causing multiple threads to attempt pump communication.",
+ "fix": "The fix was to clear the disposable in the independentConnect method by adding `tempCommandQueue.disposable.clear()` at the end of independentConnect, as suggested by MilosKozak. This was later committed in commit fcf7faa3e05daf9c408821de1677ca1a6b6d7ab1, and the user confirmed it solved the issues.",
+ "settings_changed": [],
+ "devices": [
+  "DANA R"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "DanaR",
+  "CommandQueue",
+  "independentConnect"
+ ],
+ "confidence": "high",
+ "evidence_quote": "try call `tempCommandQueue.disposable.clear()` at the end of `independentConnect`"
+}

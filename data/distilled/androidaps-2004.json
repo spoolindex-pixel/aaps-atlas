@@ -1,0 +1,23 @@
+{
+ "issue_id": 2004,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/2004",
+ "title": "[3.1.0.3] - AAPS uses the 5 minute backfilled BG from Xdrip instead of current reading",
+ "symptom": "When xdrip misses a BG due to BT connection issues and backfills on reconnection, AAPS briefly shows the current BG then switches to the backfilled (older) value, displaying a stale reading until the next one arrives.",
+ "cause": "The thread identifies that AAPS receives both the current and backfilled values but displays the older backfilled one, likely because it uses the last received value rather than the most recent timestamp. Some participants argue it's an xDrip issue, but later evidence suggests it's an AAPS issue.",
+ "fix": "A patch by @asquelt (also committed by Milos) fixes the issue by changing the query to select the most recent glucose value. The fix is in the dev branch.",
+ "settings_changed": [],
+ "devices": [
+  "G5 transmitter",
+  "xDrip",
+  "BYODA"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "xdrip",
+  "broadcast",
+  "BYODA"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "The patch by @asquelt seems to have fixed it for me. It does seem to make the query slightly slower but not to a point that its worse than the situation before."
+}

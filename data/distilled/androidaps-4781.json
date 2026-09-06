@@ -1,0 +1,24 @@
+{
+ "issue_id": 4781,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/4781",
+ "title": "3.4.2.2 Issue with starting a fresh Dash pod after the previous one failed",
+ "symptom": "After a Dash pod fails and is discarded, starting a new pod appears to work but the pump status page shows no pod connected and there is no history record of the new pod. The new pod may be immediately deactivated by a queued deactivation command from the previous pod.",
+ "cause": "The thread identifies that a deactivation command for a previous pod remains queued and is sent to the newly activated pod, causing it to be deactivated. This is described as an activation bug in the Dash driver.",
+ "fix": "The issue is fixed in version 3.4.2.3 for the Dash driver. For Eros, no fix was applied; users are advised to create a separate issue. A workaround for Eros is to close AAPS and clear the cache to clear the command queue.",
+ "settings_changed": [],
+ "devices": [
+  "Omnipod Dash",
+  "Omnipod Eros"
+ ],
+ "android_versions": [
+  "Android 16",
+  "Android 12"
+ ],
+ "driver_tags": [
+  "Dash",
+  "Eros"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "This issue is fixed in 3.4.2.3 (activation bug) - please report back if you still perceive this issue on that version."
+}

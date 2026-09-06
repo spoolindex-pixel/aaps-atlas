@@ -1,0 +1,25 @@
+{
+ "issue_id": 2055,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/2055",
+ "title": "SMBs often fail [3.1.0.3] [DASH]",
+ "symptom": "After an initial SMB has been successfully given, subsequent SMBs often fail for a few loop cycles, resulting in high BG. This started after upgrading from 3.0.3 to 3.1.0.3. There is no notification in AAPS or system when SMBs fail.",
+ "cause": "The SMB command is canceled because both basal and SMB are present in the result, and the SMB command has a timeout of one minute from the original calculation, but the basal command consumes that time. The SMB is canceled due to the timeout check in CommandSMBBolus.kt.",
+ "fix": "The fix was implemented by MilosKozak in commit baab2dad4c50ff9e3ab7d93660f2204d3c2ffcf5. The fix was confirmed by rustymonkey after testing for 36 hours on Boost_Test_Platform, all SMBs were delivered successfully.",
+ "settings_changed": [],
+ "devices": [
+  "Omnipod DASH",
+  "Omnipod Eros",
+  "Dexcom G6"
+ ],
+ "android_versions": [
+  "Android 11",
+  "Android 12"
+ ],
+ "driver_tags": [
+  "BYODA",
+  "BYOD"
+ ],
+ "confidence": "high",
+ "evidence_quote": "fixed by https://github.com/nightscout/AndroidAPS/commit/baab2dad4c50ff9e3ab7d93660f2204d3c2ffcf5"
+}

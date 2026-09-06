@@ -1,0 +1,15 @@
+{
+ "issue_id": 3070,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/3070",
+ "title": "Unwanted loop run when switching targets.",
+ "symptom": "When switching from one temporary target to another without cancelling first, AAPS performs two separate events (cancel TT and start new TT), each triggering a loop run. In between, the loop may deliver an unwanted SMB because the high temporary target is no longer active, leading to potential overreaction and rollercoaster effect.",
+ "cause": "The target switch is not atomic; the loop is triggered by database changes, and there are two changes: ending the current TT and starting the new TT.",
+ "fix": "The issue was addressed by a commit (2feaa419a715000eff001e5d58ca12e073cca8f1) that likely makes the target switch atomic, preventing intermediate loop runs. However, the exact fix details are not described in the thread.",
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [],
+ "confidence": "medium",
+ "evidence_quote": "well is not atomic. loop is triggered by database change and there are 2 changes: end current TT and start new TT."
+}

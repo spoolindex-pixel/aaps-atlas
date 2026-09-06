@@ -1,0 +1,19 @@
+{
+ "issue_id": 2028,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/2028",
+ "title": "[3.1.0.3-dev-a] Calibration in BYODA -> BG too close (red triangle) -> LGS (low glucose suspend)",
+ "symptom": "When doing a calibration in BYODA, a new BG is sent to AAPS close to the last one instead of updating it, causing a 'BG too close' error with a red triangle and the loop falls back to LGS (low glucose suspend).",
+ "cause": "BYODA sends readings not respecting the 'every 5 minutes' rule, causing duplicate BG readings close together, which leads to incorrect delta calculations affecting algorithm performance.",
+ "fix": "The issue is mostly resolved except for rare situations; resolving the rest would slow down BG processing too much. Workaround: manually delete the duplicated BG from BYODA tab of AAPS.",
+ "settings_changed": [],
+ "devices": [
+  "BYODA"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "BYODA"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "this is already resolved except very rare situations. resolving the rest would mean slowing down BG processing too much"
+}

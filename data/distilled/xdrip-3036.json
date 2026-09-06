@@ -1,0 +1,21 @@
+{
+ "issue_id": 3036,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/3036",
+ "title": "Aidex values not broadcasting via API to watchdrip.",
+ "symptom": "The watchdrip app is not able to receive push notifications from xDrip of BG changes, only when watchdrip itself makes forced requests to xDrip. This occurs when using xDrip with GlucoRX Aidex sensor.",
+ "cause": "The xDrip Aidex code on the BgReading.bgReadingInsertFromInt has a last parameter of false, meaning that the notification to watchdrip etc does not occur.",
+ "fix": "Changing the last parameter of BgReading.bgReadingInsertFromInt from false to true. This was implemented in a PR and included in the latest Nightly release, which resolved the issue.",
+ "settings_changed": [],
+ "devices": [
+  "GlucoRX Aidex sensor",
+  "watchdrip"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "Aidex",
+  "broadcast"
+ ],
+ "confidence": "high",
+ "evidence_quote": "it seems that the xdrip Aidex code on the BgReading.bgReadingInsertFromInt has a last parameter of false, meaning that the notification to watchdrip etc does not occur."
+}

@@ -1,0 +1,31 @@
+{
+ "issue_id": 1335,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/1335",
+ "title": "libre 2 oop algorithm",
+ "symptom": "When using the OOP algorithm with Libre 2, calibrated values are transferred to AndroidAPS, but uncalibrated values are transmitted to Nightscout, making evaluation or monitoring by Nightscout incorrect.",
+ "cause": "The OOP algorithm cannot be calibrated, and the raw data from Libre 2 has a minimum value of 40, which prevents large intercept calibration. The thread also indicates that the issue is related to the calibration plugin not being applied to data sent to Nightscout.",
+ "fix": "RainerTischnet describes a workaround: connect MM2 with xDrip, enable OOP algorithm, then in settings/advanced settings/advanced calibration choose 'xDrip original', calibrate, then export settings to XML, edit the XML to set 'calibrate_external_libre_algorithm' to true, import settings back, and set calibration plugin to none. This allows normal calibration to run with Nightscout and AAPS.",
+ "settings_changed": [
+  "calibrate_external_libre_algorithm → true",
+  "calibration plugin → none"
+ ],
+ "devices": [
+  "Libre 2",
+  "Libre-2",
+  "Libre-1",
+  "Libre1",
+  "Libre2"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "oop",
+  "OOP",
+  "MM2",
+  "librelink patched",
+  "xDrip original",
+  "calibration plugin"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "the trick is: connect the mm2 with xdrip, enable oop algorithm. if you see the values. settings / advanced settings / advanced calibration choose xdrip original. back to the xdrip start desktop. then there should be a P now. now you have to calibrate first. then save import / export settings. settings on SD card. save all settings on sd card. I don't have an SD card. the backup can be found under download / xdrip-export. I use the total commander app to send the xml to google drive. then edit on pc xml with notepad ++ enable true at calibrate_external_libre_algorithm."
+}

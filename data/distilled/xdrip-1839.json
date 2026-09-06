@@ -1,0 +1,26 @@
+{
+ "issue_id": 1839,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/1839",
+ "title": "Invalid slope/intercept values generated from BG report",
+ "symptom": "When blood glucose test result is entered (either manual or from bluetooth-enabled meter) xdrip can generate invalid slope/intercept values for calibration when 'Non-fixed Libre slopes' option is enabled. These values will be then ignored with 'invalid intercept value' error, so impossible to use for calibration.",
+ "cause": "The slope/intercept calculation code does not check the generated values against the current calibration plugin's sanity limits, so it can produce intercept values above the hardcoded limit (e.g., 44), which are then rejected as invalid.",
+ "fix": "The thread does not state a definitive fix. Workarounds mentioned include disabling 'Non-fixed Libre slopes' for first calibration, using fixed slope for first calibration at low range BG, and then re-enabling non-fixed slope for subsequent calibrations. Also, using an OOP (out-of-process) algorithm is suggested as an alternative.",
+ "settings_changed": [
+  "Non-fixed Libre slopes → disabled for first calibration",
+  "Non-fixed Libre slopes → enabled after first calibration"
+ ],
+ "devices": [
+  "Libre 1",
+  "miao2",
+  "contour plus one"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "Non-fixed Libre slopes",
+  "OOP1",
+  "vendor algorithm"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "In order to get it to work normally I usually deselect Non Fixed Slope to force slope to 1, then perform first calibration but deselect double calibration (which just duplicates the same value). Then I enable Non Fixed Slope to perform the next calibration."
+}

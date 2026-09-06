@@ -1,0 +1,26 @@
+{
+ "issue_id": 3797,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/3797",
+ "title": "[Bug 3.3.1.3] AAPSclient does not fetch data from NS",
+ "symptom": "AAPSClient suddenly stops receiving data from NS several times a day. Hitting 'deliver now' fetches data at once. Occurs with or without websockets. Started on version 3.3.1.3.",
+ "cause": "The issue is caused by glucose data not being uploaded to Nightscout using NSClientV3. If data is uploaded by another app (e.g., Juggluco) using v1 or not v3, AAPSClient using v3 will not receive it.",
+ "fix": "Ensure that the glucose data is uploaded to Nightscout using NSClientV3. For Juggluco users, enable 'xdrip Broadcast' in Juggluco and set glucose source in AAPS to xDrip+, and configure AAPS to save glucose values to Nightscout. Alternatively, one user fixed it by deactivating nightscout cloud upload in xdrip+ application.",
+ "settings_changed": [
+  "xdrip Broadcast → enabled",
+  "glucose source → xDrip+",
+  "nightscout cloud upload → deactivated"
+ ],
+ "devices": [
+  "Juggluco"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "NSClientV3",
+  "NSClientV1",
+  "xdrip Broadcast",
+  "xDrip+"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "If you don't receive data using v3 it only does mean it is not uploaded using v3. This is directly against best practice to let only AAPS upload to NS"
+}

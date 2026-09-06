@@ -1,0 +1,15 @@
+{
+ "issue_id": 1726,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/1726",
+ "title": "Wear OS DigitalStyle watchface time is missing minutes",
+ "symptom": "On the latest 3.0.0.2 dev k build 49163c43d, the digitalstyle watch face seems to have font issues (too big when set to AM/PM vs 24 hr) or missing info in the time.",
+ "cause": "The hourString function in DateUtil.kt uses format \"hha\" which includes the AM/PM marker, causing the time display to be too big or missing minutes in AM/PM mode.",
+ "fix": "Change the format string in hourString from \"hha\" to \"hh\" when not in 24-hour format.",
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [],
+ "confidence": "high",
+ "evidence_quote": "If this class\n```\nfun hourString(mills: Long): String {\n        var format = \"hha\"\n        if (android.text.format.DateFormat.is24HourFormat(context)) {\n            format = \"HH\"\n        }\n        return DateTime(mills).toString(DateTimeFormat.forPattern(format))\n    }\n```\nin\ninfo/nightscout/androidaps/utils/DateUtil.kt\n\nis changed to \n```\nfun hourString(mills: Long): String {\n        var format = \"hh\"\n        if (android.text.format.DateFormat.is24HourFormat(context)) {\n            format = \"HH\"\n        }\n        return DateTime(mills).toString(DateTimeFormat.forPattern(format))\n    }\n```\n\nThe display looks correct."
+}

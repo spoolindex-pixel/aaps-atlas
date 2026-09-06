@@ -1,0 +1,20 @@
+{
+ "issue_id": 4101,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/4101",
+ "title": "AAPS-CI build fails with Stack Overflow",
+ "symptom": "AAPS-CI builds fail with a StackOverflow Error, happening intermittently (yesterday 1x, today 2x). The failure location differs, and it affects both release and debug builds.",
+ "cause": "The thread suggests that the Gradle build is running out of stack resources, possibly due to insufficient JVM stack size settings.",
+ "fix": "Adjust Gradle JVM arguments to increase stack size and memory, e.g., setting org.gradle.jvmargs=-Xss1024m -Xms64m or using -Xmx8g -XX:+UseParallelGC, and setting kotlin.daemon.jvm.options=-Xmx2g and kotlin.compiler.execution.strategy=in-process. A PR (#4104) was created to adjust the CI build based on these suggestions.",
+ "settings_changed": [
+  "org.gradle.jvmargs → -Xmx8g -XX:+UseParallelGC",
+  "kotlin.daemon.jvm.options → -Xmx2g",
+  "kotlin.compiler.execution.strategy → in-process",
+  "org.gradle.jvmargs → -Xss1024m -Xms64m"
+ ],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [],
+ "confidence": "medium",
+ "evidence_quote": "I changed my values to: org.gradle.jvmargs=-Xmx8g -XX:+UseParallelGC # Kotlin compiler/daemon heap kotlin.daemon.jvm.options=-Xmx2g kotlin.compiler.execution.strategy=in-process Haven't had problem since..."
+}

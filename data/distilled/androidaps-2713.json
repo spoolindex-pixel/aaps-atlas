@@ -1,0 +1,21 @@
+{
+ "issue_id": 2713,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/2713",
+ "title": "[3.2.0-RC1] Medtrum Nano, Double history entry",
+ "symptom": "Bolus was doubled in treatments in Nightscout. The bolus is first temporarily synced, then after bolus is finished, the record is updated. This happens when the user has enabled 'Receive Insulin' from NS.",
+ "cause": "Conflict of syncWithTempId and NS back sync. NS back sync uses timestamp, and the temporary timestamp differs from the pump timestamp, causing duplicate entries.",
+ "fix": "The fix was implemented in commit 394883165d2f6603286d7bb56f6312d8b742c3b8, which ensures that SMB (bolus) is only uploaded when the bolus is fully synced, preventing the duplicate.",
+ "settings_changed": [],
+ "devices": [
+  "Medtrum nano"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "Medtrum",
+  "NSClient V1",
+  "NSClient V3"
+ ],
+ "confidence": "high",
+ "evidence_quote": "hopefully resolved by https://github.com/nightscout/AndroidAPS/commit/394883165d2f6603286d7bb56f6312d8b742c3b8"
+}

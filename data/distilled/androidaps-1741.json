@@ -1,0 +1,20 @@
+{
+ "issue_id": 1741,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/1741",
+ "title": "[3.0.0.2-dev-k] \"Error CGM data unchanged for the past ~45m...\"",
+ "symptom": "User reports receiving an error message 'CGM data unchanged for the past ~45m...' even though CGM data was changing (values ranged from 4.7 to 5.1 mmol). The error cleared after about 30 minutes.",
+ "cause": "The error is by design in AAPS for Libre sensors (FSL2 with patched LibreLink). It is a protection against a state where the FSL reports a constant (wrong) value for a longer time. The check uses delta and average delta over the period, which was close to zero in this case.",
+ "fix": "No fix provided; it is by design. The restriction is not present when using Dexcom.",
+ "settings_changed": [],
+ "devices": [
+  "FSL2",
+  "LibreLink"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "patched LibreLink"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "then it's by OAPS design. it's protection from state when FSL report constant (wrong) value for a longer time This restriction is not while using Dexcom"
+}

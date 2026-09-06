@@ -1,0 +1,15 @@
+{
+ "issue_id": 771,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/771",
+ "title": "[3.0-beta1] New profile is not correctly shown after profile switch if the new profile has the same content as the old",
+ "symptom": "After cloning a profile and editing only its name, then saving and activating it, the profile name in the top of the main display does not change. The new profile is saved correctly and the profile switch is logged, but the display of the profile name does not update. This occurs when the new profile has the same content as the old one; if content differs, there is no problem.",
+ "cause": "In AAPS 3.0, the logic distinguishes between profile switch (PS) and effective profile switch (EPS). A new EPS is created only if the requested PS is different from the current EPS and the new profile is taken into account after confirmation from the pump. If only the name is changed and the content is the same, no new EPS is created, so the displayed profile name (taken from current EPS) does not update.",
+ "fix": "The behavior was changed in beta3 so that a change in name is also a reason for updating the EPS. For users on earlier betas, a workaround is to perform a profile switch with a percentage (e.g., xx%) and then another one with 100% to force an EPS update.",
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [],
+ "confidence": "high",
+ "evidence_quote": "this is by design now. 3.0 distinguish between profile switch (PS) (something that user wants) and effective profile switch (EPS - setting loaded into pump and used for calculation). AAPS create new EPS if asked PS is different to current EPS and new profile takes into a count after confirmed from pump. Thus EPS will have different (later) timestramp. in case you only change name and do PS, no new EPS is created."
+}

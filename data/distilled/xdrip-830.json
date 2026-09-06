@@ -1,0 +1,18 @@
+{
+ "issue_id": 830,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/830",
+ "title": "xdrip api-secret correct url syntax",
+ "symptom": "When using xDrip's local web service with an API secret set, requests like http://127.0.0.1:17580/status.json return 'Authentication failed - check api-secret', 'secret is required', and 'no secret supplied'. The service works without the secret.",
+ "cause": "The API secret must be sent as a header, not as part of the URL (e.g., user:password@host syntax). The thread indicates that an API secret is not an authorization protocol that can be handled directly in the browser URL.",
+ "fix": "Use a layer in between (e.g., an AJAX request with a JavaScript framework like jQuery) to set the 'api-secret' header. The secret should be the SHA1 hash in lowercase, as shown in the curl example: curl.exe -X DELETE -H \"api-secret: 911eea185f5c758ac275687da8b7eab50ad720e5\" -g https://...",
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [
+  "api-secret",
+  "local web service"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "So, the api secret should be part of the header. I'm not sure how you are sending the requests, but something has to put the api-secret in the header."
+}

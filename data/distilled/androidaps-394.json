@@ -1,0 +1,22 @@
+{
+ "issue_id": 394,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/394",
+ "title": "Problem receiving warnings from Accu Chek Insight Pump",
+ "symptom": "When the pump issues an insulin low alert or a battery alert, the smartphone beeps but no text message is displayed. The alarm can only be silenced with the control panel on the pump. After the alarm is received, communication with the pump remains on continuously, and restarting AAPS does not disconnect the connection; only restarting the phone solves the problem.",
+ "cause": "The Insight pump had a connection for the hospital in row 5, which was not visible because the list did not scroll up when rows were removed. This caused alarms not to function properly and the connection with AAPS to be lost.",
+ "fix": "Remove the extra connection stored in row 4 or 5 of the Insight pump's connection list, as only one communication channel should be set on the pump.",
+ "settings_changed": [],
+ "devices": [
+  "Accu Chek Insight Pump",
+  "Samsung Galaxy S9+"
+ ],
+ "android_versions": [
+  "Android 10"
+ ],
+ "driver_tags": [
+  "Insight pump"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "The documentation for the Insight pump states that only one communication channel should be set on the pump. However, the Insight pump has the option to set up 5 connections. If you remove the first row, the list won't scroll up in the display. So when three rows in the display are showing \"--------\" there still may be connections left in row 4 or 5. In my pump there was a connection for the hospita in row 5l. As a result, the alarms did not function properly and the connection with AAPS was also lost."
+}

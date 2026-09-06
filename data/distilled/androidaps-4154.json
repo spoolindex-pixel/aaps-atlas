@@ -1,0 +1,19 @@
+{
+ "issue_id": 4154,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/4154",
+ "title": "IOB Calculation",
+ "symptom": "Since updating to version 3.3.2.1, the IOB shown on the main screen doesn't match the one in the SMB tab. The issue persists after reverting to previous version, but a clean reinstall without restoring data temporarily fixed it. Later, when switching from SMB to dynamicISF mode, the discrepancy reappears.",
+ "cause": "The discrepancy in IOB values is caused by the dynamicISF mode's sensitivity detection affecting the Basal IOB (from TBR) calculation. The DynISF settings are very off, leading to a mismatch between the average ISF provided by DynISF and the profile ISF.",
+ "fix": "The user resolved the issue by keeping the SMB mode active and leaving dynamicISF deactivated. The maintainer suggested checking that the average ISF provided by DynISF is about the same as the profile ISF, implying that adjusting DynISF settings to align with the profile would fix the issue.",
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [
+  "SMB",
+  "dynamicISF",
+  "DynISF"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "Basal IOB (from TBR) calculation is affected by sensitivity detection. I checked our production phone with fine tuned settings and both IOBs are very close because autosens result and sensitivity change provided by DynISF mode are very close. It means your DynISF settings is very off."
+}

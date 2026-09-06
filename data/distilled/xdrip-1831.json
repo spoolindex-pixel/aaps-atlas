@@ -1,0 +1,24 @@
+{
+ "issue_id": 1831,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/1831",
+ "title": "Android 10 NightScoutFollowService exception",
+ "symptom": "On Android 10, xDrip+ throws an exception in event logs: 'Got exception trying to use Android 10+ service starting for NightscoutFollowService java.lang.IllegalArgumentException: foregroundServiceType 0x0000....08 is not subset of foregroundServiceType attribute 0x00000000 in service element of manifest file'. Additionally, sending BG from xDrip to Android APS is not working or works only once.",
+ "cause": "The data sync services of xDrip do not have the right foregroundServiceType in the manifest, causing the exception. However, the root cause of the BG sending issue is different and not identified in the thread.",
+ "fix": "A fix was provided via a new APK (xDrip_20210923_7282febf4_DataForegroundServiceTypes_debug.apk) which resolved the exception. The BG sending issue was not resolved; the maintainer suggested using one xDrip instance as primary BG collector and broadcaster to AAPS, or considering issue #1649.",
+ "settings_changed": [],
+ "devices": [
+  "Medtronic 640",
+  "Jelly 2"
+ ],
+ "android_versions": [
+  "Android 10"
+ ],
+ "driver_tags": [
+  "NightscoutFollowService",
+  "broadcaster",
+  "Android APS"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "The exception should be gone but I'm sure, the root cause of your problem is different because regardless of the exception, NightscoutFollowService is started, anyway."
+}

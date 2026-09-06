@@ -1,0 +1,25 @@
+{
+ "issue_id": 1359,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/1359",
+ "title": "Riley Link Orange can't connect with dev branch",
+ "symptom": "RileyLink Orange cannot connect with dev branch; state stuck at initialization of RileyLink. No permission request notification appears. Connection works with master branch.",
+ "cause": "The problem is the RL check for permission before connect code, specifically in RileyLinkBLE.kt connectGattInternal where the condition uses >= Build.VERSION_CODES.S, causing the permission request not to appear on Android 12.",
+ "fix": "Change the condition in RileyLinkBLE.kt from `if (config.PUMPDRIVERS && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && ...` to `if (config.PUMPDRIVERS && Build.VERSION.SDK_INT > Build.VERSION_CODES.S && ...` to bypass the permission check and allow connection.",
+ "settings_changed": [],
+ "devices": [
+  "RileyLink Orange",
+  "EmaLink",
+  "RileyLink"
+ ],
+ "android_versions": [
+  "Android 10",
+  "Android 12"
+ ],
+ "driver_tags": [
+  "Omnipod Eros driver",
+  "MDT"
+ ],
+ "confidence": "high",
+ "evidence_quote": "It's the RL check for permission before connect code the problem https://github.com/nightscout/AndroidAPS/commit/b1d45833c5570910142e78ba39a8322b4039a9d5"
+}

@@ -1,0 +1,22 @@
+{
+ "issue_id": 2411,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/2411",
+ "title": "[DEV][Tidepool] Manual BG entries messing up stats in tidepool",
+ "symptom": "When a manual BG entry is present in the data uploaded by AAPS, Tidepool does not handle this correctly. Manual entries cause incorrect stats, e.g., a single low entry counts as a whole day below target range, and a few in-range entries add days of in-range time.",
+ "cause": "Manual BG entries from a BG meter are uploaded as the wrong record type (CGM values instead of self-monitored BG values). The type is 'cgb' in BloodGlucoseElement.kt, but should be 'smbg'.",
+ "fix": "The fix was to change the record type from 'cgb' to 'smbg' in the Tidepool upload code. This was implemented in commit b244d174fa4fbf90835e09584078812359a8b587.",
+ "settings_changed": [],
+ "devices": [
+  "xDrip"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "tidepool",
+  "manual BG",
+  "smbg",
+  "cgb"
+ ],
+ "confidence": "high",
+ "evidence_quote": "The correct type should be \"smgb\" which is what tidepool docs said. Currently, the type is \"cgb\" in line 24 in this file plugins/sync/src/main/java/info/nightscout/plugins/sync/tidepool/elements/BloodGlucoseElement.kt"
+}

@@ -1,0 +1,23 @@
+{
+ "issue_id": 1578,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/1578",
+ "title": "Freestyle libre + miaomiao2 - App crash when glucose level is high or low, can't add manual calibration",
+ "symptom": "When glucose level is high or low in xDrip, the app freezes for a few seconds and manual calibration does not change the displayed glucose, which remains 50-100 mg/dl higher than glucometer or NFC checks. Additionally, xDrip disconnects from Miaomiao2 at random times and cannot reconnect until the sensor is stopped and recalibrated, sometimes multiple times a day.",
+ "cause": "The thread identifies two causes: first, a broken Libre sensor caused the high/low glucose display and freezing; second, a calibration issue with invalid intercept value and null pointer exception in the xDrip classic algorithm leads to disconnection and inability to collect data.",
+ "fix": "For the first issue, replacing the broken Libre sensor resolved it. For the disconnection issue, the maintainer suggested enabling OOP1 (using instructions from a Medium article) and also advised stopping the sensor, deleting all calibrations, and trying a new calibration. However, the user reported that resetting calibration only works temporarily.",
+ "settings_changed": [],
+ "devices": [
+  "Freestyle libre 1",
+  "Miaomiao2"
+ ],
+ "android_versions": [
+  "Android 10"
+ ],
+ "driver_tags": [
+  "Libre bluetooth",
+  "NFC"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "I had problem with low/high info and after this xDrip has stopped, so I need to reset phone, etc, but it seems that Libre sensor was broken. So this is closed, I changed Libre sensor and problem with glucose differences and xDrip frozing just disappear."
+}

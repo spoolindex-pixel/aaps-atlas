@@ -1,0 +1,21 @@
+{
+ "issue_id": 2346,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/2346",
+ "title": "Dev not sending TBR to NS",
+ "symptom": "After migrating from Master to Dev, Nightscout no longer shows TBR (temporary basal rate) treatments. The NSClient queue grows to +1500 items, and the TBR data in the log is stuck at the time of the Dev installation, while other data like SMBs and device status are sent.",
+ "cause": "The thread does not explicitly identify a root cause, but the issue was resolved by resetting the phone's database, suggesting a database state issue.",
+ "fix": "Reset the database on the phone via the Maintenance menu / \"Reset Databases\" button. After resetting, the loop started again and TBRs were sent to NS.",
+ "settings_changed": [],
+ "devices": [
+  "DANA_RS"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "NSClient",
+  "Master",
+  "Dev"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "resetting the database on the phone, via the Maintenance menu/ \"Reset Databases\" button did the trick. After 20 mins of new BGs the loop started again and TBRs are now sent to NS."
+}

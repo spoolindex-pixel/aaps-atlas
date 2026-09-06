@@ -1,0 +1,15 @@
+{
+ "issue_id": 3842,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/3842",
+ "title": "AutoISF : No variable_ISF curve if it's alone",
+ "symptom": "When setting a variable ISF curve alone on a graph, the curve is not visible, or only some dots are visible. It is visible when combined with IOB, COB, or dev graphs.",
+ "cause": "SubGraph vertical scale is given by the first selected item in menu or in item list in upper left of each graph. When switching V_SENS graph within another graph with a higher priority item like IOB, DEV, the graph values are calculated to fit the new scale. When switching back to V_SENS as master scale, the scale is updated but the curve points are not, so they remain with the previous scale.",
+ "fix": "A PR (#3844) was made to fix the issue. After building and testing, the curve is always visible even when alone.",
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [],
+ "confidence": "high",
+ "evidence_quote": "SubGraph vertical scale is given by the first selected item in menu or in item list in upper left of each graph. If you switch V_SENS graph within another graph with a higher priority item like IOB, DEV..., then graph values are calculated again to fit the new scale. It seems like when you switch back the V_SENS curve to be the master scale (alone or with lower priority curves like STEP or HR), then scale is correctly updated on the left of the subgraph. but the curve points are not so they remains with the value of previous graph (so with an IOB scale for ex.)."
+}

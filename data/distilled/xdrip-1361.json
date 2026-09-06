@@ -1,0 +1,21 @@
+{
+ "issue_id": 1361,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/1361",
+ "title": "Code to communicate with Accucheck Guide",
+ "symptom": "The user wants to code communication with an Accucheck Guide glucose meter but cannot find the BLE part that handles it, and is unsure whether it uses Bluetooth or USB.",
+ "cause": "The Accucheck Guide does not have the GLUCOSE CONTEXT characteristic, which causes the program to get stuck in the queue if not removed.",
+ "fix": "In the BluetoothGlucoseMeter class, modify the list of characteristics to remove the GLUCOSE CONTEXT characteristic (similar to what was done for Diamond Mobile Mini), and use the command Bluetooth_CMD.write(GLUCOSE_SERVICE, RECORDS_CHARACTERISTIC, RecordsCmdTx.getAllRecords(), \"request all readings\") to get data.",
+ "settings_changed": [],
+ "devices": [
+  "Accucheck Guide",
+  "AccuCheck Guide Me"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "BluetoothGlucoseMeter",
+  "BLE"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "Problem is Accucheck don't have GLUCOSE CONTEXT characteristic. So we need to delete that., like they did for \"Diamond Mobile Mini\"."
+}

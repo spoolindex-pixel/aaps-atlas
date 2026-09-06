@@ -1,0 +1,22 @@
+{
+ "issue_id": 3662,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/3662",
+ "title": "RC 3.3.0 Bugs that I found, ",
+ "symptom": "After upgrading to RC 3.3.0, the user experiences an alarm after one missing CGM value, a cannula change warning that stays red even after changing the cannula, and degraded algorithm performance (TIR dropped from ~95% to ~88%, TDD increased from 42 to 49, inconsistent blood sugar trends). The user also reports that the new optional sensitivity feature causes horrible algorithm settings and that downgrading to Master causes database incompatibility.",
+ "cause": "The cannula status light issue is caused by the status light settings being set to 0, likely due to an upgrade from 3.2 to 3.3. The alarm after one missing CGM value is considered too aggressive by a commenter. The algorithm issues are attributed to the new optional sensitivity feature, which the user deactivated after one day.",
+ "fix": "For the cannula status light issue, the user should go to settings > overview > status lights and set the values manually. For the missing CGM alarm, a commenter suggests finding a way not to notify until many more BGs are missed. For database issues after downgrade, a full sync with NSClient v3 is a workaround. The user reverted to Master to resolve algorithm issues.",
+ "settings_changed": [
+  "status lights → set manually (was 0)"
+ ],
+ "devices": [
+  "DanaRS",
+  "Pixel 5"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "DynISF"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "Go to settings > overview > status lights. I guess some of them are set to 0. Can you confirm this?"
+}

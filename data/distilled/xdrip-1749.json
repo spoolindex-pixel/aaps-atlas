@@ -1,0 +1,15 @@
+{
+ "issue_id": 1749,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/1749",
+ "title": "Indexes are not used efficiently",
+ "symptom": "xDrip gets slower over time as the database grows, indicating that indexes are not used efficiently.",
+ "cause": "The thread suggests that the lack of running the ANALYZE command on the SQLite database may lead to outdated index statistics, causing the query optimizer to not use indexes effectively.",
+ "fix": "The thread suggests running ANALYZE on database connection close, and possibly revising the ORM layer and queries. A later comment references a pull request #2052 as providing a solution.",
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [],
+ "confidence": "medium",
+ "evidence_quote": "As far as I can tell, we never run the ANALYZE command, so maybe running it is a good thing."
+}

@@ -1,0 +1,19 @@
+{
+ "issue_id": 1412,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/1412",
+ "title": "Starting a new sensor without queueing a \"stop sensor\" first",
+ "symptom": "When starting a new sensor, if the xDrip UI is still in 'running' state and the user forgets to stop the sensor before placing the transmitter, the newly placed sensor receives a 'stopped' event and cannot be started anymore.",
+ "cause": "The xDrip UI still shows 'running' state after an old sensor has been stopped, and if a new sensor is placed without stopping the UI first, the queued 'Stop Sensor' item is sent to the new transmitter, causing the new sensor to be stopped.",
+ "fix": "A brute force method: wait for the transmitter's connection interval to reset to 0, then wait 10 seconds, stop sensor, and immediately clear the queue. Then restart the phone; for G6, xDrip will auto start its session.",
+ "settings_changed": [],
+ "devices": [
+  "G6"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "G6"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "Wait for it to reset to 0. Then, wait 10 seconds. Now, stop sensor. As soon as you approve stopping sensor, clear the queue. If you do that exactly as I have explained, you will stop the xDrip session without stopping the session on the transmitter."
+}

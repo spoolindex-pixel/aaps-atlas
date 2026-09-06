@@ -1,0 +1,20 @@
+{
+ "issue_id": 3490,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/3490",
+ "title": "Medtrum Nano / stop bolus gives error",
+ "symptom": "When stopping an ongoing bolus, a pump unreachable alert is shown, even though the bolus was canceled by the user. The alert appears to be a connection problem message with three buttons, but the text says to check amounts.",
+ "cause": "The error dialog for stopping a bolus incorrectly shows the same three buttons as a connection problem, and the message text is confusing. The underlying issue is that the driver returns an error when the user cancels the bolus, instead of returning success.",
+ "fix": "The fix is to make the driver return success when the bolus is canceled by the user, as done in the Insight Driver. This was implemented in PR #4283.",
+ "settings_changed": [],
+ "devices": [
+  "Medtrum Nano"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "Medtrum",
+  "Insight Driver"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "Fixed with #4283 (if the bolus was canceled by the user, it should should return success, it's done that way within Insight Driver)."
+}

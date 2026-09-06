@@ -1,0 +1,25 @@
+{
+ "issue_id": 1672,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/1672",
+ "title": "[Wear] [GW4] [3.0.0] Bolus progress sound and/or vibration cannot be silenced",
+ "symptom": "On Galaxy Watch 4, with AAPS 3.0.0, bolus progress events cause sound and vibration on the watch despite the 'Vibrate on bolus' setting being OFF. Users want to silence both sound and vibration for bolus progress.",
+ "cause": "The issue is caused by the changed API for notification. Before the last Wear OS update, the notification could be changed; now it cannot be silenced easily.",
+ "fix": "Workaround: Disable the AAPS notification channel 'AAPS Bolus Progress Silent' in the watch's Developer options (Settings > Developer options > App notifications > Show all > AAPS > switch off channel). Also ensure 'Vibrate on Bolus' is off in AAPS watch settings. The issue was later solved in 3.1 beta 1 by using a separate notification tile.",
+ "settings_changed": [
+  "Vibrate on Bolus → OFF",
+  "AAPS Bolus Progress Silent → off"
+ ],
+ "devices": [
+  "Galaxy Watch 4"
+ ],
+ "android_versions": [
+  "Android 12"
+ ],
+ "driver_tags": [
+  "wear",
+  "notification"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "There is a workaround, for now, disabling the notification completely: - Enable **Developer Settings** if you haven't already. - About > Software > and keep tapping on **Software Version** until a toast appears. - Back into Settings menu, **Developer options** - Scroll to bottom > App notifications > **Show all** - Select **AAPS** - Switch off the channel **AAPS Bolus Progress Silent**"
+}

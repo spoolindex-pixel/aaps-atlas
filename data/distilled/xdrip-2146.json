@@ -1,0 +1,15 @@
+{
+ "issue_id": 2146,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/2146",
+ "title": "xDrip updater only works for the Nightly channel",
+ "symptom": "When checking for updates on Stable, Beta, or Alpha channels, no update pop-up appears, even though a newer build exists. Only the Nightly channel detects updates.",
+ "cause": "The version number for the January 31, 2022 release on the update server (xdrip-plus-updates.appspot.com) was labeled incorrectly, causing xDrip to reject it due to an integer overflow issue. The actual APK file self-identifies correctly, but the server metadata was wrong.",
+ "fix": "The issue was resolved by promoting the current nightly build to the alpha channel, and later updating the Beta and Stable channels to the May 19, 2022 build. The update server metadata was corrected.",
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [],
+ "confidence": "high",
+ "evidence_quote": "It seems to be working for the nightly build urls, and the actual contents of the January release are fine (if you install the apk, it correctly self-identifies as 2122013118); it's just **labeled** wrong, so xdrip rejects it."
+}

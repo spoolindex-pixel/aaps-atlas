@@ -1,0 +1,25 @@
+{
+ "issue_id": 143,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/143",
+ "title": "[2.7] All delta get set to 0 after 30s (Dexcom patched app and xDrip)",
+ "symptom": "When using xDrip as source (with G6) the delta in homescreen is (almost always) 0 for all three deltas. The deltas get set to 0 exactly 30 seconds after the BG reading comes in. This also occurs when using the patched Dexcom app as source.",
+ "cause": "The setup DEX -> AAPS -> XDRIP -> NS -> APPS causes data to be changed by xDrip in the middle of the chain, so it's not deduplicated on AAPS side, resulting in deltas of 0 for duplicate values.",
+ "fix": "Disable all inter-app communication and upload settings in xDrip, and re-enable BG upload in AAPS. This stops duplicate uploads to Nightscout.",
+ "settings_changed": [
+  "inter-app communication in xDrip → disabled",
+  "upload settings in xDrip → disabled",
+  "BG upload in AAPS → re-enabled"
+ ],
+ "devices": [
+  "Dexcom G6"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "xDrip",
+  "patched dexcom app",
+  "broadcast"
+ ],
+ "confidence": "high",
+ "evidence_quote": "Disabling all inter-app communication + upload settings in xdrip and then **re-enabling BG upload in AAPS** did the trick."
+}

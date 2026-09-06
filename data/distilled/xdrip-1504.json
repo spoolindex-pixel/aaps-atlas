@@ -1,0 +1,21 @@
+{
+ "issue_id": 1504,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/1504",
+ "title": "Dexcom G6 Battery Status Packet Error - 8Q Transmitter",
+ "symptom": "With an 8Q transmitter, the 'Transmitter Days', 'Resistance' and 'Temperature' values are all wrong. The issue is in the handling of the battery status packet.",
+ "cause": "The battery status packet handling is incorrect for the new Firefly transmitters, which have packet sizes of 10 and 12, whereas the code likely assumed a different size.",
+ "fix": "The issue was resolved by modifying the code in BatteryInfoRxMessage.java. The fix is implemented in xDrip, and the temperature is shown correctly starting with version 2021.07.10.",
+ "settings_changed": [],
+ "devices": [
+  "Dexcom G6",
+  "8Q transmitter"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "G5Model",
+  "Firefly"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "I've modified the code as follows and fixed the issue: [BatteryInfoRxMessage.txt]"
+}

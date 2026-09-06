@@ -1,0 +1,20 @@
+{
+ "issue_id": 1779,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/1779",
+ "title": "Dynamically Detect Dexcom Warm-Up Duration",
+ "symptom": "xDrip assumes a 120 minute warmup when it starts a sensor, but some G6 transmitters have non-standard warmup durations. When a session is started from xDrip, the interface continues to count down 120 minutes and does not display the BG reading, which is confusing for users.",
+ "cause": "xDrip assumes a fixed 120-minute warmup duration based on firmware version, rather than dynamically reading the actual warmup duration from the transmitter via the 0x52 opcode.",
+ "fix": "Implement dynamic detection of warmup duration by issuing the 0x5202 command to the transmitter's Command UUID after authentication, which returns the actual warmup time (e.g., 120 minutes for stock G6, 60 minutes for stock G6+).",
+ "settings_changed": [],
+ "devices": [
+  "G6",
+  "G6+"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "native mode"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "xDrip assumes a 120 minute warmup when it starts a sensor. We do get dot points on the graph and broadcast data... But the xDrip interface continues to count down 120 minutes and doesn't display the BG reading."
+}

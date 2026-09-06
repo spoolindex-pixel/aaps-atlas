@@ -1,0 +1,20 @@
+{
+ "issue_id": 1778,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/1778",
+ "title": "G6 Timestamp Issue when newly activated.",
+ "symptom": "When first activating a G6 transmitter, xDrip incorrectly reports timestamps as negative for the first few hours because the transmitter's internal time starts from 0ms. This prevents xDrip from generating packets that need a timestamp (like backfill requests) for the first few hours after activation.",
+ "cause": "The transmitter timestamp before transmitter start is being requested, likely from backfilling. The backfill window is not capped to the transmitter start time, so requests are made for times before the transmitter's internal clock reaches zero.",
+ "fix": "Cap the backfill window to the transmitter start (or session start) time. The fix was implemented in the Nightly build of March 10, 2024, and tested successfully with G6 and G7.",
+ "settings_changed": [],
+ "devices": [
+  "Dexcom G6",
+  "Dexcom G7"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "backfill"
+ ],
+ "confidence": "high",
+ "evidence_quote": "I expect this will come from backfilling and simply capping the backfill window to the transmitter start (or session start) would resolve the issue."
+}

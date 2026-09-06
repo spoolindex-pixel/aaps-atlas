@@ -1,0 +1,22 @@
+{
+ "issue_id": 3949,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/3949",
+ "title": "Carb timestamp and carb reminder are desynchronized",
+ "symptom": "The carb reminder timer and the carb timestamp logged in treatment logs are desynchronized. The timer starts when bolus delivery ends, while the carb timestamp is set at the start of the insulin order, causing a delay equal to bolus delivery duration, which can be several minutes for some pumps.",
+ "cause": "PR #3818 changed the timer to start when bolus delivery completes, but did not update the carb timestamp in the bolus wizard, so they no longer match.",
+ "fix": "The issue was resolved in commit 5aa8ab96e205ed18ffa98f415ab05f85c29e3949, which likely schedules the alarm at the beginning of bolus delivery and cancels it if bolus fails.",
+ "settings_changed": [],
+ "devices": [
+  "touchcare nano",
+  "medtrum touchcare nano"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "bolus wizard",
+  "carb reminder",
+  "timer"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "resolved in https://github.com/nightscout/AndroidAPS/commit/5aa8ab96e205ed18ffa98f415ab05f85c29e3949"
+}

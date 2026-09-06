@@ -1,0 +1,20 @@
+{
+ "issue_id": 269,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/269",
+ "title": "Blukon collector restart race condition",
+ "symptom": "In some circumstances, xDrip restarts the collector even though it is communicating with Blukon, which can happen when 'Agressiv service restarts' is enabled or if the user forces a restart manually. This can lead to long reconnection times because xDrip waits 5 minutes each time.",
+ "cause": "The collector restart logic does not check whether the Blukon device is actually communicating; it restarts based on missed reading service restarts, causing a race condition.",
+ "fix": "Implement a static method `isCollecting()` in the Blukon class that returns true if data is being received, and use that to decide whether to restart the service instead of relying on `BgReading.last_within_millis()`. The method should be wired up to prevent restarts when communication is active.",
+ "settings_changed": [],
+ "devices": [
+  "Blukon"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "Blukon",
+  "collector"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "I think storing a timestamp of the last time blukon class received any data from the remote device and then we can use that (or a boolean method like `isCommunicating()` based on that timestamp to decide whether to restart the service instead of `BgReading.last_within_millis()` would make it more reliable."
+}

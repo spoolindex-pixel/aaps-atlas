@@ -1,0 +1,23 @@
+{
+ "issue_id": 3737,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/3737",
+ "title": "[Dana-i] Large bolus causes endless 'Waiting for estimated bolus end' without actually applying bolus",
+ "symptom": "When applying large boluses (>15 U), AAPS fails to apply the bolus and goes to 'Waiting for estimated bolus end' indefinitely. The bolus cannot be stopped; pressing stop shows 'STOP PRESSED' but nothing happens, requiring app kill and manual bolus on pump.",
+ "cause": "The pump reports a safety problem (error 128), likely due to breaking a limit such as max bolus, max daily, or safety ratio.",
+ "fix": "The user suspects the safety ratio set to 100 is the cause and plans to turn it off. The maintainer suggests trying the same bolus directly on the pump if it happens again.",
+ "settings_changed": [
+  "safety ratio → off"
+ ],
+ "devices": [
+  "Dana-i"
+ ],
+ "android_versions": [
+  "Android 15"
+ ],
+ "driver_tags": [
+  "DanaRSPacketBolusSetStepBolusStart"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "I think it's the safety ratio, that's set to 100. I will turn it off."
+}

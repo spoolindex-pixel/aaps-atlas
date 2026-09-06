@@ -1,0 +1,22 @@
+{
+ "issue_id": 296,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/296",
+ "title": "BT Glucose Meters and Initial Calibration problems",
+ "symptom": "When performing a finger prick with a Bluetooth glucose meter (e.g., Contour Next One) while xDrip is set to Auto Calibration and the initial calibration screen is open, the incoming BT reading overwrites the initial calibration prompt with a normal calibration prompt, causing the initial calibration screen to close or hide. Selecting yes records the value as a normal blood glucose reading, not as an initial calibration, and it never becomes a calibration because there is no data around it.",
+ "cause": "The thread does not explicitly identify a root cause, but it is implied that xDrip's handling of BT readings does not distinguish between initial calibration and normal calibration, so incoming readings are treated as normal readings even when an initial calibration is pending.",
+ "fix": "The suggested workaround from the maintainer is to tap on the square marker of the reading and choose to use it as a calibration, confirming that you want to use the point as a calibration. This allows manual calibration instead of relying on automatic calibration before initial calibrations are entered.",
+ "settings_changed": [],
+ "devices": [
+  "Contour Next One",
+  "Dexcom G5"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "non-native",
+  "standard xdrip mode",
+  "BT meter"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "In that case, you can tap on the square marker and tap on calibrate and confirm that you want to use the point as a calibration."
+}

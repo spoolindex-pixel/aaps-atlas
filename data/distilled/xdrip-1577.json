@@ -1,0 +1,20 @@
+{
+ "issue_id": 1577,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/1577",
+ "title": "Capture G6 session from another smartphone",
+ "symptom": "User started a new Dexcom G6 sensor with a new transmitter on a separate phone, but when trying to switch the new sensor session to the loop smartphone, xDrip+ requires stopping the old sensor session first, which sends a 'stop sensor' command to the old transmitter and kills the running session, causing a data pause.",
+ "cause": "xDrip+ sends a 'stop sensor' command to the transmitter when stopping a sensor session, which kills the running sensor session, preventing the user from switching to a new already-started session without stopping the old one.",
+ "fix": "The thread suggests using the 'clear transmitter queue' command to avoid sending the queued stop command, but the user notes that Bluetooth must be disabled before stopping the sensor to prevent the transmitter from receiving the queued command. The maintainer states that capturing a session started from another phone is possible with existing code if collection is disabled on the other phone.",
+ "settings_changed": [],
+ "devices": [
+  "Dexcom G6"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "transmitter",
+  "xDrip+"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "To avoid that the transmitter received the queued command, it‘s necessary to disable bluetooth before stopping the sensor."
+}
