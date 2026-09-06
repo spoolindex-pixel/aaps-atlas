@@ -1,0 +1,24 @@
+{
+ "issue_id": 4932,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/4932",
+ "title": "3.4.2.3 Eros - Issue with starting a fresh pod after the previous one failed (similar to Dash)",
+ "symptom": "After a previous pod failed or was discarded, starting a fresh pod on Eros with AAPS 3.4.2.3 leads to the new pod being disabled shortly after activation, and the app shows a persistent 'connecting for XXX sec' message that cannot be cleared even with 'discard pod'.",
+ "cause": "The deactivation command for the previous pod remains pending in a queue and is executed after the new pod is activated, causing the new pod to be deactivated.",
+ "fix": "A fix was applied to the Eros driver, mirroring a previous fix for Dash, which ensures that using the 'discard' button also removes the pod deactivation command that would otherwise remain pending. The fix was confirmed to resolve the issue in version 3.4.2.3.",
+ "settings_changed": [],
+ "devices": [
+  "Eros",
+  "Emalink"
+ ],
+ "android_versions": [
+  "Android 12",
+  "Android 13"
+ ],
+ "driver_tags": [
+  "Eros",
+  "RileyLink"
+ ],
+ "confidence": "high",
+ "evidence_quote": "I just tested version 3.4.2.3 with the fix, and I can confirm that it resolves the issue. I let the Eros pod expire after 80 hours, and using the “discard” button also removes the pod deactivation command, which previously remained pending and would deactivate the next pod."
+}

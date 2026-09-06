@@ -1,0 +1,21 @@
+{
+ "issue_id": 1348,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/1348",
+ "title": "Cannot disable preemptive restart",
+ "symptom": "xDrip attempts to preemptively restart the sensor on day 9 despite the user wanting to disable it. The preemptive restart option checkbox is hidden, and the user cannot disable it through the UI.",
+ "cause": "The preemptive restart option is hidden because the transmitter serial begins with 8H and is too new, but the setting ob1_g5_preemptive_restart is still true from a previous transmitter.",
+ "fix": "Manually edit the exported settings XML to set ob1_g5_preemptive_restart to false, or enter a made-up 80 serial number to get the option back in the UI and disable it.",
+ "settings_changed": [
+  "ob1_g5_preemptive_restart → false"
+ ],
+ "devices": [
+  "8H transmitter"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "preemptive restart"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "I believe I've manually changed it by editing the settings XML. I suppose I could also have just entered a made up 80 serial number to get the option back in the UI to allow me to disable it in the regular way..."
+}

@@ -1,0 +1,22 @@
+{
+ "issue_id": 1630,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/1630",
+ "title": "NewRelic Crash Reporting is buggy and causes frequent app restarts",
+ "symptom": "Frequent app restarts on various devices and Android versions, increased battery consumption, and an error in the log: NullPointerException on HarvestTimer.setPeriod, and SQLite duplicate column name dg_mgdl. On LineageOS 17.1, a message appears about every minute that xDrip is not responding.",
+ "cause": "The change from Fabric to NewRelic crash reporting (commit c6c289d) is buggy and causes the app restarts.",
+ "fix": "Disabling 'Automatic Crash Reporting' makes the messages disappear but the app still restarts frequently. The issue may be fixed by commit ebba2d8, but it is not confirmed. The maintainer suggests it should not happen unless the app is being installed frequently.",
+ "settings_changed": [
+  "Automatic Crash Reporting → disabled"
+ ],
+ "devices": [],
+ "android_versions": [
+  "LineageOS 17.1"
+ ],
+ "driver_tags": [
+  "NewRelic",
+  "Fabric"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "If I disable \"Automatic Crash Reporting\", messages disappear but the app still restarts frequently."
+}

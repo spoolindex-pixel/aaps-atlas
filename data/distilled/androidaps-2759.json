@@ -1,0 +1,17 @@
+{
+ "issue_id": 2759,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/2759",
+ "title": "RC1 and Dev-J AAPS will not update profiles from NS unless new DB record is created or cloned - updating existing record in latest DB will not work",
+ "symptom": "When using remote profiles on NS, editing an existing profile record does not push changes to AAPS or AAPSClient in RC1 and Dev-J builds. Changes only flow if a new DB record is created or cloned. In previous master, updating an existing record worked.",
+ "cause": "The problem is on NS side. NS is not timestamping changes in profile, so AAPS does not detect updates to existing records.",
+ "fix": "Create a new DB record or clone the existing one to force a new timestamp, then save it. Alternatively, wait for the next update or pause and unpause NSClientV3 to pull the latest profile data.",
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [
+  "nsclientv3"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "The problem is on NS side. NS is not timestamping changes in profile. That's the reason why you need to create new record."
+}

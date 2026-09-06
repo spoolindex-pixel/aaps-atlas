@@ -1,0 +1,23 @@
+{
+ "issue_id": 2905,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/2905",
+ "title": "DEV-M AAPSC Client not receiving BG consistently with BYOD and NS15.",
+ "symptom": "When using AAPS Client and BYOD and NS15 all treatments appear except BG. BG will appear at start and sometimes for a short period but will eventually stop and the only way to restart BG is to pause NS client and restart it. All carb entries, SMB, temp targets will flow in both directions but BG has a problem somewhere.",
+ "cause": "The thread suggests that the issue is related to the use of bridge or connect_source upload methods instead of the AAPS synchronization upload feature, which is the only one to be used in AAPS 3+. MilosKozak provides a release note stating that while using websockets in NS v3 plugin, treatments entered through NS UI and other applications using v1 API are not sent to AAPS, and advises to always use the same client (v1 or v3) in AAPS and AAPSClient until NS fully switches to v3 internally.",
+ "fix": "The thread suggests moving to AAPS upload (synchronization) instead of bridge or connect_source, as it eliminates any delay in AAPS Client. MilosKozak's release note advises to always use the same client (v1 or v3) in AAPS and AAPSClient until NS fully switches to v3 internally.",
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [
+  "bridge",
+  "connect_source",
+  "AAPS upload",
+  "NSClient",
+  "AAPSClient",
+  "BYOD",
+  "NS15"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "Moving to AAPS upload there is a significant change in the data structure and amount when checking mongo. But it has also eliminated any delay in AAPS Client."
+}

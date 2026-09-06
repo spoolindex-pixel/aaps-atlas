@@ -1,0 +1,19 @@
+{
+ "issue_id": 3368,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/3368",
+ "title": "AAPS thinks it's outdated even though latest version is installed - closed loop disabled",
+ "symptom": "When using AAPS for over 30 days, even after updating to the latest version on either master or dev branch, closed loop will be disabled and IOB will be limited to 0.0. The logs report 'Version Checker: old version'.",
+ "cause": "The version check function is called on app launch before any network event has occurred, so isConnected() returns false, preventing the version check from running and causing the app to think it is outdated.",
+ "fix": "The issue was improved by a commit (b5823eeaa1a1044f71bdc90cc6f82107d0515461) in the AndroidAPS repository. The user also suggested a workaround of triggering checkVersion() later, e.g., after 1.5 seconds, or triggering it on network change.",
+ "settings_changed": [],
+ "devices": [
+  "Galaxy S23 Ultra",
+  "Galaxy S21 Ultra",
+  "Xiaomi Mi 11"
+ ],
+ "android_versions": [],
+ "driver_tags": [],
+ "confidence": "medium",
+ "evidence_quote": "improved by https://github.com/nightscout/AndroidAPS/commit/b5823eeaa1a1044f71bdc90cc6f82107d0515461"
+}
