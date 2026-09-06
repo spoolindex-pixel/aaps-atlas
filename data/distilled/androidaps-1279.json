@@ -1,0 +1,25 @@
+{
+ "issue_id": 1279,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/1279",
+ "title": "Nightscout crashes after updating to 3.0.0.1",
+ "symptom": "Nightscout hosted on Heroku crashes after AAPS tries to upload treatments to it, with error 'Cannot read property '_id' of null'. The crash occurs only when both 'Upload Data to NS' and 'Receive therapy events' options are ON. Disabling NS upload in AAPS prevents crashes.",
+ "cause": "The thread identifies that the crash is related to therapy sync, specifically when both 'Upload Data to NS' and 'Receive therapy events' are enabled. The exact root cause is not fully established, but it is associated with AAPS sending null data to Nightscout.",
+ "fix": "The thread provides a workaround: In AAPS, go to NSClient tab, check Paused, then NSClient Preferences -> Synchronization -> turn off 'Receive therapy events', then Maintenance -> Reset Databases, exit AAPS, restart all dynos on Heroku, launch AAPS, and uncheck Paused. Additionally, for NSClient, downgrade to NSClient 2.8.2 or use a workaround from issue #1486.",
+ "settings_changed": [
+  "Receive therapy events → off",
+  "Paused → checked (temporarily)",
+  "Paused → unchecked (after restart)"
+ ],
+ "devices": [
+  "xDrip+ G5"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "NSClient",
+  "upload",
+  "receive therapy events"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "After hours of exploring my problem I found out that the Nightscout crashes only if both - Upload Data to NS - Receive therapy events options are ON. So it's defenitly therapy sync problem."
+}

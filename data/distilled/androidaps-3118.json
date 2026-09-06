@@ -1,0 +1,19 @@
+{
+ "issue_id": 3118,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/3118",
+ "title": "Temporary target from AAPSClient",
+ "symptom": "When setting a new temporary target from AAPSClient while an existing high temp target is active, the loop may cancel the current TT, run, and possibly deliver insulin before setting the new TT. Additionally, an active automation rule for a temp target (e.g., to 5.0) can override and suppress the TT set remotely from AAPSClient.",
+ "cause": "The thread identifies that an active automation rule for a temp target wins over the TT set from AAPSClient, effectively blocking the remote TT. The exact root cause is not fully established, but the issue is related to the interaction between automation rules and remote TT sync.",
+ "fix": "The issue was reported as resolved in version 3.2.0.3 for issue 1, but issue 2 persisted. Later, a comment by MilosKozak on 2024-11-30 states 'resolved in dev hopefuly', indicating a fix was implemented in development. No specific configuration change is provided.",
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [
+  "NSClientV3",
+  "websocket",
+  "temp target sync"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "resolved in dev hopefuly"
+}

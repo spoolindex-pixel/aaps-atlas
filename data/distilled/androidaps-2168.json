@@ -1,0 +1,20 @@
+{
+ "issue_id": 2168,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/2168",
+ "title": "Wear: blank AAPS watchface on Samsung Watch 4",
+ "symptom": "AAPS watchfaces show totally black on Samsung Watch 4 with latest AAPS version (3.1.0.3-dev-c-AIMI). The wear app itself works (bolus from watch) and complications work on other watch faces, but AAPS watchfaces are black. Reinstalling and rebooting did not help.",
+ "cause": "The issue is caused by old dependent libraries that need jetifier to work on modern Android, but jetifier was disabled in a commit. The crash is due to NoClassDefFoundError for android/support/v4/widget/ScrollerCompat when inflating the LineChartView.",
+ "fix": "Enable jetifier again and rebuild, or use a watch face without a chart until fixed. Alternatively, use an older wear build from before the change.",
+ "settings_changed": [],
+ "devices": [
+  "Samsung Watch 4"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "wear",
+  "watchface"
+ ],
+ "confidence": "high",
+ "evidence_quote": "Issue is caused be depended libraries that are old, to make them work on modern Android, jettifier could be used. However this was disabled in commit https://github.com/nightscout/AndroidAPS/commit/e7c41beab74306ee3b5c68c41aac9bf05da36034"
+}

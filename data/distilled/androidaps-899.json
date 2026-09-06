@@ -1,0 +1,21 @@
+{
+ "issue_id": 899,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/899",
+ "title": "Crash on changing Overview graph granularity",
+ "symptom": "When changing the granularity of the graph on the Overview tab, AAPS crashes. Tap-hold on the graph to change granularity two or three times causes a crash. Later, after a dev build, the crash is resolved but the UI becomes non-responsive and an 'AndroidAPS isn't responding' dialog appears.",
+ "cause": "Changing the scale requires recalculating data in the past, which is CPU-intensive. On slow phones it takes tens of seconds, and pressing multiple times restarts recalculation, taking even more time.",
+ "fix": "A PR (#911) was proposed that pre-calculates all scaling possibilities for the last 24 hours, eliminating the need for additional calculation during scaling changes. Testing confirmed it resolves the performance issues.",
+ "settings_changed": [],
+ "devices": [
+  "MDT 554"
+ ],
+ "android_versions": [
+  "Android 11"
+ ],
+ "driver_tags": [
+  "RileyLink"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "I could improved it with doing during prepare data all scaling possibilities for the last 24hours (6h scaling, 12h scaling, 18hour scaling, 24 hour scaling, with and without prediction) It worked fine in overview because no additional calculation was required during any change of scaling done in overview"
+}

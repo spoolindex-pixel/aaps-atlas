@@ -1,0 +1,20 @@
+{
+ "issue_id": 1088,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/1088",
+ "title": "NS follower update 10 minutes late",
+ "symptom": "When using Nightscout follower mode with Medtronic 600 Series users, xDrip follower updates every 10 minutes, causing readings to be up to 10 minutes behind.",
+ "cause": "The 600 uploader posts the time of the reading as on the pump, which is at least 30 seconds after the actual reading, and xDrip syncs its next check to the pump reading time rather than the Nightscout update time, causing a delay.",
+ "fix": "A suggestion was made to add a customizable delay to xDrip's poll time (e.g., +5:30 instead of +5:00) or to poll at 1-minute intervals if no new reading is available, but no definitive fix was implemented in this thread; it was noted as a duplicate of issue #929 and PR #1307 attempts to address it.",
+ "settings_changed": [],
+ "devices": [
+  "Medtronic 600 Series"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "Nightscout follower",
+  "uploader"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "The 600 uploader posts the time of the reading as on the pump and this will be posted to NS at least 30+ seconds after that. This means that xDrip is syncing to the pump reading time and not the nightscout update time and causes xDrip to be up to 10 minutes behind."
+}

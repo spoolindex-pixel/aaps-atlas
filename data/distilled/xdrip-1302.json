@@ -1,0 +1,19 @@
+{
+ "issue_id": 1302,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/1302",
+ "title": "xDrip+ refreshrate",
+ "symptom": "xDrip+ with Nightscout refreshes BG data every 10 minutes, but the sensor sends data every 5 minutes, causing a delay.",
+ "cause": "The refresh interval is hardcoded to 10 seconds (Constants.SECOND_IN_MS * 10) in NightscoutFollowService.java, which is too short because the uploader sends data after about 20-30 seconds, and there may be a system time difference between Nightscout and the phone.",
+ "fix": "A new setting was added in the latest Nightly release (2023.11.21) that lets you delay when the follower reads from Nightscout, when Nightscout follower is selected as the data source.",
+ "settings_changed": [
+  "Nightscout follower delay setting (new in 2023.11.21)"
+ ],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [
+  "nightscout follower"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "The latest Nightly release (https://github.com/NightscoutFoundation/xDrip/releases/tag/2023.11.21) has a new setting when you select Nightscout follower as the data source. It lets you delay when the follower reads from Nightscout."
+}

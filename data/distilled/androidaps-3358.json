@@ -1,0 +1,20 @@
+{
+ "issue_id": 3358,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/3358",
+ "title": "BUG : Bolus interrupted on empty pod / COB lost",
+ "symptom": "When using the bolus calculator with only 3U left in the Medtrum Nano pod, a bolus of 5.2U was requested. The pod started bolusing without alerts, then stopped at 3U with alerts. The carbs were not added to COB, leaving COB at 0 despite IOB showing 3U.",
+ "cause": "Carbs are recorded only on bolus success to prevent overdosing on next bolus wizard attempt. In this case, the bolus was only partially delivered, so the pump driver did not report success, and carbs were not recorded.",
+ "fix": "The thread does not state a definitive fix. Discussion suggests that carbs should be recorded even if bolus is not fully delivered, but no code change is confirmed. The issue remains open with a question about desired behavior.",
+ "settings_changed": [],
+ "devices": [
+  "Medtrum Nano"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "medtrum",
+  "dana"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "exactly. carbs are recorded only on bolus success to prevent overdosing on next bolus wzard attempt"
+}

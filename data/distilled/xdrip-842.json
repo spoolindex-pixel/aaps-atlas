@@ -1,0 +1,17 @@
+{
+ "issue_id": 842,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/842",
+ "title": "Tidepool integration - upload errors",
+ "symptom": "The Tidepool integration can fail with the error \"400 Bad Request\", leading to \"stuck\" uploads. Users report seeing 'Found Existing Remote Dataset' followed by 'Data Upload was not Sucessful: 400 Bad Request.'",
+ "cause": "The thread identifies that invalid values in xDrip, such as negative CGM values, are not accepted by Tidepool servers, causing the 400 response. A specific case with a negative calculated_value is mentioned.",
+ "fix": "A fix was created in pull request #983, which adds a data validation step before uploading to Tidepool. The fix is to be implemented in ESensorGlucose.",
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [
+  "tidepool"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "This occurs when there are invalid values in xDrip that the Tidepool servers will not accept, resulting in the 400 response (such as negative CGM values)."
+}

@@ -1,0 +1,20 @@
+{
+ "issue_id": 4036,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/4036",
+ "title": "How to Export All Data from AAPS (CGM, Basal, Bolus, IOB, etc.)",
+ "symptom": "The user wants to export all data from AAPS including CGM values, basal rates, bolus doses, IOB, and other therapy logs. They tried the export to CSV feature but found it only includes user-entered log data, not the full dataset.",
+ "cause": "The CSV export from AAPS only includes user actions and entries, not BG values. IOB/COB are recalculated dynamically and not stored. AAPS sends data to Nightscout as received from BYODA/xDrip, which may cause discrepancies with Dexcom Clarity.",
+ "fix": "Use Nightscout to export comprehensive data in JSON format, or extract from MongoDB directly. Alternatively, parse AAPS logfiles, though this is tedious. The CSV export from AAPS is the only available export and it omits BG values.",
+ "settings_changed": [],
+ "devices": [
+  "Dexcom Clarity"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "BYODA",
+  "xDrip"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "If you upload data in NS, you can export them in json format very easy. Or from mongo directly"
+}

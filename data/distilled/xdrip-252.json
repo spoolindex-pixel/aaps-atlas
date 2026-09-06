@@ -1,0 +1,25 @@
+{
+ "issue_id": 252,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/252",
+ "title": "G5 Bluetooth Pairing Modal Confirmation on Android 8 (Galaxy S8 Beta)",
+ "symptom": "Every time the user restarts their phone (and sometimes more frequently), a pairing confirmation dialog appears when xDrip first connects to the G5 transmitter. This started after upgrading to Android 8 beta on a Samsung S8.",
+ "cause": "The thread suggests that the automatic bond removal (removingBond) may trigger the need for user interaction on the next bond attempt, and that Android 8 is stricter about automatic pairing. It is also noted that having multiple devices talking to the G5 could cause this, but the user found it still occurred with only xDrip connected.",
+ "fix": "The user found that switching from the OB1 collector to the G5 collector resolved the issue, as the G5 collector re-paired without requiring any dialog or user interaction. The thread does not provide a definitive fix from the maintainers.",
+ "settings_changed": [
+  "Collector → G5 collector"
+ ],
+ "devices": [
+  "G5",
+  "Samsung S8"
+ ],
+ "android_versions": [
+  "Android 8"
+ ],
+ "driver_tags": [
+  "OB1 collector",
+  "G5 collector"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "Surprisingly, it ended up re-pairing without requiring any dialog or user interaction. After that, I also tried the \"Forget Device\" in the \"System Status\" menu that would've always required me to hit yes on the pairing dialog. With the G5 collector, there still was no pairing dialog that I needed to interact with, it bonded and paired successfully automatically without user interaction."
+}

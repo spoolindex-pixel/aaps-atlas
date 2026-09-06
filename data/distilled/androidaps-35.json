@@ -1,0 +1,26 @@
+{
+ "issue_id": 35,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/35",
+ "title": "[2.7.0]Minor bug: openaps SMB prediction not showing while CGM reading keep unchanged ~45m",
+ "symptom": "In AndroidAPS 2.7.0, when using the SMB algorithm and glucose levels are flat, the prediction line is not shown for about 45 minutes, causing confusion and insecurity. The issue occurs intermittently, and the user is using a Libre 2 with patched app and xDrip as BG source.",
+ "cause": "The behavior is not a bug but a safety precaution introduced for all CGMs after a defective Libre sensor event. The algorithm intentionally does not show prediction when BG values are flat for a certain period, to avoid acting on potentially erroneous sensor data.",
+ "fix": "The maintainer changed the behavior for Dexcom native app, but the change was not applied to xDrip+ with Dexcom or other setups. The thread does not provide a specific fix for the reported issue, but suggests that the algorithm should be adjusted to distinguish between low flatline and high values.",
+ "settings_changed": [],
+ "devices": [
+  "Libre 2",
+  "xDrip",
+  "Dexcom G6"
+ ],
+ "android_versions": [
+  "Android 10"
+ ],
+ "driver_tags": [
+  "SMB",
+  "xDrip",
+  "native mode",
+  "patched app"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "This is not a bug. You can read about it here:"
+}

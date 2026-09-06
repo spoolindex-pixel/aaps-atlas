@@ -1,0 +1,23 @@
+{
+ "issue_id": 3261,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/3261",
+ "title": "Wrong COB in AAPS due to dependenies of I/C an ISF on carbimpact and therfore the calc of carbdecay in combination with Autosens",
+ "symptom": "Wrong display of COB in AAPS, leading to incorrect bolus calculator suggestions and potentially too much or too little insulin, which can be dangerous, especially in parental setups. The issue is observed when Autosens adjusts ISF, altering the ratio of ISF to I/C and thus affecting carb decay calculation.",
+ "cause": "COB calculation in AAPS is based on profile values of ISF and I/C. Autosens adjusts ISF only (in oref decision algorithm), which changes the carbimpact (ISF/IC ratio) and thus the carb decay calculation, leading to incorrect COB display.",
+ "fix": "The thread does not provide a definitive fix. Suggestions include turning off Autosens for consistent COB decay, using autotune to determine real ratios, and adjusting min_5m_carbimpact. The user found that keeping carbimpact constant by adjusting ISF and I/C together helps, but this is not a formal fix.",
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [
+  "autosens",
+  "isf",
+  "ic",
+  "carbimpact",
+  "cob",
+  "smb",
+  "dynisf"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "Autosens adjusts ISF only in oref decision alg. COB is calculated from IC and ISF values in profile"
+}

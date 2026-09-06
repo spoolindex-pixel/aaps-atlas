@@ -1,0 +1,22 @@
+{
+ "issue_id": 689,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/689",
+ "title": "[Dev] [Bug]Intermittent Issue with Delta values not being passed from glucose_status to _determine_basal",
+ "symptom": "In the current Dev code, the values for Delta, Short Average Delta and Long Average Delta are not always passed to determine_basal. Screenshots show none showing up on either the GUI main screen or in openAPS SMB in spite of a change in glucose value of 32 mg/dl.",
+ "cause": "The cause is doubled BG values with identical timestamp, likely due to dual uploads to Nightscout (e.g., via Share bridge) causing duplicate entries. The Dev version handles duplicate timestamps differently, leading to incorrect delta data.",
+ "fix": "Keep only AAPS as the uploader to Nightscout, as it handles backward smoothing properly. Avoid double uploads from other sources like the Dexcom bridge.",
+ "settings_changed": [],
+ "devices": [
+  "Dexcom G6"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "patched app",
+  "Nightscout",
+  "Share",
+  "bridge"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "it's caused by your wrong setup: doubled BG values with identical timestamp. G6 is smoothing old values and you are probably synchnonizing them elsewhere which breaks it"
+}

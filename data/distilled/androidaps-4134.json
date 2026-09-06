@@ -1,0 +1,15 @@
+{
+ "issue_id": 4134,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/4134",
+ "title": "AAPS CI keeps failing (dev branch)",
+ "symptom": "For the past week AAPS CI build on the dev branch keeps failing. The issue is reproducible locally when building dev/fullRelease, and also occurs when building via Android Studio's 'Assemble Project'.",
+ "cause": "The AAPS-CI command line builds both the app and wear simultaneously, which can sometimes cause ordering issues.",
+ "fix": "Adjust AAPS-CI to build the app first, then the wear, to prevent the problem. This was implemented in PR #4139.",
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [],
+ "confidence": "high",
+ "evidence_quote": "The main difference with the AAPS-CI command line is that AAPS-CI builds both the app and wear simultaneously, which can sometimes cause ordering issues. I will adjust it so that AAPS-CI builds the app first, then the wear, which should prevent this problem."
+}
