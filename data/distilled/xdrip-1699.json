@@ -1,0 +1,20 @@
+{
+ "issue_id": 1699,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/1699",
+ "title": "Nightscout uploader causes HTTP error 413 - Payload Too Large when sending a large number of entries",
+ "symptom": "Nightscout uploader sends bg readings using a JSON array in the request body, but it causes HTTP error 413 (Payload Too Large) when there are a lot of entries. A user trying to send all data for more than 2 years (more than 6000 entries) encountered this error.",
+ "cause": null,
+ "fix": "Workaround: export xDrip database, extract SQLite3 database, open it and delete all content from table UploaderQueue. Then send only 1 month of data to Nightscout, which worked. The suggestion is to send data in smaller batches.",
+ "settings_changed": [],
+ "devices": [
+  "Libre 1",
+  "MiaoMiao 2"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "Nightscout uploader"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "Workaround: I exported xDrip database, extracted SQLite3 database, opened it and deleted all content from table UploaderQueue. Then, we decided to send only 1 month of data to Nightscout and it worked."
+}

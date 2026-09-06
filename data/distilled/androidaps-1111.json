@@ -1,0 +1,20 @@
+{
+ "issue_id": 1111,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/1111",
+ "title": "[3.0-beta11] Automation - profile percentage & NSClient sync",
+ "symptom": "Automation rules for profile percentage are applied multiple times when multiple rules match simultaneously, and the profile changes are not correctly synchronized to NSClient (only the first change appears, and sometimes changes are lost during websocket reconnection).",
+ "cause": "Applying a ProfileSwitch takes some time, so another ProfileSwitch rule is executed as well because the percentage is not visible immediately. Also, multiple ProfileSwitches are deduplicated on the Nightscout side even if they have slightly different timestamps.",
+ "fix": "The issue was resolved by a commit (40864620e09e4f6b03293eff89228fb2b1f96372). The maintainer also noted that rules are processed in order on the automation tab and can be reordered by drag&drop.",
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [
+  "automation",
+  "profile percentage",
+  "NSClient",
+  "Nightscout"
+ ],
+ "confidence": "high",
+ "evidence_quote": "i see more issues with current implementation: * applying ProfileSwitch take some time thus another PS rule is executed as well because percentage is not visible immediately * it looks like  multiple PS' are deduplicated on NS side even they have slighly different timestamp"
+}

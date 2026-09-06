@@ -1,0 +1,21 @@
+{
+ "issue_id": 1410,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/1410",
+ "title": "[DEV 3.0.0.1- E] After 51 minutes without bg values - TT was still on 0% and must be canceled manually.",
+ "symptom": "After a Dexcom sensor failure, AAPS did not cancel its zero temp basal after 51 minutes without BG values, requiring manual cancellation. The user's BG rose to 210 during that time.",
+ "cause": "OpenAPS is only invoked when a new glucose value arrives and can only be manually invoked for glucose values max 7 minutes old, so the code that limits zero temps to 30 minutes when BG is missing is not invoked, and the active temp runs until finished.",
+ "fix": "No explicit fix provided; the thread suggests that with a failing sensor the user needs to take over control and take appropriate action.",
+ "settings_changed": [],
+ "devices": [
+  "Dexcom G6",
+  "Combo",
+  "Pixel 5"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "Boyda"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "OpenAPS is only invoked when a new glucose value arrives and can manually be invoked only for glucose values max 7 minutes old. Hence the code mentioned above isn't invoked and the active temp runs until finished"
+}

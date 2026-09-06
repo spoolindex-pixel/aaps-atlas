@@ -1,0 +1,17 @@
+{
+ "issue_id": 2293,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/2293",
+ "title": "NSClient is not syncing to database whilst xdrip is",
+ "symptom": "After moving the database to a Docker container managed within Portainer, AAPS NSClient is not syncing to that Docker container instance, while xDrip is able to sync without issues.",
+ "cause": "The user speculates that the issue might be due to a difference in database name casing ('Nighscout' in Google Cloud vs 'nightscout' in docker compose) or not exporting all databases from Google Cloud. However, the thread does not definitively establish a root cause.",
+ "fix": "The user resolved the issue by exporting all databases from Google Cloud and restoring them to the Docker container, and by enabling the 'web-sockets' switch to 'on' inside the configuration panel for the proxied Docker container.",
+ "settings_changed": [
+  "web-sockets → on"
+ ],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [],
+ "confidence": "medium",
+ "evidence_quote": "The second different thing that I suspect was the responsible for this more welcoming status of my docker deployment stack, was the fact that _I triggered the 'web-sockets' switch to 'on'_ inside the configuration panel for this 'proxied' docker container."
+}

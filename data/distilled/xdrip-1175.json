@@ -1,0 +1,19 @@
+{
+ "issue_id": 1175,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/1175",
+ "title": "Watch Wake Up negative value preventing syncing of data when using a watch collector and coming back into range of the phone",
+ "symptom": "The 'Watch Wake Up' field in the status screen counts down past zero when the watch is used as a primary collector and is out of range of the phone. This prevents the phone's xDrip from retrieving data from the watch, showing missed readings until the phone is rebooted.",
+ "cause": "The failover time is reported by the watch; if they stop communicating, the time goes into the past even though at the watch end it is reset. The stall may be in the WearOS app on the phone.",
+ "fix": "Force killing the WearOS app on the phone and re-opening it resolved the issue. Factory resetting the watch and installing Wear OS fresh also stopped occurrences.",
+ "settings_changed": [],
+ "devices": [
+  "WearOS"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "watch collector"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "That did indeed fix the issue. I was able to kill the WearOS service in Tasker to accomplish the recommended fix."
+}

@@ -1,0 +1,15 @@
+{
+ "issue_id": 3071,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/3071",
+ "title": "NormalTarget's inconsistency",
+ "symptom": "The concept of 'normalTarget' is hardcoded to 100 in oref1 JS files, which is problematic for mmol users because 100 mg/dl equals 5.555... mmol/L, a value that cannot be set as a temp target or profile target. This causes inconsistencies in how high/low temp targets are classified, leading to incorrect behavior in features like SMB disabling and ISF adjustment.",
+ "cause": "The hardcoded value of 100 for normalTarget is not achievable in mmol units, and the code uses strict comparison with 100, causing discrepancies between documentation and actual behavior.",
+ "fix": "The issue was resolved by a commit that likely changes the normalTarget constant to 99 or adjusts the logic, as referenced in the commit link.",
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [],
+ "confidence": "medium",
+ "evidence_quote": "Looks like AAPS requires new global constant of normalTarget (=99) to be reused when needed."
+}

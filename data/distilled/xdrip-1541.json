@@ -1,0 +1,15 @@
+{
+ "issue_id": 1541,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/1541",
+ "title": "Sensor insert time is connected to database, why?",
+ "symptom": "When importing a database, the sensor state from earlier is saved, not just data points, causing annoying sensor start dates even if the sensor was just started.",
+ "cause": "The database export includes the current state of the application, including the fact that a sensor is started, because that is the current state at export time.",
+ "fix": "Use an SQLite database editor to open the 'Sensors' table and delete the last row which has a field called 'stopped_at' with the value '0' indicating a running sensor. Save the database and use it for the xDrip import to avoid having a running sensor.",
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [],
+ "confidence": "high",
+ "evidence_quote": "You can open the 'Sensors' table and delete the last row which should have a field called 'stopped_at' with the value '0' which indicates a running sensor. If you delete that row, then save the database and use that for the xDrip import then you won't have a running sensor."
+}

@@ -1,0 +1,19 @@
+{
+ "issue_id": 1327,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/1327",
+ "title": "AAPS 3.0.0.0.1 OpenHumans Upload doesn't work anymore",
+ "symptom": "OpenHumans data no longer uploads; log shows UnsupportedOperationException: Tried to obtain display from a Context not associated with one.",
+ "cause": "The code attempts to get display metrics from a background context, which is not allowed on Android 11+ (API 30).",
+ "fix": "Comment out the if statement in OpenHumansUploader.kt around line 236 that obtains display metrics; the issue was fixed by commit 60f5115ce63d91ee2330dfc0dac0eb6fd301b538.",
+ "settings_changed": [],
+ "devices": [
+  "Omnipod Dash"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "OpenHumans"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "I now use a Workaround: In the OpenHumansUploader.kt class on 236 I did comment out the if statement:"
+}

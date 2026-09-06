@@ -1,0 +1,15 @@
+{
+ "issue_id": 1658,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/1658",
+ "title": "Don't delay ascending volume alerts by 3 minutes",
+ "symptom": "The ascending volume profile starts at silent, causing a 3-minute delay before any audible alert, which may result in missing alerts or glucose levels changing before the alarm is heard.",
+ "cause": "The AlertPlayer.java file has an if statement on line 530 that keeps the alert silent for 3 minutes for the ascending profile only, during which only the vibrate option functions.",
+ "fix": "The thread proposes changing the ascending volume profile to start from a very low volume instead of silent, and suggests making medium, high, and ascending volume profiles have no delay. However, no code change is confirmed as implemented.",
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [],
+ "confidence": "medium",
+ "evidence_quote": "The _if_ statement on line 530 keeps the alert (for ascending profile only) silent for 3 minutes. Only the vibrate option will function in that period."
+}

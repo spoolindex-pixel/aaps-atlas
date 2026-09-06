@@ -1,0 +1,15 @@
+{
+ "issue_id": 3162,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/3162",
+ "title": "Crash preventing an application start after updating from 3.1.0.3 to 3.2.0.3 due to DB migration failure (notes column of boluses table)",
+ "symptom": "After updating from 3.1.0.3 to 3.2.0.3, the application crashes on start. The log shows an IllegalStateException: Migration didn't properly handle: boluses(app.aaps.database.entities.Bolus), indicating a database migration failure.",
+ "cause": "The user had previously used a development build and then downgraded, and also applied custom patches for G7 data smoothing. The maintainer states that support is only for non-modified versions and that customizations led to the error. The user later explains that the migration21to22 was not completely performed by a stable release plan because the DB was marked as updated to a higher version while the plan was different and incomplete in a development branch.",
+ "fix": "The user resolved the issue by editing the source code: downgrading the DB version to 20, rewriting the migration 20 to 24 plan, then upgrading DB to 24. However, the application ended up dropping the whole DB and recreating it. The user then returned to stock stable release 3.2.0.3. The maintainer also mentions that AAPS can recover database from NS.",
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [],
+ "confidence": "medium",
+ "evidence_quote": "migration21to22 (DatabaseModule.kt) was not completely performed by a stable release plan because DB was marked as updated to a higher version while the plan was different and incomplete in a development branch causing an unexpected result."
+}
