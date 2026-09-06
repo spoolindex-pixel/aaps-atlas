@@ -138,8 +138,9 @@ work — list endpoint only). Handles pagination, watches
   batch 5 (task 158) **1025** records / 78 parked;
   batch 6 (task 157) **1223** records / 80 parked;
   batch 7 (task 158) **1412** records / 91 parked;
-  batch 8 (task 157, this run) **1607** records / 96 parked —
-  **1684 undistilled** of 3387. Every batch reconciles exactly:
+  batch 8 (task 157) **1607** records / 96 parked;
+  batch 9 (task 158, this run) **1802** records / 101 parked —
+  **1484 undistilled** of 3387. Every batch reconciles exactly:
   new-distilled + new-parked = attempts, and
   `3387 − distilled − parked = REMAINING`.
 
