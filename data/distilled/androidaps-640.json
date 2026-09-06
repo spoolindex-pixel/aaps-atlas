@@ -1,0 +1,15 @@
+{
+ "issue_id": 640,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/640",
+ "title": "[2.8.2.2 - dev] ISF lower than 2 mmol/l results in invalid profile",
+ "symptom": "When setting the ISF lower than 2 mmol/l, the profile cannot be validated or saved. It was working correctly in 2.8.2 main.",
+ "cause": "The hard limit for ISF is defined in mg/dl (MIN_ISF = 2.0) and is never translated to mmol/l, causing the validation to fail for mmol/l users.",
+ "fix": "A fix was implemented by adding a check for units (mgdl vs mmol) in the isValidEditState function, converting the hard limits appropriately for mmol/l.",
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [],
+ "confidence": "high",
+ "evidence_quote": "part of the bug is in this place: app/src/main/java/info/nightscout/androidaps/utils/HardLimits.kt const val MIN_ISF = 2.0 // mgdl const val MAX_ISF = 720.0 // mgdl Apperently it is never translated to mmol/l."
+}

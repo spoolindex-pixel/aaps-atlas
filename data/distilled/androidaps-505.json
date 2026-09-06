@@ -1,0 +1,24 @@
+{
+ "issue_id": 505,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/505",
+ "title": "Profile upload to Medtronic error when having too many rows in basals",
+ "symptom": "After a profile change, the profile was not uploaded to the pump with a noisy alarm. The user found that the profile was too big (added few rows to basals) and managed to recover by reducing the number of rows in basals to 8.",
+ "cause": "The thread does not establish a definitive root cause. The user suspects a limitation of the pump or OrangeLink, while a maintainer suggests it might be a communication timeout issue with the RileyLink clone.",
+ "fix": "The user recovered by reducing the number of rows in basals to 8. The maintainer notes that sending basals requires a long command (more than 63 bits) and is sent as 3 commands, and if the RileyLink clone has communication problems, it might fail.",
+ "settings_changed": [
+  "basals rows → 8"
+ ],
+ "devices": [
+  "MDT722",
+  "OrangeLink",
+  "Medtronic 754"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "RileyLink",
+  "OrangeLink"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "I found out that I have made the profile too big (added few rows to basals) and managed to recover by reducing number of rows in basals to 8."
+}

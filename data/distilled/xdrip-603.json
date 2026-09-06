@@ -1,0 +1,25 @@
+{
+ "issue_id": 603,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/603",
+ "title": "xDrip not prompting for calibration using Bluetooth meter",
+ "symptom": "Using xDrip with a Contour Next One meter linked via Bluetooth, the user never gets the prompt to use the reading for calibration even though it is enabled in settings. The event log shows xDrip is trying to protect but nothing appears.",
+ "cause": "In native mode with G5/G6, synced blood tests are always sent to the transmitter regardless of automatic calibration settings, which is a bug if the native algorithm isn't perfect and shouldn't be advised of all blood test data.",
+ "fix": "The plan is to change the native algorithm support to better respect the settings for this and behave more similarly to the non-native algorithm. A workaround suggested is to uncheck 'use meter for calibrations' and check 'automatic calibration', and if connection fails, disable and re-enable the setting in 'Glucose meters' settings.",
+ "settings_changed": [
+  "use meter for calibrations → unchecked",
+  "automatic calibration → checked"
+ ],
+ "devices": [
+  "Contour Next One",
+  "G5",
+  "G6"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "native mode",
+  "Bluetooth"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "I believe the reported issue is that when using native mode with G5/G6 synced blood tests are always sent to the transmitter regardless of your automatic calibration settings."
+}
