@@ -1,0 +1,21 @@
+{
+ "issue_id": 730,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/730",
+ "title": "android calling xdrip with miaomiao packets after very long time.",
+ "symptom": "After a long period without readings, xDrip receives Miaomiao packets that appear to be from different times in the sensor's life, causing incorrect glucose readings and gaps in data.",
+ "cause": "The thread identifies that packets from different times in the sensor's life are received, and because the code sets the time early and takes a wakelock, it cannot distinguish recent packets from old ones, leading to incorrect gap filling.",
+ "fix": null,
+ "settings_changed": [],
+ "devices": [
+  "Miaomiao",
+  "Libre"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "miaomiao",
+  "libre"
+ ],
+ "confidence": "low",
+ "evidence_quote": "This causes our code to think that this is a recent packet. More than that, since no data existed for many hours, we had two parts in the code trying to complete the gap, and this is how the problem has happened."
+}

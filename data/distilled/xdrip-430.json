@@ -1,0 +1,21 @@
+{
+ "issue_id": 430,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/430",
+ "title": "xDrip+ hard crash with  libre oop algo on new sensor",
+ "symptom": "xDrip+ crashes consistently when using Libre as collector and out of process algorithm on a brand new sensor, when only one historic bg is available. The crash occurs because the extrapolation library requires at least 3 values.",
+ "cause": "The extrapolation library (SplineInterpolator) requires at least 3 data points, but when a new sensor has only one historic bg, only 2 points are available, causing a NumberIsTooSmallException.",
+ "fix": "A fix was submitted in pull request #431, but the specific changes are not described in the thread.",
+ "settings_changed": [],
+ "devices": [
+  "Libre"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "libre",
+  "oop algo",
+  "out of process algorithm"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "The issue is the fact that the extrapolation library wants to have at least 3 values each time."
+}
