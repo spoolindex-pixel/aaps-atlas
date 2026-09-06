@@ -137,8 +137,9 @@ work — list endpoint only). Handles pagination, watches
   batch 4 (task 155 refire) **832** records / 71 parked;
   batch 5 (task 158) **1025** records / 78 parked;
   batch 6 (task 157) **1223** records / 80 parked;
-  batch 7 (task 158, this run) **1412** records / 91 parked —
-  **1884 undistilled** of 3387. Every batch reconciles exactly:
+  batch 7 (task 158) **1412** records / 91 parked;
+  batch 8 (task 157, this run) **1607** records / 96 parked —
+  **1684 undistilled** of 3387. Every batch reconciles exactly:
   new-distilled + new-parked = attempts, and
   `3387 − distilled − parked = REMAINING`.
 
@@ -263,6 +264,20 @@ notice prints the one manual setup step. No `.env` required locally.
     thread must exist exactly once in the merged history). The final push is
     then `git push --force-with-lease` — content-preserving supersession of
     the stale branch; nothing is lost.
+16. **Supersession can span several stale branches at once.** Before
+    distilling, compare `data/distilled/state.json` `distilled`/`parked`
+    sets across EVERY `origin/feat/task-*` tip (not just your own) against
+    `origin/main` — e.g. task 157 batch 8 found batches 6+7 stranded on
+    feat/task-157 AND feat/task-158 branches. Batch runs get re-fired on
+    different branch names, so the same batch can exist (tree-identical)
+    on two branches and later batches stack on top. Pick the longest
+    linear unmerged chain (`git log origin/main..<branch>` + `git diff
+    --stat` two same-named commits to confirm tree-identity before
+    choosing), cherry-pick its content commits, then distill — the new
+    batch picks up exactly where that chain left off. The AGENTS-REFERENCE
+    batch-standing table may already list those cherry-picked batches
+    (their standing commits edit it); only the trailing row + running
+    total change after your own batch.
 
 ## Nightly batch runs (post-phase-2)
 
