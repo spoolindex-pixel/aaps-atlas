@@ -139,9 +139,9 @@ counted open issues too — 3387 *is* the complete closed set.
   `data/corpus/raw/` (gitignored, re-fetchable).
 - **Distilled** (phase 2): LLM-extracted S-C-F records, one per corpus
   thread, distilled in ~200-thread batches.
-- Current index: **6 docs, 53 raw threads, 251 distilled records** (first
-  ~200-thread batch; grows with each later batch task), index ≈ 1.1 MiB raw
-  (~220 KiB gzipped).
+- Current index: **6 docs, 53 raw threads, 832 distilled records** (four
+  ~200-thread batches: phase-2 first batch + three batch runs; grows with
+  each later batch task), index ≈ 2.2 MiB raw (~410 KiB gzipped).
 
 ## Hosting options (all free tier)
 
