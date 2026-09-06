@@ -56,20 +56,7 @@ jobs:
           path: site
       - name: CF token missing - manual setup step
         if: env.CLOUDFLARE_API_TOKEN == ''
-        run: |
-          echo "CF token needed: create API token with Cloudflare Pages:Edit,"
-          echo "put it in vault item aaps-atlas-cf-token and in repo secret"
-          echo "CLOUDFLARE_API_TOKEN (single manual step; see README)."
-      - name: Create CF Pages project (first deploy only)
-        if: env.CLOUDFLARE_API_TOKEN != ''
-        continue-on-error: true
-        # cloudflare/wrangler-action v3.15.0
-        uses: cloudflare/wrangler-action@9acf94ace14e7dc412b076f2c5c20b8ce93c79cd  # yamllint disable-line rule:line-length
-        with:
-          command: pages project create aaps-atlas --production-branch=main
+        run: echo "CF token secret not set - deploy skipped (designed manual gate)."
       - name: Deploy site to Cloudflare Pages (aaps-atlas)
         if: env.CLOUDFLARE_API_TOKEN != ''
-        # cloudflare/wrangler-action v3.15.0
-        uses: cloudflare/wrangler-action@9acf94ace14e7dc412b076f2c5c20b8ce93c79cd  # yamllint disable-line rule:line-length
-        with:
-          command: pages deploy site --project-name aaps-atlas
+        run: npx -y wrangler@4.129.0 pages deploy site --project-name aaps-atlas
