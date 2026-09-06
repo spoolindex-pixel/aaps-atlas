@@ -27,11 +27,12 @@ numbers are already distilled (or parked), so each run picks the next ~200 by
 comment count desc.
 
 LLM config (env, all optional):
-    AAPS_LLM_API_KEY   default: read from ~/.pi/agent/auth.json (deepseek key)
+    AAPS_LLM_API_KEY   key for the OpenAI-compatible endpoint below
+    AAPS_LLM_KEY_FILE  optional JSON key file fallback: {"deepseek": {"key": ...}}
     AAPS_LLM_BASE_URL  default: https://api.deepseek.com
     AAPS_LLM_MODEL     default: deepseek-chat
 
-Model gotcha: the deepseek-v4-flash (pi/robit default) variant is a heavy
+Model gotcha: the deepseek-v4-flash reasoning variant is a heavy
 reasoning model — on a meaningful fraction of threads it burns its whole
 completion budget on reasoning_content (finish_reason=length) and returns
 EMPTY content, which fails parse and gets parked as a reject. deepseek-chat
@@ -305,7 +306,11 @@ def llm_config() -> dict:
     model = os.environ.get("AAPS_LLM_MODEL", "deepseek-chat")
     key = os.environ.get("AAPS_LLM_API_KEY", "")
     if not key:
-        auth = Path.home() / ".pi" / "agent" / "auth.json"
+        key_file = os.environ.get(
+            "AAPS_LLM_KEY_FILE",
+            str(Path.home() / ".config" / "aaps-atlas" / "llm-key.json"),
+        )
+        auth = Path(key_file).expanduser()
         if auth.exists():
             try:
                 data = json.loads(auth.read_text(encoding="utf-8"))
@@ -313,7 +318,10 @@ def llm_config() -> dict:
             except json.JSONDecodeError:
                 key = ""
     if not key:
-        raise SystemExit("ERROR: no LLM API key — set AAPS_LLM_API_KEY (or pi auth.json deepseek key).")
+        raise SystemExit(
+            "ERROR: no LLM API key — set AAPS_LLM_API_KEY (or AAPS_LLM_KEY_FILE "
+            'pointing at a JSON file shaped {"deepseek": {"key": ...}}).'
+        )
     return {"base": base, "model": model, "key": key}
 
 

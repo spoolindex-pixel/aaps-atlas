@@ -69,9 +69,9 @@ node    scripts/search_check.mjs  # acceptance harness: corpus sizes, attributio
   page against the built index and requires hits across docs, threads and
   distilled records for the demo queries.
 - No secrets needed to build; `fetch_threads.py` uses the `gh` CLI's existing
-  auth, `fetch_corpus.py` needs `GITHUB_TOKEN` in env, `distill.py` reads the
-  robit default LLM key from `~/.pi/agent/auth.json` (or `AAPS_LLM_API_KEY`)
-  — never a token in env files or scripts.
+  auth, `fetch_corpus.py` needs `GITHUB_TOKEN` in env, and `distill.py` takes
+  `AAPS_LLM_API_KEY` in the environment (or a default-provider config file in
+  the operator's home directory) — never a token in env files or scripts.
 
 ## Layout
 
@@ -167,11 +167,11 @@ The deploy job is **fully gated on the token**: without
 notice, so the repo is always ready-to-deploy.
 
 **Single manual step (CF token needed):** create an API token with
-`Cloudflare Pages:Edit` permission, put it in vault item `aaps-atlas-cf-token`
-and in the repo secret `CLOUDFLARE_API_TOKEN` (optionally
-`CLOUDFLARE_ACCOUNT_ID`). After that, every push to `main` deploys `site/`
-automatically. First deploy auto-creates the Pages project
-(`--production-branch=main`); no secrets are ever committed to this repo.
+`Cloudflare Pages:Edit` permission and add it as the repo secret
+`CLOUDFLARE_API_TOKEN` (optionally `CLOUDFLARE_ACCOUNT_ID`). After that, every
+push to `main` deploys `site/` automatically. First deploy auto-creates the
+Pages project (`--production-branch=main`); no secrets are ever committed to
+this repo.
 
 ## Roadmap
 
