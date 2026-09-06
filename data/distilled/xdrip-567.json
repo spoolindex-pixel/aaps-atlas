@@ -1,0 +1,31 @@
+{
+ "issue_id": 567,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/567",
+ "title": "Improve wear collection service when phone is out of range",
+ "symptom": "With the latest nightlies the wear collection service is started as soon as the smartwatch has no connection to the phone (only 'Enable Wear Collection Service' is activated). It would be better if the wear collection service is already started when the phone cannot connect to the transmitter even if the watch is still connected to the phone. The watch has a better bluetooth range than the transmitter, so the watch did not start collection service because it still had connection to the phone but the transmitter already lost connection to the phone, causing sometimes no readings received.",
+ "cause": "The wear collection service is only started when the smartwatch loses connection to the phone, not when the phone loses connection to the transmitter, even though the watch may still be connected to the phone.",
+ "fix": "The user Hyuril reports that forcing the wear collection service and using only wear mode avoids the problem: 'I have the same so I have to \"Force Wear Collection Service\" and \"Only use Wear\" to avoid this problem.' Additionally, they mention deactivating 'wifi autoconnect' on the watch helped.",
+ "settings_changed": [
+  "Force Wear Collection Service → ON",
+  "Only use Wear → ON",
+  "wifi autoconnect → off"
+ ],
+ "devices": [
+  "Miaomiao",
+  "Ticwatch E",
+  "Ticwatch Pro"
+ ],
+ "android_versions": [
+  "Android 8.0.0",
+  "Android 8.1.0",
+  "Android 7.0"
+ ],
+ "driver_tags": [
+  "wear collection service",
+  "Force Wear Collection Service",
+  "Only use Wear"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "I have the same so I have to \"Force Wear Collection Service\" and \"Only use Wear\" to avoid this problem."
+}

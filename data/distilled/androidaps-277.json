@@ -1,0 +1,17 @@
+{
+ "issue_id": 277,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/277",
+ "title": "Building in Azure Pipeline (Android resource linking failed)",
+ "symptom": "When building a release version of AndroidAPS 2.8.2 in an Azure DevOps pipeline, the build fails during resource linking with AAPT2 errors reporting missing resources such as color/importListFileName and color/importListAdditionalInfo. Debug builds succeed, but release builds fail.",
+ "cause": "The user was building the wrong APK variant; they were building the WearOS image instead of the full smartphone app. The release build failed because they used 'assembleRelease' instead of 'app:assembleFullRelease'.",
+ "fix": "Specify the correct Gradle task 'app:assembleFullRelease' instead of 'assembleRelease' to build the full release APK. This resolved the linking problem.",
+ "settings_changed": [
+  "Gradle task → app:assembleFullRelease"
+ ],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [],
+ "confidence": "high",
+ "evidence_quote": "Update: Seems that i needed to specify app:assembleFullRelease instead of 'assembleRelease'. This solved the linking problem. I have now successfully build a release APK :)"
+}

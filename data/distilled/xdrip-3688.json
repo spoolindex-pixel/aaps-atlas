@@ -1,0 +1,25 @@
+{
+ "issue_id": 3688,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/3688",
+ "title": "xDrip does not recognise new G7 sensor, despite correct code, and it working on Tandem T-slim pump",
+ "symptom": "xDrip does not recognize a new G7 sensor even though the correct code is entered and the sensor works on the Tandem T-slim pump. The System Status shows the correct TX ID for the new sensor, but transmitter days and battery voltages are from the old sensor, and the main page shows sensor error and an old end time.",
+ "cause": "The thread suggests that the old sensor's Bluetooth connection remains and xDrip cannot delete it because it doesn't know the Bluetooth name, which Dexcom changes randomly. The issue may be due to not deleting all Bluetooth connections before pairing the new sensor.",
+ "fix": "The workaround is to use a fake sensor code, delete both Bluetooth connections, and re-enter the new sensor code. The maintainer advises following the guide and deleting all codes before attempting to connect to a new device, and staying on the status page after pairing.",
+ "settings_changed": [
+  "sensor code → fake code (temporarily)",
+  "sensor code → correct new code (after deleting Bluetooth connections)"
+ ],
+ "devices": [
+  "Dexcom G7",
+  "Tandem T-slim pump"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "G7",
+  "transmitter",
+  "bluetooth"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "Solved using fake sensor code, deleted both bluetooth connections and re-entered newone code"
+}

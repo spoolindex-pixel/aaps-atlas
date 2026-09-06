@@ -1,0 +1,20 @@
+{
+ "issue_id": 1317,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/1317",
+ "title": "Miband 4 - data loss indication missing",
+ "symptom": "With the nightly 20200419, there is no indication on the Miband4 that no new data is available. The old watchface/display remains unchanged until new data comes in, which is dangerous as one wants to detect data loss on the watch. At a quick glance all seems OK, but you have to check the time of the last reading with the current time to verify data validity.",
+ "cause": "The thread indicates that the behavior is intended: the watchface displays the last reading, and only after 30 minutes without new data does xDrip force a watchface update showing a crossed-out last glucose value. The user considers this unsafe and suggests adjusting the time to 10 minutes like in xDrip.",
+ "fix": "The developer (bigdigital) proposes to add two update intervals: one set to 15 minutes to update the Miband screen to show crossed-out last readings if no new data, and a second interval (30 minutes) to update the screen for graph changes. In night mode, the interval defined in night mode settings would be used. The user agrees with 15 minutes.",
+ "settings_changed": [],
+ "devices": [
+  "Miband4"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "miband",
+  "watchface"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "I can add two update intervals, one for example can be set to 15 minutes. If there would be no new readings, this timer will update miband screen to see the crossed out last readings."
+}

@@ -1,0 +1,23 @@
+{
+ "issue_id": 4942,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/4942",
+ "title": "Intermittent Omnipod Dash bolus failures — BusyException race in OmnipodDashBleManagerImpl, more pronounced on Atlas (InPlay BLE) pods",
+ "symptom": "Intermittent bolus delivery failures (\"Failed to send the command\") with Omnipod Dash. Pod history shows repeated failures at the same timestamp followed by eventual success. The issue appears correlated with the newer Atlas (InPlay BLE) pod hardware generation versus the older SAW (TWI Board) generation.",
+ "cause": "The root cause was identified via logcat capture as a U200 insulin concentration conversion issue: the loop calculated an SMB of 0.05 U, but the U200 conversion halved it to 0.025 before reaching the pod command builder, which requires a multiple of 0.05. This causes an IllegalArgumentException at ProgramBolusCommand$Builder.setNumberOfUnits, before any BLE communication. The BusyException race was initially suspected but ruled out after testing.",
+ "fix": "Update to a version including commit 2e184102e1, which fixed the bolus size issue. The user confirmed the fix and closed the issue.",
+ "settings_changed": [],
+ "devices": [
+  "Omnipod Dash"
+ ],
+ "android_versions": [
+  "Android 17"
+ ],
+ "driver_tags": [
+  "Omnipod Dash",
+  "Atlas (InPlay BLE)",
+  "SAW (TWI Board)"
+ ],
+ "confidence": "high",
+ "evidence_quote": "Fixed in commit 2e184102e1. Closing, thank you!"
+}

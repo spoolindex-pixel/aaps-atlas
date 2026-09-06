@@ -1,0 +1,15 @@
+{
+ "issue_id": 4572,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/4572",
+ "title": "aaps-ci.yml does‘t allow line breaks in KEYSTORE_BASE64",
+ "symptom": "The GitHub Actions workflow aaps-ci.yml does not allow line breaks in the KEYSTORE_BASE64 secret, which causes issues when the secret is generated using certutil on Windows, as it produces multi-line base64 output.",
+ "cause": "The user generated the base64 secret using certutil on Windows, which produces multi-line base64 output, and the workflow's echo command does not handle line breaks in secrets.",
+ "fix": "The suggested fix is to change the echo command to use a heredoc-style syntax to allow line breaks in the secret, but the maintainers argue that using the provided aaps-ci-preparation.html tool generates a single-line base64 and avoids the issue, so the change may not be needed.",
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [],
+ "confidence": "medium",
+ "evidence_quote": "Please change the line echo \"KEYSTORE_BASE64=${{ secrets.KEYSTORE_BASE64 }}\" >> $GITHUB_ENV to echo \"KEYSTORE_BASE64<<EOF\" >> $GITHUB_ENV echo \"${{ secrets.KEYSTORE_BASE64 }}\" >> $GITHUB_ENV echo \"EOF\" >> $GITHUB_ENV or something else, so that line breaks in the secret KEYSTORE_BASE64 created during base64 encoding of the keystore.jks witch certutil would work."
+}

@@ -1,0 +1,15 @@
+{
+ "issue_id": 1786,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/1786",
+ "title": "Smart alert doesn't work",
+ "symptom": "Despite having smart snoozing and smart alerting enabled, alerts are triggered when glucose is near an alert threshold but trending in the right direction (downward). The user reports getting woken by unnecessary alerts during the night.",
+ "cause": "The smart alerting logic uses a paranoid approach: it only suppresses alerts if the glucose difference over the last 5 minutes is at least 4 mg/dL and over the last 10 minutes is at least 10 mg/dL in the correct direction. In the reported case, transient upward readings caused xDrip to see an upward trend, so the alert triggered even though the overall trend was downward.",
+ "fix": "No definitive fix was provided in the thread. A change was made to high alerts only, and the issue was closed with the intention to later improve smart snooze and alert for low alerts as well.",
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [],
+ "confidence": "medium",
+ "evidence_quote": "Smart snoozing and smart alerts means that the alert will not trigger in the case that there is a \"real\" movement in the correct direction. They have been implemented with a paranoid approach. So, for the alert not to trigger, the difference in the last 5 minutes should be at least 4 (mgdl), and the difference for the last 10 minutes should be at least 10 (mgdl)."
+}

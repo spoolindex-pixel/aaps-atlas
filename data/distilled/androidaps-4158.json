@@ -1,0 +1,24 @@
+{
+ "issue_id": 4158,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/4158",
+ "title": "Too frequent basal updates may cause basal insulin delivery problems with Omnipod Dash",
+ "symptom": "When using Omnipod Dash pump with 1-minute BG updates from Juggluco, AAPS loop updates every minute, causing basal rate changes that reset the pump's timer, potentially leading to zero basal insulin delivery. Verified by manually changing temp basal rates every 30 seconds, no insulin was delivered for 10 minutes.",
+ "cause": "Omnipod Dash uses a timer for giving small 0.05u doses of basal, and every basal rate update resets the timer. If basal rate is changed too often, the timer keeps resetting, so no dose is delivered.",
+ "fix": "PR #4499 fixes this issue, and it is released in version 3.4.2.3.",
+ "settings_changed": [],
+ "devices": [
+  "Omnipod Dash",
+  "FSL3",
+  "Juggluco"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "Omnipod Dash",
+  "Juggluco",
+  "closed loop",
+  "SMB"
+ ],
+ "confidence": "high",
+ "evidence_quote": "PR #4499 that fixes this issue. If you like: in my repo under AndroidAPS there is an “issue-4158-fix” branch which is 3.4.0.0 master with this fix applied."
+}

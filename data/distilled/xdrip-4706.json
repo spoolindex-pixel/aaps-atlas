@@ -1,0 +1,23 @@
+{
+ "issue_id": 4706,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/4706",
+ "title": "Regression: false \"Appears to have lost bonding, skipping this connect!\" with Special Pairing Workaround since 2026.07.08 — lost readings",
+ "symptom": "Since updating to a nightly containing commit 7213241f4, users with Special Pairing Workaround enabled get bursts of 'Appears to have lost bonding, skipping this connect!' messages. The bonding is not actually lost, but connects are skipped and readings are lost until the safety valve at 10 skips forces a connect, or the user re-pairs or restarts the app.",
+ "cause": "Commit 7213241f4 added to onStartCommand in Ob1G5CollectionService.java: transmitterMAC = null; // clear on every service start. This causes isDeviceLocallyBonded() to return false because transmitterMAC is null, and in CONNECT_NOW state with Special Pairing Workaround on, the guard fires and skips connects.",
+ "fix": "Do not treat 'MAC not known yet' as 'bonding lost'. Options: Call tryLoadingSavedMAC() at the top of the CONNECT_NOW case (or inside isDeviceLocallyBonded()) so the cached MAC is restored before the check, or require transmitterMAC != null in the skip condition. A proposed fix is in commit 712eac9b. Workaround: disable Special pairing workaround, forget BT device and re-pair, or rollback to release 2026.06.17.",
+ "settings_changed": [],
+ "devices": [
+  "Dexcom G7"
+ ],
+ "android_versions": [
+  "Android 15"
+ ],
+ "driver_tags": [
+  "Special Pairing Workaround",
+  "OB1",
+  "G7"
+ ],
+ "confidence": "high",
+ "evidence_quote": "Do not treat \"MAC not known yet\" as \"bonding lost\". Options: - Call `tryLoadingSavedMAC()` at the top of the `CONNECT_NOW` case (or inside `isDeviceLocallyBonded()`) so the cached MAC is restored before the check, or - Require `transmitterMAC != null` in the skip condition:"
+}

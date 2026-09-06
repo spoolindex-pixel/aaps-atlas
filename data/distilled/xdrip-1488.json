@@ -1,0 +1,23 @@
+{
+ "issue_id": 1488,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/1488",
+ "title": "Xiaomi Android 11 with G6 connection barely working",
+ "symptom": "On a Xiaomi Note 10 with Android 11, xDrip initially works for a few hours then stops connecting to the Dexcom G6 transmitter, showing errors like 'could not register app for bluetooth scanning' or just scanning with no result. The transmitter is bonded and xDrip shows 'Dexcom0L Authed', but readings stop. Rebooting and rebonding only helps temporarily.",
+ "cause": "The thread does not establish a definitive root cause. The user speculates that the scanning state cannot be maintained for more than a few seconds if there is no response from the G6, and that a single loss of reception triggers the issue. A characteristic error is a TimeoutException after 6 seconds. The user also found that using the original Dexcom transmitter in parallel can trigger the issue.",
+ "fix": "No permanent fix is stated. Workarounds that help temporarily include rebooting, rebonding, 'forget device' and 'restart collector' just before the 5-minute interval, and terminating and restarting xDrip. The user eventually reduced frequency to about weekly by messing with the Bluetooth stack, but no specific settings are given.",
+ "settings_changed": [],
+ "devices": [
+  "Dexcom G6",
+  "Xiaomi Note 10"
+ ],
+ "android_versions": [
+  "Android 11"
+ ],
+ "driver_tags": [
+  "bluetooth",
+  "collector"
+ ],
+ "confidence": "low",
+ "evidence_quote": "I can reliably bring it back to work for some hours by terminating xdrip and starting it again."
+}

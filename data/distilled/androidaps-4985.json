@@ -1,0 +1,19 @@
+{
+ "issue_id": 4985,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/4985",
+ "title": "ProfileFunctionImpl reads EPS.originalEnd directly for remaining-time display, producing garbage duration (e.g. \"32399999998h\")",
+ "symptom": "The home-screen widget and Overview ribbon show an absurd remaining duration (e.g. \"32399999998h\") for a running temporary ProfileSwitch, instead of a plausible duration.",
+ "cause": "The root cause is in ProfileSwitchExtension.kt: when parsing legacy NSClientV3 ProfileSwitch documents, it uses originalDuration instead of duration, corrupting the duration at the source. Additionally, ProfileFunctionImpl.getProfileName() reads EPS.originalEnd directly, which is documented as unused and unreliable, leading to garbage display when the stored originalEnd is stale or mismatched.",
+ "fix": "The fix is to derive the end time from timestamp + originalDuration instead of trusting the stored originalEnd in ProfileFunctionImpl.getProfileName(), and to correct the parsing in ProfileSwitchExtension.kt to use duration instead of originalDuration when parsing legacy NSClientV3 ProfileSwitch documents.",
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [
+  "AAPSCLIENT",
+  "follower",
+  "Nightscout"
+ ],
+ "confidence": "high",
+ "evidence_quote": "Thanks @MilosKozak for finding and fixing the actual root cause directly (`52056ebeb4` / `6bdbf1498`, `ProfileSwitchExtension.kt`: `originalDuration` vs `duration` when parsing legacy NSClientV3 `ProfileSwitch` documents)."
+}

@@ -1,0 +1,15 @@
+{
+ "issue_id": 26,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/26",
+ "title": "Pumpe ICT - lokales Profil mit falschen Kombinationen",
+ "symptom": "When MDI (ICT) is selected and the profile is edited, a basal rate is mandatory. On MDI, basal is provided by long-acting insulin whose action curve is not documented, so entering a basal rate in U/h is not meaningful. It is unclear how AndroidAPS calculates this, and if it is not considered in the bolus wizard, a basal rate of 0 should be allowed.",
+ "cause": "The thread does not establish a root cause beyond the design requirement that a basal rate must be entered; MilosKozak explains that a basal rate of 0 is impossible due to internal calculations, but basal IOB is always zero because TBR cannot be changed on MDI.",
+ "fix": "The suggested workaround is to enter a constant basal rate equal to the total daily long-acting insulin divided by 24 hours. For example, 20 U of Lantus or Toujeo per day gives a basal rate of 0.83 U/h. Additionally, the documentation should be updated to explain this.",
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [],
+ "confidence": "medium",
+ "evidence_quote": "For long acting insulin, I suppose the best solution is to consider a constant basal rates with 1/24 the total amount of daily long acting insulin. For example if you have 20 U of very long Acting insulin every day (i.e. Lantus or Toujeo in France), I think you can enter just one basal rate value of 20/24 = 0.83 Unit / Hour"
+}

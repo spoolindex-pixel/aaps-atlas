@@ -1,0 +1,15 @@
+{
+ "issue_id": 1496,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/1496",
+ "title": "Statistic: the percentage sum is not equal to 100%",
+ "symptom": "In the statistics page, the percentages for High, Low, and In range do not sum to 100% because the values are truncated (not rounded), e.g., the sum equals 98% in the screenshot.",
+ "cause": "The percentages are calculated using integer division (implicit flooring), which truncates the decimal parts, causing the sum to be less than 100%.",
+ "fix": "Round the High and Low percentages to the nearest integer and calculate the In range percentage as 100% minus the sum of the rounded High and Low percentages. A PR (#1498) was proposed to implement this.",
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [],
+ "confidence": "high",
+ "evidence_quote": "The 3 values are truncated (not rounded), so the sum equals 98% in this screenshot and not 100% My suggestion would be to round the High and Low percentages to the nearest integer value and calculate the \"in range value\" with 100% complement"
+}
