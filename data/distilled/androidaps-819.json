@@ -1,0 +1,22 @@
+{
+ "issue_id": 819,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/819",
+ "title": "Profile Activation may fail due to profile error handling issues",
+ "symptom": "When importing settings from 2.8.x or creating a new profile, profiles that appear valid can be activated but are shown as inactive on the Overview screen. Also, out-of-range errors appear confusingly or incorrectly when creating a new profile.",
+ "cause": "The thread identifies that a target below 5.5 is invalid but no error is generated on saving, and activation of an invalid profile gives no error. Additionally, error messages are displayed for items other than the one just configured, and errors persist even after valid configuration.",
+ "fix": "The maintainer resolved issue 1) via a commit and fixed 2b) in beta3. For 2a), the behavior is expected: messages are in order of tabs on screen. No further fix was provided for the remaining usability issues.",
+ "settings_changed": [],
+ "devices": [
+  "Medtronic 554",
+  "RileyLink"
+ ],
+ "android_versions": [
+  "Android 11"
+ ],
+ "driver_tags": [
+  "Medtronic"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "1) resolved by https://github.com/nightscout/AndroidAPS/commit/760261e258e51e0d8f290e1ae9322df7bc1e0ff1 2) this is expected behavior. The goal is tell to the user where is a mistake in profile if background is red"
+}

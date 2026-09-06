@@ -1,0 +1,18 @@
+{
+ "issue_id": 2564,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/2564",
+ "title": "Profile timezone in Profile Switch treatments sent to Nightscout is off-by-one",
+ "symptom": "Profile Switch treatments created by AndroidAPS have an incorrect timezone in the 'timezone' field of the JSON in 'profileJson'. The timezone appears off-by-one, e.g., getting 'Africa/Cairo' (UTC+3) instead of actual 'Europe/Warsaw' (UTC+2). The treatment's 'created_at' field and graph position are correct.",
+ "cause": "The issue was caused by outdated timezone data on the phone. The phone's timezone database had an incorrect offset for 'Africa/Cairo' (2 hours instead of 3), and because it was the first matching item in the collection, AAPS selected it incorrectly.",
+ "fix": "Performing a Google Play security update to update the timezone data on the phone resolved the issue. The user also suggested mapping to 'Etc/GMT*' timezones as a potential improvement, but the immediate fix was the security update.",
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [
+  "virtual pump",
+  "NSClient"
+ ],
+ "confidence": "high",
+ "evidence_quote": "The fix was to perform Google Play security update which, for whatever reason, my phone doesn't notify me about..."
+}

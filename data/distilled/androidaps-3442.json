@@ -1,0 +1,20 @@
+{
+ "issue_id": 3442,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/3442",
+ "title": "[NSV1] Profile switch with Dash sets 4800 min TBR 0 + suspend that doesn't sync well with AAPSClient",
+ "symptom": "When AAPS performs a profile switch (or temp profile switch) with Dash, it sets a 0 TBR suspend for 4800 minutes, then immediately sets profile basal rate. This causes sync issues with AAPSClient, leading to wrong IOB in AAPSClient because the regular basal rate is not synced, while AAPS continues with regular basal rate.",
+ "cause": "The issue is likely a sync problem with NS and AAPSClient, possibly due to the long duration (4800 min) of the 0 TBR suspend set during profile switch, which may not sync correctly.",
+ "fix": "No definitive fix was provided. A possible fix suggested was to delay the time of setting basal rate after the 4800 min 0 tbr suspend, similar to a fix in another issue. The issue was closed because NSClientv1 is removed in AAPS 4.0.0.",
+ "settings_changed": [],
+ "devices": [
+  "Dash"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "NSClientV1",
+  "AAPSClient"
+ ],
+ "confidence": "low",
+ "evidence_quote": "Could a possible fix be to delay the time of setting basal rate after the 4800 min 0 tbr suspend? Something similar to what was done here? https://github.com/nightscout/AndroidAPS/issues/3430"
+}

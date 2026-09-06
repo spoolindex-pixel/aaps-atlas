@@ -1,0 +1,22 @@
+{
+ "issue_id": 3137,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/3137",
+ "title": "AAPS Wear, latest dev commit#041d0f0: Ongoing bolus notification that can not be cleared.",
+ "symptom": "On Samsung Watch 4 running AAPS watchface (stock or custom), an ongoing notification appears that cannot be cleared; it immediately reopens after clearing. The issue is specific to bolus notifications, which stay open at 100% - Success.",
+ "cause": "The ongoing notification channel introduced in commit 041d0f0 is necessary to keep the app running in the background, but it causes an un-clearable notification on the watch. The user concluded that the ongoing channel is unexpected/unwanted behavior only necessary for users running non-AAPS watchfaces.",
+ "fix": "Partially fixed through PR #3141. For the remaining 'Datalayer Foreground Service Channel' notification, the user suggests switching it off from watch developer options: App Notifications -> All watch apps -> AAPS -> Data layer Foreground Service Channel: OFF.",
+ "settings_changed": [
+  "Data layer Foreground Service Channel → OFF"
+ ],
+ "devices": [
+  "Samsung Watch 4"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "wear",
+  "notification channel"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "Still getting \"Datalayer Foreground Service Channel\" notification that can't be cleared (Samsung Watch4). **Solution**: Switch off this notification from watch developer options: `App Notifications -> All watch apps -> AAPS -> Data layer Foreground Service Channel: OFF`"
+}

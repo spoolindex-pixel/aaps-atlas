@@ -1,0 +1,21 @@
+{
+ "issue_id": 2278,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/2278",
+ "title": "[DEV] Flat data error, when data is not truly flat (xDrip+ with G6)",
+ "symptom": "The flat BG error is triggered frequently overnight even when the BG line is not truly flat, as seen in xDrip+ with small deviations. This can cause the loop to pause and basal to run, potentially leaving BG on target or causing it to stay elevated if not on target.",
+ "cause": "The flat BG check is performed on raw values and is too sensitive, triggering even when data is not truly flat. The issue is specific to Dexcom G6 with xDrip+ as collector, and the check was originally intended for Libre issues.",
+ "fix": "The fix was to limit the flat BG processing to Libre sources only, as implemented in commit 34930e323eaea5f3ca9f743c387d071882e9ee6d.",
+ "settings_changed": [],
+ "devices": [
+  "Dexcom G6",
+  "xDrip+"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "xDrip collector",
+  "BYODA"
+ ],
+ "confidence": "high",
+ "evidence_quote": "limit processsing to Libre sources only https://github.com/nightscout/AndroidAPS/commit/34930e323eaea5f3ca9f743c387d071882e9ee6d"
+}

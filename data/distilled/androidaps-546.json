@@ -1,0 +1,25 @@
+{
+ "issue_id": 546,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/546",
+ "title": "Pump not reachable. Watchdog sleeping",
+ "symptom": "AAPS loses connection to the pump and Watchdog cannot fix it, possibly because it is shown as connected in the Omnipod tab. The user has to toggle Bluetooth multiple times a day.",
+ "cause": "The watchdog's Bluetooth toggle duration of 1 second is too short to fix the issue.",
+ "fix": "Increase the sleep and Bluetooth disable/enable durations in QueueThread.kt from 1000 to 10000 milliseconds.",
+ "settings_changed": [],
+ "devices": [
+  "Omnipod Eros",
+  "Dexcom g6",
+  "Galaxy s7",
+  "Samsung S22",
+  "S23"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "watchdog",
+  "bluetooth",
+  "emailink"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "I had a look in the code and realised that 1 second is too short a time frame for the watchdog bark. so increased this to 10s for all three steps."
+}

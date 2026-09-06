@@ -1,0 +1,21 @@
+{
+ "issue_id": 3430,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/3430",
+ "title": "[Bug] [Dev/Master] Temp Profile switch on AAPSClient with duration, reduced % and Activity TT doesn't activate properly on AAPS (Only NSClientV1)",
+ "symptom": "When using NSClientV1 sync, selecting a profile switch on AAPSClient with duration, reduced %, and Activity TT does not activate properly on AAPS. In dev, TT is set on both but temp profile switch is not carried out on AAPS; in master, TT is not set on AAPS but profile switch is set. Works fine with NSClientV3.",
+ "cause": "NS deduping was blocking records, preventing the profile switch from being processed on AAPS when sent from AAPSClient.",
+ "fix": "The issue was resolved by increasing the deduping delay to 10 seconds (commit 11da18ea85579cf3626d8f5539d6d02d4410cfaf).",
+ "settings_changed": [],
+ "devices": [
+  "Dash",
+  "Virtual pump"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "NSClientV1",
+  "NSClientV3"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "increased to 10s now working from AAPS client (at least for me)"
+}

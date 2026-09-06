@@ -1,0 +1,21 @@
+{
+ "issue_id": 2974,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/2974",
+ "title": "[Master] Different actions doesn't sync through and receive error sporadic (v3+WS)",
+ "symptom": "Actions such as bolus from AAPS or AAPSClient do not sync through to AAPSClient, showing an error message in NSCV3-tab. The issue is sporadic and affects any action, including deletion of treatments, leading to wrong carb and IOB in AAPSClient.",
+ "cause": "The issue was caused by a bug in the Nightscout server configuration at ns.10be.de, where the API3_MAX_LIMIT parameter was not being used correctly. The server code was patched to use env.API3_MAX_LIMIT.",
+ "fix": "The fix was applied by the server provider (zehnBE) by patching lib/api3/generic/collection.js and lib/api3/index.js to use env.API3_MAX_LIMIT instead of the hardcoded value. After redeploying Nightscout master with the fix, the errors stopped. Additionally, a later comment suggests updating to Nightscout >= 15.0.7 as a fix.",
+ "settings_changed": [
+  "API3_MAX_LIMIT → env.API3_MAX_LIMIT"
+ ],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [
+  "nightscout",
+  "v3",
+  "ws"
+ ],
+ "confidence": "high",
+ "evidence_quote": "I have patched the lib/api3/generic/collection.js and lib/api3/index.js because it doesnt use the API3_MAX_LIMIT from the my.env on our side (it is in), so i rewrite it to env.API3_MAX_LIMIT."
+}
