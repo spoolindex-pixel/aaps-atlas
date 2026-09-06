@@ -1,0 +1,19 @@
+{
+ "issue_id": 1613,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/1613",
+ "title": "xDrip+ Does not ask for the sensor insertion time - I have to wait the full warmup time",
+ "symptom": "When starting an already started Dexcom G6 sensor session in xDrip+, xDrip+ does not ask for the sensor insertion time and forces a full 2-hour warmup before showing glucose values, even though it receives and broadcasts glucose data to other apps like AndroidAPS.",
+ "cause": "The request for insertion time was removed from Native-mode G6 intentionally because you cannot enter any time other than now when you start a G6 sensor. Also, you cannot do soaking with Native G6 because it would interfere with factory calibration.",
+ "fix": "Do not press 'Start Sensor' if you have an active session; just establish connectivity and readings will start showing. If everything is set up correctly, xDrip will pick up a session in progress in 10 to 15 minutes.",
+ "settings_changed": [],
+ "devices": [
+  "Dexcom G6"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "native G6"
+ ],
+ "confidence": "high",
+ "evidence_quote": "You don't need to \"start\" if you have an active session. All you need to do is to establish connectivity and the readings will start showing."
+}

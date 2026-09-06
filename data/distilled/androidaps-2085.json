@@ -1,0 +1,15 @@
+{
+ "issue_id": 2085,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/2085",
+ "title": "3.1.0.3 DEV-B AAPS restarts and kills db",
+ "symptom": "Installation of dev-b makes AAPS restart all the time (probably kills the database). Going back to dev-a, AAPS starts with an empty db.",
+ "cause": "A commit from Monday changed the getParcelableExtra call in BTReceiver.kt to use the two-argument version with BluetoothDevice::class.java, which likely causes the crash.",
+ "fix": "A PR to fix this was created: https://github.com/nightscout/AndroidAPS/pull/2089",
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [],
+ "confidence": "medium",
+ "evidence_quote": "It's this commit from Monday: https://github.com/nightscout/AndroidAPS/commit/be30b3cd3de05db2589a5c6f5a7e3fc19544b930\n\napp/src/main/java/info/nightscout/androidaps/receivers/BTReceiver.kt:\n```\n-        val device: BluetoothDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE) ?: return\n+        val device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE, BluetoothDevice::class.java) ?: return\n```"
+}

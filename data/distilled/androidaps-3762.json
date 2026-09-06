@@ -1,0 +1,17 @@
+{
+ "issue_id": 3762,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/3762",
+ "title": "[Bug/Feature] Carbs suggestions beeps every 5 mins",
+ "symptom": "After upgrade to AAPS v3.3.1.2, the phone beeps every 5 minutes with carb suggestions even when the local alarm for carbs is switched off. The alarm switch OFF does not work, and there is no snooze option in the mobile app.",
+ "cause": "The thread does not explicitly identify a root cause, but it is implied that the alarm switch is not functioning as expected and the maximum value for 'Minimum Carbs Required For Suggesstion' is limited to 10g, which may not be sufficient to avoid frequent suggestions.",
+ "fix": "The maintainer increased the limit for 'Minimum Carbs Required For Suggesstion' to 100 via commit 5d1804742df615ad42830a515b83a04f2c864dd1. This may help reduce the frequency of suggestions by allowing a higher threshold.",
+ "settings_changed": [
+  "Minimum Carbs Required For Suggesstion → 100 (max limit increased)"
+ ],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [],
+ "confidence": "medium",
+ "evidence_quote": "limit increased to 100 https://github.com/nightscout/AndroidAPS/commit/5d1804742df615ad42830a515b83a04f2c864dd1"
+}
