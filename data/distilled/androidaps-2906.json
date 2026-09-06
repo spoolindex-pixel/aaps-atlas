@@ -1,0 +1,20 @@
+{
+ "issue_id": 2906,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/2906",
+ "title": "[DEV] AAPS sync with AAPSClient slow/unreliable while AAPS screen is off when not charging (V3 API + WS)",
+ "symptom": "When AAPS phone screen is off and not charging, profile switches, carbs, and temp targets enacted from AAPSClient are not received by AAPS for several minutes or until screen is turned on or charging is connected. With screen on, sync is fast. Works as expected with v1 API.",
+ "cause": "The main issue was that time on AAPSClient device was ahead of AAPS by seconds, causing events to be received before validity, and updates were triggered by another event later. Also, the WebSocket may go to sleep when screen is off.",
+ "fix": "Synchronize time on both devices and test again. Additionally, a fix was implemented in pull request #2925, which likely moves the WebSocket to a background service (as suggested by the nscv3service branch).",
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [
+  "v3 api",
+  "ws",
+  "websocket",
+  "background service"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "I realized the main issue was that time on AAPSClient device was ahead of AAPS by seconds!!!!! and the event was received by AAPS before it's validity. then update was triggered by another event ususally within some minutes So: please synchronize time on both devices and test again"
+}

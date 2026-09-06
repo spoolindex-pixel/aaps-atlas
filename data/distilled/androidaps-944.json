@@ -1,0 +1,21 @@
+{
+ "issue_id": 944,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/944",
+ "title": "Duplicate Glucose",
+ "symptom": "After inserting a new sensor, duplicate glucose readings appear in AAPS. The issue occurs when using xDrip or Dexcom app, and persists even after reinstalling Dexcom app. Previously, resetting the database fixed it.",
+ "cause": "The bug is on the xDrip side: xDrip sends data from the previous sensor session with different timestamps, causing duplicates.",
+ "fix": "Switch to the Dexcom app and do not use xDrip+ as a Dexcom collector for AAPS. Additionally, manually delete duplicate BG entries in AAPS.",
+ "settings_changed": [],
+ "devices": [
+  "Dexcom G6",
+  "xDrip+"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "xDrip collector",
+  "Dexcom app"
+ ],
+ "confidence": "high",
+ "evidence_quote": "it's a bug on xDrip side we cannot resolve. xDrip sends data from previous session with different timestamps it is already mentioned in release notes you have to switch to dexcom app and do not use xDrip+ as a dexcom collector for AAPS"
+}

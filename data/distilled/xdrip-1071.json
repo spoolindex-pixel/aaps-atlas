@@ -1,0 +1,19 @@
+{
+ "issue_id": 1071,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/1071",
+ "title": "Announce values while connected to Android auto",
+ "symptom": "Announcements of values using text synthesis are not played while connected with Android auto. Audio can only be heard when accidentally colliding with navigation announcements (these audio duck the fm radio while playing).",
+ "cause": "The issue is that xDrip does not request audio focus before speaking, so its text-to-speech announcements are not heard while Android Auto is active.",
+ "fix": "Modify SpeechUtil.java to request audio focus before speaking and release it after a delay. Specifically, request audio focus with AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK before calling tts.speak, then sleep for 3000 ms and abandon audio focus.",
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [
+  "android auto",
+  "audio focus",
+  "text-to-speech"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "I am new to android studio and java programming, but modified the file speechutil.java to gain the audio focus before speaking. This solves the issue. Text to speech synthesis can now be heared while android auto is active."
+}

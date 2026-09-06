@@ -1,0 +1,15 @@
+{
+ "issue_id": 878,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/878",
+ "title": "Is there documentation on how to import and build xDrip",
+ "symptom": "User pulled the project from Github, opened it with IntelliJ IDEA 2018.2.8, and after build with Build Artifacts, got error: 'Error:java: invalid target release: x'. Later, using Android Studio, got errors like 'cannot find symbol class Models' and 'package UtilityModels does not exist'.",
+ "cause": "The problem is related to a comment in app/build.gradle about using a specific version of data binding until Google resolves bugs with mixed case package names. Also, updating the Android Gradle plugin when prompted can cause issues.",
+ "fix": "Use Android Studio instead of IntelliJ. When opening xDrip after a clean clone, ignore the prompt to update the Android Gradle plugin. Alternatively, build from command line with 'gradlew assembledebug'.",
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [],
+ "confidence": "medium",
+ "evidence_quote": "the problem you have is related to comment `// use specific version of data binding until google resolves the bugs with mixed case package names` in `app/build.gradle` when you open xDrip (after clean clone) in Android Studio it will ask you `Plugin Update Recommended: Android Gradle Plugin is ready to update.`. Ignore that otherwise you will get into troubles."
+}

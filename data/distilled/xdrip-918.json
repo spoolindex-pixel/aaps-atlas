@@ -1,0 +1,15 @@
+{
+ "issue_id": 918,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/918",
+ "title": "Problem adding treatment with more than 2 decimal",
+ "symptom": "When adding a treatment with 3 or more decimal places, the last 2 or 3 are considered as units of insulin, e.g., 3.125 becomes 25 units, 0.148 becomes 48 units, 1.2563 becomes 563 units. The same issue occurs with carbs.",
+ "cause": "The problem is likely in Simulation.class, specifically in the createTreatment method which uses a regex that incorrectly splits the decimal part.",
+ "fix": null,
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [],
+ "confidence": "low",
+ "evidence_quote": "I think the problem is at Simulation.class `private void createTreatment(String allWords) { allWords = allWords.replaceAll(\"([0-9].[0-9])([0-9][0-9])\", \"$1 $2\"); }`"
+}
