@@ -1,0 +1,199 @@
+{
+ "id": 798708079,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1632,
+ "title": "Dexcom sensor state inconsistently shown",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1632",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "device-dexcom",
+  "ui"
+ ],
+ "created_at": "2021-02-01T21:07:16Z",
+ "closed_at": "2024-11-29T04:58:12Z",
+ "comment_count": 30,
+ "body": "The Dexcom sensor state is not consistently shown at the main screen, menu and status which is likely quite confusing for new users and annoying, especially at sensor session beginnings or ends.\r\n\r\n### Your environment\r\n\r\n- xDrip version 2101292241\r\n- Samsung Galaxy S4 mini\r\n- LineageOS 15.1-20191216 (Android 8.1.0)\r\n- Hardware data source: Dexcom G6 native\r\n\r\n### Expected behavior\r\n\r\nSensor state should be consistent at the main screen, in the menu and at the system status page.\r\n\r\n### Actual behavior\r\n\r\nIf the sensor session is ended, the main screen correctly shows \"Stopped\":\r\n\r\n<img src=\"https://user-images.githubusercontent.com/1370732/106516111-e3a5b980-64d6-11eb-8250-c8fb735180ee.png\" width=\"300\">\r\n\r\nBut in the menu still \"Stop sensor\" is shown. \r\n\r\n<img src=\"https://user-images.githubusercontent.com/1370732/106516797-dfc66700-64d7-11eb-8db9-3289241a55a1.png\" width=\"300\">\r\n\r\nBefore starting a new sensor, one has to stop it in xDrip. If the sensor was already started with the Dexcom receiver and \"Stop sensor\" was issued (accidentally), it is necessary to clear the transmitter queue (which is currently only possible by entering a voice message or typing it in the treatment dialog).\r\n\r\nAfter a sensor was started using the menu and also sent to the transmitter (queue is empty), the system status page still shows: \"Sensor status: stopped\" and the main screen \"Stopped\" next to \"Ends in 10 days\" and \"Please wait while sensor warms up!\" on top of the screen:\r\n\r\n<img src=\"https://user-images.githubusercontent.com/1370732/106517906-662f7880-64d9-11eb-903c-aa83a551dee1.png\" width=\"900\">\r\n\r\nThis is really confusing.",
+ "comments": [
+  {
+   "id": 771162314,
+   "user": "emp-00",
+   "created_at": "2021-02-01T21:13:54Z",
+   "body": "I have also noticed this behavior (Samsung A8, Dexcom G6). AFAIK after approx. 3 connections those messages are again consistent on all relevant pages. Nevertheless, I agree that all those messages should show the correct status \"everywhere instantly\" (if possible)."
+  },
+  {
+   "id": 771166314,
+   "user": "tolot27",
+   "created_at": "2021-02-01T21:20:38Z",
+   "body": "The sensor start and stop commands should be sent to the transmitter immediately, as well. But this is another issue."
+  },
+  {
+   "id": 771562102,
+   "user": "jamorham",
+   "created_at": "2021-02-02T11:13:44Z",
+   "body": "This behavior is in part a hang-over from when we were coexisting both native and non-native and that the concept within xDrip of a sensor session isn't strictly tied to the native session. I don't really think that mode is used anymore and so it is possible to change this but it does have to be very carefully handled to ensure it doesn't break other things.\r\n\r\nAs a first pass at this I can make it so that when the sensor state transitions from started -> stopped that it can conditionally stop the xDrip sensor session. I think that should address at least half of this. \r\n\r\n"
+  },
+  {
+   "id": 771585844,
+   "user": "tolot27",
+   "created_at": "2021-02-02T11:58:14Z",
+   "body": "> As a first pass at this I can make it so that when the sensor state transitions from started -> stopped that it can conditionally stop the xDrip sensor session. I think that should address at least half of this.\r\n\r\nThat would be a good starting point."
+  },
+  {
+   "id": 772636151,
+   "user": "Navid200",
+   "created_at": "2021-02-03T16:24:56Z",
+   "body": "> This behavior is in part a hang-over from when we were coexisting both native and non-native and that the concept within xDrip of a sensor session isn't strictly tied to the native session. I don't really think that mode is used anymore \r\n\r\nWhen you say you don't think that mode is used anymore, are you ignoring those who are still using G5 or old G6 transmitters, or is this something that even they don't need?"
+  },
+  {
+   "id": 778254836,
+   "user": "jamorham",
+   "created_at": "2021-02-12T15:15:53Z",
+   "body": "@Navid200 When native mode was first introduced it was possible to toggle in and out of it mid session for testing. I don't think that method is reliable and I believe it is no longer available. People should these days either be using native mode or raw but not both.\r\n\r\nThe latest nightly includes some transitional states which I think should resolve most of the problems described in this issue. For example when a sensor is about to be started it will say `Starting Sensor` instead of its current actual state, eg `Stopped`\r\n"
+  },
+  {
+   "id": 779912236,
+   "user": "Navid200",
+   "created_at": "2021-02-16T15:29:22Z",
+   "body": "> @Navid200 When native mode was first introduced it was possible to toggle in and out of it mid session for testing. I don't think that method is reliable and I believe it is no longer available. People should these days either be using native mode or raw but not both.\r\n> \r\n> The latest nightly includes some transitional states which I think should resolve most of the problems described in this issue. For example when a sensor is about to be started it will say `Starting Sensor` instead of its current actual state, eg `Stopped`\r\n\r\nCould some of these improvements cause issues for people who are still using G5?\r\nMy problem is that I don't have a working G5 transmitter to do any testing.\r\nSo, when someone claims they cannot perform initial calibration any longer on G5 in native mode on the Feb. 4, 2021 release, I have no way of testing that.\r\n\r\nIs it possible to limit these improvements to G6 and keep G5 as is?\r\nI mean G5 is not a current technology any longer.  Dexcom is pushing everyone to G6.  But, we have a large section of the community still using G5.  Can we keep supporting them and minimize modifications to their environment?  Can we not keep the improvements from affecting G5?\r\nIt's not fair to make life difficult for them any more than Dexcom is trying to already."
+  },
+  {
+   "id": 780764074,
+   "user": "jamorham",
+   "created_at": "2021-02-17T18:38:14Z",
+   "body": "I can confirm that these recent updates work correctly on G5 in native mode."
+  },
+  {
+   "id": 780765471,
+   "user": "Navid200",
+   "created_at": "2021-02-17T18:40:33Z",
+   "body": "> I can confirm that these recent updates work correctly on G5 in native mode.\r\n\r\n@jamorham   Would you please see this:\r\nhttps://github.com/NightscoutFoundation/xDrip/issues/1647"
+  },
+  {
+   "id": 855475154,
+   "user": "Navid200",
+   "created_at": "2021-06-06T22:48:54Z",
+   "body": "With the updates, I believe the issue has been addressed.\r\n\r\nAfter the sensor stops on day 10, the stop sensor option is not shown anymore under the top left menu.\r\nAnd the sensor state shown on the main screen now is valid.\r\nIt used to be that you would have to wait up to 10-15 minutes for everything to become consistent.  Not like that anymore."
+  },
+  {
+   "id": 894649710,
+   "user": "Navid200",
+   "created_at": "2021-08-07T12:39:03Z",
+   "body": "@tolot27 \r\nIs there still any scenario where an incorrect comment is shown by the latest xDrip with respect to the sensor condition?\r\nIf not, can we close this?"
+  },
+  {
+   "id": 894823138,
+   "user": "tolot27",
+   "created_at": "2021-08-08T16:38:53Z",
+   "body": "There are still some inconsistencies if the a sensor is replaced. What I always do is waiting until the transmitter queue is empty after I've issued a sensor stop. Then I'm waiting at least one more minute to start the new sensor. But xDrip still shows some wired messages and sometimes that the sensor is still stopped even if it is indeed started and the BlueJay shows \"Warming Up\". Attached some screenshots also showing different minutes left during warm up.\r\n<img width=\"350\" src=\"https://user-images.githubusercontent.com/1370732/128639050-dcef6168-3bbc-4429-820d-1e06a75b6cd5.png\" /> <img width=\"350\" src=\"https://user-images.githubusercontent.com/1370732/128639055-b85e4f2b-ea80-4d0c-aef9-05b570c767e4.png\" />\r\n<img width=\"350\" src=\"https://user-images.githubusercontent.com/1370732/128639060-d254617c-842a-4acf-8949-54763a09a058.png\" /> <img width=\"350\" src=\"https://user-images.githubusercontent.com/1370732/128639063-17a11869-aded-45b8-aaad-981d000a64b0.png\" />\r\n"
+  },
+  {
+   "id": 894831911,
+   "user": "tolot27",
+   "created_at": "2021-08-08T17:51:56Z",
+   "body": "From the most recent sensor change a few minutes ago:\r\n<img width=\"350\" src=\"https://user-images.githubusercontent.com/1370732/128640918-aed8de7c-7fb9-4074-b0de-f6a2cf352ca7.png\" /> <img width=\"350\" src=\"https://user-images.githubusercontent.com/1370732/128640920-68aadca3-3f59-449f-a63b-2a1cc53a5468.png\" />\r\n<img width=\"350\" src=\"https://user-images.githubusercontent.com/1370732/128640923-a3bcea31-94f6-4d65-8384-b8a6202f5b3c.png\" /> <img width=\"350\" src=\"https://user-images.githubusercontent.com/1370732/128640924-88394dc8-c7ae-4049-a6b1-46a71965dc27.png\" />\r\n\r\nAs long as I replace my sons sensor, I can live with this issue. But my wife or other persons will get strongly confused. Also, I'm not sure whether it will behave always the same. IMHO, a sensor stop should never be issued right after a sensor start (last screenshot)."
+  },
+  {
+   "id": 894832314,
+   "user": "tolot27",
+   "created_at": "2021-08-08T17:55:01Z",
+   "body": "Another issue occurs on joining an existing G6 session started on a different phone. It is not that smooth like with the BlueJay. Sensor has to be started after pairing. But then the warmup counter starts and the log shows the attached errors:\r\n<img width=\"350\" src=\"https://user-images.githubusercontent.com/1370732/128641054-7c953c56-87e6-4345-98e9-3863d3a93949.png\" />\r\n"
+  },
+  {
+   "id": 894832735,
+   "user": "Navid200",
+   "created_at": "2021-08-08T17:58:14Z",
+   "body": "I disagree with your last statement.  There is no need to start sensor if you are joining a session in progress.  \r\nThis is tested: https://github.com/Navid200/xDrip/wiki/Session-in-progress"
+  },
+  {
+   "id": 894838647,
+   "user": "tolot27",
+   "created_at": "2021-08-08T18:45:41Z",
+   "body": "> I disagree with your last statement. There is no need to start sensor if you are joining a session in progress.\r\n> This is tested: https://github.com/Navid200/xDrip/wiki/Session-in-progress\r\n\r\nI did not know anymore how much time I've waited to join the existing session but it was much longer than 30 minutes. Maybe, I was too impatient but xDrip still gave me the \"Start Sensor\" option. Hence, I tapped it. Since issue is about inconsistently shown sensor states, I've mentioned this inconsistency. It would be really great if xDrip would behave like the BlueJay which can join a session right after next connect without any delay of 20 or 30 minutes.\r\n\r\nI'll try it again with the next transmitter change."
+  },
+  {
+   "id": 894858929,
+   "user": "Navid200",
+   "created_at": "2021-08-08T21:36:21Z",
+   "body": "I just started a new sensor.  I can confirm that after starting the sensor, the G5/G6 status page shows sensor stopped for 2 read cycles.\r\nThis is expected.  The reason is that the G5/G6 status page is what the transmitter reports.  After you tap on start, the command goes into the queue.  The last read cycle, the transmitter reported that the sensor was stopped so that page still shows that it is stopped.\r\nOn the next read cycle, the start commend is sent to the transmitter, but the transmitter is still reporting that the sensor is stopped.   So, the page still shows that the sensor is stopped.\r\nOn the next read cycle, the transmitter reports that the sensor has started.  Now, the page stops showing sensor stopped.\r\n\r\nThis may be confusing to someone who doesn't know that everything shown on the page comes from the transmitter and the transmitter only communicates in 5-minute sequences, not continuously.\r\n\r\nPerhaps, we can come up with different wording for that page entry to address the possible confusion.  \r\nLet's think about this.  "
+  },
+  {
+   "id": 894859618,
+   "user": "tolot27",
+   "created_at": "2021-08-08T21:43:42Z",
+   "body": "In my post from https://github.com/NightscoutFoundation/xDrip/issues/1632#issuecomment-894831911 there are three different states. The G5/G6 Status page reports \"Sensor Errors\" while the main screen both reports \"... warms up\" and \"Sensor Stopped\". In the earlier comment it shows different warming up times. \r\nFrom the end-users point of few it is totally unimportant how the communication with the transmitter works. At least the main screen should reflect what is going on. As soon as the transmitter accepts a sensor start, the state should be warming up or at least \"starting\" but not stopped.\r\n\r\nThink of the Receiver or the BlueJay. It simply shows \"Warming Up\". If the intermediate states are of interest, they could be shown if the engineering mode is active."
+  },
+  {
+   "id": 894860298,
+   "user": "Navid200",
+   "created_at": "2021-08-08T21:50:19Z",
+   "body": "I explained why it is happening.\r\nAs a user, I would like to have the info coming from the transmitter as well as the info from xDrip.\r\nAs a user who knows what's going on, I expect the warm-up remaining time reported by the transmitter (G5/G6 page) and by xDrip (main screen) to be different because of the quantization noise caused by the 5-minute communication imposed on the transmitter.  \r\nI was not stating that every user would understand any of this.  Frankly, there are many well-informed people who still don't understand this concept.\r\n\r\nOur challenge is to find a way to address the confusion for the usual user without dumbing down the interface too much for the well-informed."
+  },
+  {
+   "id": 964436910,
+   "user": "tolot27",
+   "created_at": "2021-11-09T18:51:08Z",
+   "body": "This time I stopped the sensor to replace it. After waiting (8 minutes in total) until the transmission queue is empty and getting the sensor stop message in the logs, I've started the new sensor. Unfortunately, xDrip shows the sensor start and stop symbol for both the manual action (Start/Stop Sensor) and the \"confirmation\" message from the transmitter after receiving them with the next session:\r\n<img width=\"350\" src=\"https://user-images.githubusercontent.com/1370732/140985454-21eee56d-664d-4a1f-af66-c1e6182e0459.png\" />\r\n\r\nAt least three of this events are uploaded to Nightscout CGM Monitor:\r\n![image](https://user-images.githubusercontent.com/1370732/140986194-738dc0d5-8423-4aca-b79b-b7b0e5ff88f4.png)\r\n"
+  },
+  {
+   "id": 964452984,
+   "user": "Navid200",
+   "created_at": "2021-11-09T19:11:01Z",
+   "body": "Looking at the image, I cannot see anything that is unusual.  Please explain what you find surprising in it."
+  },
+  {
+   "id": 964456139,
+   "user": "Navid200",
+   "created_at": "2021-11-09T19:14:58Z",
+   "body": "I take that back.  I don't know why there are 2 green flags.\r\n![Screenshot_20211109-141245](https://user-images.githubusercontent.com/51497406/140989663-3d43a3bc-769e-48cd-b8d2-07a06786e1ce.png)\r\n"
+  },
+  {
+   "id": 964458698,
+   "user": "Navid200",
+   "created_at": "2021-11-09T19:18:15Z",
+   "body": "I always have the transmitter disconnected for at least 10 minutes.  \r\nI tap on stop sensor.  Then, I wait for the next read to complete.  Then, I remove the sensor from my skin and remove the transmitter from it.  Then, I wait 10 minutes before inserting it into the new sensor.\r\nOtherwise, the possibility exists that the transmitter may flag a restart attempt and issue a sensor start error."
+  },
+  {
+   "id": 964462587,
+   "user": "tolot27",
+   "created_at": "2021-11-09T19:23:19Z",
+   "body": "> Looking at the image, I cannot see anything that is unusual. Please explain what you find surprising in it.\r\n\r\nPlease count the green and red flags. There are two of them but the sensor was stopped once and a new sensor was started once. I've explained the reason for the double entries in my previous post.\r\n\r\nI never had this confusing start/stop behavior with the Dexcom receiver. I can stop a sensor, replace it, and start a new sensor. The warm-up time is always correct and I don't have to wait for anything. Usually, it takes three to six minutes to set a new sensor (at my sons arm) but I don't have to wait any minute with the Dexcom receiver."
+  },
+  {
+   "id": 964486482,
+   "user": "Navid200",
+   "created_at": "2021-11-09T19:55:49Z",
+   "body": "I have seen posts in the Dexcom group of users who use the Dexcom app stating a start failure of a new sensor.\r\nThe suggestion to have the transmitter out for 10 minutes can be seen in that group too.  And I have never posted there to suggest that.\r\n\r\nI have never experienced what you are showing with xDrip having gone through 4 FireFly G6 transmitters.  I am now on the fifth."
+  },
+  {
+   "id": 964569223,
+   "user": "tolot27",
+   "created_at": "2021-11-09T21:36:14Z",
+   "body": "> I have never experienced what you are showing with xDrip having gone through 4 FireFly G6 transmitters. I am now on the fifth.\r\n\r\nThen you have luck or anything else. I encounter the problems on every G6 sensor start. Did you ever stop the sensor or does your sensor always run to it's EOL?\r\n\r\nAnyway, I'll wait for at least 10 minutes after the next sensor stop/replacement."
+  },
+  {
+   "id": 964589107,
+   "user": "Navid200",
+   "created_at": "2021-11-09T22:05:59Z",
+   "body": "I have stopped a sensor before it completed 10 days, and I have also had cases where the sensor completed 10 days and stopped before I was ready to start the next.\r\n\r\nEither way, I have found out that if the transmitter performs two consecutive read cycles (10 minutes) with its contacts floating, it guarantees that it will not consider the next start to be a restart."
+  },
+  {
+   "id": 964592825,
+   "user": "Navid200",
+   "created_at": "2021-11-09T22:11:52Z",
+   "body": "Reading your last sentence, I am worried I may cause a confusion instead of helping.  So, I will go a little bit into detail now.  \r\n\r\nI have experienced that if I tap on stop and then remove the sensor from my body right away, the transmitter is still going to perform a last read.  In that case, the reading will be an incorrect low reading.  \r\nTo avoid that, I tap on stop.  Then, I wait for it to perform a read.  Only then, after it has performed a read after I stopped, do I remove the sensor and transmitter.\r\n\r\nAfter removing the transmitter, I set a timer for 10 minutes.\r\nI then, clean my skin with alcohol, and insert the new sensor, and clean the transmitter contacts.  By the time I am done with all of that, the timer goes off shortly.  \r\nAfter the timer goes off (10 minutes from the time I removed the sensor, not from when I stopped the sensor), do I snap in the transmitter into the new sensor.\r\nI then start.\r\n\r\nFor a restart, I tap on stop, then, wait for the last read.  After the last read, I remove the transmitter from the sensor.\r\nThen, I set the timer for 10 minutes.  I don't clean the transmitter contacts (for a restart) because I want the dielectric grease to remain.  After 10 minutes, I snap in the transmitter.  I then start."
+  },
+  {
+   "id": 1032989534,
+   "user": "tolot27",
+   "created_at": "2022-02-08T19:38:01Z",
+   "body": "IMHO, we could improve the state handling by showing the correct messages and do not allow to start a new sensor until we got a confirmation from the transmitter that the previous stop command was processed successfully."
+  },
+  {
+   "id": 2507090992,
+   "user": "Navid200",
+   "created_at": "2024-11-29T04:58:12Z",
+   "body": "A lot of good suggestions have been made in this issue.\r\nThere have been improvements since this issue was originally opened.\r\nThere is even a new product on the market (G7) since this issue was opened.\r\nConsidering all of these changes, I am going to close this issue.  \r\n\r\nIf there are still issues that we need to address, would you please open a new issue to only contain the remaining issue?\r\n\r\nThanks"
+  }
+ ]
+}

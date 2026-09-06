@@ -1,0 +1,23 @@
+{
+ "issue_id": 316,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/316",
+ "title": "xDrip+ can backfill a \"flat line\" of Libre values to Nightscout on restarting",
+ "symptom": "After restarting the Libre Alarm app and SW3 in the morning, xDrip+ sends a flat line of glucose values to Nightscout, all equal to the first reading after restart, instead of the actual 8-hour history it sees.",
+ "cause": "The issue is caused by readings not being sorted before sending to Nightscout, as explained by tzachi-dar: 'According to what I understand from getDisplayGlucose() it seems that it depends on readings arriving at order. ... However in the function CalculateFromDataTransferObject This is not the case. We need to sort values, before sending them up.'",
+ "fix": "Update to the March 6th nightly (Code 1803061753) and keep 'Send Display Glucose' enabled in Nightscout Sync settings. This resolved the issue.",
+ "settings_changed": [
+  "Send Display Glucose → ON"
+ ],
+ "devices": [
+  "Freestyle Libre",
+  "Sony SW3"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "Libre Alarm",
+  "Nightscout Sync (REST-API)"
+ ],
+ "confidence": "high",
+ "evidence_quote": "I am delighted to confirm that, with the Code: [1803061753 APK](https://github.com/NightscoutFoundation/xDrip/releases/tag/2018.03.06) (from yesterday), and with ``Settings | Cloud Upload | Nightscout Sync (REST-API) | Send Display Glucose = \"ON\"``, I see the same data on Nightscout as I do in the xDrip+ UI. Success!"
+}

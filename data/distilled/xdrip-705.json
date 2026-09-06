@@ -1,0 +1,33 @@
+{
+ "issue_id": 705,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/705",
+ "title": "huawei EMUI Bluetooth issues and missed readings",
+ "symptom": "Users with Huawei phones running EMUI experience missed readings due to BLE scanning issues when the screen is off. The log shows 'App is scanning too frequently on screen off'. Readings resume when the screen is woken.",
+ "cause": "Huawei EMUI software performs its own BLE management, causing issues with scanning and connecting when the screen is off, leading to missed readings.",
+ "fix": "For Huawei EMUI, set the app to manage manually in battery settings, enable auto-launch, secondary launch, and run in background, disable battery optimization for xDrip, lock the app in the app switcher, and on some devices set battery mode to Performance instead of Power Saving. On older EMUI versions without these options, the issue may persist and require a different phone.",
+ "settings_changed": [
+  "Minimize Scanning → enabled",
+  "App launch → Manage manually",
+  "Auto-launch → activated",
+  "Secondary launch → activated",
+  "Run in background → activated",
+  "Battery optimization → don't allow",
+  "Battery mode → Performance"
+ ],
+ "devices": [
+  "Dexcom G6",
+  "Dexcom G5"
+ ],
+ "android_versions": [
+  "Android 7.0.0",
+  "Android 9"
+ ],
+ "driver_tags": [
+  "OB1",
+  "G5",
+  "G6"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "In Settings>Battery it needs to be put in Performance mode. I had it in Power Saveing mode."
+}

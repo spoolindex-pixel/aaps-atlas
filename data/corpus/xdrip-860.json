@@ -1,0 +1,27 @@
+{
+ "id": 435507979,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 860,
+ "title": "Sync with Nightscout - duplicate entries",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/860",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2019-04-21T13:05:59Z",
+ "closed_at": "2019-04-26T03:08:14Z",
+ "comment_count": 2,
+ "body": "When entering treatments via nightscout, it appears Xdrip downloads and then re-uploads the treatment data.  For example, the following two duplicate entries occur in the MongoDB.  Is there a setting or way to fix this so only the nightscout entry is created and used?  Also note that Xdrip only shows the one entry whereas nightscout shows both.\r\n\r\nThanks!\r\n\r\nXdrip version: 05bd730-2019.04.13\r\nNightscout: 0.11.1 head\r\n\r\n`{\r\n    \"_id\": {\r\n        \"$oid\": \"b4696d08d1d74ba9a20615d4\"\r\n    },\r\n    \"timestamp\": 1555344333435,\r\n    \"eventType\": \"Correction Bolus\",\r\n    \"enteredBy\": \"sync\",\r\n    \"notes\": \"ra\",\r\n    \"uuid\": \"b4696d08-d1d7-4ba9-a206-15d461c79237\",\r\n    \"insulin\": 5,\r\n    \"created_at\": \"2019-04-15T16:05:33.435Z\",\r\n    \"sysTime\": \"2019-04-15T11:05:33.435-0500\"\r\n}`\r\n\r\n`{\r\n    \"_id\": {\r\n        \"$oid\": \"5cb4abcd64c3784ebe4b3ad2\"\r\n    },\r\n    \"enteredBy\": \"\",\r\n    \"eventType\": \"Correction Bolus\",\r\n    \"reason\": \"\",\r\n    \"insulin\": 5,\r\n    \"duration\": 0,\r\n    \"notes\": \"ra\",\r\n    \"created_at\": \"2019-04-15T16:05:33.435Z\"\r\n}`",
+ "comments": [
+  {
+   "id": 485480756,
+   "user": "loopy321",
+   "created_at": "2019-04-22T17:14:20Z",
+   "body": "I noticed that if I turn my Xdrip+ collector phone off when doing a carb entry in Nightscout, there are no duplicate entries.  So this appears to be a synchronization problem.  \r\n\r\nFor example, with the phone off, only the following entry is in MongoDB:\r\n`{\r\n    \"_id\": {\r\n        \"$oid\": \"5cbdf47964c3784ebe616f48\"\r\n    },\r\n    \"enteredBy\": \"bob\",\r\n    \"eventType\": \"Carb Correction\",\r\n    \"reason\": \"\",\r\n    \"carbs\": 111,\r\n    \"duration\": 0,\r\n    \"notes\": \"test entry from nightscout\",\r\n    \"created_at\": \"2019-04-22T17:06:01.332Z\"\r\n}`"
+  },
+  {
+   "id": 486909616,
+   "user": "loopy321",
+   "created_at": "2019-04-26T03:08:14Z",
+   "body": "Figured out that xdrip settings->inter-app->accept_treatments ON was the culprit.  Solved by switching to OFF"
+  }
+ ]
+}

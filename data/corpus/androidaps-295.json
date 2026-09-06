@@ -1,0 +1,71 @@
+{
+ "id": 803990752,
+ "repo": "nightscout/AndroidAPS",
+ "number": 295,
+ "title": "[2.8.2] Insulinampullenwechsel - Accu-Check Insight Pumpe / Insulin reservior changes - Accu-Check Insight Pump",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/295",
+ "state": "closed",
+ "labels": [
+  "insight"
+ ],
+ "created_at": "2021-02-08T21:38:10Z",
+ "closed_at": "2021-10-04T15:22:11Z",
+ "comment_count": 9,
+ "body": "Wenn ich bei der Accu-Check Insight Pumpe die Insulinampulle wechsle wird das Alter von dem Katheter ebenfalls zurück gesetzt. Ich starte den Ampullenwechsel nicht über AAPS sondern direkt über die Pumpe.\r\n\r\n- Pumpe -> Ampulle und Infusionsset -> Ampulle wechseln. \r\n- Danach Schlauch füllen\r\n- Insulinabgabe starten\r\n\r\nDanach wird in AAPS unter \"Behandlungen -> Careportal\" folgendes geloggt:\r\n\r\n- Insulinreservoir-Wechsel (korrekt)\r\n- Schlauch gewechselt (korrekt)\r\n- Pumpenkatheter-Wechsel (falsch)\r\n\r\nMeine Pumpe ist die Accu-Check Insight v3 (ist eine Leihpumpe) mit meiner eigenen Accu-Check Insight v1 hatte ich das Problem nicht, da wurde nur der Reservior & Schlauchwechsel geloggt.\r\n\r\nIch weiß nun nicht ob es an der Pumpe liegt, oder an AAPS 2.8.2 mit meiner AC Insight V1 und AAPS 2.7.0 gab es dieses Problem nicht.\r\n\r\n**Google Translate:**\r\nIf I change the insulin cartridge on the Accu-Check Insight pump, the age of the catheter is also reset. I don't start the ampoule change via AAPS but directly via the pump.\r\n\r\n- Pump -> ampoule and infusion set -> change ampoule.\r\n- Then fill the tube\r\n- Start insulin delivery\r\n\r\nThen the following is logged in AAPS under \"Treatments -> Careportal\":\r\n\r\n- Change of insulin reservoir (correct)\r\n- tube changed (correct)\r\n- Pump catheter change (wrong)\r\n\r\nMy pump is the Accu-Check Insight v3 (is a rental pump) with my own Accu-Check Insight v1 I did not have the problem, only the reserve and hose change were logged.\r\n\r\nI don't know if it's the pump, or AAPS 2.8.2 with my AC Insight V1 and AAPS 2.7.0 didn't have this problem.",
+ "comments": [
+  {
+   "id": 775892020,
+   "user": "reijoahola-nightscout",
+   "created_at": "2021-02-09T12:09:19Z",
+   "body": "This must be some difference in Insight v3 because I do not have this problem with Insight v2. I expect that when you say \"age of catheter is also reset\" it actually means \"age of canula (site) is reset\". You can temporarily avoid the problem by turning off logging of reservoir changes (AAPS Insight settings) and by manually giving a comnand \"Actions/Insulin Cartridge Change\" in AAPS."
+  },
+  {
+   "id": 775921519,
+   "user": "TeufelHH",
+   "created_at": "2021-02-09T13:05:54Z",
+   "body": "Unfortunately, under \"Actions\" in AAPS I don't have the item \"Change insulin cartridges\". I can only trigger the whole thing with the pump. Also in Docs recently it says that this point no longer exists in AAPS 2.8.2 , i think in 2.7.0 this point still exists.\r\n\r\n![Screenshot_20210209-140350_AndroidAPS](https://user-images.githubusercontent.com/72801411/107367676-e0ff2180-6adf-11eb-91d7-20ee3bfc5102.jpg)\r\n"
+  },
+  {
+   "id": 775923821,
+   "user": "reijoahola-nightscout",
+   "created_at": "2021-02-09T13:10:07Z",
+   "body": "Insulin Cartridge Change command is under that Katheterwechsel button."
+  },
+  {
+   "id": 775927830,
+   "user": "TeufelHH",
+   "created_at": "2021-02-09T13:17:01Z",
+   "body": "I haven't seen that yet. In the past there was a single button for this, I think I can remember. Thanks for the information."
+  },
+  {
+   "id": 775950759,
+   "user": "reijoahola-nightscout",
+   "created_at": "2021-02-09T13:50:17Z",
+   "body": "![prime_site_change](https://user-images.githubusercontent.com/45634868/107372764-72759000-6aee-11eb-88cd-3823a69c2ed9.jpg)\r\n\r\nThis can be found under Prime/Fill."
+  },
+  {
+   "id": 778414313,
+   "user": "Philoul",
+   "created_at": "2021-02-12T19:46:51Z",
+   "body": "I confirm I have issue with my Insight v3 pump.\r\nIt worked correctly when I started to loop in the end of 2019, with a firmware v2 and an older version of AAPS...\r\nI can try to connect my old pump on my dev phone to see if it works or not... (I thought it was associated to an AAPS update, but maybe it's linked to insight firmware modification...)...\r\n@TebbeUbben do you think you can fix this issue?"
+  },
+  {
+   "id": 778443936,
+   "user": "khind",
+   "created_at": "2021-02-12T20:42:42Z",
+   "body": "Same problem with the Dana RS"
+  },
+  {
+   "id": 835831999,
+   "user": "Philoul",
+   "created_at": "2021-05-09T15:47:35Z",
+   "body": "This issue will be fixed in next version (note only firmware v3 has this issue, it works with firmware v2)"
+  },
+  {
+   "id": 933554381,
+   "user": "Philoul",
+   "created_at": "2021-10-04T14:41:12Z",
+   "body": "Fixed with https://github.com/nightscout/AndroidAPS/commit/62901923550b5ff8a8012b70388c12ad32b977dd"
+  }
+ ]
+}

@@ -1,0 +1,77 @@
+{
+ "id": 2203179887,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 3398,
+ "title": "xDrip can show an overlap when switching hardware data source",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/3398",
+ "state": "closed",
+ "labels": [
+  "device-dexcom"
+ ],
+ "created_at": "2024-03-22T19:31:22Z",
+ "closed_at": "2025-03-31T03:01:40Z",
+ "comment_count": 10,
+ "body": "I have been able to repeatedly cause this as explained here.\r\n\r\n1- Set xDrip to collect from a G6 in a simulator.\r\n2- Change the hardware data source to Nightscout follower from a different source.\r\n\r\n![Screenshot_20240322-152426](https://github.com/NightscoutFoundation/xDrip/assets/51497406/2a747510-d786-48d6-b22b-bf4b6cf66886)\r\n  \r\nThe overlap occurs when switching from a G6 collector to Nightscout follower.  It does not when switching from Nightscout follower to G6 collector.\r\n  \r\n---  \r\n  \r\nI think xDrip should only backfill for a time period that has no readings.\r\nI'm not sure.  But, I suspect that xDrip will avoid backfilling if there is existing data for the exact time stamps.  But, I believe it should avoid it even if the timestamps are different as long as there are readings in the same time period.",
+ "comments": [
+  {
+   "id": 2198147372,
+   "user": "minsartp",
+   "created_at": "2024-06-29T12:42:30Z",
+   "body": "I have the same issues when switching from Dexcom One to One+: \r\nIn my case, it went as follows: I put on the new (and my first!) One+ Sensor yesterday around 21:54. I STOPPED my old (One) sensor this morning at around 7:51 (it still had +-24 hours left). I immediately changed the Transmitter ID to start the new sensor, which effectively happend at around 7:57. I immediately saw all backfilled data in xDrip and AAPS. The earliest value that was backfilled is from 22:22 yesterday, which is probably the very first value after the warmup period. The new and old values are not exactly in sync (old: every 5 minutes starting at xx:01 -> xx:06 -> xx:11 , ...) (new: every 5 minutes starting at xx:02 -> xx:07 -> xx:13 , ...)\r\n![Screenshot_20240629_075913_xDrip+](https://github.com/NightscoutFoundation/xDrip/assets/47970734/9cf5db10-9d2c-4ed5-80aa-4ee59422cafb)\r\n"
+  },
+  {
+   "id": 2198252502,
+   "user": "Navid200",
+   "created_at": "2024-06-29T16:24:24Z",
+   "body": "I just did another test.  This time, I switched from fake data source to Nightscout follower.  And there is an overlap.  \r\n![Screenshot_20240629-121550](https://github.com/NightscoutFoundation/xDrip/assets/51497406/39496494-cdfe-4351-912a-364a88dc352b)  ![Screenshot_20240629-122221](https://github.com/NightscoutFoundation/xDrip/assets/51497406/d8f8f5fd-3f3f-4093-a53d-9ae29add08f8)  "
+  },
+  {
+   "id": 2203131855,
+   "user": "Navid200",
+   "created_at": "2024-07-02T13:16:07Z",
+   "body": "**G6 > stop > G7 right away**  \r\n  \r\nThis means after stopping sensor, you change the transmitter ID right away before there is a chance for xDrip to submit the stop command to the G6 transmitter.  \r\n  \r\n![Screenshot_20240702-082837](https://github.com/NightscoutFoundation/xDrip/assets/51497406/28cf3332-27c4-48f0-8712-3f03570f10b8)  ![Screenshot_20240702-082704](https://github.com/NightscoutFoundation/xDrip/assets/51497406/7eea0712-7701-4fc2-9047-ee7e26fff8f9)\r\n\r\n  \r\n"
+  },
+  {
+   "id": 2203175536,
+   "user": "minsartp",
+   "created_at": "2024-07-02T13:32:21Z",
+   "body": "> **G6 > stop > G7 right away**\r\n> \r\n> This means after stopping sensor, you change the transmitter ID right away before there is a chance for xDrip to submit the stop command to the G6 transmitter.\r\n> \r\n> ![Screenshot_20240702-082837](https://private-user-images.githubusercontent.com/51497406/345041444-28cf3332-27c4-48f0-8712-3f03570f10b8.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MTk5MjcwODAsIm5iZiI6MTcxOTkyNjc4MCwicGF0aCI6Ii81MTQ5NzQwNi8zNDUwNDE0NDQtMjhjZjMzMzItMjdjNC00OGYwLTg3MTItM2YwMzU3MGYxMGI4LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNDA3MDIlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjQwNzAyVDEzMjYyMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTJkZTk1MzAxNTkyN2Q4YWE5ZmY3YzNjYWFkZGJjNTkzZGJlMmQ0ZWFmMjc3NWJjOTIyNGVmNTNlNWRiNzQ1ZWEmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JmFjdG9yX2lkPTAma2V5X2lkPTAmcmVwb19pZD0wIn0.R0m5JxFdw8mpnDUzrXlwezTLV8GzGoVKCxJoiX4ocAc) ![Screenshot_20240702-082704](https://private-user-images.githubusercontent.com/51497406/345041924-7eea0712-7701-4fc2-9047-ee7e26fff8f9.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MTk5MjcwODAsIm5iZiI6MTcxOTkyNjc4MCwicGF0aCI6Ii81MTQ5NzQwNi8zNDUwNDE5MjQtN2VlYTA3MTItNzcwMS00ZmMyLTkwNDctZWU3ZTI2ZmZmOGY5LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNDA3MDIlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjQwNzAyVDEzMjYyMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTQ0OGI2NTU0YmI3NzhjOWYwZGJhMDgxNDU2MTg0MjI3YzUwNjk0NmIxOWU0MzMwODQ5MmE0MDdhYTAxYTRhMjImWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JmFjdG9yX2lkPTAma2V5X2lkPTAmcmVwb19pZD0wIn0.sd1Ty6Sl5FkBCR7k7vFkrSUalJAg5YCRMmITYxGV8Ko)\r\n\r\nIn my case, I did wait that the G6 sensor was fully stopped (= the command processed by the"
+  },
+  {
+   "id": 2203343307,
+   "user": "Navid200",
+   "created_at": "2024-07-02T14:15:25Z",
+   "body": "**G6 > G7**  \r\nThis means changing the transmitter ID from G6 to G7 without stopping the session.  This does not cause an overlap.  \r\n  \r\n![Screenshot_20240702-095206](https://github.com/NightscoutFoundation/xDrip/assets/51497406/9d6c924d-b3a6-4ca1-8101-90d5f3928de6)  ![Screenshot_20240702-101026](https://github.com/NightscoutFoundation/xDrip/assets/51497406/ba8e18cd-7134-4030-888b-7c55478ec6a5)  \r\n\r\n"
+  },
+  {
+   "id": 2233716701,
+   "user": "Navid200",
+   "created_at": "2024-07-17T16:26:41Z",
+   "body": "Starting with the xDrip Nightly release of July 17, 2024, xDrip will only backfill (G6 or G7) starting from the last existing reading.  \r\nThis will avoid the possibility of an overlap.  \r\n\r\nAs a result, if you have a gap followed by some readings, the backfill will not fill the gap.  \r\n  \r\nIt is best to avoid practices that could cause such gaps. For example, if you want to perform a test, use a test phone instead of using your main xDrip installation on your active main phone.  "
+  },
+  {
+   "id": 2607184920,
+   "user": "Navid200",
+   "created_at": "2025-01-22T12:59:07Z",
+   "body": "@Der-Schubi I can still cause this to fail.  That's why I reopened it.\n\nI think I need to exclude backfills that precede the start time of the current internal session.  That combined with the internal session start time being limited to last reading should be a solid fix.\nI will be working on this and should have the PR ready in a few days and test G7 to G7 in 9 days.\n\nIn the meantime, to avoid an overlap, you can stop your sensors from expiring.  To do that, let's say you know your sensor will expire at 2 pm.  At 1:55 or before, stop collection in xDrip.  Then, peel off the sensor and move it away.  Then, switch to your new sensor.  This will avoid a backfill overlap until we fix the issue."
+  },
+  {
+   "id": 2607347118,
+   "user": "Der-Schubi",
+   "created_at": "2025-01-22T14:08:33Z",
+   "body": "> [@Der-Schubi](https://github.com/Der-Schubi) I can still cause this to fail. That's why I reopened it.\n> \n> I think I need to exclude backfills that precede the start time of the current internal session. That combined with the internal session start time being limited to last reading should be a solid fix.\n\nThats why I suggested to stop the internal session before starting a new one. I think this would take care of a few tripping points.\nNot the one with the backfill in particular, though."
+  },
+  {
+   "id": 2607364561,
+   "user": "Navid200",
+   "created_at": "2025-01-22T14:15:33Z",
+   "body": "And what do we do if you decide to switch temporarily from one sensor to another and then come back?\nIf we stop the internal session automatically every time you switch devices, there will not really be any value in maintaining such a value.  What would be its benefit then?  "
+  },
+  {
+   "id": 2764983070,
+   "user": "Navid200",
+   "created_at": "2025-03-31T03:01:40Z",
+   "body": "This is now fixed for G7 to G7 switch as well as of the 2025.03.23 release."
+  }
+ ]
+}

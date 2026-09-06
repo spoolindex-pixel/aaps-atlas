@@ -1,0 +1,86 @@
+{
+ "id": 623688078,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1350,
+ "title": "Libre-2: no options to save calibrated values neither to upload them to Nightscout. Help needed",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1350",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "device-libre",
+  "sync-nightscout",
+  "calibration"
+ ],
+ "created_at": "2020-05-23T15:54:43Z",
+ "closed_at": "2021-07-08T07:35:37Z",
+ "comment_count": 11,
+ "body": "I have searched in the issues, but found no other like this.\r\nThe problem is that there is a number of countries in which Abott only sells Libre-2. Spain is an example. We cannot buy Libre-1, although I think it's better than L2 in several ways.\r\n\r\nThe options to use Libre-2 with Xdrip are essentially 2: use the patched app to capture the native data or use a third party bluetooth connector to send the data to Xdrip with OOP algorithm running in the background. In both cases, we cannot calibrate data.\r\n\r\nOOP simply rejects calibrations. It yields the current value calibrated, but when the next read arrives it goes back to the native values. The first solution only allows a calibration by adding/subtracting 20 mg/dl to the native value. Furthermore, the native Libre-2 never will deliver a native value below 39. And the intercept of the calibration can never higher than 40 for that reason.\r\n\r\nIn my case, this has transformed my life in a nightmare. My current Libre-2 is reading very low values. I read this happens more than often, and even that Libre-2 is very sensitive to any hit or movement, so it will start behaving abnormally. \r\n\r\nYet this Libre-2, I think, was not affected by that. However, it had been in range with finger pricks the first two days, and then started to change and go down. Sometimes, in the old calibration style of Xdrip the slope can be above 1, and some other moments it was below 1.\r\n\r\nThe only solution I found is to use L2 paired with MM2, OOP running in the background and activating as a secondary plugin the Xdrip algorithm in calibrations. The data showed on screen is from that plugin. It is the only way to use the sensor under these conditions. The problem is that new calibrations do not soften or adjust previous readings as it does Xdrip with L1. In addition, the data table contains only the native values, which are uploaded to NS.\r\n\r\nIn my opinion this is useless. I could live with this option I found provided the data uploaded to NS are free of error/bias or incorrections. To put it simply: now I'm 88, but the native reading is 58. And if I'm 70, the native reading is 39. And in case I'm below 70, the Xdrip will not yield an alarm, because in these conditions, the limitations imposed make it impossible to yield a native value below 39. \r\n\r\nMy suggestion or question: **how can I tell Xdrip to upload the Xdrip calibrated values to NS instead of the native Libre-2 values?** I activated the option to enable the pluging to override all the other options, but it seems to change nothing. **Shouldn't this save the calibrated value of the plugin to the data table and upload these values to NS?**\r\n\r\nI'm afraid that L2 has worsen what L1 yielded. This should serve as a warning for future users, since Abott seems to expand L2 in markets and will stop serving L1. If I don't found a solution for this, I will have to search for other alternatives, although their cost is higher.\r\n\r\nAny help will be appreciated, since I believe that many people will suffer from this problem with L2\r\n\r\nThanks!",
+ "comments": [
+  {
+   "id": 654258966,
+   "user": "silver77surfer",
+   "created_at": "2020-07-06T14:03:17Z",
+   "body": "I would like to support the suggestion of yosepito. For me there is only Libre 2 available in Germany. I think the other countries will follow, sooner or later. I tried to use Libre 2, Bubble transmitter and OOP algorithm. It is only possible to calibrate with a plugin. And it is not possible, to send the calibrated values to nightscout, Nightscout only receives the non calibrated values, although you choose in seetings that the plugins shall be considered."
+  },
+  {
+   "id": 654697811,
+   "user": "yosepito",
+   "created_at": "2020-07-07T08:45:42Z",
+   "body": "After using several Libre-2, I confirm the native data is massively lower than finger pricks. The limit of +-20 in the calibration is useless under these conditions. There is no reason for that. Developers: This is a \"use at your own risk\" project. We know that Libre-2 has a lower threshold of 40. However, there are a number of reasons why this does not hold.\r\n\r\nCurrent sensor: the first 2 days, finger pricks were +20 above the native data. Now it's +35 or +40. I decided to shift from patched Libre app to OOP + MM2 and do activate Xdrip original algorithm to show my BGs. Yet the data table is still wrong with native data.\r\n\r\nThe plugins should be able to override native data if the user wants to use that. Please, anyone could help with this? Maybe @gregorybel or @jamorham ? Thanks\r\n\r\nsee also #1371 and and #1335 for a discussion of potential problems of calibrations (reasons I cannot share at all)\r\n@tzachi-dar : please, can we advance on this?"
+  },
+  {
+   "id": 683408422,
+   "user": "tzachi-dar",
+   "created_at": "2020-08-30T11:21:54Z",
+   "body": "We now have the possibility to calibrate libre 2 (using mm/blucon/bubble).\r\nShould also work on android 10.\r\nIf anyone is interested to test this, please write here."
+  },
+  {
+   "id": 683425857,
+   "user": "silver77surfer",
+   "created_at": "2020-08-30T14:15:00Z",
+   "body": "> We now have the possibility to calibrate libre 2 (using mm/blucon/bubble).\r\n> Should also work on android 10.\r\n> If anyone is interested to test this, please write here.\r\n\r\nHey there! Great news! At the moment I use Libre 2 patched app. But the calibration limit (+ 20 mg/dL) often is not enough for me. I have a MM 1 and a bubble. Both with the latest firmware. I am on Android 10. So I could do some tests. By the way: I hope there is also a smooth algorithm similar to the algorithm of the patched app?!"
+  },
+  {
+   "id": 683449502,
+   "user": "tzachi-dar",
+   "created_at": "2020-08-30T17:48:31Z",
+   "body": "Please see instructions here:\nhttps://gitter.im/LibreOOPAlgorithm/Lobby\n\nOn Sun, 30 Aug 2020 at 17:15, silver77surfer <notifications@github.com>\nwrote:\n\n> We now have the possibility to calibrate libre 2 (using mm/blucon/bubble).\n> Should also work on android 10.\n> If anyone is interested to test this, please write here.\n>\n> Hey there! Great news! At the moment I use Libre 2 patched app. But the\n> calibration limit (+ 20 mg/dL) often is not enough for me. I have a MM 1\n> and a bubble. Both with the latest firmware. I am on Android 10. So I could\n> do some tests. By the way: I hope there is also a smooth algorithm similar\n> to the algorithm of the patched app?!\n>\n> —\n> You are receiving this because you were mentioned.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/1350#issuecomment-683425857>,\n> or unsubscribe\n> <https://github.com/notifications/unsubscribe-auth/AB4TBZE5HXUAL7RIBGP6VBLSDJNHBANCNFSM4NIP4ACA>\n> .\n>\n"
+  },
+  {
+   "id": 683652571,
+   "user": "yosepito",
+   "created_at": "2020-08-31T08:49:12Z",
+   "body": "just to not duplicate this:\r\nsee my comments in https://github.com/NightscoutFoundation/xDrip/issues/1371#issuecomment-683652026\r\n\r\nI suggest using that link to post comments in a unified way\r\n\r\nthanks to @tzachi-dar "
+  },
+  {
+   "id": 715958685,
+   "user": "tolot27",
+   "created_at": "2020-10-24T16:04:55Z",
+   "body": "Isn't this a duplicate of #1335, is it?"
+  },
+  {
+   "id": 741712312,
+   "user": "patanito",
+   "created_at": "2020-12-09T11:28:41Z",
+   "body": "@tolot27 it is. I think it can be closed. See:\r\nhttps://github.com/NightscoutFoundation/xDrip/issues/1371#issuecomment-741710603"
+  },
+  {
+   "id": 741739827,
+   "user": "tolot27",
+   "created_at": "2020-12-09T12:28:03Z",
+   "body": "@tzachi-dar Will the upload also fixed with your PR #1524?"
+  },
+  {
+   "id": 876099077,
+   "user": "Navid200",
+   "created_at": "2021-07-08T03:42:12Z",
+   "body": "Can we close this if it is a duplicate?"
+  },
+  {
+   "id": 876205870,
+   "user": "tolot27",
+   "created_at": "2021-07-08T07:35:37Z",
+   "body": "Closing this because Libre2 calibration now possible and sync of calibrated values is requested earlier with #475 and will be merged with #1090."
+  }
+ ]
+}

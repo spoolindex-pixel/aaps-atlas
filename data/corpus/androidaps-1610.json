@@ -1,0 +1,81 @@
+{
+ "id": 1200741682,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1610,
+ "title": "SMS Communicator Not Sending Response in Dev i but still works in Master (tried on multiple phones)",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1610",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-04-12T01:03:30Z",
+ "closed_at": "2022-05-19T21:18:43Z",
+ "comment_count": 12,
+ "body": "SMS communicator is not sending a response (but will still implement commands). \r\n\r\nThis problem first began when I switched from @tim2000s main dynamic ISF branch to his dev. I briefly switched back to master and it worked fine. I then switched to NS dev G, H and then I and its not working. I've tried on multiple phones (S9, Jelly 2, Atom and Not 10) and its not working on any of them. Master still works fine. \r\n--------------\r\n- Time: 8:40pm I sent five different SMS commands\r\n-AndroidAPS 3.0.0.1-dev-i\r\n-BUILD: 671127673-2022.04.05-12:55\r\n-logs and screenshots attached\r\n[AndroidAPS_LOG_1649724181836.log.zip](https://github.com/nightscout/AndroidAPS/files/8468679/AndroidAPS_LOG_1649724181836.log.zip)\r\n\r\n\r\n\r\n![Screenshot_20220411-204217_AndroidAPS](https://user-images.githubusercontent.com/73077567/162857620-15fce289-c84d-40a7-b156-d44b47836d6b.jpg)\r\n![Screenshot_20220411-201853_Permission controller](https://user-images.githubusercontent.com/73077567/162857624-053ddfee-9cdf-416c-ae21-bf1c0fd949d4.jpg)\r\n![Screenshot_20220411-201440_Settings](https://user-images.githubusercontent.com/73077567/162857627-0445ef86-8f5e-423d-9c82-724a31c33ec0.jpg)\r\n![Screenshot_20220411-205048_Messages](https://user-images.githubusercontent.com/73077567/162857633-b3d8e5ac-0819-4aaa-8874-523aab6e3bba.jpg)\r\n\r\n\r\nPlease let me know if there is anything I can do to help get you some useful data. \r\n\r\nThank you, \r\n\r\nColeby\r\n",
+ "comments": [
+  {
+   "id": 1096443443,
+   "user": "MilosKozak",
+   "created_at": "2022-04-12T09:30:10Z",
+   "body": "problem is on master. AAPS cannot send SMS even we see it's trying it"
+  },
+  {
+   "id": 1097928013,
+   "user": "MilosKozak",
+   "created_at": "2022-04-13T11:16:22Z",
+   "body": "what do you see in AAPS permissions in android setting?"
+  },
+  {
+   "id": 1098606951,
+   "user": "ColebyPearson",
+   "created_at": "2022-04-14T00:52:24Z",
+   "body": "@MilosKozak  Would it be helpful to send a video showing SMS commands sending texts in Master and then switching to dev ? I can show the settings and permissions and switch back to master to show. \r\n\r\nI've attached pictures of permissions, please let me know if you see anythin\r\n![Screenshot_20220413-190022_Permission controller](https://user-images.githubusercontent.com/73077567/163292821-f234d4e3-fa58-4a12-933c-3f6ec9b3ea64.jpg)\r\n![Screenshot_20220413-190014_Permission controller](https://user-images.githubusercontent.com/73077567/163292822-045eb870-bab8-420a-a98e-0164eec3d66b.jpg)\r\n![Screenshot_20220413-190029_Permission controller](https://user-images.githubusercontent.com/73077567/163292824-461b8c71-630d-4041-9e99-6f14382e4860.jpg)\r\n![Screenshot_20220413-190036_Permission controller](https://user-images.githubusercontent.com/73077567/163292825-dd94edb3-345e-4195-9ac3-bb5be4e72b9c.jpg)\r\n![Screenshot_20220413-190036_Permission controller (1)](https://user-images.githubusercontent.com/73077567/163292826-944abf66-2b92-4498-a336-a6d6ac6420a2.jpg)\r\n![Screenshot_20220413-185939_Permission controller](https://user-images.githubusercontent.com/73077567/163292827-02c19d7d-8110-4ee7-8cf5-e4c9ed85b252.jpg)\r\ng"
+  },
+  {
+   "id": 1098798595,
+   "user": "MilosKozak",
+   "created_at": "2022-04-14T07:32:53Z",
+   "body": "there is no change in SMS code between master and dev-i except some text formating"
+  },
+  {
+   "id": 1098798930,
+   "user": "MilosKozak",
+   "created_at": "2022-04-14T07:33:18Z",
+   "body": "try it on another phone"
+  },
+  {
+   "id": 1099001113,
+   "user": "jumalakarhu",
+   "created_at": "2022-04-14T10:14:33Z",
+   "body": "I can confirm the same with Sony xperia xz1 compact.  sms command in dev is not functional. Sms is read in aaps and respons issued  (seen in sms log in aaps), but sms is not actually sent from phone. Works fine when going back to master. Could it be something about permissions not properly inherited/handled (?) in dev from master? Would be worth testing with a fresh install of dev, but I do not have a spare android 9+ at the moment.\r\n"
+  },
+  {
+   "id": 1099727199,
+   "user": "ColebyPearson",
+   "created_at": "2022-04-14T23:56:40Z",
+   "body": "@MilosKozak I've tried on Samsung note 10, Jelly 2, Atom and S9 all with no luck. They all work fine with Master. \r\n\r\nI'll take a video performing SMS commands and then switching from dev to master to new dev to show how its working/ not working and will pull some more logs. \r\n\r\nIs it helpful for me to adjust the log settings to add or remove certain categories?\r\n\r\nIt looks like @jumalakarhu can confirm what I am seeing as well. \r\n\r\n"
+  },
+  {
+   "id": 1100267934,
+   "user": "ColebyPearson",
+   "created_at": "2022-04-15T18:05:21Z",
+   "body": "@MilosKozak Here's a video of me attempting and failing to respond to SMS commands in dev-i and then installing master to show them working and then to dev h. \r\n\r\nhttps://drive.google.com/file/d/121tXlCh4dX9zuVP6RbcVSVzWT621wZWz/view?usp=sharing\r\n\r\nIm updating now to latest dev to see if there are any changes"
+  },
+  {
+   "id": 1100747387,
+   "user": "treebearded",
+   "created_at": "2022-04-16T20:07:45Z",
+   "body": "Same issue here, dev-i, Huawei p20pro, android10"
+  },
+  {
+   "id": 1104781924,
+   "user": "shafiro",
+   "created_at": "2022-04-21T06:46:58Z",
+   "body": "Had the same problem with Galaxy S21+. After upgrading to Android 12, SMS functionality is back to normal. "
+  },
+  {
+   "id": 1132216805,
+   "user": "MilosKozak",
+   "created_at": "2022-05-19T21:18:43Z",
+   "body": "resolved by https://github.com/nightscout/AndroidAPS/commit/6f358bc0c80b902b0abbf6b0dbd77a88b035ee24"
+  }
+ ]
+}

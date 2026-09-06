@@ -1,0 +1,87 @@
+{
+ "id": 192853443,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 40,
+ "title": "What should we do when parseInt in EditAlertActivity returns null",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/40",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2016-12-01T13:56:00Z",
+ "closed_at": "2016-12-03T11:16:14Z",
+ "comment_count": 12,
+ "body": "See example line here, the result is cast to `int` but can be null. There are a few places this occurs. What should we do with those to fail through cleanly when for whatever reason there could be invalid data?\r\n\r\nCan we use `Integer` instead and test for null. What is the correct way to exit the `onTouch` listener when this might happen?\r\n\r\nhttps://github.com/NightscoutFoundation/xDrip/blob/a3f32d9b3e760fc69b0ce3f9a7df57d0cd333ce4/app/src/main/java/com/eveningoutpost/dexdrip/EditAlertActivity.java#L795",
+ "comments": [
+  {
+   "id": 264182471,
+   "user": "AdrianLxM",
+   "created_at": "2016-12-01T14:12:03Z",
+   "body": "Using `Integer` instead of `int` has other implications as well.\r\n\r\n* `int` is always initialised; `Integer` are not.\r\n* `int` are passed by value; `Integer` by reference. This can have the implication that if you pass an `Integer` to a function it might have side effects on the calling function if it modifies the value.\r\n * All `==`, `!=`, ... comparisons have to be changed to `a.equals(b)`, .... As with primitive datatypes they compare values but with non-primitive ones it compares references."
+  },
+  {
+   "id": 264187118,
+   "user": "jamorham",
+   "created_at": "2016-12-01T14:31:05Z",
+   "body": "Is `Integer` immutable if set `final` ?  In the cases I've seen in `EditAlertActivity` it is almost immediately cast to `int` like for example when being used as parameter for `SnoozeActivity.SetSnoozePickerValues`\r\n\r\nIf the pass by reference is a problem we could just evaluate it twice and do the null check or should we be passing up the `NullPointerException` instead and having `parseInt` return `int` instead of `Integer` ?"
+  },
+  {
+   "id": 264190009,
+   "user": "tzachi-dar",
+   "created_at": "2016-12-01T14:42:06Z",
+   "body": "I'm not sure I understand how you can get a null there.\r\nThe behavior I see on my phone is that there is spiner that only allows one to get good values. (this are predefined values).\r\n\r\nAssuming that you will soon answer how to reproduce this, than my suggestions:\r\n\r\n1) block it from returning null.\r\n2) if 1 is not possible than use the default value \r\ndefaultSnooze = SnoozeActivity.getDefaultSnooze(above);\r\n\r\nSo, how do I reproduce this?"
+  },
+  {
+   "id": 264191634,
+   "user": "AdrianLxM",
+   "created_at": "2016-12-01T14:48:20Z",
+   "body": "In this particular case\r\n\r\n * getInt() could either return a primitive Datatype with `0` as default, as in `SnoozeActivity.SetSnoozePickerValues()` and `SetSnoozePickerValues()` the \"locatoin\" (position?) will get set to a default value anyways. `alterReraiseInt` is also handled anyways to be not smaller than `1`. All other cases have to be handled either way.\r\n\r\n* The other possibility is to use `Integer` and allow for `null` and simply handle that null case.\r\n\r\nAs the scope is limited, either way works."
+  },
+  {
+   "id": 264193430,
+   "user": "AdrianLxM",
+   "created_at": "2016-12-01T14:54:55Z",
+   "body": "@jamorham in general no;  setting a variable final means, the object it \"points\" to cannot be exchanged. But the values/state the Object holds can. In this case it effectively is like that as `Integer` has no methods to modify the content and by itself is a final Class so there cannot be subclasses."
+  },
+  {
+   "id": 264194473,
+   "user": "AdrianLxM",
+   "created_at": "2016-12-01T14:58:20Z",
+   "body": "And @tzachi-dar is right: the practical chance that a value is entered that cannot be parsed to an integer is close to zero. The input is either a spinner or limited to \"number\"."
+  },
+  {
+   "id": 264199970,
+   "user": "jamorham",
+   "created_at": "2016-12-01T15:17:54Z",
+   "body": "I don't know a specific way to reproduce it, but android studio flags it as potential for null pointer exception and the frameworks on various phones can do strange things, for example some might allow local numeric symbols eg `,` to be entered in a number field and you can click to edit the spinner or the spinner view object might just fail to return correctly due to low memory conditions or losing focus etc.\r\n\r\nI've raised the issue because I don't know enough about the flow of this code to simply wrap it with eg `if (xx == null) return false` for the rare occasions it might happen.\r\n\r\nHere is a stacktrace:\r\n\r\n```\r\nFatal Exception: java.lang.NullPointerException: Attempt to invoke virtual method 'int java.lang.Integer.intValue()' on a null object reference\r\n       at com.eveningoutpost.dexdrip.EditAlertActivity$10.onTouch(EditAlertActivity.java:795)\r\n       at android.view.View.dispatchTouchEvent(View.java:8383)\r\n       at android.view.ViewGroup.dispatchTransformedTouchEvent(ViewGroup.java:2431)\r\n       at android.view.ViewGroup.dispatchTouchEvent(ViewGroup.java:2120)\r\n       at android.view.ViewGroup.dispatchTransformedTouchEvent(ViewGroup.java:2431)\r\n       at android.view.ViewGroup.dispatchTouchEvent(ViewGroup.java:2120)\r\n       at android.view.ViewGroup.dispatchTransformedTouchEvent(ViewGroup.java:2431)\r\n       at android.view.ViewGroup.dispatchTouchEvent(ViewGroup.java:2120)\r\n       at android.view.ViewGroup.dispatchTransformedTouchEvent(ViewGroup.java:2431)\r\n       at android.view.ViewGroup.dispatchTouchEvent(ViewGroup.java:2120)\r\n       at android.view.ViewGroup.dispatchTransformedTouchEvent(ViewGroup.java:2431)\r\n       at android.view.ViewGroup.dispatchTouchEvent(ViewGroup.java:2120)\r\n       at android.view.ViewGroup.dispatchTransformedTouchEvent(ViewGroup.java:2431)\r\n       at android.view.ViewGroup.dispatchTouchEvent(ViewGroup.java:2120)\r\n       at android.view.ViewGroup.dispatchTransformedTouchEvent(ViewGroup.java:2431)\r\n       at android.view.ViewGroup"
+  },
+  {
+   "id": 264202947,
+   "user": "tzachi-dar",
+   "created_at": "2016-12-01T15:28:08Z",
+   "body": "I would simply change the code from:\r\nint defaultSnooze = parseInt(editSnooze.getText().toString());\r\nto:\r\nint defaultSnooze;\r\ndefaultSnoozeString = editSnooze.getText().toString();\r\nif(defaultSnoozeString != null) {\r\n   defaultSnooze = parseInt(defaultSnoozeString);\r\n} else {\r\n   defaultSnooze = SnoozeActivity.getDefaultSnooze(above);\r\n}\r\n\r\nSince this is only the default of how the dialog will start I guess that any solution will work...\r\n"
+  },
+  {
+   "id": 264207523,
+   "user": "jamorham",
+   "created_at": "2016-12-01T15:43:34Z",
+   "body": "Although it could be caused by the String itself being null, if it is an invalid integer for some other reason then the nullpointer exception will come from the conversion of `Integer` to `int` which occurs on the referenced line. \r\n\r\nHow about something very similar to that:\r\n\r\n```\r\nint defaultSnooze;\r\ntry {\r\n      defaultSnooze = parseInt(editSnooze.getText().toString());\r\n    } catch (NullPointerException e) {\r\n      defaultSnooze = SnoozeActivity.getDefaultSnooze(above);\r\n    }\r\n```"
+  },
+  {
+   "id": 264210192,
+   "user": "tzachi-dar",
+   "created_at": "2016-12-01T15:52:23Z",
+   "body": "Generally speaking, I don't like catching null pointer exceptions since this might hide bugs.\r\nin this specific case it is ok, since we are only catching it from line (that actually have 3 functions).\r\n"
+  },
+  {
+   "id": 264214826,
+   "user": "jamorham",
+   "created_at": "2016-12-01T16:08:23Z",
+   "body": "Yes I think the above is pretty safe but could also be done like:\r\n\r\n```\r\nInteger defaultSnooze = parseInt(editSnooze.getText().toString());\r\nif (defaultSnooze == null)\r\n                 defaultSnooze = SnoozeActivity.getDefaultSnooze(above);\r\n```\r\n\r\nI wrote it as above with the catch because then it doesn't change the type of `defaultSnooze` and there are a couple of other places which might need the same treatment.\r\n\r\nRegardless of the implementation I think I've got an answer to the main question which is what to do when its null."
+  },
+  {
+   "id": 264633086,
+   "user": "jamorham",
+   "created_at": "2016-12-03T11:16:14Z",
+   "body": "Should now be resolved by: https://github.com/NightscoutFoundation/xDrip/commit/f4502664f76a2f3d4b1eec9fa101d23390908f1a"
+  }
+ ]
+}

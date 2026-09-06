@@ -1,0 +1,51 @@
+{
+ "id": 2447682135,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3396,
+ "title": "problem connecting to nightscout on AAPS 3.2.0.4",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3396",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-08-05T06:06:32Z",
+ "closed_at": "2024-08-08T10:15:39Z",
+ "comment_count": 6,
+ "body": "Connecting to nightscout 15.0.2 ( hosted inside Homeassistant - as docker  img) seems to give me and error message \"401 - Missing or bad access token or JWT\"\r\nthe same server and token seem to connect fine if I use NSClient 3.1.0.3?\r\nnot sure what gone wrong here\r\n\r\n\r\n--------------\r\nAAPSClient 3.2.0.4\r\nNSCLIENT\r\nBuild: 5d3e33ce8a-2024.02.27\r\nRemote: https://github.com/nightscout/AndroidAPS.git\r\nFlavor: aapsclientrelease\r\nNightscout version: UNKNOWN\r\n--------------\r\nnightscout\r\nversion 15.0.2\r\nhead\r\n--------------\r\n\r\n`XX.XX.XX.XX - - [05/Aug/2024:15:25:49 +1000] \"GET /api/v1/entries/sgv.json HTTP/1.1\" 200 2 \"-\" \"HomeAssistant/2024.7.4 aiohttp/3.9.5 Python/3.12\"\r\nXX.XX.XX.XX - - [05/Aug/2024:15:25:54 +1000] \"GET /api/v3/status HTTP/1.1\" 401 61 \"-\" \"okhttp/4.12.0\"\r\nMissing or bad access token or JWT\r\nXX.XX.XX.XX - - [05/Aug/2024:15:25:54 +1000] \"GET /api/v2/authorization/request/XXXX-XXXXXXXXXXXXXXX HTTP/1.1\" 200 280 \"-\" \"okhttp/4.12.0\"\r\nXX.XX.XX.XX - - [05/Aug/2024:15:25:54 +1000] \"GET /api/v3/status HTTP/1.1\" 401 61 \"-\" \"okhttp/4.12.0\"\r\nMissing or bad access token or JWT\r\nXX.XX.XX.XX - - [05/Aug/2024:15:25:54 +1000] \"GET /api/v3/status HTTP/1.1\" 401 61 \"-\" \"okhttp/4.12.0\"\r\nMissing or bad access token or JWT\r\nXX.XX.XX.XX - - [05/Aug/2024:15:25:54 +1000] \"GET /api/v2/authorization/request/XXXX-XXXXXXXXXXXXXXX HTTP/1.1\" 304 0 \"-\" \"okhttp/4.12.0\"\r\nXX.XX.XX.XX - - [05/Aug/2024:15:25:54 +1000] \"GET /api/v3/status HTTP/1.1\" 401 61 \"-\" \"okhttp/4.12.0\"\r\nMissing or bad access token or JWT\r\nXX.XX.XX.XX - - [05/Aug/2024:15:25:55 +1000] \"GET /api/v3/status HTTP/1.1\" 401 61 \"-\" \"okhttp/4.12.0\"\r\nMissing or bad access token or JWT\r\nXX.XX.XX.XX - - [05/Aug/2024:15:25:55 +1000] \"GET /api/v2/authorization/request/XXXX-XXXXXXXXXXXXXXX HTTP/1.1\" 200 280 \"-\" \"okhttp/4.12.0\"\r\nXX.XX.XX.XX - - [05/Aug/2024:15:25:55 +1000] \"GET /api/v3/status HTTP/1.1\" 401 61 \"-\" \"okhttp/4.12.0\"\r\nMissing or bad access token or JWT\r\nXX.XX.XX.XX - - [05/Aug/2024:15:25:55 +1000] \"GET /api/v3/status HTTP/1.1\" 401 61 \"-\" \"okhttp/4.12.0\"\r\nMissing or bad access token or JWT\r\nXX.XX.XX.XX - - [05/Aug/2024:15:25:55 +1000] \"GET /api/v2/authorization/request/XXXX-XXXXXXXXXXXXXXX HTTP/1.1\" 304 0 \"-\" \"okhttp/4.12.0\"\r\nXX.XX.XX.XX - - [05/Aug/2024:15:25:55 +1000] \"GET /api/v3/status HTTP/1.1\" 401 61 \"-\" \"okhttp/4.12.0\"\r\nMissing or bad access token or JWT`",
+ "comments": [
+  {
+   "id": 2269005926,
+   "user": "olorinmaia",
+   "created_at": "2024-08-05T12:53:06Z",
+   "body": "Hi :)\r\nPlease read release notes, and especially:\r\nhttps://androidaps.readthedocs.io/en/latest/Installing-AndroidAPS/Releasenotes.html#important-comments-on-using-v3-versus-v1-api-for-nightscout-with-aaps\r\n\r\nIf you want to use NSclientV3 you need to create access tokens in Nightscout. This is done in NS admin tools. If you use NSClientv1 you can use API SECRET as used in 3.1.0.3.\r\n\r\nIf you want to use NS+ button and have correct basal showing in NS you need to use NSClientv1. V3 currently isn't able to due to a rendering bug in NS."
+  },
+  {
+   "id": 2269144146,
+   "user": "aemad37",
+   "created_at": "2024-08-05T13:56:41Z",
+   "body": "Sorry I commented through the wrong account earlier 😅 \r\n\r\nThanks for replying man ... I just tried again everything fresh and yes you're right v1 works\r\nNot sure what was wrong before but yeah it does work now for the combination of 3.2.0.4 and ns15\r\nHopefully this might help someone else \r\n\r\nTho just for the record I was using tokens with v3 and it did authenticate then it threw the http 401 error\r\nI reckon it's not worth having this ticket now since you're saying v3 is kinda not ready?  Should I close it ? Or leave it there ?\r\n\r\nCheers 🙏"
+  },
+  {
+   "id": 2269304129,
+   "user": "olorinmaia",
+   "created_at": "2024-08-05T15:07:50Z",
+   "body": "Make sure tokens generated have admin access.\r\n\r\nIn my opinion. If you are following a child you'd want websockets, v1 wins as it got no issues with NS atm. If you dont rely on NS or accurate basal rendering or got followers, v3 is probably best as you can turn off websockets to save power."
+  },
+  {
+   "id": 2269335270,
+   "user": "aemad37",
+   "created_at": "2024-08-05T15:22:47Z",
+   "body": "Yeah I see\r\n\r\nIt is my 2 yo yeah he recently got diagnosed with t1d and trying to get everything as monitored/automated as much as possible.. so it does make sense to stick to v1 as I don't really care about the power consumption and I'd rather have a more reliable and live link. \r\n\r\nThanks again man I've been scratching my head late at night for 2 days now lol\r\n🙏❤️"
+  },
+  {
+   "id": 2269344257,
+   "user": "olorinmaia",
+   "created_at": "2024-08-05T15:27:07Z",
+   "body": "I use v1 to follow my 8yo son and based on alot of testing of both NSClient versions v1 is best. V3 will probably get better in future. \r\n\r\nGood luck. You got the best system on your hands now 👍💙"
+  },
+  {
+   "id": 2269362422,
+   "user": "aemad37",
+   "created_at": "2024-08-05T15:35:54Z",
+   "body": "Yup definitely like it\r\nSame to you man 🙏✌️"
+  }
+ ]
+}

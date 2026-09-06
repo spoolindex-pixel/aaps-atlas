@@ -1,0 +1,30 @@
+{
+ "issue_id": 996,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/996",
+ "title": "Unable to read Miaomiao data after upgrade to Android 10",
+ "symptom": "After upgrading to Android 10, xDrip can see the MiaoMiao device over Bluetooth but fails to connect or receive data. One user reports that switching to Wear collection produces only one reading before failing; another with Android 9 also reports the same problem. Some users later report nightly missed readings due to Bluetooth disconnects.",
+ "cause": "The principal reported cause is an Android 10 Bluetooth communication issue with MiaoMiao: xDrip recognizes the MiaoMiao on Bluetooth scan and says 'communicating to device', but no data transfer occurs, while NFC reading works. The thread does not establish a definitive root cause, and one affected reporter is still on Android 9.",
+ "fix": "No single official fix is given. User-stated workarounds include: restarting the phone, disabling/enabling Bluetooth, force-quitting xDrip and resetting the MiaoMiao (btdkomplex); following elrufoelrufo's instructions in issue #1001 (reedhuish); enabling 'trust auto connect', 'use scanning' and 'close gatt on ble disconnect' (James866); or disabling 'trust auto connect' (rodrigowebjump).",
+ "settings_changed": [
+  "trust auto connect → enabled",
+  "use scanning → enabled",
+  "close gatt on ble disconnect → enabled",
+  "trust auto connect → disabled"
+ ],
+ "devices": [
+  "MiaoMiao",
+  "Libre"
+ ],
+ "android_versions": [
+  "Android 10",
+  "Android 9"
+ ],
+ "driver_tags": [
+  "bluetooth",
+  "wear collection",
+  "nfc"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "Oddly it started to work again after disabling bluetooth, force quitting xDrip, restarting the phone, and resetting the Miaomiao. It then continued to fail to take readings for another 10 minutes or so and then started working as if nothing was wrong."
+}

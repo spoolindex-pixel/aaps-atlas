@@ -1,0 +1,231 @@
+{
+ "id": 1076784247,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1890,
+ "title": "G6 On new sensor start, data with timestamp before new sensor was started is sent to NS and AAPS",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1890",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-12-10T12:14:05Z",
+ "closed_at": "2022-01-28T18:16:27Z",
+ "comment_count": 38,
+ "body": "### Subject of the issue\r\nWhen new G6 sensor is started, old data (data accumulated before new sensor was started) is being added to NS and send over broadcast. This seems like similar issue to https://github.com/NightscoutFoundation/xDrip/issues/1778 and solution might be the same. Once new sensor is started, all data from before should be ignored and dropped. Is this something that could be easily implemented? \r\n\r\n### Expected behavior\r\nData before sensor start is dropped.\r\n\r\n### Actual behavior\r\nWhen sensor starts all data is sent to NS and broadcast.\r\n\r\n### Steps to reproduce the behavior:\r\nStart new G6 sensor and look at data\r\n\r\n### Additional notes\r\nSo new version of AAPS (3.0 - current betas), stops Loop as soon is it receives such data (new BgQualityPlugin). This is why all AAPS users are being warned not to use Xdrip anymore. If this could be fixed sooner, rather the later, warning about Xdrip probably won't go in release...  \r\n",
+ "comments": [
+  {
+   "id": 991024428,
+   "user": "andyrozman",
+   "created_at": "2021-12-10T14:35:38Z",
+   "body": "I did ask on Gitter, but there was no response... It is true I didn't have all the details yet at that point, but this is valid issue, that will soon affect a lot of users of Xdrip (everybody that is using AndroidAPS that is)."
+  },
+  {
+   "id": 997091899,
+   "user": "savek-cc",
+   "created_at": "2021-12-17T23:37:52Z",
+   "body": "https://github.com/Navid200/xDrip/discussions/148 discusson for additional info on the topic"
+  },
+  {
+   "id": 997100046,
+   "user": "savek-cc",
+   "created_at": "2021-12-18T00:05:03Z",
+   "body": "After looking at some of the source code, my guess is that xDrip decides to request a backfill (as the last bg values are quite old) on the first bg value from a new sensor, see https://github.com/NightscoutFoundation/xDrip/blob/master/app/src/main/java/com/eveningoutpost/dexdrip/G5Model/Ob1G5StateMachine.java#L803 - will have to start a new sensor anyway in a couple of days; will see if I get around to having logcat open then at the 2h mark.\r\nMaybe this backfill then requests some stale data from the transmitter and ends up with old data from the old sensor?"
+  },
+  {
+   "id": 1007447935,
+   "user": "ToreBj",
+   "created_at": "2022-01-07T14:28:33Z",
+   "body": "I can confirm that after a sensor change and warmup (2h) AAPS receives (a backfill) 3h of BG data. \r\n\r\nWhy is a backfill requested in Xdrip?"
+  },
+  {
+   "id": 1010017185,
+   "user": "jamorham",
+   "created_at": "2022-01-11T14:27:58Z",
+   "body": "Is the problem that AAPS wont accept out of order data or that it wont accept data before the sensor start time?"
+  },
+  {
+   "id": 1010037491,
+   "user": "savek-cc",
+   "created_at": "2022-01-11T14:49:45Z",
+   "body": "The code in question sits in https://github.com/nightscout/AndroidAPS/blob/dev/app/src/main/java/info/nightscout/androidaps/plugins/constraints/bgQualityCheck/BgQualityCheckPlugin.kt#L79 - so it receives bg values from xDrip that are less than 20ms apart; so duplicate values with different timestamps.\r\nSo the issue seems to be that xDrip is broadcasting values that were already broadcasted before - but with a slightly different timestamp."
+  },
+  {
+   "id": 1010042049,
+   "user": "jamorham",
+   "created_at": "2022-01-11T14:54:29Z",
+   "body": "Isn't that 20 seconds expressed in ms? rather than 20ms difference?"
+  },
+  {
+   "id": 1010059060,
+   "user": "jamorham",
+   "created_at": "2022-01-11T15:11:48Z",
+   "body": "I'm pretty sure that xDrip is doing de-duplication of readings based on timestamp before it processes them. This should apply to upload to nightscout and local broadcast. There could be a bug with this code or something else could be happening. It would be very interesting if a user who has experienced this problem with AAPS could provide what the reading timestamps look like from that red warning code that @savek-cc linked - for example are they identical timestamps or slightly different?"
+  },
+  {
+   "id": 1010127510,
+   "user": "andyrozman",
+   "created_at": "2022-01-11T16:19:41Z",
+   "body": "@jamorham I think problem is that they are \"slightly\" different, but still within that 20s range. If they were the same NS and AAPS  would detect that, but they seem to be just little \"off\", so they get treated as new record."
+  },
+  {
+   "id": 1010143624,
+   "user": "savek-cc",
+   "created_at": "2022-01-11T16:31:54Z",
+   "body": "@MilosKozak i thought that code was supposed to check for duplicates within a couple of ms - but apparently it really is 20 seconds that are checked here? Could you *please* provide a short explainaition from your understanding of the issue and what these 20 seconds are about (as I can't really understand what is cought there in the bg quality plugin)?\r\n@jamorham it used to be less: https://github.com/nightscout/AndroidAPS/commit/22eb5245562567e3264cbb09580f16b7b1ce3517"
+  },
+  {
+   "id": 1010170893,
+   "user": "jamorham",
+   "created_at": "2022-01-11T17:02:17Z",
+   "body": "@andyrozman Is this problem for data which is being delivered from xDrip via local broadcast or after being uploaded to nightscout (or both) ?"
+  },
+  {
+   "id": 1010268268,
+   "user": "andyrozman",
+   "created_at": "2022-01-11T18:59:47Z",
+   "body": "I would imagine both. \r\nIf you send it via broadcast there will be a problem and if it comes from NS also. AAPS look at all data it receives and checks for duplicates within those 20s... "
+  },
+  {
+   "id": 1010277303,
+   "user": "MilosKozak",
+   "created_at": "2022-01-11T19:10:29Z",
+   "body": "I'm not sure about NS and i don't know if xdrip even sends bg updates from the past to the NS.\n But it's definitely broadcasted to AAPS"
+  },
+  {
+   "id": 1010308322,
+   "user": "savek-cc",
+   "created_at": "2022-01-11T19:51:28Z",
+   "body": "@MilosKozak as I can't understand that check function: can you explain in plain English what that function checks for with the 20 seconds?"
+  },
+  {
+   "id": 1010471400,
+   "user": "ToreBj",
+   "created_at": "2022-01-11T23:44:41Z",
+   "body": "![Screenshot_20220105-141718](https://user-images.githubusercontent.com/23278852/149038116-75627a32-39d8-4afb-9d47-a98781d94c00.jpg)\r\nHere you can see what is received from xdrip in AAPS .  You can see the 2h warm-up pause and the list was updated with duplicate BG values from before the sensor change, indicated with red after the first received BG. It seems that the full 3h transmitter buffer was received, i.e. almost an hour worth of data before sensor change had to be deleted for me to continue looping."
+  },
+  {
+   "id": 1010478409,
+   "user": "ToreBj",
+   "created_at": "2022-01-11T23:48:16Z",
+   "body": "I had a look at the code that was referred, and I see that there is a calculation for the missing range, but can't see any testing for sensor warm-up?"
+  },
+  {
+   "id": 1010756015,
+   "user": "MilosKozak",
+   "created_at": "2022-01-12T08:12:16Z",
+   "body": "> @MilosKozak as I can't understand that check function: can you explain in plain English what that function checks for with the 20 seconds?\r\n\r\nhttps://github.com/Navid200/xDrip/discussions/148"
+  },
+  {
+   "id": 1010834992,
+   "user": "MilosKozak",
+   "created_at": "2022-01-12T09:32:15Z",
+   "body": "> Isn't that 20 seconds expressed in ms? rather than 20ms difference?\r\n\r\nreceived timestamps are in https://github.com/Navid200/xDrip/discussions/148"
+  },
+  {
+   "id": 1011406441,
+   "user": "savek-cc",
+   "created_at": "2022-01-12T20:04:54Z",
+   "body": "> > @MilosKozak as I can't understand that check function: can you explain in plain English what that function checks for with the 20 seconds?\r\n> \r\n> [Navid200#148](https://github.com/Navid200/xDrip/discussions/148)\r\n\r\nOk - while that link still didn't explain the code to me, it just made \"click\" for me... 20s is still way to close for 2 values - I was somehow convinced that 20 seconds would be 4 readings; getting lost somewhere between ms, s and minutes there for whatever reason..."
+  },
+  {
+   "id": 1011441358,
+   "user": "savek-cc",
+   "created_at": "2022-01-12T20:51:54Z",
+   "body": "I just did a backup on my xDrip sqlite DB containing 50.000 entries and found this in there:\r\n![Bildschirmfoto von 2022-01-12 21-48-51](https://user-images.githubusercontent.com/13501427/149219298-c193a265-66c6-47e0-856f-c335a2c84772.png)\r\nFirst is OO Calc coloum number (ignore), then _id, caluclated_value, timestamp, diff(timestamp, prev timestamp)/1000 (so seconds)  - so most have a diff of ~300 seconds - but some are \"0\" or \"1\" second apart.\r\nSo as can be seen, there are backfill values with timestamps within 260-817ms of an original value within the actual xDip DB.\r\n@jamorham \r\nI guess this might happen because the backfill timestamps are re-calculated from the dex time which probably might be a coupld ms off - or not even off this precision in the first place?"
+  },
+  {
+   "id": 1011453864,
+   "user": "savek-cc",
+   "created_at": "2022-01-12T21:10:11Z",
+   "body": "For anyone who wants to check on their own database (I used sqliteviewer on fedora):\r\n`SELECT * from (\r\nSELECT _id, calculated_value, timestamp, source_info,\r\n(timestamp - LAG (timestamp, 1) OVER (ORDER BY timestamp)) as diff_ms\r\nFROM BgReadings WHERE source_info NOT NULL ORDER BY timestamp) WHERE diff_ms < 20*1000;`\r\nWill give you a table like this (which also the complete output of my instance)\r\n\"diff\" is the difference to the previous row/reading which is not included in the table as that row's diff was more than 20 seconds - if anyone knows how to modify the sql in order to also get the \"close\" row, please do tell ;)\r\n\r\n_id | calculated_value | timestamp | source_info | diff_ms\r\n-- | -- | -- | -- | --\r\n47916 | 139.0 | 1599799924438 | G5 Native | 635\r\n47917 | 137.0 | 1599800224096 | G5 Native | 293\r\n47918 | 134.0 | 1599800523975 | G5 Native | 172\r\n47919 | 129.0 | 1599800823978 | G5 Native | 175\r\n47920 | 128.0 | 1599801124137 | G5 Native | 334\r\n47921 | 120.0 | 1599801424055 | G5 Native | 252\r\n47922 | 121.0 | 1599801724117 | G5 Native | 314\r\n47923 | 121.0 | 1599802023986 | G5 Native | 183\r\n47924 | 118.0 | 1599802324022 | G5 Native | 219\r\n47925 | 114.0 | 1599802623955 | G5 Native | 152\r\n54450 | 103.0 | 1601796038765 | G5 Native | 466\r\n54451 | 108.0 | 1601796338610 | G5 Native | 311\r\n54452 | 89.0 | 1601796638767 | G5 Native | 468\r\n54453 | 111.0 | 1601796939473 | G5 Native | 1174\r\n54454 | 113.0 | 1601797238814 | G5 Native | 515\r\n54455 | 115.0 | 1601797538611 | G5 Native | 312\r\n54456 | 112.0 | 1601797838754 | G5 Native | 455\r\n65259 | 86.0 | 1605074296270 | G5 Native | 5362\r\n65260 | 84.0 | 1605074596328 | G5 Native | 5420\r\n65261 | 82.0 | 1605074896647 | G5 Native | 5739\r\n65262 | 81.0 | 1605075196757 | G5 Native | 6849\r\n65263 | 64.0 | 1605075496628 | G5 Native | 6720\r\n65264 | 62.0 | 1605075796649 | G5 Native | 6741\r\n65265 | 75.0 | 1605076096475 | G5 Native | 6567\r\n78329 | 156.0 | 1609092345784 | G5 Native | 271\r\n78330 | 149.0 | 1609092645669 | G5 Native | 156\r\n78331 | 14"
+  },
+  {
+   "id": 1011466904,
+   "user": "savek-cc",
+   "created_at": "2022-01-12T21:29:45Z",
+   "body": "and when looking at the complete table at the timestamps in question, you can see that it apparently really is about the backfill after sensor change (the second to last one features a gap of ~129 minutes between the timestamps):\r\n\r\n_id | calculated_value | timestamp | source_info | diff | date_str\r\n-- | -- | -- | -- | -- | --\r\n47915 | 140.0 | 1599799631271 | G5 Native | 306677 | 11-09-2020 04:47:11\r\n47951 | 139.0 | 1599799923803 | G5 Native::Backfill | 292532 | 11-09-2020 04:52:03\r\n47916 | 139.0 | 1599799924438 | G5 Native | 635 | 11-09-2020 04:52:04\r\n47952 | 137.0 | 1599800223803 | G5 Native::Backfill | 299365 | 11-09-2020 04:57:03\r\n47917 | 137.0 | 1599800224096 | G5 Native | 293 | 11-09-2020 04:57:04\r\n47953 | 134.0 | 1599800523803 | G5 Native::Backfill | 299707 | 11-09-2020 05:02:03\r\n47918 | 134.0 | 1599800523975 | G5 Native | 172 | 11-09-2020 05:02:03\r\n47954 | 129.0 | 1599800823803 | G5 Native::Backfill | 299828 | 11-09-2020 05:07:03\r\n47919 | 129.0 | 1599800823978 | G5 Native | 175 | 11-09-2020 05:07:03\r\n47955 | 128.0 | 1599801123803 | G5 Native::Backfill | 299825 | 11-09-2020 05:12:03\r\n47920 | 128.0 | 1599801124137 | G5 Native | 334 | 11-09-2020 05:12:04\r\n47956 | 120.0 | 1599801423803 | G5 Native::Backfill | 299666 | 11-09-2020 05:17:03\r\n47921 | 120.0 | 1599801424055 | G5 Native | 252 | 11-09-2020 05:17:04\r\n47957 | 121.0 | 1599801723803 | G5 Native::Backfill | 299748 | 11-09-2020 05:22:03\r\n47922 | 121.0 | 1599801724117 | G5 Native | 314 | 11-09-2020 05:22:04\r\n47958 | 121.0 | 1599802023803 | G5 Native::Backfill | 299686 | 11-09-2020 05:27:03\r\n47923 | 121.0 | 1599802023986 | G5 Native | 183 | 11-09-2020 05:27:03\r\n47959 | 118.0 | 1599802323803 | G5 Native::Backfill | 299817 | 11-09-2020 05:32:03\r\n47924 | 118.0 | 1599802324022 | G5 Native | 219 | 11-09-2020 05:32:04\r\n47960 | 114.0 | 1599802623803 | G5 Native::Backfill | 299781 | 11-09-2020 05:37:03\r\n47925 | 114.0 | 1599802623955 | G5 Native | 152 | 11-09-2020 05:37:03\r\n47961 | 78.0 | 1599802923803 | G5 Native::Back"
+  },
+  {
+   "id": 1011502779,
+   "user": "savek-cc",
+   "created_at": "2022-01-12T22:19:25Z",
+   "body": "Not all backfilled ones from before sensor change are bad though, check ID 54489 which is a valid backfill and does not cause a duplicate value. So the solution (as I guess, xDrip should not have these dupes in it's own database either @Navid200  @jamorham) could be to actually check if the database already contains an entry at backfill-entry-timestamp +- xx seconds before adding a backfill value?)\r\n\r\n_id | calculated_value | timestamp | source_info | diff_ms | time_str | sensor_age_min\r\n-- | -- | -- | -- | -- | -- | --\r\n54487 | 115.0 | 1601797538299 | G5 Native::Backfill | 299485 | 04-10-2020 07:45:38 | 123.3789\r\n54455 | 115.0 | 1601797538611 | G5 Native | 312 | 04-10-2020 07:45:38 | 22400.5929666667\r\n54488 | 112.0 | 1601797838299 | G5 Native::Backfill | 299688 | 04-10-2020 07:50:38 | 123.379033333333\r\n54456 | 112.0 | 1601797838754 | G5 Native | 455 | 04-10-2020 07:50:38 | 22405.5953333333\r\n54489 | 103.0 | 1601798138299 | G5 Native::Backfill | 299545 | 04-10-2020 07:55:38 | 123.379183333333\r\n54481 | 189.0 | 1601806838103 | G5 Native | 8699804 | 04-10-2020 10:20:38 | 123.292883333333\r\n54490 | 204.0 | 1601807138341 | G5 Native | 300238 | 04-10-2020 10:25:38 | 128.29685\r\n\r\nSQL on this one:\r\n`SELECT * from (\r\nSELECT _id, calculated_value, timestamp, source_info,\r\n(timestamp - LAG (timestamp, 1) OVER (ORDER BY timestamp)) as diff_ms,\r\nstrftime('%d-%m-%Y %H:%M:%S', datetime(timestamp/1000, 'unixepoch')) time_str,\r\ntime_since_sensor_started / (1000*60) as sensor_age_min\r\nFROM BgReadings WHERE source_info NOT NULL ORDER BY timestamp);`"
+  },
+  {
+   "id": 1013446154,
+   "user": "Navid200",
+   "created_at": "2022-01-14T20:18:07Z",
+   "body": "A Nightly was just released.\r\n\r\njamorham worked on this and it is meant to address the issues reported here.\r\nPlease report back when you get a chance to test it if the problem persists or not either way.\r\nThanks"
+  },
+  {
+   "id": 1013456033,
+   "user": "jamorham",
+   "created_at": "2022-01-14T20:35:06Z",
+   "body": "@savek-cc thanks for your analysis. Where you have close timestamps do these have a different sensor id column? I'm suspecting they do as the xDrip de-duplication is filtered by sensor session which maybe it also shouldn't be but it is possible for different sensor session id's to have duplicated backfilled data which I expect is likely part of the reason for this issue. What I have done is capped the backfill window start to the current sensor session start which I'm thinking will have a similar effect."
+  },
+  {
+   "id": 1013461366,
+   "user": "savek-cc",
+   "created_at": "2022-01-14T20:44:22Z",
+   "body": "Hi @jamorham - here's the same data as in https://github.com/NightscoutFoundation/xDrip/issues/1890#issuecomment-1011466904 - with added cols:\r\n_id | sensor | sensor_uuid | calculated_value | timestamp | source_info | diff_ms | time_str | sensor_age_min\r\n-- | -- | -- | -- | -- | -- | -- | -- | --\r\n47915 | 4 | c264cf80-e396-44e8-b5c9-94c4ad20fb3e | 140.0 | 1599799631271 | G5 Native | 306677 | 11-09-2020 04:47:11 | 38730.7323666667\r\n47951 | 5 | 8dfe3337-8af3-4889-9833-a3e811af8a09 | 139.0 | 1599799923803 | G5 Native::Backfill | 292532 | 11-09-2020 04:52:03 | 121.292533333333\r\n47916 | 4 | c264cf80-e396-44e8-b5c9-94c4ad20fb3e | 139.0 | 1599799924438 | G5 Native | 635 | 11-09-2020 04:52:04 | 38735.61845\r\n47952 | 5 | 8dfe3337-8af3-4889-9833-a3e811af8a09 | 137.0 | 1599800223803 | G5 Native::Backfill | 299365 | 11-09-2020 04:57:03 | 121.292966666667\r\n47917 | 4 | c264cf80-e396-44e8-b5c9-94c4ad20fb3e | 137.0 | 1599800224096 | G5 Native | 293 | 11-09-2020 04:57:04 | 38740.6127833333\r\n47953 | 5 | 8dfe3337-8af3-4889-9833-a3e811af8a09 | 134.0 | 1599800523803 | G5 Native::Backfill | 299707 | 11-09-2020 05:02:03 | 121.2932\r\n47918 | 4 | c264cf80-e396-44e8-b5c9-94c4ad20fb3e | 134.0 | 1599800523975 | G5 Native | 172 | 11-09-2020 05:02:03 | 38745.61075\r\n47954 | 5 | 8dfe3337-8af3-4889-9833-a3e811af8a09 | 129.0 | 1599800823803 | G5 Native::Backfill | 299828 | 11-09-2020 05:07:03 | 121.293466666667\r\n47919 | 4 | c264cf80-e396-44e8-b5c9-94c4ad20fb3e | 129.0 | 1599800823978 | G5 Native | 175 | 11-09-2020 05:07:03 | 38750.6107666667\r\n47955 | 5 | 8dfe3337-8af3-4889-9833-a3e811af8a09 | 128.0 | 1599801123803 | G5 Native::Backfill | 299825 | 11-09-2020 05:12:03 | 121.29365\r\n47920 | 4 | c264cf80-e396-44e8-b5c9-94c4ad20fb3e | 128.0 | 1599801124137 | G5 Native | 334 | 11-09-2020 05:12:04 | 38755.6134833333\r\n47956 | 5 | 8dfe3337-8af3-4889-9833-a3e811af8a09 | 120.0 | 1599801423803 | G5 Native::Backfill | 299666 | 11-09-2020 05:17:03 | 121.2938\r\n47921 | 4 | c264cf80-e396-44e8-b5c9-94c4ad20fb3e | 120.0 "
+  },
+  {
+   "id": 1013469058,
+   "user": "savek-cc",
+   "created_at": "2022-01-14T20:58:24Z",
+   "body": "@MilosKozak so https://github.com/NightscoutFoundation/xDrip/commit/6f7c3660d6e140d914f24a155a0bcffa810ab4d8 should fix the issue towards both NS and AAPS.\r\nFor reference: If you want to analyze and xDrip-Backup for this event, you can use the following SQL to get all pairs that are within 20 seconds of each other:\r\n`SELECT * from (\r\nSELECT _id, sensor, sensor_uuid, calculated_value, timestamp, source_info,\r\nabs (timestamp - LAG (timestamp, 1) OVER (ORDER BY timestamp)) as diff_ms1,\r\nabs (timestamp - LAG (timestamp, -1) OVER (ORDER BY timestamp)) as diff_ms2,\r\nstrftime('%d-%m-%Y %H:%M:%S', datetime(timestamp/1000, 'unixepoch')) time_str,\r\ntime_since_sensor_started / (1000*60) as sensor_age_min\r\nFROM BgReadings WHERE source_info NOT NULL ORDER BY timestamp) where (diff_ms1 < 20000 or diff_ms2 < 20000);`"
+  },
+  {
+   "id": 1013516295,
+   "user": "ToreBj",
+   "created_at": "2022-01-14T22:28:42Z",
+   "body": "I have a sensor change tomorrow and will test this. Thank you!"
+  },
+  {
+   "id": 1013673838,
+   "user": "ToreBj",
+   "created_at": "2022-01-15T12:27:05Z",
+   "body": "I had a successful sensor change now. Well done👍"
+  },
+  {
+   "id": 1013674123,
+   "user": "ToreBj",
+   "created_at": "2022-01-15T12:29:14Z",
+   "body": "@savek-cc do you have some more details on how to connect and run SQL?"
+  },
+  {
+   "id": 1013721362,
+   "user": "BRamine",
+   "created_at": "2022-01-15T17:30:25Z",
+   "body": "> Is the problem that AAPS wont accept out of order data or that it wont accept data before the sensor start time?\n\nAaps accepts all data which creates duplicate thus loop malfunction."
+  },
+  {
+   "id": 1013858831,
+   "user": "savek-cc",
+   "created_at": "2022-01-16T11:32:20Z",
+   "body": "> @savek-cc do you have some more details on how to connect and run SQL?\r\n\r\n@ToreBj Use the import/export in xDrip to export the database. This will result in a zipped database backup on your phone. Copy that zip to your pc and extract it.\r\nAfterwards you can use an SQLite browser to look at the data and run SQL statement on it. I used https://sqlitebrowser.org/ for that purpose."
+  },
+  {
+   "id": 1013866195,
+   "user": "savek-cc",
+   "created_at": "2022-01-16T12:23:35Z",
+   "body": "@jamorham - do you plan on applying this fix also to the wear collector?\r\nhttps://github.com/NightscoutFoundation/xDrip/blob/master/wear/src/main/java/com/eveningoutpost/dexdrip/G5Model/Ob1G5StateMachine.java#L764 and following"
+  },
+  {
+   "id": 1020677641,
+   "user": "andyrozman",
+   "created_at": "2022-01-25T00:11:55Z",
+   "body": "Was this fix already released? In which version?"
+  },
+  {
+   "id": 1020688600,
+   "user": "Navid200",
+   "created_at": "2022-01-25T00:33:19Z",
+   "body": "> Was this fix already released? In which version?\r\n\r\nJanuary 14, 2022.\r\nhttps://navid200.github.io/xDrip/docs/ReleaseNotes.html"
+  },
+  {
+   "id": 1020866886,
+   "user": "tolot27",
+   "created_at": "2022-01-25T06:56:06Z",
+   "body": "We cannot close this issue until it is fixed for wear as well. The code duplication requires changes twice."
+  }
+ ]
+}

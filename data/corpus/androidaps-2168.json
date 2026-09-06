@@ -1,0 +1,69 @@
+{
+ "id": 1437352006,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2168,
+ "title": "Wear: blank AAPS watchface on Samsung Watch 4",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2168",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-11-06T10:06:27Z",
+ "closed_at": "2022-11-13T16:18:28Z",
+ "comment_count": 9,
+ "body": "Have problem getting AAPS watch face on Samsung Watch 4 with the latest AAPS version (3.1.0.3-dev-c-AIMI). I got a new watch, and compiled / installed the wear apk fine via adb. (ie, both phone and watch having matching latest builds). The wear app itself worked OK (I could bolus from the watch, albeit couldn’t get into settings) and complications worked on other watch faces – but AAPS watchfaces just showed totally black. Tried uninstalling / reinstalling and watch/phone reboots.  \r\n\r\nMy workaround for now is to use a wear apk compiled (dev c, but not 100% sure) in September (version 27D2709646-2022.09.08 as per watch settings screen) which seems to work OK (albeit being misaligned with the version running on the phone). \r\n\r\nSo it seems there has been a change to dev aaps wear code since September which has broken watch faces for Samsung Watch 4.\r\n",
+ "comments": [
+  {
+   "id": 1304876369,
+   "user": "koelewij",
+   "created_at": "2022-11-06T19:36:23Z",
+   "body": "This seems to have happened somewhere between October 25th and November 1st. Installing a wear build of October 25th solved the issue. "
+  },
+  {
+   "id": 1307945218,
+   "user": "Danielkharkiv",
+   "created_at": "2022-11-08T22:52:55Z",
+   "body": "I have the same problem. Could you help and show how you have chosen the date of the wear build?"
+  },
+  {
+   "id": 1307956049,
+   "user": "koelewij",
+   "created_at": "2022-11-08T23:05:57Z",
+   "body": "I had an old version as backup. I don’t really know how to do this in AS. You might ask on discord. You can also try the master build. Possibly that works fine with the dev version on the phone. No major changes I believe. "
+  },
+  {
+   "id": 1307961197,
+   "user": "Danielkharkiv",
+   "created_at": "2022-11-08T23:11:03Z",
+   "body": "I was trying to do build wear apk in master dev  as well, but it was the still same problem. "
+  },
+  {
+   "id": 1307964363,
+   "user": "Danielkharkiv",
+   "created_at": "2022-11-08T23:14:55Z",
+   "body": "It looks like the best way is to wait a new commit "
+  },
+  {
+   "id": 1311805463,
+   "user": "Andries-Smit",
+   "created_at": "2022-11-11T15:11:36Z",
+   "body": "It seems that something is wrong with the line chart. So, until it is fixed you can take a watch face without a chart, that will work\r\n> FATAL EXCEPTION: main\r\n                                                                                                    Process: info.nightscout.androidaps, PID: 25711\r\n                                                                                                    java.lang.RuntimeException: Unable to create service info.nightscout.androidaps.watchfaces.AapsWatchface: android.view.InflateException: Binary XML file line #162 in info.nightscout.androidaps:layout/activity_home: Binary XML file line #162 in info.nightscout.androidaps:layout/activity_home: Error inflating class lecho.lib.hellocharts.view.LineChartView\r\n                                                                                                    \tat android.app.ActivityThread.handleCreateService(ActivityThread.java:4215)\r\n\r\n> Caused by: java.lang.NoClassDefFoundError: Failed resolution of: Landroid/support/v4/widget/ScrollerCompat;\r\n                                                                                                    \tat lecho.lib.hellocharts.gesture.ChartScroller.<init>(ChartScroller.java:21)\r\n                                                                                                    \tat lecho.lib.hellocharts.gesture.ChartTouchHandler.<init>(ChartTouchHandler.java:57)\r\n                                                                                                    \tat lecho.lib.hellocharts.view.AbstractChartView.<init>(AbstractChartView.java:56)\r\n\r\nSeems that **android/support/v4/widget/ScrollerCompat** no longer being available "
+  },
+  {
+   "id": 1312550516,
+   "user": "Andries-Smit",
+   "created_at": "2022-11-12T18:55:42Z",
+   "body": "Issue is caused be depended libraries that are old, to make them work on modern Android, jettifier could be used. However this was disabled in commit https://github.com/nightscout/AndroidAPS/commit/e7c41beab74306ee3b5c68c41aac9bf05da36034\r\n\r\n(Also the preference menu is impacted)\r\n\r\nProbable reason, it slows the build. I could recommend \"pre-jetifier\" the decencies as described here.\r\nhttps://adambennett.dev/2020/08/disabling-jetifier/\r\n\r\nFor all inpatient, that do not want to way on a fix, just enable jetifier again, and rebuild"
+  },
+  {
+   "id": 1312808673,
+   "user": "dexdan",
+   "created_at": "2022-11-13T20:00:34Z",
+   "body": "Many thanks both!"
+  },
+  {
+   "id": 1312848494,
+   "user": "Danielkharkiv",
+   "created_at": "2022-11-13T23:11:08Z",
+   "body": "Thanks, everybody for sharing your thoughts and your propositions. The new update solved the problem. Thanks to developers "
+  }
+ ]
+}

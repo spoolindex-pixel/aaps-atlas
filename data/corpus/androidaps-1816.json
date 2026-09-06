@@ -1,0 +1,83 @@
+{
+ "id": 1264851558,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1816,
+ "title": "Considering lowest possible basal value willst profile reduction",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1816",
+ "state": "closed",
+ "labels": [
+  "enhancement"
+ ],
+ "created_at": "2022-06-08T14:31:13Z",
+ "closed_at": "2022-08-10T08:52:48Z",
+ "comment_count": 11,
+ "body": "Currently, I cannot set the profile to a lower rate than 100% because at least one basal value is set to the lowest possible value already. This way, I am unable to define a lower profile for my son for doing sports (higher IC, lower ISF, lower basal).\r\n \r\nI.e. when I have set one basal value of 0.05 units using an Omnipod DASH, this unit cannot be reduced anymore as the minimum of the Omnipod DASH is 0.05 units.\r\n \r\nI suggest to enhance the logic of profile reduction by considering the lowest possible minimum that the pump is able to handle. Referring to above mentioned example, the profile reduction of 80% would consider one or more values that already are on their minimum and would not try to reduce them by 20% but would let them with the already defined minimum.\r\n \r\nExample:\r\n \r\nBasal values\r\n100%; profile 80% current logic; profile 80% new logic\r\n0.05;ERROR;0.05\r\n0.07;0.05;0.05\r\n0.09;0.05;0.05\r\n0.10;0.10;0.10\r\n0.15;0.12;0.12",
+ "comments": [
+  {
+   "id": 1151558204,
+   "user": "Philoul",
+   "created_at": "2022-06-09T19:53:15Z",
+   "body": "Interesting suggestion. @MilosKozak do you think we could manage profiles without pump constraints (for ex with rates or TBR << lower limit available by the pump) and let the loop manage with an alternance of 100% and zero temp to fit requested values...\nProfiles built by autotune are with 3 digits, so do not respect pump constraints (and rounding to pump capabilities is perfectly done by the driver...)."
+  },
+  {
+   "id": 1152229941,
+   "user": "MilosKozak",
+   "created_at": "2022-06-10T10:45:13Z",
+   "body": "it's doable (i think easy). The question is if it's good idea. when you set 30% of small profile, you expect 30% of insulin. but it could easy happen you stay at 100% in some ranges"
+  },
+  {
+   "id": 1152810498,
+   "user": "Philoul",
+   "created_at": "2022-06-11T00:10:30Z",
+   "body": "I didn't correctly understood the suggestion, I think we should remove in local profile (and tbr) the constraint of pump minimum values and allow basal rates or tbr of 0.02 or 0.01U/h even if pump limitation is 0.05U/h mini.\nThe basal rate set into the pump will be 0.05 (mini value) but it shouldn't rise an error (because it's pump minimum value), then iob calculation will be done with profile values so the loop will automatically adjust with zero temp to have an average delivered insulin equals to profile or tbr rate..."
+  },
+  {
+   "id": 1153888168,
+   "user": "mordechi-david",
+   "created_at": "2022-06-13T13:03:55Z",
+   "body": "I too have encountered this problem in some children"
+  },
+  {
+   "id": 1153924754,
+   "user": "MilosKozak",
+   "created_at": "2022-06-13T13:36:25Z",
+   "body": "this would break base assumption that estimated profile is profile loaded in pump"
+  },
+  {
+   "id": 1154039368,
+   "user": "Philoul",
+   "created_at": "2022-06-13T15:05:04Z",
+   "body": "Yes, but in this case the safety issue is due to the pump, not to aaps...\nCurrently no other choice for parents to change the pump to another one with lowest constraints (if available), or use diluted insulin with a correct convertion of the profile...\nBut none of these solution is really satisfactory for young kids.\nDo you have other ideas in mind?"
+  },
+  {
+   "id": 1154164098,
+   "user": "Philoul",
+   "created_at": "2022-06-13T17:00:28Z",
+   "body": "Maybe in this case we could just add a warning to inform the user that basal rate set in pump is greater than profile / tbr request due to pump constraints..."
+  },
+  {
+   "id": 1154195524,
+   "user": "mordechi-david",
+   "created_at": "2022-06-13T17:34:02Z",
+   "body": "In principle, it is possible to make it calculated, for example, according to the amount of injection for half an hour and until it reaches a quantity less than 0.5, it will stop and turn on the pump intermittently, the question is whether such a thing is possible."
+  },
+  {
+   "id": 1154198777,
+   "user": "mordechi-david",
+   "created_at": "2022-06-13T17:37:53Z",
+   "body": "> זה ישבור את ההנחה הבסיסית שהפרופיל המשוער הוא פרופיל שנטען במשאבה\r\n\r\nI totally agree with this because in any communication problem etc. it is very important that the active profile remains, which will not happen in these cases"
+  },
+  {
+   "id": 1154937035,
+   "user": "MilosKozak",
+   "created_at": "2022-06-14T09:23:50Z",
+   "body": "i don't like the idea making the code complicated for edge cases like this. complicated code means more possible bugs\r\nthere are still 2 possible solutions like you already mentioned\r\n* prepare extra profile (not just %) and switch to it\r\n* use diluted insulin"
+  },
+  {
+   "id": 1210366096,
+   "user": "GerritosSteen",
+   "created_at": "2022-08-10T08:52:48Z",
+   "body": "Thanks for the exchange. I understand the inconsistencies that would raise by this request. I'll close the issue accordingly "
+  }
+ ]
+}

@@ -1,0 +1,39 @@
+{
+ "id": 395008601,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 730,
+ "title": "android calling xdrip with miaomiao packets after very long time.",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/730",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2018-12-31T17:13:45Z",
+ "closed_at": "2021-03-27T03:38:10Z",
+ "comment_count": 4,
+ "body": "Here are the pictures that have been reported on facebook:\r\n\r\n![image](https://user-images.githubusercontent.com/7942372/50564723-2a40ec80-0d30-11e9-90ae-87ff2c080808.png)\r\n",
+ "comments": [
+  {
+   "id": 450673460,
+   "user": "tzachi-dar",
+   "created_at": "2018-12-31T17:43:43Z",
+   "body": "This strange data pattern was reported by the person more than once.\r\n\r\nLooking at his xdrip db the following pattern was observed: \r\n\r\nselect datetime(timestamp / 1000, 'unixepoch', 'localtime'), timestamp, calculatedbg from LibreBlock order by timestamp\r\n\r\n\"2018-12-27 21:38:14\"\t\"1545939494253\"\t\"137.155660799969\"\r\n\"2018-12-27 21:43:14\"\t\"1545939794067\"\t\"130.833726915018\"\r\n\"2018-12-28 04:58:35\"\t\"1545965915093\"\t\"130.833726915018\"\r\n\"2018-12-28 04:58:57\"\t\"1545965937272\"\t\"0.0\"\r\n\"2018-12-28 05:06:34\"\t\"1545966394950\"\t\"176.646097122402\"\r\n\"2018-12-28 05:11:34\"\t\"1545966694755\"\t\"173.008820092704\"\r\n\r\nSo, we can see that there are no readings from the 27/12 - 21:43 until 28-12 04:58\r\n\r\nThat said the readings when they start connecting seems strange. one of them is 130 and the other is already 176.\r\n\r\nLooking into the blocks it seems that they come from two different times from the sensor life.\r\nIn other words, there is the following two readings that are consistent:\r\n\r\n       MS                        time                        internal counter\r\n1545939794067 2018_12_27_21_43_14           8013 glucoseLevel =  157.6 \r\n1545965937272 2018_12_28_04_58_57           8446 glucoseLevel =  204.3 \r\n\r\nThe two readings above seems right since they have about 7 hours of difference between them, but on the other hand the libre counter is 427 minutes different (8446-8013)\r\n\r\nWhile we also have this reading.\r\n1545965915093 2018_12_28_04_58_35          8018                  glucoseLevel =  157.6 \r\nAs we can see on the last reading time is like the later reading but counter is from 7 hours ago.\r\nThis causes our code to think that this is a recent packet.\r\nMore than that, since no data existed for many hours, we had two parts in the code trying to complete the gap, and this is how the problem has happened.\r\n"
+  },
+  {
+   "id": 450673809,
+   "user": "tzachi-dar",
+   "created_at": "2018-12-31T17:47:18Z",
+   "body": "How to fix?\r\n\r\nSince we set the time very early in the code that handles the packet, and also start by taking a wakelock on this datapath, I'm not sure there is much we can do.\r\n\r\nOne thing that might help is if on the function \r\npublic void onCharacteristicChanged(BluetoothGatt gatt, final BluetoothGattCharacteristic characteristic)\r\nwe can get the time of the data. I did not find such a place.\r\n\r\nThe other option is to store on the sensor the exact start time (based on libre data) and throw away packets that don't match the expected time.\r\n"
+  },
+  {
+   "id": 786824321,
+   "user": "Navid200",
+   "created_at": "2021-02-26T18:41:06Z",
+   "body": "@tzachi-dar What is the status of this issue?"
+  },
+  {
+   "id": 808640016,
+   "user": "Navid200",
+   "created_at": "2021-03-27T03:38:10Z",
+   "body": "Closing due to inactivity"
+  }
+ ]
+}

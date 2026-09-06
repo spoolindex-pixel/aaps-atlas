@@ -1,0 +1,59 @@
+{
+ "id": 2840933197,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3819,
+ "title": "Android 3.3.0 and upwards, huge increase in battery drain",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3819",
+ "state": "closed",
+ "labels": [
+  "unknown_reason"
+ ],
+ "created_at": "2025-02-09T20:24:30Z",
+ "closed_at": "2025-09-25T21:13:49Z",
+ "comment_count": 7,
+ "body": "Reporting bugs\n--------------\nThis is observed in all major releases after AAPS 3.2.0.4 including the latest 3.3.1.2 Build: 202df2cebf-2025.01.15\n\nBattery drain was previously around 5% per day. \n\nThis has jumped to around 20%. \n\n[AndroidAPS._2025-01-05_00-00-21_.1.zip](https://github.com/user-attachments/files/18726058/AndroidAPS._2025-01-05_00-00-21_.1.zip)\n\n![Image](https://github.com/user-attachments/assets/1d357d88-bb5c-4ebe-8c0c-a74516fdc5d3)\n\nI've tried a fresh install rather than update, and clearing cache. \n\nRebooting obviously doesn't work. I'm using the NSClientV3 but have also tried disabling uploading to eliminate this as a possible culprit. \n\nSetting are completely unchanged between 3.2.0.4 and 3.3.1.2, hardware is also completely unchanged. \n\nRe-installing 3.2.0.4 lowers the daily battery drain back down to 5%, but this will soon be an unsupported version so this isn't a permanent fix. ",
+ "comments": [
+  {
+   "id": 2647514420,
+   "user": "MilosKozak",
+   "created_at": "2025-02-10T10:08:15Z",
+   "body": "reset logging to default\nremove old db records"
+  },
+  {
+   "id": 2648114521,
+   "user": "SimonPhilpott",
+   "created_at": "2025-02-10T14:13:13Z",
+   "body": "Hi thanks for the reply,\n\nJust to check. Do you mean the files found at \n\n/storage/emulated/0/AAPS/logs/info.nightscout.androidaps?"
+  },
+  {
+   "id": 2648300009,
+   "user": "jaredwhittle",
+   "created_at": "2025-02-10T15:05:12Z",
+   "body": "I think he means first, go to Maintenance > Log Settings > (scroll to the bottom) Reset to Defaults button\nThen for remove old db records, go to Maintenance > Database Cleanup > OK to removed tracked changes and historic data older than 3 months"
+  },
+  {
+   "id": 2648740392,
+   "user": "SimonPhilpott",
+   "created_at": "2025-02-10T17:23:51Z",
+   "body": "Cheers for pointing me in the right direction. Just did that and I'll see\r\nif anything made a difference. I cleared logs too while I was there\r\n\r\nOn Mon, 10 Feb 2025, 15:05 jaredwhittle, ***@***.***> wrote:\r\n\r\n> I think he means first, go to Maintenance > Log Settings > (scroll to the\r\n> bottom) Reset to Defaults button\r\n> Then for remove old db records, go to Maintenance > Database Cleanup > OK\r\n> to removed tracked changes and historic data older than 3 months\r\n>\r\n> —\r\n> Reply to this email directly, view it on GitHub\r\n> <https://github.com/nightscout/AndroidAPS/issues/3819#issuecomment-2648300009>,\r\n> or unsubscribe\r\n> <https://github.com/notifications/unsubscribe-auth/ABUEHINORPF3IAAPRNTH6232PC537AVCNFSM6AAAAABWZFVVE2VHI2DSMVQWIX3LMV43OSLTON2WKQ3PNVWWK3TUHMZDMNBYGMYDAMBQHE>\r\n> .\r\n> You are receiving this because you authored the thread.Message ID:\r\n> ***@***.***>\r\n>\r\n"
+  },
+  {
+   "id": 2649409279,
+   "user": "SimonPhilpott",
+   "created_at": "2025-02-10T22:34:16Z",
+   "body": "Is 6h of wakelocks normal?\n\n![Image](https://github.com/user-attachments/assets/4fae348a-3aa8-4189-a382-19d90269d6c6)"
+  },
+  {
+   "id": 2653949341,
+   "user": "SimonPhilpott",
+   "created_at": "2025-02-12T14:53:22Z",
+   "body": "Clearing logs and resetting to default hasn't worked unfortunately."
+  },
+  {
+   "id": 2880156639,
+   "user": "MilosKozak",
+   "created_at": "2025-05-14T12:58:12Z",
+   "body": "wakelocks are necessary if you use websockets"
+  }
+ ]
+}

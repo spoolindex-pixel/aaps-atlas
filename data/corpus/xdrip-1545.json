@@ -1,0 +1,54 @@
+{
+ "id": 760544559,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1545,
+ "title": "FR: Predictive Simulation Settings — some improvements",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1545",
+ "state": "closed",
+ "labels": [
+  "enhancement",
+  "ui"
+ ],
+ "created_at": "2020-12-09T17:56:11Z",
+ "closed_at": "2023-01-09T01:58:35Z",
+ "comment_count": 6,
+ "body": "1.\r\nDifferent (maybe customizible) colors for points / profiles of different insulins Predictive Simulation.\r\n\r\nYou know, certain units of different insulins have different activity per a hour.\r\nLet's say 8 units of Fiasp (which main action lasts for about 2 hours) will work as 4~ units per 1 hour.\r\nBut 8 units of Actrapid (which main action lasts for about 4~ hours) will work as 2~ units per 1 hour.\r\n\r\nI think that my main ask is about DIFFERENT COLORS FOR PROFILES OF DIFFERENT INSULINS IN MAIN AND/OR LOWER xDrip graph view.\r\nBecause by default you can see insulin point's name. But you can't see certain insulin on graph (by default graph is only one color).\r\n\r\n<details><summary>IMAGES</summary>\r\n<p>\r\n\r\n![photo_2020-12-09_14-01-26 1](https://user-images.githubusercontent.com/31447095/101667065-8d2c7980-3a57-11eb-9402-b018fd0aff92.png)\r\n![photo_2020-12-09_14-01-26 2](https://user-images.githubusercontent.com/31447095/101667068-8e5da680-3a57-11eb-99b5-9f8ba6dd1aa3.png)\r\n\r\n</p>\r\n</details>\r\n\r\nPLEASE, IT'S VERY IMPORTANT FOR ME.\r\nAll my compensation scheme is based on it.\r\n\r\n...\r\n\r\n2.\r\nActive insulin info.\r\n\r\nBy default we see IoB.\r\nBut I'm interested in ability to see \"active insulin\" at real time.\r\nMaybe in percents (from maximal value -- which will be based on certain dose's \"peak\" and insulin's profile) or someting like that.\r\n\r\nLet's say we injected 8 units of Actrapid.\r\nFirst 30 minutes it (almost) doesn't act -- so it's activity (based on Actrapid's profile) should be 0% (IoB counting as usual: 8 and decreasing).\r\nBut then (after 30 minutes) insulin's activity info should begin rising (someting like 5%,10%... again based on Actrapid's profile).\r\nOn peak it should get 100% -- we stilll see usual counting of IoB (which ATM will be less then on start) -- so showing \"active insulin\" is dynamical system.\r\nDuring main action insulin's activity slowly going down (100%>90% etc...).\r\nAnd on \"tail\" insulin's activity getting lower.\r\n\r\nThe biggest problem I see is about combining different insulins... It can make this system too compicated. You are programmer and maths specialist, maybe you have better ideas about how to realize this.\r\n\r\n...\r\n\r\n3.\r\nPredictive Simulation Settings > Multiple Insulin Types > Config Insulin Profiles > Choose Basal Insulin Profile > Actrapid as Basal Insulin\r\n\r\nIs it possible to make blue pipet visible on graph (Predictive Simulation) with Actrapid whtn it's selected as Basal Insulin (like with real basal insulins -- Insulatard [probably Protafan], Toujeo, Lantus)?\r\n\r\n...\r\n\r\n4. \r\nApidra Profile. \r\nIt's is a little bit different from Novorapid.\r\nApidra's profile subjectively is more exponental and shorter (it has main action at about 3.5—4 hours and some \"tail\"); while Novorapid Acts about longer (4—5 hours) and has more linear profile.\r\nIt will be nice to add Apidra to Insulin profiles.\r\n\r\n...\r\n\r\n5. Different Food Types.\r\n\r\nYou probably know, that different food has different GI (glicemical index).\r\n\r\nSo, it will be nice to be able to specify food what you eat like when you you select insulin.\r\nI think it should be at least 3 selectable GI Types (fast/med/slow).\r\n-- this will allow us to calculate difficult food.\r\n\r\n...\r\n\r\nThanks.",
+ "comments": [
+  {
+   "id": 744762416,
+   "user": "tolot27",
+   "created_at": "2020-12-14T22:54:05Z",
+   "body": "1. That's an interesting feature request but maybe more like a scientific one? The IOB line reflects the active insulin at a certain time. Hence, it can be sufficient at least as you don't have a detailed GI prediction of the food you ate.\r\n2. I believe it is more confusing to show this and it has almost no influence on the therapy. Every IOB is active, it has just not entered the cell wall.\r\n3. There is an PR #1388 addressing this, already.\r\n4. There is an PR #1388 addressing this, already.\r\n5. This was already asked by you with #1525."
+  },
+  {
+   "id": 745558035,
+   "user": "ARkaine2",
+   "created_at": "2020-12-15T20:48:30Z",
+   "body": "About 1.\r\n\r\nMost time I use predictive simulator without specifying carbs and still find it extremely useful.\r\n\r\nBut look what's the deal:\r\n\r\nLet's say at same time I injected 4 units of Fiasp (which lasts for 2.5~ hours) and 4 units of Actrapid (which lasts for 5--6 hours) and specified them in predictive simulator -- at this moment it will show 8 IOB.\r\n\r\n6 units (4 units of Fiasp and about 2 units of Actrapid) will be used per first 2.5 hours and 2 units (Actrapid action in 2.5--5 hours range) will left per 2.5--5 hours.\r\n\r\nWhat's the problem:\r\n\r\nFor example 1 hour after meal I see that I injected not enough insulin (Fiasp) and I decide to inject more and injected it (additional 4 units of Fiasp).\r\n\r\nATM / after some time I'll have some n IOB and I won't know which insulins/injections are combined (I don't know how much of IOB are previous Fiasp, how much of IOB are Actrapid and I can't calculate it with last Fiasp dose).\r\n\r\nSo, I'm interesting in ability to see each specified in predictive simulator insulin dose \"separately\" (and still in context of all insulins).\r\n\r\n<details><summary>I like summarizing profile in lower part of screen.</summary>\r\n<p>\r\n\r\n![photo_2020-12-15_18-56-02 0](https://user-images.githubusercontent.com/31447095/102270314-848be580-3f26-11eb-9051-3ee61f4134f1.jpg)\r\n\r\n</p>\r\n</details>\r\n\r\nBut I'd like too see each injection's action time.\r\n\r\n<details><summary>Variant 1 (preferable):</summary>\r\n<p>\r\n\r\n![photo_2020-12-15_18-56-02 2](https://user-images.githubusercontent.com/31447095/102270321-8655a900-3f26-11eb-83b1-bd5095ad2a39.png)\r\n\r\n</p>\r\n</details>\r\n\r\n<details><summary>Variant 2 (other):</summary>\r\n<p>\r\n\r\n![photo_2020-12-15_18-56-02 1](https://user-images.githubusercontent.com/31447095/102270317-85bd1280-3f26-11eb-8e6a-04f2d77ce76d.png)\r\n\r\n</p>\r\n</details>\r\n\r\nMaybe this can be done via UI tweaks or additional info showing.\r\n\r\n...\r\n\r\nAbout 2.\r\nI agree. If 1 will be realized, there will be no need in 2.\r\n\r\n...\r\n\r\nAbout 3--5.\r\nThanks."
+  },
+  {
+   "id": 745983054,
+   "user": "ARkaine2",
+   "created_at": "2020-12-16T09:28:27Z",
+   "body": "<details><summary>The best realization of this idea I think should look like so:</summary>\r\n<p>\r\n\r\n![photo_2020-12-15_18-56-02 3 — копия](https://user-images.githubusercontent.com/31447095/102329860-8c34a400-3f91-11eb-991b-cf1e11e53b0c.png)\r\n\r\n</p>\r\n</details>\r\n\r\nThese units display IOB (of each injection) and COUNT DOWN as usual \"summary\" IOB -- so these points (and numbers on them) are counters.\r\n\r\n\r\n\r\n<details><summary>If possible, with different colors graphs:</summary>\r\n<p>\r\n\r\n![photo_2020-12-15_18-56-02 2 — копия](https://user-images.githubusercontent.com/31447095/102329870-8d65d100-3f91-11eb-884e-d014c4378900.png)\r\n\r\n</p>\r\n</details>\r\n\r\nThanks for attention."
+  },
+  {
+   "id": 748476255,
+   "user": "chuckgit99",
+   "created_at": "2020-12-19T13:39:58Z",
+   "body": "Just the different colors for basal and bolus would be a very useful feature for me to track bolus effects yet still keep the background basal in play.  Currently the are just combined into one big treatment\r\n> Different (maybe customizible) colors for points / profiles of different insulins Predictive Simulation.\r\n> \r\n> I think that my main ask is about DIFFERENT COLORS FOR PROFILES OF DIFFERENT INSULINS IN MAIN AND/OR LOWER xDrip graph view.\r\nThanks to ARkaine2 for OP"
+  },
+  {
+   "id": 748477203,
+   "user": "chuckgit99",
+   "created_at": "2020-12-19T13:47:47Z",
+   "body": "BTW, if xdrip+ could somehow be linked to \"diabetes:m\" that could take care of ARkaine2 comment about food.  Possible?\r\nDifferent Food Types.\r\nYou probably know, that different food has different GI (glicemical index).\r\n\r\nSo, it will be nice to be able to specify food what you eat like when you you select insulin.\r\nI think it should be at least 3 selectable GI Types (fast/med/slow).\r\n-- this will allow us to calculate difficult food."
+  },
+  {
+   "id": 1375015859,
+   "user": "Navid200",
+   "created_at": "2023-01-09T01:58:35Z",
+   "body": "After more than 2 years, there has been no activity on this.  No developer has shown interest.\r\n\r\nMy suggestion is to break down your requests into multiple requests and put each one of them in a single discussion, not an issue.  \r\nThat will allow each to be handled independently."
+  }
+ ]
+}

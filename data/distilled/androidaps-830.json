@@ -1,0 +1,26 @@
+{
+ "issue_id": 830,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/830",
+ "title": "[2.8.2] AndroidAPS forgets it just bolussed/issues double bolus",
+ "symptom": "AndroidAPS sometimes forgets it just bolussed (SMB) and also sometimes issues a double bolus (SMB) within a minute. When re-reading pump history, AndroidAPS doesn't know those boluses were SMBs but thinks the user entered them on the pump. The issue has occurred multiple times and is not reproducible.",
+ "cause": "The thread does not establish a definitive root cause. A maintainer (andyrozman) suggests that the driver thinks SMB is Corr after history is read, which will be fixed with issue #798, and that the double bolus might be due to the first bolus needing longer to be issued (pump communication). Later, MilosKozak notes that 2.8.2 code is outdated and suggests testing 3.0.",
+ "fix": "No definitive fix is stated. The thread suggests that the SMB-as-Corr issue will be fixed with issue #798, and MilosKozak recommends testing 3.0 because 2.8.2 code is mostly rewritten. The issue is closed for inactivity.",
+ "settings_changed": [],
+ "devices": [
+  "Medtronic 554/523",
+  "RileyLink",
+  "Dexcom G6",
+  "Combo"
+ ],
+ "android_versions": [
+  "Android 11"
+ ],
+ "driver_tags": [
+  "Medtronic",
+  "Combo",
+  "xdrip"
+ ],
+ "confidence": "low",
+ "evidence_quote": "That driver thinks SMB is Corr (after history is read) will be fixed with https://github.com/nightscout/AndroidAPS/issues/798, we can look at double bolus issue then... But this is really weird... Unless we receive 2 boluses we wouldn't issue 2 of them, but what might happen is that first bolus needs longer to be issued (pump communication)..."
+}

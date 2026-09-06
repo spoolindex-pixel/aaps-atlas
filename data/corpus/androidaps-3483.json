@@ -1,0 +1,27 @@
+{
+ "id": 2600181929,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3483,
+ "title": "Approving temp basal suggestions crashes the app",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3483",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-10-20T08:35:48Z",
+ "closed_at": "2024-11-04T21:38:38Z",
+ "comment_count": 2,
+ "body": "Approving temp basal suggestions crashes the app. I have completed objective 3, but in hindsight, it was happening also when trying to approve the suggestions that appeared before completing objective 3. I started with a virtual pump, and at some point moved to Omnipod Dash. Setting temp basals manually does seem to work. \r\n\r\nLooks like it is related to #3083 . \r\nThe following line from the logs seems to reflect (one of) the precision times of the bug. If there is reason to believe otherwise I can verify it again.\r\n`04:35:39.922 [OverviewFragmentHandler] D/APS: [LoopPlugin.invoke():232]: invoke from Accept temp button`   \r\n\r\n- Build: 3df83535f9-2024.09.24\r\n- Flavor: fullrelease\r\n- NS version: 15.0.2\r\n- Using with Xdrip+ and Omnipod Dash\r\n- Phone model: Galaxy A25 5G\r\n- Android 14\r\n- Log files are attached\r\n[AndroidAPS._2024-10-20_03-11-07_.1[1].zip](https://github.com/user-attachments/files/17449553/AndroidAPS._2024-10-20_03-11-07_.1.1.zip)\r\n[AndroidAPS._2024-10-20_04-45-05_.2[1].zip](https://github.com/user-attachments/files/17449554/AndroidAPS._2024-10-20_04-45-05_.2.1.zip)\r\n\r\nThanks to all the contributors for the amazing work on the app! Will very much appreciate any help with this issue. \r\nI'll be happy to supply any other useful details if necessary or help with the debugging in any way.\r\n",
+ "comments": [
+  {
+   "id": 2429207260,
+   "user": "YishaiBerg",
+   "created_at": "2024-10-22T12:54:02Z",
+   "body": "Update - for some strange reason this only happens when using a PIN or custom password for bolus protection. When using biometrics or no protection it works. \r\nIs anyone able to reproduce this?"
+  },
+  {
+   "id": 2455754617,
+   "user": "MilosKozak",
+   "created_at": "2024-11-04T21:38:38Z",
+   "body": "fixed by https://github.com/nightscout/AndroidAPS/commit/dadd409f105844f76ee08dc0ed136b6341dfe792"
+  }
+ ]
+}

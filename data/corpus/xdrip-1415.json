@@ -1,0 +1,162 @@
+{
+ "id": 683734127,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1415,
+ "title": "Unable to fully perform calibration on 8K series G6 transmitter with latest nightly (67014b0-20202.07.25)",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1415",
+ "state": "closed",
+ "labels": [
+  "device-dexcom",
+  "calibration"
+ ],
+ "created_at": "2020-08-21T18:19:10Z",
+ "closed_at": "2021-08-04T18:20:04Z",
+ "comment_count": 24,
+ "body": "All attempts to calibrate result in \"Got invalid impossible slope calibration!\".\r\nThe calibration is accepted by the transmitter but xdrip doesn't register as such and stays in \"initial calibration\" stage.\r\nWas working on previous transmitter (81 series)\r\n\r\nLogs uploaded, calibration attempts start at 06:54, there are more than one.",
+ "comments": [
+  {
+   "id": 678626845,
+   "user": "emp-00",
+   "created_at": "2020-08-22T11:03:39Z",
+   "body": "You cannot calibrate with too big differences of current BG vs the calibration value. As a rule of thumb don't enter calibrations  with more than 15-20% difference. This is a limitation of the Firefly firmware (8G and later transmitters) in combination with xDrip (unfortunately). Workaround if your real BG is *really* that far off => calibrate in MAX 20% steps and always wait a few hours until the next calibration. It's not 100% clear (to me) how long you have to wait - to be on the safe side wait 12 hours. It's a little bit \"luck\" you need but usually the Dexcom BG is never that far off, so this should not happen too often."
+  },
+  {
+   "id": 678638953,
+   "user": "PedanticAvenger",
+   "created_at": "2020-08-22T13:06:43Z",
+   "body": "I would accept that except.\r\n1) does it when within 1 mmol/L of what the g6 thinks is correct \r\n2) as stated the sensor accepts the value, it is xdrip that IMMEDIATELY rejects it. "
+  },
+  {
+   "id": 678647942,
+   "user": "emp-00",
+   "created_at": "2020-08-22T14:30:36Z",
+   "body": "Have a look [at this conversation](https://github.com/NightscoutFoundation/xDrip/issues/1364) - there you can find information on two different ways to enter calibrations, which method is \"better\" and how to adjust settings accordingly. Check it out and let us know if it helped for point 2. above."
+  },
+  {
+   "id": 678719469,
+   "user": "PedanticAvenger",
+   "created_at": "2020-08-23T02:07:22Z",
+   "body": "I had read over that before I filed, it didn't look related to this issue unfortunately.  But perhaps there is some similarity.\r\n\r\nI'll try to screengrab the logs from another attempt tonight so you can see what is going on.  Unless I'm missing something what I find odd is that xdrip considers the value immediately invalid upon entering it and before it is sent to a transmitter.  If there is something in place to handle Firefly firmware I would expect there to be a more sensical error message or perhaps a different method of handling.  If it is firmware having issues (which I HAVE encountered before and am used to dealing with) that behavior is different than what I am currently observing."
+  },
+  {
+   "id": 678763689,
+   "user": "emp-00",
+   "created_at": "2020-08-23T11:41:09Z",
+   "body": "@PedanticAvenger : Actually I wanted to refer [to this thread](https://github.com/NightscoutFoundation/xDrip/issues/1310). Do you use the \"syringe icon\" for entering calibrations? If I remember correctly, I also had the issue of immediate rejections for some time. Ever since using only the syringe (and the settings as per thread in issue #1310) this issue never occurred again for me. Hoping this helps."
+  },
+  {
+   "id": 678767705,
+   "user": "Navid200",
+   "created_at": "2020-08-23T12:22:58Z",
+   "body": "> \r\n> The calibration is accepted by the transmitter but xdrip doesn't register as such and stays in \"initial calibration\" stage.\r\n> \r\n\r\nConsidering that you can only run 8K in native mode, which makes the transmitter responsible for calibration, if the calibration is accepted by the transmitter, what is the problem then?"
+  },
+  {
+   "id": 679482054,
+   "user": "PedanticAvenger",
+   "created_at": "2020-08-25T03:02:09Z",
+   "body": "> @PedanticAvenger : Actually I wanted to refer [to this thread](https://github.com/NightscoutFoundation/xDrip/issues/1310). Do you use the \"syringe icon\" for entering calibrations? If I remember correctly, I also had the issue of immediate rejections for some time. Ever since using only the syringe (and the settings as per thread in issue #1310) this issue never occurred again for me. Hoping this helps.\r\n\r\nI'm digesting this thread now. Different but I see similarities. I'll continue to document things here for my case.  Further note, this is the first sensor for the 8k transmitter so maybe after a stop and start in a few days this will go away. "
+  },
+  {
+   "id": 679485870,
+   "user": "PedanticAvenger",
+   "created_at": "2020-08-25T03:05:03Z",
+   "body": "> > The calibration is accepted by the transmitter but xdrip doesn't register as such and stays in \"initial calibration\" stage.\r\n> \r\n> Considering that you can only run 8K in native mode, which makes the transmitter responsible for calibration, if the calibration is accepted by the transmitter, what is the problem then?\r\n\r\nThe issue is that while I can accept this personally the vast majority of users would totally panic and xdrip should handle this. Either this is an edge case and we document it and learn or this is a bug and we figure it out and a fix is discovered and rolled out. The process itself is important to continue to build comfort with the medical community in solutions like this. That's all. "
+  },
+  {
+   "id": 681103438,
+   "user": "PedanticAvenger",
+   "created_at": "2020-08-26T20:22:01Z",
+   "body": "Ok, so the message on calibration attempt (every calibration, does the same thing even when calibration exactly the same as what g6 thinks BG is at.)\r\n![Screenshot_20200824-205349](https://user-images.githubusercontent.com/15637097/91352481-284e5b80-e7a7-11ea-9b15-de79b24f1ee2.jpg)\r\n\r\nLog entries to correlate.\r\n![Screenshot_20200824-205403](https://user-images.githubusercontent.com/15637097/91352503-2e443c80-e7a7-11ea-8dbf-99e884009d33.jpg)\r\n\r\nLogs showing calibration was sent to transmitter.\r\n![Screenshot_20200824-205805](https://user-images.githubusercontent.com/15637097/91352512-313f2d00-e7a7-11ea-9e09-f8faafd2fb1e.jpg)\r\n\r\nFurther log entries, not sure if this is correct behavior or not so included.\r\n![Screenshot_20200824-205816](https://user-images.githubusercontent.com/15637097/91352517-343a1d80-e7a7-11ea-850d-468dce95a8ac.jpg)\r\n\r\n\r\nThe scenario with using the syringe to calibrate breaks in a different way so will upload them in a separate record."
+  },
+  {
+   "id": 682289920,
+   "user": "PedanticAvenger",
+   "created_at": "2020-08-28T02:30:29Z",
+   "body": "Ok, and the syringe calibration method.\r\n\r\nRight after entry.\r\n![Screenshot_20200827-065131](https://user-images.githubusercontent.com/15637097/91514430-fcfd6680-e8a3-11ea-8002-a23ea94b82f2.jpg)\r\n\r\nA second or so later.\r\n![Screenshot_20200827-065136](https://user-images.githubusercontent.com/15637097/91514448-08509200-e8a4-11ea-8328-095dc5c89391.jpg)\r\n\r\nThe relevant log.\r\n![Screenshot_20200827-065147](https://user-images.githubusercontent.com/15637097/91514462-12729080-e8a4-11ea-9c33-a8be73c0e5f8.jpg)\r\n\r\nUp to the sensor\r\n![Screenshot_20200827-065303](https://user-images.githubusercontent.com/15637097/91514472-16061780-e8a4-11ea-83ad-bfee8c4853de.jpg)\r\n\r\nAnd a bit after\r\n![Screenshot_20200827-065322](https://user-images.githubusercontent.com/15637097/91514499-20281600-e8a4-11ea-97f4-5b686c9b30de.jpg)\r\n\r\n"
+  },
+  {
+   "id": 685002111,
+   "user": "PedanticAvenger",
+   "created_at": "2020-09-01T17:01:43Z",
+   "body": "Second sensor behaves in exactly the same way.  So seems to be a transmitter/Xdrip+ thing."
+  },
+  {
+   "id": 758059070,
+   "user": "Navid200",
+   "created_at": "2021-01-11T16:14:35Z",
+   "body": "> > > The calibration is accepted by the transmitter but xdrip doesn't register as such and stays in \"initial calibration\" stage.\r\n> > \r\n> > \r\n> > Considering that you can only run 8K in native mode, which makes the transmitter responsible for calibration, if the calibration is accepted by the transmitter, what is the problem then?\r\n> \r\n> The issue is that while I can accept this personally the vast majority of users would totally panic and xdrip should handle this. Either this is an edge case and we document it and learn or this is a bug and we figure it out and a fix is discovered and rolled out. The process itself is important to continue to build comfort with the medical community in solutions like this. That's all.\r\n\r\nI agree.\r\nI wish xDrip would be updated so that it would behave in an expected and easy-to-understand manner."
+  },
+  {
+   "id": 785182251,
+   "user": "Navid200",
+   "created_at": "2021-02-24T16:03:36Z",
+   "body": "I would like the xDrip messages to be cleaned out with respect to new G6.  I am not sure when that is going to happen.  There are already several open issues talking about the symptoms.  This is an example.\r\nIn my opinion, we need to present the issue as the messages rather than focusing on the behavior.\r\n\r\nLook at the title of this issue.  It starts by talking about initial calibration on 8K.  That is very confusing.  One is not supposed to perform initial calibration on an 8K.\r\n  \r\nWould there be any objection to closing this issue?\r\n\r\nDo you have any questions about how to calibrate when needed or how to start, or restart?  I can explain those in as much detail as you like."
+  },
+  {
+   "id": 785375781,
+   "user": "PedanticAvenger",
+   "created_at": "2021-02-24T20:51:10Z",
+   "body": "\"One is not supposed to perform initial calibration\" is highly misleading statement.  Even dexcom doesn't take so strong a position but rather say \"Most users will not need calibrations.\"  that is not the case for me and several others, generally calibrate at least once every couple days or I end up with growing drift in values.\r\nI'm ok with this being gathered under a single ticket, there are messages and data provided in the thread of this issue."
+  },
+  {
+   "id": 785400328,
+   "user": "Navid200",
+   "created_at": "2021-02-24T21:35:47Z",
+   "body": "\r\nThe only time you will need to perform initial calibration with a G6 is if you run it in no-code mode.  This is based on Dexcom directions, not mine.\r\n\r\nYou can run in no-code mode if you like.  But, that would disable factory calibration, the main advantage of G6 over G5.\r\n\r\nI hope I haven't been misleading.  Please let me know if I am wrong.  I don't mean to mislead you or anyone else."
+  },
+  {
+   "id": 812214901,
+   "user": "Navid200",
+   "created_at": "2021-04-01T22:40:06Z",
+   "body": "There may be a misunderstanding what one may mean by initial calibration as well as  what one means by the word calibration.\r\n\r\nSince a CGM has no direct access to blood, it relies on a post processing to corelate the measured interstitial fluid glucose with blood glucose.\r\nThis post-process association is referred to, by many, as calibration.\r\nLikewise, many CGMs need an initial association before they can show any results.  Dexcom G5 is an example.\r\n\r\nHowever, when we see a discrepancy between what our CGM shows and what our blood glucose meter shows, we perform a \"calibration\".  In this case, the word has a slightly different meaning.  It is about the act of providing correct information to the CGM so that it can correct its association formula.\r\n\r\nA new G6 transmitter will provide readings right after the 2-hour warm-up.  The association is established using the 4-digit code you provide to the transmitter from the sensor package.\r\nSo, once can say that a new G6 does not need initial calibration when talking about the first definition.\r\n\r\nHowever, for someone who cannot 100% rely on factory calibration of G6, they may need to calibrate as soon as the readings start.  And since that is the first calibration they provide to the sensor, they may like to call it the initial calibration.  \r\n\r\nWhen I said that one is not supposed to perform initial calibration on an 8K, I was referring to the first definition of initial calibration.  \r\n\r\nCalibrating a new G6 is challenging partly because of what Dexcom has done to the firmware in order to not allow restarts.  But, we can still calibrate.\r\nI am working on documentation.  It's not complete.  Neither is it free from errors.\r\nhttps://github.com/Navid200/xDrip/wiki/Calibrate-G6-after-a-Sensor-Restart\r\n\r\nThe challenge with cleaning up the confusing messages from xDrip is to maintain backwards compatibility.  Anyway, that is something that only a few of the developers (if not only one) have the expertise to tackle.\r\nSo, we ha"
+  },
+  {
+   "id": 812285341,
+   "user": "PedanticAvenger",
+   "created_at": "2021-04-02T02:40:22Z",
+   "body": "Removed and the issue remains relevant. "
+  },
+  {
+   "id": 812290107,
+   "user": "Navid200",
+   "created_at": "2021-04-02T02:59:16Z",
+   "body": "1- Calibrating an 8KXXXX transmitter is more challenging than calibrating an 81XXXX.\r\n\r\n2- xDrip issues messages that are confusing, when we calibrate an 8KXXXX, although we can calibrate.  The calibration command is called initial calibration even when we are performing subsequent calibrations.\r\n\r\n3- We are unable to calibrate an 8KXXXX transmitter using xDrip.\r\n\r\n1 was caused by Dexcom.   We cannot do anything to xDrip to undo that.\r\n2 is caused by xDrip's existing behavior that we need to address, and we will I hope.\r\nI don't believe 3 is a true statement.\r\n\r\nCan we close this issue if 2 is addressed?\r\n\r\nIf not, would you please explain what else needs to be done to address this issue?"
+  },
+  {
+   "id": 823175745,
+   "user": "dhermanns",
+   "created_at": "2021-04-20T10:47:28Z",
+   "body": "Just wondering: Wouldn't it be nice and easy if Xdrip would introduce a simple percentual offset calibration?\r\n\r\nSo a user could define something like my Dexcom G6 is always 5% too high. So please Xdrip multiply every received sensor value by 0.95 before sending it to other apps/nightscout backend.\r\n\r\nSo you don't have to calibrate anything regarding the Dexcom Sensor at all. And the modification should be possible for more than one developer here ;-) ."
+  },
+  {
+   "id": 823229334,
+   "user": "Navid200",
+   "created_at": "2021-04-20T12:22:34Z",
+   "body": "@dhermanns That would not be a good idea.\r\nOne reason a user would experience a consistent error (with all G6 sensors) is the error being a fault of the blood glucose meter.\r\nImplementing what you suggest will discourage users from investigating to figure out the cause."
+  },
+  {
+   "id": 823235242,
+   "user": "dhermanns",
+   "created_at": "2021-04-20T12:32:13Z",
+   "body": "I'm not sure if I get you right: What for an error of your blood glucose meter do you recognize the way it's implemented right now?\n\nMy meter is not connected at all to Xdrip. I'm using the factory calibration of the G6. So normally I don't have to calibrate at all. So the actual implementation can't recognize any BGM errors for me, right?\n\nSo an offset definition would be a nice possibility to improve the sensor accuracy. Or did I get you wrong?"
+  },
+  {
+   "id": 823238977,
+   "user": "Navid200",
+   "created_at": "2021-04-20T12:38:03Z",
+   "body": "Every time you go to the lab for blood work, test your blood glucose exactly at the same time.\r\nKeep such results.  After a while you will have a set of data letting you judge the accuracy of your blood glucose meter.\r\n\r\nA blood glucose meter only needs to have an error less than 15% to be considered accurate enough to be sold in the market.\r\nA 5% error is within that standard.  So, it is not unlikely that your blood glucose meter is solely, if not partly, responsible for the error you are experiencing.\r\n\r\nHence, letting the user manipulate the accuracy of xDrip, as you describe, is not a good idea and could result in many more erroneous issues (due to user error) compared to the number of issues it may resolve."
+  },
+  {
+   "id": 823242821,
+   "user": "dhermanns",
+   "created_at": "2021-04-20T12:44:10Z",
+   "body": "For such an error my BGM gets calibrated in the hospital regularly. And I have multiple BGMs to double check.\n\nI never had a problem with my BGM but have regularly differences to my G6. Sometimes up to 20%. And right now I was not able to adjust these :-/\n\nSo I think it would be nice to have an option. You don't have to use it if you would like to have maximum security.\n\nBut that are just my two cents."
+  },
+  {
+   "id": 862366039,
+   "user": "Navid200",
+   "created_at": "2021-06-16T13:09:26Z",
+   "body": "> Just wondering: Wouldn't it be nice and easy if Xdrip would introduce a simple percentual offset calibration?\r\n> \r\n> So a user could define something like my Dexcom G6 is always 5% too high. So please Xdrip multiply every received sensor value by 0.95 before sending it to other apps/nightscout backend.\r\n> \r\n\r\nI would object to such a pull request.  I expect so will others.  The reason is how things could go wrong for a user who is not 100% careful.  We have had many similar proposals (that could possibly cause errors) that have never been accepted.\r\nWe have to worry about how a capability may impact the majority before it can be approved.  "
+  }
+ ]
+}

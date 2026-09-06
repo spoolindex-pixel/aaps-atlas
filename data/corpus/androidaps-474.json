@@ -1,0 +1,120 @@
+{
+ "id": 857394126,
+ "repo": "nightscout/AndroidAPS",
+ "number": 474,
+ "title": "AAPS 2.8.2 not connecting to Orangelink on Samsung a20e",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/474",
+ "state": "closed",
+ "labels": [
+  "rileylink",
+  "medtronic"
+ ],
+ "created_at": "2021-04-13T23:32:26Z",
+ "closed_at": "2026-07-22T13:02:12Z",
+ "comment_count": 18,
+ "body": "I received new OrangeLink today. Connected to it and it worked fine. Later I tried to connect again but connection is not getting established now:\r\n\r\nRileyLink Status on MEDTRONIC page remanins in \r\n\r\n> RileyLink initialization...\r\n\r\n state\r\n\r\ninteresting part of log files:\r\n\r\n> 00:11:01.471 [pool-18-thread-1] D/PUMPBTCOMM: [RFSpyReader.poll():58]: pool-18-thread-1[693]Entering poll at t==1736617, timeout is 0 mDataQueue size is 0\r\n> 00:11:01.473 [pool-18-thread-1] D/PUMPBTCOMM: [RFSpyReader.poll():70]: Got data [null] at t==1736621\r\n> 00:11:01.475 [pool-18-thread-1] D/PUMPBTCOMM: [RFSpy.writeToDataRaw():204]: writeToData (raw=[03 06 10 1A])\r\n> 00:11:01.479 [pool-18-thread-1] E/PUMPBTCOMM: [RileyLinkBLE.writeCharacteristic_blocking():509]: BT Device not supported\r\n> 00:11:01.482 [pool-18-thread-1] E/PUMPBTCOMM: [RFSpy.writeToDataRaw():209]: BLE Write operation failed, code=0\r\n> 00:11:01.484 [pool-18-thread-1] E/PUMPBTCOMM: [RFSpy.writeToData():226]: writeToData: No response from RileyLink\r\n> 00:11:01.586 [pool-18-thread-1] D/PUMPBTCOMM: [RFSpyReader.poll():58]: pool-18-thread-1[693]Entering poll at t==1736734, timeout is 0 mDataQueue size is 0\r\n> 00:11:01.588 [pool-18-thread-1] D/PUMPBTCOMM: [RFSpyReader.poll():70]: Got data [null] at t==1736736\r\n> 00:11:01.591 [pool-18-thread-1] D/PUMPBTCOMM: [RFSpy.writeToDataRaw():204]: writeToData (raw=[03 06 11 13])\r\n> 00:11:01.595 [pool-18-thread-1] E/PUMPBTCOMM: [RileyLinkBLE.writeCharacteristic_blocking():509]: BT Device not supported\r\n> 00:11:01.597 [pool-18-thread-1] E/PUMPBTCOMM: [RFSpy.writeToDataRaw():209]: BLE Write operation failed, code=0\r\n> 00:11:01.599 [pool-18-thread-1] E/PUMPBTCOMM: [RFSpy.writeToData():226]: writeToData: No response from RileyLink\r\n> 00:11:01.702 [pool-18-thread-1] D/PUMPBTCOMM: [RFSpyReader.poll():58]: pool-18-thread-1[693]Entering poll at t==1736849, timeout is 0 mDataQueue size is 0\r\n> 00:11:01.705 [pool-18-thread-1] D/PUMPBTCOMM: [RFSpyReader.poll():70]: Got data [null] at t==1736852\r\n> 00:11:01.707 [pool-18-thread-1] D/PUMPBTCOMM: [RFSpy.writeToDataRaw():204]: writeToData (raw=[02 0B 00])\r\n> 00:11:01.711 [pool-18-thread-1] E/PUMPBTCOMM: [RileyLinkBLE.writeCharacteristic_blocking():509]: BT Device not supported\r\n> 00:11:01.713 [pool-18-thread-1] E/PUMPBTCOMM: [RFSpy.writeToDataRaw():209]: BLE Write operation failed, code=0\r\n> 00:11:01.714 [pool-18-thread-1] E/PUMPBTCOMM: [RFSpy.writeToData():226]: writeToData: No response from RileyLink\r\n> 00:11:01.717 [pool-18-thread-1] D/PUMPBTCOMM: [RFSpy.setMedtronicEncoding():372]: Set Encoding for Medtronic: FourByteSixByteLocal\r\n> 00:11:01.719 [pool-18-thread-1] D/PUMPBTCOMM: [ServiceTaskExecutor.afterExecute():50]: Finishing task ResetRileyLinkConfigurationTask\r\n\r\n\r\nI found that RileyLinkBLE.writeCharacteristic_blocking():509 log means that\r\n`bluetoothConnectionGatt.getService(serviceUUID) == null`\r\n\r\nwhy is that happening?\r\n\r\none more interesting thing is that i have installed nRF Connect app to this phone and this app does not connect ot Orange too. Its logs say:\r\nError 133 (0x85): GATT ERROR\r\n",
+ "comments": [
+  {
+   "id": 819208498,
+   "user": "OpossumGit",
+   "created_at": "2021-04-14T03:50:33Z",
+   "body": "After million of attempts I got connected with one trick: paired phone with some unrelated device - speakers. It probably touched something in Bluetooth stack and enabled connections to OrangeLink again (while clearing of cache and data of system Bluetooth app was not helping). \nNow I am getting following problem: AAPS keeps restarting while communicating with Medtronic 722.\nThat reminds me that it crashed earlier too, which is probable reason why Bluetooth stack was left in blocked state. \nSo I'll have to change the issue to \"why AAPS keeps crashing\", but it is 6AM in the morning so I'll collect logs later. "
+  },
+  {
+   "id": 819274607,
+   "user": "OpossumGit",
+   "created_at": "2021-04-14T06:49:50Z",
+   "body": "update: I can connect to OrangeLink by performing:\r\n1. delete OL from AAPS\r\n2. take batteries from OL\r\n3. reboot phone\r\n4. put batteries back\r\n5. connect to OL in AAPS\r\n\r\nbut then, when AAPS starts pulling pump history AAPS crashes and restarts and crashes again..\r\n\r\nlog indicates there are BLE issues:\r\n```\r\n07:37:59.099 [Thread-22] W/PUMPBTCOMM: [RileyLinkCommunicationManager.sendAndListen():88]: isDeviceReachable. Response is invalid ! [noResponseFromRileyLink=[true, false, false, false, false], interrupted={}, timeout={}, unknownCommand={}, invalidParam={}]\r\n07:37:59.102 [Thread-22] E/PUMPCOMM: [MedtronicCommunicationManager.getPumpHistory():418]: Problem acknowledging frame response. (retry=[2])\r\n07:37:59.105 [Thread-22] E/PUMPCOMM: [MedtronicCommunicationManager.getPumpHistory():425]: We couldn't acknowledge frame from pump, aborting operation.\r\n07:37:59.108 [Thread-22] W/PUMPCOMM: [MedtronicCommunicationManager.getPumpHistory():393]: Expected frame number [13, 12], received {} (retrying)\r\n07:37:59.111 [Thread-22] I/PUMPBTCOMM: [RileyLinkCommunicationManager.sendAndListen():75]: Sent:A7 43 37 98 06 00\r\n07:37:59.215 [Thread-22] D/PUMPBTCOMM: [RFSpyReader.poll():58]: Thread-22[1561]Entering poll at t==340477, timeout is 0 mDataQueue size is 0\r\n07:37:59.218 [Thread-22] D/PUMPBTCOMM: [RFSpyReader.poll():70]: Got data [null] at t==340480\r\n07:37:59.221 [Thread-22] D/PUMPBTCOMM: [RFSpy.writeToDataRaw():204]: writeToData (raw=[14 05 00 00 00 00 00 00 00 0F A0 00 00 00 A7 43 37 98 06 00 4B])\r\n07:37:59.225 [Thread-22] E/PUMPBTCOMM: [RileyLinkBLE.writeCharacteristic_blocking():529]: writeCharacteristic_blocking: not configured!\r\n07:37:59.227 [Thread-22] E/PUMPBTCOMM: [RFSpy.writeToDataRaw():209]: BLE Write operation failed, code=5\r\n07:37:59.230 [Thread-22] E/PUMPBTCOMM: [RFSpy.writeToData():226]: writeToData: No response from RileyLink\r\n```"
+  },
+  {
+   "id": 819280261,
+   "user": "OpossumGit",
+   "created_at": "2021-04-14T07:00:58Z",
+   "body": "And, found this too... Seems like real candidate, probably not related to BT then, will open new issue:\r\n```\r\n07:37:19.231 [Thread-23] D/PUMP: [MedtronicHistoryData.processNewHistoryData():511]: ProcessHistoryData: 'Delivery Suspend' Processed [count=[2, [{},{}]], items={}]\r\n07:37:19.236 [Thread-23] E/CORE: [MedtronicHistoryData.processNewHistoryData():518]: ProcessHistoryData: Error processing Suspends entries: Value 60 for secondOfMinute must be in the range [0,59]\r\norg.joda.time.IllegalFieldValueException: Value 60 for secondOfMinute must be in the range [0,59]\r\n\tat org.joda.time.field.FieldUtils.verifyValueBounds(FieldUtils.java:277) ~[na:0.0]\r\n\tat org.joda.time.chrono.BasicChronology.getDateTimeMillis(BasicChronology.java:176) ~[na:0.0]\r\n\tat org.joda.time.chrono.GregorianChronology.getDateTimeMillis(GregorianChronology.java:44) ~[na:0.0]\r\n\tat org.joda.time.chrono.AssembledChronology.getDateTimeMillis(AssembledChronology.java:133) ~[na:0.0]\r\n\tat org.joda.time.LocalDateTime.<init>(LocalDateTime.java:511) ~[na:0.0]\r\n\tat org.joda.time.LocalDateTime.<init>(LocalDateTime.java:457) ~[na:0.0]\r\n\tat info.nightscout.androidaps.plugins.pump.common.utils.DateTimeUtil.toLocalDateTime(DateTimeUtil.java:43) ~[na:0.0]\r\n\tat info.nightscout.androidaps.plugins.pump.common.utils.DateTimeUtil.getATechDateDiferenceAsMinutes(DateTimeUtil.java:249) ~[na:0.0]\r\n\tat info.nightscout.androidaps.plugins.pump.medtronic.data.dto.TempBasalProcessDTO.getDuration(TempBasalProcessDTO.java:18) ~[na:0.0]\r\n\tat info.nightscout.androidaps.plugins.pump.medtronic.data.MedtronicHistoryData.processSuspends(MedtronicHistoryData.java:1119) ~[na:0.0]\r\n\tat info.nightscout.androidaps.plugins.pump.medtronic.data.MedtronicHistoryData.processNewHistoryData(MedtronicHistoryData.java:516) ~[na:0.0]\r\n\tat info.nightscout.androidaps.plugins.pump.medtronic.MedtronicPumpPlugin.readPumpHistory(MedtronicPumpPlugin.java:1136) ~[na:0.0]\r\n\tat info.nightscout.androidaps.plugins.pump.medtronic.MedtronicPumpPlugin.initializePump"
+  },
+  {
+   "id": 819280522,
+   "user": "andyrozman",
+   "created_at": "2021-04-14T07:01:27Z",
+   "body": "Can you please post more logs. I need to see what is happening on initialization of RL."
+  },
+  {
+   "id": 819284824,
+   "user": "OpossumGit",
+   "created_at": "2021-04-14T07:09:06Z",
+   "body": "I have opened #476 and if you agree that it is seconds issue (and not BT issue) we may continue there.\r\n\r\nIn the meantime, here are logs I have (not a lot of components were checked so log is not so comprehensive).\r\n[AndroidAPS_LOG_1618378842172.log.zip](https://github.com/nightscout/AndroidAPS/files/6308833/AndroidAPS_LOG_1618378842172.log.zip)\r\n"
+  },
+  {
+   "id": 819449939,
+   "user": "andyrozman",
+   "created_at": "2021-04-14T11:35:27Z",
+   "body": "It seems like your phone has some communication problems with RL/OL. Some phones are pretty problematic (Samsungs and Huaweis for example). \r\nIn instructions there is recommendation NOT to pair RL with your Phone (or else detection in configuration of RL might not work), but some users have noticed that it works better for them if they actually pair RL with the Phone. So this is something you could try and see if it works better.\r\n"
+  },
+  {
+   "id": 819460532,
+   "user": "OpossumGit",
+   "created_at": "2021-04-14T11:55:10Z",
+   "body": "yes, it has problems on android level (since even nRF Connect app was throwing errors too). My conclusion is that Samsung has frozen BLE after AAPS has crashed (AAPS does not crash gracefuly).\r\n\r\nAnd reason for crashing in my case is #476 \r\n\r\nAfter five steps described above I can always connect and for example if I picked Omnipod pump (that I do not have) I am able to connect and disconnect from OrangeLink without any issues indefinite times (no pairing neccessary). \r\n\r\nTherefore, point of this issue is that some devices (Samsung) block BLE for OL after AAPS crash.\r\n\r\nSince that is the case, I am more interested that root cause (crashing) is fixed (or is it already fixed in dev, since I have seen a few Medtronic pump history issues being worked on)"
+  },
+  {
+   "id": 882861775,
+   "user": "rustymonkey",
+   "created_at": "2021-07-19T21:10:06Z",
+   "body": "fyi, this issue was raised by several users at https://www.facebook.com/groups/AndroidAPSUsers/posts/2980284845526246 . I've been testing the Orangelink for a couple of days with mdt_hotfix_2_8_2 (from Andy Rozman's repository) on an S7. I was testing recovery from lost connections between the OL and the Pump, and between OL and the Phone (re. https://github.com/MilosKozak/AndroidAPS/issues/2121 ), and it was working great until this issue occurred.\r\n\r\nThe following  steps (suggested by Franz Eckl) solved the problem for me (similar to the above but no phone restart):\r\n1 In the pump Preferences > RileyLink Configuration, delete the OL\r\n2 Exit AAPS\r\n3 Power off/on the OL\r\n4 Run AAPS and in pump Preferences > RileyLink Configuration, scan for the OL and add it. \r\n\r\nNote:\r\n- restarting the phone and the OL without removing the OL from AAPS didn't solve the problem\r\n- deleting the  OL device in AAPS and restarting the phone resulted in some very strange behavior of the OL appearing to connect despite not being configured: AAPS > Medtronic screen indicated that it was 'Connected' to the OL and pump (even though I never re-added the OrangeLink. The medtronic screen also indicated \"Errors: RileyLink Address Invalid\". And Medtronic Preferences > RileyLink configuration indicated 'Not set'! "
+  },
+  {
+   "id": 882875765,
+   "user": "andyrozman",
+   "created_at": "2021-07-19T21:32:24Z",
+   "body": "mdt_hotfix_2_8_2 doesn't contain fix for OL..."
+  },
+  {
+   "id": 902948282,
+   "user": "rustymonkey",
+   "created_at": "2021-08-20T20:46:57Z",
+   "body": "Been using AAPS for a month with an S7 and this issue seems to occur at least once a day, often after the phone has disconnected from the RL. Based on the reports in FB, it's not an uncommon problem:\r\nhttps://www.facebook.com/photo?fbid=10165663209020541&set=gm.3070659316488798\r\nhttps://www.facebook.com/groups/AndroidAPSUsers/posts/3060053327549397\r\nhttps://www.facebook.com/photo/?fbid=10215691550000902&set=gm.3054954914725905\r\n\r\nI'll try switching to an old Nexus 5x and see if the results are any different--I'm hoping that you're right that it's a Samsung-specific problem."
+  },
+  {
+   "id": 903859763,
+   "user": "rustymonkey",
+   "created_at": "2021-08-23T15:08:50Z",
+   "body": "We've tested with a Nexus 5x for 7 days and the endless 'Rileylink initialization' problem has not yet occurred (using the identical settings from the S7 device), so it appears to be device-specific.\r\n\r\nI'd still suggest raising the priority on this since makes AAPS unreliable on a significant % of android devices."
+  },
+  {
+   "id": 951869745,
+   "user": "andyrozman",
+   "created_at": "2021-10-26T12:04:03Z",
+   "body": "OL fix has been merged into dev (and beta1), so this error might be fixed. Can someone please confirm that? \r\n@OpossumGit @rustymonkey \r\n\r\nPlease test with latest 2.x release (which is 2.5). It seems that OL developer has introduced some bug into 3.2 version (latest one) and he is still working on it. \r\n"
+  },
+  {
+   "id": 953158854,
+   "user": "OpossumGit",
+   "created_at": "2021-10-27T17:37:59Z",
+   "body": "@andyrozman I am reluctant on using dev/beta versions as AAPS is used by my daughter that spends a lot of time away from me (school). \r\nBut I am wondering which fix is merged into dev? Currently she is running AAPS from branch you prepared for me (fix you made for pump history crashes) and I have merged bubbledevteam modifications into that code.  That is still not perfect solution, reconnecting is not 100%. If I go with dev do I have this MDT fix and is OL fix the work of Bubble or is it something else?\r\nAnd which versions are you talking about (2.5,3.2)? OL firmware? I don’t know which is currently on my device, I updated few months ago. "
+  },
+  {
+   "id": 953161884,
+   "user": "OpossumGit",
+   "created_at": "2021-10-27T17:41:34Z",
+   "body": "Found answer to FW, I see those are OL versions and it is downgradeable so I can go with 2.5 whenever I want (if I am on 3.2)"
+  },
+  {
+   "id": 953187635,
+   "user": "rustymonkey",
+   "created_at": "2021-10-27T18:13:05Z",
+   "body": "@andyrozman the s7 that experienced the bug doesn't support Android 9 so I can't really verify the fix (I've updated it to PixelExperience firmware (Android 11) and will test it out with AAPS 3.0 dev / RL / MDT 554, and with an OL when my son returns from out of town)."
+  },
+  {
+   "id": 964635266,
+   "user": "rustymonkey",
+   "created_at": "2021-11-09T23:24:25Z",
+   "body": "I've tested the S7 running Android 11 (Pixel Experience), and:\r\n- on 2.8.1, the 'RileyLink Initialization' error often occurs\r\n- on 3.0 B3-B5, the 'RileyLink Initialization' error never occurs\r\n\r\nThat's not to say that I'm not experiencing connectivity issues with 3.0, but as far as I can tell, this issue is resolved."
+  },
+  {
+   "id": 984928745,
+   "user": "rustymonkey",
+   "created_at": "2021-12-02T19:20:03Z",
+   "body": "Unfortunately, in the 3 weeks since my last comment, the RileyLink Initialization error occurred 4 times (on various 3.0 Beta builds)--it's less frequent than with 2.x, but still occurs occasionally. \r\n\r\nAs reported earlier, restarting the OL and the Phone doesn't solve the problem--to solve the problem, the OL must be removed from AAPS. i.e. \r\n1 In the pump Preferences > RileyLink Configuration, delete the OL\r\n2 Exit AAPS (or power down the phone)\r\n3 Power off/on the OL\r\n4 Run AAPS and in pump Preferences > RileyLink Configuration, scan for the OL and add it.\r\n\r\nNote that on 2 occasions in which it occurred, the device's Wi-Fi somehow stopped working and then I rebooted the device and then noticed the RL initialization bug (because the failed basal adjustment alarm went off). Next time such a Wi-Fi disconnect occurs, I'll check to see whether it directly triggers the RL initialization bug (or if it's triggered by rebooting the device).\r\nEDIT: On the other 2 occasions in which it occurred, the phone running AAPS ran out of battery--I'll try to test whether this can consistently trigger the bug.\r\nEDIT 2: Allowing the S7 to run out of battery consistently triggers this problem."
+  }
+ ]
+}

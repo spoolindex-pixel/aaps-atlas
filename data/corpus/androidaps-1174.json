@@ -1,0 +1,69 @@
+{
+ "id": 1103446687,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1174,
+ "title": "[RC1] SMB/Close Loop stops after Calibrations",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1174",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-01-14T10:41:22Z",
+ "closed_at": "2022-01-14T17:23:43Z",
+ "comment_count": 9,
+ "body": "There is a behaviour in AndroidAPS RC1 that I think should be reviewed. Everytime I calibrate using DexcomApp, and the value are very similar, AndroidAPS detects as two readings close to each other and stop the SMB/Close Loop.\r\nIn my opinion AndroidAPS should ignore \"BG Check\" values or the readings adjusted after calibration. This is happening to me quite often. I have to go manually remove the reading in red.\r\nI can be wrong but I feel the issue is related to the BG value adjusted after the calibration.\r\n\r\nCalibration was at 8:59 and SMB/Close Loop stop working around 9:30 +/- (as you can check in the graph.\r\n\r\n[AndroidAPS_LOG_1642156371451.log.zip](https://github.com/nightscout/AndroidAPS/files/7869732/AndroidAPS_LOG_1642156371451.log.zip)\r\n\r\n![Screenshot_20220114-100642](https://user-images.githubusercontent.com/608650/149502592-a79bd301-1d7a-4e71-ac48-ca2f3f55c2ac.png)\r\n![Screenshot_20220114-100647](https://user-images.githubusercontent.com/608650/149502594-f1e2e4cb-8c55-4fb3-b70a-951d3e5ed5e6.png)\r\n![Screenshot_20220114-100655](https://user-images.githubusercontent.com/608650/149502596-59153303-0e14-4354-9427-6a16740e5248.png)\r\n![271848805_1033307574064787_1336009735855990777_n](https://user-images.githubusercontent.com/608650/149502544-38b59648-8c48-4404-8bff-d3bef9fec2b3.jpg)\r\n\r\n",
+ "comments": [
+  {
+   "id": 1013100874,
+   "user": "MilosKozak",
+   "created_at": "2022-01-14T13:05:48Z",
+   "body": "time around 8:59 is not in logs"
+  },
+  {
+   "id": 1013115762,
+   "user": "parapenT1sta",
+   "created_at": "2022-01-14T13:27:44Z",
+   "body": "I think these two logs cover the time frame of the events.\r\n[AndroidAPS._2022-01-14_00-00-01_.14.zip](https://github.com/nightscout/AndroidAPS/files/7870659/AndroidAPS._2022-01-14_00-00-01_.14.zip)\r\n[AndroidAPS._2022-01-14_00-00-01_.13.zip](https://github.com/nightscout/AndroidAPS/files/7870660/AndroidAPS._2022-01-14_00-00-01_.13.zip)\r\n\r\n"
+  },
+  {
+   "id": 1013296056,
+   "user": "MilosKozak",
+   "created_at": "2022-01-14T16:59:06Z",
+   "body": "are you using G5?"
+  },
+  {
+   "id": 1013296566,
+   "user": "MilosKozak",
+   "created_at": "2022-01-14T16:59:49Z",
+   "body": "it looks like a bug in Dexcom app. calibration is sent as BG value too"
+  },
+  {
+   "id": 1013302368,
+   "user": "parapenT1sta",
+   "created_at": "2022-01-14T17:07:38Z",
+   "body": "Yes, G5.\r\nAs I wrote it seems AndroidAPS marks as \"red\" reading the value adjusted really after the calibration."
+  },
+  {
+   "id": 1013308546,
+   "user": "parapenT1sta",
+   "created_at": "2022-01-14T17:16:17Z",
+   "body": "@MilosKozak One note, the same problem happens when I initiate a new sensor and enter dual calibrations\r\nSame problem with xDrip or BYOD. AndroidAPS assume the dual calibrations as two readings at near time and marked them as red.\r\n\r\n"
+  },
+  {
+   "id": 1013313722,
+   "user": "MilosKozak",
+   "created_at": "2022-01-14T17:23:43Z",
+   "body": "fixed by https://github.com/nightscout/AndroidAPS/commit/0603e741be6c6cd23d2d4b6c84c70de528b63a43\r\nfixed for G5 BOYDA. no way to fix it in xdrip on AAPS side"
+  },
+  {
+   "id": 1013331147,
+   "user": "parapenT1sta",
+   "created_at": "2022-01-14T17:48:48Z",
+   "body": "Thank you @MilosKozak !\r\n\r\nRegarding xDrip, what can be the solution? Changes on xDrip itself to avoid broadcast the calibrations?"
+  },
+  {
+   "id": 1013640799,
+   "user": "MilosKozak",
+   "created_at": "2022-01-15T08:10:02Z",
+   "body": "i did only workaround as the issue is somewhere in G5 (maybe app only, who knows)\r\nif you see the issue with xDrip too it must be analyzed there"
+  }
+ ]
+}

@@ -1,0 +1,22 @@
+{
+ "issue_id": 1308,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/1308",
+ "title": "Enabling OOP calibration",
+ "symptom": "The user requests enabling the 'OOP algorithm calibration' checkbox in xDrip+ settings. They report that without calibration, BG values from OOP algorithm are systematically far from a glucose meter, and they had to manually edit settings XML to enable it.",
+ "cause": "The OOP algorithm has a low boundary of 39 mg/dl, making it impossible to get values below that. If calibration is enabled, it could cause missed hypoglycemia because the algorithm cannot output values below the threshold, leading to inaccurate low readings.",
+ "fix": "The maintainers decided not to enable the checkbox due to safety concerns about missing low glucose scenarios. No fix was provided; the feature remains disabled.",
+ "settings_changed": [],
+ "devices": [
+  "Libre2",
+  "Miaomiao2",
+  "xDrip+"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "OOP",
+  "calibration"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "The algorithm has A low boundary of 39 mgdl. I.e. It is not possible to get values below that. Enabling this feature might be unsafe as you can miss out on certain low glucose scenarios."
+}

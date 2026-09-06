@@ -1,0 +1,75 @@
+{
+ "id": 2485321796,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3415,
+ "title": "Dark and bright green dots change..\n",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3415",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-08-25T15:11:01Z",
+ "closed_at": "2024-12-05T16:11:39Z",
+ "comment_count": 10,
+ "body": "I have changed transmitters and got the yellow triangle \"recalculated data\". Ok, I'm used to it.\nThe strange thing is that in the graphs, the dark and bright green dots change status/color often... How come ?\n![Screenshot_20240825_140813_AAPS.jpg](https://github.com/user-attachments/assets/06ceb381-6f99-444c-ab4f-5bac3c68db96)\n\n![Screenshot_20240825_142618_AAPS.jpg](https://github.com/user-attachments/assets/b5aba9c8-2752-47d8-a0f2-245459d2321c)\n\n![Screenshot_20240825_165937_AAPS.jpg](https://github.com/user-attachments/assets/75474299-dfc5-4a2f-94f2-b227acad7690)\n\n![Screenshot_20240825_170326_AAPS.jpg](https://github.com/user-attachments/assets/a52d701b-69f2-44aa-b7f1-59848f73620d)\n\n",
+ "comments": [
+  {
+   "id": 2308896591,
+   "user": "robertrub",
+   "created_at": "2024-08-25T15:29:36Z",
+   "body": "![Screenshot_20240825_172837_AAPS.jpg](https://github.com/user-attachments/assets/9fe850e8-37c7-4502-b608-b2ee5d2ddca2)\n\nThey are all bright now... "
+  },
+  {
+   "id": 2308897950,
+   "user": "robertrub",
+   "created_at": "2024-08-25T15:33:38Z",
+   "body": "And dark dots are back...\n![Screenshot_20240825_173300_AAPS.jpg](https://github.com/user-attachments/assets/30278f71-3d93-4d0d-8d68-1020530d1a19)\n\n"
+  },
+  {
+   "id": 2473195625,
+   "user": "MilosKozak",
+   "created_at": "2024-11-13T10:57:33Z",
+   "body": "caused by delayed data "
+  },
+  {
+   "id": 2473473332,
+   "user": "robertrub",
+   "created_at": "2024-11-13T12:28:08Z",
+   "body": "@MilosKozak You closed this issue but the dots changing color was NOT due to missed readings. I had added the _missed readings arriving later_ info thinking it might help to give you a search direction. All my screenshots were done when the phone was near the G6 and xDrip was receiving the BGs regularly.\n\nI think the problem comes from the smoothing in AAPS but I'm not sure.\n\nI'm about to swap sensors. Maybe the desynchronisation of the 5 min interval between the 2 transmitters is creating a problem in the smoothing section... (very wild guess).\n\nI'll stop smoothing before the swap and see if anything behaves differently...\n\nPlease reopen this issue as it is not solved."
+  },
+  {
+   "id": 2479924659,
+   "user": "robertrub",
+   "created_at": "2024-11-15T21:07:28Z",
+   "body": "Stopping smoothing in AAPS does NOT stop the dot problem..The end of 36 hours after transmitter change stops the problem.\n\nSo, the \"culprit\" is with/around the recalculated data code (when there is a \"slide\" of the 5 min delays when the G6 transmitters are changes)."
+  },
+  {
+   "id": 2509725297,
+   "user": "vanelsberg",
+   "created_at": "2024-12-01T11:34:02Z",
+   "body": "> the dark and bright green dots change status/color often...\r\n\r\nHmmm. Using BYODA: do not see these different colors at all. You are using xDrip+?\r\n"
+  },
+  {
+   "id": 2509730250,
+   "user": "robertrub",
+   "created_at": "2024-12-01T11:48:58Z",
+   "body": "Yes, xDrip."
+  },
+  {
+   "id": 2509734631,
+   "user": "vanelsberg",
+   "created_at": "2024-12-01T12:01:28Z",
+   "body": "Haven't used xDrip+ other then in follower mode. Could it be xDrip+ does some filling in (or Libre smoothing)?\r\nJust asking....\r\n"
+  },
+  {
+   "id": 2509742040,
+   "user": "robertrub",
+   "created_at": "2024-12-01T12:19:32Z",
+   "body": "I saw once that, if missed 2 readings (far from phone), then on next connection, only reading 3 arrived and 5 min later, readings 1,2 and 4 arrived.\n\nThis said, the dark/light green dots (and they change color !!) happens even when I'm near the phone and all the BGs arrive every 5 min.\n\nLook at the 2nd logs I posted on this issue. They are strange...\n\nhttps://github.com/nightscout/AndroidAPS/issues/3413"
+  },
+  {
+   "id": 2520796310,
+   "user": "MilosKozak",
+   "created_at": "2024-12-05T16:11:39Z",
+   "body": "resolved in https://github.com/nightscout/AndroidAPS/issues/3413"
+  }
+ ]
+}

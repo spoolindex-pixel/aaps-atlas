@@ -1,0 +1,90 @@
+{
+ "id": 3522391591,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 4215,
+ "title": "Libre sensor \"wait 60 minutes\" on already running sensor",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/4215",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "device-libre"
+ ],
+ "created_at": "2025-10-16T15:26:17Z",
+ "closed_at": "2026-05-12T11:27:44Z",
+ "comment_count": 16,
+ "body": "A number of users have identifed a problem using xDrip+ with Libre 2/2+ sensors. If a sensor has been operating for some time, after the initial one hour warmup, it was previously routine to start the sensor in xDrip+ and say \"not started today\" in order to bypass a warmup phase in xDrip. Some months ago this appeared to change.\r\n\r\nThe problem behaviour is that users are now told to wait one hour before being asked for calibration input, even though the sensor may be days old. There is also a one hour delay before data is sent to AAPS causing a break in the loop. \r\n\r\nPrevious discussion https://github.com/NightscoutFoundation/xDrip/discussions/4004 \r\n\r\n@AdLouwerse identified when the change of behaviour occurred - ~\" Nightly build xDrip-plus-20250312-14494e7.apk works fine, the problem starts at nightly build xDrip-plus-20250323-0addc89.apk.\"\r\n\r\nhttps://github.com/NightscoutFoundation/xDrip/compare/2025.03.12...2025.03.23\r\n\r\n_Originally posted by @PhilTU in https://github.com/NightscoutFoundation/xDrip/discussions/4201_",
+ "comments": [
+  {
+   "id": 3566496149,
+   "user": "jamorham",
+   "created_at": "2025-11-22T10:46:51Z",
+   "body": "Does this only happen if users are running multiple sensors at the same time, like attaching a new sensor and then connecting it to xdrip later while another sensor has previously been running at the same time?\n\nI can see the code that likely has been introduced that would cause this (thanks for identifying that diff) but I just need to understand the exact circumstances to ensure the fix is correct and doesn't affect those other changes that relate to overlapping backfills."
+  },
+  {
+   "id": 3566646150,
+   "user": "PhilTU",
+   "created_at": "2025-11-22T11:52:27Z",
+   "body": "In general users had the Libre sensor running for a few hours before connecting it to xDrip - for example\n\n\"My Libre2+ was started with the LibreLink yesterday. When I today, like I always do when switching Libre, I stopped the old one, clicked the Forget Device, then scanned the new Libre and selected \"Not today\", xDrip would still display sensor warm up message and only after would I be able to calibrate it. Tried it multiple times.\"\n\nThe feedback isn't clear what happened with the previous sensor. Nobody explicitly said they were running two in parallel but it's quite likely they started the new one with the vendor app while xDrip+ was running on the extra half day life of the previous sensor.\n\nUsing the Fake data source I can reproduce Navid's experience that a 3h warmup is initiated even when you say the sensor started 3 days earlier."
+  },
+  {
+   "id": 3566671977,
+   "user": "Navid200",
+   "created_at": "2025-11-22T12:24:53Z",
+   "body": "@jamorham If you point me to a prospective solution, I can test for G7 backfill overlap.  It will take me a total of 20 days to test both possibilities.  \nI was working on a solution.  I was adding a new field of started_warmup_at to Sensor.create.\nBut, I don't have a solution yet."
+  },
+  {
+   "id": 3568019846,
+   "user": "Navid200",
+   "created_at": "2025-11-23T14:33:01Z",
+   "body": "I opened a PR that fixes this and have included a test release:\nhttps://github.com/NightscoutFoundation/xDrip/pull/4253"
+  },
+  {
+   "id": 3589189465,
+   "user": "Navid200",
+   "created_at": "2025-11-28T12:38:47Z",
+   "body": "This should be resolved as of the 2025.11.28 Nightly release.\nPlease let us know if you still experience it. "
+  },
+  {
+   "id": 3606676375,
+   "user": "PhilTU",
+   "created_at": "2025-12-03T12:41:22Z",
+   "body": "> Please let us know if you still experience it.\n\nunfortunately yes. I just updated to 2025.12.02 as I saw Libre mentioned in the changelog. Stopped the sensor in xDrip+, NFC scanned, did \"Start sensor\", said \"Not today\" and went to \"Please wait while sensor warms up! (60 minutes) status.\n\nLibre Bluetooth hardware data source, OOP2 from September 2025, stopping and starting sensor issue persists. OOP2 set to No calibration option in xDrip+"
+  },
+  {
+   "id": 3618276230,
+   "user": "jamorham",
+   "created_at": "2025-12-05T19:27:46Z",
+   "body": "@PhilTU In no calibration mode as soon as you receive a glucose reading then that message should vanish and you should see the glucose value. Can you recreate the problem and after a period when you would expect to have readings upload logs? Thanks"
+  },
+  {
+   "id": 3619836845,
+   "user": "PhilTU",
+   "created_at": "2025-12-06T10:04:22Z",
+   "body": "Will do. I agree that previously I observed that. This phone almost never connects with Bluetooth but I will test on another.\n\nEdit - I rescanned with NFC and the wait 60 message did indeed go away.\n\n\nMost of the dissatisfied users were using \"calibration\""
+  },
+  {
+   "id": 4420419808,
+   "user": "Navid200",
+   "created_at": "2026-05-11T11:52:56Z",
+   "body": "Was this problem resolved?"
+  },
+  {
+   "id": 4427103513,
+   "user": "PhilTU",
+   "created_at": "2026-05-12T03:33:08Z",
+   "body": "> Was this problem resolved?\n\nI think so, at least it does not persist beyond occurring once on a new xDrip+ installation.\n\nI will try to check .."
+  },
+  {
+   "id": 4429158913,
+   "user": "AdLouwerse",
+   "created_at": "2026-05-12T09:32:43Z",
+   "body": "> Was this problem resolved?\n\nFor me it's solved.\nThanks for the effort."
+  },
+  {
+   "id": 4430031164,
+   "user": "Navid200",
+   "created_at": "2026-05-12T11:27:44Z",
+   "body": "Very well.\n\nThanks a lot.  \n\nThen, I will close this issue.  "
+  }
+ ]
+}

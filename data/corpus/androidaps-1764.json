@@ -1,0 +1,57 @@
+{
+ "id": 1244731297,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1764,
+ "title": "[dev-k] Autotune throws FATAL EXCEPTION",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1764",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-05-23T07:55:13Z",
+ "closed_at": "2022-05-26T08:30:59Z",
+ "comment_count": 7,
+ "body": "@Philoul Is this interesting or helpful?\r\n```\r\n2022-05-23 09:48:31.304 2930-2930/? E/AndroidRuntime: FATAL EXCEPTION: main\r\n    Process: info.nightscout.androidaps, PID: 2930\r\n    java.lang.NullPointerException: Attempt to invoke virtual method 'boolean android.content.Context.isUiContext()' on a null object reference\r\n        at android.view.ViewConfiguration.get(ViewConfiguration.java:502)\r\n        at android.view.View.<init>(View.java:5335)\r\n        at android.view.View.<init>(View.java:5485)\r\n        at android.view.ViewGroup.<init>(ViewGroup.java:699)\r\n        at android.widget.LinearLayout.<init>(LinearLayout.java:254)\r\n        at android.widget.LinearLayout.<init>(LinearLayout.java:250)\r\n        at android.widget.LinearLayout.<init>(LinearLayout.java:246)\r\n        at android.widget.LinearLayout.<init>(LinearLayout.java:242)\r\n        at android.widget.TableLayout.<init>(TableLayout.java:91)\r\n        at info.nightscout.androidaps.plugins.general.autotune.AutotuneFragment.showResults$lambda-41$lambda-40(AutotuneFragment.kt:391)\r\n        at info.nightscout.androidaps.plugins.general.autotune.AutotuneFragment.$r8$lambda$ESyvUDAdq5HElXihWjE_BWA88Bs(Unknown Source:0)\r\n        at info.nightscout.androidaps.plugins.general.autotune.AutotuneFragment$$ExternalSyntheticLambda2.run(Unknown Source:2)\r\n        at android.os.Handler.handleCallback(Handler.java:938)\r\n        at android.os.Handler.dispatchMessage(Handler.java:99)\r\n        at android.os.Looper.loop(Looper.java:223)\r\n        at android.app.ActivityThread.main(ActivityThread.java:7700)\r\n        at java.lang.reflect.Method.invoke(Native Method)\r\n        at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:612)\r\n        at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:997)\r\n```",
+ "comments": [
+  {
+   "id": 1134487277,
+   "user": "Philoul",
+   "created_at": "2022-05-23T10:18:27Z",
+   "body": "Of course I'm interrested, thank's... Are you on latest update of dev branch, and can you reproduce this Fatal Exception ? (on first analysis I don't see what could be wrong, and I never got this crash...)...\r\n@MilosKozak can `context` be null here ? other ideas ?\r\n```\r\nbinding.autotuneResults.addView(\r\n                        TableLayout(context).also { layout ->\r\n```"
+  },
+  {
+   "id": 1134502800,
+   "user": "swissalpine",
+   "created_at": "2022-05-23T10:33:27Z",
+   "body": "Yes, latest dev, updated this morning.\r\nI think the problem occurs when I go back to the main screen. Before one of your recent fixes I had occasional crashes when doing this, today I had logcat active by chance when the error occurred. However, I have tried a few times now to provoke the error - but this time no exception."
+  },
+  {
+   "id": 1134523851,
+   "user": "Philoul",
+   "created_at": "2022-05-23T10:58:02Z",
+   "body": "And do you have autotune as a tab or in hambuger menu?"
+  },
+  {
+   "id": 1134574827,
+   "user": "swissalpine",
+   "created_at": "2022-05-23T11:51:07Z",
+   "body": "Hamburger Menu\r\n"
+  },
+  {
+   "id": 1134635915,
+   "user": "Philoul",
+   "created_at": "2022-05-23T12:49:53Z",
+   "body": "Ok, thanks.\nI'll switch from tab to humburger menu to see if I can reproduce this crash..."
+  },
+  {
+   "id": 1134671230,
+   "user": "swissalpine",
+   "created_at": "2022-05-23T13:19:28Z",
+   "body": "I had a crash again. But without Logcat. But the last AAPS log entries:\r\n```\r\n|\t23\t| 0.850 |0.994\t| 17% / 0\r\n+------------------------------------------\r\n|\t∑\t|\t17.5 |\t17.9 |\r\n+------------------------------------------\r\n\r\n15:06:10.398 [Thread-1968] D/info.nightscout.androidaps.plugins.general.autotune.AutotunePlugin: [FS] Create autotune.2022-05-23.log file in autotune folder\r\n15:06:10.404 [Thread-1968] D/info.nightscout.androidaps.plugins.general.autotune.AutotunePlugin: [FS] Create autotune.2022-05-23.log file in autotune folder\r\n15:06:10.417 [Thread-1968] D/info.nightscout.androidaps.plugins.general.autotune.AutotunePlugin: [FS] Create autotune_recommendations.log file in autotune folder\r\n15:06:10.459 [Thread-1968] D/info.nightscout.androidaps.plugins.general.autotune.AutotunePlugin: [FS] Create autotune_2022-05-23_15-06-08.zip file in /storage/emulated/0/AAPS/logs/info.nightscout.androidaps folder\r\n15:06:10.870 [RxCachedThreadScheduler-47] D/NSCLIENT: [NSClientPlugin.onStart$lambda-5():124]: PING received\r\n15:06:10.871 [RxCachedThreadScheduler-47] D/NSCLIENT: [NSClientPlugin.onStart$lambda-5():124]: QUEUE Resend started: Ping received\r\n15:06:10.894 [RxCachedThreadScheduler-47] D/NSCLIENT: [NSClientPlugin.onStart$lambda-5():124]: QUEUE Resend ended: Ping received\r\n15:06:27.633 [main] D/CONSTRAINTS: [Constraint.setIfSmaller():47]: Setting because of smaller value 1111111.0 -> 12.0 (Limiting IOB to 12.0 U because of max value in preferences)[Safety]\r\n15:06:29.136 [main] D/CORE: [MainApp.onCreate():93]: onCreate\r\n```\r\nAgain it happened while going back to the main screen."
+  },
+  {
+   "id": 1137620130,
+   "user": "MilosKozak",
+   "created_at": "2022-05-25T17:38:00Z",
+   "body": "sometimes this happen when UI update is triggered from RX. Event is received after destroying fragment/activity/dialog.\r\nyou can check context/_binding at start of function"
+  }
+ ]
+}

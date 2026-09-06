@@ -1,0 +1,18 @@
+{
+ "issue_id": 3243,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/3243",
+ "title": "Remove duplicate Norwegian language in Crowdin and xDrip+",
+ "symptom": "There are duplicate Norwegian language entries in Crowdin and xDrip+ ('Norwegian' and 'Norwegian Bokmal'), causing confusion for Norwegian users. The 'Norwegian' option is only 45% translated and is essentially an unfinished version of Norwegian Bokmål, while 'Norwegian Bokmal' is 100% translated and is the default system language for Norwegian phones.",
+ "cause": "The 'no' language was added to Crowdin and xDrip+ by mistake, possibly due to a misunderstanding that there were two distinct Norwegian languages. In reality, Norwegian Bokmål (nb) is the standard written language, and 'no' is not a valid ISO code for Norwegian; it is just an incomplete duplicate of nb.",
+ "fix": "Remove the 'no' language from Crowdin and xDrip+, change the forced language option value from 'no' to 'nb', create a legacy settings update feature to migrate users who had selected 'Norsk' (no) to 'nb', and remove the 'no' translated strings from the source tree. Also rename the display name for 'nb' to 'Norsk bokmål'.",
+ "settings_changed": [
+  "Force language option value → nb (from no)",
+  "Display name for nb → Norsk bokmål"
+ ],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [],
+ "confidence": "high",
+ "evidence_quote": "To resolve 3, we should change this language value to `nb` and then create a legacy settings update feature to move anyone from `no` forced language to `nb` forced language. After this is done we can also remove the `no` translated strings from the xDrip source tree as these would never be accessed."
+}

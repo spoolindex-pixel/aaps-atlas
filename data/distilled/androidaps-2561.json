@@ -1,0 +1,15 @@
+{
+ "issue_id": 2561,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/2561",
+ "title": "Bolus delivery % only for cob and Carbs !?",
+ "symptom": "The option 'Deliver this part of bolus wizard result' applies to all components of the bolus wizard calculation, which can lead to overdosing when multiple consecutive carb entries are made within a short time period. For example, entering 60g of carbs in one entry results in 2.93U, but entering 45g then 15g results in 4.02U total, which is more than needed.",
+ "cause": "The bolus wizard calculates a single dose for the end of DIA and applies the 'Deliver this part of bolus wizard result' percentage to all components (BG, trend, IOB, etc.), not just to carbs. This causes overdosing when multiple carb entries are made because each entry gets the full percentage applied, leading to cumulative insulin that exceeds the intended dose.",
+ "fix": "The issue was resolved by a commit referenced by MilosKozak: https://github.com/nightscout/AndroidAPS/commit/6616be42791eb8ced53ee6ec2d1f878c1629c897. The commit likely changes the behavior so that the percentage applies only to carbs (COB and new carbs), as proposed by szantos.",
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [],
+ "confidence": "medium",
+ "evidence_quote": "The option \"Deliver this part of bolus wizard result\" does what it says, but does it safely represent most user's intention? An overdosing may occur if there are multiple consecutive carb entries within a short time period."
+}

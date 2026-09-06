@@ -1,0 +1,57 @@
+{
+ "id": 348503442,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 539,
+ "title": "Feature request",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/539",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2018-08-07T22:02:17Z",
+ "closed_at": "2018-08-10T21:16:43Z",
+ "comment_count": 7,
+ "body": "Would it be possible to allow treatment uploads only to nightscout but no sensor data. We have several phones that are configured as xDrip-Follower that we use to input treatments that we want to have uploaded but we don't need additional copies of the CGM entries from these devices, i.e. it would be cool if one could skip CGM uploads to NS similar to what one can already do for treatments and bridge battery and then only have the treatments uploaded from these devices. Maybe there is a way to accomplish this today that I'm just not aware off.\r\n\r\nThanks. ",
+ "comments": [
+  {
+   "id": 412177831,
+   "user": "doc77",
+   "created_at": "2018-08-10T19:09:21Z",
+   "body": "Treatments are automatically shared from the follower to the master. Every bit of data on any follower is uploaded to the master.\r\n\r\nWhy don't you just do your NS upload from the master?"
+  },
+  {
+   "id": 412207100,
+   "user": "jweismann",
+   "created_at": "2018-08-10T21:09:04Z",
+   "body": "Maybe I have simply misunderstood current implementation. I have configured each of the\r\nxDrip-Follower phones with a cloud upload setting that have Nightscout Sync (Rest-api)\r\nconfigured with the Base URL being the same as the one used by ns-client to feed\r\nlocal xDrip-Follower, but are you saying that I don't need to do this? That the\r\nxDrip-Follower will feed the NS site via the local ns-client and the local xdrip itself\r\ndoes not have to have any URL knowledge about the NS site. If this is indeed the case \r\nthen I will close this issue. \r\n"
+  },
+  {
+   "id": 412208534,
+   "user": "doc77",
+   "created_at": "2018-08-10T21:15:19Z",
+   "body": "Yes. You only need the xDrip+ master feeding to NS. Entries made on the follower phones are synced with the master immediately, regardless of their proximity.\r\n\r\nThe way it works is that with the xDrip+ master collecting all data from all followers, by making the xDrip+ master phone the only Nightscout uploaded, you will not have duplicate data in NS."
+  },
+  {
+   "id": 412208856,
+   "user": "jweismann",
+   "created_at": "2018-08-10T21:16:40Z",
+   "body": "Excellent!!! Thank you so much for the clarification. "
+  },
+  {
+   "id": 412227127,
+   "user": "jamorham",
+   "created_at": "2018-08-10T22:57:27Z",
+   "body": "I believe you can have the Nightscout upload on any follower or the master (recommended). If you put it on more than one handset then you're really testing xDrip's de-duplication facilities to the maximum as you have the greatest chance for a feedback loop as xDrip can both upload and download from Nightscout and also syncs everything between masters and followers as well. To clarify, as @doc77 said it only needs to be on one device."
+  },
+  {
+   "id": 412291279,
+   "user": "jweismann",
+   "created_at": "2018-08-11T17:52:15Z",
+   "body": "Great input, @doc77 and @jamorham. To summarize and pose an follow up question: Let S be the transmitter, M the master xdrip phone that has S as its Hardware data source. Let F1 and F2 be followers to M, i.e. they get \"entries\" from M. Let T be sources of treatments (here both M, F1 and F2 may enter treatments - think of it as patient and two care-givers). Finally let NS be a nightscout site where all data is collected. In simple drawings the great suggestion is to go from:\r\n\r\n             F1+T --> NS\r\nS --> M+T -------> NS\r\n             F2+T --> NS\r\n\r\ninto a setup like the one shown below where only one device, namely the master M, uploads to NS:\r\n\r\n        M  <-- F1+T\r\nS --> M  -------> NS\r\n         M  <-- F2+T\r\n\r\nThat is, one Master that gets \"entries\" from S and additional \"treatments\" from F1, F2 and all \"entries\" and all \"treatments\" will get uploaded to NS via M. Neither F1 nor F2 will have any local nightscout syncs (rest-api) settings activated. The question relates to how F1 and F2 should communicate with M.\r\n\r\nQuestion: Today I have F1 and F2 set as followers via AndroidAPS NSclient - is this the recommended way to setup followers nowadays or should I rather have F1 and F2 set as followers via the xdrip Follower handset settings? I would be most grateful if you could shed some light on the pros and cons here.\r\n"
+  },
+  {
+   "id": 516527784,
+   "user": "shafiro",
+   "created_at": "2019-07-30T18:00:56Z",
+   "body": "I hope it is OK to ask here ?\r\n\r\nI am following my son's phone (which is the master), but my phone is feeding to NS. Treatments entered on my phone are uploaded to NS. Treatments entered on my son's phone, are synced to mine, but are not being uploaded. Why?"
+  }
+ ]
+}

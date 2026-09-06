@@ -1,0 +1,258 @@
+{
+ "id": 340966912,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 504,
+ "title": "Add support for Medtrum A6 CGM",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/504",
+ "state": "closed",
+ "labels": [
+  "enhancement",
+  "device-medtrum"
+ ],
+ "created_at": "2018-07-13T10:29:00Z",
+ "closed_at": "2021-08-07T02:09:40Z",
+ "comment_count": 62,
+ "body": "This work is in progress now.\r\n\r\nThis ticket replaces: https://github.com/NightscoutFoundation/xDrip/issues/408\r\n\r\n@kimbersdiabetic @dimis28 @tim2000s @sulkaharo if you know of any interested parties who would be able to test the support when it is ready, it would be great if they could make themselves known here.",
+ "comments": [
+  {
+   "id": 405105643,
+   "user": "Menor3",
+   "created_at": "2018-07-15T17:28:29Z",
+   "body": "I am down to test it"
+  },
+  {
+   "id": 405256956,
+   "user": "StuArnold",
+   "created_at": "2018-07-16T14:00:13Z",
+   "body": "My daughter should be getting a Medtrum in the next few weeks. If it happens will be interested and happy to test.\r\n\r\n "
+  },
+  {
+   "id": 405956287,
+   "user": "jamorham",
+   "created_at": "2018-07-18T14:43:53Z",
+   "body": "I am making good progress with this. I will let you know when I have anything to test."
+  },
+  {
+   "id": 405960194,
+   "user": "Menor3",
+   "created_at": "2018-07-18T14:54:17Z",
+   "body": "Nice one, can't wait to test it out. The medtrum application is pretty bad and it drains the battery like CRAZY."
+  },
+  {
+   "id": 406278029,
+   "user": "jamorham",
+   "created_at": "2018-07-19T13:34:46Z",
+   "body": "Ok, I think I have a lot of stuff working now. I'm getting data from the sensor. We have the option to use the A6 native algorithm or the xDrip algorithm. \r\n\r\nI'm going to make it an option which to show as the primary number and then plot the alternate algorithm as a trace behind it so we can work out which may be the most useful. There may need some tuning to work properly with xDrip calibration algorithm which as a lot of dex style assumptions in it."
+  },
+  {
+   "id": 406340605,
+   "user": "jamorham",
+   "created_at": "2018-07-19T16:40:48Z",
+   "body": "Okay the July 19th nightly contains support for the Medtrum A6. Its about 2000+ lines of code so far!\r\n\r\nTo get it to work you should select Medtrum A6 in the hardware data source settings section. Then use `Bluetooth Scan` to identify the A6 transmitter. It isn't always discoverable so you often have to keep clicking scan until it shows up. If its not attached to your body then pop it in the charging doc and after a few seconds it should be visible.  When you see it click on it to select it.\r\n\r\nNow select `Start Sensor` in xDrip (assuming it is connected to a sensor) and you should start to get it gathering data. Use the `System Status` menu item and the `Medtrum` tab to see what the collector is doing.\r\n\r\nOnce you have calibrated it then you can also go back to the `Settings` page and below the `Data Source` you can choose to use either the native algorithm of the A6 or the xDrip algorithm on the raw data. I am very interested to know whether xDrip algorithm works successfully with it. \r\n\r\nIt will also generate a dual plot showing the Native algorithm and xDrip algorithm. The one which is not selected as primary will show as tiny purple dots."
+  },
+  {
+   "id": 406383738,
+   "user": "Menor3",
+   "created_at": "2018-07-19T19:11:20Z",
+   "body": "Where exactly I can download this new version?"
+  },
+  {
+   "id": 406404710,
+   "user": "jamorham",
+   "created_at": "2018-07-19T20:30:50Z",
+   "body": "@Menor3 switch to the Nightly update channel, see instructions here: https://github.com/NightscoutFoundation/xDrip/wiki/How-to-get-the-Nightlies-on-Automatic-Update"
+  },
+  {
+   "id": 406579945,
+   "user": "Menor3",
+   "created_at": "2018-07-20T12:00:59Z",
+   "body": "Do you think that having xdrip and easysense app open at the same time may cause the transmitter to lost the signal, so I have to restart it?"
+  },
+  {
+   "id": 406598563,
+   "user": "jamorham",
+   "created_at": "2018-07-20T13:20:14Z",
+   "body": "I think there is a very strong chance that the official app can interfere. You can try force stopping it from the android system settings for apps and see if that can temporarily stop it running while you test xDrip. "
+  },
+  {
+   "id": 406707983,
+   "user": "Menor3",
+   "created_at": "2018-07-20T19:45:55Z",
+   "body": "Yeah, I can confirm that the official app is causing sensor to lost signal. After force stoping the app, everything works for now."
+  },
+  {
+   "id": 406717319,
+   "user": "jamorham",
+   "created_at": "2018-07-20T20:25:21Z",
+   "body": "@Menor3 nice one!\r\n\r\nI just released the July 20th version which includes back filling and a few other fixes. Please try it out. \r\n\r\nI also wrote up a short guide:\r\n\r\nhttps://github.com/NightscoutFoundation/xDrip/wiki/Using-the-Medtrum-A6"
+  },
+  {
+   "id": 406723712,
+   "user": "Menor3",
+   "created_at": "2018-07-20T20:52:44Z",
+   "body": "Do you think it is possible to make so the sensor doesn't restart every time you unplug the transmitter from the sensor? It is the stupidest system ever, every time I unplug the transmitter and then plug it back again the warm-up time starts."
+  },
+  {
+   "id": 406749753,
+   "user": "jamorham",
+   "created_at": "2018-07-20T23:21:20Z",
+   "body": "@Menor3 it might be possible. How often do you have to remove the transmitter? "
+  },
+  {
+   "id": 406775413,
+   "user": "Menor3",
+   "created_at": "2018-07-21T06:48:45Z",
+   "body": "Not often, but for example I had some problems with the signal, because of the official app and I had to unplug it like 3 times to get the signal back again and every time the 2 hrs warm-up started. If everything works I think that you need to unplug it just to recharge the transmitter."
+  },
+  {
+   "id": 463539203,
+   "user": "DunePlodder",
+   "created_at": "2019-02-14T08:34:26Z",
+   "body": "@menor3 I think you'll have to ask @jamorham for the code."
+  },
+  {
+   "id": 464100185,
+   "user": "jamorham",
+   "created_at": "2019-02-15T15:55:30Z",
+   "body": "@Menor3 @DunePlodder Just use the latest nightly which has support"
+  },
+  {
+   "id": 464103459,
+   "user": "Menor3",
+   "created_at": "2019-02-15T16:04:17Z",
+   "body": "@jamorham I still cannot connect the sensor. It doesn't appear in the Bluetooth scan"
+  },
+  {
+   "id": 464111753,
+   "user": "jamorham",
+   "created_at": "2019-02-15T16:27:58Z",
+   "body": "@Menor3 is it connected to another device? I don't think it shows on scan if it is already connected. If you really get stuck you can pop it in to the charger and after a few seconds it should show on the scan."
+  },
+  {
+   "id": 464353140,
+   "user": "Menor3",
+   "created_at": "2019-02-16T14:54:27Z",
+   "body": "@jamorham Everytime i connect sensor to the app information is displaying 'set medtrum serial number' , where I can do that?"
+  },
+  {
+   "id": 464353597,
+   "user": "DunePlodder",
+   "created_at": "2019-02-16T15:00:22Z",
+   "body": "@Menor3 Have you looked at this:\r\nhttps://github.com/NightscoutFoundation/xDrip/wiki/Using-the-Medtrum-A6"
+  },
+  {
+   "id": 464353904,
+   "user": "Menor3",
+   "created_at": "2019-02-16T15:04:12Z",
+   "body": "@DunePlodder yes I have, I can't see any information about that. When I connect the sensor I am getting connection failure all the time"
+  },
+  {
+   "id": 464354550,
+   "user": "DunePlodder",
+   "created_at": "2019-02-16T15:13:20Z",
+   "body": "@Menor3 As I remember you don't actually enter the serial number. When you do the Bluetooth Scan in xDrip it displays the serial number at that stage. I can only suggest starting again & following the wiki step by step. Might be worth rebooting your phone first?"
+  },
+  {
+   "id": 464355014,
+   "user": "Menor3",
+   "created_at": "2019-02-16T15:19:35Z",
+   "body": "@DunePlodder I started from scratch few times but there's always connectivity issues. The sensor connects for a few seconds then it disconnects and that's not ending loop.\r\n"
+  },
+  {
+   "id": 464356317,
+   "user": "DunePlodder",
+   "created_at": "2019-02-16T15:36:21Z",
+   "body": "Does it connect to the Medtrum App? Thinking it could be a transmitter problem? Otherwise I'm a bit short of ideas I'm afraid."
+  },
+  {
+   "id": 464357522,
+   "user": "Menor3",
+   "created_at": "2019-02-16T15:50:55Z",
+   "body": "Yes it connects to the medtrum app no problem"
+  },
+  {
+   "id": 594510113,
+   "user": "ARLabsClosedLoop",
+   "created_at": "2020-03-04T13:06:24Z",
+   "body": "I've just had a message from Spencer Martin at Medtrum that xDrip now supports the new Medtrum sensor & transmitter. Ive been using A6 closed loop (AAPS/DanaRS) since July and would like to know how this new upgrade is implemented - via an additional software layer (Medtrum app->xDrip->AAPS) or whether the new Tx is now supported directly in xDrip?"
+  },
+  {
+   "id": 600498183,
+   "user": "louispeel78",
+   "created_at": "2020-03-18T08:51:28Z",
+   "body": "Good morning all, \r\n\r\nI received the new slim version of the medtrum A6 with the new sensors on saturday. \r\nI have tried to connect with Xdrip but it reads the transmitter serial number incorrectly and does not work. I am currently using medtrums own interface which i am not overly happy with. Can anyone offer any help as to how to correctly connect the transmitter to xdrip ?\r\nMany Thanks"
+  },
+  {
+   "id": 600513542,
+   "user": "Menor3",
+   "created_at": "2020-03-18T09:26:15Z",
+   "body": "@louispeel78 Did you have to pay for the new transmitter?"
+  },
+  {
+   "id": 600513924,
+   "user": "louispeel78",
+   "created_at": "2020-03-18T09:27:08Z",
+   "body": "yes, but this was my first order from medtrum. i was waiting for the new system before i changed over. "
+  },
+  {
+   "id": 600514586,
+   "user": "Menor3",
+   "created_at": "2020-03-18T09:28:43Z",
+   "body": "@louispeel78 are they still charging 140 pounds for 4 sensors?"
+  },
+  {
+   "id": 600514975,
+   "user": "louispeel78",
+   "created_at": "2020-03-18T09:29:38Z",
+   "body": "I got the starter pack which was 225 for the new transmitter and 4 sensors, so i assume the 4 pack of sensors will also have the same price of 140 for a pack of 4"
+  },
+  {
+   "id": 600519239,
+   "user": "ARLabsClosedLoop",
+   "created_at": "2020-03-18T09:39:29Z",
+   "body": "I have had some discussions with Spencer at Medtrum UK. He's sent the new TouchCare Slim (TCS) transmitter had sensors to Jon Amorham (last week) Medtrum have released him new code to build into xDrip - but so far (and I've been asking Jon on here for a month or two about it) there is no reply or news of a TCS compatible xDrip.\r\nI'll use up my old A6 sensors and have to switch over to Dexcom in July, I expect. BUT I will be able to use prof Roman Hvorka's new Android loop software with my Dana RS then - every cloud has a silver lining.\r\n"
+  },
+  {
+   "id": 600521277,
+   "user": "louispeel78",
+   "created_at": "2020-03-18T09:44:04Z",
+   "body": "i'm looking into looping but i only have access to a metronic 640g so my options are limited\r\n"
+  },
+  {
+   "id": 600539104,
+   "user": "louispeel78",
+   "created_at": "2020-03-18T10:21:24Z",
+   "body": "@jamorham please keep us updated with the development of the Touchcare Slim. I am in the unfortunate position that the alert specially on the follow app do not always work and i have this on a 19 month baby so the notifications are important to me. Also is there any reading i can do which will allow me to use the android APS on the Medtrum 640G I can change GCM if needed. \r\nMany Thanks for all your work on this. "
+  },
+  {
+   "id": 600853245,
+   "user": "markw3194",
+   "created_at": "2020-03-18T20:54:15Z",
+   "body": "@louispeel78 how are you getting on with the TCS? \r\nI’ve got a starter kit arriving tomorrow, but I’ve only found bad reviews about their previous CGM’s! \r\n\r\nAlso, for anybody else reading it they’ve got a special offer on at the moment, £170 for a starter kit (transmitter+charger and 4 sensors) "
+  },
+  {
+   "id": 601019268,
+   "user": "louispeel78",
+   "created_at": "2020-03-19T06:58:43Z",
+   "body": "@markw3194 I must have missed the special offer as i paid the full 225 for the kit. \r\nto be honest i was ok with it the first day, the second day readings were off by around 30mg/dl  by the time it came to calibrate. I have started calibrating twice a day and it seams to be within reason. i'm not happy with the interface and the alarms, I have the CGM on my 19 month son who sleeps in the next room and the follow app does not always give out the alarms. I do love the reading every two mins rather than waiting the full 5 mins. I am looking forward to getting back to xdrip + where at least i know the alarms are working. In all honesty i dont think in my eyes anything will match up to the dexcom G6 which we used for the first 3 months but i just cant afford it anymore. "
+  },
+  {
+   "id": 616958838,
+   "user": "lawwolf78",
+   "created_at": "2020-04-21T05:22:17Z",
+   "body": "Good morning everyone. \r\n\r\nDid we have any update on this ? \r\nI am back to the medtrum until the freestyle 2 sensors arrive. \r\nmust admit i'm not all that happy with medtrums new system. \r\nI am hoping that using xdrip might soften the blow a little, so really looking forward to this,\r\n"
+  },
+  {
+   "id": 798189244,
+   "user": "gemmid81",
+   "created_at": "2021-03-13T11:23:40Z",
+   "body": "Hi I was wondering if anyone could help me. I have just set up my son's Medtrum cgm with xdrip and it is showing as lost on his handset. Does the use of xdrip mean that the information bypasses the handset? Thank you for any information 😊\r\n"
+  },
+  {
+   "id": 894590745,
+   "user": "Navid200",
+   "created_at": "2021-08-07T02:09:40Z",
+   "body": "It seems support was added a long time ago.\r\n\r\nIf you have found this thread and have questions about how to use xDrip, please use the support channels:\r\nhttps://www.facebook.com/groups/xDripG5\r\nhttps://gitter.im/jamorham/xDrip-plus"
+  }
+ ]
+}

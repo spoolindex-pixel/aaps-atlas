@@ -1,0 +1,91 @@
+{
+ "id": 216547602,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 91,
+ "title": "Sugar Absorption model not quite complete",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/91",
+ "state": "closed",
+ "labels": [
+  "enhancement",
+  "insulin",
+  "algorithmics"
+ ],
+ "created_at": "2017-03-23T19:35:01Z",
+ "closed_at": "2023-08-14T21:03:21Z",
+ "comment_count": 12,
+ "body": "I've been playing around trying to better understand the predicted BG system. From what I can tell the model isn't quite complete or accurate. \r\n\r\n![xdrip-compare](https://cloud.githubusercontent.com/assets/9636311/24266288/b041dba8-0fdc-11e7-8cfa-b4b828cc186d.jpg)\r\n\r\nI've attached a photoshopped overlay of what the system thought would happen versus what did. Treating a low with 20g of pure dextrose dissolved in water. This is quite different from eating 20g of chocolate. Although, next time I'd be happy to treat a low with chocolate for the sake of science...\r\n\r\nI think the system needs to know how much fat, protein, and fiber is in the food as well. Even the type of carb is probably relevant given how dextrose, sucrose, and fructose to name a few are metabolized. There are probably other factors too that I don't know about or understand. \r\n\r\nFrom a UI standpoint, nobody is going to want to enter all the components each time so I think a good implementation would be to store the food item in a database (that could also be network distributed). This way, picking the food item, you can get an accurate model of how it will be absorbed. With this, the system can even provide suggested pre-bolus times to overlay peak insulin action and peak absorption.",
+ "comments": [
+  {
+   "id": 288865757,
+   "user": "jamorham",
+   "created_at": "2017-03-23T21:28:41Z",
+   "body": "xDrip+ implements the original DIYPS carbohydrate absorption model which is a simple linear absorption model. \r\n\r\nAs far as I know there are not really any established models that will yield significant gains in accuracy vs the complexities of implementing them. I'm very happy if there is a model which could be utilized but from what I've heard (any my knowledge might be out of date now) its very difficult to model because it varies between people and even individual days. So a perfect model for a meal could be produced at significant effort but next week or with a different individual it would be inaccurate.\r\n\r\nThe best place to start with this I think would be to look at what existing open-source efforts in the pump-automation (openaps style) projects are doing regarding absorption models and see if there is anything which could easily be applied to extend the existing model.\r\n\r\nIn your example above with a more rapid absorption of glucose in solution, I think we would expect that is going to be one of the fastest possible absorptions, but also there is the potential affect of hormone release such as glucagon and adrenaline due to hypoglycemia which can act to raise blood sugar independently and also varies between individuals and other factors. "
+  },
+  {
+   "id": 289283467,
+   "user": "dronesalot",
+   "created_at": "2017-03-26T13:19:39Z",
+   "body": "I agree it will never be perfect, but controlling for the known physical factors will increase accuracy. We all know that dextrose absorption is fastest, so modeling it the same as a slice of pizza is going to be wrong. As every diabetic knows, pizza is the other end of the spectrum. \r\n\r\nThe other point, and an item to add is a display of how far the projected result diverges from actual, as this will provide statistical feedback on whether an adjustment of the algorithm has resulted in better accuracy or not."
+  },
+  {
+   "id": 313932198,
+   "user": "Illiteratus",
+   "created_at": "2017-07-09T17:04:56Z",
+   "body": "Hi guys\r\nGreat thing to talk about! \r\nI was thinking about exact the same problem myself for a long time already. And here my suggestion, but I can't put it into code :(\r\n\r\nI think the best way would be, to have a small local collection where everyone could add a food item with his own experience on absorption.\r\nLater on you just choose the item which is stored, or add a new one, or modify the absorption time, if you experience that the entered values are wrong.\r\nNo math, no need for resolving a problem that can not be resolved (because every person is different). We all have our life-long experience on how we digest, so why calculating something we already know....\r\n\r\nAs fastworks said already, especially combinations of fast carbs in one item with high fat ration in an other is impossible to calculate. But if we would enter that as a meal and not separated by items, then we still can use our experience factor....\r\n\r\nOn the other hand, it would also be a great thing on tracking what we eat ....\r\n\r\nIf someone could put something like that as an option into that dialog where you enter carbs, insulin and time, and connect it dynamically to the existing option for absorption-rate/hour which is already implemented in the calculation, the problem would be solved.....\r\nAnd if you do not enter any value (or use an existing one), for absorption-rate could be used the standard one....."
+  },
+  {
+   "id": 314004155,
+   "user": "dronesalot",
+   "created_at": "2017-07-10T04:50:09Z",
+   "body": "As an interesting addition, the introduction of FIASP insulin has also increased the need for more adaptable insulin absorption models. \r\n\r\nPart of the deal with the food model is that someone should be able to have a library of their foods. For example I like a certain boston creme doughnut and I know if I pre-bolus 20 minutes on rapid insulin or 5 minutes on the new FIASP for 42g of carbs then I can eat the goodie without so much as a blip on the BG. \r\n\r\nOther junk foods, I haven't worked them all out, but it is nice if I can select a specific food and see a history of the bolus program I used plus the result in the past. "
+  },
+  {
+   "id": 314016332,
+   "user": "Illiteratus",
+   "created_at": "2017-07-10T06:24:47Z",
+   "body": "Yes...  great idea. I thought of that too, but was a little afraid to post it within my first post, because it could have sounded a little too much to ask for......  :)\r\n\r\nAnother fact in in favor would be, that I buy some stuff quite often and know how it impacts my BG even though I don't know the data (carbs)...."
+  },
+  {
+   "id": 314109610,
+   "user": "dronesalot",
+   "created_at": "2017-07-10T13:44:30Z",
+   "body": "Same issue with me. I'm a creature of habit but after a while I forget exactly the insulin doses that work on a specific set of food. I've tried a few times to get a build environment working for the app so I could just implement the system but I haven't had any luck. Not a huge amount of time available to do it either :("
+  },
+  {
+   "id": 351479011,
+   "user": "th122",
+   "created_at": "2017-12-13T18:25:56Z",
+   "body": "I marked a handful of papers as related and went to a library with a subscription in the publications they appeared in to be able to download them:\r\n\r\n- Laguna Sanz, AJ. (2010). _Model Identification from Ambulatory Data for Post-Prandial Glucose Control in type 1 Diabetes._ [Open Access](http://hdl.handle.net/10251/14052)\r\n  Explains and compares several of the more detailled models of carb absorption, groupig them into gastrointestinal models and endogenous models.\r\n- Bock et.al. _A therapy parameter-based model for predicting blood glucose concentrations in patients with type 1 diabetes_ [10.1016/j.cmpb.2014.12.002](http://dx.doi.org/10.1016/j.cmpb.2014.12.002)\r\n     Prefers a prediction model based solely on BG measurements. References Bergman Minimal Model, Minimal Model, Linear minimal model, \r\n- _(to be continued tomorrow)_"
+  },
+  {
+   "id": 800118911,
+   "user": "vguttmann",
+   "created_at": "2021-03-16T09:59:07Z",
+   "body": "I wonder if it would be possible to train a neural network (I think a GAN is well-suited to this) to do this. \n\nIt would also eliminate the need for setting all the parameters manually, and if done correctly, all the factors can be extracted from the model. I'll go ahead and document what I eat more closely, and experiment a bit with my data.\n\nTo a point, this model will work, but the more exact we want to be, the more we will need to include. For instance, at some point exercise would also need to be included."
+  },
+  {
+   "id": 800333640,
+   "user": "Navid200",
+   "created_at": "2021-03-16T14:58:55Z",
+   "body": "@fastworks What is the status of this?\r\nWould you please update considering it has been a while.\r\n\r\nShould this change to a feature request?\r\nOr, is it an xDrip bug?"
+  },
+  {
+   "id": 896811495,
+   "user": "Navid200",
+   "created_at": "2021-08-11T13:07:31Z",
+   "body": "I would like us to identify features and functionalities that are essential to a CGM and ensure to maintain and support those, and those that are good to have and do what is possible for them.\r\nI'd rather not overwhelm the developers with everything and in the process overlook the essential functionalities.\r\n\r\nA CGM is supposed to warn you when you are low.  What warns you about what may happen in the future is a simulator, not a CGM.  I know that it's good to have.  That's my point.\r\nWe currently have alerts that misbehave.  I'd rather developers focus on those issues than on this.\r\n\r\nI would love to know what may happen in the future.  \r\nYes, we can improve the simulator.  But, only if we have the bandwidth."
+  },
+  {
+   "id": 1272384187,
+   "user": "akacase",
+   "created_at": "2022-10-08T19:34:25Z",
+   "body": "We have libraries that do this in the wild already with LoopKit and iOS. We could lift those algorithms into xdrip without much work."
+  },
+  {
+   "id": 1678056795,
+   "user": "Navid200",
+   "created_at": "2023-08-14T21:02:43Z",
+   "body": "I am going to convert this to a discussion.\r\nThe conversation can continue there."
+  }
+ ]
+}

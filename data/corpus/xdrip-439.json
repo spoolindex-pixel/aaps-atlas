@@ -1,0 +1,39 @@
+{
+ "id": 322920414,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 439,
+ "title": "Bluecon: reading historical data older than 20 minutes ago",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/439",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2018-05-14T18:00:00Z",
+ "closed_at": "2018-05-15T22:37:54Z",
+ "comment_count": 4,
+ "body": "Hi there\r\n\r\nI tend to go for runs without my phone, and when I return, the only historical data I get is the previous four readings. I'd like to be able to track what happened to my glucose levels during the run.\r\n\r\nReviewing the code, I see that Bluekon.java seems to limit m_minutesBack to 15 whenever the value is over 17 (lines 356-362 in the current git master):\r\n\r\n```\r\n// ensure to have min 3 mins distance to last reading to avoid doible draws (even if they are distict)\r\nif (m_minutesBack > 17) {\r\n    m_minutesBack = 15;\r\n} else if (m_minutesBack > 12) {\r\n    m_minutesBack = 10;\r\n} else if (m_minutesBack > 7) {\r\n    m_minutesBack = 5;\r\n}\r\n```\r\n\r\nIs there a specific reason that it reduces any age to the most recent 15 minutes? Could I simply rebuild it with those lines commented out, or with a loop which sets any m_minutesBack to the closest multiple of 5, along the lines of this:\r\n\r\n```\r\nif ((m_minutesBack % 5) > 2) { \r\n    m_minutesBack -= m_minutesBack / 5;\r\n}\r\n```\r\n?\r\n\r\nThank you for some very useful software!",
+ "comments": [
+  {
+   "id": 388912812,
+   "user": "gregorybel",
+   "created_at": "2018-05-14T18:15:34Z",
+   "body": "no, reading last 8h is a lot more complicated and Battery intensive.\r\n\r\nyou can have a look at how it's done using NFC.\r\n\r\n"
+  },
+  {
+   "id": 388988526,
+   "user": "trallen",
+   "created_at": "2018-05-14T22:55:50Z",
+   "body": "Thanks for the quick reply. I'll play around a bit and see if I can get it working satisfactorily (maybe hidden behind a preference)."
+  },
+  {
+   "id": 389154261,
+   "user": "tzachi-dar",
+   "created_at": "2018-05-15T12:48:49Z",
+   "body": "There is one simple advice to get the 8 hours data:\r\nFollow this page: https://github.com/tzachi-dar/LibreOOPAlgorithm\r\n\r\nIt will also give you results very close to the libre reader with no need for calibration."
+  },
+  {
+   "id": 389335963,
+   "user": "trallen",
+   "created_at": "2018-05-15T22:37:54Z",
+   "body": "Thanks very much! The LibreOOPAlgorithm extension works fabulously. Interesting to see the difference in values (in my previous testing of the Libre Reader, the values seem to be slightly less accurate than a well-calibrated value in xDrip, but that's a matter for the FreeStyle team!). I'll mark this issue as closed."
+  }
+ ]
+}

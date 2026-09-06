@@ -1,0 +1,51 @@
+{
+ "id": 3175923868,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4048,
+ "title": "Persistent Bluetooth pairing request with Bond BT Device on A15+ setting",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4048",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-06-25T14:40:23Z",
+ "closed_at": "2025-06-27T02:02:28Z",
+ "comment_count": 6,
+ "body": "When enabling the _Preferences->Bond BT Device on A15+ (Pixel Phones Workaround)_ setting, I receive persistent  Bluetooth pairing requests on every Bluetooth attempt as shown below:\n\n![Image](https://github.com/user-attachments/assets/1b5a5f03-cf7b-4ec3-8d71-9165f1f43ea9)\n\nIf the feature is disabled then pairing request messages disappear but a workaround is unavailable in my experiments.\n\nThis happens on a Samsung Galaxy S23U ( model SM-S918U) with Omnipod Dash.\n\nParticulars of build and NS version:\n\nAAPS 3.3.2.0\nBuild: ba551caffc-2025.04.04\nRemote: https://github.com/nightscout/AndroidAPS.git\nFlavor: fullrelease\nNightscout version: 15.0.2\n\nLogs attached as well.\n\n[AndroidAPS_LOG_1750853249273.log.zip](https://github.com/user-attachments/files/20905916/AndroidAPS_LOG_1750853249273.log.zip)",
+ "comments": [
+  {
+   "id": 3005608809,
+   "user": "nickb24",
+   "created_at": "2025-06-25T17:32:10Z",
+   "body": "That's normal and expected. You need to accept the pairing request."
+  },
+  {
+   "id": 3005621197,
+   "user": "eurenda",
+   "created_at": "2025-06-25T17:37:11Z",
+   "body": "Got it, my understanding is that since it was LE Bluetooth that the pairing was actually not necessary,/required I'll go ahead a close this upon confirmation."
+  },
+  {
+   "id": 3005630935,
+   "user": "nickb24",
+   "created_at": "2025-06-25T17:40:46Z",
+   "body": "If you don't need to use the bonding option then you can disable the setting and then you won't get the pairing requests."
+  },
+  {
+   "id": 3005732878,
+   "user": "eurenda",
+   "created_at": "2025-06-25T18:22:12Z",
+   "body": "After pairing it to get rid of the persistent pairing message, the pump is unable to communicate with AAPS (it's been a out 30 mins since I paired it).  \n\nI receive a _READSTATUS KeepAlive. Status outdated _ when performing a refresh with the setting ENABLED or disabled.  This is after restarting AAPS both with the setting enabled/disabled.\n\nThis pump is about to expire so I'm in dire straits, but the pairing is what caused the behavior.  I occasionally enable/disable the _Bond BT device_ setting (previously without accepting the pairing request) in order to try to troubleshoot and workaround bug #4047 \n\n![Image](https://github.com/user-attachments/assets/6226e783-aa20-4618-953d-6b780b9f8392)\n\nI'm uploading logs to see if this helps, I'm going to discard this pump in the next hour unless there are any other steps anyone might need to replicate or troubleshoot.\n\n"
+  },
+  {
+   "id": 3011081383,
+   "user": "nickb24",
+   "created_at": "2025-06-27T01:49:58Z",
+   "body": "This issue should be closed since \"Persistent Bluetooth pairing request\" is normal when using the Dash bond option in AAPS. "
+  },
+  {
+   "id": 3011100285,
+   "user": "eurenda",
+   "created_at": "2025-06-27T02:02:28Z",
+   "body": "Closed."
+  }
+ ]
+}

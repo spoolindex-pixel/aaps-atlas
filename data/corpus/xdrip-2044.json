@@ -1,0 +1,66 @@
+{
+ "id": 1165013770,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 2044,
+ "title": "Ways to improve the Reminders feature",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/2044",
+ "state": "closed",
+ "labels": [
+  "enhancement",
+  "ux-notification"
+ ],
+ "created_at": "2022-03-10T10:08:22Z",
+ "closed_at": "2024-03-02T15:56:38Z",
+ "comment_count": 8,
+ "body": "There are a number of places where there is room for improvement within the Reminders feature. I'll list these on a single issue.\r\n\r\n- [x] Swiping off a reminder from the notification area or lock-screen causes it to be snoozed. For many applications cancel/rescheduling the reminder as the default operation may be preferred.\r\n- [x] If using a repeating reminder, for example to remind for a regular cannula change. If this is then performed a day late, the rescheduling sticks to the original schedule when the user might well wish to reschedule to the time period in the future from when the change was actually done.\r\n- [x] The user interface doesn't make it constantly clear the different functionality of swipe left/right on the list screen.\r\n- [x] There is no visibility or synchronization of reminders to followers (this is a bit more tricky to resolve)\r\n\r\nI've been working on some fixes for these issues and should have something ready to address much of this soon.",
+ "comments": [
+  {
+   "id": 1065187785,
+   "user": "Navid200",
+   "created_at": "2022-03-11T14:55:25Z",
+   "body": "Is there anything a user can do using xDrip reminders that they cannot do using Google Calendar?"
+  },
+  {
+   "id": 1065510838,
+   "user": "jamorham",
+   "created_at": "2022-03-11T20:47:36Z",
+   "body": "@Navid200  I'm probably not the best person to comment on that as I don't use google calendar so am not familiar with its feature set.\r\n\r\nThe most significant feature is for scheduling repeating reminders such as cannula changes etc. When it is reminding it has an exponential backoff on the snoozing and can be set to only remind during the day. There can be speech announcements and it has options to detect home wifi so it only reminds you to do certain tasks when at home etc."
+  },
+  {
+   "id": 1071215418,
+   "user": "jamorham",
+   "created_at": "2022-03-17T18:55:12Z",
+   "body": "Addressed in https://github.com/NightscoutFoundation/xDrip/commit/25a60e71b4e16469f44798d621dc610b943ecf76"
+  },
+  {
+   "id": 1072228196,
+   "user": "tolot27",
+   "created_at": "2022-03-18T09:25:14Z",
+   "body": "> Addressed in [25a60e7](https://github.com/NightscoutFoundation/xDrip/commit/25a60e71b4e16469f44798d621dc610b943ecf76)\r\n\r\nDoes this commit addresses all four subtasks? Please check all addressed subtasks in the topmost comment."
+  },
+  {
+   "id": 1072568592,
+   "user": "jamorham",
+   "created_at": "2022-03-18T16:17:44Z",
+   "body": "Items 1-4 have been addressed. \r\n\r\n1) Lock screen dismissal is better handled now and there is a new menu item `Cancel by Default` which allows notification dismissal to cancel instead of snooze.\r\n\r\n2) Late cancellations (> 1 day) now have a pop-up dialog asking whether to use old or new timing, whether to stick to the old time schedule or use a new one of the current time + interval period.\r\n\r\n3) When there is at least 1 reminder present in the UI there is a small text box at the bottom to remind the swipe off direction for snooze vs cancel/reschedule as previously shown in the introductory showcase help.\r\n\r\n4) Reminders can also have a `Graph Note` which indicates on the graph via a note icon when a reminder alerts. This is also synchronized with followers but is just a read-only indication.\r\n"
+  },
+  {
+   "id": 1072844686,
+   "user": "tolot27",
+   "created_at": "2022-03-18T21:55:43Z",
+   "body": "Great, thanks. Hence, we can close this issue, can't we?\r\nHopefully, someone will add this to the xDrip documentation."
+  },
+  {
+   "id": 1079690942,
+   "user": "tolot27",
+   "created_at": "2022-03-26T13:07:32Z",
+   "body": "With the new reminder feature I get acoustic alarms even if they are snoozed for a certain amount of time. No notification is shown. That's a bit wired."
+  },
+  {
+   "id": 1974836403,
+   "user": "Navid200",
+   "created_at": "2024-03-02T15:56:38Z",
+   "body": "I hope you don't mind me closing this.  We can always reopen if needed."
+  }
+ ]
+}

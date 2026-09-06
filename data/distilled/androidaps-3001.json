@@ -1,0 +1,21 @@
+{
+ "issue_id": 3001,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/3001",
+ "title": "Discussion: Why open loop when DST ?",
+ "symptom": "During the summer/winter time change, the user experienced a 3-hour open loop with the DASH pump, while another user with Medtrum did not. The issue is that AAPS opens the loop for a period after DST change.",
+ "cause": "The thread discusses that when time shifts backwards, database values get duplicates in time, and IOB and COB calculations become invalid. Also, for DASH, the pump time update requires user confirmation, and the loop is opened during this period.",
+ "fix": "No definitive fix is stated. Suggestions include automating the time update and profile sending after DST change, but there is disagreement and safety concerns. The thread does not conclude with a resolution.",
+ "settings_changed": [],
+ "devices": [
+  "DASH",
+  "Medtrum"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "dash",
+  "medtrum"
+ ],
+ "confidence": "low",
+ "evidence_quote": "As AAPS knows IOB and COB at the moment of the change, the only thing that can change between 2AM and 3AM is the profile. It would be good if, after the time change, AAPS sends new time to pump, then sends active profile to pump automatically."
+}

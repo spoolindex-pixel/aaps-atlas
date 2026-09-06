@@ -1,0 +1,65 @@
+{
+ "id": 944324681,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1779,
+ "title": "Dynamically Detect Dexcom Warm-Up Duration",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1779",
+ "state": "closed",
+ "labels": [
+  "device-dexcom-transmitter"
+ ],
+ "created_at": "2021-07-14T11:24:21Z",
+ "closed_at": "2022-06-01T22:54:17Z",
+ "comment_count": 8,
+ "body": "Rather than assume warmup durations by firmware version, G6 exposes this information dynamically through the 0x52 opcode. This allows for G6 transmitters with non standard warmup durations to display correctly\r\n\r\nTo retrieve current warmup time\r\nIssue the following to the Command UUID after authentication\r\n`0x5202 + CRC16`\r\nThis will return as an example\r\n```\r\n53 xx xx xxxx 201C xxxx (Stock G6)\r\n53 xx xx xxxx 100E xxxx (Stock G6+)\r\n```\r\n\r\n1C20 = 120 Minutes Sensor Warmup (Stock G6)\r\n0E10 = 60 Minutes Sensor Warmup (Stock G6+)\r\n",
+ "comments": [
+  {
+   "id": 1103435001,
+   "user": "Navid200",
+   "created_at": "2022-04-20T03:31:29Z",
+   "body": "I don't think xDrip cares about what the transmitter warm-up time is in native mode.\r\nI think in native mode, as soon as the transmitter starts transmitting readings, xDrip shows them.\r\nThat's why when you start a sensor from t:slim, you don't have to also start from xDrip."
+  },
+  {
+   "id": 1103464660,
+   "user": "theunknown86",
+   "created_at": "2022-04-20T04:40:44Z",
+   "body": "xDrip assumes a 120 minute warmup when it starts a sensor. We do get dot points on the graph and broadcast data... But the xDrip interface continues to count down 120 minutes and doesn't display the BG reading. It's very confusing for users"
+  },
+  {
+   "id": 1103466422,
+   "user": "Navid200",
+   "created_at": "2022-04-20T04:44:51Z",
+   "body": "I don't think that happens.\r\nYou can start a sensor and have everything come up and working.  If now your phone dies, all you need to do is to install xDrip on another phone and enter the transmitter ID.  You don't have to start.  It will take a while, may be up to 20 minutes, for the new phone to sync with the time base of the transmitter.  After that happens, it will start showing readings.  It definitely doesn't take 2 hours."
+  },
+  {
+   "id": 1103467641,
+   "user": "Navid200",
+   "created_at": "2022-04-20T04:47:40Z",
+   "body": "Again, we may be talking about different things here.\r\nThere are messages xDrip shows that I don't like.  I have seen a message stating that xDrip is doing an auto start!  I really don't like that message.   But, shortly after, you will get readings."
+  },
+  {
+   "id": 1103475360,
+   "user": "theunknown86",
+   "created_at": "2022-04-20T05:05:57Z",
+   "body": "![Screenshot_20201121-160345_xDrip+ variant2](https://user-images.githubusercontent.com/3621222/164154312-e8530842-6449-4cd0-ab0b-e7b63d99ca51.jpg)\r\n\r\nThis is what happens... Specifically when session is started from xDrip\r\n\r\nThe issue is derived from the assumption made in this function. Above I have documented how to dynamically read the duration from each transmitter.\r\n\r\nhttps://github.com/NightscoutFoundation/xDrip/blob/38fee03be56da6ce9cbe90e08dbe8e4b651c6edc/app/src/main/java/com/eveningoutpost/dexdrip/G5Model/FirmwareCapability.java#L107"
+  },
+  {
+   "id": 1103838745,
+   "user": "Navid200",
+   "created_at": "2022-04-20T11:46:28Z",
+   "body": "I may understand what you are talking about now."
+  },
+  {
+   "id": 1144109531,
+   "user": "Navid200",
+   "created_at": "2022-06-01T20:36:08Z",
+   "body": "@joshbohmer Is this working?\r\nCan we close the issue if it is?"
+  },
+  {
+   "id": 1144221865,
+   "user": "theunknown86",
+   "created_at": "2022-06-01T22:54:12Z",
+   "body": "Yes this is working as expected now"
+  }
+ ]
+}

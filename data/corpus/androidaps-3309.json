@@ -1,0 +1,59 @@
+{
+ "id": 2264379327,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3309,
+ "title": "Failed bolus by SMS was actually delivered",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3309",
+ "state": "closed",
+ "labels": [
+  "combo"
+ ],
+ "created_at": "2024-04-25T19:53:03Z",
+ "closed_at": "2024-05-02T07:55:55Z",
+ "comment_count": 7,
+ "body": "At 11:24 today, I sent an SMS to bolus for my daughter at school. I immediately received a reply saying the bolus failed, so I sent another text to bolus. This was at 11:25.\r\n\r\nNightscout doesn't update all the time due to connectivity problems at school, so I couldn't check on Nightscout, but then it did update and I saw that the failed bolus had actually been delivered.\r\n\r\nUsing AAPS 3.2.0.2 Build c31617fd2c-2023.12.13, Combo, G6, xDrip and Xiaomi A2 Lite.\r\n\r\nI've uploaded the SMS screenshot, the bolus of 2.5u at 11:24 and 11:25 on Nightscout, a screenshot of the Treatments in AAPS and the two zip files nearest to the time the \"failed bolus\" occurred; one at 10:27 and 13:13.  \r\n\r\nWe've been using SMS bolus commands for years and don't think we have ever encountered this before. \r\n\r\n![SMS](https://github.com/nightscout/AndroidAPS/assets/68807070/46dc4b8f-d6cc-4146-8cbc-07195cd0ccd3)\r\n![double bolus](https://github.com/nightscout/AndroidAPS/assets/68807070/ab34ba11-dbc8-46b1-877c-8ff3d8c2c687)\r\n![Treatments Screenshot](https://github.com/nightscout/AndroidAPS/assets/68807070/64183527-79c2-4c54-83de-ec9086daa63e)\r\n[AndroidAPS._2024-04-25_01-00-20_.5.zip](https://github.com/nightscout/AndroidAPS/files/15119962/AndroidAPS._2024-04-25_01-00-20_.5.zip)\r\n[AndroidAPS._2024-04-25_01-00-20_.docx](https://github.com/nightscout/AndroidAPS/files/15133501/AndroidAPS._2024-04-25_01-00-20_.docx)\r\n\r\n\r\n",
+ "comments": [
+  {
+   "id": 2082461490,
+   "user": "MilosKozak",
+   "created_at": "2024-04-29T11:20:41Z",
+   "body": "this seems to be combo v2 related @dv1 "
+  },
+  {
+   "id": 2082623600,
+   "user": "gh4tf",
+   "created_at": "2024-04-29T12:38:55Z",
+   "body": "Thanks @MilosKozak \r\n\r\nActually, now you mention that, since updating AAPS and using Combo v2 instead of Ruffy, we are getting more frequent bolus delivery failed notifications when we have personally used AAPS to give insulin and know it has definitely been delivered when our daughter is at home. That is what may have happened this time and caused the bolus failed SMS."
+  },
+  {
+   "id": 2090014960,
+   "user": "gh4tf",
+   "created_at": "2024-05-02T09:32:21Z",
+   "body": "Hi, how will I know if there is a reason why this happened please as the issue has been closed?\r\n\r\n> On 2 May 2024, at 08:56, Milos Kozak ***@***.***> wrote:\r\n> \r\n> ﻿\r\n> Closed #3309 as completed.\r\n> \r\n> —\r\n> Reply to this email directly, view it on GitHub, or unsubscribe.\r\n> You are receiving this because you modified the open/close state.\r\n"
+  },
+  {
+   "id": 2090023154,
+   "user": "dv1",
+   "created_at": "2024-05-02T09:36:54Z",
+   "body": "> Hi, how will I know if there is a reason why this happened please as the issue has been closed?\r\n\r\nI added changes that, among other things, alter how the driver behaves during bolus delivery. The previous behavior may have caused confusion inside the Combo. However, it is not (yet) guaranteed to fix the problem. Please test when you can."
+  },
+  {
+   "id": 2090103190,
+   "user": "gh4tf",
+   "created_at": "2024-05-02T10:19:07Z",
+   "body": "@dv1 thanks. I have just created issue 3318 which shows AAPS screenshots for the bolus delivery failed error. It happened last night. I don't know if you made the changes before then though?\r\n\r\n(I created a separate issue, instead of including it in this issue, because this issue was specifically about SMS commands, whereas the new issue was directly on AAPS, although the cause sounds like it is the same.)"
+  },
+  {
+   "id": 2090107538,
+   "user": "dv1",
+   "created_at": "2024-05-02T10:21:51Z",
+   "body": "@gh4tf This was merged today morning, so I doubt it. Check your version and git commit hash, and verify that you are really at the very newest dev version."
+  },
+  {
+   "id": 2587085926,
+   "user": "pontomedon",
+   "created_at": "2025-01-13T13:19:06Z",
+   "body": "I installed 3.3.1.0 yesterday, and unfortunately, this issue still persists. Happens on maybe every 10th or 20th bolus delivery:\r\n\r\n1. use bolus advisor to enter carbs, calculate insulin, deliver\r\n2. the pump connects, bolus delivery progress bar runs all the way to 100%, but then something goes wrong and\r\n3. a \"Bolus delivery failed\" announcement is logged\r\n4. both insulin and carbs are missing from the treatments, only the calculation is there\r\n5. Bolus is imported from pump on next history sync, carbs are still missing.\r\n\r\nPlease let me know if I can provide any logs or how I could debug this (professional Android developer here, so no problem to get technical)."
+  }
+ ]
+}

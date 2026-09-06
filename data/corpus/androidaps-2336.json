@@ -1,0 +1,63 @@
+{
+ "id": 1528509671,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2336,
+ "title": "WearOS entered treatments from Pixel Watch not received by Pixel7 phone (no confirmation)",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2336",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-01-11T06:34:34Z",
+ "closed_at": "2024-01-24T12:45:13Z",
+ "comment_count": 8,
+ "body": "Using Pixel 7 phone and Pixel watch\r\nAAPS build version 3.1.0.3\r\n\r\nAPK key is identical and watch shows up in Wear tab on phone\r\nAble to receive info from phone, eg bgl, cob, iob, profile, target, etc\r\nNot using aaps watchfaces\r\nAble to successfully send command from watch to phone once the wear app is started only for a short period of time until something happens and am no longer able to.\r\nWhen try to send a command the next time, no confirmation message comes up on watch and command is not received by phone.\r\nMust close and restart AAPS on watch. Then able to send commands again for short period of time.\r\nMust close and restart the watch AAPS each time, in order to have confirmation received.\r\n\r\nLog file of one-off command sent successfully (added 5g carbs) at 17:16 Aus Eastern Daylight Time (GMT+11):\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/10389433/AndroidAPS.log)\r\n\r\nWhen trying to send command from watch when not working, log file does not receive any updates.",
+ "comments": [
+  {
+   "id": 1384505801,
+   "user": "wootmasterslick",
+   "created_at": "2023-01-16T20:09:10Z",
+   "body": "Here the same problem with a brand new Galaxy watch 5. Tried multiple watchfaces. \r\n\r\nI find it very odd the function only works for a very short time."
+  },
+  {
+   "id": 1384558320,
+   "user": "databoy2k",
+   "created_at": "2023-01-16T21:15:29Z",
+   "body": "[aapswear.txt](https://github.com/nightscout/AndroidAPS/files/10429492/aapswear.txt)\r\n\r\nSame issue. I've attached my ADB logcat which was cleared before I started logging. Everything in this logcat is strictly the following steps:\r\n1) Tap screen to wake up watch\r\n2) Tap AAPS Blood Glucose complication (expected outcome: should go to AAPS menu) - nothing happens on watch\r\n3) Tap AAPS Blood Glucose complication again - still nothing happens on watch\r\n4) Open WearOS apps menu and select \"AAPS\"\r\n5) Run \"Calculator\" with 3g carbs, tap checkmark\r\n6) Observe \"Calculation Requested\" toast\r\n7) Nothing further happens for UI (expected: notification on watch and screen titled \"Confirm\" with calc. wizard response, in my case it recommended a 0.2U bolus)\r\n\r\nThis log came from my Galaxy Watch 4 version R890XXU1GVK7 running AWF Infograph watchface, AAPS Wear B724620953-2023.01.13 (dev-g), AAPS phone b724620953-2023.01.13 (fullrelease).\r\n\r\nI've noted that I don't have the same issues as long as I'm running any AAPS watchface (e.g. AAPS(DigitalStyle)). Calculator works consistently and I can control the phone."
+  },
+  {
+   "id": 1400226184,
+   "user": "wootmasterslick",
+   "created_at": "2023-01-23T11:59:03Z",
+   "body": "Is anybody looking into this?"
+  },
+  {
+   "id": 1497069874,
+   "user": "mk89pwnz",
+   "created_at": "2023-04-05T07:52:30Z",
+   "body": "Can confirm this, had it with GW4 and now with GW5 Pro, only way is to use AAPS watchface, I even tried to force keep running the aaps watch app but still the same problem, maybe wearOS is killing it if watchface is not used? After some time I just gave up and use aaps watchface :)"
+  },
+  {
+   "id": 1520433806,
+   "user": "bedevos",
+   "created_at": "2023-04-24T15:55:26Z",
+   "body": "Same problem here."
+  },
+  {
+   "id": 1806070768,
+   "user": "jchester47",
+   "created_at": "2023-11-10T16:47:04Z",
+   "body": "I am having the same issue on my Galaxy Watch 6 Classic when using any watchfaces that are not the default ones available in APS and sent to the phone. If I use a Galaxy watchface or a custom one, the complications work but the commands panel does not. \n\nIf I force close and restart the AAPS app on the watch, the commands work for about 10 minutes but then stop working. \n\nThere seems to be some sort of odd dependency between the watchface and the phone commands. \n\nThis is very annoying since I have a watchface I prefer over the defaults."
+  },
+  {
+   "id": 1806276856,
+   "user": "mk89pwnz",
+   "created_at": "2023-11-10T18:55:17Z",
+   "body": "Same it's and old bug and imo wearos is killing aaps on watch unless it's being used, I would love to use simple pixel like watch face with just compilations form aaps. With 3.2 you can make your own watchface but it will take a lot of time"
+  },
+  {
+   "id": 1806869749,
+   "user": "jaredwhittle",
+   "created_at": "2023-11-11T17:19:28Z",
+   "body": "I have this issue too. Even though I open the app on the watch, which should reactivate the app and pull it out of some sort of battery save suspend mode, it still won't connect to the phone app to confirm the treatment."
+  }
+ ]
+}

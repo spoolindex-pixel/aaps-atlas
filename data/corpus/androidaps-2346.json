@@ -1,0 +1,63 @@
+{
+ "id": 1533576777,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2346,
+ "title": "Dev not sending TBR to NS",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2346",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-01-15T00:36:10Z",
+ "closed_at": "2023-01-23T08:56:09Z",
+ "comment_count": 8,
+ "body": "I migrated my wife from Master to Dev last weekend and since then NS no longer shows TBR rendered. Her NS version is 14.2.6.\r\n\r\ne.g. there is no change from the profile basal rendered in NS but i don't believe this is a NS issue.\r\n\r\n![image](https://user-images.githubusercontent.com/37312469/212500952-1cd8dc5d-ba85-461d-9e70-f6dbf158e937.png)\r\n\r\nWe're using the latest AIMI build, which is based off AAPS dev-g commit [14a329d](https://github.com/nightscout/AndroidAPS/commit/14a329d178fbdb69c529cf3b0f39d8048da5c83c) however this issue has been persistent since i moved her over to Dev on Sunday 08Jan.\r\n\r\nFrom what i can tell the NSClient module isn't pushing the TBR to NS, i can see Device Status, Profile Switches, SMBs etc all being sent, but not the TBR.\r\n\r\n\r\nMost recent SMB 22:51 and TBR 22:55 treatments:\r\n\r\n![IMG-20230114-WA0012](https://user-images.githubusercontent.com/37312469/212501199-a0047e14-ac99-4ae3-8070-6ebd6d2b4b38.jpg)\r\n\r\n\r\n![IMG-20230114-WA0011](https://user-images.githubusercontent.com/37312469/212501203-97f0678c-8570-448c-9b0e-024fa00a3d39.jpg)\r\n\r\n\r\non the NSClient view, i can see it's adding the treatment for the SMB at 22:51, but it's not doing the same for the TBR at 22:55, but it does send the device status.\r\n\r\n\r\n![IMG-20230114-WA0010](https://user-images.githubusercontent.com/37312469/212501236-53818262-7f24-41ab-931b-f5be7c70536b.jpg)\r\n\r\n\r\none futher thing that is new since moving to Dev, is the NSClient Queue is consistently growing and now showing +1500 items, as you can see top right in screenshot above. I've no idea what these are or how to view them. by comparison my kid who is still using Master and NS 14.2.6 has a queue of zero items.\r\n\r\n\r\nhere's some parts of the log file, which shows a that TBR hasn't updated since my wife started using Dev last Sunday, the TBR epco ms is the time i started Dev on her phone Sun Jan 08 2023 08:57:10, \r\n\r\n```ruby\r\n22:52:07.054 [NSClientServiceHandler] I/NSCLIENT: [DataSyncSelectorImplementation.processChangedTemporaryBasals():510]: Loading TemporaryBasal data Start: 0 TemporaryBasal(id=1, version=1, dateCreated=1673168230344\r\n```\r\nin comparison the SMB time which is the correct last SMB Sat Jan 14 2023 22:51:52.\r\n\r\n```ruby\r\n22:52:07.047 [NSClientServiceHandler] I/NSCLIENT: [DataSyncSelectorImplementation.processChangedBoluses():121]: Loading Bolus data Start: 532 Bolus(id=532, version=1, dateCreated=1673736712218\r\n```\r\n\r\n\r\n```ruby\r\n22:52:07.044 [RxCachedThreadScheduler-49] D/NSCLIENT: [NSClientPlugin$onStart$9.accept():127]: PING received\r\n22:52:07.046 [RxCachedThreadScheduler-49] D/NSCLIENT: [NSClientPlugin$onStart$9.accept():127]: QUEUE Resend started: Ping received\r\n22:52:07.047 [NSClientServiceHandler] I/NSCLIENT: [DataSyncSelectorImplementation.processChangedBoluses():121]: Loading Bolus data Start: 532 Bolus(id=532, version=1, dateCreated=1673736712218, isValid=true, referenceId=null, interfaceIDs_backing=InterfaceIDs(nightscoutSystemId=null, nightscoutId=63c331fea50e720004c6f9f0, pumpType=DANA_RS, pumpSerial=, temporaryId=null, pumpId=1673736676000, startId=null, endId=null), timestamp=1673736676000, utcOffset=0, amount=0.05, type=SMB, notes=null, isBasalInsulin=false, insulinConfiguration=null) forID: 533 \r\n22:52:07.048 [NSClientServiceHandler] I/NSCLIENT: [DataSyncSelectorImplementation.processChangedBoluses():132]: Ignoring Bolus. Only NS id changed: 533 \r\n22:52:07.054 [NSClientServiceHandler] I/NSCLIENT: [DataSyncSelectorImplementation.processChangedTemporaryBasals():510]: Loading TemporaryBasal data Start: 0 TemporaryBasal(id=1, version=1, dateCreated=1673168230344, isValid=true, referenceId=null, interfaceIDs_backing=InterfaceIDs(nightscoutSystemId=null, nightscoutId=null, pumpType=DANA_RS, pumpSerial=, temporaryId=null, pumpId=1673133721000, startId=null, endId=1673135436000), timestamp=1673133721000, utcOffset=0, type=NORMAL, isAbsolute=false, rate=0.0, duration=1715000) forID: 1 \r\n22:52:07.068 [RxCachedThreadScheduler-49] D/NSCLIENT: [NSClientPlugin$onStart$9.accept():127]: QUEUE Resend ended: Ping received\r\n```\r\n\r\n\r\ni've picked a couple of lines out of the log file:\r\n\r\nprior basal rate:\r\n```ruby\r\n22:55:44.399 [DefaultDispatcher-worker-5] D/APS: [DetermineBasalAdapterAIMIJS.invoke():95]: Current temp:   {\"temp\":\"absolute\",\"duration\":10,\"rate\":0.42,\"minutesrunning\":5}\r\n```\r\n\r\ninitiated basal rate\r\n```ruby\r\n22:55:44.451 [DefaultDispatcher-worker-5] D/APS: [LoopPlugin.applyTBRRequest():556]: applyAPSRequest: Rate: 0.90 U/h (300.00%) Duration: 30.00 min Reason: undefined. force basal because you receive 2 time max smb size : 10 minutes0.14999999999999997, 10m@0.42 Force Basal AIMI\r\n22:55:44.451 [RxCachedThreadScheduler-42] D/WEAR: [DataLayerListenerServiceMobile.sendMessage():192]: sendMessage: /rx_bridge {\"type\":\"info.nightscout.rx.weardata.EventData.SingleBg\",\"timeStamp\":1673736923219,\"sgvString\":\"8.5\",\"glucoseUnits\":\"mmol\",\"slopeArrow\":\"→\",\"delta\":\"+0.2\",\"avgDelta\":\"+0.2\",\"sgv\":153.0,\"high\":180.0,\"low\":72.0}\r\n22:55:44.452 [RxCachedThreadScheduler-42] D/WEAR: [DataLayerListenerServiceMobile.sendMessage():192]: sendMessage: /rx_bridge {\"type\":\"info.nightscout.rx.weardata.EventData.Preferences\",\"timeStamp\":1673736944451,\"wearControl\":true,\"unitsMgdl\":false,\"bolusPercentage\":100,\"maxCarbs\":100,\"maxBolus\":6.0,\"insulinButtonIncrement1\":0.5,\"insulinButtonIncrement2\":1.0,\"carbsButtonIncrement1\":5,\"carbsButtonIncrement2\":10}\r\n22:55:44.452 [RxCachedThreadScheduler-42] D/WEAR: [DataLayerListenerServiceMobile.sendMessage():192]: sendMessage: /rx_bridge {\"type\":\"info.nightscout.rx.weardata.EventData.QuickWizard\",\"entries\":[]}\r\n22:55:44.454 [DefaultDispatcher-worker-5] D/APS: [LoopPlugin.applyTBRRequest():619]: applyAPSRequest: setTempBasalAbsolute()\r\n22:55:44.455 [DefaultDispatcher-worker-5] D/PUMPQUEUE: [CommandQueueImplementation.add():177]: Adding: CommandTempBasalAbsolute - TEMP BASAL 0.8999999999999999 U/h 30 min\r\n22:55:44.455 [DefaultDispatcher-worker-5] D/APS: [LoopPlugin.invoke():454]: invoke end\r\n22:55:44.455 [DefaultDispatcher-worker-5] D/WORKER: [LoggingWorker$doWork$2.invokeSuspend():29]: Worker result SUCCESS for class kotlinx.coroutines.UndispatchedCoroutine\r\n22:55:44.459 [Thread-19067] D/PUMPQUEUE: [QueueThread.run():112]: connect\r\n22:55:44.460 [Thread-19067] D/PUMP: [DanaRSPlugin.connect():163]: RS connect from: Connection needed\r\n22:55:44.459 [CommandQueueImplementationHandler] D/PUMPQUEUE: [CommandQueueImplementation.notifyAboutNewCommand$lambda$6():213]: Starting new thread\r\n22:55:44.461 [Thread-19067] D/PUMPBTCOMM: [BLEComm.connect():112]: Initializing BLEComm.\r\n22:55:44.461 [RxCachedThreadScheduler-433] D/CORE: [UserEntryLoggerImpl$log$1.accept():56]: USER ENTRY: 14/01/2023 22:55:44 TEMP_BASAL Loop  [UnitPerHour(value=0.8999999999999999), Minute(value=30)]\r\n22:55:44.464 [Thread-19067] D/PUMPBTCOMM: [BLEComm.connect():141]: Trying to create a new connection from: Connection needed\r\n22:55:44.476 [Thread-19067] D/PUMPBTCOMM: [BLEComm.setCharacteristicNotification():280]: setCharacteristicNotification\r\n22:55:44.494 [DefaultDispatcher-worker-5] D/WORKER: [LoggingWorker$doWork$2.invokeSuspend():29]: Worker result SUCCESS for class kotlinx.coroutines.UndispatchedCoroutine\r\n```\r\n\r\n\r\ncould this line in this next section explain the issue? usually zero is false (at least when i use it in excel..)\r\n```ruby\r\n22:55:52.031 [binder:29236_F] D/PUMPCOMM: [DanaRSPacketAPSBasalSetTemporaryBasal.handleMessage():47]: Set APS temp basal start result: 0\r\n``` \r\n\r\n\r\nfollowed by the failure to load to NS\r\n```ruby\r\n22:55:52.802 [NSClientServiceHandler] I/NSCLIENT: [DataSyncSelectorImplementation.processChangedTemporaryBasals():510]: Loading TemporaryBasal data Start: 0 TemporaryBasal(id=1, version=1, dateCreated=1673168230344, isValid=true, referenceId=null, interfaceIDs_backing=InterfaceIDs(nightscoutSystemId=null, nightscoutId=null, pumpType=DANA_RS, pumpSerial=, temporaryId=null, pumpId=1673133721000, startId=null, endId=1673135436000), timestamp=1673133721000, utcOffset=0, type=NORMAL, ",
+ "comments": [
+  {
+   "id": 1383150825,
+   "user": "MilosKozak",
+   "created_at": "2023-01-15T13:27:05Z",
+   "body": "send screenshot of Treatments - TBR from both master and aapsclient"
+  },
+  {
+   "id": 1384594443,
+   "user": "Foxy7",
+   "created_at": "2023-01-16T21:44:46Z",
+   "body": "> send screenshot of Treatments - TBR from both master and aapsclient\r\n\r\nThese are from my daughters Master version. is this what you mean?\r\n\r\n\r\n\r\n![IMG-20230116-WA0001](https://user-images.githubusercontent.com/37312469/212769609-2633b2f2-26be-4e2a-985c-af9d9d391afc.jpg)\r\n\r\n\r\n![IMG-20230116-WA0002](https://user-images.githubusercontent.com/37312469/212769988-1079d340-ef88-4c8c-a3c7-58193c19ba33.jpg)\r\n\r\nthanks.\r\n"
+  },
+  {
+   "id": 1397496235,
+   "user": "MilosKozak",
+   "created_at": "2023-01-19T19:29:47Z",
+   "body": "data seems to be sent properly. compare tab with TBRs on both phones if there are differences"
+  },
+  {
+   "id": 1398070090,
+   "user": "Foxy7",
+   "created_at": "2023-01-20T08:36:39Z",
+   "body": "> data seems to be sent properly. compare tab with TBRs on both phones if there are differences\r\n\r\nHi @MilosKozak \r\n\r\nThis isn't correct so I've obviously explained this poorly just to be clear TBRs are not being sent to nightscout for my wife's phone running Dev, but did previously when she was using Master.\r\n\r\ne.g. my wife's NS view:\r\n![image](https://user-images.githubusercontent.com/37312469/213650141-daf7a33f-6e05-4b52-973a-dfb583daa08c.png)\r\n\r\n\r\nmy kids (Master AAPS):\r\n![image](https://user-images.githubusercontent.com/37312469/213650299-ad481708-1f96-4916-95d4-8156f677d6f4.png)\r\n\r\n\r\n\r\nThe key difference that I can see is that Dev is not creating these messages, e.g. from my kid's phone running Master i see, but there is no equivalent output on my wife's Dev phone.\r\n![image](https://user-images.githubusercontent.com/37312469/213650495-9e9368de-7365-4c58-88a8-ea56f5d9d59f.png)\r\n\r\n\r\nmy wife's Dev phone correctly initiates the TBRs on the pump:\r\n```ruby\r\n22:55:44.399 [DefaultDispatcher-worker-5] D/APS: [DetermineBasalAdapterAIMIJS.invoke():95]: Current temp:   {\"temp\":\"absolute\",\"duration\":10,\"rate\":0.42,\"minutesrunning\":5}\r\n```\r\n\r\nBut the version id of the NS log line isn't growing and stuck at 1 and the timestamp is stuck at the go live time of when I installed Dev on her phone on the morning of Sunday 8th Jan:\r\n```ruby\r\n22:52:07.054 [NSClientServiceHandler] I/NSCLIENT: [DataSyncSelectorImplementation.processChangedTemporaryBasals():510]: Loading TemporaryBasal data Start: 0 TemporaryBasal(id=1, version=1, dateCreated=1673168230344\r\n```\r\n\r\n"
+  },
+  {
+   "id": 1399228116,
+   "user": "MilosKozak",
+   "created_at": "2023-01-21T10:57:17Z",
+   "body": "post here full log from master phone"
+  },
+  {
+   "id": 1399228425,
+   "user": "MilosKozak",
+   "created_at": "2023-01-21T10:59:20Z",
+   "body": "other solution could be reset database on phone"
+  },
+  {
+   "id": 1399967716,
+   "user": "Foxy7",
+   "created_at": "2023-01-23T08:30:48Z",
+   "body": "> other solution could be reset database on phone\r\n\r\ni've just tried this. will feedback results.\r\n"
+  },
+  {
+   "id": 1399991757,
+   "user": "Foxy7",
+   "created_at": "2023-01-23T08:56:09Z",
+   "body": "@MilosKozak Thanks, resetting the database on the phone, via the Maintenance menu/ \"Reset Databases\" button did the trick.\r\n\r\nAfter 20 mins of new BGs the loop started again and TBRs are now sent to NS.\r\n\r\n![image](https://user-images.githubusercontent.com/37312469/213999546-afc15443-0c5d-4396-8470-bfe5e46c3f21.png)\r\n"
+  }
+ ]
+}

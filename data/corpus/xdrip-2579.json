@@ -1,0 +1,45 @@
+{
+ "id": 1509826612,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 2579,
+ "title": "Instant Crash without Play Services",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/2579",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-12-23T22:40:49Z",
+ "closed_at": "2022-12-24T17:32:01Z",
+ "comment_count": 5,
+ "body": "### Instant Crash without Play Services\r\nLink to the discussion thread:  https://github.com/NightscoutFoundation/xDrip/discussions/2578\r\n\r\n### Your environment\r\n- https://github.com/NightscoutFoundation/xDrip/releases/tag/2022.09.08b or later\r\n- no sensor connected\r\n- GrapheneOS on Pixel 6a\r\n- no Google Play services or Micro G\r\n\r\n### Reproduction in Emulator\r\n\r\n- latest master, build set to \"app\"\r\n- Device: Pixel 5\r\n- Image: \r\n  - Release Name: S\r\n  - API 31\r\n  - ABI x86_64, \r\n  - Android 12.0 (Important: The version **without** \"(Google APIs ATD)\" or \"(Google APIs)\"\r\n- Just press \"run\". - The emulator will start and then quickly stop. - Look at the logs for details.\r\n\r\n### Expected behavior\r\nWhen opening the app, the app should open and stay open.\r\n\r\n### Actual behavior\r\nThe app flashes up for a short moment (0.5 sec) and then instantly crashes.\r\n\r\nWhen doing this repeatedly, I can get android to give me a backtrace:\r\n```\r\ntype: crash\r\nosVersion: google/bluejay/bluejay:13/TQ1A.221205.011/2022122000:user/release-keys\r\npackage: com.eveningoutpost.dexdrip:1603091400\r\nprocess: com.eveningoutpost.dexdrip\r\nprocessUptime: 475 + 189 ms\r\n\r\njava.lang.RuntimeException: Unable to create service com.google.android.gms.measurement.AppMeasurementService: java.lang.ClassNotFoundException: Didn't find class \"com.google.android.gms.measurement.AppMeasurementService\" on path: DexPathList[[zip file \"/data/app/~~eysawNWmQ4hJYEcbeJV8Dw==/com.eveningoutpost.dexdrip-R3zFO1xYfLPEK29EI55vNw==/base.apk\"],nativeLibraryDirectories=[/data/app/~~eysawNWmQ4hJYEcbeJV8Dw==/com.eveningoutpost.dexdrip-R3zFO1xYfLPEK29EI55vNw==/lib/arm64, /system/lib64, /system_ext/lib64]]\r\n\tat android.app.ActivityThread.handleCreateService(ActivityThread.java:4504)\r\n\tat android.app.ActivityThread.-$$Nest$mhandleCreateService(Unknown Source:0)\r\n\tat android.app.ActivityThread$H.handleMessage(ActivityThread.java:2162)\r\n\tat android.os.Handler.dispatchMessage(Handler.java:106)\r\n\tat android.os.Looper.loopOnce(Looper.java:201)\r\n\tat android.os.Looper.loop(Looper.java:288)\r\n\tat android.app.ActivityThread.main(ActivityThread.java:7878)\r\n\tat java.lang.reflect.Method.invoke(Native Method)\r\n\tat com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:548)\r\n\tat com.android.internal.os.ExecInit.main(ExecInit.java:49)\r\n\tat com.android.internal.os.RuntimeInit.nativeFinishInit(Native Method)\r\n\tat com.android.internal.os.RuntimeInit.main(RuntimeInit.java:355)\r\nCaused by: java.lang.ClassNotFoundException: Didn't find class \"com.google.android.gms.measurement.AppMeasurementService\" on path: DexPathList[[zip file \"/data/app/~~eysawNWmQ4hJYEcbeJV8Dw==/com.eveningoutpost.dexdrip-R3zFO1xYfLPEK29EI55vNw==/base.apk\"],nativeLibraryDirectories=[/data/app/~~eysawNWmQ4hJYEcbeJV8Dw==/com.eveningoutpost.dexdrip-R3zFO1xYfLPEK29EI55vNw==/lib/arm64, /system/lib64, /system_ext/lib64]]\r\n\tat dalvik.system.BaseDexClassLoader.findClass(BaseDexClassLoader.java:259)\r\n\tat java.lang.ClassLoader.loadClass(ClassLoader.java:379)\r\n\tat java.lang.ClassLoader.loadClass(ClassLoader.java:312)\r\n\tat android.app.AppComponentFactory.instantiateService(AppComponentFactory.java:129)\r\n\tat android.app.ActivityThread.handleCreateService(ActivityThread.java:4472)\r\n\t... 11 more\r\n\r\n```\r\n\r\n### Steps to reproduce the behavior:\r\n0. Ensure environment is as described.\r\n1. Tap app icon on home screen.\r\n\r\n\r\n### Affected Versions\r\nThe problem affects https://github.com/NightscoutFoundation/xDrip/releases/tag/2022.09.08b and later.\r\nThis means the error was introduced here https://github.com/NightscoutFoundation/xDrip/compare/2022.09.08...2022.09.08b\r\n\r\nUnfortunately, that is a bit of a big commit.\r\n\r\n### Pointers and Possible Reasons\r\n- com.google.android.gms.measurement.AppMeasurementService is usually pulled in indirectly by Firebase: In the diff some Firebase-related things were changed. - This is probably worth a closer look.\r\n- From what I've seen with similar issues online: It is likely related to a change in the build files, not the actual code.",
+ "comments": [
+  {
+   "id": 1364502051,
+   "user": "moberer",
+   "created_at": "2022-12-24T10:02:52Z",
+   "body": "Full crash log in Emulator Environment:\r\n\r\n```\r\n12/24 10:51:35: Launching 'app' on Pixel 5 API 31.\r\nInstall successfully finished in 1 s 37 ms.\r\n$ adb shell am start -n \"com.eveningoutpost.dexdrip/com.eveningoutpost.dexdrip.Home\" -a android.intent.action.MAIN -c android.intent.category.LAUNCHER\r\nConnected to process 1740 on device 'Pixel_5_API_31 [emulator-5554]'.\r\nCapturing and displaying logcat messages from application. This behavior can be disabled in the \"Logcat output\" section of the \"Debugger\" settings page.\r\nI/outpost.dexdri: Late-enabling -Xcheck:jni\r\nW/outpost.dexdri: Unexpected CPU variant for X86 using defaults: x86_64\r\nD/CompatibilityChangeReporter: Compat change id reported: 171979766; UID 10105; state: DISABLED\r\nD/ApplicationLoaders: Returning zygote-cached class loader: /system/framework/android.test.base.jar\r\nV/GraphicsEnvironment: ANGLE Developer option for 'com.eveningoutpost.dexdrip' set to: 'default'\r\nV/GraphicsEnvironment: Neither updatable production driver nor prerelease driver is supported.\r\nD/NetworkSecurityConfig: No Network Security Config specified, using platform default\r\nD/NetworkSecurityConfig: No Network Security Config specified, using platform default\r\nI/MultiDex: VM with version 2.1.0 has multidex support\r\nI/MultiDex: Installing application\r\nI/MultiDex: VM has multidex support, MultiDex support library is disabled.\r\nW/ComponentDiscovery: Application info not found.\r\nW/ComponentDiscovery: Could not retrieve metadata, returning empty list of registrars.\r\nD/FirebaseApp: com.google.firebase.auth.FirebaseAuth is not linked. Skipping initialization.\r\nD/FirebaseApp: com.google.firebase.crash.FirebaseCrash is not linked. Skipping initialization.\r\nE/FirebaseInstanceId: Google Play services missing or without correct permission.\r\nI/FirebaseInitProvider: FirebaseApp initialization successful\r\nD/CompatibilityChangeReporter: Compat change id reported: 160794467; UID 10105; state: DISABLED\r\nI/FA: App measurement is starting up, version: 12451\r\n"
+  },
+  {
+   "id": 1364511942,
+   "user": "jamorham",
+   "created_at": "2022-12-24T11:13:13Z",
+   "body": "Thanks. I strongly suspect the cause will be due to a bug in the updated google play libraries (which is why we try to avoid updating them)"
+  },
+  {
+   "id": 1364556846,
+   "user": "jamorham",
+   "created_at": "2022-12-24T17:06:16Z",
+   "body": "Please try the Dec 24th nightly (available now) and see if this resolves the issue. Thanks for a comprehensive bug report and differential testing."
+  },
+  {
+   "id": 1364558650,
+   "user": "moberer",
+   "created_at": "2022-12-24T17:20:13Z",
+   "body": "The Dec 24 nightly works!\r\n\r\nNo problem, thanks a lot for your time and effort and a very merry christmas!"
+  },
+  {
+   "id": 1364560654,
+   "user": "jamorham",
+   "created_at": "2022-12-24T17:32:01Z",
+   "body": "No problem. you too."
+  }
+ ]
+}

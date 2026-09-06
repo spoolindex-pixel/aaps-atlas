@@ -1,0 +1,33 @@
+{
+ "id": 394117230,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 725,
+ "title": "API \"direction\" options @ /api/v1/entries/current.json ?",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/725",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2018-12-26T08:46:47Z",
+ "closed_at": "2021-02-16T09:10:29Z",
+ "comment_count": 3,
+ "body": "Just developing a clock for the kindle touch/paperwhite...\r\n\r\nWhat are the direction options of the API? at /api/v1/entries/current.json\r\n\r\nI can see Flat is one (as I am flat now) and there is a file /static/images/Flat.svg\r\n\r\nI can also see\r\n- SingleUp.svg\r\n- SingleDown.svg\r\n- DoubleUp.svg\r\n- DoubleDown.svg\r\n\r\nare the directions the same names? e.g. DoubleDown ?\r\n\r\nThanks",
+ "comments": [
+  {
+   "id": 450597934,
+   "user": "haspden",
+   "created_at": "2018-12-31T00:52:47Z",
+   "body": "Options that I have seen and thus worked out exist are\r\n\r\n→ Flat\r\n↑ SingleUp\r\n↓ SingleDown\r\n↗ FortyFiveUp\r\n↘ FortyDiveDown\r\n\r\n_What may exist, but i've not yet seen them in the API json return\r\n↑↑ DoubleUp\r\n↓↓ DoubleDown_"
+  },
+  {
+   "id": 779704276,
+   "user": "tolot27",
+   "created_at": "2021-02-16T09:28:27Z",
+   "body": "Trend arrows (using Unicode characters) and values are defined in https://github.com/NightscoutFoundation/xDrip/blob/master/app/src/main/java/com/eveningoutpost/dexdrip/ImportedLibraries/dexcom/Dex_Constants.java#L86-L96."
+  },
+  {
+   "id": 2791128355,
+   "user": "degola",
+   "created_at": "2025-04-09T22:34:34Z",
+   "body": "Just found this while looking for the possible values as well since Nightscout API documentation hasn't any details on values.\nUnfortunately the link from @tolot27 didn't work anymore.\nSo for future references this looks complete:\nhttps://github.com/nightscout/cgm-remote-monitor/blob/master/tests/direction.test.js\n```\n    direction.info({mills: now, direction: 'NONE'}).label.should.equal('⇼');\n    direction.info({mills: now, direction: 'NONE'}).entity.should.equal('&#8700;');\n\n    direction.info({mills: now, direction: 'DoubleUp'}).label.should.equal('⇈');\n    direction.info({mills: now, direction: 'DoubleUp'}).entity.should.equal('&#8648;');\n\n    direction.info({mills: now, direction: 'SingleUp'}).label.should.equal('↑');\n    direction.info({mills: now, direction: 'SingleUp'}).entity.should.equal('&#8593;');\n\n    direction.info({mills: now, direction: 'FortyFiveUp'}).label.should.equal('↗');\n    direction.info({mills: now, direction: 'FortyFiveUp'}).entity.should.equal('&#8599;');\n\n    direction.info({mills: now, direction: 'Flat'}).label.should.equal('→');\n    direction.info({mills: now, direction: 'Flat'}).entity.should.equal('&#8594;');\n\n    direction.info({mills: now, direction: 'FortyFiveDown'}).label.should.equal('↘');\n    direction.info({mills: now, direction: 'FortyFiveDown'}).entity.should.equal('&#8600;');\n\n    direction.info({mills: now, direction: 'SingleDown'}).label.should.equal('↓');\n    direction.info({mills: now, direction: 'SingleDown'}).entity.should.equal('&#8595;');\n\n    direction.info({mills: now, direction: 'DoubleDown'}).label.should.equal('⇊');\n    direction.info({mills: now, direction: 'DoubleDown'}).entity.should.equal('&#8650;');\n\n    direction.info({mills: now, direction: 'NOT COMPUTABLE'}).label.should.equal('-');\n    direction.info({mills: now, direction: 'NOT COMPUTABLE'}).entity.should.equal('&#45;');\n\n    direction.info({mills: now, direction: 'RATE OUT OF RANGE'}).label.should.equal('⇕');\n    direction.info({mills: now, direction:"
+  }
+ ]
+}

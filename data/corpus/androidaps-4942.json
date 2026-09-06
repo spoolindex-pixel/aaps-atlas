@@ -1,0 +1,51 @@
+{
+ "id": 4773207295,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4942,
+ "title": "Intermittent Omnipod Dash bolus failures — BusyException race in OmnipodDashBleManagerImpl, more pronounced on Atlas (InPlay BLE) pods",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4942",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2026-06-30T02:44:22Z",
+ "closed_at": "2026-07-01T19:26:09Z",
+ "comment_count": 6,
+ "body": "## Summary\n\nIntermittent bolus delivery failures (\"Failed to send the command\") with Omnipod Dash. Pod history shows repeated failures at the same timestamp followed by eventual success. The issue appears correlated with the newer Atlas (InPlay BLE) pod hardware generation versus the older SAW (TWI Board) generation, failures began within the same timeframe as switching pod stock from SAW to Atlas after running out of SAW pods.\n\n## Root cause\n\nIn `pump/omnipod/common/src/main/kotlin/app/aaps/pump/omnipod/common/bledriver/comm/OmnipodDashBleManagerImpl.kt`, the `busy: AtomicBoolean` lock guarding `connect()`, `sendCommand()`, and `pairNewPod()` is released in a `finally { busy.set(false) }` block that executes *after* `emitter.onComplete()`. Because RxJava's `Observable.concat()` synchronously subscribes to the next source the moment `onComplete()` fires — before the `finally` block runs — a command dispatched immediately after a connection completes can observe `busy == true` and throw `BusyException` before any BLE I/O is attempted.\n\nThis explains:\n- Why increasing `DEFAULT_IO_TIMEOUT_MS` from 1000ms to 2500ms had no effect (the failure occurs before any packet write, so the timeout is never reached)\n- Why bolus commands fail while TBR/Cancel TBR commands at the same timestamp succeed (a failed bolus's retry loop in `waitForBolusDeliveryToComplete()` incidentally waits long enough for the original connection to finish, leaving a stable connection for the subsequent TBR)\n\n## Why Atlas pods may be more affected\n\nThis race condition likely exists regardless of pod generation but requires a sufficiently wide timing window between BLE connection initiation and session establishment to trigger reliably. Atlas (InPlay BLE) pods may have different BLE/EAP-AKA session establishment timing than SAW (TWI Board) pods. (Note: LoopKit's iOS documentation independently describes different reconnection behavior for Atlas pods on certain iPhone models, which is suggestive though not direct confirmation of the same mechanism here.)\n\n## Proposed fix\n\nMove `busy.set(false)` to execute immediately before each `emitter.onComplete()` / `emitter.tryOnError()` call rather than in a trailing `finally` block, across all exit paths in `sendCommand()`, `connect()`, and `pairNewPod()`. This closes the window so no downstream subscriber can observe `busy == true` after a method has signaled completion.\n\nA complete diff covering all identified exit paths (14 total across the three methods) is available and was validated via multi-pass static analysis. **This fix has been applied and is undergoing real-world on-body testing; results not yet confirmed.** Posting now for visibility and to invite review/testing from others, particularly those also experiencing this issue on Atlas pods.\n\nHappy to share the full diff and analysis on request.",
+ "comments": [
+  {
+   "id": 4839580183,
+   "user": "killakitty69",
+   "created_at": "2026-06-30T03:24:33Z",
+   "body": "Update: Applied the proposed fix (moved busy.set(false) before \nemitter.onComplete()/tryOnError() across all exit paths in \nsendCommand(), connect(), and pairNewPod()) and tested on-body \nwith Atlas pods. Bolus failures continued at the same frequency \n-- reverted the change. This rules out the BusyException ordering \ndefect as the sole cause, though it may still be a contributing \nfactor. Continuing to investigate."
+  },
+  {
+   "id": 4845126005,
+   "user": "MilosKozak",
+   "created_at": "2026-06-30T15:17:54Z",
+   "body": "attach log files from occurence"
+  },
+  {
+   "id": 4846295286,
+   "user": "killakitty69",
+   "created_at": "2026-06-30T17:38:09Z",
+   "body": "[Google-Pixel-9-Pro-XL-Android-17_2026-06-30_132946.logcat.txt](https://github.com/user-attachments/files/29517283/Google-Pixel-9-Pro-XL-Android-17_2026-06-30_132946.logcat.txt)\n\n## Update: Root cause identified via logcat capture (not the BLE race)\n\nAfter applying and testing the BusyException ordering fix, bolus \nfailures continued at the same frequency. Reverted that change. \nCaptured a full logcat during a live failure event, which revealed \na different and unrelated root cause:\n\njava.lang.IllegalArgumentException: Number of units must be dividable by 0.05\n    at ProgramBolusCommand$Builder.setNumberOfUnits(ProgramBolusCommand.kt:70)\n\nImmediately preceding this in the log:\n\ndeliverTreatment: requestedBolusAmount=0.025\n\n## Root cause\n\nI use U200 insulin concentration. The loop calculated an SMB of \n0.05 U (the pod's minimum deliverable amount), but the U200 \nconcentration conversion is halving this value to 0.025 before \nit reaches the pod command builder. The Omnipod Dash has a fixed \nminimum bolus/pulse increment of 0.05 units regardless of insulin \nconcentration -- this is a hardware constraint on the pod's pulse \nmechanism, not affected by U100 vs U200. The conversion logic \nappears to be applying the U200 halving to a value that needs to \nremain a clean multiple of 0.05 for the pod to accept it.\n\nThis means any SMB or bolus amount that becomes a non-multiple of \n0.05 after U200 conversion (e.g. 0.05 -> 0.025, 0.15 -> 0.075) \nwill fail at the command builder validation stage, before any BLE \ncommunication is attempted -- which is why this presents identically \nto a BLE failure (\"Failed to send the command\") but has nothing to \ndo with BLE timing, connection state, or pod hardware generation.\n\nThis explains why the BusyException race fix had no effect, and \nlikely explains most or all of my reported bolus failures, separate \nfrom the Atlas pod investigation above.\n\nThe fix likely needs the U200 concentration conversion to happen \nin a way that preserves divisi"
+  },
+  {
+   "id": 4852937675,
+   "user": "MilosKozak",
+   "created_at": "2026-07-01T09:48:32Z",
+   "body": "so you are using v4? bolus size has been fixed recently. do you update regularly?"
+  },
+  {
+   "id": 4854624456,
+   "user": "killakitty69",
+   "created_at": "2026-07-01T12:14:05Z",
+   "body": "> so you are using v4? bolus size has been fixed recently. do you update regularly?\n\nI am literally running up to, but not including that commit.  I will update and verify so we can close this issue.\n\nThanks!"
+  },
+  {
+   "id": 4859343592,
+   "user": "killakitty69",
+   "created_at": "2026-07-01T19:26:10Z",
+   "body": "Fixed in commit 2e184102e1.  Closing, thank you!"
+  }
+ ]
+}

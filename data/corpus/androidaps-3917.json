@@ -1,0 +1,33 @@
+{
+ "id": 2957850331,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3917,
+ "title": "Likely bug in sending duration for profileSwitch, mongodb has different duration value",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3917",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-03-29T07:49:19Z",
+ "closed_at": "2025-04-05T16:37:31Z",
+ "comment_count": 3,
+ "body": "While extracting data from mongodb, and going through {eventType : Profile Switch}. I notice that the duration is not properly represented in millseconds and seems like there is a dual conversion from minutes to millseconds `(60*1000 * 60*1000)`. As can be seen in the screenshots below, the duration on mongodb is reported as `2592000000000` which equals to `720 mins` if we divide `2592000000000 / (60*1000 * 60*1000)`. I'm unable to place it in the code, tried my best to find the root cause of this. I wonder if this bug is related to profiles not switching off.\n\nThe version of AAPS is 3.3.1.3\n\n<img width=\"718\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/0ba5ae8b-1679-4944-a3bd-2544894e9636\" />\n\n![Image](https://github.com/user-attachments/assets/0f6a58a9-aaea-422e-95b5-07aef0facafd)",
+ "comments": [
+  {
+   "id": 2770529813,
+   "user": "vanelsberg",
+   "created_at": "2025-04-01T19:51:19Z",
+   "body": "Hmmm... just curious: at what timezone are you running?\n"
+  },
+  {
+   "id": 2772431484,
+   "user": "shoaib42",
+   "created_at": "2025-04-02T12:38:04Z",
+   "body": "I'm running on America/Toronto (EST/EDT). I have noticed that Profiles either get America/Cuiaba or America/Panama based on the day light savings, although the utc offset is properly set in these timestamps as either -0400 or -0500. For all the profile switch documents I see that the duration has this \"Dual conversion\" of minutes to milliseconds."
+  },
+  {
+   "id": 2780918064,
+   "user": "MilosKozak",
+   "created_at": "2025-04-05T16:36:53Z",
+   "body": "fixed by https://github.com/nightscout/AndroidAPS/commit/9b90eea7740e86d8e614ce3b6b98a912348e2668\nThanks!"
+  }
+ ]
+}

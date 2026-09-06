@@ -1,0 +1,39 @@
+{
+ "id": 1345137263,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2032,
+ "title": "[3.1.0.3] Future insulin activity projection line disappears",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2032",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-08-20T11:08:57Z",
+ "closed_at": "2022-12-04T19:21:14Z",
+ "comment_count": 4,
+ "body": "It happens recurrently, I just saw it again at 13:58 today. The yellow insulin projection line into the future disappears sometimes. Didn't use to happen with v. 2.8.2.1. It's a dashed line and most of the time it appears normally on 3.1.0.3 as well.\r\n\r\nIt may have to do with existing text from treatments around that area? (but not sure).\r\nLogs and 2 screenshots attached.\r\n\r\nUPDATE:to be more exact, the dashed insulin projection line stops at the next round hour line. See comments below.\r\n\r\n[AndroidAPS._2022-08-20_12-52-10_.5.zip](https://github.com/nightscout/AndroidAPS/files/9386929/AndroidAPS._2022-08-20_12-52-10_.5.zip)\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/9386930/AndroidAPS.log)\r\n![Screenshot_2022-08-20-13-58-07-90](https://user-images.githubusercontent.com/70835405/185743092-6452fcd2-86ce-4b52-ad44-3ced93ce1516.jpg)\r\n![Screenshot_2022-08-20-14-04-14-38](https://user-images.githubusercontent.com/70835405/185743095-f0821179-867e-4115-81c1-c71e1b907c28.jpg)\r\n\r\n",
+ "comments": [
+  {
+   "id": 1221296223,
+   "user": "nlof",
+   "created_at": "2022-08-20T11:18:15Z",
+   "body": "And it partially reappeared a few minutes later.\r\n\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/9386956/AndroidAPS.log)\r\n\r\n![Screenshot_2022-08-20-14-11-59-01](https://user-images.githubusercontent.com/70835405/185743454-e79998b5-17f3-4465-9568-0d73783878b1.jpg)\r\n\r\n![Screenshot_2022-08-20-14-13-50-00](https://user-images.githubusercontent.com/70835405/185743455-8efdc564-6f02-4cb4-89b3-02922d08b6cf.jpg)\r\n"
+  },
+  {
+   "id": 1221526604,
+   "user": "Philoul",
+   "created_at": "2022-08-21T11:27:36Z",
+   "body": "I think you only have only forecast for activity until. the next hour in future.\nIf you are just before a new hour (13h58) or graph is still not fully updated (14h04), you don't see the forecast activity, and a bit later, you see it up to next hour (15h in your screenshots)..."
+  },
+  {
+   "id": 1221543998,
+   "user": "nlof",
+   "created_at": "2022-08-21T13:15:10Z",
+   "body": "You're absolutely correct, I followed this for a while and reached the same conclusion. \r\nIt's still a bug, there's no reason for the graph to stop at the next round hour; it works fine on v 2.8.2.1 (see attached screenshot).\r\n![Screenshot_20220821-161319](https://user-images.githubusercontent.com/70835405/185792679-01498b0f-a5a2-44f1-9fec-e848a9c5436d.png)\r\n"
+  },
+  {
+   "id": 1336496316,
+   "user": "MilosKozak",
+   "created_at": "2022-12-04T19:21:13Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/1f1a2eae48564779a9f88363749f6d58fa8441f1"
+  }
+ ]
+}

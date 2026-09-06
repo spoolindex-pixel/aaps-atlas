@@ -1,0 +1,39 @@
+{
+ "id": 2526646062,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3436,
+ "title": "Negative carb entry doesn't sync between AAPSClient / AAPS",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3436",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-09-14T22:49:46Z",
+ "closed_at": "2024-11-01T14:42:37Z",
+ "comment_count": 4,
+ "body": "Just tested 9fe441bc - nice new feature!\r\n\r\nWhen entering negative carbs in AAPS it doesn't sync to AAPSClient, neither the other way.\r\n\r\nTested with both v1 and v3 NSClient",
+ "comments": [
+  {
+   "id": 2359401449,
+   "user": "vanelsberg",
+   "created_at": "2024-09-18T21:04:04Z",
+   "body": "> When entering negative carbs in AAPS it doesn't sync to AAPSClient, neither the other way.\r\n\r\nDepends on the objective of entering negative carbs.\r\n\r\n- If it is used to prevent overdosing due to the fact that according to oRef calculations carbs correctly entered absorbe to slow I think the negative carbs should not be counted or sent to NS/appsclient/other. Carbs were actually taken!\r\n- _If it is to modify carbs entered wrongly earlier, I do not think one should use negative Carbs for this_.\r\n\r\nNegative carbs is not ment for \"correcting\" the amount of crabs entered in the past.\r\nUser can do this through the treatment Tab. ~~So I would argue this is not a bug?~~"
+  },
+  {
+   "id": 2359410299,
+   "user": "olorinmaia",
+   "created_at": "2024-09-18T21:10:03Z",
+   "body": "Many parents use AAPSClient boluscalculator to assess how much to bolus for. AAPS phone is often in pocket of child or perhaps in some cases not close by. Bolus can be delivered manually by sms or via watch connected to AAPS. \r\n\r\nYou can also have the situation that negative carbs are entered in AAPSClient, and AAPS COB doesn't get reduced.\r\n\r\nIt is very important that COB on AAPSClient and AAPS is synced. I cant see any reason why it shouldnt."
+  },
+  {
+   "id": 2359440567,
+   "user": "vanelsberg",
+   "created_at": "2024-09-18T21:30:20Z",
+   "body": "> It is very important that COB on AAPSClient and AAPS is synced. I cant see any reason why it shouldnt.\r\n\r\nOk. Yes. Then this is a bug...\r\n\r\nDidn't think about remoting by parent (which obviously aapsclient is used for)\r\n"
+  },
+  {
+   "id": 2451991254,
+   "user": "olorinmaia",
+   "created_at": "2024-11-01T14:42:37Z",
+   "body": "Fixed by c12639b7"
+  }
+ ]
+}

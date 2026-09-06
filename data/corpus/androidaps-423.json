@@ -1,0 +1,39 @@
+{
+ "id": 834738985,
+ "repo": "nightscout/AndroidAPS",
+ "number": 423,
+ "title": "AndroidAPS is stopped when processing Medtronic pump history",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/423",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-03-18T12:18:37Z",
+ "closed_at": "2021-04-14T11:41:44Z",
+ "comment_count": 4,
+ "body": "It has happened on AndroidAPS 2.8.2. It is 100% reproducible since it started, so AAPS is being restarted every time pump sends history. \r\nPhone: Samsung Galaxy S7 (Android 8.0)\r\nPump: Medtronic 715 (firmware 2.3A)\r\nRileyLink\r\n\r\nAfter changing battery in insulin pump, application started to stop during retrieving historical data from insulin pump.\r\nFrom log it looks that parsing of history is causing the problems:\r\norg.joda.time.IllegalFieldValueException: Value 0 for dayOfMonth must be in the range [1,31]\r\n\r\n[AndroidAPS_2.8.2_history_parsing_problem.log.zip](https://github.com/nightscout/AndroidAPS/files/6163923/AndroidAPS_2.8.2_history_parsing_problem.log.zip)\r\n\r\n",
+ "comments": [
+  {
+   "id": 811303206,
+   "user": "andyrozman",
+   "created_at": "2021-03-31T18:15:38Z",
+   "body": "PR was merged, so this is fixed... Problem was BGReceived512 entry... It should work correctly now... "
+  },
+  {
+   "id": 811304032,
+   "user": "andyrozman",
+   "created_at": "2021-03-31T18:16:54Z",
+   "body": "https://github.com/nightscout/AndroidAPS/pull/448"
+  },
+  {
+   "id": 819453372,
+   "user": "andyrozman",
+   "created_at": "2021-04-14T11:41:44Z",
+   "body": "Since this was merged into dev we can close it... "
+  },
+  {
+   "id": 819893928,
+   "user": "andyrozman",
+   "created_at": "2021-04-14T22:36:46Z",
+   "body": "@duzy78 I have created special hotix branch that is based on master and contains all 3 medtronic fixes: https://github.com/andyrozman/AndroidAPS/tree/hotfix_mdt_2_8_2"
+  }
+ ]
+}

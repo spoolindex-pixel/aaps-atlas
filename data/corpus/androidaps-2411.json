@@ -1,0 +1,57 @@
+{
+ "id": 1586364352,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2411,
+ "title": "[DEV][Tidepool] Manual BG entries messing up stats in tidepool",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2411",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-02-15T18:46:19Z",
+ "closed_at": "2023-03-28T13:51:41Z",
+ "comment_count": 7,
+ "body": "Build 4e502026e0-2023.02.14 (dev-h) merged at 388ee3d56cbe3772189a5cebc53b420371525dff\r\nPumps used: Insight, Dash and Virtual\r\nLogs: I had logging disabled at the time of enabling the Tidepool plugin. I will add logs of a manual entry upload as soon as I have logs for it (have to wait 3 hours before tidepool uploads)\r\n\r\nWhen a manual BG entry is present (these are coming from xDrip in my case) in the data uploaded by AAPS, Tidepool does not handle this correctly.\r\nExample 1: Manual entry is added at 8:20 @ 3.7mmol, Tidepool counts this as a whole day below target range in the stats\r\n![Screenshot from 2023-02-15 19-29-05](https://user-images.githubusercontent.com/60566713/219120799-7bc146f1-3365-41e2-ab85-c88b556e8ed1.png)\r\n\r\nExample 2: Manual entries are added at: 12:30, 14:20 and 14:33 all in range, 3 days of in range is added to stats\r\n![Screenshot from 2023-02-15 19-34-41](https://user-images.githubusercontent.com/60566713/219121281-cec85543-42eb-48ca-9e09-e4760d358096.png)\r\n\r\nIf more information is needed please let me know\r\n",
+ "comments": [
+  {
+   "id": 1432920989,
+   "user": "jbr7rr",
+   "created_at": "2023-02-16T11:10:37Z",
+   "body": "New entry gave problems as well:\r\nTime of manual BG entry: 15-02-2023 19:47\r\n[AndroidAPS_LOG_1676508664449.log.zip](https://github.com/nightscout/AndroidAPS/files/10755211/AndroidAPS_LOG_1676508664449.log.zip)\r\n"
+  },
+  {
+   "id": 1433423364,
+   "user": "MilosKozak",
+   "created_at": "2023-02-16T17:09:11Z",
+   "body": "I checked Tideppol documentation and data is uploaded as requested\r\nhttp://developer.tidepool.org/data-model/device-data/types/cbg.html\r\nreport issue to https://public-chat.tidepool.org/"
+  },
+  {
+   "id": 1455856996,
+   "user": "gniezen",
+   "created_at": "2023-03-06T10:18:46Z",
+   "body": "@jbr7rr Are these manual entries from a BG meter? Then AndroidAPS is uploading them as the wrong record type. They should be handled as self-monitored BG values, not CGM values: https://developer.tidepool.org/data-model/device-data/types/smbg.html . "
+  },
+  {
+   "id": 1456319844,
+   "user": "jbr7rr",
+   "created_at": "2023-03-06T15:13:15Z",
+   "body": "> @jbr7rr Are these manual entries from a BG meter? Then AndroidAPS is uploading them as the wrong record type. They should be handled as self-monitored BG values, not CGM values: https://developer.tidepool.org/data-model/device-data/types/smbg.html .\r\n\r\nYes, these are manual entries from BG meter"
+  },
+  {
+   "id": 1484198631,
+   "user": "emmatovar27",
+   "created_at": "2023-03-26T19:27:33Z",
+   "body": "The correct type should be \"smgb\" which is what tidepool docs said. \r\n\r\nCurrently, the type is \"cgb\" in line 24 in this file\r\n\r\nplugins/sync/src/main/java/info/nightscout/plugins/sync/tidepool/elements/BloodGlucoseElement.kt\r\n\r\nThe glucose reading looks like dots in the graph. \r\n\r\n![image](https://user-images.githubusercontent.com/39507448/227799600-872912df-d1cf-4ba0-acdc-ee357da16ec5.png)\r\n"
+  },
+  {
+   "id": 1484776283,
+   "user": "jbr7rr",
+   "created_at": "2023-03-27T09:06:06Z",
+   "body": "@emmatovar27  Nice, will you create PR for this? Otherwise I can change and test, and create PR afterwards?"
+  },
+  {
+   "id": 1486931848,
+   "user": "MilosKozak",
+   "created_at": "2023-03-28T13:51:41Z",
+   "body": "updated by https://github.com/nightscout/AndroidAPS/commit/b244d174fa4fbf90835e09584078812359a8b587"
+  }
+ ]
+}

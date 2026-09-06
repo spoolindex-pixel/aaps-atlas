@@ -1,0 +1,257 @@
+{
+ "id": 244854734,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 149,
+ "title": "Force collection on smartwatch does not work on any watch except Sony Smartwatch 3",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/149",
+ "state": "closed",
+ "labels": [
+  "device-watch"
+ ],
+ "created_at": "2017-07-22T15:47:53Z",
+ "closed_at": "2021-08-06T14:59:10Z",
+ "comment_count": 69,
+ "body": "Based on my own experience with 5 android wear watches and everyone else's experience documented in the facebook group, I have come to the conclusion that there is only one single watch that works when running the collector service, and that is the Sony SW3. I have also tried the original Moto 360, Moto 360 Sport, Moto 360 v2, Zenwatch 2, Zenwatch 3, and Zenwatch 3 after upgrading to Android Wear 2.0. Other reports say that it does not work on the huawei, the nixon, LG sport, urbane, etc. \r\n\r\nWhile they all work with xdrip as a regular watchface viewer, none of them except the SW3 will get readings at all. Every indication on my ZW3 right now shows that it is working - watch is listed correctly in the xdrip app settings, force collection is enabled, location permissions are enabled on the watch, all the settings between the phone and watch match up, Dexcom shows up in the bluetooth settings menu of the watch, Android Wear is listed as the collector both on the watch and phone, etc. But no readings ever come in, even after hours of waiting. Tried multiple restarts of both phone and watch, tried leaving the phone off or in airplane mode. Tried toggling scan constantly and wake screen before reading options. Tried toggling aggressive service restarts. Tried manually restarting the collector.  I even factory reset the watch twice. Nothing works. \r\n\r\nI am hoping someone working on the code can work on this further because to me, being able to run the collector service on my watch is the single most important thing about the app and I know others feel the same way. Apple/Dexcom is now catching up because the Apple Watch will be able to function as a standalone collector with the G5 now.  For now I will continue using the Smartwatch 3 but I don't think it is a good solution for the future since the SW3 can only be bought through ebay and old stock that is quickly running out, and there are other issues with that watch such as the nasty battery drain bug.\r\n\r\nI understand this will probably be a challenge to figure out why the other watches aren't working. I would even be willing to send my zenwatch 3 to a developer who is serious about working on it. I think it is that important for the future of the G5 and xdrip.",
+ "comments": [
+  {
+   "id": 317285669,
+   "user": "kskandispersonal",
+   "created_at": "2017-07-23T22:06:19Z",
+   "body": "Thanks for the feedback.  Yes, each wear device seems to use a different BLE implementation.  There are a few other watches that seem to work well as the collector, including the LG Urbane and the original Zenwatch.  I haven't tried them myself though.  I agree, support for the newer watches, esp w/ Wear 2.0, should be added.  It is a TODO but unfortunately, I am not able to address it right now.  If other dev members have time and would like to investigate the issues, maybe they can contact you if you are still willing to provide the Zenwatch 3 temporarily for dev.  I, myself, only have the SW3 (two of them) but to find workarounds for a specific watch, I do think the watch will be required as a lot of debugging will most likely be required."
+  },
+  {
+   "id": 317290382,
+   "user": "Vaughanabe13",
+   "created_at": "2017-07-23T23:36:44Z",
+   "body": "You say the Urbane works, but I see reports in the xdrip G5 facebook\ncommunity that say the LG Urbane does not work as the collector. Multiple\nreports say it doesn't work if you search the group.  I'm hearing the LG\nUrbane 2nd edition doesn't work either: \" I'm using the Urbane 2nd edition\npaired with phone as collector, but I've not been able to \"connect\"\ndirectly from watch to transmitter. Bluetooth report on watch shows Dexcom\nas \"disconnected\".\" Another post on March 31 from Richard Sample has\nmultiple people confirming the LG Urbane 2nd edition doe not work. I don't\nsee any comments at all on the group about the zenwatch (original), only\nthe zenwatch 2 and 3 which both don't work. It could be that these posts\nwere all from a time when the software was immature, I don't know. But\nthere isn't a single post I can find from anyone who had success on any\nwatch except the Smartwatch 3.\n\nI'm willing to send the zenwatch 3 or an original moto 360 that I have\nlaying around and can't use (since only my SW3 works) if anyone wants to\nwork on it. Just send me a message and I'll ship it to you.\n\nOn Sun, Jul 23, 2017 at 5:06 PM, kskandispersonal <notifications@github.com>\nwrote:\n\n> Thanks for the feedback. Yes, each wear device seems to use a different\n> BLE implementation. There are a few other watches that seem to work well as\n> the collector, including the LG Urbane and the original Zenwatch. I haven't\n> tried them myself though. I agree, support for the newer watches, esp w/\n> Wear 2.0, should be added. It is a TODO but unfortunately, I am not able to\n> address it right now. If other dev members have time and would like to\n> investigate the issues, maybe they can contact you if you are still willing\n> to provide the Zenwatch 3 temporarily for dev. I, myself, only have the SW3\n> (two of them) but to find workarounds for a specific watch, I do think the\n> watch will be required as a lot of debugging will most likely be required.\n>\n> —\n> You are receiving this because you au"
+  },
+  {
+   "id": 340217958,
+   "user": "jamorham",
+   "created_at": "2017-10-28T20:32:23Z",
+   "body": "I've tried a number of things with the zenwatch 2 including even changing the bluetooth chip firmware but I haven't been able to resolve the core problem yet which is that after bonding the g5 transmitter doesn't agree with the bonding parameters.\r\n\r\nThe next steps are to look at the really low level bluetooth data exchanges, but its rather complicated and even if that shows why its not working it may still not allow it to be fixed. I am expecting if it is fixable then it may require for example a custom modified rom being flashed to the watch to make it work.\r\n\r\nIt might work with pre-nov-2016 g5 transmitters which were less strict about the bonding but I don't have one of those to test with."
+  },
+  {
+   "id": 340443138,
+   "user": "Vaughanabe13",
+   "created_at": "2017-10-30T13:27:37Z",
+   "body": "Thanks so much for working on it. I personally wouldn't have a problem\nloading a custom ROM on my watch if that's the only way to make it work. At\nleast a working solution could be explored and ported to other watches and\npotentially updated over time.\n\nOn Sat, Oct 28, 2017 at 3:32 PM, Jamorham <notifications@github.com> wrote:\n\n> I've tried a number of things with the zenwatch 2 including even changing\n> the bluetooth chip firmware but I haven't been able to resolve the core\n> problem yet which is that after bonding the g5 transmitter doesn't agree\n> with the bonding parameters.\n>\n> The next steps are to look at the really low level bluetooth data\n> exchanges, but its rather complicated and even if that shows why its not\n> working it may still not allow it to be fixed. I am expecting if it is\n> fixable then it may require for example a custom modified rom being flashed\n> to the watch to make it work.\n>\n> It might work with pre-nov-2016 g5 transmitters which were less strict\n> about the bonding but I don't have one of those to test with.\n>\n> —\n> You are receiving this because you authored the thread.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/149#issuecomment-340217958>,\n> or mute the thread\n> <https://github.com/notifications/unsubscribe-auth/AOJ6Qij1YzbJ_YC2AwZmBrjiTpC6xFzxks5sw49YgaJpZM4OgNLz>\n> .\n>\n"
+  },
+  {
+   "id": 346061896,
+   "user": "jamorham",
+   "created_at": "2017-11-21T15:28:22Z",
+   "body": "Okay, I have produced a rom patch for the Zenwatch 2 which makes it work with the G5. I may well be able to repeat this process for other smart watches but it is fiddly and I only have a Zenwatch to experiment with at the moment. "
+  },
+  {
+   "id": 346609289,
+   "user": "lskeele1",
+   "created_at": "2017-11-23T12:45:28Z",
+   "body": "How would one get the rom patch for ZW2?  I have one, and I'm very eager to make it work as an independent collector from the phone. I love this project!"
+  },
+  {
+   "id": 346618821,
+   "user": "jamorham",
+   "created_at": "2017-11-23T13:30:28Z",
+   "body": "Patching the Zenwatch2 to work with the G5, PDF guide -> https://drive.google.com/open?id=1lPpjkiyiASLThoYFDpL9Pfor4fW3-4OK\r\n\r\nAll the required files in a care package zip file: https://drive.google.com/open?id=1Gk_Fbi98AkjLmSBTmVJ7_pq9dy7xF7Ld\r\n\r\nPlease let me know how you get on with this. If you're using windows instead of Linux then you will need to get set up with the ADB and FASTBOOT tools there as well as probably get universal adb drivers installed. I am slightly hazy on this process and it needs documenting in the guide."
+  },
+  {
+   "id": 346620032,
+   "user": "jamorham",
+   "created_at": "2017-11-23T13:35:50Z",
+   "body": "Oh and you should use any xDrip+ from the 23rd Nov nightly onwards as this has the updated wear component which can take advantage of the system level permissions on the patched zenwatch."
+  },
+  {
+   "id": 346671870,
+   "user": "lskeele1",
+   "created_at": "2017-11-23T17:31:30Z",
+   "body": "Thanks!  Traveling now, but will give it a try when I get home and let you know how it goes."
+  },
+  {
+   "id": 346872529,
+   "user": "jamorham",
+   "created_at": "2017-11-24T17:22:57Z",
+   "body": "I've also now produced a patch for the LG G Watch (W100)\r\n\r\nPatching the LG Watch PDF Guide: https://drive.google.com/open?id=1pgabdYX-vMjSjyb0G5jbgoTko9gJxxCT\r\n\r\nAll the required files for the LG g in a care package zip file:  https://drive.google.com/open?id=1z2ovSF66V_k7H49Wi_VHuBqPi0_2xpwk"
+  },
+  {
+   "id": 347209941,
+   "user": "lskeele1",
+   "created_at": "2017-11-27T15:06:30Z",
+   "body": "Reporting success on patching the Zenwatch 2!  @JamorHam, you’re amazing!  Here’s my report, in case you find anything helpful.  First the good: My watch (I have the smaller version of the ZW2) has a near 100% collection rate.  I initially tried to patch with Windows, but couldn’t seem to find the right drivers, so I switched to my RPi3.  (I had previously manually updated to Wear 2.0 on Windows, but something was not working right on this one.  As far as instructions go, though, I found this to be helpful in terms of getting ADB and Fastboot to work with Windows: https://www.androidsage.com/2016/03/04/install-marshmallow-ota-for-asus-zenwatch-2/.)  Anyway, back to my update.  Using my RPi3, I followed JamorHam’s instructions, and the patch worked well.  A few notes: First, I used the command line rather than the swipe to boot into Fastboot mode.  When I did, the watch said, “Fastboot Mode” rather than “Fastboot CSC.”  Not sure, but I think this may be a difference in the international version of the watch.  When I tried to unlock the bootloader, it told me that the bootloader was already unlocked.  (Maybe this was from sideloading the OTA update to Wear 2.0?)  I did not get a message on the watch screen about unlocking the bootloader, and the watch did not do a factory reset during this process – it retained my data.  Everything else went according to the instructions.  I uninstalled and reinstalled xDrip+ on the watch, and on the phone.  The only other difference (related to not doing a factory reset) was that my watch didn’t do a fifteen-minute initial boot – it was a normal restart.\r\n\r\nNow, the minor inconveniences.  After one day of use, I’ve had very significant decrease in battery life on the watch.  It hopefully won’t be a huge deal, because I plan to use my phone as the primary collector, and the watch only as a backup.  But the other problem is that I can’t seem to get the phone to be the collector.  My Sony SW3 shifts back and forth seamlessly between the"
+  },
+  {
+   "id": 347250434,
+   "user": "Vaughanabe13",
+   "created_at": "2017-11-27T17:05:19Z",
+   "body": "I would love to know what settings you have on your ZW2 that may be\nimpacting battery life. For example, do you have gestures and tilt to wake?\nDo you have ambient display enabled? Brightness? Etc.\n\nGreat work, I think this is awesome progress! Unfortunately I think battery\nlife will always be a concern but with improvements in the new processors\nand hardware configurations that might be partially mitigated.\n\nOn Mon, Nov 27, 2017 at 9:06 AM, lskeele1 <notifications@github.com> wrote:\n\n> Reporting success on patching the Zenwatch 2! @JamorHam, you’re amazing!\n> Here’s my report, in case you find anything helpful. First the good: My\n> watch (I have the smaller version of the ZW2) has a near 100% collection\n> rate. I initially tried to patch with Windows, but couldn’t seem to find\n> the right drivers, so I switched to my RPi3. (I had previously manually\n> updated to Wear 2.0 on Windows, but something was not working right on this\n> one. As far as instructions go, though, I found this to be helpful in terms\n> of getting ADB and Fastboot to work with Windows:\n> https://www.androidsage.com/2016/03/04/install-marshmallow-ota-for-asus-\n> zenwatch-2/.) Anyway, back to my update. Using my RPi3, I followed\n> JamorHam’s instructions, and the patch worked well. A few notes: First, I\n> used the command line rather than the swipe to boot into Fastboot mode.\n> When I did, the watch said, “Fastboot Mode” rather than “Fastboot CSC.” Not\n> sure, but I think this may be a difference in the international version of\n> the watch. When I tried to unlock the bootloader, it told me that the\n> bootloader was already unlocked. (Maybe this was from sideloading the OTA\n> update to Wear 2.0?) I did not get a message on the watch screen about\n> unlocking the bootloader, and the watch did not do a factory reset during\n> this process – it retained my data. Everything else went according to the\n> instructions. I uninstalled and reinstalled xDrip+ on the watch, and on the\n> phone. The only other diffe"
+  },
+  {
+   "id": 347304734,
+   "user": "Vaughanabe13",
+   "created_at": "2017-11-27T19:48:22Z",
+   "body": "Just an update: I sent jamorham 4 more watches to patch. He is doing great work.\r\n\r\nZenwatch 3\r\nFossil Q Founder 2.0\r\nPolar M600\r\nMoto 360"
+  },
+  {
+   "id": 347340924,
+   "user": "jamorham",
+   "created_at": "2017-11-27T21:53:18Z",
+   "body": "@lskeele1 great to hear that you've been able to repeat my process and apply the patch to the zenwatch. I recommend using the OB1 collector and I would hope that this would use less battery than that classic collector"
+  },
+  {
+   "id": 347366971,
+   "user": "lskeele1",
+   "created_at": "2017-11-27T23:45:56Z",
+   "body": "OB1 Collector is working better.  After most of a day, battery life is much better than before, and the phone and watch are now switching properly when I check/uncheck the \"force wear\" box.  (It usually misses about two readings during the transition, but that's no big deal to me.)  Both watch and phone look as if they will easily make it one full day, which is all that I'm looking for.  @Vaughanabe13, I keep ambient display on because I want to view my glucose level quickly, and I've found that waking the screen takes a half second or so.  Other than that, normal settings: brightness 3, no gestures, but yes tilt to wake."
+  },
+  {
+   "id": 372358111,
+   "user": "JimZam",
+   "created_at": "2018-03-12T15:48:52Z",
+   "body": "Thank you so much for your quick and really enlightening answer, Vaughanabe13.\r\nKind regards"
+  },
+  {
+   "id": 374266120,
+   "user": "lskeele1",
+   "created_at": "2018-03-19T16:03:36Z",
+   "body": "@jamorham I originally used the smaller ZW2 (without the speaker) for this process.  I recently got the larger version (with the speaker), and was able to modify it to work as the collector, but during the process, I lost the ability to use the watch as a speakerphone.  The speaker on the watch still plays media (e.g., Pandora), but, during a call, the microphone and speaker do not work.  Any thoughts on why this would be the case or how to remedy it?  As always, thanks!"
+  },
+  {
+   "id": 374599414,
+   "user": "cybernissart",
+   "created_at": "2018-03-20T13:35:21Z",
+   "body": "Have a smartphone running nightly build 190318, and a SW3 running 10.0.84 GPS version.\r\nCollector on smartwatch does not work, when phone is out of range or off.\r\n\r\nDon't know if it was broken by an interim build somewhere, as it was working previous weeks ago somehow.\r\n\r\nWould you have troubleshooting steps/method to address it on watch?\r\n\r\nHow to check if BT binding and association password if correctly pushed from phone to watch?\r\nCan we connect through BT association menu perhaps (it fails in my case)?\r\n\r\nIs adb the only method to check for this?"
+  },
+  {
+   "id": 375659906,
+   "user": "ralf-ms",
+   "created_at": "2018-03-23T13:10:21Z",
+   "body": "I can't get my Huawei Watch 2 working with Libre Blucon (force wear collection service).\r\nIs this also caused by incompatible bluetooth implementations/versions or is this an entirely different issue?\r\n"
+  },
+  {
+   "id": 379520169,
+   "user": "paaascal",
+   "created_at": "2018-04-08T04:50:16Z",
+   "body": "Hello i Do water sports and need a watch that can collect freestyle libre data WITHOUT the phone around.  I happen to be on the ocean for long hours and simply need to see my bs and go to shore if it starts dropping...  Is the swr50 the only one that can do this WITHOUT the phone or are there others?\r\n\r\nWhen I have. The phone around I use xdrip...  \r\n\r\nThanks"
+  },
+  {
+   "id": 379531882,
+   "user": "no1jeeves",
+   "created_at": "2018-04-08T08:37:40Z",
+   "body": "Hi, the libre freestyle is an NFC device, not a transmitter, I don't think\nthat anyone makes a watch with NFC,\n\nOn Sun, Apr 8, 2018, 5:50 AM paaascal <notifications@github.com> wrote:\n\n> Hello i Do water sports and need a watch that can collect freestyle libre\n> data WITHOUT the phone around. I happen to be on the ocean for long hours\n> and simply need to see my bs and go to shore if it starts dropping... Is\n> the swr50 the only one that can do this WITHOUT the phone or are there\n> others?\n>\n> When I have. The phone around I use xdrip...\n>\n> Thanks\n>\n> —\n> You are receiving this because you commented.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/149#issuecomment-379520169>,\n> or mute the thread\n> <https://github.com/notifications/unsubscribe-auth/AiRfwvduuOiILg5nWJIooZmYysh9PPUNks5tmZcKgaJpZM4OgNLz>\n> .\n>\n"
+  },
+  {
+   "id": 379532631,
+   "user": "paaascal",
+   "created_at": "2018-04-08T08:49:12Z",
+   "body": "Google.ca type Nfc smartwatch ;) "
+  },
+  {
+   "id": 401526570,
+   "user": "betulin",
+   "created_at": "2018-06-30T08:26:47Z",
+   "body": "Hello from Spain, I've been reading the post and I concluded there is no collector watch, except Z3, S3 and i'm not sure about Huawei-watch 2 and Fibit - Special Versa edition. I am looking for collector watch which not needs to be connected to the phone. I'm not thinking in using Nigthscout, at least, for the moment.  I am using Freestyle libre + Miao Miao. \r\nI'd appreciate any advice. \r\nMany Thanks\r\n"
+  },
+  {
+   "id": 401673793,
+   "user": "patelrupesh",
+   "created_at": "2018-07-02T05:08:17Z",
+   "body": "hi,\r\nI have just bought Sony Smartwatch 3 after reading on a lot of weblinks that this watch seamlessly as a collector without needing any modifications to the ROM however unfortunately my SW3 doesn't give any readings when selecting the option of \"Force Wear Collection Service\" - though I do see on the watch a message saying that \"Force Wear Enabled\". I just see the last reading with the strikethrough line on the xdrip+ watchface. Can someone please help as this is the 2nd watch that I bought (First one was Huawei 2 - that too didn't work).\r\n\r\nThanks,\r\nRupesh"
+  },
+  {
+   "id": 401711573,
+   "user": "SimonPhilpott",
+   "created_at": "2018-07-02T08:32:42Z",
+   "body": "@patelrupesh same as me. I've walked Xdrip versions right back to 13th March and none of them collect via the smartwatch 3. I did notice that 30th March and previous versions of Xdrip showed the Blucon as 'bonded# which for me at least using the phone ads a huge amount of reliability for re-pairing when dropping in and out of range. \r\n\r\n![screenshot_20180702-090801_xdrip](https://user-images.githubusercontent.com/6833057/42153376-daf3308c-7dda-11e8-9496-bc4674a83641.jpg)\r\n![screenshot_20180702-090819_xdrip](https://user-images.githubusercontent.com/6833057/42153378-db1c118c-7dda-11e8-8c6c-b6e856dab275.jpg)\r\n![screenshot_20180702-090831_xdrip](https://user-images.githubusercontent.com/6833057/42153379-db3cb2d4-7dda-11e8-833b-9332eb22fb58.jpg)\r\n"
+  },
+  {
+   "id": 401805669,
+   "user": "patelrupesh",
+   "created_at": "2018-07-02T13:34:01Z",
+   "body": "That's unfortunate to read Simon. Does anyone have a solution for this please - Sony smartwatch 3 as a collector? I hope someone might know how to get this working as there are plenty of users on the internet saying that they have been using the SW3 as a collector."
+  },
+  {
+   "id": 402020951,
+   "user": "patelrupesh",
+   "created_at": "2018-07-03T05:51:42Z",
+   "body": "Can someone please assist?\r\n\r\nThanks."
+  },
+  {
+   "id": 402175055,
+   "user": "Vaughanabe13",
+   "created_at": "2018-07-03T14:22:48Z",
+   "body": "The SW3 does work as a collector, and once you get it working it works reliably and very well, although sometimes it can be a pain to get it working. Here are the settings that work for me.\r\n\r\n- Make sure your Hardware Data Source is set to G5 Transmitter and that your Dexcom Transmitter ID is correct.\r\n- In G5/G6 Debug Settings in the phone, check \"Use the new OB1 Collector\". I also have \"Allow OB1 unbonding\" and \"Allow OB1 initiate bonding\" checked. Check \"Authenticate G5 before each read\" and do not check \"Unbond G5 for each read.\" You can try both ways with the \"Scan for G5 constantly\". It doesn't need to be on, but sometimes I seem to get better/quicker connections when I leave it on. Either way it doesn't seem to make much difference.\r\n- Go to \"Smart Watch Features->Android Wear Integration.\"  Ensure AW Integration is enabled, enable the wear collection service, enable \"Force Wear Collection Service.\" \r\n- Go to \"Less common settings\" and check \"Aggressive service restarts.\" I'm not sure if this is necessary or not but I tend to always leave it on.\r\n\r\nNow, sometimes the settings between the watch and the phone get out of sync. For example, make sure the \"Force Wear Collection\" setting is enabled in both the watch settings and the phone. Sometimes it will only be set in one or the other. Make sure they both are enabled. \r\n\r\nAfter you change all these settings, start your sensor session (if it isn't already started). I also like to go to the System Status screen and tap \"Restart Collector\" just for good measure. On this page, you eventually want to see in the Connection Status: \"DexcomW2 Authed, FW:1.0.4.10\" which means your collector is properly bonding to the G5 transmitter. \r\n\r\nMore things you need to do: In the SW3, make sure the software of the watch is up to date, by performing a software update through the Android Wear interface. Then go to the Permissions settings in the watch settings, and go to Xdrip+ and enable all the permissions including location. Y"
+  },
+  {
+   "id": 402351994,
+   "user": "patelrupesh",
+   "created_at": "2018-07-04T03:22:24Z",
+   "body": "Thanks @Vaughanabe13 \r\nI did try all the options suggested in your message however without joy - unfortunately.\r\nJust one difference - I'm using a combination of Libre+Blucon and not Dexcom G5. Don't think this would make any difference though.\r\n\r\nStrange part is that the xDrip+ application on both the watch and phone stop giving readings as soon as I select option \"Force Wear Collection Service\".\r\n\r\nNot sure however it seems that the issue is with the current xDrip+ releases rather than the watch itself. Anyways, whatever the root cause is, the watch doesn't work as a collector for me even after doing all possible suggested configuration changes.\r\n\r\nDoes anyone else have an idea on this.\r\nCan I please request the development team to assist with this.\r\n\r\nDid send Jon couple of emails however seems he's busy as haven't responded yet.\r\n\r\nThanks all - please help."
+  },
+  {
+   "id": 402522628,
+   "user": "Vaughanabe13",
+   "created_at": "2018-07-04T16:31:36Z",
+   "body": "You could try going back to a previous version of xdrip+ and trying that.\nIt's certainly possible that something has broken compatibility. I really\ncan't speak to the blucon personally since I don't use it and I'm not an\nxdrip developer, sorry. I really wish there were official\ntransmitter-to-watch products out there and that it didn't have to be\nsomething cobbled together.\n\nOn Tue, Jul 3, 2018 at 10:22 PM patelrupesh <notifications@github.com>\nwrote:\n\n> Thanks @Vaughanabe13 <https://github.com/Vaughanabe13>\n> I did try all the options suggested in your message however without joy -\n> unfortunately.\n> Just one difference - I'm using a combination of Libre+Blucon and not\n> Dexcom G5. Don't think this would make any difference though.\n>\n> Strange part is that the xDrip+ application on both the watch and phone\n> stop giving readings as soon as I select option \"Force Wear Collection\n> Service\".\n>\n> Not sure however it seems that the issue is with the current xDrip+\n> releases rather than the watch itself. Anyways, whatever the root cause is,\n> the watch doesn't work as a collector for me even after doing all possible\n> suggested configuration changes.\n>\n> Does anyone else have an idea on this.\n> Can I please request the development team to assist with this.\n>\n> Did send Jon couple of emails however seems he's busy as haven't responded\n> yet.\n>\n> Thanks all - please help.\n>\n> —\n> You are receiving this because you were mentioned.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/149#issuecomment-402351994>,\n> or mute the thread\n> <https://github.com/notifications/unsubscribe-auth/AOJ6QkyLOkugWWZbnbo9eZMjpytKqpS3ks5uDDTzgaJpZM4OgNLz>\n> .\n>\n"
+  },
+  {
+   "id": 402569746,
+   "user": "simondavies560",
+   "created_at": "2018-07-04T23:03:22Z",
+   "body": "We had an Asus Zenwatch 2 working very effectively with a build from some\ntime in the middle of January (sorry, can't remember the exact build), and\nhad some temporary success with a March 12th build with Ticwatch, but that\nconnection has always been very flaky. Definitely suggest rolling back to\nolder versions, Sony SW 3 does seem to have been the watch of choice\nhistorically.\n\nOn Thu., 5 Jul. 2018, 02:31 Vaughanabe13, <notifications@github.com> wrote:\n\n> You could try going back to a previous version of xdrip+ and trying that.\n> It's certainly possible that something has broken compatibility. I really\n> can't speak to the blucon personally since I don't use it and I'm not an\n> xdrip developer, sorry. I really wish there were official\n> transmitter-to-watch products out there and that it didn't have to be\n> something cobbled together.\n>\n> On Tue, Jul 3, 2018 at 10:22 PM patelrupesh <notifications@github.com>\n> wrote:\n>\n> > Thanks @Vaughanabe13 <https://github.com/Vaughanabe13>\n> > I did try all the options suggested in your message however without joy -\n> > unfortunately.\n> > Just one difference - I'm using a combination of Libre+Blucon and not\n> > Dexcom G5. Don't think this would make any difference though.\n> >\n> > Strange part is that the xDrip+ application on both the watch and phone\n> > stop giving readings as soon as I select option \"Force Wear Collection\n> > Service\".\n> >\n> > Not sure however it seems that the issue is with the current xDrip+\n> > releases rather than the watch itself. Anyways, whatever the root cause\n> is,\n> > the watch doesn't work as a collector for me even after doing all\n> possible\n> > suggested configuration changes.\n> >\n> > Does anyone else have an idea on this.\n> > Can I please request the development team to assist with this.\n> >\n> > Did send Jon couple of emails however seems he's busy as haven't\n> responded\n> > yet.\n> >\n> > Thanks all - please help.\n> >\n> > —\n> > You are receiving this because you were mentioned.\n> > Reply to this "
+  },
+  {
+   "id": 415287560,
+   "user": "RicardoFBCoelho",
+   "created_at": "2018-08-23T04:36:20Z",
+   "body": "Saw this very interesting topic. I am looking for a Smartwatch myself to connect with Libre – my aim is to set up a CGM. I’ve seen a few reported watches like Sony SW3, Finow Q1 and several models from Ticwatch that do this without the smartphone.\r\n\r\nHowever, I would like to ask if anyone has experience with any model from Samsung such as Samsung Gear 3 or the new Galaxy watch. In theory, they should have the tech to work but they operate on Tizen OS and not Android Wear.\r\n\r\nI appreciate all the help.\r\nThanks,\r\n\r\nRicardo \r\n"
+  },
+  {
+   "id": 417855262,
+   "user": "betulin",
+   "created_at": "2018-09-01T12:07:38Z",
+   "body": "Hi, I am trying to set up a s. watch as standalone collector. S. watch it should get  readings when MiaoMiao is out of range of the phone and when it's back in phone range, it would connect to it again and s.watch's readings should be syncc.  Also,  I'd like to follow both, the SW and phone on my own phone. It could be on IOS or Android or both, not problem.I could use, Xdrip or Spike or NS. I'd really appreciate any suggestions are wellcome.\r\nI've been reading about . I'd like to tell  you what I have found so far:\r\n1. The Sony SW3 works as an standalone collector but it is not possible to follow it as a follower. Neither in xDrip nor in NS. It does not require any patch but it is sometimes hard to get connection\r\n2. Those watches, which are full Android and have sim, basically works as if they were a phone. They allow standalone connection, follow-up with xDrip as a follower and since they have sim and data connection, they also allow to see it in NS. Unfortunately,  its, battery is too short. They are not submersible.\r\n3. There are some Smartwatches with Android WOs which can working as standalone collectors after applying a patch. Some of them has sim card. However, this is only described for the dexcom g5 sensors and I do not know, for sure, if they shoul be patched or not using MM. They are more expensive . They have a very good battery and they are submersible.\r\n4. The iwatch, so far, do not work as standalone  collectors, they need the iPhone nearby\r\nI'd appreciate any corrections,  suggestion, information  could me set up an standalone collector that can be follow, good battery, IP68 .\r\n5.Fitbit ionic can get readings but I haven't be able to understand where they canoe from. I understood  they are taken from xdrip acting the watch as a follower, but no sure.\r\n\r\nThe 3rd option would be the best for me but I don't know if they work with MM without patching. I'd prefer not to patch, because I don't feel confident enough to go through it\r\n\r\nThanks a lot"
+  },
+  {
+   "id": 423659647,
+   "user": "tKostka",
+   "created_at": "2018-09-21T20:21:12Z",
+   "body": "@jamorham: I tried to patch my new Polar M600 with the BT fix but was getting error during the install in the TWRP shell:\r\n\r\n> ERROR : with firmware patch A\r\n> ERROR : with firmware patch B\r\n> ERROR : could not patch BT\r\n> ERROR : with demigod mode\r\n> ERROR : with demigod-2 mode\r\n\r\nI've tried several times, with several reboots.\r\nIt seems there was an Update from Polar recently, the Bulid Number of my M600 ist different from the number in the PDF Guide: OWDB.180305.008 vs OWDB.180305.0**15**\r\nIs this the problem? If so, would it be possible to get an updated patch?\r\n\r\nBy the way, I made this with my Windows 10 Notebook. To help other Windows users, you may add the following in your future PDF guides.\r\nI was missing a smartwatch driver for fastboot, so i had to download and manually force windows to use the android google driver (https://developer.android.com/studio/run/win-usb).\r\nThe fastboot commands are different from Linux. In the Windows shell it is just `fastboot oem unlock` (not fastboot –i 0xda4 oem unlock) and `fastboot boot twrp-polar-m600.img`. The fastboot option -i is not available in Windows.\r\n\r\nThanks for all of your work, i'm using xDrip for years now. I hope you can help with this problem.\r\n\r\n![polar-build-nr](https://user-images.githubusercontent.com/11375777/45904048-10684300-bdec-11e8-9766-a1c2cd0502c0.png)\r\n![polar-versions1](https://user-images.githubusercontent.com/11375777/45904049-1100d980-bdec-11e8-882a-7d559e379cb5.png)\r\n![polar-versions2](https://user-images.githubusercontent.com/11375777/45904050-1100d980-bdec-11e8-9013-8e99c1352327.png)\r\n\r\nEDIT: add TWRP logs from the install error, but I don't understand whats wrong there\r\n> mount: mounting /dev/block/platform/mtk-msdc.0/by-name/system on /system failed: Device or resource busy\r\n> xdelta3: source file too short: XD3_INVALID_INPUT\r\n> xdelta3: normally this indicates that the source file is incorrect\r\n\r\n[TWRP.log](https://github.com/NightscoutFoundation/xDrip/files/2407844/TWRP.log)\r\n"
+  },
+  {
+   "id": 432713687,
+   "user": "SimonPhilpott",
+   "created_at": "2018-10-24T15:47:35Z",
+   "body": "I've had a pretty good experience with using a Miao Miao over the top of my Libre and removing the SW3 from its strap and putting it into a small roll pouch around my neck. That got me back in the water for most activities.  Most roll pouches for electronics are IPX8 and support touchscreen use which banded with the (flakey) IP68 rating is about as reliable as things are going to get. \r\n\r\nThe Nixon Mission would be a great step, but that being said it;s no use if the Miao Miao remains as IP68. You're only as waterproof as item with the lowest rating after all. "
+  },
+  {
+   "id": 451482439,
+   "user": "heygar",
+   "created_at": "2019-01-04T15:51:17Z",
+   "body": "I just recently started messing with this with my ZW3. I'm looking for a smartwatch I can wear out on a catamaran cruise of sorts. Lots of water activity.\r\nI've decided to try the Misfit Vapor as I can get a used one for ~$50 on Ebay. \r\nHas anyone had any luck running the Vapor as a collector? Or is it totally impossible?"
+  },
+  {
+   "id": 474966355,
+   "user": "Braintelligence",
+   "created_at": "2019-03-20T18:13:30Z",
+   "body": "@heygar did you have any luck with the vapor? "
+  },
+  {
+   "id": 474968381,
+   "user": "heygar",
+   "created_at": "2019-03-20T18:18:12Z",
+   "body": "The bidding went above my comfort level for the risk of it not working.\r\nI'm still looking for a water proof wear OS watch I can confidently use as a stand alone collector. "
+  },
+  {
+   "id": 491503436,
+   "user": "lee-b",
+   "created_at": "2019-05-11T11:34:59Z",
+   "body": "I've noticed that this works (on a Huawei Watch Pro 2 to a MiaoMiao) with Glimp, but not XDrip, for some reason.  I never tried Glimp on my old SW3 and Nightrider, but couldn't get XDrip's watch-based collection working with that setup either."
+  },
+  {
+   "id": 894319781,
+   "user": "Navid200",
+   "created_at": "2021-08-06T14:59:10Z",
+   "body": "It seems the issue this thread was opened for was already addressed."
+  }
+ ]
+}

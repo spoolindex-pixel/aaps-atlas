@@ -1,0 +1,51 @@
+{
+ "id": 3484674158,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4197,
+ "title": "Make AAPSClient visually distinguishable from AAPS on Wear OS",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4197",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-10-05T10:39:57Z",
+ "closed_at": "2025-10-13T09:16:02Z",
+ "comment_count": 6,
+ "body": "AAPSClient on WearOS uses the same name and icon as the regular AAPS, resulting in confusing UX when both apps are installed side by side.\n\nFor example, in the below image of the app list, one is AAPS and the other is AAPSClient:\n\n<img width=\"450\" height=\"450\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/e803c4d8-583f-461c-bc5b-d2681d7765d4\" />\n\nThe same issue exists in complication picker.\n\nIt's not a huge issue since the correct app can be easily identified through trial and error, but would be great to have them use different icons and names, just like their phone counterparts.\n\nThis was observed on the master branch (latest commit `937e2bccc9c43c1a1566a8ec2793bcae4ff11dba` at the time of writing). \n\nWhen building APK, I selected module `AndroidAPS.wear` and build variant `fullRelease` for regular AAPS and `aapsClientRelease` for AAPSClient.",
+ "comments": [
+  {
+   "id": 3369334707,
+   "user": "MilosKozak",
+   "created_at": "2025-10-05T21:13:53Z",
+   "body": "it doesn't make sense to install more versions to watch"
+  },
+  {
+   "id": 3369361141,
+   "user": "ulevitsky",
+   "created_at": "2025-10-05T22:00:50Z",
+   "body": "It does to me as it allows me to have my own and someone else's data displayed in different watchface complications:\n\n<img width=\"450\" height=\"450\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/7245ad91-82dd-4106-b5b7-48bcf6c21b00\" />\n\nI'd argue it could be useful to anyone who , for whatever reason, has more than one instance of AAPS installed on their phone -- i.e. any combination of regular AAPS and different variants of AAPSClient."
+  },
+  {
+   "id": 3371596530,
+   "user": "MilosKozak",
+   "created_at": "2025-10-06T13:16:40Z",
+   "body": "this is possible without installing multiple wear os apps "
+  },
+  {
+   "id": 3373986416,
+   "user": "ulevitsky",
+   "created_at": "2025-10-06T20:37:00Z",
+   "body": "That'd be awesome. \n\nFor reference, this is what I'm seeing when selecting data source for a complication on my watch: each instance publishes a singular \"Blood glucose\" data source, providing that app's BG value. \n\nSo to have two different data streams from two different sources, on my phone I have two apps (AAPS and AAPSClient), each streaming data to its counterpart on the watch.\n\n<img width=\"450\" height=\"450\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/3d23b063-e3e9-4d65-b695-9ac60bfa7f0c\" />\n\nCould you please point me in the right direction on how to set it up differently? Couldn't find anything in the docs."
+  },
+  {
+   "id": 3396575343,
+   "user": "MilosKozak",
+   "created_at": "2025-10-13T09:16:02Z",
+   "body": "there is an option on AAPSClient WearPlugin to send data to master installed on the same phone"
+  },
+  {
+   "id": 3396840328,
+   "user": "ulevitsky",
+   "created_at": "2025-10-13T10:23:45Z",
+   "body": "I found the setting in AAPSClient on the phone and enabled it. I also uninstalled AAPSClient from the watch. I then resent data from Wear plugin in AAPS.\n\nHowever it's a bit unclear what should I pick to make the BG value from AAPS client on the phone display inside a complication? \n\nIn complication selector, there is now only a single \"Blood Glucose\" source under \"AAPS\" and unsurprisingly, it is the BG from AAPS, not AAPSClient."
+  }
+ ]
+}

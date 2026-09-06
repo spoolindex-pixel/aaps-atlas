@@ -1,0 +1,183 @@
+{
+ "id": 2752085632,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3639,
+ "title": "AAPS Client/ Websockets / BZ Sync",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3639",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-12-20T07:04:11Z",
+ "closed_at": "2024-12-26T20:19:06Z",
+ "comment_count": 30,
+ "body": "Since the Beta 1 version, including the Devs versions, the BZ values ​​are no longer transmitted to the AAPS client when websockets are active. The rest goes through.\r\nMaster websockets ON, AAPSCLient1 websockets OFF - works perfectly, but slowly. AAPSCLient2 websockets OFF - does not work perfectly, breaks off at some point.\r\nSince around 6:20 a.m. there has been no sync of the BZ values. Fully synchronizing NS fixes the error.\r\n\r\n[AndroidAPS.log](https://github.com/user-attachments/files/18207147/AndroidAPS.log)\r\n![Screenshot_20241220-075303](https://github.com/user-attachments/assets/4d272aa0-0ad0-49cd-8fba-5fc6f222efe7)\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
+ "comments": [
+  {
+   "id": 2557190109,
+   "user": "olorinmaia",
+   "created_at": "2024-12-20T15:10:29Z",
+   "body": "Which ns server / hosting are you using? Version of NS?"
+  },
+  {
+   "id": 2557201144,
+   "user": "elgrupo123",
+   "created_at": "2024-12-20T15:16:03Z",
+   "body": "> Which ns server / hosting are you using? Version of NS?\r\n> \r\n> I don't experience this with 10be.de NS master or dev.\r\n\r\nHi,\r\n10be.de + NS Master 15.0.2.\r\nFor me with activated WS the error occurs every few hours, on my wife's follower it doesn't work at all with activated WS."
+  },
+  {
+   "id": 2557477277,
+   "user": "elgrupo123",
+   "created_at": "2024-12-20T18:01:54Z",
+   "body": "And here are the log files from our second follower, where it is not synchronized at all with the activated websockets.\r\n[AndroidAPS.log](https://github.com/user-attachments/files/18213885/AndroidAPS.log)\r\n"
+  },
+  {
+   "id": 2557483365,
+   "user": "Philoul",
+   "created_at": "2024-12-20T18:06:27Z",
+   "body": "Write in english please."
+  },
+  {
+   "id": 2557685361,
+   "user": "olorinmaia",
+   "created_at": "2024-12-20T20:36:47Z",
+   "body": "Ok, so if I want to try to reproduce this, to confirm, is your setup like this?\r\nAAPS = NSClientV3 + WS = ON\r\nAAPSClient 1 and 2 = NSClientV3 + WS = OFF ? \r\n\r\nAnd just one of them sync? For me it sounds like one of your phones got some issues with either settings or permissions. But I will try this setup myself and see.\r\n\r\nMy regular setup is WS = ON with NSclientv3 on all phones. "
+  },
+  {
+   "id": 2557699334,
+   "user": "elgrupo123",
+   "created_at": "2024-12-20T20:50:23Z",
+   "body": "Not quite right.\r\n\r\nAll with NS V3\r\n\r\nMaster with NS V3 - WS Active - no problems.\r\n\r\nFollower 1 - with AAPS Client (WS Active) problems after a few hours, AND with AAPS Client2 (WS deactivated), no problems.\r\n\r\nFollower 2 - with AAPS Client (WS Active), problems straight away. Only works with WS deactivated."
+  },
+  {
+   "id": 2558052551,
+   "user": "gerison77",
+   "created_at": "2024-12-21T08:45:09Z",
+   "body": "Running 2 Rigs with the follwoing setups\r\n\r\nEach Rig is running: Master Blackview N6000 3.3.0-rc1 NSClient V3 websockets on and Client Blackview BV 9200 3.3.0-rc1 NSClient V3 websockets on. Servers hosted on 10be.de running **Nightscout 15.3 dev**\r\n\r\nCan't confirm that issue in this setup on 2 rigs, nor with Client 1 nor with Client 2\r\n"
+  },
+  {
+   "id": 2558089064,
+   "user": "elgrupo123",
+   "created_at": "2024-12-21T11:27:12Z",
+   "body": "That doesn't help me. I can only report my problems. \r\nJust switched all devices to 3.2.0.4 and the problem no longer exists. \r\nI posted the logs, I can't contribute anything more. I'm not a developer."
+  },
+  {
+   "id": 2558090036,
+   "user": "olorinmaia",
+   "created_at": "2024-12-21T11:31:19Z",
+   "body": "Strange it works when you downgrade to 3.2 🤔\r\n\r\nI have no issues with two phones for my testrig with 3.3 dev. For the sake of it I'll test with three phones later today. If I encounter the same I'll also share logs. "
+  },
+  {
+   "id": 2558094603,
+   "user": "Philoul",
+   "created_at": "2024-12-21T11:54:11Z",
+   "body": "Can you confirm this issue can be reproduced 🤔.\nI mean (was not a temporary issue that can arrive from time to time in NS server, and fixed a bit later...)\nNow it works again (with 3.2.0.4), if you update rig to latest RC1, it reproduce the issue or not?\n@MilosKozak any other idea of potential root cause?"
+  },
+  {
+   "id": 2558101599,
+   "user": "elgrupo123",
+   "created_at": "2024-12-21T12:14:28Z",
+   "body": "> Can you confirm this issue can be reproduced 🤔. I mean (was not a temporary issue that can arrive from time to time in NS server, and fixed a bit later...) Now it works again (with 3.2.0.4), if you update rig to latest RC1, it reproduce the issue or not? @MilosKozak any other idea of potential root cause?\r\n\r\nfrom 3.2.0.4 back to 3.3.0 does not help. The only way to get the value is to synchronize NSV3 manually, then a value comes, after that nothing more."
+  },
+  {
+   "id": 2558105048,
+   "user": "olorinmaia",
+   "created_at": "2024-12-21T12:23:58Z",
+   "body": "Can you switch to NSClientv1 on all phones to see if problem persist?\r\n\r\nAlso can you take a screenshot of your apiv3 settings in 10be server settings? At the very bottom"
+  },
+  {
+   "id": 2558106640,
+   "user": "elgrupo123",
+   "created_at": "2024-12-21T12:29:54Z",
+   "body": "> Can you switch to NSClientv1 on all phones to see if problem persist?\r\n> \r\n> Also can you take a screenshot of your apiv3 settings in 10be server settings? At the very bottom\r\n\r\n![PXL_20241221_122902930](https://github.com/user-attachments/assets/cafc454f-4c45-4c35-8345-63a42ede4822)\r\n"
+  },
+  {
+   "id": 2558131891,
+   "user": "olorinmaia",
+   "created_at": "2024-12-21T14:06:20Z",
+   "body": "@elgrupo123 can you try to switch to ns master branch in 10be? "
+  },
+  {
+   "id": 2558133112,
+   "user": "elgrupo123",
+   "created_at": "2024-12-21T14:11:21Z",
+   "body": "> @elgrupo123 can you try to switch to ns master branch in 10be?\r\n\r\nIt is set to NS Master the whole time. A test with Dev didn't help."
+  },
+  {
+   "id": 2558135310,
+   "user": "olorinmaia",
+   "created_at": "2024-12-21T14:20:29Z",
+   "body": "It stopped syncing bg on one of the phones with dev branch on 10be. Then I switched to master and since then it has been working. Could you try clear database in the AAPSClients and do a full sync after when using master branch of NS?\r\n\r\nI'm suspecting something from NS dev is causing this, but please let me know if that helps.\r\n\r\nEdit: I can see now that on one of the phones bg doesn't arrive for 5min interval or two. I haven't seen this when running all on one phone.\r\n\r\n@MilosKozak are you able to set up 3 phones to test this also? "
+  },
+  {
+   "id": 2558148628,
+   "user": "olorinmaia",
+   "created_at": "2024-12-21T15:15:15Z",
+   "body": "Confirming this with 10be master branch and 3 phones. V3 and Ws = on\r\nLog AAPSclient\r\n[AndroidAPS_LOG_1734793839136.log.zip](https://github.com/user-attachments/files/18218906/AndroidAPS_LOG_1734793839136.log.zip)\r\n\r\nAAPS\r\n[AndroidAPS_LOG_1734793804048.log.zip](https://github.com/user-attachments/files/18218908/AndroidAPS_LOG_1734793804048.log.zip)\r\n\r\nScreenshot of AAPSClient missing bg updates. Other data is syncing. Other phones are ok. I can see in v3 log that some treatments are recurring / spamming with older time than now. \r\n\r\n![Screenshot_20241221_160932_AAPSClient2](https://github.com/user-attachments/assets/d3e925b1-9a1d-4ce7-a0d5-01001e5df555)\r\n![Screenshot_20241221_160938_AAPSClient2](https://github.com/user-attachments/assets/6b7ffe45-dd03-451e-a6df-52f3af769e48)\r\n"
+  },
+  {
+   "id": 2558150125,
+   "user": "elgrupo123",
+   "created_at": "2024-12-21T15:20:55Z",
+   "body": "I have activated another follower (3 in total) and have the same problem. \r\nWith V1 they all work correctly and I'll leave it like that for now.\r\n\r\nOne follower runs fine with WS ON - Android 15, the others Android 14. Could this be the problem?"
+  },
+  {
+   "id": 2558152283,
+   "user": "olorinmaia",
+   "created_at": "2024-12-21T15:30:06Z",
+   "body": "All my phones are older android than 15. I dunno. "
+  },
+  {
+   "id": 2558171552,
+   "user": "gerison77",
+   "created_at": "2024-12-21T16:48:08Z",
+   "body": "Running now 3 clients as well in NSClient V3. No Sync Problems with BG since 1 hour. But age of pump is not synced (3rd phone was not activated since two days and missed the pump change, maybe that is the reason). All Phones run Andorid 12 and 3.3.0-rc1.\r\n\r\nI did experience such a behaviour in the past. In the most cases a database reset and full sync solved the issue. In the logs I could always find a repeating patteren which seemed to stuck.\r\nAt least that helps, so I hope.\r\n"
+  },
+  {
+   "id": 2558209728,
+   "user": "Philoul",
+   "created_at": "2024-12-21T19:12:25Z",
+   "body": "> from 3.2.0.4 back to 3.3.0 does not help. The only way to get the value is to synchronize NSV3 manually, then a value comes, after that nothing more.\n\nI got exactly this issue during tests a few weeks ago, root cause was AAPS phone upload data using NSClient V1, and AAPSClient phone dowload data with NSClient V3... 🤔"
+  },
+  {
+   "id": 2558213107,
+   "user": "elgrupo123",
+   "created_at": "2024-12-21T19:24:27Z",
+   "body": "Apparently it's just the websockets. If I deactivate the websockets on all devices, it works without any problems even with V3. \r\nI can live with that, the issue can be closed."
+  },
+  {
+   "id": 2558214243,
+   "user": "olorinmaia",
+   "created_at": "2024-12-21T19:29:08Z",
+   "body": "Well. Without websockets updates are slower. I wouldnt say this is a solution to the problem. "
+  },
+  {
+   "id": 2558395650,
+   "user": "elgrupo123",
+   "created_at": "2024-12-22T09:44:08Z",
+   "body": "Back on 3.2.0.4, all devices (4 in total) are synced very quickly and reliably - WS Active. Regardless of whether it is the DEV or RC version, something is wrong with the sync."
+  },
+  {
+   "id": 2561480982,
+   "user": "anko184",
+   "created_at": "2024-12-24T22:54:25Z",
+   "body": "I'm having the exact same problem as soon as I connect a third phone. With two phones as followers everything worked without any problem.\r\nI'm running 3.3.0-rc1 on master and aapsclient2 on the followers. Master phone is running Android 14, 1 follower the same and the others are on Android 15 QPR2b1. The problem started when I connected the second Android 15 phone. \r\nI'm going to remove one A15 phone to check if the problem is still there and I'll report here. "
+  },
+  {
+   "id": 2561847755,
+   "user": "elgrupo123",
+   "created_at": "2024-12-25T11:26:21Z",
+   "body": "> I'm having the exact same problem as soon as I connect a third phone. With two phones as followers everything worked without any problem. I'm running 3.3.0-rc1 on master and aapsclient2 on the followers. Master phone is running Android 14, 1 follower the same and the others are on Android 15 QPR2b1. The problem started when I connected the second Android 15 phone. I'm going to remove one A15 phone to check if the problem is still there and I'll report here.\r\n\r\nMy 1 follower phone runs on Android 15 and has no problems. The 2nd and 3rd followers have Android 14 and don't work."
+  },
+  {
+   "id": 2561860327,
+   "user": "anko184",
+   "created_at": "2024-12-25T12:01:42Z",
+   "body": "> > I'm having the exact same problem as soon as I connect a third phone. With two phones as followers everything worked without any problem. I'm running 3.3.0-rc1 on master and aapsclient2 on the followers. Master phone is running Android 14, 1 follower the same and the others are on Android 15 QPR2b1. The problem started when I connected the second Android 15 phone. I'm going to remove one A15 phone to check if the problem is still there and I'll report here.\r\n> \r\n> My 1 follower phone runs on Android 15 and has no problems. The 2nd and 3rd followers have Android 14 and don't work.\r\n\r\nI think it has to do with AAPS itself and not the phones. After 8-10 hours since I removed one A15 phone everything works as expected with rc1 and WS on. "
+  },
+  {
+   "id": 2563075297,
+   "user": "MilosKozak",
+   "created_at": "2024-12-26T20:19:06Z",
+   "body": "I found a bug in @olorinmaia case. NSCV1 was not properly shutdown after switching v1 -> v3. This is fixed by https://github.com/nightscout/AndroidAPS/commit/6a670611df1dc8a87c9b6300c1a632fe6dc358d6\r\n\r\nI run AAPS + two clients with WS on and found no issue so far\r\nUpdate to latest dev, turn on WS and if this happen again create new issue with description, time and logs from all 3 devices"
+  }
+ ]
+}

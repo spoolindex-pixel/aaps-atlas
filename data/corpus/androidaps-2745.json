@@ -1,0 +1,21 @@
+{
+ "id": 1885066462,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2745,
+ "title": "Assert.assertTrue(expression) tests do not explain failures, assertThat matchers provides more details on this and others",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2745",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-09-07T03:49:13Z",
+ "closed_at": "2023-09-08T06:18:24Z",
+ "comment_count": 1,
+ "body": "`assertTrue` with an expression inside often contains little information in a test failure. For example, this `DateUtilTest`\r\n\r\n```\r\nAssertions.assertTrue(DateUtil(context).dateString(1513902750000L).contains(\"22\"))\r\n```\r\n\r\nFails opaquely with\r\n\r\n```\r\njava.lang.AssertionError\r\n\tat org.junit.Assert.fail(Assert.java:87)\r\n\tat org.junit.Assert.assertTrue(Assert.java:42)\r\n\tat org.junit.Assert.assertTrue(Assert.java:53)\r\n\tat info.nightscout.androidaps.utils.DateUtilTest.dateStringTest(DateUtilTest.kt:43)\r\n```\r\n\r\nRewritten to use a [truth](https://truth.dev) matcher, the output is much clearer\r\n```\r\nassertThat(DateUtil(context).dateString(1513902750000L)).contains(\"22\")\r\n```\r\n\r\nfails with\r\n\r\n```\r\nvalue of           : dateString(...)\r\nexpected to contain: 22\r\nbut was            : 12/21/17\r\n\tat app//info.nightscout.androidaps.utils.DateUtilTest.dateStringTest(DateUtilTest.kt:44)\r\n```",
+ "comments": [
+  {
+   "id": 1711654875,
+   "user": "ryanhaining",
+   "created_at": "2023-09-08T13:14:33Z",
+   "body": "There's a lot of other tests that use `assertTrue` which should be using matchers. Can we keep this open for a bit? I am working my way through them and will tag to this issue."
+  }
+ ]
+}

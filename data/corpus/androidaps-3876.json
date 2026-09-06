@@ -1,0 +1,21 @@
+{
+ "id": 2905716071,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3876,
+ "title": "sprefactor branch InsightPairing Crash",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3876",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-03-09T22:28:52Z",
+ "closed_at": "2025-03-10T12:35:46Z",
+ "comment_count": 1,
+ "body": "I tested sprefactor branch concerning insight Driver.\n\nIt seems to work except when I remove Pairing then try to pair again my pump...\n\nI get this crahs:\n![Image](https://github.com/user-attachments/assets/ef65b400-e2fa-49eb-bcf1-656b6967d440)\n\n```\n23:23:52.982  E  FATAL EXCEPTION: main\n                 Process: info.nightscout.androidaps, PID: 5193\n                 java.lang.ClassCastException: app.aaps.core.keys.StringNonKey cannot be cast to app.aaps.core.keys.interfaces.PreferenceKey\n                 \tat app.aaps.activities.MyPreferenceFragment.onSharedPreferenceChanged(MyPreferenceFragment.kt:187)\n                 \tat android.app.SharedPreferencesImpl$EditorImpl.notifyListeners(SharedPreferencesImpl.java:637)\n                 \tat android.app.SharedPreferencesImpl$EditorImpl.apply(SharedPreferencesImpl.java:511)\n                 \tat app.aaps.shared.impl.sharedPreferences.SPImpl.remove(SPImpl.kt:96)\n                 \tat app.aaps.implementation.sharedPreferences.PreferencesImpl.remove(PreferencesImpl.kt:205)\n                 \tat app.aaps.implementation.pump.PumpSyncImplementation.connectNewPump(PumpSyncImplementation.kt:60)\n                 \tat app.aaps.core.interfaces.pump.PumpSync.connectNewPump$default(PumpSync.kt:44)\n                 \tat app.aaps.pump.insight.app_layer.activities.InsightPairingActivity$serviceConnection$1.onServiceConnected(InsightPairingActivity.kt:56)\n                 \tat android.app.LoadedApk$ServiceDispatcher.doConnected(LoadedApk.java:1972)\n                 \tat android.app.LoadedApk$ServiceDispatcher$RunConnection.run(LoadedApk.java:2004)\n                 \tat android.os.Handler.handleCallback(Handler.java:938)\n                 \tat android.os.Handler.dispatchMessage(Handler.java:99)\n                 \tat android.os.Looper.loop(Looper.java:230)\n                 \tat android.app.ActivityThread.main(ActivityThread.java:7700)\n                 \tat java.lang.reflect.Method.invoke(Native Method)\n                 \tat com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:612)\n                 \tat com.android.internal.os.ZygoteInit.main(ZygoteInit.java:997)\n```",
+ "comments": [
+  {
+   "id": 2710441031,
+   "user": "MilosKozak",
+   "created_at": "2025-03-10T12:35:46Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/40c0ef4ff53fb31beab2a179a1598778d0e840e8"
+  }
+ ]
+}

@@ -1,0 +1,87 @@
+{
+ "id": 1931813622,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2884,
+ "title": "Extreme battery drain with latest dev-m and DynISF using.",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2884",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-10-08T13:52:01Z",
+ "closed_at": "2023-10-19T19:06:00Z",
+ "comment_count": 12,
+ "body": "With this dev version my batterie runs out in hours, not days as with my old version from 02.09.2023.\r\nSmartphone become very warm.\r\nCan't go back because my latest good dev is timed out. 😒\r\n\r\n[AndroidAPS_LOG_1696772865300.log.zip](https://github.com/nightscout/AndroidAPS/files/12840841/AndroidAPS_LOG_1696772865300.log.zip)",
+ "comments": [
+  {
+   "id": 1752088481,
+   "user": "Alamo04",
+   "created_at": "2023-10-08T15:39:12Z",
+   "body": "Find the reason,  **it's the DynISF Algorithm**. \r\n\r\nChanged to SMB and battery drain is OK again."
+  },
+  {
+   "id": 1755294731,
+   "user": "robertrub",
+   "created_at": "2023-10-10T12:31:10Z",
+   "body": "I'm not using DynISF and I have a huge battery drain too (list 50% in 6 hours ..).\n\nCleaned db right now. Will see if it changes anything.\n\n![Screenshot_20231009_181539_AAPS.jpg](https://github.com/nightscout/AndroidAPS/assets/76626474/c872d842-d09c-491a-bf37-00b3dae18596)\n\n"
+  },
+  {
+   "id": 1755454347,
+   "user": "Alamo04",
+   "created_at": "2023-10-10T13:41:28Z",
+   "body": "Now, without DynISF, my batterie is fine.\r\n\r\nWith DynISF the batterie drains extreme and the phone get very hot. Don't know if that didn't destroy the phone over a longer time.\r\n\r\nWill not change back to DynISF until its confirmed fixed.\r\n\r\n@robertrub \r\nFor me:\r\n- In Dev, you can also clean your db. Thats enough for me to have no issues with that.\r\n- I deactivated \"Automation\", in settings. In my case this was also a huge batterie drainer.\r\n"
+  },
+  {
+   "id": 1756298438,
+   "user": "MilosKozak",
+   "created_at": "2023-10-10T21:32:20Z",
+   "body": "caused by xdrip sync\r\nhttps://github.com/nightscout/AndroidAPS/commit/0caded7bbb2c09036f4dc20a80b04634eb275441"
+  },
+  {
+   "id": 1756438480,
+   "user": "Alamo04",
+   "created_at": "2023-10-10T23:17:18Z",
+   "body": "Thanks @MilosKozak :)\r\n\r\nFor Info:\r\nLoaded my phone over Night.\r\n\r\nAfter change to SMB yesterday everything was fine, today at 10:00 PM my Phone had 90% batterie left.\r\nThen, in 1,5h it drains to 21%.\r\n\r\nDon't understand that.\r\n\r\nInstalled the new version just now, hope the fix works."
+  },
+  {
+   "id": 1762413205,
+   "user": "Alamo04",
+   "created_at": "2023-10-14T00:09:20Z",
+   "body": "@MilosKozak \r\nAfter update to latest dev version today, this bug appears again. 3h and batterie empty.\r\nWas using DynISF again.\r\n\r\nGoing back to the older version (11.10.2023), with your fix. \r\nThat works the last 2 Days, but I was using SMB in that time. Will see what happened with DynISF."
+  },
+  {
+   "id": 1766148855,
+   "user": "MilosKozak",
+   "created_at": "2023-10-17T10:40:18Z",
+   "body": "can you test with latest dev?\r\n"
+  },
+  {
+   "id": 1766162271,
+   "user": "robertrub",
+   "created_at": "2023-10-17T10:48:46Z",
+   "body": "I just updated. I'm starting testing (using OpenSMB and Automations)"
+  },
+  {
+   "id": 1766236030,
+   "user": "Alamo04",
+   "created_at": "2023-10-17T11:39:05Z",
+   "body": "Will do this evening, after work."
+  },
+  {
+   "id": 1767258730,
+   "user": "Alamo04",
+   "created_at": "2023-10-17T22:01:22Z",
+   "body": "Test since 2h, until now ok.\r\n\r\nWill report tomorrow evening."
+  },
+  {
+   "id": 1769059432,
+   "user": "Alamo04",
+   "created_at": "2023-10-18T17:57:46Z",
+   "body": "Test after 22 hour's = ok.\r\nIf the bug didn't appear in the next 24h, this issue is gone.\r\n\r\nNext report tomorrow evening, meantime I will change a little between SMB and DynISF, only to be sure."
+  },
+  {
+   "id": 1771556206,
+   "user": "Alamo04",
+   "created_at": "2023-10-19T19:06:00Z",
+   "body": "Changed this morning to SMB and at noon back to DynISF. Still no batterie issues.\r\n\r\nSo this issue is fixed and I close it.\r\n\r\n@MilosKozak \r\nDo you find the problem, or is there a risk that it comes back with next dev updates ?"
+  }
+ ]
+}

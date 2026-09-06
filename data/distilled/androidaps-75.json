@@ -1,0 +1,15 @@
+{
+ "issue_id": 75,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/75",
+ "title": "AAPS+Nightscout for selfhosting (SSL)",
+ "symptom": "AndroidAPS requires an SSL connection to Nightscout, but the user wants to self-host Nightscout privately on a VPN without public exposure. The user tried engineering_mode but still gets the error 'NS URL not encrypted', and Nightscout lacks full authentication for its web frontend, so they are reluctant to expose it publicly.",
+ "cause": "AndroidAPS does not allow unencrypted or self-signed certificate connections to Nightscout, and Nightscout's web frontend does not provide full authentication, preventing secure public exposure via reverse proxy.",
+ "fix": "Use a newer Nightscout version (e.g. niepi/cgm-remote-monitor:14.0.7) that requires authentication even for viewing the web frontend, then expose the Nightscout site to the internet using HTTPS via a reverse proxy such as Caddy.",
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [],
+ "confidence": "high",
+ "evidence_quote": "OK, I made it working with the latest NS version (I used niepi/cgm-remote-monitor:14.0.7), there one needs to authenticate even for viewing the web frontend. With this I was able to open the site to the Internet."
+}

@@ -1,0 +1,75 @@
+{
+ "id": 2190669237,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3268,
+ "title": "[Medtrum Nano]: BT -> Connection timed out",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3268",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-03-17T13:22:47Z",
+ "closed_at": "2024-03-27T09:07:13Z",
+ "comment_count": 14,
+ "body": "I started trying Medtrum Nano on 14 March at 18:52. I activated my first test patch and tried to give a bolus, but there was no connection for a long time. If I remember correctly, there was a \"pump unreachable\" notification. I restarted AAPS with Exit. That didn't help either. After about 10 minutes of waiting, a connection was made. But after about half an hour, the Medtrum took a few minutes to connect. I have used Dash before without any problems. I have a small problem with the Anubis transmitter, which often doesn't connect for 10-20 minutes, even when the phone is near me. It appears that disabling power optimization specifically for the Bluetooth system service on OnePlus devices is not directly possible through the standard user interface.\r\n\r\nAfter that, the connection is usually established within 2 seconds. But sometimes, after receiving the BG reading, I see that it has been trying to connect for 120 seconds and still hasn't connected. With Dash, if I remember correctly, it always connected within 2 seconds or sometimes a little longer.\r\n\r\nOn 17 March at 1:56 and 2:05, I got \"Connection timed out\". I tried to give a small bolus 2 times with the message pump unreachable. It reconnected after I clicked on the three dots to exit. After a disconnection at 2:05, it didn't reconnect after the first exit but after the second. This is getting annoying.\r\n\r\nAAPS version: AAPS 3.3.0-dev\r\nBuild: f2166ec366-2024.03.15\r\nPhone: OnePlus 12\r\nOS: OxygenOS 14.0\r\nBluetooth: 5.4, A2DP, LE, aptX HD, LHDC\r\nNano battery: 2.82 V\r\n\r\nWhole log folder is zipped and attached.\r\n\r\n[AAPS log files.zip](https://github.com/nightscout/AndroidAPS/files/14627504/AAPS.log.files.zip)\r\n",
+ "comments": [
+  {
+   "id": 2002577641,
+   "user": "jbr7rr",
+   "created_at": "2024-03-17T18:54:15Z",
+   "body": "Thx for reporting, unfortunately the logs don't contain the time period of the connection issues, and no errors in the logs provided.\r\n\r\n@MilosKozak Can we increase the log size? compared to master, dev logs are tiny\r\n\r\n@dar-kod Can you setup the logs in the following manner, and upload logs when it happens again?\r\n![WhatsApp Image 2024-03-17 at 19 49 21](https://github.com/nightscout/AndroidAPS/assets/60566713/7a57a4fc-f2e3-4984-ae7c-d416950d4db6)\r\n"
+  },
+  {
+   "id": 2003057226,
+   "user": "MilosKozak",
+   "created_at": "2024-03-18T06:59:22Z",
+   "body": "I didn't touch the size of logs"
+  },
+  {
+   "id": 2004285682,
+   "user": "dar-kod",
+   "created_at": "2024-03-18T15:48:52Z",
+   "body": "I got the \"Pump unreachable\" alarm at 06:43:40. I'm not sure, but it's probably caused by sleeping on the patch. The phone was about 1m away. It seems that of all the files in the log folder, only AndroidAPS.log may contain some data. I have attached the whole folder.\r\n\r\n[AAPS log files.zip](https://github.com/nightscout/AndroidAPS/files/14638855/AAPS.log.files.zip)\r\n"
+  },
+  {
+   "id": 2004741234,
+   "user": "jbr7rr",
+   "created_at": "2024-03-18T19:20:45Z",
+   "body": "@dar-kod Can you test with https://github.com/nightscout/AndroidAPS/pull/3270 ?\r\n\r\nCan you let it run for a couple of days and see if it fixes it? After that pls report back and send logs"
+  },
+  {
+   "id": 2006950482,
+   "user": "dar-kod",
+   "created_at": "2024-03-19T11:35:53Z",
+   "body": "Thank you @jbr7rr. I started testing with #3270 at 23:47 the day before. No disconnects so far."
+  },
+  {
+   "id": 2013038795,
+   "user": "dar-kod",
+   "created_at": "2024-03-21T17:04:34Z",
+   "body": "@jbr7rr There have been no BT problems so far. I have yet to test if there will be when I apply a new patch. \r\n\r\nI have something strange and I am not sure if it is related to BT. When the bolus is visible in the progress bar, when I click stop it says \"failed\": \"Bolus reported an error. Manually check real delivered amount\". I have tried stopping 2 times today (15:42 and 17:35) and both times it was like this.\r\n\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/14704626/AndroidAPS.log)\r\n"
+  },
+  {
+   "id": 2014916465,
+   "user": "jbr7rr",
+   "created_at": "2024-03-22T11:49:42Z",
+   "body": "> @jbr7rr There have been no BT problems so far. I have yet to test if there will be when I apply a new patch.\r\n> \r\n> I have something strange and I am not sure if it is related to BT. When the bolus is visible in the progress bar, when I click stop it says \"failed\": \"Bolus reported an error. Manually check real delivered amount\". I have tried stopping 2 times today (15:42 and 17:35) and both times it was like this.\r\n> \r\n> [AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/14704626/AndroidAPS.log)\r\n\r\nThis is expected behaviour when you cancel bolus"
+  },
+  {
+   "id": 2015090464,
+   "user": "dar-kod",
+   "created_at": "2024-03-22T13:21:58Z",
+   "body": "> This is expected behaviour when you cancel bolus\r\n\r\nI didn't expect it because it wasn't like that with Dash.\r\n\r\nThere seems to be no recurring BT issues. I changed the patch today and there were no problems."
+  },
+  {
+   "id": 2022179001,
+   "user": "jbr7rr",
+   "created_at": "2024-03-27T08:15:42Z",
+   "body": "Merged in dev, can be closed imo. If you thing cancel bolus should not give a error please open new issue"
+  },
+  {
+   "id": 3611950688,
+   "user": "fjpezuela",
+   "created_at": "2025-12-04T12:14:38Z",
+   "body": "Hello,\n\nI have a OnePlus 10 Pro with Android 15 and I've had the same problem discussed in this thread with version 3.3.3.0-dev-d.\n\nI tried two Medtrum patches, and the connection was successful, allowing me to place a bolus immediately afterward. Subsequently, the phone stopped connecting to the pump. I tried restarting the phone, restarting AAPS, turning Bluetooth on and off, etc., without success.\n\nI thought it was a problem with the base station, but I tried connecting it to another phone with version 3.2.0.4 and Android 10, and it connects and works without problems.\n\nIn three days, I can test the Medtrum again with a different patch and upload the logs, in case it can be resolved.\n\nThe strangest thing is that even though AAPS wouldn't connect to the pump, if I went to the option to discard the patch or activate a new one, I could do so without problems, with the same failure occurring after the initial pairing."
+  }
+ ]
+}

@@ -1,0 +1,108 @@
+{
+ "id": 1125812903,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1288,
+ "title": "Omnipod and DASH tabs force closes AAPS if phone language is set to \"Danish\"",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1288",
+ "state": "closed",
+ "labels": [
+  "omnipod dash",
+  "omnipod eros"
+ ],
+ "created_at": "2022-02-07T10:44:09Z",
+ "closed_at": "2022-04-07T11:54:36Z",
+ "comment_count": 16,
+ "body": "Update to current description of the problem:\r\n1. The omnipod/dash tabs seem to force close AAPS when the pod has <50U left (could be something with this translation string?)\r\n2. Changing language to English in AAPS does not change names of the tabs, thus not solving the problem (can not tell if it changes the language IN the tab)\r\n3. Changing phone language to English changes all translations back to original and the problem disappears.\r\n\r\n\r\n\r\n--- Old ---\r\nWhen alarm for low reservoir or end timer occurs, pushing the tab for omnipod or dash (I tried both types of pods with same error) simply force closes the app. It is impossible to \"ack alarms\" or change the pod. \r\nSo far my solutions is resetting AAPS, importing old import and starting over with a new pod while physically deactivating the old one. I have been searching around for solutions and have tried reinstalling, resetting and even rebuilding the app package.\r\nThe last occurrences happened several times between 01.00 - 02.30, but i was resetting and reinstalling several times in the timespan - wondering if log files are useless then?\r\n\r\nBuild v.: 3.0.0.1 (and 3.0.0)\r\n\r\nThe issue does not occur on v.2.8.2\r\n\r\nPhone: Samsung SM-G981B/DS, Android 12\r\n\r\nI hope this is the correct logfile. Date: 2022.02.06, time 01.00-02.30.\r\n[AndroidAPS._2022-02-06_02-27-07_.0.zip](https://github.com/nightscout/AndroidAPS/files/8014520/AndroidAPS._2022-02-06_02-27-07_.0.zip)",
+ "comments": [
+  {
+   "id": 1031823012,
+   "user": "MilosKozak",
+   "created_at": "2022-02-07T19:14:17Z",
+   "body": "Nothing in log. Is it replicable?"
+  },
+  {
+   "id": 1031853591,
+   "user": "zeppo33",
+   "created_at": "2022-02-07T19:48:57Z",
+   "body": "> Nothing in log. Is it replicable?\r\n\r\nI guess it is, but I will have to wait until the Pod triggers an alarm for either. I am trying to adjust the alarm time for pod depletion to suit my needs for a new log file. I guess I can try letting it force close a couple of times and then quickly download the latest log file to make sure its the correct one. I will hopefully return with it in ~24h\r\n"
+  },
+  {
+   "id": 1032911075,
+   "user": "zeppo33",
+   "created_at": "2022-02-08T18:08:03Z",
+   "body": "OK, so i randomly opened the \"omnipod\" tab just now - and AAPS force closed. The alarm has not been triggered yet, so maybe that is not the main root of the problem. Adding screenshots and brand new log file. I opened the tab 3 times with force closed app every time within the 18.59 minute mark. I really hope this helps.\r\n\r\n![Screenshot_20220208-185903_AndroidAPS](https://user-images.githubusercontent.com/21089659/153048936-bbd97c3f-0c1d-4fb6-992a-cb0660669c52.jpg)\r\n![Screenshot_20220208-185912_AndroidAPS](https://user-images.githubusercontent.com/21089659/153048949-58cec935-aea5-4895-8773-48476e2778b9.jpg)\r\n[AndroidAPS_LOG_1644343198245.log.zip](https://github.com/nightscout/AndroidAPS/files/8026381/AndroidAPS_LOG_1644343198245.log.zip)\r\n."
+  },
+  {
+   "id": 1034884264,
+   "user": "zeppo33",
+   "created_at": "2022-02-10T12:49:51Z",
+   "body": "I wonder if I am reading the log correct, but I think this may be the last thing happening before AAPS is force closed. What does it mean, and how do I correct it?\r\n\r\n18:59:31.408 [Thread-10] D/CORE: [AutosensDataStore.createBucketedData5min():324]: Adjusted time 07.02.2022 09:00:41\r\n\r\nI am due for a Pod+Dexcom change tomorrow afternoon, I wonder if I should try to factory reset my phone and see if it helps?\r\n\r\n"
+  },
+  {
+   "id": 1035796811,
+   "user": "m-scha1337",
+   "created_at": "2022-02-11T02:33:14Z",
+   "body": "@zeppo33 might be a long-shot but could you try and change your phones system language from danish to english?\r\nSomebody on facebook has raised a similar issue and their system language is also set to danish.\r\n\r\nAlso: Do you know how to record a logcat?"
+  },
+  {
+   "id": 1037033650,
+   "user": "zeppo33",
+   "created_at": "2022-02-12T07:06:37Z",
+   "body": "@m-scha1337 I looked for the other guy, and it seems you were right. So I did some more digging to try and narrow it down:\r\n1. The omnipod/dash tabs seem to force close AAPS when the pod has <50U left (could be something with this translation string?)\r\n2. Changing language to English in AAPS does not change names of the tabs, thus not solving the problem (can not tell if it changes the language IN the tab)\r\n3. Changing phone language to English changes all translations back to original and the problem disappears."
+  },
+  {
+   "id": 1037058792,
+   "user": "zeppo33",
+   "created_at": "2022-02-12T08:14:39Z",
+   "body": "> * The omnipod/dash tabs seem to force close AAPS when the pod has <50U left (could be something with this translation string?)\r\n> \r\n> * Changing language to English in AAPS does not change names of the tabs, thus not solving the problem (can not tell if it changes the language IN the tab)\r\n> \r\n> * Changing phone language to English changes all translations back to original and the problem disappears.\r\n\r\nIssue with this description is now confirmed by another user in this facebook thread: https://www.facebook.com/726516084/videos/3057617701166751/"
+  },
+  {
+   "id": 1037208708,
+   "user": "m-scha1337",
+   "created_at": "2022-02-12T12:37:04Z",
+   "body": "@MilosKozak I think this warrants the \"bug\" label"
+  },
+  {
+   "id": 1038335404,
+   "user": "danielhers",
+   "created_at": "2022-02-13T18:47:08Z",
+   "body": "I confirm this happens to me too, exactly when less than 50 units are left in my Eros. Changing the phone language from Danish to English fixes the problem. "
+  },
+  {
+   "id": 1038759863,
+   "user": "MilosKozak",
+   "created_at": "2022-02-14T07:49:44Z",
+   "body": "i already fixed some crashes related to wrong translations. Could you test 3.0.0.1-dev?"
+  },
+  {
+   "id": 1040386750,
+   "user": "m-scha1337",
+   "created_at": "2022-02-15T15:11:45Z",
+   "body": "> i already fixed some crashes related to wrong translations. Could you test 3.0.0.1-dev?\r\n\r\nwell @MilosKozak, the thing is.. I was going to test this in 3.0.0.1-Release, forcing AAPS into using using danish via root shenanigans (zygisk, lsposed and \"app settings reborn\", changing 'locale' to danish). My end goal was to check logcat for anything suspicious..\r\nI had already set up pretty much everything, but in the end i had to give up because i can't really think of a way of faking a real RileyLink connection and faking a real Omnipod dash connection that reports <=50 IU remaining.. \r\nSince i'm not willing to sacrifice a real pod for this test (this is a burner phone so i would need to sacrifice a pod upon switching back to my main phone), i abandoned this idea.\r\n\r\nTherefore I am asking you if there is a way of faking a RileyLink connection and faking an active Omnipod dash, configured to report <=50 IU remaining, without using the \"Virtual Pump\" driver interface..\r\nEven if this issue has already been fixed, i would like to know for future testing :)"
+  },
+  {
+   "id": 1044533159,
+   "user": "zeppo33",
+   "created_at": "2022-02-18T13:32:00Z",
+   "body": "> i already fixed some crashes related to wrong translations. Could you test 3.0.0.1-dev?\r\n\r\n@MilosKozak I have never tried anything but the \"master\" version. Can i just build, upgrade and use straight out of the box? Can i just as easily revert to 3.0.0.1?"
+  },
+  {
+   "id": 1045963302,
+   "user": "m-scha1337",
+   "created_at": "2022-02-19T08:04:41Z",
+   "body": "> > i already fixed some crashes related to wrong translations. Could you test 3.0.0.1-dev?\r\n> \r\n> MilosKozak I have never tried anything but the \"master\" version. Can i just build, upgrade and use straight out of the box? Can i just as easily revert to 3.0.0.1?\r\n\r\nTake this with a grain of salt because frankly, i'm not 100% sure since i don't really do kotlin/java but: I think you will have a tough time going back from 3.0.0.1 dev to 3.0.0.1 master as android generally does not allow app downgrades..\r\n\r\nI believe in order to go back from the dev build to the master branch build, you'd need to completely uninstall the AAPS dev .apk, then re-install the AAPS master .apk.\r\n\r\nI would _also_ be careful not to import settings generated in a more recent version of AAPS, into an older version of it. As i scrolled through `VersionCheckerPlugin.kt`, i found that `PrefFileListProvider.kt` (which i assume is responsible for import/export of settings) calls `versionCheckerUtils.versionDigits()` and compares app version numbers with the app version attached to the settings file and the current version (which in this case could both just be '3.0.0.1' but idk).\r\nAs I understand it, importing different **minor** version settings _should_ be fine, but there's no guarantee of course..\r\n\r\n---\r\n\r\nThen again; i could be totally wrong about all of this.. Those are just my two cents on the matter.\r\nglhf."
+  },
+  {
+   "id": 1047768155,
+   "user": "Andries-Smit",
+   "created_at": "2022-02-22T12:54:45Z",
+   "body": "Wrong translations should no longer cause crashes and should fall back to the English text and report an issue via Crashlytics. #1329  "
+  },
+  {
+   "id": 1059715293,
+   "user": "zeppo33",
+   "created_at": "2022-03-05T07:50:08Z",
+   "body": "> Wrong translations should no longer cause crashes and should fall back to the English text and report an issue via Crashlytics. #1329\r\n\r\nSo this should be working again from the the next master version available after 3.0.0.1?"
+  }
+ ]
+}

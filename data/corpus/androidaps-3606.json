@@ -1,0 +1,51 @@
+{
+ "id": 2732357838,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3606,
+ "title": "Temporary profile percentage for a duration set does not end.",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3606",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-12-11T09:29:11Z",
+ "closed_at": "2024-12-11T12:56:17Z",
+ "comment_count": 6,
+ "body": "**AndroidAPS 3.3.0-dev-e**\r\n**Build:** 859764d2ce4fc3359c4fe4e243a89466fc5aa996\r\n**Flavor:** Fullrelease\r\n\r\n**Problem description:**\r\n\r\nTemporary profile percentage for the duration set does not end.\r\nTemporary target was manually to 80% for a duration of 180 minutes at 02:09hrs.\r\nIn overview at 0918hrs it is still active, showing negative time of 9 minutes. At that time however, 80% profile is still active and does not change/progress.\r\n\r\n**Additional information**\r\nProblem looks similar to issue https://github.com/nightscout/AndroidAPS/issues/2538\r\n\r\n_Logfiles_\r\n[AndroidAPS_LOG_1733905150983.log.zip](https://github.com/user-attachments/files/18092575/AndroidAPS_LOG_1733905150983.log.zip)\r\n\r\n_Screenshots:_\r\n![Overview75](https://github.com/user-attachments/assets/94cfbe3f-79d7-40c6-abda-91c1f0bd17d9)\r\n![profileswitch](https://github.com/user-attachments/assets/58aa4860-8d21-4862-ad8b-21ace362c798)\r\n\r\n",
+ "comments": [
+  {
+   "id": 2535344300,
+   "user": "MilosKozak",
+   "created_at": "2024-12-11T09:49:37Z",
+   "body": "I need older logs from  2:09\r\nnegative time can easy happen between end of profile with duration and enacting the change by pump. That's how it's designed"
+  },
+  {
+   "id": 2535551832,
+   "user": "vanelsberg",
+   "created_at": "2024-12-11T11:10:29Z",
+   "body": "Ah yes - realize there is much more logs then just latest 3 :-|\r\n\r\nAll logs from today:\r\n[logs.zip](https://github.com/user-attachments/files/18094287/logs.zip)\r\n\r\n"
+  },
+  {
+   "id": 2535566790,
+   "user": "vanelsberg",
+   "created_at": "2024-12-11T11:15:31Z",
+   "body": "> negative time can easy happen between end of profile with duration and enacting the change by pump.\r\n\r\nYes, but I think this is different: At this moment AAPS is **still running op 80% profile** (12 hours after setting 80% for 180 minutes. DASH history confirms it did not cancle.... (this should also see that in the logs?)\r\n\r\nHave to manually reset bij either set a profile of 100% or delete the temp profile% from treatments...\r\n\r\n"
+  },
+  {
+   "id": 2535918340,
+   "user": "MilosKozak",
+   "created_at": "2024-12-11T12:56:18Z",
+   "body": "AAPS didn't schedule \"KeepAlive\". this is happening sometimes on some phones and as it's google's library I cannot affect it.\r\nRestart of AAPS probably helps.\r\nYou may search logs for \"KeepAlive\" to be sure it works\r\n"
+  },
+  {
+   "id": 2535920558,
+   "user": "MilosKozak",
+   "created_at": "2024-12-11T12:57:19Z",
+   "body": "I don't see it it newest logs as well"
+  },
+  {
+   "id": 2543032492,
+   "user": "vanelsberg",
+   "created_at": "2024-12-14T09:53:28Z",
+   "body": "Hmmm.... \r\nWill monitor. And have a closer look at the logs when problem repeats on current dev"
+  }
+ ]
+}

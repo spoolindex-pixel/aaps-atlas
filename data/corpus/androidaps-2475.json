@@ -1,0 +1,63 @@
+{
+ "id": 1640812313,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2475,
+ "title": "AAPS 3.2.0 dev-i is not uploading to NS smoothed values from G7 patched app. ",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2475",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-03-26T08:01:09Z",
+ "closed_at": "2023-03-26T10:37:41Z",
+ "comment_count": 8,
+ "body": "Reporting bug\r\n\r\nI changed today from BYODA G6 to the patch app of G7. \r\n\r\nIt looks like AAPS needs to upload the smoothed values. Instead is uploading the raw values to Nightscout. \r\n\r\n\r\n![Screenshot_20230326-004511](https://user-images.githubusercontent.com/39507448/227762682-dd3249d5-1fff-4567-867f-573e0fc07c7d.png)\r\n![Screenshot_20230326-004522](https://user-images.githubusercontent.com/39507448/227762684-96e8f987-15c9-4ec9-b5a3-2b681bdf9434.png)\r\n![Screenshot_20230326-004548](https://user-images.githubusercontent.com/39507448/227762685-3e2791f4-6f87-4fe0-b068-dd1122b64e6d.png)\r\n\r\nI'm using version AAPS 3.2.0 - dev-i Build:003f323d4c-2023.03.25\r\nI'm using the plugin that uses the API v3 and NS version 15.0.0\r\n\r\nHere are the logs too. \r\n[AndroidAPS_LOG_1679817337271.log.zip](https://github.com/nightscout/AndroidAPS/files/11071036/AndroidAPS_LOG_1679817337271.log.zip)\r\n",
+ "comments": [
+  {
+   "id": 1484032813,
+   "user": "blaqone",
+   "created_at": "2023-03-26T08:41:56Z",
+   "body": "Maybe add a switch to allow uploading smoothed OR raw data to NS.\r\n\r\nBUT then again it is the smoothed data you rely on if you enable that smoothing plugin - so I think the smoothed data must be written to NS."
+  },
+  {
+   "id": 1484035127,
+   "user": "Pamalosebi",
+   "created_at": "2023-03-26T08:53:02Z",
+   "body": "yes, please. I guess it would also render services like [https://autotuneweb.azurewebsites.net](https://autotuneweb.azurewebsites.net) useless."
+  },
+  {
+   "id": 1484039153,
+   "user": "blaqone",
+   "created_at": "2023-03-26T09:10:51Z",
+   "body": "> yes, please. I guess it would also render services like https://autotuneweb.azurewebsites.net useless.\r\n\r\nAutotune has nothing to do with smoothing values."
+  },
+  {
+   "id": 1484056316,
+   "user": "MilosKozak",
+   "created_at": "2023-03-26T10:37:41Z",
+   "body": "this is by design. AAPS doesn't modify BG values. But it can does smoothing for internal use and rendering"
+  },
+  {
+   "id": 1484065876,
+   "user": "blaqone",
+   "created_at": "2023-03-26T11:20:38Z",
+   "body": "On the one hand it is said that AAPS does not change any values - but the smoothing plugin does exactly that. To use the g7 in AAPS this is also needed - so far so good. \r\nBut why the values, on the basis of which you adjust your food and insulin delivery every day, are not written and documented to NS is not clear to me at all.\r\nEither one says that AAPS does not change values - then the g7 plugin should not be used - or one allows the writing of the smoothed G7 values to NS.\r\n\r\nThis should be discussed."
+  },
+  {
+   "id": 1484074817,
+   "user": "Pamalosebi",
+   "created_at": "2023-03-26T11:59:47Z",
+   "body": "> > yes, please. I guess it would also render services like https://autotuneweb.azurewebsites.net useless.\r\n> \r\n> Autotune has nothing to do with smoothing values.\r\n\r\nAre you sure about this?\r\n\r\nAs far as I know it uses CGM data from NS. How else would it find possible UAMs?\r\n\r\nIt may be that \"Autotune has nothing to do with smoothing values\", but I am talking about the calculations that are done with the raw data available in NS. And if these are not smoothed (as it should be) then I don't see how these services are supposed to work with the data. Also when generating reports and so on..."
+  },
+  {
+   "id": 1484077033,
+   "user": "blaqone",
+   "created_at": "2023-03-26T12:07:10Z",
+   "body": "> > > yes, please. I guess it would also render services like https://autotuneweb.azurewebsites.net useless.\r\n> > \r\n> > \r\n> > Autotune has nothing to do with smoothing values.\r\n> \r\n> Are you sure about this?\r\n> \r\n> As far as I know it uses CGM data from NS. How else would it find possible UAMs?\r\n> \r\n> It may be that \"Autotune has nothing to do with smoothing values\", but I am talking about the calculations that are done with the raw data available in NS. And if these are not smoothed (as it should be) then I don't see how these services are supposed to work with the data. Also when generating reports and so on...\r\n\r\nYes this is indeed correct!"
+  },
+  {
+   "id": 1484116629,
+   "user": "MilosKozak",
+   "created_at": "2023-03-26T14:38:25Z",
+   "body": "AAPS even keeps original values in DB. data is smoothed just before use and only in memory"
+  }
+ ]
+}

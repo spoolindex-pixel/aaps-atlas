@@ -1,0 +1,51 @@
+{
+ "id": 232048818,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 126,
+ "title": "BG broadcast issue with NFC and libre",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/126",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2017-05-29T15:16:11Z",
+ "closed_at": "2018-11-02T08:03:57Z",
+ "comment_count": 6,
+ "body": "When I scan my libre over NFC with a few hours between each scan, then xdrip-plus broadcasts several times the same last value instead of broadcasting all new values since last scan.\r\n\r\nSee screenshot:\r\n\r\n![2017-05-15 19 24 07](https://cloud.githubusercontent.com/assets/24234385/26554787/489b4828-4492-11e7-9f93-584e65a493b9.png)\r\n",
+ "comments": [
+  {
+   "id": 305154474,
+   "user": "jamorham",
+   "created_at": "2017-05-31T10:45:41Z",
+   "body": "Thanks for reporting this. I'm trying to determine where the problem is originating from.\r\n\r\nAs a test can you do this:\r\n\r\nGo to `Settings` -> `Inter-app Settings` and un-check `Send Display Glucose` then repeat your test and let me know if you get the same problem?"
+  },
+  {
+   "id": 305277583,
+   "user": "gregorybel",
+   "created_at": "2017-05-31T18:34:12Z",
+   "body": "Hi John, \r\n\r\nI unchecked this and no more issue! \r\n\r\nHope this help to fix issue. \r\nThanks "
+  },
+  {
+   "id": 305315098,
+   "user": "jamorham",
+   "created_at": "2017-05-31T20:57:21Z",
+   "body": "Okay thanks, this means that the feature called `Display Glucose` which includes noise compensation and calibration plugins will need to be updated to support data coming in out of sequence which I think is what is causing your issue here."
+  },
+  {
+   "id": 308482087,
+   "user": "gregorybel",
+   "created_at": "2017-06-14T16:15:49Z",
+   "body": "Jon, can you tell me where in the code you think the issue is then I will try to fix it and if I manage then will do a PR. "
+  },
+  {
+   "id": 308491924,
+   "user": "AdrianLxM",
+   "created_at": "2017-06-14T16:50:57Z",
+   "body": "@gregorybel, it must be in this call: https://github.com/NightscoutFoundation/xDrip/blob/master/app/src/main/java/com/eveningoutpost/dexdrip/UtilityModels/BgSendQueue.java#L235\r\n\r\n(edit: sorry, wrong line)"
+  },
+  {
+   "id": 308642564,
+   "user": "gregorybel",
+   "created_at": "2017-06-15T06:36:54Z",
+   "body": "Thank you @AdrianLxM! "
+  }
+ ]
+}

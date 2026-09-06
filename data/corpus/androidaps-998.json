@@ -1,0 +1,27 @@
+{
+ "id": 1065868682,
+ "repo": "nightscout/AndroidAPS",
+ "number": 998,
+ "title": "[3.0beta7] NSClient doesn't receive updated insulin amount when bolus is partly cancelled",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/998",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-11-29T10:30:19Z",
+ "closed_at": "2021-11-29T18:06:47Z",
+ "comment_count": 2,
+ "body": "We were at an event by our local diabetes association this weekend where kids were sorted in age groups and sent for different activities while parent had conference sessions. \r\nSunday morning we dosed 20 carbs/4U before going to the breakfast buffet in order to have at least a little prebolus going (same as saturday which worked fine). She chose a full plate of carbs (pancakes and waffles with sugar on top), 70 carbs total. So we started a bolus for 50 carbs (subtracting the 20 carb prebolus) resulting in 11U. After a few minutes I remembered she was going swimming with her group right after breakfast for 2 hours. So I hit the cancel button. on the AAPS phone the bolused amount was edited to what she actually received (7.5U). That would correspond well to her typical need for intense activity, and what she would have been receiving had I remembered to to a 70% profile change before bolusing for breakfast. So we were confident in sending her off, knowing they would have regular breaks to check glucose and add more carbs if needed. \r\n\r\nHowever after a while I checked NSClient on my phone and it displayed the full 11U bolus in both graph area and Treatments. In nightscout the correct amounts are showing. \r\n\r\n![20211129_111254](https://user-images.githubusercontent.com/71758682/143851218-6afbb260-43aa-424b-ad66-7694446f01e6.jpg)\r\n![2021-11-28-NS breakfast bolus](https://user-images.githubusercontent.com/71758682/143851237-9621f13a-9f3b-4b82-8e97-997ea369a188.PNG)\r\n\r\nIn this case the error didn't cause any panic on our part as I knew the bolus was partly cancelled and it was a display \"error\" in NSClient, but if the same thing had happened while she was at school, OR if a bolus was partly cancelled due to pod failing in the middle, I would have been nervously trying to contact her to fix something that was already fixed on her end. \r\n",
+ "comments": [
+  {
+   "id": 981513948,
+   "user": "kristinsmotz",
+   "created_at": "2021-11-29T10:44:14Z",
+   "body": "These are the only logs available for yesterday in the aaps/logs folder on my daughter's phone, but I don't think the contain the correct time frame. Not sure how I can find them now.\r\n[AndroidAPS._2021-11-28_00-00-06_.0.zip](https://github.com/nightscout/AndroidAPS/files/7617552/AndroidAPS._2021-11-28_00-00-06_.0.zip)\r\n[AndroidAPS._2021-11-28_00-00-06_.1.zip](https://github.com/nightscout/AndroidAPS/files/7617554/AndroidAPS._2021-11-28_00-00-06_.1.zip)\r\n"
+  },
+  {
+   "id": 981883599,
+   "user": "MilosKozak",
+   "created_at": "2021-11-29T18:06:47Z",
+   "body": "fixed by https://github.com/nightscout/AndroidAPS/commit/ac62217984ccaf8ec3a090b97fe2b4a3987bc2af"
+  }
+ ]
+}

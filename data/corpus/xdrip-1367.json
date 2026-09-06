@@ -1,0 +1,51 @@
+{
+ "id": 639467963,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1367,
+ "title": "No readings in Xdrip from patched Librelink app",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1367",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2020-06-16T08:18:11Z",
+ "closed_at": "2020-06-16T09:12:42Z",
+ "comment_count": 6,
+ "body": "Hi,\r\nI am using the [LibreLink-xDrip patch](https://github.com/TinoKossmann/LibreLink-xDrip-Patch) on my AGM X3 but I cannot get any values in xDrip.\r\n\r\nI followed TinoKossmann's instructions above and from the output of logcat I can see that the phone recieves the raw CGM-values every minute.\r\n```\r\n06-16 09:43:30.519 12760 12760 D PatchedBleManager: BLE Streaming Data Result: 199.0\r\n06-16 09:44:32.580 12760 12760 D PatchedBleManager: BLE Streaming Data Result: 198.0\r\n06-16 09:45:30.310 12760 12760 D PatchedBleManager: BLE Streaming Data Result: 202.0\r\n06-16 09:47:32.550 12760 12760 D PatchedBleManager: BLE Streaming Data Result: 203.0\r\n06-16 09:48:31.666 12760 12760 D PatchedBleManager: BLE Streaming Data Result: 207.0\r\n06-16 09:49:32.874 12760 12760 D PatchedBleManager: BLE Streaming Data Result: 203.0\r\n06-16 09:50:33.327 12760 12760 D PatchedBleManager: BLE Streaming Data Result: 205.0\r\n```\r\nIn xdrip I don't get any readings.\r\n![Screenshot_20200616-100236](https://user-images.githubusercontent.com/42959721/84748318-c1e3da80-afb8-11ea-97e5-bf921f0617ea.png)\r\n\r\nFrom the logcat file I can see that readings are not delivered from `com.freestylelibre.app.de` to `com.eveningoutpost.dexdrip`\r\n```\r\n06-16 09:25:21.299  2608  2652 W MobileSafeService: checkStartServicePerm com.freestylelibre.app.de com.eveningoutpost.dexdrip false                          \r\n06-16 09:25:21.299  2608  2652 V autorun_br: Skipping delivery to com.eveningoutpost.dexdrip/10106 : package is restricted 2, caller: Intent { act=com.librelink.app.ThirdPartyIntegration.GLUCOSE_READING flg=0x10 pkg=com.eveningoutpost.dexdrip (has extras) } 10107 12760 com.freestylelibre.app.de\r\n```\r\nI use version 2.3 of the original LibreLink app and version `8ba59ae-2020.03.11` version of xdrip (nightlies). Android 8.1.\r\n\r\nSee [this gist for phone info](https://gist.github.com/benfiscal/35ab159fb52dade3bb4f49df9548a0ea) . I also upload the [full logcat file](https://gist.github.com/benfiscal/711c7e8b44bae02867644f3ea51d031b)",
+ "comments": [
+  {
+   "id": 644640689,
+   "user": "benfiscal",
+   "created_at": "2020-06-16T09:12:37Z",
+   "body": "I managed to solve this. The problem was that the apps were restricted from accociated autorun  in the Autorun manager in Android System settings."
+  },
+  {
+   "id": 655445022,
+   "user": "JimZam",
+   "created_at": "2020-07-08T10:55:39Z",
+   "body": "Good morning. I've this problem too. The fact is in the past it worked but with this new sensor I'm not able to make it work. Librelink's alarms don't work so I don't know where is the problem...\r\nI've tried deleting bluetooth data and Librelink patched is running in the backgroud.\r\nAny help is appreciated\r\nRegards\r\n"
+  },
+  {
+   "id": 655458966,
+   "user": "benfiscal",
+   "created_at": "2020-07-08T11:27:12Z",
+   "body": "Hi,\r\nCould it be a faulty sensor? \r\nAre you able to run `adb logcat > file.txt` and provide the output in file.txt in a gist?"
+  },
+  {
+   "id": 655477855,
+   "user": "JimZam",
+   "created_at": "2020-07-08T12:07:04Z",
+   "body": "I don't know if it is a faluty sensor...\r\nadb logcat is running and file.txt is more than 10Mb by now and growing, I'll put it in gist when it ends but I don't know if something is wrong due to the size of the file.\r\nThank you for your help and light-speed answer\r\nRegards"
+  },
+  {
+   "id": 657103856,
+   "user": "JimZam",
+   "created_at": "2020-07-11T17:58:43Z",
+   "body": "Ok, it works three days later... I've intalled and reinstalled the patched app (the one with Abbott communication) until alarms appeared in red on the graphic and the app asked permission for GPS and battery and optimization. I've to say I started the sensor with the patched app without internet access and now it's working with the one with server access, I don't know why/how, I've tried so many times...\r\nRegards"
+  },
+  {
+   "id": 657120165,
+   "user": "benfiscal",
+   "created_at": "2020-07-11T19:55:42Z",
+   "body": "I’m glad to hear that it now works for you! "
+  }
+ ]
+}

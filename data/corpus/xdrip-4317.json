@@ -1,0 +1,45 @@
+{
+ "id": 3777196688,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 4317,
+ "title": "Carelink follower",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/4317",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2026-01-02T20:25:26Z",
+ "closed_at": "2026-01-02T21:01:03Z",
+ "comment_count": 5,
+ "body": "The data source \"Carelink follower\" is not working, It has been 2 hours since the error shown in the image below.\n\n@Navid200 @jamorham \n\n![Image](https://github.com/user-attachments/assets/c19187c7-d21f-4b14-ac09-af3d1e1142ae)\n\n![Image](https://github.com/user-attachments/assets/0f319d2b-6a24-4d5c-8bbd-12467668bd72)",
+ "comments": [
+  {
+   "id": 3706187868,
+   "user": "m0rt4l1n",
+   "created_at": "2026-01-02T20:37:19Z",
+   "body": "Same issue here, I am currently looking into it but would appreciate if others look into this as well :)\n\nMy findings are:\n- The login url (https://mdtlogin-ocl.medtronic.com:443/mmcl/auth/oauth/v2/token) currently responds to the TLS ClientHello with an TCP close immediately, maybe they block traffic without certain flags?\n- sniffing on traffic from the iOS app, this domain is not connected to, instead the following are being connected to: clcloud.minimed.eu, carelink.minimed.eu, carelink-connect.minimed.eu, carelink-login.minimed.eu. See the attached screenshot (ignore the 1password stuff)\n\n<img width=\"566\" height=\"701\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/ac3ca807-710a-4f91-bdca-93cb144292e9\" />"
+  },
+  {
+   "id": 3706189792,
+   "user": "m0rt4l1n",
+   "created_at": "2026-01-02T20:38:50Z",
+   "body": "I also suspect, that the config for Medtronic's endpoints (https://clcloud.minimed.eu/connect/carepartner/v11/discover/android/3.2) is outdated and a new one is loaded by the apps. I will have to disassemble the newest android app to check if a new url is used.\n\nNote that https://clcloud.minimed.com/connect/carepartner/v11/discover/android/3.2 currently reports the SSOConfiguration https://carelink.minimed.eu/configs/v1/eu_sso_cp_eu_v6.json (for EU at least) which references \"mdtlogin-ocl.medtronic.com\" (which replies with an RST,ACK on ClientHello). This json also says `\"client_cert_rsa_keybits\": 1024` so maybe the Apps have an mTLS client certificate which the server expects and verifies (which would be very shitty of medtronic) but I think the client cert is not reported in ClientHello so that is unlikely"
+  },
+  {
+   "id": 3706199224,
+   "user": "m0rt4l1n",
+   "created_at": "2026-01-02T20:45:32Z",
+   "body": "Update the Android app has a new discovery URL embedded in the APK but the sso configuration seems to be faulty too: https://clcloud.minimed.com/connect/carepartner/v13/discover/android/3.6"
+  },
+  {
+   "id": 3706203155,
+   "user": "m0rt4l1n",
+   "created_at": "2026-01-02T20:48:24Z",
+   "body": "Update:\n\nThis discovery says to use Auth0SSOConfiguration \n\n<img width=\"867\" height=\"102\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/de750697-d9a7-495a-81a0-c8a98bd529ee\" />\n\nWhich actually uses \"carelink-login.minimed.eu\", so a bit success!"
+  },
+  {
+   "id": 3706219007,
+   "user": "Navid200",
+   "created_at": "2026-01-02T21:00:48Z",
+   "body": "Please don't open an issue in this repository.  \nWe ask everyone to open a discussion instead.\n\nYou must have seen this same request and you must have ignored it or missed it.  \nI am going to convert this to a discussion to be fair to everyone else who respects or does not miss that request."
+  }
+ ]
+}

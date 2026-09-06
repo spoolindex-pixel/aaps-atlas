@@ -1,0 +1,73 @@
+{
+ "id": 775086847,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1578,
+ "title": "Freestyle libre + miaomiao2 - App crash when glucose level is high or low, can't add manual calibration",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1578",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "device-libre",
+  "device-miaomiao"
+ ],
+ "created_at": "2020-12-27T18:30:21Z",
+ "closed_at": "2021-07-08T04:22:49Z",
+ "comment_count": 9,
+ "body": "Hi,\r\n\r\nfrom couple days I have problem with xDrip when my glucose in xDrip is high or low (that's info from xDrip). \r\nThe problem is that I have alarm from xDrip and when I try to open xDrip app is freezeing for couple seconds, so I use glucometer to add manual calibration to xDrip, but nothing changes and glucose level is still high in xDrip. Difference between glucometer and xDrip is 50 or 100 mg/dl, even when I use NFC and freestyle libre app there is difference like 50 or more, so sensor seems to work ok (I mean that when I check by Libre by NFC and glucometer levels are very close, but in xDrip is 50 or 100 more than in manual or NFC check).\r\n\r\n**Tech details:**\r\n**Phone**: Xiaomi Redmi 9 (MIUI global 11.0.9, Android 10 qp1A.190711.020), I have battery saving off, also allow xDrip to work in background, etc.\r\n**Sensor**: Freestyle libre 1 (nfc)\r\n**Add**: Miaomiao2\r\n**XDrip version**: e14bae1-2020.07.13 (last stable)\r\n**XDrip connection type:** Libre bluetooth\r\n\r\nI have installed safety updates to Android couple days ago, but I didn't see that it changes anything to xDrip, I mean that there is no other issues than mentioned.\r\n\r\nAlso I cannot see any other issues, so when my glucose level is between low and high everything is working fine and glucose level is very close to glucometer check.",
+ "comments": [
+  {
+   "id": 751502521,
+   "user": "luk7227",
+   "created_at": "2020-12-27T18:44:52Z",
+   "body": "One thing more, when glucose level is high or low in xDrip I need to restart phone or stop sensor (don't stop, just reset calibration) or it is still high or low, even if glucose level is ok ( f.e. after taling insulin and take some time).\r\nIf I try to not reset calibration in xDrip, xDrip still shows high or low with no changes. When I try to check with freestyle libre app by NFC sensor shows good level of sugar in blood (confirmed by glucometer check)."
+  },
+  {
+   "id": 753319089,
+   "user": "luk7227",
+   "created_at": "2021-01-01T13:50:53Z",
+   "body": "Sesnor was broken, after couple days has stopped working. After use new one evertyhing seems to work fine. "
+  },
+  {
+   "id": 753533394,
+   "user": "luk7227",
+   "created_at": "2021-01-02T21:42:49Z",
+   "body": "Hi,\r\n\r\nunfortunately, I still have problem with disconnecting. Everything is still configured as above and I have new Libre 1 sensor with Miaomiao2 connected, but now XDrip is disconnecting Miaomiao2 and even if I can connect Miaomiao2 using bluetooth there is no data from sensor received.\r\nI can only connect again when I going to stop sensor (don't stop, just reset calibration), otherwise no data is collected in XDrip and can't see sensor.\r\n\r\nI have checked all logs and only thing that is supossed to repat before disconnecting is:\r\n\r\nCalibration\r\nGot invalid intercept value in xDrip classic algorithm: 56.06036681635072\r\n\r\n(just after this is another)\r\n\r\nCalibration\r\nNull pointer in AdjustRecentReadings >=3: java.lang.NullPointerException: Attempt to read from field 'double.eveningoutpost.dexdrip.Model.Calibration.slope' on a null object reference.\r\n\r\n\r\n\r\n![xdrip02 01 2021](https://user-images.githubusercontent.com/76660722/103467095-c05ae380-4d4b-11eb-8e1f-c24dc4bb8ca0.jpg)\r\n"
+  },
+  {
+   "id": 753548712,
+   "user": "tzachi-dar",
+   "created_at": "2021-01-03T00:29:16Z",
+   "body": "Can you go to stop sensor.\nDelete all calibrations and try a new calibration.\n\nבתאריך שבת, 2 בינו׳ 2021, 23:43, מאת luk7227 ‏<notifications@github.com>:\n\n> Hi,\n>\n> unfortunately, I still have problem with disconnecting. Everything is\n> still configured as above and I have new Libre 1 sensor with Miaomiao2\n> connected, but now XDrip is disconnecting Miaomiao2 and even if I can\n> connect Miaomiao2 using bluetooth there is no data from sensor received.\n> I can only connect again when I going to stop sensor (don't stop, just\n> reset calibration), otherwise no data is collected in XDrip and can't see\n> sensor.\n>\n> I have checked all logs and only thing that is supossed to repat before\n> disconnecting is:\n>\n> Calibration\n> Got invalid intercept value in xDrip classic algorithm: 56.06036681635072\n>\n> (just after this is another)\n>\n> Calibration\n> Null pointer in AdjustRecentReadings >=3: java.lang.NullPointerException:\n> Attempt to read from field\n> 'double.eveningoutpost.dexdrip.Model.Calibration.slope' on a null object\n> reference.\n>\n> [image: xdrip02 01 2021]\n> <https://user-images.githubusercontent.com/76660722/103467095-c05ae380-4d4b-11eb-8e1f-c24dc4bb8ca0.jpg>\n>\n> —\n> You are receiving this because you are subscribed to this thread.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/1578#issuecomment-753533394>,\n> or unsubscribe\n> <https://github.com/notifications/unsubscribe-auth/AB4TBZCABHMVKBI2DKTY5XTSX6HONANCNFSM4VLCLETA>\n> .\n>\n"
+  },
+  {
+   "id": 753587396,
+   "user": "luk7227",
+   "created_at": "2021-01-03T08:57:25Z",
+   "body": "Hi, \r\n\r\nthanks for quick answer, I mentioned this above, when I go to stop sensor -> don't stop, just reset calibration, sensor is working again, but after some time sensor is going to stop working again and I have to do it again and again.\r\n\r\nSometimes it's 2 or 3 times a day, so I don't have information from sensor for couple hours or even all night, no alarms, nothing, so that's the biggest problem."
+  },
+  {
+   "id": 753589370,
+   "user": "tzachi-dar",
+   "created_at": "2021-01-03T09:19:43Z",
+   "body": "So, let me see if I got this correctly.\nYou have everything working (that is you are getting data) but then you\ncompare your bg to xDrip and there are big differences, so you calibrate,\nand then things stop working?\n\nI guess that in this case, using oop1 should be a good possibility.\n\nSee instructions her on how to enable it:\nhttps://miaomiaoreader.medium.com/how-to-make-libre-us-14-days-sensors-work-with-miaomiao2-on-xdrip-35b431a40940\n\nThanks\nTzachi\n\nOn Sun, 3 Jan 2021 at 10:57, luk7227 <notifications@github.com> wrote:\n\n> Hi,\n>\n> thanks for quick answer, I mentioned this above, when I go to stop sensor\n> -> don't stop, just reset calibration, sensor is working again, but after\n> some time sensor is going to stop working again and I have to do it again\n> and again.\n>\n> Sometimes it's 2 or 3 times a day, so I don't have information from sensor\n> for couple hours or even all night, no alarms, nothing, so that's the\n> biggest problem.\n>\n> —\n> You are receiving this because you commented.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/1578#issuecomment-753587396>,\n> or unsubscribe\n> <https://github.com/notifications/unsubscribe-auth/AB4TBZFMA5MDPVRT6BLII3TSYAWQBANCNFSM4VLCLETA>\n> .\n>\n"
+  },
+  {
+   "id": 753683622,
+   "user": "luk7227",
+   "created_at": "2021-01-03T22:14:21Z",
+   "body": "Sorry, I described two separate things, so first is already solved (numbered below).\r\n\r\nI'm going to do update by your insctruction and let know is it working, thank you 👍 \r\n\r\nThings that I mentioned:\r\n\r\n1. I had problem with low/high info and after this xDrip has stopped, so I need to reset phone, etc, but it seems that Libre sensor was broken. So this is closed, I changed Libre sensor and problem with glucose differences and xDrip frozing just disappear.\r\n\r\n2. I still have have problem with:\r\nI got new Libre sensor and have reset miaomiao2, but xDrip is disconnecting miaomiao2 and sensor at random time and doesn't want to connect again. When I reset bluetooth or phone or miaomiao2 I can connect to miaomiao2, but xDrip can't find sensor.\r\n\r\nOnly thing that works is when I stop sensor and add new calibration, but it's temporary, because it happens every now and then and the only thing I see in the logs is in the post above.\r\nSo the problem is \"losing\" the sensor in xDrip and not collecting data until I notice that it is not working and I have to stop sensor and add new calibration sometimes 2 or 3 times a day on completly random time.\r\n"
+  },
+  {
+   "id": 808818265,
+   "user": "Navid200",
+   "created_at": "2021-03-27T23:42:16Z",
+   "body": "@luk7227 Would you please close this issue if it has been resolved?\r\n\r\nIf not, would you please ask using the support channels?\r\nhttps://www.facebook.com/groups/xDripG5\r\nhttps://gitter.im/jamorham/xDrip-plus\r\nThanks"
+  },
+  {
+   "id": 876113207,
+   "user": "Navid200",
+   "created_at": "2021-07-08T04:22:49Z",
+   "body": "Closing due to inactivity"
+  }
+ ]
+}

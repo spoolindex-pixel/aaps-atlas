@@ -1,0 +1,67 @@
+{
+ "id": 787703428,
+ "repo": "nightscout/AndroidAPS",
+ "number": 239,
+ "title": "Omnipod \"Pump\" (Orange/EmaLink) battery age not shown (Not urgent)",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/239",
+ "state": "closed",
+ "labels": [
+  "enhancement",
+  "rileylink",
+  "omnipod eros"
+ ],
+ "created_at": "2021-01-17T13:13:28Z",
+ "closed_at": "2022-03-08T10:17:25Z",
+ "comment_count": 8,
+ "body": "I have an Omnipod with an Orangelink. \r\n\r\nAAPS 2.8.1.1 shows the battery level of the Orangelink, which is working :)\r\n\r\nBut, if I note (on the Actions page) _Pump battery change_ with a **date** (today or before), the information is noted on the care portal but not shown in the actions page. \r\n\r\nOrangelink battery is NOT the pump battery but it is the only necessary battery information needed with Omnipod. \r\n\r\nAs Orangelink is in beta testing, having the age of the battery shown will help giving them the necessary information too.\r\n\r\n![Screenshot_20210117-140905_AndroidAPS](https://user-images.githubusercontent.com/76626474/104844028-09737180-58ce-11eb-8ec3-732f70c30a0f.jpg)\r\n![Screenshot_20210117-140839_AndroidAPS](https://user-images.githubusercontent.com/76626474/104844030-0a0c0800-58ce-11eb-8f37-bb2327a11d67.jpg)\r\n",
+ "comments": [
+  {
+   "id": 763683780,
+   "user": "vanelsberg",
+   "created_at": "2021-01-20T15:02:11Z",
+   "body": "Confirming.\r\nSeeing this too."
+  },
+  {
+   "id": 763915342,
+   "user": "ToreBj",
+   "created_at": "2021-01-20T20:34:40Z",
+   "body": "+1"
+  },
+  {
+   "id": 945018817,
+   "user": "andyrozman",
+   "created_at": "2021-10-16T23:04:02Z",
+   "body": "OrangeLink is the only RL/RL-clone that we can read battery from... \r\n\r\nAnd display you have shown, would show age of battery in pump (your case Pod). We can't read battery from Pod, so in this case age shouldn't be shown at all... \r\n\r\nDisplaying Battery level of OL, wouldn't be really correct here... Especially since we don't know how long we have used the battery on OL. "
+  },
+  {
+   "id": 945053928,
+   "user": "robertrub",
+   "created_at": "2021-10-17T05:45:53Z",
+   "body": "Hi Andy\r\n\r\nAAPS can \"know\" the battery age as we can set it with the pump battery change button (this is how NS calculates it).\r\n\r\nI think that OL battery = pump battery idea is assumed as, as you said, you cannot know the % or do anything with the Omnipod pump battery.\r\n\r\nIt would be useful if AAPS could look in the treatments history and if it finds an entry \"Pump battery change\", it shows the battery age.\r\n\r\nTnx :)"
+  },
+  {
+   "id": 945094218,
+   "user": "vanelsberg",
+   "created_at": "2021-10-17T11:14:44Z",
+   "body": "Suggestion on \"battery age\" (nicetohave):\r\n\r\n* For Omnipod (both DASH and EROS) \"pump battery age\" has no meaning. So the field could be hidden.\r\n* For RL devices \"pump battery age\" may have different meaning (RL=rechargeable vs OL=replaceable battery) so it would need additional complexity for showing something sensible. So I would suggest to also hide the field by default for RL devices.\r\n\r\n(User could be interested in registering how long battery/charge for RL/OL/Other lasts. Maybe consider an option for the user to enable the field and manually reset battery age on charge or replacement through Actions?)\r\n\r\n"
+  },
+  {
+   "id": 945154470,
+   "user": "robertrub",
+   "created_at": "2021-10-17T16:29:23Z",
+   "body": "Sorry, I don't agree on battery age for OL having no meaning. My OL arrives at 50% in about 1 month. Even though it says \"50%\", when I measure the battery voltages, they are on the low side and more importantly, OL has more disconnect/reconnect problems. I use the battery age in NS to know when I'll need to change the batteries.  As we already have this information, it would be nice to show it ;)\r\n\r\nAs for DASH, no battery info is needed and, if possible, the \"battery info\" line should not be shown at all.  "
+  },
+  {
+   "id": 945164163,
+   "user": "vanelsberg",
+   "created_at": "2021-10-17T17:33:04Z",
+   "body": "@robertrub Agree that for OL battery age would make some sense. This could then be covered by the user option to enable the field?\r\n\r\n(Just my personal view: Remembering battery **percentage** of OL on the EROS tab was quite accurate I mostly monitored this to determine battery health. Personally I had no interest in battery **age** - other then when testing OL to get and idea on how many days batteries would last - used pen-and-paper for that ;-)"
+  },
+  {
+   "id": 1061529374,
+   "user": "Andries-Smit",
+   "created_at": "2022-03-08T08:31:49Z",
+   "body": "For Omnipod EROS, the age should be working, when the \"Change battery pump\" action is performed. Change action button is only available for EROS when enabled through the preferences. For Dash battery section in action and overview status light will be hidden completely https://github.com/nightscout/AndroidAPS/pull/1328"
+  }
+ ]
+}

@@ -1,0 +1,21 @@
+{
+ "id": 401463294,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 752,
+ "title": "after starting a new libre sensor, it's old values are uploaded to nightscout as well",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/752",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2019-01-21T18:13:06Z",
+ "closed_at": "2019-05-18T21:30:53Z",
+ "comment_count": 1,
+ "body": "I had a sensor running (very close to the 14'th day). \r\nStarted a new one. After a few hours, connected the MM to it.\r\nNS was loaded with duplicate entries. (see picture):\r\n![image](https://user-images.githubusercontent.com/7942372/51491987-d79ba300-1db8-11e9-89ad-3c15448a1227.png)\r\n\r\nThe most problematic point is at time: 1547930076608",
+ "comments": [
+  {
+   "id": 469909257,
+   "user": "tzachi-dar",
+   "created_at": "2019-03-06T00:00:17Z",
+   "body": "Here is some more info about the issue:\r\n\r\nTried to reproduce the issue many times without success. \r\nAfter reading the code, it seems that this was probably a very rare race code that I was not able to find.\r\n\r\nThat said, it is very easy to reach an ugly state where for 5 readings we are having the same data (this will happen every time on xDrip but will not go to nightscout).\r\nHere is an example:\r\n![image](https://user-images.githubusercontent.com/7942372/53845261-170d0000-3fb1-11e9-917c-60da34bed1ea.png)\r\n\r\nxDrip has a mechanism that should block this kind of behavior, but it does not work in the case of a new sensor. This is because in the function createBGfromGD() we call BgReading.getForPreciseTimestamp with locktosensor=true. \r\nThis means that after creating a new sensor, the same point can be entered again and the mechanism of getForPreciseTimestamp does not solve the issue.\r\n\r\nOne question that I was asking myself, is why it does not happen for all points, 8 hours back.\r\nThe answer that I have found is that after starting a new sensor, there are still no calibrations, so first bg readings are thrown.\r\nSo, after there is the first reading, new bg points are created, and this points are not shown, since there is no calibration. This readings already belong to the new sensor.\r\n\r\nAfter the first calibration, new points are rejected because of the points that were created before the calibration. Still, as one can see in the attached picture, last 5 points get recreated with the new calibration data.\r\n\r\nI'll soon send a simple fix for this problem.\r\n"
+  }
+ ]
+}

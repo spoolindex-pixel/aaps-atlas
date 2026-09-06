@@ -1,0 +1,145 @@
+{
+ "id": 740752276,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1503,
+ "title": "Notification Channel settings missing on new phone",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1503",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "ux-notification",
+  "android11+"
+ ],
+ "created_at": "2020-11-11T13:06:31Z",
+ "closed_at": "2026-07-13T14:18:26Z",
+ "comment_count": 21,
+ "body": "I am replacing my older Pixel 2 XL with a Pixel 5 and I am having an issue with not being able to properly configure the glucose alerts notification channel on the new phone. I transferred my settings using the QR code method and have set my glucose alerts up from scratch the same as the old phone but I am unable to set the channel options as I was on the old phone so that the alarms can vibrate and break through Do Not Disturb mode at night reliably.\r\n\r\nI have tried toggling various options inside the alerts section to see if I can get this to appear including changing the Alert Volume Profile to no avail.\r\n\r\nI've attached screenshots showing the different options I have on the two phones (both are running Android 11). If I press on the text for the 'bgAlertChannel' notifications on the Pixel 5 it simply toggles on or off.\r\n\r\n\r\n![xdrip_GANCP2XL_11112020_1302](https://user-images.githubusercontent.com/44261610/98815199-b210db00-241e-11eb-9f71-88a6a94154df.jpg)\r\n![xdrip_GANCP5_11112020_1304](https://user-images.githubusercontent.com/44261610/98815203-b3420800-241e-11eb-985a-109bff32f63d.png)\r\n\r\n",
+ "comments": [
+  {
+   "id": 727649451,
+   "user": "tolot27",
+   "created_at": "2020-11-15T22:38:22Z",
+   "body": "@dbnsacc I'm a bit lost. Were are the screenshots from? From Android System Settings or xDrip settings? The skin looks completely new to me. Which version of xDrip do you have?"
+  },
+  {
+   "id": 727652959,
+   "user": "dbnsacc",
+   "created_at": "2020-11-15T23:02:37Z",
+   "body": "These are inside the system settings where you can control the notification channels for each app. On a Pixel you can access the settings quickly by half/short swiping a fired notification and tapping the cog. The skin is essentially as close to stock Android as you get with a Pixel nowadays.\r\n\r\nI suspect that the reason I can't adjust the notification channel on the new phone is that I haven't yet found a way to 'fire' that notification type within xDrip+ on it - it always seems to fire the one in my previous posts screenshot with just the vibration symbol (whereas on the old phone at some point in time I must have managed to fire the alternate type with the music note) which exposed the individual settings allowing me to break through Do Not Disturb mode (notification settings aren't exposed until a notification fires in recent versions of Android).\r\n\r\nI'm on the very latest version of xDrip+ available on both phones: a91b660-2020.10.01 and attached a screenshot of my system status and one of my configured notifications as an example of how I have them set. I've tried reconfiguring each of these options and test firing them to no avail. I also have the option to speak an alert enabled under Settings > Speak Readings but disabling this has no effect. My volume profile is currently on ascending also but again changing to medium, for example, does nothing.\r\n<img src=\"https://user-images.githubusercontent.com/44261610/99199384-a31b8700-2796-11eb-9cd9-057299d30beb.png\" width=\"300\" /><img src=\"https://user-images.githubusercontent.com/44261610/99199385-a3b41d80-2796-11eb-8798-dc9caf3423e6.png\" width=\"300\" />\r\n\r\n"
+  },
+  {
+   "id": 785892382,
+   "user": "Navid200",
+   "created_at": "2021-02-25T13:24:44Z",
+   "body": "@dbnsacc The three screenshots in your first post are all screenshots of Android settings, no?\r\nWhat can we do from xDrip to change any of that?\r\n\r\nWould you please explain what you expect xDrip to do?"
+  },
+  {
+   "id": 785895624,
+   "user": "nickb24",
+   "created_at": "2021-02-25T13:29:39Z",
+   "body": "The problem being described can be seen here: https://developer.android.com/training/notify-user/channels\r\n\r\nI've taken a look a little bit into the xDrip code but haven't figured out why xDrip doesn't register as a proper notification channel with Android. "
+  },
+  {
+   "id": 786934066,
+   "user": "Navid200",
+   "created_at": "2021-02-26T22:42:00Z",
+   "body": "@nickb24 is this issue a duplicate of the following?\r\nhttps://github.com/NightscoutFoundation/xDrip/issues/999"
+  },
+  {
+   "id": 787073532,
+   "user": "nickb24",
+   "created_at": "2021-02-27T13:34:26Z",
+   "body": "> @nickb24 is this issue a duplicate of the following?\r\n> #999\r\n\r\nI think it's related but not a duplicate. "
+  },
+  {
+   "id": 787163405,
+   "user": "tolot27",
+   "created_at": "2021-02-27T21:46:52Z",
+   "body": "> > @nickb24 is this issue a duplicate of the following?\r\n> > #999\r\n> \r\n> I think it's related but not a duplicate.\r\n\r\nPlease can you elaborate this in more detail?"
+  },
+  {
+   "id": 787209293,
+   "user": "nickb24",
+   "created_at": "2021-02-28T00:24:50Z",
+   "body": "> > > @nickb24 is this issue a duplicate of the following?\r\n> > > #999\r\n> > \r\n> > \r\n> > I think it's related but not a duplicate.\r\n> \r\n> Please can you elaborate this in more detail?\r\n\r\nEssentially if you look at the developer documents here: https://developer.android.com/training/notify-user/channels you can see that when a notification group is created the user is supposed to have the ability to click on the group and then get additional settings. You can see that with any other app that I have on my phone (Pixel 2, Android 11). \r\n\r\nI think the two issues are related because they both have to do with how xDrip handles and creates notifications using channels. "
+  },
+  {
+   "id": 855519716,
+   "user": "Navid200",
+   "created_at": "2021-06-07T01:43:30Z",
+   "body": "I don't understand what the issue is.\r\nI am using notification channels effectively.  They let me customize different alarms.\r\nIf this is an issue, please explain how I can reproduce it.\r\nOtherwise, I am inclined to close it."
+  },
+  {
+   "id": 855522903,
+   "user": "dbnsacc",
+   "created_at": "2021-06-07T01:55:50Z",
+   "body": "> I don't understand what the issue is.\r\n> I am using notification channels effectively. They let me customize different alarms.\r\n> If this is an issue, please explain how I can reproduce it.\r\n> Otherwise, I am inclined to close it.\r\n\r\nAs can be seen from the screenshots in the original post, the channel (bgAlertChannel) which would allow the alerts to be customized in order to break through Do Not Disturb on the newer phone does not have the individually fired alerts (Glucose Alerts Settings) displayed in the Notification Settings for xDrip+ in order to do so. Instead they can only be enabled or disabled completely by the displayed toggle.\r\n\r\nI'm not sure how to reproduce this as it is an issue I experienced moving from my old to my current phone and persisted despite resetting xDrip+ and setting back up from scratch (as well as when restoring from backup). As far as I am aware, Android has to detect that a certain alert has been 'fired' by a channel before it will display in the System settings and that doesn't seem to be happening for some reason on my Pixel 5 (despite testing the alerts in the settings of xDrip+ and receiving actual alerts since)."
+  },
+  {
+   "id": 855524746,
+   "user": "Navid200",
+   "created_at": "2021-06-07T02:02:59Z",
+   "body": "I can see bgAlertChannel in your screenshot.\r\nWhat is wrong with it?  \r\nCan you not tap on it and tweak it as you like?  You need to tap on the left, not on the button."
+  },
+  {
+   "id": 855526930,
+   "user": "dbnsacc",
+   "created_at": "2021-06-07T02:09:51Z",
+   "body": "Unfortunately whether I tap on the toggle or the text \"All 'bgAlertChannel' notifications\" it only has the effect of completely disabling or enabling that channel. In order to customize the alert inside the channel I think I would need the \"Glucose Alert Settings\" alert with the bell symbol underneath it as I had on the previous phone in order to let me customize it."
+  },
+  {
+   "id": 855530435,
+   "user": "Navid200",
+   "created_at": "2021-06-07T02:21:34Z",
+   "body": "Can you show the following please?\r\n\r\nSettings -> Alarms and Alerts -> Glucose Alerts Settings"
+  },
+  {
+   "id": 855537390,
+   "user": "dbnsacc",
+   "created_at": "2021-06-07T02:47:09Z",
+   "body": "Below should hopefully be a screenshot of those settings. I currently have volume profile on Ascending but have also used Medium at times.\r\n\r\n![sshot_GAS-07062021_033117](https://user-images.githubusercontent.com/44261610/120952290-a2523e80-c742-11eb-9fb9-f093a0e6f1df.jpg)\r\n"
+  },
+  {
+   "id": 855538153,
+   "user": "Navid200",
+   "created_at": "2021-06-07T02:50:02Z",
+   "body": "OK thanks.\r\n\r\nI don't have an Android 11 phone.\r\nI will see if I can recreate this issue using the virtual devices in Android studio."
+  },
+  {
+   "id": 907531750,
+   "user": "Navid200",
+   "created_at": "2021-08-28T00:03:41Z",
+   "body": "I finally have an Android 11 phone and can confirm that I experience this issue.\r\n\r\nI wonder why this problem is only present in Android 11 and not 9.\r\nWhat do we have to do differently, in xDrip, so that it would work fine with Android 11 as well?"
+  },
+  {
+   "id": 907545680,
+   "user": "Navid200",
+   "created_at": "2021-08-28T01:28:17Z",
+   "body": "For some reason, I have got the ability to edit the settings for persistent high.  But, not the others.\r\nI'm not sure why!\r\n![Screenshot_20210827-212412](https://user-images.githubusercontent.com/51497406/131201927-9d4c5e87-06d9-4bed-96d4-8b51d0b28535.png)\r\n"
+  },
+  {
+   "id": 3148404599,
+   "user": "Navid200",
+   "created_at": "2025-08-03T12:53:02Z",
+   "body": "I have a made a few improvements to xDrip so that we don't need to depend on notification channels.  I also have an open PR that will continue along those lines.  Assuming it gets approved, I will have one more PR that will allow you to fully control all alerts in detail with no need to notification channels.\n\nIs this still a problem for anyone using the latest Nightly release?  "
+  },
+  {
+   "id": 3262885520,
+   "user": "Navid200",
+   "created_at": "2025-09-06T18:15:02Z",
+   "body": "Notification channels cannot be transferred to a new phone.  xDrip settings can.\nNotification channels don't behave exactly the same way on all phones.  xDrip offers to control all characteristics of all alerts.  The only exception to that today is being able to disable vibration for extra alerts.  That feature will also be added to xDrip soon.\n\nWhy notification channel settings are missing on a phone is something that the phone manufacturer should address.  \n\nI am closing this PR.  If needed, we can reopen."
+  },
+  {
+   "id": 4697006093,
+   "user": "Navid200",
+   "created_at": "2026-06-13T01:40:07Z",
+   "body": "We will be raising the target SDK to 26 soon.  When we do that, there will be no choice but to rely on notification channels.  \nTherefore, this becomes an issue and needs to be reopened.  "
+  },
+  {
+   "id": 4958940280,
+   "user": "Navid200",
+   "created_at": "2026-07-13T14:18:26Z",
+   "body": "I have a Motorola Stylus phone that runs Android 11.  It had this exact problem and I have screenshots posted previously in this same thread.\nAfter updating to the 2026.07.12 release, the problem has been resolved.  \n\n<img width=\"270\" height=\"575\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/f1f7c70b-177d-45a3-bb44-205287a94f6b\" />  \n  \n<br/>  \n<br/>  \n<br/>  \n  \nI am closing this issue.  We can reopen if anyone still experiences this problem after updating their version of xDrip.  "
+  }
+ ]
+}

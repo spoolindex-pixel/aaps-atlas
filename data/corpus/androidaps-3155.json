@@ -1,0 +1,75 @@
+{
+ "id": 2063473376,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3155,
+ "title": "Switching Porfile via NSclient V3 doesn't work with APPS 3.0.2.3 and NS 15.02",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3155",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-01-03T08:17:51Z",
+ "closed_at": "2024-01-04T08:59:18Z",
+ "comment_count": 10,
+ "body": "After creating a new Dataset with new basal rates in NS with profile manager. Switching to this profile in NS is not effected on AAPS 3.0.2.3 app with NSclient V3 enabled unless switching to NSclient V1. \r\n\r\nExample: \r\nProfile switch in NS at 7:02 was effected in AAPS directly after switching to NSclientV1 at 8:35.\r\n\r\n![Screenshot_20240103-091515](https://github.com/nightscout/AndroidAPS/assets/61501057/5600ec42-1147-4284-8c5d-edb716cfd7c2)\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/13816851/AndroidAPS.log)\r\n\r\n",
+ "comments": [
+  {
+   "id": 1875113868,
+   "user": "MilosKozak",
+   "created_at": "2024-01-03T10:03:32Z",
+   "body": "log starts 9:06"
+  },
+  {
+   "id": 1876019604,
+   "user": "MilosKozak",
+   "created_at": "2024-01-03T21:53:14Z",
+   "body": "i tested it and it works like expected. If you have websockets enabled, change is performed immediately. Without websockets it takes up to 5 min.\r\nI can check your case if you find logs"
+  },
+  {
+   "id": 1876096320,
+   "user": "gerison77",
+   "created_at": "2024-01-03T23:14:57Z",
+   "body": "Thank you Milos.\r\nI reproduced the behaviour today at 23:03 (profile switch in NS) than switching to NSclient V1, with effected switch at 23:05.\r\nWebsockts were activated in NSClient V3. \r\n\r\n"
+  },
+  {
+   "id": 1876099782,
+   "user": "MilosKozak",
+   "created_at": "2024-01-03T23:19:48Z",
+   "body": "upload logs. best from both sides + screenshots"
+  },
+  {
+   "id": 1876717907,
+   "user": "gerison77",
+   "created_at": "2024-01-04T08:46:57Z",
+   "body": "[AndroidAPS._2024-01-03_21-25-10_.109.zip](https://github.com/nightscout/AndroidAPS/files/13827916/AndroidAPS._2024-01-03_21-25-10_.109.zip)\r\n[AndroidAPS._2024-01-03_21-25-10_.110.zip](https://github.com/nightscout/AndroidAPS/files/13827919/AndroidAPS._2024-01-03_21-25-10_.110.zip)\r\n"
+  },
+  {
+   "id": 1876727636,
+   "user": "MilosKozak",
+   "created_at": "2024-01-04T08:55:05Z",
+   "body": "i need log from aapsclient too"
+  },
+  {
+   "id": 1876730524,
+   "user": "gerison77",
+   "created_at": "2024-01-04T08:57:29Z",
+   "body": "AAPS Client was not involved. Profile switch effected directly on nightscout site, hosted by horoku. Profile switch via AAPS Client works.\r\n"
+  },
+  {
+   "id": 1876732921,
+   "user": "MilosKozak",
+   "created_at": "2024-01-04T08:59:18Z",
+   "body": "start with reading release notes\r\nhttps://androidaps.readthedocs.io/en/latest/Installing-AndroidAPS/Releasenotes.html#important-comments-on-using-v3-versus-v1-api-for-nightscout-with-aaps"
+  },
+  {
+   "id": 1876740956,
+   "user": "gerison77",
+   "created_at": "2024-01-04T09:05:18Z",
+   "body": "Im about to get the nightscout logs as well."
+  },
+  {
+   "id": 1876746107,
+   "user": "gerison77",
+   "created_at": "2024-01-04T09:08:46Z",
+   "body": "AAPS Client was not involved. But I read now, that entries made in NS Website require NS 1 so. The issue is known.\r\nSorry for bothering."
+  }
+ ]
+}

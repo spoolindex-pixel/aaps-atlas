@@ -1,0 +1,95 @@
+{
+ "id": 1244301060,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1760,
+ "title": "Last Dev crash at start",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1760",
+ "state": "closed",
+ "labels": [
+  "omnipod dash"
+ ],
+ "created_at": "2022-05-22T16:17:23Z",
+ "closed_at": "2022-06-19T19:54:42Z",
+ "comment_count": 13,
+ "body": "Last dev crash systematically at start. I tried clean install : desintall aaps, delete folder aaps, clean cache.\r\nI'm with Samsung s10e android 12 One UI 4.1 with omnipod dash.\r\nI think the crash appears with the last update for dash.\r\n[AndroidAPS._2022-05-22_17-55-49_.0.zip](https://github.com/nightscout/AndroidAPS/files/8749765/AndroidAPS._2022-05-22_17-55-49_.0.zip)\r\n\r\n",
+ "comments": [
+  {
+   "id": 1133931493,
+   "user": "MilosKozak",
+   "created_at": "2022-05-22T16:36:09Z",
+   "body": "there was a recent change which had to be done on pod change. isn't it this case?"
+  },
+  {
+   "id": 1133931641,
+   "user": "MilosKozak",
+   "created_at": "2022-05-22T16:37:10Z",
+   "body": "```\r\n17:53:36.500 [main] E/PUMPCOMM: [OmnipodDashPodStateManagerImpl.load():699]: Failed to deserialize Pod state\r\ncom.google.gson.JsonSyntaxException: java.lang.NumberFormatException: For input string: \"01G3P01WF8F5SZ1GJP128E1MHN\"\r\n\tat com.google.gson.internal.bind.TypeAdapters$11.read(TypeAdapters.java:320) ~[na:0.0]\r\n\tat com.google.gson.internal.bind.TypeAdapters$11.read(TypeAdapters.java:310) ~[na:0.0]\r\n\tat com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$1.read(ReflectiveTypeAdapterFactory.java:130) ~[na:0.0]\r\n\tat com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$Adapter.read(ReflectiveTypeAdapterFactory.java:221) ~[na:0.0]\r\n\tat com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$1.read(ReflectiveTypeAdapterFactory.java:130) ~[na:0.0]\r\n\tat com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$Adapter.read(ReflectiveTypeAdapterFactory.java:221) ~[na:0.0]\r\n\tat com.google.gson.Gson.fromJson(Gson.java:991) ~[na:0.0]\r\n\tat com.google.gson.Gson.fromJson(Gson.java:956) ~[na:0.0]\r\n\tat com.google.gson.Gson.fromJson(Gson.java:905) ~[na:0.0]\r\n\tat com.google.gson.Gson.fromJson(Gson.java:876) ~[na:0.0]\r\n\tat info.nightscout.androidaps.plugins.pump.omnipod.dash.driver.pod.state.OmnipodDashPodStateManagerImpl.load(OmnipodDashPodStateManagerImpl.kt:694) ~[na:0.0]\r\n\tat info.nightscout.androidaps.plugins.pump.omnipod.dash.driver.pod.state.OmnipodDashPodStateManagerImpl.<init>(OmnipodDashPodStateManagerImpl.kt:44) ~[na:0.0]\r\n\tat info.nightscout.androidaps.plugins.pump.omnipod.dash.driver.pod.state.OmnipodDashPodStateManagerImpl_Factory.newInstance(OmnipodDashPodStateManagerImpl_Factory.java:50) ~[na:0.0]\r\n\tat info.nightscout.androidaps.plugins.pump.omnipod.dash.driver.pod.state.OmnipodDashPodStateManagerImpl_Factory.get(OmnipodDashPodStateManagerImpl_Factory.java:40) ~[na:0.0]\r\n\tat info.nightscout.androidaps.plugins.pump.omnipod.dash.driver.pod.state.OmnipodDashPodStateManagerImpl_Factory.get(OmnipodDashPodStateManagerImpl_Factory.java:13) ~[na:0.0]\r\n"
+  },
+  {
+   "id": 1133931774,
+   "user": "MilosKozak",
+   "created_at": "2022-05-22T16:38:08Z",
+   "body": "i'd suggest load previous version and upgrade on pod change"
+  },
+  {
+   "id": 1133933942,
+   "user": "macarolobe",
+   "created_at": "2022-05-22T16:52:59Z",
+   "body": "I have to deactivate pod before the update ?"
+  },
+  {
+   "id": 1133949101,
+   "user": "MilosKozak",
+   "created_at": "2022-05-22T18:24:56Z",
+   "body": "yes"
+  },
+  {
+   "id": 1134645320,
+   "user": "macarolobe",
+   "created_at": "2022-05-23T12:58:46Z",
+   "body": "I disabled the pod before the update but same effect, the app crash at the start. I will retry next pod change."
+  },
+  {
+   "id": 1138304105,
+   "user": "macarolobe",
+   "created_at": "2022-05-26T08:40:14Z",
+   "body": "So after a lot of tries with crash at start, it seems that the Wear module is the problem. When I disabled it the installation was ok with no crash. So I will try at my next pod change."
+  },
+  {
+   "id": 1138356502,
+   "user": "mick711",
+   "created_at": "2022-05-26T09:47:42Z",
+   "body": "Thanks i juste today AAPS doesn't start i need to force for Time to start , i don't know why but i use Wear.  Log https://drive.google.com/file/d/1FePR5--Bi2cTmwVKBhFRzp12vTuIpqzx/view?usp=drivesdk Time 11:39 11:40 "
+  },
+  {
+   "id": 1138538839,
+   "user": "MilosKozak",
+   "created_at": "2022-05-26T12:45:41Z",
+   "body": "i see crashes related to not updated wear app"
+  },
+  {
+   "id": 1140847065,
+   "user": "macarolobe",
+   "created_at": "2022-05-30T08:16:35Z",
+   "body": "After disabled wear module, no problem to install dev and new pod."
+  },
+  {
+   "id": 1142284948,
+   "user": "mick711",
+   "created_at": "2022-05-31T15:26:45Z",
+   "body": "I think this issue can be closed . All work fine after update wear, now i know when i update i need to update app and wear ."
+  },
+  {
+   "id": 1159022095,
+   "user": "avereha",
+   "created_at": "2022-06-17T16:04:00Z",
+   "body": "I don't think this issue is dash-specific. \r\nThe error in the logs in inside a try-catch\r\n```\r\ntry {\r\n                return Gson().fromJson(\r\n                    sharedPreferences.getString(R.string.key_omnipod_dash_pod_state, \"\"),\r\n                    PodState::class.java\r\n                )\r\n            } catch (ex: Exception) {\r\n                logger.error(LTag.PUMPCOMM, \"Failed to deserialize Pod state\", ex)\r\n            }\r\n```\r\nIt should not cause a crash."
+  },
+  {
+   "id": 1159161448,
+   "user": "macarolobe",
+   "created_at": "2022-06-17T19:13:13Z",
+   "body": "Crashs were cause by the wear module not by dash."
+  }
+ ]
+}

@@ -1,0 +1,17 @@
+{
+ "issue_id": 1793,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/1793",
+ "title": "Different notification channels for persistent foreground collector notification and number icon",
+ "symptom": "The persistent notification for the foreground collector and the number icon use the same notification channel, so hiding one hides the other. The user wants to hide the persistent collector notification while keeping the number icon.",
+ "cause": "The persistent foreground collector notification and the number icon share the same notification channel (Ongoing notification), so Android cannot hide one without the other.",
+ "fix": "A separate notification channel was created for the number icon, but this results in two notifications. Instead, the developer made the existing notification very small as an alternative.",
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [
+  "Android 11"
+ ],
+ "driver_tags": [],
+ "confidence": "medium",
+ "evidence_quote": "I created a separate notification channel for the number icon. The problem is that we will end up with two different notifications! After you disable the persistent notification, you will have one notification. There is no way to eliminate the notification. Showing the number icon is done through a notification. So, I decided to follow your other preferences of having the option of making the existing notification very small."
+}

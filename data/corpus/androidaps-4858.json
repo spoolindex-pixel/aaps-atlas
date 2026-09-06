@@ -1,0 +1,45 @@
+{
+ "id": 4515317468,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4858,
+ "title": "[BUG] Dual watchface displays outdated IOB values due to delayed broadcast; dev3 and dev",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4858",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2026-05-25T08:01:30Z",
+ "closed_at": "2026-06-02T10:20:21Z",
+ "comment_count": 5,
+ "body": "Dual watchface displays an outdated IOB value received from AAPSCLIENT2.\n\nObserved:\n\nIOB inside AAPSCLIENT2 is current\nBroadcasted IOB value is delayed/not synced correctly\nWatchface therefore displays stale IOB\nBG and COB appear correct\n\nExample:\n\nWatchface showed IOB 0.21\nActual current IOB on phone was 0.73\n\nEnvironment:\n\nAAPS V4\nV4Client2 broadcasting to V3Client connected to watch\nIssue reportedly existed previously as well\n\nExpected behavior:\n\nBroadcasted IOB should stay synchronized/current\nOr stale IOB should be clearly marked\nOr outdated IOB should not be displayed\n\n<img width=\"454\" height=\"454\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/b80893de-3c1a-45d3-91ec-f5f930a71c68\" />\n\n<img width=\"1080\" height=\"2408\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/4cb16618-2ac1-4b98-8684-30c14f8a73ec\" />\n\n[AndroidAPS_LOG_1779613988852.log.zip](https://github.com/user-attachments/files/28211806/AndroidAPS_LOG_1779613988852.log.zip)\n[AndroidAPS_LOG_1779613998372.log.zip](https://github.com/user-attachments/files/28211807/AndroidAPS_LOG_1779613998372.log.zip)",
+ "comments": [
+  {
+   "id": 4535956127,
+   "user": "MilosKozak",
+   "created_at": "2026-05-25T17:13:54Z",
+   "body": "you cannot mix versions. all must be the same"
+  },
+  {
+   "id": 4536461112,
+   "user": "MilosKozak",
+   "created_at": "2026-05-25T18:47:07Z",
+   "body": "and next time be more specific please. what screenshot and log is from what device etc\n"
+  },
+  {
+   "id": 4536875452,
+   "user": "MilosKozak",
+   "created_at": "2026-05-25T20:00:15Z",
+   "body": "and .... control question:\nBroadcasting is designed like following:\n`AAPS <- Client1 <- Client2 <- Client 3`\nie. Client 1 cannot broadcast to Client2. Data is allowed only from right side. The reason is automatic evaluation what is displayed in 2nd slot\n\nDoes your setup match?"
+  },
+  {
+   "id": 4542428490,
+   "user": "gerison77",
+   "created_at": "2026-05-26T08:55:08Z",
+   "body": "sorry, for being too unspecific. Sequence was correct. Client 2 to Client 1. By AAPS you mean watch, right?\nI might have to  switch my other kid to V4 as well....  When I do so; I will report back and provide accuarte LogFiles.\n"
+  },
+  {
+   "id": 4601419378,
+   "user": "MilosKozak",
+   "created_at": "2026-06-02T10:20:21Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/fd92c243c695ada3cd093731f6ba685d2d6da8eb"
+  }
+ ]
+}

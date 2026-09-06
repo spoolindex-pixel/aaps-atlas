@@ -1,0 +1,39 @@
+{
+ "id": 2515778546,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3428,
+ "title": "AAPS 3.2.0.4 and NSCLIENTv3 has 10 Entries in queue",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3428",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-09-10T08:33:41Z",
+ "closed_at": "2024-09-10T10:58:36Z",
+ "comment_count": 4,
+ "body": "A few days ago I noticed that I constantly have entries in the queue from the NSCLIENTV3 tab. The day before yesterday there were 9 and since yesterday there have been 10. I have already tried a complete synchronization but then when processing it it counts down from around 50,000 down to 10 and what remains. Otherwise everything looks good, I didn't find any errors, my data is apparently all being uploaded to Nightscout.\r\n\r\nAAPS 3.2.0.4\r\nNSCLIENTV3\r\nNS-Host: 10be.de\r\nNS-Version: 15.0.2\r\n\r\nLast Logfile see attachmend\r\n\r\n![Screenshot_20240909_125454_AAPS](https://github.com/user-attachments/assets/71c146b7-ce39-4304-8fab-f66194ab1e51)\r\n\r\n[AndroidAPS.log](https://github.com/user-attachments/files/16941921/AndroidAPS.log)\r\n\r\n",
+ "comments": [
+  {
+   "id": 2340208059,
+   "user": "MilosKozak",
+   "created_at": "2024-09-10T09:56:40Z",
+   "body": "reset logging to defaults, perform sync and upload logs again"
+  },
+  {
+   "id": 2340326144,
+   "user": "TeufelHH",
+   "created_at": "2024-09-10T10:50:38Z",
+   "body": "Ok here the new logs\r\n\r\n[AndroidAPS.log](https://github.com/user-attachments/files/16943697/AndroidAPS.log)\r\n\r\n"
+  },
+  {
+   "id": 2340342576,
+   "user": "MilosKozak",
+   "created_at": "2024-09-10T10:58:36Z",
+   "body": "the reason is not visible. probably not a worth to dig into it\r\nthanks anyway"
+  },
+  {
+   "id": 2356386502,
+   "user": "Gohtraw",
+   "created_at": "2024-09-17T16:23:54Z",
+   "body": "Actually, I have the same problem.\r\nI think something went wrong when we deleted an entry from the food database (maybe in NS and at the same time in AAPS).\r\nAAPS tries synching the deletion with NS, doesn't find a record with that identifier and throws a java exception:\r\n```\r\n12:53:45.844 [RxCachedThreadScheduler-44] D/NSCLIENT: [NSClientV3Plugin$onStart$9.accept():241]: ► UPDATE food Sent PairFood 66aa3d0b91785261081fab91 <i>{\"carbs\":10,\"category\":\"Süßigkeiten\",\"date\":1725965625843,\"energy\":376,\"fat\":5,\"gi\":2,\"identifier\":\"66aa3d0b91785261081fab91\",\"isReadOnly\":false,\"isValid\":false,\"name\":\"Milka - Alpenmilch\",\"portion\":4.0,\"protein\":1,\"subCategory\":\"Schokolade\",\"unit\":\"pcs\"}</i> 2/12\r\n12:53:46.151 [DefaultDispatcher-worker-5] E/NSCLIENT: [NSClientV3Plugin.dbOperationFood():573]: Upload exception\r\njava.lang.IllegalArgumentException: URL \"v3/food\" does not contain \"{identifier}\". (parameter #1)\r\n    for method NightscoutRemoteService.deleteFood\r\n\tat retrofit2.Utils.methodError(Utils.java:54)\r\n\tat retrofit2.Utils.methodError(Utils.java:43)\r\n\tat retrofit2.Utils.parameterError(Utils.java:64)\r\n\tat retrofit2.RequestFactory$Builder.validatePathName(RequestFactory.java:829)\r\n\tat retrofit2.RequestFactory$Builder.parseParameterAnnotation(RequestFactory.java:416)\r\n\tat retrofit2.RequestFactory$Builder.parseParameter(RequestFactory.java:325)\r\n\tat retrofit2.RequestFactory$Builder.build(RequestFactory.java:206)\r\n\tat retrofit2.RequestFactory.parseAnnotations(RequestFactory.java:67)\r\n\tat retrofit2.ServiceMethod.parseAnnotations(ServiceMethod.java:26)\r\n\tat retrofit2.Retrofit.loadServiceMethod(Retrofit.java:202)\r\n\tat retrofit2.Retrofit$1.invoke(Retrofit.java:160)\r\n\tat java.lang.reflect.Proxy.invoke(Proxy.java:1006)\r\n\tat $Proxy5.deleteFood(Unknown Source)\r\n\tat app.aaps.core.nssdk.NSAndroidClientImpl$updateFood$2.invokeSuspend(NSAndroidClientImpl.kt:418)\r\n\tat app.aaps.core.nssdk.NSAndroidClientImpl$updateFood$2.invoke(Unknown Source:8)\r\n\tat app.aaps.core.nssdk.NSAndroidClientImpl$upda"
+  }
+ ]
+}

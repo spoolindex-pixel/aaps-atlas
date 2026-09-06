@@ -1,0 +1,65 @@
+{
+ "id": 3226971801,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4056,
+ "title": "[Dana R, dev branch] Prime/fill not available when pump disconnected",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4056",
+ "state": "closed",
+ "labels": [
+  "for_discussion"
+ ],
+ "created_at": "2025-07-13T23:50:06Z",
+ "closed_at": "2025-07-26T20:34:19Z",
+ "comment_count": 8,
+ "body": "Build: `3133121c76-2025.06.12`.\nPump: Dana R\nPreviously, after \"disconnect pump\", in the actions screen the \"prime/fill\" button was available. Currently they are not, and I need to use a workaround of switching to \"open loop\", setting basal to 0%, and then priming. My previous build was on 2024-04-29, and on that one IIRC this was possible.",
+ "comments": [
+  {
+   "id": 3074282024,
+   "user": "swissalpine",
+   "created_at": "2025-07-15T16:08:46Z",
+   "body": "I have adapted the code accordingly because I also fill the catheter with the Rapid D-Link when the needle is not in the body and the status disconnected is selected."
+  },
+  {
+   "id": 3085641773,
+   "user": "Philoul",
+   "created_at": "2025-07-17T21:54:58Z",
+   "body": "On a tube pump, fill tube must be done with the pump disconnected and prime the catheter must be done with a connected pump (AFAIK).\n\nBy design, on Insight pump, changing reservoir and tube must be done from pump user interface (Insight pump cannot communicate with Bluetooth when the pump screen is on). So the only command that can be done from AAPS is priming the catheter which must be done pump connected.\nDuring change reservoir process initialized from the pump, once tube reservoir is changed pump disconnected, you have to fill tube from pump (you can accept or refuse), then you should connect the pump and prime the cathe (again you can accept or refuse to prime if you re-use an cathe already primed with your body), and only after you should restart pump and communication with AAPS is possible.\n\nIf you only change the cathe, you don't need to stop the pump, so priming can be done from AAPS UI, but pump must be connected.\n\nI don't know how is dana pump user interface, but I don't understand which use case could require a \"fill tube\" or \"prime\" command sent from AAPS, with a pump disconnected 🤔.\n\n@swissalpine when you explain you prime the catheter with the needle outside your body, I understand that you can insert later the cathe with the needle into your body with insulin inside ?\n\nThis is just impossible to do with all the cathe I tested in the past (combo then Insight pumps), because the needle is just here to insert and guide the little plastic tube inside the body and then needle is removed from the body after cathe insertion.\n\nSo can you explain a bit more which cathe and how you insert it within your body, because I was not aware it was \"feasable\" to fill it and insert after 🤔."
+  },
+  {
+   "id": 3085679478,
+   "user": "swissalpine",
+   "created_at": "2025-07-17T22:14:16Z",
+   "body": "I use the Rapid D-Link and it is filled outside the body (steel).\nhttps://m.youtube.com/watch?v=a-L_3JNSD_o"
+  },
+  {
+   "id": 3088935489,
+   "user": "viq",
+   "created_at": "2025-07-18T10:18:10Z",
+   "body": "I'm sorry, I'm not clear on what's the difference between \"priming\" and\n\"filling\".\nI'm using steel needle cannulas. It's a simple tube with a needle at the\nend, with a protector on it, so what is and isn't in it is irrelevant to me\nbeing able to insert it.\nStructurally it's [pump]----<connector>---(needle), with tubing being\nscrewed into the pump and onto the reservoir. Doing which generally means\nyou end up with both bubbles and insulin in the tubing. Amount of insulin\nneeded to get bubbles out of the tube to the connector, and then after\nconnecting to get a drop out the needle, generally doesn't seem to be\nconsistent. Thus, site change for me generally is: in AAPS tell the pump to\n\"disconnect\", prepare everything, remove old tubing from pump, attach new,\n\"prime\" with first portion to get air and bubbles out of the tubing,\nconnect the part with needle, \"prime\" again with smaller amount to get a\ndrop on the tip of the needle, insert site, \"reconnect pump\" in AAPS\nFrom the pump interface, I have basically two options: \"fill\", where I have\nto enter amount of insulin that's in the \"new\" reservoir, which will\ncontinue pumping insulin until I either press \"pause that for now\" or go\nthrough multiple button presses for \"stop\" (or it goes through motion of\npumping out 25 units, when it stops itself). Or I can tell it to give a\nbolus. That's it, those are my options. At neither of those moments is pump\nnot accessible via Bluetooth.\n\n> Message ID: ***@***.***>\n>\n"
+  },
+  {
+   "id": 3089301358,
+   "user": "swissalpine",
+   "created_at": "2025-07-18T12:18:41Z",
+   "body": "Yes, that's roughly what I've done so far."
+  },
+  {
+   "id": 3089316027,
+   "user": "viq",
+   "created_at": "2025-07-18T12:23:52Z",
+   "body": "Anyway, those operations are generally easier for me to perform from AAPS,\nthan touching pump interface, and currently to do that I need to reconnect\npump, switch it to open loop, switch it to 0% basal, deal with whatever\nnotifications ping me from open loop, go though priming when I'm ready, and\nswitch to closed loop when I'm done. As opposed to just hitting \"prime\"\nwhile pump is \"disconnected\".\n"
+  },
+  {
+   "id": 3091926766,
+   "user": "Philoul",
+   "created_at": "2025-07-19T06:12:18Z",
+   "body": "Thanks for sharing the video (was not aware of this kind of catheter primed outside the body).\nMain difference is: your catheter includes an additional tube that should be filled outside body and an additional connector to manage...\n\nOn my side, the connection between the tube and the catheter is done on the catheter without any additional tube. So prime is done connected to body, and the amount of units is always the same (according to catheter's design, amount to prime can be between 0.5U and less than 1U).\nFilling the tube must be done disconnected to the catheter and requires much more insulin (between 10U and 20U according to the length of the tube, and is not 100% the same each time you replace the reservoir)."
+  },
+  {
+   "id": 3111592153,
+   "user": "viq",
+   "created_at": "2025-07-24T00:43:28Z",
+   "body": "I'll add a note that \"disable loop\" also makes the \"prime/fill\" controls be\nnot available. So currently the only way I can trigger pumping insulin\nwithout system thinking it went into me is:\n- deal with notifications from open loop\n- do it through pump as a bolus (and hope AAPS won't pick it up from\nhistory) or go through the whole dance of pretending it's reservoir change\n- do a bolus through AAPS and then go to treatments and delete it\n"
+  }
+ ]
+}

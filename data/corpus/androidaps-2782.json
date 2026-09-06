@@ -1,0 +1,39 @@
+{
+ "id": 1897360450,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2782,
+ "title": "[DEV] \"PH\" gets added in Treatments history when manual bolus (not delivered by pump)",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2782",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-09-14T21:54:32Z",
+ "closed_at": "2023-09-22T15:03:56Z",
+ "comment_count": 4,
+ "body": "AAPSClient 3.2.0-dev-l\r\nBuild: 471ed28a04-2023.09.14\r\nFlavor: aapsclientrelease\r\nNightscout version: NS15 dev\r\n\r\nStep by step\r\n1) Bolus from AAPSClient or AAPS, toggle \"do not bolus, record only\". \r\nor\r\n1) Bolus from AAPSClient Calculator (Possibly also Wear AAPSClient Calc and manual bolus / treat?)\r\n2) Successful sync, but \"PH\" gets added to treatment history\r\n\r\nExpected result would be only \"NS\".\r\n\r\n[AndroidAPS_LOG_1694728318735.log.zip](https://github.com/nightscout/AndroidAPS/files/12613848/AndroidAPS_LOG_1694728318735.log.zip)\r\n\r\n![image](https://github.com/nightscout/AndroidAPS/assets/114103483/ff034f4a-e7f9-488f-8997-242664313e7a)\r\n\r\n![image](https://github.com/nightscout/AndroidAPS/assets/114103483/81304031-125a-432a-b45e-dee6a170f08f)\r\n",
+ "comments": [
+  {
+   "id": 1721106186,
+   "user": "jbr7rr",
+   "created_at": "2023-09-15T11:18:37Z",
+   "body": "Yes I see the same with hardware pump\r\n\r\n@MilosKozak \r\n\r\nIs it an idea to make the original fix https://github.com/nightscout/AndroidAPS/commit/394883165d2f6603286d7bb56f6312d8b742c3b8 include a check if there is a temporaryId and pumpId is null to then exclude it ?\r\n"
+  },
+  {
+   "id": 1722293036,
+   "user": "MilosKozak",
+   "created_at": "2023-09-16T18:52:49Z",
+   "body": "resolved in https://github.com/nightscout/AndroidAPS/commit/275e52a546791ff044121bce6984a778b724a2c6"
+  },
+  {
+   "id": 1724415814,
+   "user": "olorinmaia",
+   "created_at": "2023-09-18T21:06:26Z",
+   "body": "@MilosKozak Could you apply the same fix to the Calculator in AAPSClient. If I do a bolus via the Calculator in AAPSClient \"PH\" gets added in treatment history as well. Maybe check Wear AAPSClient calculator, bolus, and treat also."
+  },
+  {
+   "id": 1731576159,
+   "user": "MilosKozak",
+   "created_at": "2023-09-22T15:03:56Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/ccabee0399d33427ffa8837e53d6756d569e99b5"
+  }
+ ]
+}

@@ -1,0 +1,27 @@
+{
+ "id": 1268284309,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1823,
+ "title": "New IOB is not displayed immediately if an occlusion occurs.",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1823",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-06-11T14:00:28Z",
+ "closed_at": "2022-06-13T10:22:47Z",
+ "comment_count": 2,
+ "body": "Reporting bugs\r\n--------------\r\n- **09:36:13.475 Error detected: Okluze** \r\n-  The history from the pump (IOB,COB) has not changed (were not in treatment in NS) if an occlusion occurs (Asked: 4.5 Delivered: 2.6). \r\n- It was displayed after the next bolus with the new values (both of them IOB +2.6+2.9, COB +35+30). I cancelled the second bolus (Asked: 3.85 Delivered: 2.9) because I was counting on some insulin already dispensed the first time, but I didn't see it. \r\n- Maybe it's a behavior not a mistake. If the bolus fails, the carbs don't register. They do load the next time the pump is reconnected, but the insulin dosed is something else. \r\n- Maybe waiting is enough, but I think the history from the pump should be loaded and displayed immediately after occlusion, that's potentially dangerous.\r\n- 3.0.0.2-dev-m-fa79864d2-2022.06.08-13:36, \r\n- DANA_RV2\r\n- [AndroidAPS_LOG_1654933557660.log.zip](https://github.com/nightscout/AndroidAPS/files/8883899/AndroidAPS_LOG_1654933557660.log.zip)",
+ "comments": [
+  {
+   "id": 1153507886,
+   "user": "Korostensky",
+   "created_at": "2022-06-13T06:05:28Z",
+   "body": "The next day 2022-06-12, same situation. Occlusion showed information about incomplete bolus, but IOB and COB did not change. \r\n\r\nThis time the app got stuck and only after a restart did the IOB and COB change\r\n[AndroidAPS_LOG_1655018663768.log.zip](https://github.com/nightscout/AndroidAPS/files/8888294/AndroidAPS_LOG_1655018663768.log.zip)\r\n"
+  },
+  {
+   "id": 1153741570,
+   "user": "MilosKozak",
+   "created_at": "2022-06-13T10:22:47Z",
+   "body": "hmmm pump stops communicating on this event and it takes time to recover from this situation. Anyway this https://github.com/nightscout/AndroidAPS/commit/f887043aff9abccf3106112af667669e21e374b2  could speed it up"
+  }
+ ]
+}

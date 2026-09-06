@@ -1,0 +1,21 @@
+{
+ "id": 2204575324,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3276,
+ "title": "Data Loss with AndroidAPS-Nightscout via NSCLIENTV3, due to Nightscout starting without database connection",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3276",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-03-24T21:52:58Z",
+ "closed_at": "2024-11-30T21:25:59Z",
+ "comment_count": 1,
+ "body": "**Describe the bug**\r\nThe AndroidAPS queue is lost when the Nightscout front-end starts without a proper database connection. This issue is observed after updating to AndroidAPS v3.2.0.0+ (currently at AndroidAPS v3.2.0.4) and Nightscout v15.0.2. See screenshots 1 and 2 below.\r\n\r\n**Expected behavior**\r\nAndroidAPS removes uploads from the queue even when there is an error message like '_NOT_FOUND DeviceStatus Error Cannot POST /api/v3/devicestatus_'. The expected behavior is for AndroidAPS to only remove an upload from the queue if the upload was successful (see screenshot 3). It appears there is no (yet) control mechanism in AndroidAPS's NSCLIENTV3 that verifies whether an upload was successful before removing it from the queue.\r\n\r\n**My setup information**\r\nI am currently running nightscout/cgm-remote-monitor:15.0.2 on Docker with mongo:4.4.17-rc0, all on a Synology NAS. We use AndroidAPS 3.2.0.4 to upload data to Nightscout using websockets.\r\n\r\n**To Reproduce**\r\n- Scenario 1 - data loss\r\nI shut down my Synology and then boot it. It automatically boots the Nightscout container and mongo database container. Most of the time, Nightscout starts up before the MongoDB database, leading to an error on the Nightscout front-end (as shown in screenshot 2). AndroidAPS polls frequently to check whether Nightscout is available and, if it is, starts processing the queue (despite the error on the front-end). The uploads in the queue are lost because AndroidAPS uploads data without being able to save it in the Nightscout database (screenshot 1).\r\n\r\n- Scenario 2 - data queued\r\nI shut down Synology and then boot it without starting the Nightscout container and mongo database container. AndroidAPS queues uploads until nightscout becomes available. No data is lost.\r\n\r\n**Screenshot 1**\r\n![20240324 1640 AndroidAPS - NSCLIENT V3](https://github.com/nightscout/AndroidAPS/assets/13611404/abef7bc4-6316-4ef3-b2e0-193a9011b2e7)\r\n\r\n**Screenshot 2**\r\n![20240324 1640 Nightscout site](https://github.com/nightscout/AndroidAPS/assets/13611404/0b609469-5ebe-4fd9-9c72-a036917a8202)\r\n\r\n**Screenshot 3**\r\n![20240324 2157 AndroidAPS - NSCLIENT V3 OK](https://github.com/nightscout/AndroidAPS/assets/13611404/c37e60d8-8d7e-4f8f-8087-f532a1aabbfd)",
+ "comments": [
+  {
+   "id": 2509390389,
+   "user": "MilosKozak",
+   "created_at": "2024-11-30T21:25:59Z",
+   "body": "improved by https://github.com/nightscout/AndroidAPS/commit/ed37ffac7effecbe60dd2faeb0bcbcf082d5141c"
+  }
+ ]
+}

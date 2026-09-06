@@ -1,0 +1,22 @@
+{
+ "issue_id": 1770,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/1770",
+ "title": "Backfilled data incompletely fetched from Nightscout",
+ "symptom": "xDrip does not fetch all backfilled data from Nightscout, resulting in gaps in the follower's data even though the data is present on Nightscout. The log shows 'Cannot inject display glucose value as time difference too great' messages.",
+ "cause": "The follower remembers the last reading time and only requests data from that point onward. If the collector uploads recent data first and then backfills older data, the follower misses the backfilled data because it doesn't request data before its last reading.",
+ "fix": "No fix was provided. The issue was closed with a comment suggesting that using Nightscout as a repository and accessing it via browser may be sufficient, and asking if there is a reason the follower needs backfill.",
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [
+  "Android 7",
+  "Android 10"
+ ],
+ "driver_tags": [
+  "Nightscout",
+  "follower",
+  "collector"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "xDrip remembers the last time that it was doing the last read. (In other words, if xDrip is reading now, and the last read is from 10:00:00, than xDrip will read again asking for data from 10:00:00 and after it)."
+}

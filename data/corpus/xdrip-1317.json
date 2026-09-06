@@ -1,0 +1,60 @@
+{
+ "id": 605640844,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1317,
+ "title": "Miband 4 - data loss indication missing ",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1317",
+ "state": "closed",
+ "labels": [
+  "enhancement",
+  "device-miband"
+ ],
+ "created_at": "2020-04-23T15:39:03Z",
+ "closed_at": "2021-12-03T22:00:35Z",
+ "comment_count": 7,
+ "body": "With the nightly 20200419 I get no indication on the Miband4 that no new data is available. The old watchface/display remain unchanged until new data come in. This is dangerous as one want to detect any data loss also on the watch. At a quick glance all seems to be OK. You have to check the time of the last reading with the current time tp verify that the data is valid.\r\nSetup: Master phone with xDrip / patched LL app, xdrip sync master, xdrip snyc Follower phone with Miband4 attached.",
+ "comments": [
+  {
+   "id": 618514454,
+   "user": "MasterPlexus",
+   "created_at": "2020-04-23T16:53:41Z",
+   "body": "@bigdigital , I think this is a case for you?"
+  },
+  {
+   "id": 618549998,
+   "user": "bigdigital",
+   "created_at": "2020-04-23T17:54:19Z",
+   "body": "Hi. this is intended behaviour. Normally you should receive data every 5 minutes. The last bg reading would be displayed on the band wacthface, based on this time, you can consider the relevance of the data. If xdrip wouldn't receive new data for 30 minutes. The xdrip will force the watcface uploading, and you should see  crossed out last glucose value like on this photo https://bigdigitalhome.files.wordpress.com/2020/01/prot1.jpg ."
+  },
+  {
+   "id": 618833655,
+   "user": "keencave",
+   "created_at": "2020-04-24T06:44:47Z",
+   "body": "This seems to be unsafe. The time to display the crossed out last reading should be adjusted to 10 minutes like in xdrip.\r\n"
+  },
+  {
+   "id": 619337870,
+   "user": "bigdigital",
+   "created_at": "2020-04-25T07:50:49Z",
+   "body": "I've checked xdrip source code, the data considered as stale after 11 minutes for most of the data sources, except librealarm, it use 13 minutes interval. I can add two update intervals, one for example can be set to 15 minutes. If there would be no new readings, this timer will update miband screen to see the crossed out last readings. After this, woudl be used second update interval (30 mins), it would update miband screen to show changes on the graph. "
+  },
+  {
+   "id": 619409865,
+   "user": "keencave",
+   "created_at": "2020-04-25T16:59:20Z",
+   "body": "15 should be OK, that will give similar behaviour to the standard xdrip timers. So the crossed reading will appear after 15 minutes then?\r\n"
+  },
+  {
+   "id": 619506864,
+   "user": "bigdigital",
+   "created_at": "2020-04-26T08:13:03Z",
+   "body": "Yes, except the night mode. In night mode would be used interval defined in th night mode settings."
+  },
+  {
+   "id": 621308311,
+   "user": "keencave",
+   "created_at": "2020-04-29T16:05:09Z",
+   "body": "Agree. This make sense.\r\n"
+  }
+ ]
+}

@@ -1,0 +1,35 @@
+{
+ "id": 1492886003,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 2549,
+ "title": "Web Server header responses CR+LF issue",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/2549",
+ "state": "closed",
+ "labels": [
+  "webservice"
+ ],
+ "created_at": "2022-12-12T22:18:53Z",
+ "closed_at": "2023-07-16T11:57:07Z",
+ "comment_count": 3,
+ "body": "From :- \r\n[Discussion](https://github.com/NightscoutFoundation/xDrip/discussions/2445#discussioncomment-4382163)\r\n\r\nI use xDrip with a libre2, however I wanted to display the latest sugar on screen during zwift cycling.\r\n\r\nTo do this I used node to fetch the url\r\nhttp://<phoneip>:<xdripPort>/pebble\r\n\r\nThe return from the GET has invalid headers.\r\nProtocol states headers are followed by \\r and \\n they seem to only contain \\n\r\n\r\nNode throws an insecure header violation.\r\nOther programmatic GET libraries do the same. You can force some to ignore the insecure header response, but it seems inadvisable to disable security for a whole node application to deal with this one invalid response.\r\n\r\nWould seem the correct solution is to have xdrip response use the CR-LF specified in the protocol?\r\n\r\nThere may be compatibility issues in fixing this, so it may be advisable to expose these responses on a different port number or enable a flag within the settings to enable this mode?  \r\n",
+ "comments": [
+  {
+   "id": 1627447196,
+   "user": "jamorham",
+   "created_at": "2023-07-08T17:57:52Z",
+   "body": "Please try July 8th nightly which should resolve the issue."
+  },
+  {
+   "id": 1630090948,
+   "user": "Navid200",
+   "created_at": "2023-07-11T04:22:40Z",
+   "body": "@gazhay \r\nWould you please test?"
+  },
+  {
+   "id": 1637064770,
+   "user": "Navid200",
+   "created_at": "2023-07-16T11:57:07Z",
+   "body": "We can reopen if needed.  But, changes have been made to address this concern and unless they are tested, we cannot keep this open."
+  }
+ ]
+}

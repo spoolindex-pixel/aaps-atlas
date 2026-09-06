@@ -1,0 +1,35 @@
+{
+ "id": 1032440916,
+ "repo": "nightscout/AndroidAPS",
+ "number": 770,
+ "title": "[Improvement] Add a Bolus Reminder in Carbs Dialog",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/770",
+ "state": "closed",
+ "labels": [
+  "enhancement"
+ ],
+ "created_at": "2021-10-21T12:34:37Z",
+ "closed_at": "2021-10-26T17:31:00Z",
+ "comment_count": 3,
+ "body": "The idea is to be able to set a reminder for a later bolus, when you start to eat (Enter Carbs in Carbs Button) but you have a low BG and/or an important negative delta...\r\n\r\nIn screenshot below I started to eat at 12:42 but my BG value was 87mg/dl and Delta -8 mg/dl for the last 5 minutes...\r\n=> I always hesitate to give a significant bolus in this situation, especially with a very fast insulin (Lyumjev)...\r\n=> but I often forget to bolus soon enough after my meal\r\n\r\nTrigger to show a \"Remind Bolus CheckBox\" in Carbs dialog could be something like:\r\n       BG + 3 * Delta <= 70mg/dl (or 3.9mmol/l)\r\nTrigger to remind bolus could be:\r\n       5 min Delta >= 0 and  BG value >= 70 mg/dl (or 3.9mmol/l)\r\n\r\n=> It was at 13:13 in my case in second screenshot so about 30 min later\r\n\r\n![Screenshot_20211021-125705_AndroidAPS](https://user-images.githubusercontent.com/52934600/138271357-93a6adb8-bdd3-41ac-9956-ea0e6ac20511.jpg)\r\n\r\n![Screenshot_20211021-131334_AndroidAPS](https://user-images.githubusercontent.com/52934600/138271462-621b1daa-299f-44ad-a83a-0fbcce497a02.jpg)",
+ "comments": [
+  {
+   "id": 948650913,
+   "user": "MilosKozak",
+   "created_at": "2021-10-21T14:04:07Z",
+   "body": "I'd say enter at least carbs. then aps will start large SMBs on BG rise if you forget to bolus "
+  },
+  {
+   "id": 948869711,
+   "user": "Philoul",
+   "created_at": "2021-10-21T17:57:52Z",
+   "body": "That's what I always do (enter carbs), but sometimes I forget to bolus later (and when I remember it's often too late, BG is already above 150 and rising very fast...)\r\nAnd SMBs (even large) are generally not sufficient to avoid very high bg without a real bolus...\r\n"
+  },
+  {
+   "id": 949676164,
+   "user": "Philoul",
+   "created_at": "2021-10-22T14:19:45Z",
+   "body": "Development done I test it and will do a PR soon"
+  }
+ ]
+}

@@ -1,0 +1,20 @@
+{
+ "issue_id": 645,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/645",
+ "title": "[2.8.2.2 Dev] Sometimes manual bolus are not correctly recorded in database",
+ "symptom": "Manual boluses (and sometimes SMBs) are correctly delivered by the pump but not recorded in the database, so they are missing from the IOB graph and Treatment tab, though they appear in User Entry and pump history. This occurs intermittently with Accu-Chek Insight pump.",
+ "cause": "The calculated date from the pump event is shifted one day before compared to the real timestamp, causing the bolus to be considered already recorded and not updated in the database.",
+ "fix": "Philoul states 'I'll fix this bug very quickly.' The fix is to correct the date calculation in the Insight driver's processBolusDeliveredEvent.",
+ "settings_changed": [],
+ "devices": [
+  "Accu-Chek Insight"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "Insight driver",
+  "pumpSync"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "SMB correctly recorded in deliverTreatment ID is found in readHistory during the process of processBolusDeliveredEvent from pump, but the calculated date from pump event is shifted one day before compared to real timestamp (strange because this calculation was not modified during update of the plugin for new database) => I'll fix this bug very quickly."
+}

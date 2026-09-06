@@ -1,0 +1,63 @@
+{
+ "id": 2887402412,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3866,
+ "title": "Manual automation not changing profile %",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3866",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-02-28T15:09:06Z",
+ "closed_at": "2025-03-01T16:41:07Z",
+ "comment_count": 8,
+ "body": "I have an _activity_ manual automation. Sets profile to 30% and TT to 150.\n\nThe _set TT to 150_ is working but _set profile to 30%_ or 50% isn't working. \n\n![Screenshot_20250228_160057_AAPS.jpg](https://github.com/user-attachments/assets/8da099df-b7ef-41f4-8212-ac59a60608a6)\n\n![Screenshot_20250228_155638_AAPS.jpg](https://github.com/user-attachments/assets/c04d6bfb-96ea-479a-822f-cbcf6505a90d)\n\n![Screenshot_20250228_155941_AAPS.jpg](https://github.com/user-attachments/assets/be11a035-ce9f-4130-993b-8836f60ad15b)\n\nEven without the TT, the profile % doesn't change.\n\nHere are the logs. Look around 15h50 and later.\n\n![AndroidAPS_LOG_1740754810300.log.zip](https://github.com/user-attachments/files/19029354/AndroidAPS_LOG_1740754810300.log.zip)\n\nUsing last dev\n\n![Screenshot_20250226_201028_AAPS.jpg](https://github.com/user-attachments/assets/ef8fb1c8-5342-4709-9ac7-236fefa78a15)\n\n",
+ "comments": [
+  {
+   "id": 2690890710,
+   "user": "robertrub",
+   "created_at": "2025-02-28T15:11:29Z",
+   "body": "When I try to change profile % manually,  I get this strange message and the profile % doesn't change either.\n\n![Screenshot_20250228_161020_AAPS.jpg](https://github.com/user-attachments/assets/7d99febf-e7f9-443c-b3bd-a3026be80067)\n\nThe basal rate at the moment, 0.3U/h at 30% gives 0.09U/h which should be accepted by Medtrum. 50% doesn't work either (0.15U/h)\n\n![Screenshot_20250228_161224_AAPS.jpg](https://github.com/user-attachments/assets/1c835987-eb7f-4a5d-a494-42e62d243a00)\n\n"
+  },
+  {
+   "id": 2690912781,
+   "user": "robertrub",
+   "created_at": "2025-02-28T15:20:10Z",
+   "body": "Manually, I cannot change **the profile %** but if I change the **profile AND the profile %**, then it works."
+  },
+  {
+   "id": 2692093394,
+   "user": "robertrub",
+   "created_at": "2025-03-01T09:30:27Z",
+   "body": "Very strange, it's working normally this morning..."
+  },
+  {
+   "id": 2692177671,
+   "user": "olorinmaia",
+   "created_at": "2025-03-01T12:19:37Z",
+   "body": "I thought the limit for automations was 50% ;)\n\nI can see a basal rate in your profile is 0,15. So 0,15 * 0,3 = 0,045 which is below the lowest basal rate that can be set on pump at the moment (?). I believe that is why you get this error message if you use that profile and try to execute automation rule."
+  },
+  {
+   "id": 2692187363,
+   "user": "robertrub",
+   "created_at": "2025-03-01T12:45:15Z",
+   "body": "As I said, I got the same error when changing profile to 50% too... It was something else but what ???\n\nFYI, I changed the automation limits to 30 and 150% for my personal use. "
+  },
+  {
+   "id": 2692188617,
+   "user": "MilosKozak",
+   "created_at": "2025-03-01T12:48:33Z",
+   "body": "I testes 50% on latest dev and no issues (virtual pump)\nTest unmodified version"
+  },
+  {
+   "id": 2692193842,
+   "user": "robertrub",
+   "created_at": "2025-03-01T13:02:27Z",
+   "body": "@MilosKozak As said this morning, all is back to normal and working normally as before. No idea what happened yesterday. Did you see anything strange in the logs ?"
+  },
+  {
+   "id": 2692312020,
+   "user": "MilosKozak",
+   "created_at": "2025-03-01T16:41:07Z",
+   "body": "Hmmm no idea what happened. Pump was reporting profile already set correctly but AAPS didn't see it"
+  }
+ ]
+}

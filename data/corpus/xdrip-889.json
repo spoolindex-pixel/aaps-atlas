@@ -1,0 +1,101 @@
+{
+ "id": 448320293,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 889,
+ "title": "Deleted calibration is not removed on watch in forced mode",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/889",
+ "state": "closed",
+ "labels": [
+  "device-watch"
+ ],
+ "created_at": "2019-05-24T19:22:32Z",
+ "closed_at": "2021-08-06T13:34:05Z",
+ "comment_count": 14,
+ "body": "My SW3 does not sync calibrations from the phone that I have deleted. I added an calibration and deleted it again. My SW3 runs the collector and the calibration that I deleted is not removed from the watch, but is removed form the phone. If i run the collector on the phone, everyting is correct. When I run the collector on the watch again, the calibration is wrong again. How do I trigger a resync the calibration data on the watch? I have tried to use the \"refresh db\". Tried to turn off and on connection to phone. \"Reset wear db\" works, but this changes the history of bg readings and a lot of duplicate entries appears. ",
+ "comments": [
+  {
+   "id": 495767639,
+   "user": "kskandispersonal",
+   "created_at": "2019-05-24T19:45:44Z",
+   "body": "Could you try doing a Reset Wear DB, followed by the Refresh DB?"
+  },
+  {
+   "id": 495769405,
+   "user": "haralha",
+   "created_at": "2019-05-24T19:52:55Z",
+   "body": "\"Reset wear db\" works but since I run the collector on the watch, my historical readings get a lot of duplicates. The duplicates are also uploaded to nightscout. I don't want to destroy my data when I just want to refresh the calibration. \"Refresh DB\" don't have any effect.\r\n\r\nDuplicates in history:\r\n<img width=\"392\" alt=\"Screen Shot 2019-05-24 at 21 49 35\" src=\"https://user-images.githubusercontent.com/22540796/58353114-e8931880-7e6d-11e9-8a86-bc23421713fd.png\">\r\n"
+  },
+  {
+   "id": 495776079,
+   "user": "kskandispersonal",
+   "created_at": "2019-05-24T20:18:26Z",
+   "body": "Hmm, \"Reset wear db\" should delete the entire db on your watch.  Then if you do a \"Refresh DB', the watch should retrieve the latest data (calibrations, BGs, treatments, blood tests) from your phone.  I'm not sure why there are duplicate history records.  Does this show on your phone, too?  The data should be the same, once you Reset Wear DB.  Can you do a Reset wear DB, then restart both watch and phone.  After both start, the watch should receive the latest records from the phone.  Maybe switch back to the phone as a collector before restart the devices.\r\n\r\nOh, are you using a Calibration Plugin?  If so, this could be why you might see different results.  AFAIK, Calibration Plugin is not supported on the watch.\r\n\r\nYes, I understand you would not want to corrupt your NS data!"
+  },
+  {
+   "id": 495788165,
+   "user": "haralha",
+   "created_at": "2019-05-24T21:06:42Z",
+   "body": "The duplicated data shows on the phone and the watch. \"Refresh db\" does not clean up the corrupt data. Yes I have enabled a plugin but I have not enabled \"use plugin glucose\" so it will not do anything with bg-data. I don't use it because it don't work on the watch. \r\n\r\nThe duplicates seems like a merge between the watch and the phone since they have two different calibration sets. \r\n\r\nAlmost same timestamp:\r\n![IMG_9525 2](https://user-images.githubusercontent.com/22540796/58356707-87247700-7e78-11e9-9d37-e6fca34aa65e.JPG)\r\n"
+  },
+  {
+   "id": 495794891,
+   "user": "kskandispersonal",
+   "created_at": "2019-05-24T21:37:22Z",
+   "body": "Yes, it appears Timestamp, Aged raw, and Raw have duplicates.  Only the calculated BG value is different.  This is the BG Data Table, right, not the Calibration Table?\r\n\r\nAFAIK, the watch does not send back calibrations to the phone, only the raw BG data received from the transmitter (if watch is the collector).  Then it is up to the phone to process that transmitter data, whether to display it, save it to its DB, upload to NS, etc.\r\n\r\nDo you see this same data on your Watch (go to the 3-dot menu, and select the BG icon in the second row)?\r\n\r\nDo you have Settings - xDrip+ Display Settings - Graph Settings - Rewrite History ticked?\r\n\r\nAre you using Libre?"
+  },
+  {
+   "id": 495799600,
+   "user": "haralha",
+   "created_at": "2019-05-24T22:01:46Z",
+   "body": "It is the BG Data Table.\r\n\r\nI dont have duplicates on the bg table on the watch, but they are displayed in the graph on the watch. Strange...\r\n![IMG_1017](https://user-images.githubusercontent.com/22540796/58358693-43357000-7e80-11e9-9d86-449044ea3bc4.JPG)\r\n\r\n![IMG_6742](https://user-images.githubusercontent.com/22540796/58358600-e639ba00-7e7f-11e9-8d79-86a9e610b3ba.JPG)\r\n\r\nYes I have rewrite history ticket. Maybe I should turn it off?\r\n\r\nYes, I use Libre and Miaomiao. "
+  },
+  {
+   "id": 495809467,
+   "user": "kskandispersonal",
+   "created_at": "2019-05-24T23:00:15Z",
+   "body": "Yes, I would switch the History preference off and see if it helps.  This switch will adjust past BGs when a new Calibration is created.\r\n\r\n\r\nAlso, I'm not a Libre/Miaomiao user but I see in etc/CompareCgms/readme.txt file that, which could be playing a part in this:\r\n\r\n2) Automatic data that is saved by the sensor. It points are 15 minutes apart.\r\nThe main issue that I see here, is that abbott \"changes the history\" which means that they fix\r\nthe past data once they have more information. \r\n\r\nAlso, have you checked you Nightscout site and/or Mlab db?  Are their duplicate records?"
+  },
+  {
+   "id": 495867599,
+   "user": "haralha",
+   "created_at": "2019-05-25T06:32:37Z",
+   "body": "I will turn of the history preference and see if thats help.\r\n\r\nYes there is duplicates in Nightscout. "
+  },
+  {
+   "id": 495942506,
+   "user": "haralha",
+   "created_at": "2019-05-25T19:23:05Z",
+   "body": "I have now turned off \"rewrite history ticket\". It did not help..."
+  },
+  {
+   "id": 496505546,
+   "user": "kskandispersonal",
+   "created_at": "2019-05-28T12:58:34Z",
+   "body": "@haralha Sorry, could you bring this duplication issue up in gitter https://gitter.im/jamorham/xDrip-plus, or as a new issue here in github, if this indeed is an issue for you?  The title of this issue does not mention the BG duplication.  Maybe someone more familiar with Libre can help."
+  },
+  {
+   "id": 497438427,
+   "user": "haralha",
+   "created_at": "2019-05-30T18:39:08Z",
+   "body": "@kskandispersonal I have created a new issue her on github. "
+  },
+  {
+   "id": 497490942,
+   "user": "kskandispersonal",
+   "created_at": "2019-05-30T21:22:17Z",
+   "body": "Yes, I see it. This seems to be an issue related to bad calibrations. With Dexcom, one can reset all calibrations in the DB for a sensor by selecting Settings - Stop Sensor in xDrip+ on the phone. Then tap the \"DON'T STOP, JUST RESET THE CALIBRATIONS\" button. This should clear up the table. I'm not sure if this is available for libre though. Can you try that?\r\n"
+  },
+  {
+   "id": 786880183,
+   "user": "Navid200",
+   "created_at": "2021-02-26T20:35:10Z",
+   "body": "@haralha Can we close this issue?\r\nIf not, would you please provide a link to the other issue you opened, and explain why this one still needs to remain open?"
+  },
+  {
+   "id": 894264274,
+   "user": "Navid200",
+   "created_at": "2021-08-06T13:34:05Z",
+   "body": "Closing due to inactivity"
+  }
+ ]
+}

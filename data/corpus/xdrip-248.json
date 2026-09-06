@@ -1,0 +1,85 @@
+{
+ "id": 284617007,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 248,
+ "title": "New feature request - Add GVI and PGS calculations in Statistics and History",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/248",
+ "state": "closed",
+ "labels": [
+  "enhancement",
+  "ui",
+  "algorithmics"
+ ],
+ "created_at": "2017-12-26T22:21:49Z",
+ "closed_at": "2020-11-06T20:49:42Z",
+ "comment_count": 11,
+ "body": "Nightscout has added these new metrics to measure glycemic variability index, and patient glycemic status.  I think it would be useful for xDrip+ users as well to view in Statistics and History.\r\n\r\nhttps://www.healthline.com/diabetesmine/a-new-view-of-glycemic-variability-how-long-is-your-line#3",
+ "comments": [
+  {
+   "id": 354020817,
+   "user": "AdrianLxM",
+   "created_at": "2017-12-26T22:38:14Z",
+   "body": "I absolutely agree!\r\n\r\n@sulkaharo's filtering is here: https://github.com/nightscout/cgm-remote-monitor/blob/master/lib/report_plugins/glucosedistribution.js#L150"
+  },
+  {
+   "id": 361078256,
+   "user": "kskandispersonal",
+   "created_at": "2018-01-28T17:06:24Z",
+   "body": "I'm adding this feature based on NS' implementation.  However, I'm getting different results from NS as compared to xDrip+ using my own db.  # of readings below, in and above seem to be off from NS, sometimes significantly over more than a day.  One reason might be that NS does NOT exclude BGs < sensor threshold, `where(\"calculated_value > \" + CUTOFF)`.  I know for me I have quite a few lows over time, and by excluding this number, GVI and PGS will be off.  xDrip excludes this number for Status line, History and Stats.  Would it make sense to make its exclusion a preference instead?  So that for those who have frequent lows, these values can be included in the Stats and History?"
+  },
+  {
+   "id": 370102301,
+   "user": "jamorham",
+   "created_at": "2018-03-03T01:13:02Z",
+   "body": "Does this now work? Can I mark this as resolved?"
+  },
+  {
+   "id": 372148626,
+   "user": "sulkaharo",
+   "created_at": "2018-03-11T20:59:24Z",
+   "body": "@kskandispersonal I should hide the data showing the number of records in Nightscout as those are not correct after filtering happens. Do the percentages match roughly? The intent with the NS filtering was to remove the worst noisy records and the effect of single missing records. Was the issue mentioned above that data above and below certain thresholds should be filtered out? "
+  },
+  {
+   "id": 372150226,
+   "user": "AdrianLxM",
+   "created_at": "2018-03-11T21:20:04Z",
+   "body": "@sulkaharo xDrip treat everything < 39 as special value (error state) as  LOW get mapped to 39 and there is nothing below LOW. If those values will be used in Nightscout, then the statistics will be different.\r\n\r\nI've added the same two filter passes to xDrip like you did to Nightscout now."
+  },
+  {
+   "id": 372174847,
+   "user": "kskandispersonal",
+   "created_at": "2018-03-12T02:13:05Z",
+   "body": "Yes, xDrip results match pretty close to NS now after Adrian added your two filters.  Thanks to you both!!\r\n\r\nEg (from my DB):\r\n7 Days\r\nNS  GVI 1.21 PGS 35.62\r\nxDrip GVI 1.18 PGS 34.26\r\n30 Days\r\nNS  GVI 1.23 PGS 37.52\r\nxDrip: 1.18 PGS 37.38\r\n90 Days\r\nNS GVI 1.22 PGS 29.21\r\nxDrip: 1.19 PGS 30.35\r\n\r\n\r\n"
+  },
+  {
+   "id": 393611059,
+   "user": "dv1",
+   "created_at": "2018-05-31T17:30:27Z",
+   "body": "One comment on this. Using the defined time in range for PGS seems odd, since both GVI and PGS are supposed to reflect how close (or far away) your BG control is to that of a non-diabetic. With that in mind, I think PGS calculation should _not_ involve the defined range, but either a hardcoded 70-110 range, or a second configurable range just for PGS."
+  },
+  {
+   "id": 403598956,
+   "user": "feikmeyer",
+   "created_at": "2018-07-09T19:50:05Z",
+   "body": "I have a question: Is the PGS (patient glycemic status) the same as the PGS (personal glycemic state) defined here: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5467104/ ?\r\n\r\nWhere can I find information on how the patient glycemic status is calculated?\r\n\r\n\r\n\r\nEdit: Found the information in an [archived version of the Healthline-Link above.](https://web.archive.org/web/20160422180805/https://www.healthline.com/diabetesmine/a-new-view-of-glycemic-variability-how-long-is-your-line)"
+  },
+  {
+   "id": 605891664,
+   "user": "kameamea",
+   "created_at": "2020-03-30T09:35:37Z",
+   "body": "The PGS value in xdrip depends on your personal upper and lower limits. Try lowering your upper limit from 180mg/dL to 120mg/dL and you'll see an dramatic increase in your PGS statistics value.\r\nThis makes no sense at all.\r\n\r\nI couldn't find a paper where PGS (patient glycemic status) was described. \r\n\r\nfeikmeyer gave two links: The first article from 2017 (https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5467104/)\r\nDiabetes Technol Ther. 2017 Jun 1; 19(Suppl 3): S-38–S-48. \r\ndefines PGS as personal glycemic state with an value < 15 to be excellent.\r\nOne of the authors of the paper is Thomas Peyser\r\n\r\nThe second one https://web.archive.org/web/20160422180805/https://www.healthline.com/diabetesmine/a-new-view-of-glycemic-variability-how-long-is-your-line\r\nis a report from a talk which (the same?) Dexcom's VP of Science & Technology  Tom Peyser gave 2012\r\nBut the details are missing here. There PGS is an acronym for patient glycemic status\r\nFor this PGS a value < 35  is excellent. This seems to be the one calculated in xdrip.\r\n\r\nSo despite both sources use the same acronym and the same author is involved, the two definitions have not much in common, at least mathematically. \r\n\r\nHowever the first article states:\r\n... percent time in range (70–180 mg/dL) ...\r\nSo those limits should be used in xdrip as well for PGS calculation I guess"
+  },
+  {
+   "id": 606068367,
+   "user": "dv1",
+   "created_at": "2020-03-30T15:26:23Z",
+   "body": "> However the first article states:\r\n> ... percent time in range (70–180 mg/dL) ...\r\n> So those limits should be used in xdrip as well for PGS calculation I guess\r\n\r\nI agree. Otherwise, the PGS is barely useful. A \"bad\" PGS due to a poor time in range could actually reflect better BG control due to the range being something like 70-110, while a \"good\" PGS with high time in range would actually reflect poor control due to a range of 40-400.\r\n\r\nThe 70-180 range is a consensus made by the ADA and others. Let's use that."
+  },
+  {
+   "id": 723293566,
+   "user": "tolot27",
+   "created_at": "2020-11-06T20:49:42Z",
+   "body": "Merged with #283 thus, closing it."
+  }
+ ]
+}

@@ -1,0 +1,33 @@
+{
+ "id": 3696738539,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4384,
+ "title": "[Dev] AAPSClient Pump status display 0% and red color color when using Dash",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4384",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-12-04T21:50:08Z",
+ "closed_at": "2025-12-06T20:52:33Z",
+ "comment_count": 3,
+ "body": "See screenshots. Latest dev. New pod activated on test-rig.\nOn master this issue is not present. \nI expect to see \"x min ago Closed Loop\" in normal colors.\n\nAAPS:\n\n<img width=\"583\" height=\"1229\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/cef2e3c8-c361-4324-955b-9b5d76fce017\" />\n\nAAPSClient:\n\n<img width=\"583\" height=\"1229\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/f09f3632-eaac-4e3b-ac9b-679af27cd509\" />\n\n<img width=\"583\" height=\"1229\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/f675484f-7d25-4a95-a915-ed0662265de4\" />",
+ "comments": [
+  {
+   "id": 3614621822,
+   "user": "olorinmaia",
+   "created_at": "2025-12-04T22:44:25Z",
+   "body": "This change in NSDeviceStatusHandler.kt fixes the issue for me, but not sure if it's a proper fix. I'm not able to at first glance locate the root cause to why Dash is reporting battery.\n\n```\n            pump.battery?.percent?.let {\n                if (it > 0) { // ignore 0 or invalid\n                    deviceStatusPumpData.isPercent = true\n                    deviceStatusPumpData.percent = it\n                }\n            }\n```"
+  },
+  {
+   "id": 3620330915,
+   "user": "MilosKozak",
+   "created_at": "2025-12-06T13:20:19Z",
+   "body": "test now\nhttps://github.com/nightscout/AndroidAPS/commit/0bfd8305736f48bd13b49169faeff4c38cb82660"
+  },
+  {
+   "id": 3621106270,
+   "user": "olorinmaia",
+   "created_at": "2025-12-06T20:52:33Z",
+   "body": "Well done! Fixed with https://github.com/nightscout/AndroidAPS/commit/0bfd8305736f48bd13b49169faeff4c38cb82660"
+  }
+ ]
+}

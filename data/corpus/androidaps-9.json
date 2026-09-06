@@ -1,0 +1,147 @@
+{
+ "id": 709718787,
+ "repo": "nightscout/AndroidAPS",
+ "number": 9,
+ "title": "[2.7] no \"import settings\" possible because of small display size and no scrolling possible",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/9",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2020-09-27T11:06:37Z",
+ "closed_at": "2020-10-02T12:13:19Z",
+ "comment_count": 22,
+ "body": "Tested with a \"Jelly Pro\" from Unihertz (issue maybe also replicable with landscape format for other phones)\r\nIf I want to import settings, I only see this and it isn't possible to scroll and click on \"ok\":\r\n![Screenshot_20200927-125326](https://user-images.githubusercontent.com/37214302/94363312-b9c02e80-00c1-11eb-8af6-c8acd7509e05.png)\r\nafter minimizing the size of the file direction:\r\n![Screenshot_20200927-125315](https://user-images.githubusercontent.com/37214302/94363310-b88f0180-00c1-11eb-8860-00488b2c0048.png)\r\nit is still not possible because of the next window (I can't scroll and click on \"import\")\r\n![Screenshot_20200927-125305](https://user-images.githubusercontent.com/37214302/94363309-b167f380-00c1-11eb-8aec-a8d6e2684e64.png)\r\n\r\nAlso:\r\n- Objective 3: \"Confirm\"-Button only accessible on landscape (hidden if you don't now you have to switch to landscape mode)\r\n- Export-Settings",
+ "comments": [
+  {
+   "id": 699628227,
+   "user": "osodebailar",
+   "created_at": "2020-09-27T12:20:18Z",
+   "body": "Maybe the same setting as in atom ca solve the problem.\r\nSet the fontsize in settings of jelly to 'small'.\r\nIf this does not help, you can do a fast workaround until as solution is implemented:\r\nSearch the text 'Du wirst nach dem Master-Passwort gefragt. .......' and delete the second sentence 'Mit diesem werden die importierten Einstellungen entschlüsselt' in strings.xml.\r\nCommit the the file and rebuild master"
+  },
+  {
+   "id": 699635615,
+   "user": "MarieT1D",
+   "created_at": "2020-09-27T13:27:25Z",
+   "body": "Thanks for the hint, but unfortunately it didn't work.\r\nAs in the third picture, there are too many listings, so shortening the phrases is not enough and changing the font size doesn't apply for me with this (or not enough) :/"
+  },
+  {
+   "id": 699636724,
+   "user": "osodebailar",
+   "created_at": "2020-09-27T13:37:11Z",
+   "body": "Than the Next workaround , Remove the unneeded Backup Filed from AAps/preferences Directory"
+  },
+  {
+   "id": 699639087,
+   "user": "MarieT1D",
+   "created_at": "2020-09-27T13:58:50Z",
+   "body": "There is only one at AAPS/preferences (which I need to import) or which to you mean?"
+  },
+  {
+   "id": 699639661,
+   "user": "osodebailar",
+   "created_at": "2020-09-27T14:04:18Z",
+   "body": "Ja Marie , alle Backups der Einstellungen  aus dem Ordner löschen die Du nicht brauchst. dann ist die Liste kurz und es sollte passen"
+  },
+  {
+   "id": 699640190,
+   "user": "MarieT1D",
+   "created_at": "2020-09-27T14:09:04Z",
+   "body": "The list I mean contains the information of the back-up (Name, Date, phone used for the back-up, AAPS Version used for the backup, etc.) (3rd picture) so I think we are talking about a different list"
+  },
+  {
+   "id": 699641565,
+   "user": "osodebailar",
+   "created_at": "2020-09-27T14:20:26Z",
+   "body": "Ach das meinst Du. Sry. das war für mich keine Liste.\r\nDu kannst alternativ testen den Title 'Einstellungen Importieren' zu kürzen. der Header verbraucht viel Platz. \r\nFür eine endgültige Lösung muss das Layout überarbeitet werden. "
+  },
+  {
+   "id": 699642113,
+   "user": "MarieT1D",
+   "created_at": "2020-09-27T14:25:20Z",
+   "body": "Already tried that, too, I changed all string variablies I could which have line breaks. The only thing I could still try is changing the size of the header.\r\n![Screenshot_20200927-162755](https://user-images.githubusercontent.com/37214302/94367378-9a83ca00-00de-11eb-8432-8296d7259696.png)"
+  },
+  {
+   "id": 699646436,
+   "user": "osodebailar",
+   "created_at": "2020-09-27T15:02:18Z",
+   "body": "Ja da muss man sich Layoutmässig was einfallen lassen.\r\nWenn es nur um den Import geht , dann öffne die DateI : PrefImportSummaryDialog.kt\r\nund kommentiere die folgenden 2  Zeilen aus \r\nZeile 46 \r\n//  val table = (innerLayout.findViewById<View>(R.id.summary_table) as TableLayout)\r\nund Zeile 79 \r\n // table.addView(rowLayout, idx++)\r\n\r\ndann siehst Du keine Zusammnfassung mehr , kannst aber imortieren\r\n"
+  },
+  {
+   "id": 699655750,
+   "user": "dlvoy",
+   "created_at": "2020-09-27T16:21:11Z",
+   "body": "Andreas, weil ich ein bisschen verstehe, nicht jede hier ist Deutschsprachige ;)\r\n\r\nIt is obviously error with summary dialog, which does not allow scrolling on ultra-small screens. I will fix that.\r\nIn the meantime - hack mentioned above will allow to import prefs. "
+  },
+  {
+   "id": 699656017,
+   "user": "osodebailar",
+   "created_at": "2020-09-27T16:23:26Z",
+   "body": "Dafuer gibt es Google . Da geht auch English zu deutsch und und umgekehrt . \r\nAber ich hatte eh Marie direkt geantwortet . "
+  },
+  {
+   "id": 699680792,
+   "user": "swissalpine",
+   "created_at": "2020-09-27T19:56:24Z",
+   "body": "Yes, I deleted the German language files because the texts are too long and cumbersome for me. But it also seems to me that my font size is smaller, so I have no problems at all on the Atom. Maybe you should check the font size in the Atom settings (Einstellungen > Display > Erweitert> Schriftgröße).\r\n![Screenshot_20200927-214539](https://user-images.githubusercontent.com/12517693/94374326-c49fb100-010b-11eb-8878-c0c081b61846.png)"
+  },
+  {
+   "id": 699688337,
+   "user": "MarieT1D",
+   "created_at": "2020-09-27T21:07:53Z",
+   "body": "> Ja da muss man sich Layoutmässig was einfallen lassen.\r\n> Wenn es nur um den Import geht , dann öffne die DateI : PrefImportSummaryDialog.kt\r\n> und kommentiere die folgenden 2 Zeilen aus\r\n> Zeile 46\r\n> // val table = (innerLayout.findViewById(R.id.summary_table) as TableLayout)\r\n> und Zeile 79\r\n> // table.addView(rowLayout, idx++)\r\n> \r\n> dann siehst Du keine Zusammnfassung mehr , kannst aber imortieren\r\n\r\nIt worked, thanks a lot!"
+  },
+  {
+   "id": 700652261,
+   "user": "dlvoy",
+   "created_at": "2020-09-29T11:52:49Z",
+   "body": "After first attempts, seems like AlertDialog.builder inner layout cannot just simple be wrapped with ScrollView. \r\nProbably whole dialog need refactoring from system-type Dialog to custom Activity, but this will be more complex fix."
+  },
+  {
+   "id": 700810321,
+   "user": "osodebailar",
+   "created_at": "2020-09-29T16:10:16Z",
+   "body": "@dlvoy i have a solution that work. in the next two days i make a pull request for a review."
+  },
+  {
+   "id": 700911831,
+   "user": "dlvoy",
+   "created_at": "2020-09-29T18:49:53Z",
+   "body": "Ha! I also worked on it in parallel :D here my attempt:\r\nhttps://github.com/dlvoy/AndroidAPS/tree/hotfix/import-prefs-layout-uniherz\r\n\r\nBasically it introduce new layout files for small-height & landscape devices, with fixed & scrollable table with summary:\r\nhttps://github.com/dlvoy/AndroidAPS/commit/d763614ae64006eaea6cc58b604d43f4194a6ad1\r\n\r\nDo you have device to check it? I only had tested that on Emu.\r\nPlease feel free to choose which of those two fixes is better, I can review / emu test yours as well!"
+  },
+  {
+   "id": 700942354,
+   "user": "osodebailar",
+   "created_at": "2020-09-29T19:38:43Z",
+   "body": "I will have a look tomorrow on your solution \r\nI implemented my solution in my GUI Branch , if you want to have a look.\r\nOne of the solution for very small displays is here to set the title as marquee element , and only show the file name , not the path. The path is not interesting for a normal user.\r\nThe 3rd solution is in the end when the table in the inner element is shown. I set a nested scroll around .\r\nYou can test it here in my “new_gui_to_dev’ Branch \r\nhttps://github.com/osodebailar/AndroidAPS"
+  },
+  {
+   "id": 701541224,
+   "user": "MarieT1D",
+   "created_at": "2020-09-30T17:43:01Z",
+   "body": "I will test them, thanks for your work"
+  },
+  {
+   "id": 701562563,
+   "user": "osodebailar",
+   "created_at": "2020-09-30T18:23:43Z",
+   "body": "@MarieT1D you can test my  solution, i have a pull request too of you want. "
+  },
+  {
+   "id": 702551765,
+   "user": "dlvoy",
+   "created_at": "2020-10-02T06:28:04Z",
+   "body": "Fixed by @osodebailar with https://github.com/nightscout/AndroidAPS/pull/15 - so it can be re-tested from `dev` branch.\r\n@MarieT1D  If test on device confirms it is solved - please close issue ;)"
+  },
+  {
+   "id": 702593019,
+   "user": "swissalpine",
+   "created_at": "2020-10-02T08:15:53Z",
+   "body": "I can confirm: The fix works on Unihertz Atom."
+  },
+  {
+   "id": 702700114,
+   "user": "MarieT1D",
+   "created_at": "2020-10-02T12:13:10Z",
+   "body": "Yesss, it works, thanks so much for you work and sorry for the delay, I will close the issue"
+  }
+ ]
+}

@@ -1,0 +1,107 @@
+{
+ "id": 1899552013,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2790,
+ "title": "Wear tiles, menus and settings aren't translated for Norwegian language",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2790",
+ "state": "closed",
+ "labels": [
+  "unknown_reason"
+ ],
+ "created_at": "2023-09-16T20:00:39Z",
+ "closed_at": "2023-10-04T20:29:03Z",
+ "comment_count": 15,
+ "body": "In wear app for AAPS / AAPSClient (master and also dev) there are missing translations for almost all icons in the tiles, text in menu and settings although I think everything is translated in e.g. Norwegian. \r\n\r\nI notice that for example \"Cancel\" is translated to \"Avbryt\" in Norwegian but nothing else. in the temp-target tile. All other tiles / settings are in English. If I activate an item in any tile, the following screen up to confirmation isnt translated, after confirmation some translation is done.\r\n\r\nMy main AAPS has Norwegian language, and clock and phone is Norwegian language (if it matters)\r\n![image](https://github.com/nightscout/AndroidAPS/assets/114103483/986095db-ff06-4caa-aacb-a28f6a75decb)\r\n![image](https://github.com/nightscout/AndroidAPS/assets/114103483/bdff08ed-337c-4478-8d80-64c6eb4420ad)\r\n![image](https://github.com/nightscout/AndroidAPS/assets/114103483/28cbd5ca-2702-4a28-a95a-af7ffda9e414)\r\n![image](https://github.com/nightscout/AndroidAPS/assets/114103483/1cd0460e-01a3-4757-a6f1-b0e069f66514)\r\n",
+ "comments": [
+  {
+   "id": 1727959501,
+   "user": "MilosKozak",
+   "created_at": "2023-09-20T15:30:42Z",
+   "body": "probably translations were not merged yet.\r\nupdate to latest master and re-test"
+  },
+  {
+   "id": 1728231007,
+   "user": "olorinmaia",
+   "created_at": "2023-09-20T18:23:38Z",
+   "body": "@MilosKozak \r\n\r\nUpdated to  AAPS 3.2.0-dev-l c52c0e1125-2023.09.20 and updated also wear APK and did a fresh install on watch.\r\n\r\nI can't see any change in issue described above originally. If I change language in AAPS to English \"Avbryt\" turns to \"Cancel\" in the tiles, but all tiles except of that one stay in english no matter what language in AAPS. \r\n\r\n![image](https://github.com/nightscout/AndroidAPS/assets/114103483/367dea8e-b768-47be-b5bf-37faa84aeaab)\r\n![image](https://github.com/nightscout/AndroidAPS/assets/114103483/e182abc2-1477-430d-9540-84a3f2b3b42b)\r\n"
+  },
+  {
+   "id": 1731657664,
+   "user": "MilosKozak",
+   "created_at": "2023-09-22T15:56:04Z",
+   "body": "I agree it doesn't work but it works for other languages tested. Probably android bug"
+  },
+  {
+   "id": 1732077285,
+   "user": "olorinmaia",
+   "created_at": "2023-09-22T22:04:00Z",
+   "body": "I notice if I change language in android to Swedish and use system default language in AAPS all translations in AAPS and wear turns Swedish. So that means system language in android does matter.\r\n\r\nIf I use Norwegian as system language in android only small parts gets translated in AAPS and wear if I use language = system default in AAPS. \r\nIs there some reason AAPS don't support Norwegian as system language vs Swedish or is it just a android bug? "
+  },
+  {
+   "id": 1732084910,
+   "user": "olorinmaia",
+   "created_at": "2023-09-22T22:15:31Z",
+   "body": "![Screenshot_20230923_001217_Settings](https://github.com/nightscout/AndroidAPS/assets/114103483/a401776e-be1f-4940-9cb8-058e0db22d67)\r\nNorwegian got three choices in android. It's Norwegian bokmål that is 100% right in most cases. In comparison Sweden only got one option. "
+  },
+  {
+   "id": 1732319516,
+   "user": "MilosKozak",
+   "created_at": "2023-09-23T13:32:00Z",
+   "body": "translation is done for language marked 2 on your screenshot. International code \"no\""
+  },
+  {
+   "id": 1732319609,
+   "user": "MilosKozak",
+   "created_at": "2023-09-23T13:32:28Z",
+   "body": "![image](https://github.com/nightscout/AndroidAPS/assets/11146458/c268f58d-951b-4083-9df3-bb937bbc68d4)\r\n"
+  },
+  {
+   "id": 1732333966,
+   "user": "olorinmaia",
+   "created_at": "2023-09-23T14:46:12Z",
+   "body": "This is wrong since 99,9% use number 1 in my list and also standard setting when setting up a phone in Norwegian.\r\n\r\nNorwegian bokmål should be chosen. If possible all those Norwegian choices should recieve AAPS app and wear translation in Norwegian. "
+  },
+  {
+   "id": 1733121621,
+   "user": "MilosKozak",
+   "created_at": "2023-09-25T08:00:22Z",
+   "body": "well I can enable Norwegian Bokmal in Crowdin but it will mean new translation"
+  },
+  {
+   "id": 1733228878,
+   "user": "olorinmaia",
+   "created_at": "2023-09-25T09:06:27Z",
+   "body": "They can't be merged or copyied over? So we basically have translated for a language that doesnt get recognized via the default system language in android for Norway. Workaround is now to select \"Norwegian\" as language in AAPS. but that doesnt translate all correctly in wear as this issue describes.\r\n\r\nIs it possible to edit the current translation to Norwegian bokmål instead and see if that fixes this issue so we dont have to translate everything again? And also not continue translating for a Norwegian language noone uses? ;)"
+  },
+  {
+   "id": 1738207551,
+   "user": "olorinmaia",
+   "created_at": "2023-09-27T22:49:27Z",
+   "body": "I noticed something in the code, not sure if it matters. \r\n\r\nWhere translation doesn't work it looks like this: (no-rNO)\r\n![image](https://github.com/nightscout/AndroidAPS/assets/114103483/045660e9-f3ba-4ee7-82c5-8a1a1a8f1687)\r\n\r\nWhere it works it looks like this: (nb)\r\n![image](https://github.com/nightscout/AndroidAPS/assets/114103483/eeee514f-0492-4e3b-8c46-201a2102ad68)\r\n"
+  },
+  {
+   "id": 1742086490,
+   "user": "Philoul",
+   "created_at": "2023-10-01T13:43:19Z",
+   "body": "@MilosKozak I asked @olorinmaia to create within wear resources a new subfolder `values-nb-rNO` and copy paste in it the string file included into `values-no-rNO`\r\n=> It fixed the tiles translation issue for him...\r\nSo I think enabling Norwegian Bokmal in Crowdin will fix this issue...\r\n"
+  },
+  {
+   "id": 1742087491,
+   "user": "olorinmaia",
+   "created_at": "2023-10-01T13:46:40Z",
+   "body": "Thanks @Philoul  :) I solved the issue locally, so I'm happy. But for other Norwegian users it would be nice to find a permanent solution. \r\n\r\nWe know now that \"values-nb-rNO\" translates correctly (Norwegian Bokmål). Is there any way to copy all translated strings already done in Norwegian over to Norwegian bokmål? \r\nIf not, I suggest we add it, and I start translating all wear strings, and leave the rest for when I got time. (Since you can force norwegian within AAPS by selecting Norwegian language)"
+  },
+  {
+   "id": 1745818411,
+   "user": "olorinmaia",
+   "created_at": "2023-10-03T22:23:10Z",
+   "body": "Norwegian bokmål added to crowdin and uploaded the \"old\" Norwegian translations. Going to build l10n_dev tomorrow and check if this fixes this issue.\r\n\r\n![image](https://github.com/nightscout/AndroidAPS/assets/114103483/806105a0-91f7-4d7e-a7de-02c2904d72b3)\r\n"
+  },
+  {
+   "id": 1747592782,
+   "user": "olorinmaia",
+   "created_at": "2023-10-04T20:29:03Z",
+   "body": "Fixed in dev with fdc9ac1b\r\n"
+  }
+ ]
+}

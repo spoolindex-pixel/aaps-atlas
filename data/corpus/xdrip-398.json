@@ -1,0 +1,51 @@
+{
+ "id": 315208124,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 398,
+ "title": "xDrip sometimes is not able to reconnect to tomato after not being connected for some time.",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/398",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2018-04-17T19:57:06Z",
+ "closed_at": "2021-03-04T14:31:47Z",
+ "comment_count": 6,
+ "body": "Happening with lineageos 14.1 on nexus5 (20180405)\r\nFinally got a repro of this with the BT sniffer showing what is happening:\r\n\r\nHigh level description:\r\nAfter not being connected for some time (half an hour to my thinking, but more than a day according to the logs). I brought the phone close to the tomato. It did not connect for ~15 minutes.\r\nI opened the phone, and in a few seconds they connected.\r\n\r\nThe connection has happened on 17/4 on ~9:05.\r\n\r\nLooking at the sniffer logs, then the phone sends BT SCAN_REQ, the tomato answers with SCAN_RSP\r\n[by the way, sometimes the tomato does not answer.]\r\n\r\n31034\t2018-04-17 21:05:15.186786\t47:49:54:8e:fd:2b\tdb:23:f4:f2:86:62\tLE LL\t38\tSCAN_REQ\r\n31035\t2018-04-17 21:05:15.192240\tdb:23:f4:f2:86:62\tBroadcast\tLE LL\t32\tSCAN_RSP\r\n\r\nThe phone does not send a connection request.\r\n\r\nAfter the phone is opened, it sends a connection request. and all is well.\r\nIt takes ~10 seconds from the connect request to the last scan request, so I'm not sure if the scan is part of the connect or not.\r\n\r\nLooking at the xdrip logs, here is what I see:\r\n\r\n\"2018-04-17 21:03:32\"\t\"DexCollectionService\"\t\"onState change status = 133\"\r\n\"2018-04-17 21:03:32\"\t\"DexCollectionService\"\t\"onConnectionStateChange: State disconnected.\"\r\n\"2018-04-17 21:03:32\"\t\"DexCollectionService\"\t\"onConnectionStateChange: mBluetoothGatt is not null, closing.\"\r\n\"2018-04-17 21:03:32\"\t\"DexCollectionService\"\t\"Refresh result state close: true\"\r\n\"2018-04-17 21:03:32\"\t\"DexCollectionService\"\t\"onConnectionStateChange: Disconnected from GATT server.\"\r\n\"2018-04-17 21:03:32\"\t\"DexCollectionService\"\t\"Scheduling next retry in: 36 seconds @ 2018-04-17 21:04:08 period diff: -1523988007150\"\r\n\"2018-04-17 21:03:32\"\t\"DexCollectionService\"\t\"setRetryTimer: Restarting in: 36 seconds\"\r\n\r\nBut when phone is opened, here are the logs:\r\n\"2018-04-17 21:05:23\"\t\"DexCollectionService\"\t\"setFailoverTimer: Fallover Restarting in: 6 minutes\"\r\n\"2018-04-17 21:05:23\"\t\"DexCollectionService\"\t\"checkConnection: Connection state: DISCONNECTED\"\r\n\"2018-04-17 21:05:23\"\t\"DexCollectionService\"\t\"connect: going to connect to device at address: DB:23:F4:F2:86:62\"\r\n\"2018-04-17 21:05:23\"\t\"DexCollectionService\"\t\"connect: Trying to create a new connection.\"\r\n\"2018-04-17 21:05:23\"\t\"DexCollectionService\"\t\"Scheduling next retry in: 39 seconds @ 2018-04-17 21:06:02 period diff: -1523988118254\"\r\n\"2018-04-17 21:05:23\"\t\"DexCollectionService\"\t\"setRetryTimer: Restarting in: 39 seconds\"\r\n\"2018-04-17 21:05:24\"\t\"DexCollectionService\"\t\"onState change status = 0\"\r\n\"2018-04-17 21:05:24\"\t\"DexCollectionService\"\t\"onConnectionStateChange: Connected to GATT server. \"\r\n\"2018-04-17 21:05:24\"\t\"DexCollectionService\"\t\"Requesting to discover services: previous: NULL\"\r\n\"2018-04-17 21:05:24\"\t\"DexCollectionService\"\t\"checkConnection: Connection state: CONNECTED\"\r\n\r\n\r\n\r\n",
+ "comments": [
+  {
+   "id": 382123148,
+   "user": "tzachi-dar",
+   "created_at": "2018-04-17T20:01:07Z",
+   "body": "\r\n[capture.noconnection.zip](https://github.com/NightscoutFoundation/xDrip/files/1921387/capture.noconnection.zip)\r\n\r\n[capture.noconnection.txt](https://github.com/NightscoutFoundation/xDrip/files/1921391/capture.noconnection.txt)\r\n"
+  },
+  {
+   "id": 382124226,
+   "user": "tzachi-dar",
+   "created_at": "2018-04-17T20:04:30Z",
+   "body": "Attached is the bt capture (in a zip file), and the xdrip log.\r\nFor the first time only you open Wireshark:\r\n    go to edit->preferences->protocols->DLT_USER\r\n    edit the encapsulation table and add \"user10 (DLT=147)\" with \"nordic_ble\" in payload protocol field."
+  },
+  {
+   "id": 386460544,
+   "user": "tzachi-dar",
+   "created_at": "2018-05-03T22:51:54Z",
+   "body": "After some more reading, and searching in the internet it is hard to be very optimistic.\r\nThere are many implementations of android BT.\r\n\r\nFollowing https://devzone.nordicsemi.com/cfs-file/__key/communityserver-blogs-components-weblogfiles/00-00-00-00-04-DZ-1046/2604.BLE_5F00_on_5F00_Android_5F00_v1.0.1.pdf it seems that many things make a difference here:\r\n\r\n1) autoconnect parameter of phone.\r\n2) bonded or not.\r\n3) device was already scanned or not.\r\n\r\nI was not bonded and in my code autoconnect was false. It has now changed to true. so I'll keep following."
+  },
+  {
+   "id": 491495144,
+   "user": "lee-b",
+   "created_at": "2019-05-11T09:24:55Z",
+   "body": "I see this one quite frequently with miaomiao (including on my old (Mate 10 Pro) and new (Oneplus 6t) phones).  XDrip reports the status as `133 (restart device?)`.  When this happens, rescanning/reselecting the miaomiao from the \"bluetooth\" menu option, and restarting the collector always seems to work.\r\n\r\nJust a hunch based entirely on generic software/hardware knowledge rather than miaomiao/tomato specifics, but I guess the 133 code might mean \"rebooting; wait and reconnect\" (or just \"connection invalid; re-do bluetooth handshake\") or something like that?\r\n\r\nDoing so seems to work, either way.  Perhaps XDrip could try handling status 133 that way, at least by default, until we know more?  Don't see it doing any harm since there's no data coming in anyway."
+  },
+  {
+   "id": 783624082,
+   "user": "Navid200",
+   "created_at": "2021-02-22T19:40:20Z",
+   "body": "@tzachi-dar What is the status of this issue?  Would you please update?\r\nThanks"
+  },
+  {
+   "id": 790659637,
+   "user": "Navid200",
+   "created_at": "2021-03-04T14:31:47Z",
+   "body": "Closing due to inactivity"
+  }
+ ]
+}

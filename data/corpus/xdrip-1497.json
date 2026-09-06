@@ -1,0 +1,102 @@
+{
+ "id": 737711104,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1497,
+ "title": "Buttons Silence alarms not working",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1497",
+ "state": "closed",
+ "labels": [
+  "question",
+  "ux-alarm"
+ ],
+ "created_at": "2020-11-06T12:10:40Z",
+ "closed_at": "2021-03-15T23:58:08Z",
+ "comment_count": 14,
+ "body": "Greetings. I have a Samsung S10 Plus with Android 10. I also have buttons silence alarms selected. This feature doesn't seem to be working and when I get an alarm in the middle of the night it's quite challenging to silence an alarm. It used to work fine on my S7 but not now . Any chance I could get some help with this please? Thanks!",
+ "comments": [
+  {
+   "id": 723159983,
+   "user": "tolot27",
+   "created_at": "2020-11-06T16:04:26Z",
+   "body": "Did you read #73? Does the known limitations answer your question partially? "
+  },
+  {
+   "id": 723281598,
+   "user": "Stormyfour20",
+   "created_at": "2020-11-06T20:19:40Z",
+   "body": "Thanks for replying. I did read it and I guess I just figured that since it was from 2017 that it had been resolved. Especially since it worked fine on my S7 but it doesn't seem to work on the S10. What I gathered from that post is that it really is random whether it works or not?"
+  },
+  {
+   "id": 723285189,
+   "user": "tolot27",
+   "created_at": "2020-11-06T20:28:35Z",
+   "body": "> What I gathered from that post is that it really is random whether it works or not?\r\n\r\nNo, not random. As @jamorham statet: \"I haven't found a reliable way to do this when the phone is locked or outside of the app.\" Hence, if your phone is unlocked and xDrip in the foreground, it should work.\r\nBut as times go on and newer Android releases change a lot of things, it can work but doesn't have to be.\r\n"
+  },
+  {
+   "id": 723357854,
+   "user": "Stormyfour20",
+   "created_at": "2020-11-07T00:24:37Z",
+   "body": "Well I was looking for some help, not a lecture."
+  },
+  {
+   "id": 723839593,
+   "user": "AdrianLxM",
+   "created_at": "2020-11-09T08:03:50Z",
+   "body": "@Stormyfour20 the way you could reliably get button presses is by writing an accessibility service."
+  },
+  {
+   "id": 726073069,
+   "user": "Stormyfour20",
+   "created_at": "2020-11-12T13:20:45Z",
+   "body": "@AdrianLxM Thanks! I guess I'm looking for a quick fix and I'm frustrated that there is an option to \"Buttons silence alarms\" and it doesn't work especially since it worked on my S7. I feel like I'm doing something wrong and causing it."
+  },
+  {
+   "id": 726902603,
+   "user": "AdrianLxM",
+   "created_at": "2020-11-13T17:37:38Z",
+   "body": "> @AdrianLxM Thanks! I guess I'm looking for a quick fix and I'm frustrated that there is an option to \"Buttons silence alarms\" and it doesn't work especially since it worked on my S7. I feel like I'm doing something wrong and causing it.\n\nI doubt you are doing something wrong. An app capturing user input is a sensitive thing. Capturing it globally while not being open could open the world to sniffing passwords intended to be input to another app. So Android is restricting it more and more.\nAs a developer I don't like this restrictions... As a user I fully understand them.\n\nThe one good reason of capturing user entry is an assistant service. So that's the way to go. And the user then will get warned (and in newer devices actively have to enable it)."
+  },
+  {
+   "id": 727207151,
+   "user": "Stormyfour20",
+   "created_at": "2020-11-14T13:26:39Z",
+   "body": "@AdrianLxM Obviously I'm a rookie at this, so I really appreciate you taking the time to explain it to me in a way I can understand. My wife also appreciates it! I'll see if I can sort this out and hopefully it will get resolved. Thank you."
+  },
+  {
+   "id": 797202677,
+   "user": "Navid200",
+   "created_at": "2021-03-12T03:07:03Z",
+   "body": "@Stormyfour20 You say you need this when you get an alarm in the middle of the night.\r\nDon't you want to see what the alarm is before snoozing it?\r\nIf you unlock the phone to see what the alarm is, you can easily silence it as well.  Would you please explain the scenario?"
+  },
+  {
+   "id": 797512999,
+   "user": "Stormyfour20",
+   "created_at": "2021-03-12T14:09:26Z",
+   "body": "Thanks for the reply. The goal here is to not wake up my wife. By the time I can get to the \"snooze alert\" menu 30+ seconds has gone by and now she's awake. On the S7 I had I could silence the alert almost immediately with the power button and everyone but me stays asleep. Yes I want to know the blood sugar value, but I can see that in the kitchen when I get up to treat the low. Thanks for trying to help!"
+  },
+  {
+   "id": 797518024,
+   "user": "Navid200",
+   "created_at": "2021-03-12T14:17:57Z",
+   "body": "Oh, I see, you silence the alarm right away.  But then, quietly unlock the phone to see what the alert was.  I understand now.\r\n\r\nJust in case you don't know, there may be another option, which may be an improvement but not the perfect solution that has been disabled due to the Android 11 ...\r\n\r\nThere is an ascending volume profile.\r\nYou can enable it by going to Settings -> Alarms and Alerts -> Glucose Alerts Settings -> Alert Volume Profile\r\n\r\nIf you choose the ascending volume profile, the alarm starts at very low volume.  Your selected sound file plays at the very low volume.  Then, in 1 minute, the same sound file is played at slightly higher volume.  There will be a 1-minute gap between consecutive execution of the sound file.  The volume goes up once every time the file is played.\r\nIf the phone is close to you, I hope that only you will hear it and not your wife the first time it plays.  If you snooze the alarm, it will stop and will not continue the repeat the alarm.\r\n\r\nWould that help?"
+  },
+  {
+   "id": 799292433,
+   "user": "Stormyfour20",
+   "created_at": "2021-03-15T10:07:23Z",
+   "body": "That's a fantastic idea! I'll give it a go and set it up today. \r\n\r\nOn a side note, when I posted this a while back I was using Toujeo. I've since switched to Tresiba for long acting. Wow, what a difference. Nighttime lows are almost a thing of the past. That's another way to silence those alarms.\r\n\r\nThank you for trying to help out, I really appreciate it. "
+  },
+  {
+   "id": 799359657,
+   "user": "Navid200",
+   "created_at": "2021-03-15T11:54:39Z",
+   "body": "You're welcome.\r\nPlease update either way (if it works or not).\r\nIf you are satisfied, please close the issue or let me know to do it."
+  },
+  {
+   "id": 799840032,
+   "user": "Stormyfour20",
+   "created_at": "2021-03-15T23:58:08Z",
+   "body": "I tried it out today and seems like this is an excellent alternative. I'm calling this a fix and closing the issue. Another happy customer! Thanks."
+  }
+ ]
+}

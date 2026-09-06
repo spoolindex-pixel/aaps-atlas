@@ -1,0 +1,45 @@
+{
+ "id": 4206176794,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4686,
+ "title": "3.4.2.1 Oneplus 9 rooted LineageOS Omnipod Dash Found too many pods for activation",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4686",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2026-04-05T01:38:21Z",
+ "closed_at": "2026-04-07T13:26:25Z",
+ "comment_count": 5,
+ "body": "Reporting bugs\n--------------\n- **Note the precise time the problem occurred** and describe the circumstances and steps that caused\n  the problem\n\nDevice: OnePlus9 LE2117\nLineage OS: 23.0-20251013-NIGHTLY-lemonade\nAAPS Version: 3.4.2.1\n\nWhile activating a new Omnipod dash for the first time on AAPS v3.4.2.1 (self compiled) on my daughters phone I repeatedly got this error:\n\n`pump/omnipod/dash/src/main/res/values/strings.xml:32:    <string name=\"omnipod_dash_found_too_many_pods\">Found too many pods for activation</string>`\n\nI was not home and my wife had already trashed 2 pumps.  The debug version was not installed and the logs were removed when I had to uninstall.  On the next pump change I will try to get it if I am able.  I ended up removing AAPS 4.3.2.1 and downgrading it to 3.4.1.0 however the profile was corrupted.  The DASH tab was in a strange state with both activate new pump and deactivate buttons available.  Deactivate hung indefinitely so I ended up having to clear all data and restore a profile from made prior to the upgrade to 3.4.2.1.  I installed the debug variant on my device, Galaxy S23 Ultra, and captured logs while activating a pump and did not have any issues.\n\nI will update this issue when I am able to get log output.\n\n- Note the Build version (found in the About dialog in the app, when pressing the three dots in the\n  upper-right corner).\n\n1393357107\n\n- Obtain the app's log files, which can be found on the phone in\n  _/storage/emulated/0/Android/data/info.nightscout.androidaps/_\n  See https://wiki.aaps.app/en/latest/GettingHelp/AccessingLogFiles.html\n\nWas not able to capture due to not being home and had to downgrade to previous version\n\n- Open an issue at https://github.com/nightscout/AndroidAPS/issues/new\n",
+ "comments": [
+  {
+   "id": 4199294424,
+   "user": "MilosKozak",
+   "created_at": "2026-04-07T13:26:25Z",
+   "body": "sorry we cannot help with Lineage OS\nGeneraly: \nthere must be only one active pod in range\ndowngrading scenarios are not tested at all\n"
+  },
+  {
+   "id": 4202391384,
+   "user": "rpm5099",
+   "created_at": "2026-04-07T21:45:41Z",
+   "body": "That's likely to be a problem.  Lineage OS is Android, actually the only Android most people will be using in the near future if Google goes through with the app restrictions.  The error happened with the upgrade, not the downgrade.  There was only one active pod in range."
+  },
+  {
+   "id": 4202784954,
+   "user": "xitation",
+   "created_at": "2026-04-07T23:26:19Z",
+   "body": "Could be that 2 pods that were not activated correctly are nearby and it doesn't know which one to activate. Put one in the Microwave (don't turn it on, microwave blocks Bluetooth radio) and try to activate the other one.\n\nAnd/Or take a look here https://androidaps.readthedocs.io/en/latest/CompatiblePumps/OmnipodDASH.html#generic-error-java-lan-illegalstateexception-trying-to-set-a-bluetooth-address-to-but-it-is-already-set-to on how to force a deactivation of a pod that might already be activated in AAPS in case that is causing you an issue. \n\nSome combination of force deactivate old pod and ensure only 1 pod is nearby should help. \n\nAlso ensure you are on the current stable version of AAPS as a lot was fixed in later versions to work around Android 16 issues, also I'd check out the Bluetooth troubleshooting guide to make sure you have all the correct fixes to ensure reliable BLE - https://androidaps.readthedocs.io/en/latest/GettingHelp/BluetoothTroubleshooting.html\n\nUnfortunately if you try all these things and don't have success, I'd fall back to @MilosKozak advice, that we don't have a lot of Custom Rom OS's in the community and are unlikely to be able to assist beyond what I've suggested here. \n\nHere is a list of known devices in the community and their Android OS versions with advice of how reliable they have been for people which might be useful for you - https://docs.google.com/spreadsheets/u/1/d/e/2PACX-1vScCNaIguEZVTVFAgpv1kXHdsHl3fs6xT6RB2Z1CeVJ561AvvqGwxMhlmSHk4J056gMCAQE02sAWJvT/pubhtml?gid=683363241&single=true"
+  },
+  {
+   "id": 4203296721,
+   "user": "rpm5099",
+   "created_at": "2026-04-08T01:56:46Z",
+   "body": "> Could be that 2 pods that were not activated correctly are nearby and it doesn't know which one to activate. Put one in the Microwave (don't turn it on, microwave blocks Bluetooth radio) and try to activate the other one.\n> \n> And/Or take a look here https://androidaps.readthedocs.io/en/latest/CompatiblePumps/OmnipodDASH.html#generic-error-java-lan-illegalstateexception-trying-to-set-a-bluetooth-address-to-but-it-is-already-set-to on how to force a deactivation of a pod that might already be activated in AAPS in case that is causing you an issue.\n> \n> Some combination of force deactivate old pod and ensure only 1 pod is nearby should help.\n> \n> Also ensure you are on the current stable version of AAPS as a lot was fixed in later versions to work around Android 16 issues, also I'd check out the Bluetooth troubleshooting guide to make sure you have all the correct fixes to ensure reliable BLE - https://androidaps.readthedocs.io/en/latest/GettingHelp/BluetoothTroubleshooting.html\n> \n> Unfortunately if you try all these things and don't have success, I'd fall back to [@MilosKozak](https://github.com/MilosKozak) advice, that we don't have a lot of Custom Rom OS's in the community and are unlikely to be able to assist beyond what I've suggested here.\n> \n> Here is a list of known devices in the community and their Android OS versions with advice of how reliable they have been for people which might be useful for you - https://docs.google.com/spreadsheets/u/1/d/e/2PACX-1vScCNaIguEZVTVFAgpv1kXHdsHl3fs6xT6RB2Z1CeVJ561AvvqGwxMhlmSHk4J056gMCAQE02sAWJvT/pubhtml?gid=683363241&single=true\n\nAppreciate your reply.  Pod interference is definitely not the issue.  Both my daughter and I have been using the Omnipod with AAPS for 3 years now, never had any issues connecting.  It may not be a bug in AAPS, I'm actually looking into that right now.  There's been no change on the device other than upgrading AAPS, but that doesn't mean something else is to blame (including myself).  I'm a b"
+  },
+  {
+   "id": 4203766193,
+   "user": "rpm5099",
+   "created_at": "2026-04-08T04:09:25Z",
+   "body": "Quick update, I was not able to reproduce the problem tonight under the same circumstances.  Everything worked fine, so I don't know what the cause was.  I'll try to get debug logs if it happens again.  Thanks."
+  }
+ ]
+}

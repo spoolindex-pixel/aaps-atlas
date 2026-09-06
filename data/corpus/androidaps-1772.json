@@ -1,0 +1,63 @@
+{
+ "id": 1249180426,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1772,
+ "title": "NSClient Dev-l not syncing on profile switch cancelation",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1772",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-05-26T06:59:16Z",
+ "closed_at": "2022-05-26T21:38:08Z",
+ "comment_count": 8,
+ "body": "**Version:** Dev-l (on both AAPS and NSClient)  \n\n**Issue Description:**  \n- Changed profile to 150% and synced ok to NSClient  \n- Automation canceled the high profile from 150% to 100% but profile was not changed to 100% on NSClient. \n- Also noticing a small IOB deviation (0.01U on AAPS to Neg. IOB on NSClient).  \n- On NSClient I cannot switch to 100% manually. It's frozen on 150%.  \n- Had no issues with Dev-K\n\nLogs attached. \n\n**NSClient**  \n![Screenshot_20220526_074339.jpg](https://user-images.githubusercontent.com/4725280/170434671-d111f86e-c569-44b3-ad43-67ddd2542db4.jpg)\n\n![Screenshot_20220526_074451_info.nightscout.nsclient.jpg](https://user-images.githubusercontent.com/4725280/170434687-1ea7ae9a-a462-46e9-8b11-3a87923c39af.jpg)\n\n**AAPS**  \n![Screenshot_20220526_085655.jpg](https://user-images.githubusercontent.com/4725280/170434863-acb6458e-bf01-4077-b558-8085f9bce315.jpg)\n\n![Screenshot_20220526_085706.jpg](https://user-images.githubusercontent.com/4725280/170434879-08dc3622-1f7a-47b5-9c67-af36deec168b.jpg)\n\n![AndroidAPS_LOG_1653543930691.log.zip](https://github.com/nightscout/AndroidAPS/files/8776960/AndroidAPS_LOG_1653543930691.log.zip)\n\n![AndroidAPS_LOG_1653543910211.log.zip](https://github.com/nightscout/AndroidAPS/files/8776962/AndroidAPS_LOG_1653543910211.log.zip)\n",
+ "comments": [
+  {
+   "id": 1138301295,
+   "user": "MilosKozak",
+   "created_at": "2022-05-26T08:36:40Z",
+   "body": "do you use dev branch of NS? there is a bug in master"
+  },
+  {
+   "id": 1138653976,
+   "user": "MilosKozak",
+   "created_at": "2022-05-26T14:43:04Z",
+   "body": "i tested all described scenarios and it's working like expected.\r\nI believe it's NS in your case"
+  },
+  {
+   "id": 1138723550,
+   "user": "bchris21",
+   "created_at": "2022-05-26T15:50:46Z",
+   "body": "Yes Milos. Maybe it's related with with issue #1743 too https://github.com/nightscout/AndroidAPS/issues/1743.\n\nHow can I use Dev in NS? Rebuild in Heroku using Dev branch? Will I keep my NS URL? (That's my only concern actually).\n\nThanks"
+  },
+  {
+   "id": 1138752151,
+   "user": "swissalpine",
+   "created_at": "2022-05-26T16:22:24Z",
+   "body": "Yes. Deploy dev branch. Your variables/settings stays untouched."
+  },
+  {
+   "id": 1138824968,
+   "user": "bchris21",
+   "created_at": "2022-05-26T17:26:27Z",
+   "body": "@swissalpine thanks a lot.\r\n\r\nNightscout updated in Heroku. Just to confirm my actions:  \r\n\r\n1) I disconnected and reconnected my fork and changed branch to Dev\r\n![image](https://user-images.githubusercontent.com/4725280/170540422-cf4b7d17-32b2-4410-b46d-d90cf996df36.png)\r\n\r\n2) Deployed successfully \r\n![image](https://user-images.githubusercontent.com/4725280/170541472-dd955e71-8e67-4252-a73e-26fa6643d67d.png)\r\n\r\n![image](https://user-images.githubusercontent.com/4725280/170541593-e68f5f98-9481-4f2b-8711-12a581f8bf87.png)\r\n\r\n**Question:**  \r\nHow can I confirm that I have Dev version in NS and not the Master?  As far as I remember version was the same before using Master. Restarted All Dynos and refreshed NS page.  \r\n![image](https://user-images.githubusercontent.com/4725280/170542038-e8884855-fad1-4dc0-8f94-9420c898c29c.png)\r\n\r\nI tried to send a TBR with NSClient (https://github.com/nightscout/AndroidAPS/issues/1743) but still is not passed.\r\n\r\nThanks\r\n\r\n\r\n"
+  },
+  {
+   "id": 1138925432,
+   "user": "MilosKozak",
+   "created_at": "2022-05-26T19:17:46Z",
+   "body": "tbr cannot be send over NS. It must come from pump"
+  },
+  {
+   "id": 1138949745,
+   "user": "bchris21",
+   "created_at": "2022-05-26T19:50:10Z",
+   "body": "Temp Target I am sorry.\n\nAlso tried carb entry and bolus (record only) but didn't work. \n\nJust tried with my wife's phone and all features work.\n\nI have a Huawei P30 Pro while she has a Huawei P30. Same Dev-l versions installed on both phones.\n\nI believe it's phone issue. I would like to make a clean installation of NSClient on my phone. Shall I Reset Database on NSClient? Will I lose any data from AAPS or NS or just local data? Can I simply uninstall and reinstall without recovering a settings backup?\n\nThanks"
+  },
+  {
+   "id": 1139084454,
+   "user": "bchris21",
+   "created_at": "2022-05-26T21:37:55Z",
+   "body": "Issue fixed.\n\nBuilt and installed NSClient2 which works fine. \n\nApparently something was corrupted on previous installation.\n\nAgain thanks for your support."
+  }
+ ]
+}

@@ -1,0 +1,111 @@
+{
+ "id": 1097268700,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1141,
+ "title": "[3.0beta11] NSClient does not see temp target ",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1141",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-01-09T18:31:21Z",
+ "closed_at": "2022-01-26T18:31:11Z",
+ "comment_count": 16,
+ "body": "Just discovered that when a temp target is set either manually or via automation on AAPS phone, it can not be seen on NSClient phone.\r\n\r\nAaps:\r\n![received_984383505811064](https://user-images.githubusercontent.com/71758682/148695470-daefff49-e88e-46f0-a9ef-f8f9a6d6fc3a.jpeg)\r\nNSClient:\r\n![Screenshot_20220109-192427_NSClient](https://user-images.githubusercontent.com/71758682/148695482-dac4f300-f61a-4832-a9ef-8172df16620c.jpg)\r\n\r\n\r\n\r\n\r\n\r\n[AndroidAPS_LOG_1641752708207.log.zip](https://github.com/nightscout/AndroidAPS/files/7835660/AndroidAPS_LOG_1641752708207.log.zip)\r\n",
+ "comments": [
+  {
+   "id": 1008732634,
+   "user": "MilosKozak",
+   "created_at": "2022-01-10T10:28:40Z",
+   "body": "if the problem is on NSC side I need logs from NSC as well. and time of occurence"
+  },
+  {
+   "id": 1008761989,
+   "user": "kristinsmotz",
+   "created_at": "2022-01-10T11:03:02Z",
+   "body": "I will try to recreate this afternoon, and include logs from both phones (AAPS phone currently at school). I checked in Nightscout reporter (https://nightscout-reporter.zreptil.de/) and was able to find all the temp targets from yesterday in a report there, so info is coming through to NS, but possibly not to NSClient. \r\n![bilde](https://user-images.githubusercontent.com/71758682/148755295-c775dc7d-d84c-46f7-938d-531a1c5d2811.png)\r\n\r\nAs per right now I checked NSClient - Treatments - temp target tab, and could not find any temp targets there for yesterday except one that was cancelled due to no connection I believe. \r\n![Screenshot_20220110-120021_NSClient](https://user-images.githubusercontent.com/71758682/148755424-57df64c9-2628-4993-a70d-25f1cbfee486.jpg)\r\n\r\n"
+  },
+  {
+   "id": 1008763057,
+   "user": "kristinsmotz",
+   "created_at": "2022-01-10T11:04:18Z",
+   "body": "I'll try tonight to reproduce and export logs from both phones, then update to RC-1 and try to reproduce error there as well. "
+  },
+  {
+   "id": 1008769538,
+   "user": "kristinsmotz",
+   "created_at": "2022-01-10T11:11:44Z",
+   "body": "I just remembered; i updated our nightscout site 5th january at night, in order to fix a previously reported error with BG check having wrong value in NSClient. I did an update to the latest dev on nightscout. So I would guess that something in that build is causing this error for me now. If updating to RC-1 tonight does not help I will roll back NS to latest master, and see if that does it then report the error there as well. "
+  },
+  {
+   "id": 1008929496,
+   "user": "kristinsmotz",
+   "created_at": "2022-01-10T14:32:00Z",
+   "body": "I decided to revert to master on my nightscout site and can now see temp targets in NSClient. I suspect this commit on the nightscout dev is what caused this issue: https://github.com/nightscout/cgm-remote-monitor/commit/aca8d5ab492f1e356c36f340102044dc961d82aa#diff-5a16ec3fb169ae3b2b0b4d0a810080d451c8910345d86280d1cc2c67d4a178a0"
+  },
+  {
+   "id": 1011016185,
+   "user": "MilosKozak",
+   "created_at": "2022-01-12T12:55:02Z",
+   "body": "so passing TT to NSClient is not working with current NS dev?"
+  },
+  {
+   "id": 1011046869,
+   "user": "kristinsmotz",
+   "created_at": "2022-01-12T13:28:44Z",
+   "body": "That is correct, or at least with the dev as it was on 5th January at 22.00 CET. "
+  },
+  {
+   "id": 1012357172,
+   "user": "kristinsmotz",
+   "created_at": "2022-01-13T17:35:18Z",
+   "body": "Today had another occurrence of TT not showing up in NSClient, only on AAPS phone. We updated to RC-1 a couple of days ago. The TT came from an automation that runs every Thursday at 10.00. it also posts a message to graph area \"Fysak torsdag 10.30-12.00\", and sets a temporary 80% profile, both of which showed up on both phones.\r\n \r\nScreenshots from AAPS: \r\n![graph](https://user-images.githubusercontent.com/71758682/149370346-0cbd5dbc-c173-47db-ad08-17cd49b19590.jpg)\r\n![treatments](https://user-images.githubusercontent.com/71758682/149370362-00dc03a0-2e1c-434e-9d6f-3437246950af.jpg)\r\n![automation](https://user-images.githubusercontent.com/71758682/149377810-c90ef526-1976-4282-8ea7-390fee294b4b.jpg)\r\n\r\nScreenshots from NSClient:\r\n![Screenshot_20220113-165938_NSClient](https://user-images.githubusercontent.com/71758682/149370467-fb58804f-1849-4a24-8a65-db1a83a12fb5.jpg)\r\n![Screenshot_20220113-170019_NSClient](https://user-images.githubusercontent.com/71758682/149370502-ab4d2f4b-0435-413b-a64e-6b6a80e84dd7.jpg)\r\n\r\nLog from AAPS: \r\n[AndroidAPS_LOG_1642089548988.log.zip](https://github.com/nightscout/AndroidAPS/files/7864355/AndroidAPS_LOG_1642089548988.log.zip)\r\n\r\n \r\nIf it will help you investigate further, our NS site is https://heddamamonitor.herokuapp.com/\r\nThis time it appears that NS didn't catch the TT either:\r\n[NS reporter log.pdf](https://github.com/nightscout/AndroidAPS/files/7864748/NS.reporter.log.pdf)\r\n\r\n![bilde](https://user-images.githubusercontent.com/71758682/149380025-1c310185-f360-48f7-995e-e576ba34fe76.png)\r\n\r\nI'm having trouble with logs in NSClient, they're either only being put in the /logs folder at random times, or being deleted in random order. I'd really appreciate any advice to fix this so I always can have the logs for the last 24 hours available. Currently this is what the folder on my phone contains:\r\nnew logs every 10-20 minutes since 13.26, but still containing logs from 1.41, 2.01 and 2.16 this morning.\r\n![Screenshot_20220113-182255_My F"
+  },
+  {
+   "id": 1013909137,
+   "user": "MilosKozak",
+   "created_at": "2022-01-16T16:40:58Z",
+   "body": "whithout NSC logs is not possible to resolve the issue. having so many files means there is too much logging enabled. give me a sample of NSC log"
+  },
+  {
+   "id": 1013963161,
+   "user": "kristinsmotz",
+   "created_at": "2022-01-16T22:14:22Z",
+   "body": "[AndroidAPS_LOG_1642369862613.log.zip](https://github.com/nightscout/AndroidAPS/files/7878042/AndroidAPS_LOG_1642369862613.log.zip)\r\n[AndroidAPS_LOG_1642369878670.log.zip](https://github.com/nightscout/AndroidAPS/files/7878043/AndroidAPS_LOG_1642369878670.log.zip)\r\n![received_483391019977595](https://user-images.githubusercontent.com/71758682/149680093-1a273320-ddd9-4f39-9e03-3d51d8b60fc7.jpeg)\r\n![received_484694859882267](https://user-images.githubusercontent.com/71758682/149680096-ef8e3dd5-0009-47a5-b1ac-e9a4e9e96c17.jpeg)\r\n![Screenshot_20220116-231135_NSClient](https://user-images.githubusercontent.com/71758682/149680110-54e6f50f-64df-4975-ab7f-c8fa3a59639e.jpg)\r\n\r\n\r\nI just did a set of tests to reproduce. \r\n\r\nFirst test: manual TT , showed up in NSClient\r\nSecond test: automation setting TT and Temp profile, did not show in NSClient\r\nThird test: automation setting TT and note, showed up in NSClient. \r\n\r\nAdded screenshots from treatments to easily see times to look for in log."
+  },
+  {
+   "id": 1019177977,
+   "user": "MilosKozak",
+   "created_at": "2022-01-22T10:50:52Z",
+   "body": "sorry i need both: screenshot + logs from AAPS and the same from NSC. I'm not sure what is what and second logs doesn't cover 22:15"
+  },
+  {
+   "id": 1019895303,
+   "user": "kristinsmotz",
+   "created_at": "2022-01-24T09:32:42Z",
+   "body": "I understand. Having trouble with getting phones to send correct logs when I try. I will try to review log settings on both phones and recreate the errors. Do you have recommendations for what to log which will give you enough info without flooding the log with irrelevant stuff? Would this be sufficient on the NSClient phone?\r\n\r\n![Screenshot_20220124-103055_NSClient](https://user-images.githubusercontent.com/71758682/150757196-920bf204-f0b1-47cd-8e3b-675b4b347778.jpg)\r\n\r\n"
+  },
+  {
+   "id": 1019964835,
+   "user": "MilosKozak",
+   "created_at": "2022-01-24T10:50:45Z",
+   "body": "no need to enable anything special.  just logs +- 1h from the event from both devices"
+  },
+  {
+   "id": 1021613500,
+   "user": "kristinsmotz",
+   "created_at": "2022-01-25T21:12:55Z",
+   "body": "OK here goes. Started a TT from Automation at 21.00 (With a temp profile included in the same Automation). \r\nInfo from NSClient phone:\r\nNSClient 3.0-rc3\r\nNSCLIENT\r\nBuild: 617cdd681-2022.01.17-16:02\r\nRemote: https://github.com/nightscout/AndroidAPS\r\nFlavor: nsclientrelease\r\nNightscout version: 14.2.5\r\nLog: \r\n[AndroidAPS_LOG_1643142836954.log.zip](https://github.com/nightscout/AndroidAPS/files/7937130/AndroidAPS_LOG_1643142836954.log.zip)\r\nScreenshots of Overview and TT tab in Treatments on NSClient phone:\r\n![Screenshot_20220125-213406_NSClient](https://user-images.githubusercontent.com/71758682/151060072-98540638-48c0-4cf3-b58c-e354b723e960.jpg)\r\n![Screenshot_20220125-213415_NSClient](https://user-images.githubusercontent.com/71758682/151060084-2b490acb-5dcc-4c02-ad23-213cb5e3ac8e.jpg)\r\n\r\nFrom AAPS phone:\r\nAndroidAPS 3.0-rc3\r\nBuild: 617cdd681-2022.01.17-15:51\r\nRemote: https://github.com/nightscout/AndroidAPS\r\nFlavor: fullrelease\r\nNightscout version: 14.2.5\r\nEngineering mode enabled\r\nLogs:\r\n[AndroidAPS_LOG_1643142902100.log.zip](https://github.com/nightscout/AndroidAPS/files/7937145/AndroidAPS_LOG_1643142902100.log.zip)\r\nScreenshots from Overview and TT tab in Treatments:\r\n![image](https://user-images.githubusercontent.com/71758682/151060454-5b5c2e96-e71e-449e-b5b4-b1461552c5d2.png)\r\n![image](https://user-images.githubusercontent.com/71758682/151060513-ef226148-62ae-4acd-be11-e8605b00dd37.png)\r\n\r\n\r\n\r\n"
+  },
+  {
+   "id": 1021614233,
+   "user": "kristinsmotz",
+   "created_at": "2022-01-25T21:13:52Z",
+   "body": "As previously mentioned, it appears this error only occurs when using an Automation to set a temp % profile AND a temp target in the same automation. "
+  },
+  {
+   "id": 1022477320,
+   "user": "MilosKozak",
+   "created_at": "2022-01-26T18:31:11Z",
+   "body": "related to bug in NS\r\nI already created a fix for that https://github.com/nightscout/cgm-remote-monitor/pull/7285 but it's not part of NS yet"
+  }
+ ]
+}

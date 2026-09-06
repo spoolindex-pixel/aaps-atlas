@@ -1,0 +1,65 @@
+{
+ "id": 1647284913,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2483,
+ "title": "[3.2.0-beta1] Profile helper 'Clone' reports Error in IC Values",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2483",
+ "state": "closed",
+ "labels": [
+  "question - more info needed"
+ ],
+ "created_at": "2023-03-30T09:52:28Z",
+ "closed_at": "2023-04-04T13:34:36Z",
+ "comment_count": 8,
+ "body": "When an existing working local profile is cloned, it generates a DefaultProfile <datetime> local profile.\r\n\r\nWhen viewed in the LP tab - the profile is highlighted in Red, and has invalid entries (different to the original profile) in the Basal rate fields etc\r\n\r\nChanging from a working profile to the newly cloned DefaultProfile shows an error at the bottom of the screen saying 'Error in IC Values'\r\n\r\nbuild: b4e5b01ea3-23.03.03\r\n\r\n![Screenshot_20230330-102215](https://user-images.githubusercontent.com/57946229/228798771-425d4c38-8d25-4a7a-972c-ee8a533fd502.png)\r\n\r\n[AndroidAPS_LOG_1680169503885.log.zip](https://github.com/nightscout/AndroidAPS/files/11110157/AndroidAPS_LOG_1680169503885.log.zip)\r\n",
+ "comments": [
+  {
+   "id": 1491512932,
+   "user": "MilosKozak",
+   "created_at": "2023-03-31T08:20:10Z",
+   "body": "sorry explanation is not enough to be able replicate the issue.\r\nput here step by step screenshots what you did and where are the differences"
+  },
+  {
+   "id": 1491536143,
+   "user": "Vigilo-Rob",
+   "created_at": "2023-03-31T08:39:33Z",
+   "body": "No problems - see attached Zip for screenshots.\r\n\r\nThose entitled 'Working DAI' etc are the profile that is cloned and shows my current profile settings.\r\n\r\nThose entitled 'Error DAI' etc are the cloned profile once its created.\r\n\r\nThe 'Profile Helper' screenshot is before I press the 'Clone' button.\r\n\r\n[Profile Helper Error Details.zip](https://github.com/nightscout/AndroidAPS/files/11119914/Profile.Helper.Error.Details.zip)\r\n"
+  },
+  {
+   "id": 1495715085,
+   "user": "MilosKozak",
+   "created_at": "2023-04-04T10:21:16Z",
+   "body": "working profile has a name 40pct fiasp.\r\nFailing profile is DefaultProfile\r\nthus it's not a clone of \"40pct fiasp\""
+  },
+  {
+   "id": 1495729083,
+   "user": "Vigilo-Rob",
+   "created_at": "2023-04-04T10:32:39Z",
+   "body": "DefaultProfile is the name it allocates to the profile when you press the 'Clone' button - not sure what you expect to happen? My guess is it can't clone a profile with the same name else there would be a duplicate profile hence uses DefaultProfile and Datetime to identify the new profile\r\n\r\nThe problem appears to be the values created in the profile itself - look at the IC ratio on the cloned profile - its shows an IC ratio of 23370203 with 7 different ICs\r\n\r\nThe IC ratio from the source cloned profile is 7.3 and a single time entry."
+  },
+  {
+   "id": 1495732747,
+   "user": "MilosKozak",
+   "created_at": "2023-04-04T10:35:33Z",
+   "body": "but this is not your current profile. it kind of recommendation where to start if you have no profile\r\nwhat values did you put in?"
+  },
+  {
+   "id": 1495835378,
+   "user": "Vigilo-Rob",
+   "created_at": "2023-04-04T11:48:37Z",
+   "body": "Current profile I used to clone is 40pct fiasp (thats what I'm actually using for the loop)\r\n\r\n![Current Profile](https://user-images.githubusercontent.com/57946229/229782405-d17d110b-a7a6-4a25-a821-fa0079600fd0.png)\r\n"
+  },
+  {
+   "id": 1495955280,
+   "user": "MilosKozak",
+   "created_at": "2023-04-04T13:16:21Z",
+   "body": "if you have current profile selected there is no clone button"
+  },
+  {
+   "id": 1495987699,
+   "user": "Vigilo-Rob",
+   "created_at": "2023-04-04T13:34:36Z",
+   "body": "Right - light finally dawns - (thank you)\r\n\r\nSo it's not possible to clone the active profile, and the default profile has out-of-range entries to force the user to enter their own profile rather than accepting a default value.\r\n\r\nSort of makes sense - apologies for asking so many questions."
+  }
+ ]
+}

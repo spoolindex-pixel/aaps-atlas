@@ -1,0 +1,99 @@
+{
+ "id": 1230039453,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 2111,
+ "title": "OB1 Collector long WakeUp",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/2111",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-05-09T17:35:36Z",
+ "closed_at": "2022-05-10T18:40:26Z",
+ "comment_count": 14,
+ "body": "Hello,\r\nI Updated my OnePlus 8T to the OxygenOS 12,\r\nand since the Update, the OB1 Collector has a very long WakeUp Time.\r\nSo there are 3 Readings, one missing, and Three Readings again.\r\n\r\nMaybe you could add an option to restart the OB1 30seconds before the next reading?\r\n\r\nIf I restart it manually, it's working.\r\n\r\nI think, there are some changes in the Android Kernel, in OxygenOS 11 I had no problems with the collector service.\r\n",
+ "comments": [
+  {
+   "id": 1122304048,
+   "user": "jamorham",
+   "created_at": "2022-05-10T12:07:43Z",
+   "body": "Check what power saving options are present in this version of Android and exclude xDrip from them. Make sure it is allowed to work in the background."
+  },
+  {
+   "id": 1122347075,
+   "user": "Miquest",
+   "created_at": "2022-05-10T12:48:24Z",
+   "body": "I excluded it from all settings I found.\r\nI think, there are Settings in the Kernel which I cannot change.\r\nI also allowed the background activity for xDrip Plus."
+  },
+  {
+   "id": 1122347883,
+   "user": "Miquest",
+   "created_at": "2022-05-10T12:49:09Z",
+   "body": "That's the Problem: \r\n![Screenshot_2022-05-10-14-48-47-83_2dd2c1bcb8f659cd696bcba2072f751b](https://user-images.githubusercontent.com/91971937/167632108-2a18a9f3-c202-464d-9731-52a91417466a.jpg)\r\n"
+  },
+  {
+   "id": 1122497597,
+   "user": "Miquest",
+   "created_at": "2022-05-10T14:48:33Z",
+   "body": "I found one point in the Code which looked like a solution in\r\n/app/src/main/java/com/eveningoutpost/dexdrip/SystemStatus.java\r\n\r\nI'm no expert in Java, maybe you can add the circled point into a time based loop? \r\nI don't trust me to try it out, because I don't want to crash my phone, and I cannot build a APK file. \r\n\r\n<img width=\"497\" alt=\"Screenshot 2022-05-10 164430\" src=\"https://user-images.githubusercontent.com/91971937/167656945-f1aff3e9-f05d-4341-8965-b6476b4218d3.png\">\r\n\r\n"
+  },
+  {
+   "id": 1122504075,
+   "user": "tolot27",
+   "created_at": "2022-05-10T14:53:44Z",
+   "body": "Since Dexcom only communicates every 5 minutes and your last connection is 1 second ago, there is no need to wake up earlier than these 4 minutes."
+  },
+  {
+   "id": 1122554844,
+   "user": "Miquest",
+   "created_at": "2022-05-10T15:36:24Z",
+   "body": "The OB1 Collector starts to scan Around 30seconds before next reading. \r\nSometimes, the collector needs 4minutes to start, that's why the readings are Sometimes missing"
+  },
+  {
+   "id": 1122565953,
+   "user": "Navid200",
+   "created_at": "2022-05-10T15:46:09Z",
+   "body": "I don't think it makes any difference how much earlier we wake up the scanner if the cause of the problem is that Android doesn't allow xDrip to operate in the background.\r\nYou may be looking at the effect rather than the cause."
+  },
+  {
+   "id": 1122578609,
+   "user": "Miquest",
+   "created_at": "2022-05-10T15:52:48Z",
+   "body": "Do you know an app which can force the Background Activity for other apps?\r\n"
+  },
+  {
+   "id": 1122599121,
+   "user": "Navid200",
+   "created_at": "2022-05-10T16:09:12Z",
+   "body": "Have you disabled Bluetooth battery optimization also?"
+  },
+  {
+   "id": 1122600062,
+   "user": "Miquest",
+   "created_at": "2022-05-10T16:10:09Z",
+   "body": "In Android 12 there is no option do deactivate that..."
+  },
+  {
+   "id": 1122607009,
+   "user": "Navid200",
+   "created_at": "2022-05-10T16:17:05Z",
+   "body": "Not sure why you say that.  I just checked Android 12 in an emulator and can see it."
+  },
+  {
+   "id": 1122622978,
+   "user": "Navid200",
+   "created_at": "2022-05-10T16:32:37Z",
+   "body": "I already told you what I did to verify.\r\nOpen a discussion and I can show you.  \r\nOr, ask many others who have been using Android 12 and xDrip."
+  },
+  {
+   "id": 1122643614,
+   "user": "Miquest",
+   "created_at": "2022-05-10T16:54:26Z",
+   "body": "Maybe it's a bug in OxygenOS 12."
+  },
+  {
+   "id": 1122646742,
+   "user": "Miquest",
+   "created_at": "2022-05-10T16:57:52Z",
+   "body": "But thank you for all the time you spent to help me!"
+  }
+ ]
+}

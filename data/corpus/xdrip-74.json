@@ -1,0 +1,51 @@
+{
+ "id": 209586904,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 74,
+ "title": "Improper scaling when lowering \"Display Size\" (DPI) - Android 7.0+",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/74",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2017-02-22T21:29:25Z",
+ "closed_at": "2021-03-04T14:05:10Z",
+ "comment_count": 6,
+ "body": "Starting with Android 7.0, Google added the ability to change your display size (basically adjust the DPI). When you change the display size from from Default to Large, Larger, and Largest, the app scales properly. However, when you change the display size from Default to Small, the app (and more specifically the Status Line text) does not scale properly at all; the size of the Status Line text appears to at least double.\r\n\r\nWhile only mildly annoying with the just the default Status Line or even one Status Line items, the improper scaling makes the ability to add multiple extra Status Line items impossible.\r\n\r\nI've included screenshots of what the behavior looks like below. The top photo is with \"Display Size = Default\" and the bottom is with \"Display Size = Small\".\r\n\r\n![display size - default](https://cloud.githubusercontent.com/assets/15961925/23232597/7d64934c-f911-11e6-8812-8020481e816c.png)\r\n![display size - small](https://cloud.githubusercontent.com/assets/15961925/23232603/7f7cb20e-f911-11e6-96ac-f24cc41c4162.png)\r\n",
+ "comments": [
+  {
+   "id": 281820811,
+   "user": "jamorham",
+   "created_at": "2017-02-22T22:09:32Z",
+   "body": "Hi, thanks for reporting this I can take a look at it\r\n\r\nI'm not familiar with the display size feature of android 7. What is the practical purpose of adjusting the display size? When would a user do that?\r\n\r\n"
+  },
+  {
+   "id": 281838622,
+   "user": "rpzigler",
+   "created_at": "2017-02-22T23:24:07Z",
+   "body": "Thanks!\r\n\r\nOfficially, it is referred to as Screen Zoom in the developer resources. The practical purpose is to lower the information density and make everything on the display smaller; you are essentially increasing your apparent display \"resolution\" by zooming out on the device UI. It doesn't just make the text smaller like changing the font size, it makes the entire UI smaller by 0.85x. \r\n\r\nIf you have a large screen device, it is particularly helpful. By default, an Android phone with a 1440p 5\" screen and a 1440p 6\" screen would display the exact same amount of information; the information on the 6\" screen is just larger. For me personally, I have a large screen device because I want to be able to see more information at a single time, not see the same amount of information but bigger. So I change the display size to small which gives me \"so much room for activities!\" \r\n\r\nIf you were to use a launcher like Google Now Launcher that doesn't allow you to change the number of rows/columns, it shrinks the size of icons allowing you to fit more icons in a single row. In your SMS app it allows more messages to be displayed on a single page. Maybe instead of being able to display 100 lines of text with the default DPI, it would now show 118 lines of text and reducing your font size from default to small could increase that even further.\r\n\r\n[Here are the behavior changes from the Android Developers site and how to make the app compatible with the new feature.](https://developer.android.com/about/versions/nougat/android-7.0-changes.html#screen-zoom)\r\n\r\n[Here is a explanation from Android Police with a good comparisons of how the different settings affect the display scale.](http://www.androidpolice.com/2016/03/10/android-n-feature-spotlight-easily-change-your-devices-display-dpi-with-screen-zoom/)\r\n\r\n"
+  },
+  {
+   "id": 282712635,
+   "user": "jamorham",
+   "created_at": "2017-02-27T13:00:05Z",
+   "body": "I haven't been able to reproduce this in the emulator with Android 7.1.1 with a screen resolution of 1080x1920. With the Display Size set to \"small\" I see the text as smaller.  Can you give me the exact screen dimensions of your phone and I can try those to see if it makes any difference?\r\n\r\nPS a 1440p 5\" screen and 1440p 6\" in screen should already have different DPI values. \r\n\r\n"
+  },
+  {
+   "id": 282790899,
+   "user": "rpzigler",
+   "created_at": "2017-02-27T17:32:53Z",
+   "body": "I have a Nexus 6P which is a 5.7\" dispaly. The exact dimensions are 2.8\" x 5.0\" and the resolution is 1440x2560."
+  },
+  {
+   "id": 783362371,
+   "user": "Navid200",
+   "created_at": "2021-02-22T13:09:47Z",
+   "body": "@rpzigler Has this been addressed already?\r\nThanks"
+  },
+  {
+   "id": 790641447,
+   "user": "Navid200",
+   "created_at": "2021-03-04T14:05:10Z",
+   "body": "I am closing this due to inactivity.\r\nIf this has not been addressed, please post here."
+  }
+ ]
+}

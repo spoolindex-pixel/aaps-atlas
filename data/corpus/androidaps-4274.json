@@ -1,0 +1,33 @@
+{
+ "id": 3579433370,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4274,
+ "title": "AndroidAPS failed to get Juggluco readings without any errors",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4274",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-11-02T11:03:17Z",
+ "closed_at": "2025-11-06T17:11:48Z",
+ "comment_count": 3,
+ "body": "I noticed at 10:49 when I went to Bolus that AndroidAPS had not had blood glucose readings for 481 mins.\nJuggluco was working correctly.\n\nI fixed the issue by force closing AndroidAPS and restarting, so I suspect it locked up sonewhere.\n\nAAPS 3.3.2.1\nBuild: 937e2bccc9-2025.10.14\nRemote: https://github.com/nightscout/AndroidAPS\nFlavor: fullrelease\nNightscout version: UNKNOWN\n\n[AndroidAPS_LOG_1762080514358.log.zip](https://github.com/user-attachments/files/23289940/AndroidAPS_LOG_1762080514358.log.zip)\n\n<img width=\"320\" height=\"663\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/5c8209af-2dc6-49f8-ad2a-2465fdd8b623\" />\n<img width=\"714\" height=\"320\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/66c93cf9-ad76-4bec-a835-bdd1979d71a2\" />",
+ "comments": [
+  {
+   "id": 3498425729,
+   "user": "MilosKozak",
+   "created_at": "2025-11-06T17:11:48Z",
+   "body": "I agree. But the reason is, that WorkManager stoped working (It's a Google library)\nIt can be related to low system resources in phone (just guessing)\nSorry I cannot help ."
+  },
+  {
+   "id": 3536461396,
+   "user": "jimbaxter",
+   "created_at": "2025-11-15T12:51:30Z",
+   "body": "Thanks for looking, out of curiosity where did you see the error?\n\nWhen I look at the logs I do not see any errors for the WorkManager, just success messages."
+  },
+  {
+   "id": 3536461923,
+   "user": "jimbaxter",
+   "created_at": "2025-11-15T12:52:24Z",
+   "body": "Sorry, I found it now\n\n02:30:07.366 [DefaultDispatcher-worker-10] D/WORKER: [LoggingWorker$doWork$2.invokeSuspend():27]: Worker result FAILURE for class app.aaps.workflow.PrepareBasalDataWorker Data {Error : stopped"
+  }
+ ]
+}

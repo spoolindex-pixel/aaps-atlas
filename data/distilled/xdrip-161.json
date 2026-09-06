@@ -1,0 +1,23 @@
+{
+ "issue_id": 161,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/161",
+ "title": "Hello, Can you build in xDrip An automatic screen wake-up at high and low blood glucose values with threshold input? And a screen duration on switch via hook as with voice announcement?",
+ "symptom": "The user requests a feature to automatically wake the screen on high or low blood glucose values with threshold input and a screen duration switch, similar to voice announcement. They also report that the Android Uploader app stops in the background, causing missed readings, and ask for a way to prevent it from stopping.",
+ "cause": "The Android Uploader (600SeriesAndroidUploader) has a failover timer that restarts it after 20 minutes, causing gaps in data transmission. The screen wake feature is not available because the phone's charging port is occupied by the Enlite Contour Next 2.4 meter, preventing the use of Daydream or keep-screen-on features.",
+ "fix": "For missed reading alerts, disable the 'Missed Reading Alerts' in Settings->Alarms and Alerts. For the Android Uploader stopping, the issue is in the 600SeriesAndroidUploader repo, not xDrip, and may be due to a failover timer. No direct fix is provided in xDrip.",
+ "settings_changed": [
+  "Missed Reading Alerts → disabled"
+ ],
+ "devices": [
+  "Enlite Contour Next 2.4",
+  "Android Uploader"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "600series uploader",
+  "broadcast"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "In order to not having to do that you can go to \"Settings->Alarms and Alerts->Missed Reading Alerts\" and disable that alert. Then it won't alarm on missed readings."
+}

@@ -1,0 +1,105 @@
+{
+ "id": 1808354594,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2626,
+ "title": "[dev-j AND 3.2RC1] AAPS or AAPSClient pushing multiple profile database records to NS",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2626",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-07-17T18:34:02Z",
+ "closed_at": "2023-09-01T08:58:02Z",
+ "comment_count": 15,
+ "body": "After I updated to dev-j on 16th June, it seems there is a bug where with every loop run (or even more frequently), either AAPS or AAPSClient or both, send a new profile database record. \r\n\r\nI remember last year (oct-nov 22 I think) there was a bug creating multiple profile database records with the same StartDate, but now it is creating with a new value in Created AND in StartDate field. \r\n\r\nIf I pause NSclient on both apps, it stops posting new records, but if I unpause, it's pushing new records again. \r\n![image](https://github.com/nightscout/AndroidAPS/assets/71758682/f3f2a820-fda4-4b8b-9580-def5ec98a6d8)\r\n\r\nI was able to find a script to remove the duplicate profile values for last year's problem, and customize it for this new issue to get rid of records, here you can see example of created vs startdate (valid from) for the records:\r\n![image](https://github.com/nightscout/AndroidAPS/assets/71758682/622d8637-fb5d-48fa-b206-6d698a17ce4b)\r\n\r\nAttached logs here in case you can find some useful info there. \r\n[AndroidAPS_LOG_1689617704715.log.zip](https://github.com/nightscout/AndroidAPS/files/12072763/AndroidAPS_LOG_1689617704715.log.zip)\r\n\r\nFor now it seems a useful workaround to go back to dev-i version, as it's not currently pushing extra profile store records on that version. \r\n\r\nUpdate: I also tested selecting NSClientV3 in config builder in both apps, and updating to dev-j again, but it still sent new profile store records. In NSClientV3 tab the records show with the heading \"WS CREATE/UPDATE profile\". They also show up in the Profile editor in Nightscout. \r\n",
+ "comments": [
+  {
+   "id": 1646554563,
+   "user": "treebearded",
+   "created_at": "2023-07-22T10:42:14Z",
+   "body": "I can verify this, same issue since update from dev-i to 18f01d7b5930252a01bdbda86d56a1af720a0aa0 yesterday.\r\n@kristinsmotz Do you have your updated script avaliable? Im sure there are some of us running on dev-j :)"
+  },
+  {
+   "id": 1646961416,
+   "user": "Alamo04",
+   "created_at": "2023-07-23T21:17:13Z",
+   "body": "This is an old issue and was fixed a long time ago.\r\nCan't confirm if it is back, because since NS Dev 15.0.0 I can see only my active profile and unfortunately this NS Version is needed for AAPS Dev.\r\nNS Issue done in 03/2023 and no response. \r\nBut as far I can see in NS Client v3, everything works ok, no spamming profile switches here.\r\n\r\nSince I changed to NS Dev 15.0.0 I can't view, change, or clone older profiles. Also can't create a new one.\r\nThis will become a big problem for parents.\r\nWhy can you see that with Dev-J and NS 15.0.0 ?\r\n\r\n![Screenshot_20230723-230521_Chrome](https://github.com/nightscout/AndroidAPS/assets/36486505/3c4c00cd-d383-43d1-b431-92584b306809)\r\n\r\n\r\n\r\n"
+  },
+  {
+   "id": 1648560434,
+   "user": "someguygg",
+   "created_at": "2023-07-24T20:30:45Z",
+   "body": "\r\n> Since I changed to NS Dev 15.0.0 I can't view, change, or clone older profiles. Also can't create a new one. This will become a big problem for parents. Why can you see that with Dev-J and NS 15.0.0 ?\r\n> \r\n\r\nIt doesn't show the editor in chrome. Try edge browser and you can modify NS profiles for now.\r\n\r\n"
+  },
+  {
+   "id": 1655490000,
+   "user": "Alamo04",
+   "created_at": "2023-07-28T10:57:04Z",
+   "body": "@someguygg \r\nChrome works fine, also Firefox. Didn't use Edge. This is a problem on NightScout Dev side.\r\nZehnBe fixed that for me. It was a small patch in NightScout code, on server side.\r\n\r\nBecause I can now see whats happened in profiles, I can't confirm that problem from OP."
+  },
+  {
+   "id": 1696729184,
+   "user": "ohjay73",
+   "created_at": "2023-08-29T03:57:35Z",
+   "body": "I'm experiencing the same problem.. each time WS CREATE/UPDATE is triggered in aaps or aapsclient an entry is created in nightscout that takes the lowest alphabetical profile and triggers it as active with the same created and start date. Happens every 3 to 5 minutes and fills your profiles DB in mongo\r\n\r\n"
+  },
+  {
+   "id": 1699856493,
+   "user": "kristinsmotz",
+   "created_at": "2023-08-30T21:18:14Z",
+   "body": "This is still a problem in 3.2 RC1, which will be a huge problem for us. \r\n\r\nSee log from this evening after 22.00CET, our nightscout is already filling up. \r\n[AndroidAPS_LOG_1693430335851.log.zip](https://github.com/nightscout/AndroidAPS/files/12480307/AndroidAPS_LOG_1693430335851.log.zip)\r\n\r\nI had to roll back to dev-i for now to avoid this problem, hoping for a quick fix as it is supposed to stop working within a few days. "
+  },
+  {
+   "id": 1700133285,
+   "user": "ohjay73",
+   "created_at": "2023-08-31T00:57:25Z",
+   "body": "> This is an old issue and was fixed a long time ago. Can't confirm if it is back, because since NS Dev 15.0.0 I can see only my active profile and unfortunately this NS Version is needed for AAPS Dev. NS Issue done in 03/2023 and no response. But as far I can see in NS Client v3, everything works ok, no spamming profile switches here.\r\n> \r\n> Since I changed to NS Dev 15.0.0 I can't view, change, or clone older profiles. Also can't create a new one. This will become a big problem for parents. Why can you see that with Dev-J and NS 15.0.0 ?\r\n> \r\n> ![Screenshot_20230723-230521_Chrome](https://user-images.githubusercontent.com/36486505/255431657-3c4c00cd-d383-43d1-b431-92584b306809.jpg)\r\n\r\nRemove your authorization in nightscout and then reload the page and enter your code but DONOT check the remember me tickbox. Then check how many profiles you have.. I'm betting that by the date of creation of your profile being the same date as your comment that you are being flooded but the remember me bug is only letting you see the top level profile. Please test and report back"
+  },
+  {
+   "id": 1700465876,
+   "user": "blochj",
+   "created_at": "2023-08-31T06:54:03Z",
+   "body": "I can confirm the same issue here. This fills entire mongodb database of 512mb within few hours...\n![20230831_085340.jpg](https://github.com/nightscout/AndroidAPS/assets/108429726/d45506c7-781d-4146-b251-f85bd6daf84c)\n\n"
+  },
+  {
+   "id": 1700513212,
+   "user": "MilosKozak",
+   "created_at": "2023-08-31T07:30:55Z",
+   "body": "something is modifying profile in NS\r\nDo following:\r\nchange api secret (and tokens if used) and restart NS to be sure nothing has write access\r\nupdate api secret on main phone only\r\nsee the results\r\nyou can do one profile modification to see if it's properly updated in NS and no update loop started\r\nthen you can update api secret  on another apps (one by one with testing)"
+  },
+  {
+   "id": 1700548222,
+   "user": "kristinsmotz",
+   "created_at": "2023-08-31T07:57:56Z",
+   "body": "Between the first time I saw this and updating to 3.2RC1 yesterday, I had actually switched nightscout sites and API_SECRET due to kid changing names. So there shouldn't be anything accessing the profile store except AAPS and AAPSClient apps. The problem pops up right after updating to new version (have tried going back and forth between dev-i and newer versions), even if I don't initiate a profile switch or profile edit. In the NSClient tab on AAPS phone it keeps sending new \"profile store\" batches every 10-ish seconds. \r\n\r\nCurrently we have the following setup: \r\nFSL3 being read by Juggluco, uploading glucose values to nightscout AND sending sideways to AAPS\r\nAAPS on kid's phone\r\nAAPSClient on my phone, husband's phone (usually force closed due to battery drain), my mother's phone. Only mine is actually used to upload, the others are just reading (technically allowed to upload, but users haven't been trained to do that). \r\nMultiple Fitbit Versa of different generations, reading from NS but not uploading.\r\n\r\nI will test your suggestions when kid is home from school today. \r\n\r\n"
+  },
+  {
+   "id": 1701074519,
+   "user": "kristinsmotz",
+   "created_at": "2023-08-31T13:48:28Z",
+   "body": "OK did some testing. \r\nChanged API secret and only updated in Juggluco and AAPS to start. \r\nSwitched off \"Receive profile store\" in NSClient preferences - Synchronization\r\nExported settings\r\nUpdated to 3.2RC1 on AAPS phone\r\nUpdated to 3.2RC1 on AAPSClient phone, paused NSClient on AAPSClient phone\r\nMade a profile edit from AAPS. \r\none new profile db record was added to the mongodb collection. \r\nwaited a few minutes, no more profile db records were added. \r\nSwitched on \"receive profile store\"\r\nno more profile records created\r\n\r\nThen tried updating API Secret on AAPSClient phone, and unpausing NSClient\r\nImmediately saw new profile record being created with a different/older default profile\r\nNew profile records keep being added every 10-ish seconds with the same older profile\r\n\r\nIf I pause NSClient on AAPSClient phone, no more profile records are posted, but I don't get updates either, so monitoring kid is impossible. \r\nIf I switch off \"receive profile store\" on AAPS phone, no more profile records are posted to database, but I can no longer update profile from parent phone when kid is in school. \r\n\r\nIt seems to me the issue is AAPSClient. If profile is edited on AAPS phone, and that profile record (newest profile as defaultProfile) is received on AAPSClient phone, AAPSClient responds by pushing a new profile record to db (with the oldest profile in that record as defaultProfile), which is then pushed back to db from AAPS after being received there from nightscout/NSClient. \r\n\r\nFor now I'll use workaround by keeping \"receive profile store\" off, and keep using RC1 so we won't lose looping when dev-i expires. This problem did not exist in dev-i, so hopefully that will give you some more direction for troubleshooting. \r\n\r\nAttaching recent logs from this testing:\r\nAAPS:\r\nAAPS 3.2.0-rc1\r\nBuild: 65252eb0ba-2023.08.30\r\nRemote: https://github.com/kristinsmotz/AndroidAPS\r\nFlavor: fullrelease\r\nNightscout version: 15.0.0\r\nEngineering mode enabled \r\n\r\n[AndroidAPS_LOG_1693489454129."
+  },
+  {
+   "id": 1701574287,
+   "user": "MilosKozak",
+   "created_at": "2023-08-31T18:41:05Z",
+   "body": "@kristinsmotz using NSCv1 or v3?"
+  },
+  {
+   "id": 1701576307,
+   "user": "kristinsmotz",
+   "created_at": "2023-08-31T18:42:47Z",
+   "body": "V1 since I couldn't get v3 to work with AAPSClient"
+  },
+  {
+   "id": 1702143762,
+   "user": "treebearded",
+   "created_at": "2023-09-01T04:34:31Z",
+   "body": "Nsc version is probably relevant.\r\nI don't have this problem on 3.2rc1 using nscv3 on all phones.\r\n\r\n\r\n\r\nOn Thu, 31 Aug 2023, 20:42 kristinsmotz, ***@***.***> wrote:\r\n\r\n> V1 since I couldn't get v3 to work with AAPSClient\r\n>\r\n> —\r\n> Reply to this email directly, view it on GitHub\r\n> <https://github.com/nightscout/AndroidAPS/issues/2626#issuecomment-1701576307>,\r\n> or unsubscribe\r\n> <https://github.com/notifications/unsubscribe-auth/AAT2J74RYBSEYGURJ2KILT3XYDLLHANCNFSM6AAAAAA2NKMHJU>\r\n> .\r\n> You are receiving this because you commented.Message ID:\r\n> ***@***.***>\r\n>\r\n"
+  },
+  {
+   "id": 1702409600,
+   "user": "MilosKozak",
+   "created_at": "2023-09-01T08:58:02Z",
+   "body": "resolved in https://github.com/nightscout/AndroidAPS/commit/919c79ebf9cf77b0e0ec486858092764bf8aad62"
+  }
+ ]
+}

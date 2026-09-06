@@ -1,0 +1,69 @@
+{
+ "id": 3577385060,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4272,
+ "title": "Autotune have wrong Profile",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4272",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-11-01T06:33:54Z",
+ "closed_at": "2025-11-14T11:52:27Z",
+ "comment_count": 9,
+ "body": "I'm using the dev-d version. When I run Autotune, the profile it uses contains completely incorrect data. I only have one profile, so I can rule out the possibility that I selected the wrong one. Have erveryone a idea what's wrong or what's I do wrong. \n\n<img width=\"1008\" height=\"2244\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/f6b4762f-c2f8-40cf-8ad7-1009525f2735\" />\n\n<img width=\"1008\" height=\"2244\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/f64fd119-3456-4be2-a81c-37dd1be6681a\" />\n\n<img width=\"1008\" height=\"2244\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/5cd61f34-cfa8-45bf-b950-e5c42634190e\" />\n\n<img width=\"1008\" height=\"2244\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/af504cb7-16b8-4f94-b9b2-2abbef191b11\" />",
+ "comments": [
+  {
+   "id": 3510722711,
+   "user": "Philoul",
+   "created_at": "2025-11-10T10:28:42Z",
+   "body": "My only explain how this could be possible is with these steps:\n- Autotune run has been done using current running profile as the input (not by a manual selection of one explicit profile in dropdown menu).\n- profile within ProfilePlugin has been updated recently (with latest values shared within your screenshot)\n- latest updated profile has never been explicitely applied with a profilSwitch action done after the update (so your current running profile is still the one before latest update).\n\nTo confirm this issue, you should provide, not only the screenshot of profile values within plugin, but also a screenshot of current running profile done from overview (with profile button)."
+  },
+  {
+   "id": 3510971443,
+   "user": "Honzebibi",
+   "created_at": "2025-11-10T11:17:21Z",
+   "body": "<img width=\"1008\" height=\"2244\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/a58de2ca-c05e-4152-9fdf-9039acd8c65b\" />\n<img width=\"1008\" height=\"2244\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/46423c6a-e092-4272-92dd-4cb95236f005\" />"
+  },
+  {
+   "id": 3512283716,
+   "user": "Philoul",
+   "created_at": "2025-11-10T15:11:34Z",
+   "body": "With your latest screenshot I'm lost because all the different profiles shared are different:\n- the one in your profile plugin: rate at 1:00 = 1.30 U/h\n- the autotune input profile: rate at 1:00 = 0.893 U/h\n- the autotune calculated profile: rate at 1:00 = 1.161 U/h\n- your current running profile: rate at 1:00 = 1.22 U/h\n\nCould you please explain, starting from now with the list of all starting point situation (including screenshots  done now on plugin, overview and Autotune with the screenshot of profileView button for input profile)?\n\nWithin Autotune, the button \"Check Input profile\" is here to show the detailed information of the selected input profile:\n![Screenshot_20251110-130602_AAPS.jpg](https://github.com/user-attachments/assets/3b4cdd24-938c-4ca4-aa7f-a91a078b87cc)\n\nYou can compare and check:\n- default selection (click before any run or results what is the default)\n- explicit selection of current active profile in profile list\n- explicit selection of the profile with profilePlugin\n\nThen compare and share selection.\n\nKeep also in mind that the green link in Autotune (Last run) will show the latest run synthesis (this run can be old so both input side and output side can be outdated and no more consistant with current situation).\n\n"
+  },
+  {
+   "id": 3512359870,
+   "user": "Honzebibi",
+   "created_at": "2025-11-10T15:23:52Z",
+   "body": "I have click to the Button. The Profile is correct. When I klick Autotune the profile Information are wrong. \n\n<img width=\"1008\" height=\"2244\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/73fb868e-0d0a-49da-9ba6-adcb4af08445\" />\n\n<img width=\"1008\" height=\"2244\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/68354243-424a-42b7-817f-eabb5c4bf879\" />\n<img width=\"1008\" height=\"2244\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/921c1d7c-49e4-409b-a9f4-8af0fbb9ad51\" />\n<img width=\"1008\" height=\"2244\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/dc0826f2-3fcc-4b94-9fcf-d52769e76b16\" />"
+  },
+  {
+   "id": 3512790561,
+   "user": "Philoul",
+   "created_at": "2025-11-10T16:48:07Z",
+   "body": "Sorry I'm still confused:\n- when you select a profile with autotune, or when you change one parameter (i.e. number of day selected) the result area should be empty \n\nAt this step I would like to see the manual selected profile in the autotune top dropdown menu (first by selecting \"<Active>\") and share the \"check input profile results\" and the equivalent screenshots of Current Running Profile from main OverView (both profiles should be the same)\nAnd then Run Autotune and share a new screenshot with corresponding results.\n\nYou can then provide me the same kind of screenshots, but this time with the selection of \"Normal\" profile in Autotune Dropdown menu (and the corresponding profile should be the basal rates tab within Profile Plugin).\n\nCan you also precise which branch and used (Autotune Plugin is not available in master)... Is it from main AndroidAPS repo, from latest dev or older version (which commit), using AAPS or AAPSCLIENT version...\n\nSorry to ask you so many screenshots and information, but I'm not able to reproduce your issue and neither understand what should I do to try reproduce it 🤔."
+  },
+  {
+   "id": 3521464859,
+   "user": "Honzebibi",
+   "created_at": "2025-11-12T11:29:18Z",
+   "body": "I using AAPS.\nThe New dev. \n\n<img width=\"1008\" height=\"2244\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/5075501a-2d13-4d80-9f07-26e56b91d5cb\" />\n<img width=\"1008\" height=\"2244\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/1dcc47b5-41b7-45d5-9459-d95f6085fe7d\" />\n<img width=\"1008\" height=\"2244\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/9a0f9737-7975-45cc-a7c3-a8a2b9a6a649\" />\n<img width=\"1008\" height=\"2244\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/bd221aaf-ecd5-48c2-baa9-9cb1bd3a2435\" />\n<img width=\"1008\" height=\"2244\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/cb62ff51-0290-4bf3-8693-7cd8acfbb3de\" />\n<img width=\"1008\" height=\"2244\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/e2eb845d-b93d-43c4-87aa-37a32115b884\" />\n<img width=\"1008\" height=\"2244\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/c5944eef-fec2-4efe-9309-27b73a135fdc\" />\n<img width=\"1008\" height=\"2244\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/ffdeb700-40c3-4002-96da-149332c2865c\" />\n<img width=\"1008\" height=\"2244\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/e3c9030b-3bf9-44b5-80c7-e379f22b2dad\" />"
+  },
+  {
+   "id": 3523147766,
+   "user": "Philoul",
+   "created_at": "2025-11-12T17:47:48Z",
+   "body": "Thanks, very strange, it looks like you have an hard coded profile as input (whatever your selection, you always have the same starting point within AT)\n- will check on latest dev if something can explains this"
+  },
+  {
+   "id": 3523168411,
+   "user": "Honzebibi",
+   "created_at": "2025-11-12T17:53:34Z",
+   "body": "Thank you"
+  },
+  {
+   "id": 3529148404,
+   "user": "Philoul",
+   "created_at": "2025-11-13T18:30:53Z",
+   "body": "Fixed with 2ae01d546f4194e707213f1d54a60de547e23648"
+  }
+ ]
+}

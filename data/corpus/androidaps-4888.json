@@ -1,0 +1,71 @@
+{
+ "id": 4610417604,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4888,
+ "title": "3.4.2.3",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4888",
+ "state": "closed",
+ "labels": [
+  "equil"
+ ],
+ "created_at": "2026-06-08T06:06:21Z",
+ "closed_at": "2026-06-16T13:26:31Z",
+ "comment_count": 9,
+ "body": "## Summary\n\nThere is a bug with the Equil pump integration: it is not possible to set or change the pump profile.\n\nEach time a profile change is attempted, AndroidAPS runs into a pump connection problem and the operation fails.\n\n## Affected area\n\n- Pump: Equil\n- Function: setting / changing pump profile\n\n## Actual behavior\n\nWhen trying to set or change the profile on the Equil pump, AndroidAPS fails because of a connection problem with the pump.\n\nThe profile is not updated on the pump.\n\n## Expected behavior\n\nAndroidAPS should connect to the Equil pump successfully and apply the selected profile without failing.\n\n## Steps to reproduce\n\n1. Open AndroidAPS\n2. Profile\n3. Try to set or change the pump profile\n4. Wait for the command to be sent to the pump\n5. The process fails with a pump connection problem\n\n## Frequency\n\n- Happens every time\n\n## Impact\n\nThis blocks profile changes on Equil completely.\n\n## Additional notes\n\nThe issue appears to be related to the connection process during profile transfer to the pump.\n",
+ "comments": [
+  {
+   "id": 4649007618,
+   "user": "MilosKozak",
+   "created_at": "2026-06-08T12:32:10Z",
+   "body": "provide logs from attempt"
+  },
+  {
+   "id": 4702087021,
+   "user": "kwietrak",
+   "created_at": "2026-06-14T14:47:17Z",
+   "body": "<img width=\"1512\" height=\"2016\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/b1c56702-7c86-4425-9369-7a6467377215\" />"
+  },
+  {
+   "id": 4702088759,
+   "user": "kwietrak",
+   "created_at": "2026-06-14T14:48:00Z",
+   "body": "Only if I try to set the basal value higher than 1,5 Units per hour"
+  },
+  {
+   "id": 4702112090,
+   "user": "kwietrak",
+   "created_at": "2026-06-14T14:57:36Z",
+   "body": "[AndroidAPS_LOG_1781448717541.log.zip](https://github.com/user-attachments/files/28929339/AndroidAPS_LOG_1781448717541.log.zip)"
+  },
+  {
+   "id": 4702113675,
+   "user": "kwietrak",
+   "created_at": "2026-06-14T14:58:16Z",
+   "body": "Log provided. The attempts to set higher basal rate in the time between 16.20 and 16.55"
+  },
+  {
+   "id": 4702675111,
+   "user": "kwietrak",
+   "created_at": "2026-06-14T18:37:02Z",
+   "body": "After installing the newest APPS Release still the issue exist. \nAAPS 3.4.2.3\nBuild: 05a3433598-2026.06.14\nRemote: https://github.com/nightscout/AndroidAPS.git\nFlavor: fullrelease\nWersja Nightscout: 15.0.2\n\nLog attached. Could you please take a look?\n\n[AndroidAPS_LOG_1781461998919.log.zip](https://github.com/user-attachments/files/28932528/AndroidAPS_LOG_1781461998919.log.zip)"
+  },
+  {
+   "id": 4719251660,
+   "user": "MilosKozak",
+   "created_at": "2026-06-16T13:26:31Z",
+   "body": "fixed by https://github.com/nightscout/AndroidAPS/commit/e4e21002782c75b21438086e9b220bcb6f030bb5\nIt will be part of AAPS v4\nSo far increase max bolus to 2.5U as a workaround"
+  },
+  {
+   "id": 4719750099,
+   "user": "kwietrak",
+   "created_at": "2026-06-16T14:17:47Z",
+   "body": "Thanks for the response\nWhat do you mean by max bolus to 2,5 Units as workaround?\nThe issue was with the basal rate in the profile - current possible value was max  1,5 units per hour as the basal, not a single bolus."
+  },
+  {
+   "id": 4720108713,
+   "user": "MilosKozak",
+   "created_at": "2026-06-16T14:52:13Z",
+   "body": "that was the bug. code was observing max bolus instead of max basal"
+  }
+ ]
+}

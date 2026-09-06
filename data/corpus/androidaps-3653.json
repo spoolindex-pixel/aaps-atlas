@@ -1,0 +1,54 @@
+{
+ "id": 2756597367,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3653,
+ "title": "When temporarily disconnected with Dexcom G6, backfill data comes well to xDrip+ but not to AAPS when reconnected.",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3653",
+ "state": "closed",
+ "labels": [
+  "unresovable",
+  "xdrip"
+ ],
+ "created_at": "2024-12-23T19:17:16Z",
+ "closed_at": "2024-12-26T19:52:54Z",
+ "comment_count": 6,
+ "body": "- The exact time the problem occurred: the connection was lost between 18:55 and 19:10.\r\n\r\n- The circumstances and steps that caused the problem:\r\n\r\n_It is important to say that I am a rare user with this problem. The settings in xDrip+ are exactly as described in [Inter-app Settings (Broadcast)](https://androidaps.readthedocs.io/en/latest/CompatibleCgms/xDrip.html#inter-app-settings-broadcast) with \"Identify receiver\"._\r\n\r\nIf you come close to your phone after about 15 minutes, you will see that the data in AAPS is not backfilled when you reconnect.\r\n\r\n- The Build version: see attachment. But the version is not important, as this problem has been around for a few years now.\r\n\r\n- The app's log files are attached.\r\n![Screenshot_2024-12-23-20-00-51-244_info nightscout androidaps](https://github.com/user-attachments/assets/0d2e896f-c563-4064-84d7-dff57062c99d)\r\n![1734979490309](https://github.com/user-attachments/assets/5607105f-53f7-44f4-a047-e7550b0d2a44)\r\n[logs.zip](https://github.com/user-attachments/files/18232622/logs.zip)\r\n",
+ "comments": [
+  {
+   "id": 2562003034,
+   "user": "MilosKozak",
+   "created_at": "2024-12-25T21:25:49Z",
+   "body": "report to xdrip "
+  },
+  {
+   "id": 2562048579,
+   "user": "olorinmaia",
+   "created_at": "2024-12-26T00:58:16Z",
+   "body": "https://github.com/NightscoutFoundation/xDrip/discussions/3831#discussioncomment-11665537\r\n\r\nI don't think I can reproduce this issue. Just tested it with xDrip and G7 missing 1 bg, or do I need to miss more? Either way AAPS internally back fills in sensor errors etc. So why is it a problem if xdrip doesn't send all in between?\r\n\r\nAre you using xdrip as collector or in companion mode? "
+  },
+  {
+   "id": 2562079172,
+   "user": "dar-kod",
+   "created_at": "2024-12-26T02:11:41Z",
+   "body": "> So why is it a problem if xdrip doesn't send all in between?\r\n\r\nYou can try asking yourself what it would be like for you if you did not get backfill data. If others have it, why should I not? It looks better, the statistics are much more accurate and does it affect the loop (not sure).\r\n\r\n> Are you using xdrip as collector or in companion mode?\r\n\r\nAs a collector."
+  },
+  {
+   "id": 2562299811,
+   "user": "Philoul",
+   "created_at": "2024-12-26T08:18:40Z",
+   "body": "It works fine with BYODA...\n\nIf you use xdrip instead of BYODA, you should accept xdrip limitations, or open the issue within xdrip project 🧐.\nAAPS will not replace received data from xdrip by something else...\n\nI don't understand what's your expectation with this issue opened in AAPS project 🤔."
+  },
+  {
+   "id": 2562344512,
+   "user": "MilosKozak",
+   "created_at": "2024-12-26T09:07:44Z",
+   "body": "BOYDA always send last XX values (as they may change in the past because of smoothing) and AAPS accepts all changes\r\nxDrip is probably sending always only last value"
+  },
+  {
+   "id": 2563055737,
+   "user": "dar-kod",
+   "created_at": "2024-12-26T19:44:25Z",
+   "body": "> I don't understand what's your expectation with this issue opened in AAPS project 🤔.\r\n\r\nI was not sure that this problem needed to be solved by xDrip. When Milos informed me, I opened the topic in the [xDrip discussions](https://github.com/NightscoutFoundation/xDrip/discussions/3831)."
+  }
+ ]
+}

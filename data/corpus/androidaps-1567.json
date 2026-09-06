@@ -1,0 +1,48 @@
+{
+ "id": 1193369077,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1567,
+ "title": "DASH / Feature : Synchronize DASH automatically to stop alerts",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1567",
+ "state": "closed",
+ "labels": [
+  "enhancement",
+  "omnipod dash"
+ ],
+ "created_at": "2022-04-05T15:43:40Z",
+ "closed_at": "2026-02-11T07:36:02Z",
+ "comment_count": 5,
+ "body": "The DASH beeps when it reaches the minimum reservoir set by user, at 70 hours and 72 hours of use (as well as before 80 hours etc). When we hear these beeps, we are obliged to open AAPS, go to DASH tab, force an _actualization_ so that AAPS can show the \"Accept alerts\" button which permits to stop the beeps. \r\n\r\nAll these situations are known to AAPS which keeps track of the insulin in stock, pod end time etc. \r\n\r\nCan AAPS _Actualize_ pod automatically when it knows that these alerts situations will happen so that the \"Stop Alerts\" button will be available to stop the beeps easily ? ",
+ "comments": [
+  {
+   "id": 1089278763,
+   "user": "kristinsmotz",
+   "created_at": "2022-04-05T20:09:56Z",
+   "body": "I raised a similar request to copy the \"automatically acknowledge alerts\" setting/functionality from the Eros setup to the Dash as well. i think it would be harder for the system to check/listen for the alerts than to automatically dismiss them once there is a connection for another reason/TBR/SMB/keep alive or otherwise. \r\n\r\n"
+  },
+  {
+   "id": 1089436077,
+   "user": "nicoleloop",
+   "created_at": "2022-04-05T22:18:43Z",
+   "body": "It can also lead to slightly embarassing situations when out in public; when others in your immediate vicinity look at you, wondering why/how your abdomen is beeping at them..."
+  },
+  {
+   "id": 1687443273,
+   "user": "robertrub",
+   "created_at": "2023-08-22T05:15:50Z",
+   "body": "This one is old but still a valid enhancement ;)"
+  },
+  {
+   "id": 2606954350,
+   "user": "pnharris02",
+   "created_at": "2025-01-22T11:11:58Z",
+   "body": "I'm not sure I like the idea of refreshing the connection automatically when opening the Dash tab.  Sometimes I like to first see how long it's been since the last connection.\nBut I agree this would be useful in the situation where the pump alarm is going off, and you need to be able to access the silence alerts button.\n\nA partial workaround would be to turn off the pod alerts, and create your own alerts in automation, based on the age of the pump. In this case, the alerts would sound from the phone, rather than the pump, which would often be preferable, although it would not suit everyone. I’m not sure if all Dash pod alerts can be disabled, but I think most can."
+  },
+  {
+   "id": 2606986313,
+   "user": "kristinsmotz",
+   "created_at": "2025-01-22T11:26:55Z",
+   "body": "There are two different issues her: \nAuto-acknowledge pod alerts (pod will expire, low reservoir etc, the usual bibeep, bibeep). These could be autoacknowledged on next manual or automatic communication with pod, and replaced with a careportal note (would make them visible to parents in AAPSClient as well). The Omnipod Eros setup had a preference option to auto-acknowledge these alerts, in which case the app would dismiss the alert to stop the reminders every few minutes, and we wouldn't have to scramble to the phone, into dash tab, wait for refresh and then silence alerts. \n\nThe more serious death scream that means the pod is no longer working at all, those would be harder to automate I think, since it would require deactivating a pod. It is probably a good idea to make this visible to parents in AAPSClient by copying the error message to a Note or Notification/Alert. But automatically deactivating a screaming pod to make it stop screaming is definitely a bad idea and will inevitably lead to middle of night pod failures being ignored until morning, by which time it will be hard to avoid DKA incident which can be dangerous."
+  }
+ ]
+}

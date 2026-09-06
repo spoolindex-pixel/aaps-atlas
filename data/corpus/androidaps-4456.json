@@ -1,0 +1,27 @@
+{
+ "id": 3773031251,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4456,
+ "title": "AAPS 3.4.0.0 crashes on start with tidepool plugin enabled and no mainstream browser",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4456",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-12-31T15:38:48Z",
+ "closed_at": "2026-01-04T18:37:42Z",
+ "comment_count": 2,
+ "body": "I just build and installed AAPS 3.4.0.0 and it instantly crashed all the time.\n\nI asked AI the logs and asked for the reason and it pointed me towards the AuthFlowOut.kt and the BrowserAllowlist. The only browser I have installed is fennec, which is not in the allowlist.\n\nI could fix it myself removing the browser checks from the code - then the system defaults browser is used and no more crashes.\n\nWhat I have changed:\n\nFile AuthFlowOut.kt (Line 51):\n```\n    val authService: AuthorizationService =\n        AuthorizationService(\n            context, AppAuthConfiguration.Builder()\n                // .setBrowserMatcher(\n                //     BrowserAllowList(\n                //         VersionedBrowserMatcher.CHROME_CUSTOM_TAB,\n                //         VersionedBrowserMatcher.FIREFOX_CUSTOM_TAB,\n                //         VersionedBrowserMatcher.SAMSUNG_CUSTOM_TAB\n                //     )\n                // )\n                .build()\n        )\n```\n\nLogCat:\n```\nFATAL EXCEPTION: main\nProcess: info.nightscout.androidaps, PID: 28905\nandroid.content.ActivityNotFoundException\n at net.openid.appauth.AuthorizationService.prepareAuthorizationRequestIntent(authorizationservice.java:555)\n at net.openid.appauth.AuthorizationService.performAuthManagementRequest(authorizationservice.java:339)\n at net.openid.appauth.AuthorizationService.performAuthorizationRequest(authorizationservice.java:228)\n at net.openid.appauth.AuthorizationService.performAuthorizationRequest(authorizationservice.java:175)\n at app.aaps.plugins.sync.tidepool.auth.AuthFlowOut.doTidePoolInitialLogin$lambda$0(AuthFlowOut.kt:152)\n at app.aaps.plugins.sync.tidepool.auth.AuthFlowOut.$r8$lambda$IRmsE71-yBtN7GoiJT_TJqIOhBo(Unknown Source:0)\n at app.aaps.plugins.sync.tidepool.auth.AuthFlowOut$$ExternalSyntheticLambda0.onFetchConfigurationCompleted(D8$$SyntheticClass:0)\n at net.openid.appauth.AuthorizationServiceConfiguration$ConfigurationRetrievalAsyncTask.onPostExecute(authorizationserviceconfiguration.java:417)\n at net.openid.appauth.AuthorizationServiceConfiguration$ConfigurationRetrievalAsyncTask.onPostExecute(authorizationserviceconfiguration.java:358)\n at android.os.AsyncTask.finish(asynctask.java:771)\n at android.os.AsyncTask.-$$Nest$mfinish(Unknown Source:0)\n at android.os.AsyncTask$InternalHandler.handleMessage(asynctask.java:788)\n at android.os.Handler.dispatchMessage(handler.java:107)\n at android.os.Looper.loopOnce(looper.java:267)\n at android.os.Looper.loop(looper.java:371)\n at android.app.ActivityThread.main(activitythread.java:8837)\n at java.lang.reflect.Method.invoke(Native Method)\n at com.android.internal.os.RuntimeInit$[MethodAndArgsCaller.run](https://methodandargscaller.run/)(runtimeinit.java:598)\n at com.android.internal.os.ZygoteInit.main(zygoteinit.java:896)\n```",
+ "comments": [
+  {
+   "id": 3707874653,
+   "user": "nehasvit",
+   "created_at": "2026-01-04T08:44:15Z",
+   "body": "I also had trouble launching the new AAPS version. I use Edge as my default browser, so Chrome was probably in deep sleep.\n\nFirst, I reinstalled version 3.3.2.0 and disabled Tidepool sync; after that, version 3.4.0.0 launched without any issues. Later, when I manually opened Chrome and enabled Tidepool sync, the login screen popped up in Chrome correctly.\n\n(Samsung S24 SM-S9210, Android 16)"
+  },
+  {
+   "id": 3708321130,
+   "user": "MilosKozak",
+   "created_at": "2026-01-04T18:37:42Z",
+   "body": "This cannot be affected by AAPS. Browser must support procession OAUTH2 requests and proper callback. AAPS is usig default browser in system.\n"
+  }
+ ]
+}

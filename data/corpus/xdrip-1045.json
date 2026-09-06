@@ -1,0 +1,181 @@
+{
+ "id": 502565740,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1045,
+ "title": "Database Import should not overwrite existing data",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1045",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "enhancement",
+  "database"
+ ],
+ "created_at": "2019-10-04T10:46:49Z",
+ "closed_at": "2025-03-29T01:32:10Z",
+ "comment_count": 28,
+ "body": "Hello\r\n\r\nI had to change my phone. On the new phone I installed xDrip+ and started a new Dexcom G6 Sensor. All running fine. Then I wanted to ADD the old Database and I observed the following issues:\r\n\r\n1) The data on the phone was replaced by the old one. So I lost all the new values. So it would be nice to have a real ADD of data.\r\n\r\n2) I started the Dexcom with the Code and it was running fine. After the import of the old data, I was forced to calibrate with blood. Although the date and timespan of the sensor was still correct, xDrip+ lost the calibration.\r\n\r\nBest regards and thanks for the great effort you all spend!",
+ "comments": [
+  {
+   "id": 538598851,
+   "user": "definitivequestion",
+   "created_at": "2019-10-05T00:25:42Z",
+   "body": "Hence the warning. I agree it would be nice if the import database code was rewritten as SQL insert statements."
+  },
+  {
+   "id": 781621840,
+   "user": "Navid200",
+   "created_at": "2021-02-18T20:42:06Z",
+   "body": "@AdrianLxM I hope you don't mind me asking you.\r\nWhy did this happen?\r\nIn this scenario, what can the user do with xDrip on the old phone to ensure that it will not contain any data for the period it was not being used any longer?  Would that avoid overwriting data on the new phone?"
+  },
+  {
+   "id": 782261262,
+   "user": "Navid200",
+   "created_at": "2021-02-19T18:34:19Z",
+   "body": "@nickb24"
+  },
+  {
+   "id": 782324864,
+   "user": "tolot27",
+   "created_at": "2021-02-19T20:29:13Z",
+   "body": "The current procedure is a complete restore of a backup database. This means, the data gets completely overwritten as it is typical for restore procedures. I suggest copying the data from the old phone to the new phone as soon as possible and prior adding treatments or calibrations at the new phone.\r\nThe menu item is incorrectly named \"Import database\". Instead, it should be named \"Restore database\" to reflect the current behavior. \r\nImplementing a real import would be nice but gets complicated if the database is large and import fails somehow. Also conflicts can occur if the new phone got backfill data.\r\n\r\nAnother solution is to use Nightscout and keep the data their."
+  },
+  {
+   "id": 782351171,
+   "user": "Navid200",
+   "created_at": "2021-02-19T21:05:00Z",
+   "body": "This is the message that comes up.\r\n![Screenshot_20210219-155739](https://user-images.githubusercontent.com/51497406/108561314-048a4f00-72cc-11eb-97a5-96a52c80d7da.png)\r\n\r\nDo we need to turn this into a bug and request there to be a more clear message explaining that the existing database will be overwritten?\r\nOr, is the existing message good enough and we can close this issue?\r\n"
+  },
+  {
+   "id": 782354913,
+   "user": "tolot27",
+   "created_at": "2021-02-19T21:12:14Z",
+   "body": "I would turn it into an FR and change the title, accordingly."
+  },
+  {
+   "id": 782372781,
+   "user": "Navid200",
+   "created_at": "2021-02-19T21:36:20Z",
+   "body": "I don't have edit privilege on the title."
+  },
+  {
+   "id": 824818853,
+   "user": "SimonPhilpott",
+   "created_at": "2021-04-22T12:58:50Z",
+   "body": "I recently wiped the phone app data and cache in order to fix battery drain on my smartwatch SW3, usually this would involve saving all settings to SD card and exporting my database prior to this so that I can restore both.\r\n\r\nHowever once the app storage was cleared, after restoring settings via the popup message I was prompted with the import database prompt which I accepted. Despite the import data success message, nothing was imported also the settings that were recently restored were wiped. I attempted to import the database again, but again the screen remained blank and no data points were restored - also my settings were once again cleared.\r\n\r\nLooking in the log files for all of the recent data points I can see a lot of errors;\r\n\r\n\"Bg data was not calculated, working on raw data\" followed by\r\n\"Error getting data from getLatestBgForXMinutes. Returning\", \"libreBlock exists but no matching bg record exists\"\r\n\r\nThis might be impacting the import as the data is not in the right format to display?\r\n\r\n**Note**: I'm not asking Xdrip to overwrite anything, since the database after wiping the app cache & data is empty. This is a pure import and bring in the saved data"
+  },
+  {
+   "id": 824855132,
+   "user": "Navid200",
+   "created_at": "2021-04-22T13:45:02Z",
+   "body": "@SimonPhilpott  When I have reinstalled xDrip, I have been asked if I wanted to restore settings.  I have never been asked if I wanted to restore the database.  Are you sure it wasn't a question about restoring settings? \r\n\r\nHow many days of data did you have in xDrip when you exported the database?\r\nWhat is the name and size of the database file?"
+  },
+  {
+   "id": 824973737,
+   "user": "SimonPhilpott",
+   "created_at": "2021-04-22T16:04:36Z",
+   "body": "@Navid200 Okay so I bit the bullet and wiped everything so I can clearly document this with screenshots, so there's no confusion. Same issue once again, with only about a days worth of data held in the exported database pre-wipe. This is a description of each screenshot taken after each step;\r\n\r\n1) Pre app wipe. You can see the data from the last day here.\r\n2) Wiping the data from the app\r\n3) Launching Xdrip+ for the first time after wiping and setting the source back to Libre > MiaoMiao 1 (seen here as Bluetooth bridge...)\r\n4) Settings backup detected\r\n5) Settings are restored, this are my Alerts\r\n6) Still no data, so...\r\n7) Import database\r\n8) The file\r\n9) Success, supposedly\r\n10) But no data, it should show right up to the point I wiped the app seen in screenshot 1\r\n11) And it's wiped my settings, so I restored them manually again\r\n12) And here is the prompt I mentioned that asked to restore the exported database it detected. I said no, it just wipes the settings again\r\n![1- Screenshot_20210422-164433_xDrip+](https://user-images.githubusercontent.com/6833057/115746986-c1606100-a38c-11eb-84dc-08ed0b402e26.jpg)\r\n![2 - Screenshot_20210422-164505_Settings](https://user-images.githubusercontent.com/6833057/115746990-c2918e00-a38c-11eb-9c1f-fb2bd99efbc3.jpg)\r\n![3 - Screenshot_20210422-164524_xDrip+](https://user-images.githubusercontent.com/6833057/115746993-c32a2480-a38c-11eb-9ae8-8c6c5d7ef41d.jpg)\r\n![4 - Screenshot_20210422-164546_xDrip+](https://user-images.githubusercontent.com/6833057/115746996-c32a2480-a38c-11eb-9855-74f595e892c3.jpg)\r\n![5 - Screenshot_20210422-164702_xDrip+](https://user-images.githubusercontent.com/6833057/115746998-c3c2bb00-a38c-11eb-8d7b-05499dba078a.jpg)\r\n![6 - Screenshot_20210422-164714_xDrip+](https://user-images.githubusercontent.com/6833057/115746999-c45b5180-a38c-11eb-80ad-96c277b28195.jpg)\r\n![7 - Screenshot_20210422-164721_xDrip+](https://user-images.githubusercontent.com/6833057/115747005-c6251500-a38c-11eb-9dc7-6b781ea4d168.jpg)\r\n![8"
+  },
+  {
+   "id": 825007017,
+   "user": "Navid200",
+   "created_at": "2021-04-22T16:44:16Z",
+   "body": "@SimonPhilpott Can you inspect the database file to see what it contains?\r\nAs a first step, it will tell us if the problem is with export or import.\r\nIt is an sqlite file.  You can use a database browser."
+  },
+  {
+   "id": 825053549,
+   "user": "SimonPhilpott",
+   "created_at": "2021-04-22T17:40:00Z",
+   "body": "@Navid200  Okay so it opens, there are lots of pockets of data is there any particular category that would help?  Is it poor behaviour to attach it here?\r\n\r\n"
+  },
+  {
+   "id": 825062192,
+   "user": "Navid200",
+   "created_at": "2021-04-22T17:53:16Z",
+   "body": "If you look at BgReadings, do you see anything?\r\nYou can also look at sqlite_sequence.  It should give you a summary of all the contents.\r\nDoes it make sense?  Does the file contain enough data corresponding to what you exported?  Or, is it empty?\r\n\r\nYou can attach it if you don't consider the contents to be private."
+  },
+  {
+   "id": 825135585,
+   "user": "SimonPhilpott",
+   "created_at": "2021-04-22T19:43:05Z",
+   "body": "BgReadings has 3015 entries, in sqlite there are nearly 12k entries under user error. Not sure if that's meaningful. I've attached my sqlite file since I don't really have a problem with 24h of data for bug testing purposes. \r\n[export20210421-165626.zip](https://github.com/NightscoutFoundation/xDrip/files/6360854/export20210421-165626.zip)\r\n\r\n"
+  },
+  {
+   "id": 825201477,
+   "user": "Navid200",
+   "created_at": "2021-04-22T21:36:37Z",
+   "body": "I just imported your database.\r\nI can see readings starting early morning of April 11, 2021 and ending noon of April 21, 2021, yesterday.\r\n\r\nDo you not see those results?"
+  },
+  {
+   "id": 825206859,
+   "user": "Navid200",
+   "created_at": "2021-04-22T21:48:41Z",
+   "body": "There are also blood glucose readings starting from September 2020.  I suppose those are from a Bluetooth blood glucose meter."
+  },
+  {
+   "id": 825411602,
+   "user": "SimonPhilpott",
+   "created_at": "2021-04-23T06:03:43Z",
+   "body": "I do not see those results no, what version of Xdrip+ are you running? That's pretty interesting what you've seen fro results going back so far, I suppose I didn't think the MiaoMiao held the saved data back that far. To be honest it would be a better place to restore from since it's held so far back and useful should I need to flush the phone app but still have enough data for reporting should I need to show my Endio anything. Is it worth me raising it as a feature? "
+  },
+  {
+   "id": 825640588,
+   "user": "Navid200",
+   "created_at": "2021-04-23T12:58:17Z",
+   "body": "I used the April 13, 2021 release.\r\nWhat do you see if you tap on history and go back 2 days?\r\n\r\nIt looks like the export has worked properly for you.  Since I have been able to import successfully.\r\nLet's find out why you are having trouble importing.  So, please answer my  question above.\r\n\r\nI don't know what you are considering to propose as a feature.\r\nIn short, if there is a feature that many can benefit from and there is no work-around for, it may be merged.  However, I know many people will benefit if xDrip included a GPS capability.  I go hiking and I have to keep switching between xDrip and my GPS app.\r\nSubmitting a request to add a GPS feature to xDrip, although many will benefit from, is still selfish because xDrip is a CGM; it is not a GPS; it is not a watch; it is not a simulator; it is not a diet guide; it is not ...  \r\n\r\nLook at the number of open issues, 2 of which currently have been opened by you.  Why do you think there are so many open issues with nobody paying attention to them for years?  \r\nThe more complicated we make xDrip, the harder it becomes to maintain."
+  },
+  {
+   "id": 825677135,
+   "user": "SimonPhilpott",
+   "created_at": "2021-04-23T13:57:28Z",
+   "body": "@Navid200 I can see calibrations, notes and any carb inputs but no data whatsoever.  \r\n\r\nI can appreciate how pointless submitting new features might seem. They are always open for consideration - you never know what the appetite might be and the discussion does at least challenge or distil an idea. We simply have more users than developers - I'm working on an alternative theme but that plays to my strengths and Java is not one of them. I do agree on simplification, the settings menu has become a mess of options and attempts to fix X for whatever unique circumstance the bug is experienced within. Github is great, but it does not make up for better development processes. Diabetes hardware is a mess of standards until that standardises this is the way things are, no?   "
+  },
+  {
+   "id": 825709910,
+   "user": "Navid200",
+   "created_at": "2021-04-23T14:47:38Z",
+   "body": "Can I post a snapshot of what I see?  It may help you.  But, it's your readings.  So, I won't if you don't want me to."
+  },
+  {
+   "id": 825941475,
+   "user": "Navid200",
+   "created_at": "2021-04-23T21:46:09Z",
+   "body": "@SimonPhilpott If you can see calibrations, notes and carb inputs, the import has worked for those at least, right?\r\n It's not like it cannot import the file at all.\r\n\r\nWhat do you see if you look at history?"
+  },
+  {
+   "id": 832792880,
+   "user": "pcastelo",
+   "created_at": "2021-05-05T15:39:20Z",
+   "body": "Hi guys i have the same issue with android 11, i test same version xdrip  with older android and work without any problem letme know if i can help or need some screenshot   "
+  },
+  {
+   "id": 832800956,
+   "user": "Navid200",
+   "created_at": "2021-05-05T15:45:22Z",
+   "body": "@pcastelo If you have attempted to import a database file into xDrip and it has confirmed that it was imported.  But, it did not, and your phone is Android 11, would you please post in this tread instead?\r\nhttps://github.com/NightscoutFoundation/xDrip/issues/1705"
+  },
+  {
+   "id": 844463303,
+   "user": "Navid200",
+   "created_at": "2021-05-19T20:51:30Z",
+   "body": "We have renamed the menu item from \"Import\" to \"Restore\" to avoid this confusion.\r\nThere is currently no capability to import a database leaving the existing database intact.\r\nWhen you get a new phone, you should transfer the database before you set up your new phone as a collector."
+  },
+  {
+   "id": 1165577399,
+   "user": "Navid200",
+   "created_at": "2022-06-24T13:29:46Z",
+   "body": "@jwoglom @tzachi-dar \r\n\r\n1- Is it possible to create a new feature to allow importing only the BG readings from a database file in without overwriting the entire database?\r\n\r\n2- Is there a way to combine two databases outside xDrip?"
+  },
+  {
+   "id": 1165677027,
+   "user": "Navid200",
+   "created_at": "2022-06-24T15:19:07Z",
+   "body": "@SimonPhilpott and everyone else,\r\n\r\n1705- xDrip has a problem with restoring database for some Android 11 phones.  This has been reported in the following issue and a work-around has also been identified:  https://github.com/NightscoutFoundation/xDrip/issues/1705\r\n\r\n1045- xDrip is currently incapable of importing a database.  It can only overwrite the existing database.  This issue (https://github.com/NightscoutFoundation/xDrip/issues/1045) is about that.\r\n\r\nThese are two different issues.  Would you please delete your posts and images in this thread that are not about 1045 and instead are about 1705?  This will allow each thread to focus on one specific matter.\r\n\r\nThanks"
+  },
+  {
+   "id": 1288130236,
+   "user": "air-ship",
+   "created_at": "2022-10-23T14:50:19Z",
+   "body": "I hope this helps with an xDrip+ database restore on a new phone...\r\n\r\nPhones: Old phone > Sony Xperia L3 / Android 8.1. New Phone > Samsung Galaxy S10e / Android 12\r\nVersion: xDrip+ nightly build 8th September 2022 / xDrip-plus-20220908-4aeee42.apk\r\n\r\nHere's how I managed to restore a cloud backup. Not quite the way I thought it would work. I suggest you read through the steps and comments to get an overview of the process.\r\n\r\n1. On my old phone I made a cloud backup in xDrip+ > There dots menu > Import / Export features > Cloud Backup. I tried it with my primary Google account and couldn't get a backup to complete. No idea why so I can't advise on troubleshooting this. I then tried another Google account and managed to successfully create a backup: xDrip-Backups/xdrip-backup-I3312-Xperia-L3.xdrip\r\n2. On the new phone I tried the standard cloud backup restore but this didn't work because xDrip+ writes an empty file with the name of the new phone (xdrip-backup-SM-G970U1-Rees's-S10e.xdrip). The xdrip-backup-I3312-Xperia-L3.xdrip is never found by xDrip+. No idea why even though the file exists. Read on.\r\n3. So I downloaded the backup file > xdrip-backup-I3312-Xperia-L3.xdrip. Next I There dots menu > Import / Export features > Cloud Backup > SELECT BACKUP LOCATION grey button. I had uploaded xdrip-backup-I3312-Xperia-L3.xdrip to my S10e's Download directory (could be whatever directory you want). Next, in SELECT BACKUP LOCATION I chose USE ALTERNATE FILE. Navigated to my S10e's Download directory and chose the file xdrip-backup-I3312-Xperia-L3.xdrip.\r\n4. Once I completed step 4 xDrip+ then recognised the backup and listed in the info about the backup above the three grey buttons in Cloud Backup. At this stage you know you have your backup selected for restore. Now tap the RESTORE FROM BACKUP grey button. Choose \"YES\" in the \"Backup Source Confirm\", \"Are you really sure?\" > YES. The restore now runs and in my case it was successful. xDrip+ restarts and (hopefully) you"
+  }
+ ]
+}

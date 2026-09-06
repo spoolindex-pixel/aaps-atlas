@@ -1,0 +1,89 @@
+{
+ "id": 1965857875,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2990,
+ "title": "3.1.0.3 + 3.2.0.1 No Pump (Dana RS) Pairing possible",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2990",
+ "state": "closed",
+ "labels": [
+  "unknown_reason"
+ ],
+ "created_at": "2023-10-27T16:41:30Z",
+ "closed_at": "2023-11-02T20:47:03Z",
+ "comment_count": 13,
+ "body": "The problem here is that in the pairing process the pump goes into communication according to the pairing codes,\r\nthe arrows appear but then the process stops. \r\n\r\nThe whole thing happens reliably 12 times in a row. It is a DANA RS V3 from 03/2023. \r\nAnother older RS in working well.\r\n\r\nLog attached.\r\n[AndroidAPS_LOG_1698424097983.log.zip](https://github.com/nightscout/AndroidAPS/files/13191320/AndroidAPS_LOG_1698424097983.log.zip)\r\n",
+ "comments": [
+  {
+   "id": 1783296852,
+   "user": "MilosKozak",
+   "created_at": "2023-10-27T17:54:20Z",
+   "body": "unpair pump in android\r\nreset pairing on Dana tab by holding BT icon\r\nthen try again"
+  },
+  {
+   "id": 1783307518,
+   "user": "MilosKozak",
+   "created_at": "2023-10-27T18:03:52Z",
+   "body": "or .... try to pair the pump to another phone first and then back"
+  },
+  {
+   "id": 1783867027,
+   "user": "sfriedriszik",
+   "created_at": "2023-10-28T16:43:39Z",
+   "body": "@MilosKozak \r\ntried both approaches. still without success.\r\nanother dana rs 4/2018 works well\r\n\r\nIs there another approach?\r\n\r\n(log attached)\r\n[AndroidAPS_LOG_1698510482597.log.zip](https://github.com/nightscout/AndroidAPS/files/13196327/AndroidAPS_LOG_1698510482597.log.zip)\r\n"
+  },
+  {
+   "id": 1784732935,
+   "user": "MilosKozak",
+   "created_at": "2023-10-30T08:47:10Z",
+   "body": "try original anydana app"
+  },
+  {
+   "id": 1784736088,
+   "user": "sfriedriszik",
+   "created_at": "2023-10-30T08:49:20Z",
+   "body": "@MilosKozak Anydana App works."
+  },
+  {
+   "id": 1784780341,
+   "user": "MilosKozak",
+   "created_at": "2023-10-30T09:17:12Z",
+   "body": "hmmm sorry,  no more ideas\r\nis any other pump with the same firmware working?"
+  },
+  {
+   "id": 1784789034,
+   "user": "MilosKozak",
+   "created_at": "2023-10-30T09:22:18Z",
+   "body": "does the dialog for entering keys appear on screen?"
+  },
+  {
+   "id": 1784813624,
+   "user": "sfriedriszik",
+   "created_at": "2023-10-30T09:37:25Z",
+   "body": "@MilosKozak \r\n\r\nYes, the dialog appears and the values can also be entered and confirmed.\r\nthen the arrow graphic appears and then the process stops."
+  },
+  {
+   "id": 1784863718,
+   "user": "MilosKozak",
+   "created_at": "2023-10-30T10:07:55Z",
+   "body": "then  i don't know"
+  },
+  {
+   "id": 1784870117,
+   "user": "sfriedriszik",
+   "created_at": "2023-10-30T10:11:57Z",
+   "body": "@MilosKozak \r\n\r\nAnyway, thank you very much for your efforts"
+  },
+  {
+   "id": 1791485904,
+   "user": "mSternEU",
+   "created_at": "2023-11-02T20:23:14Z",
+   "body": "Issue detected/solved, it was a display resolution problem.\r\n\r\nThe pairing dialogue doesn't get scrollable when showing more content than the current device resolution allows, so the user isn't able to reach the \"cancel / ok\" buttons (or can't even guess they are there).\r\nImplementing scrollable diaglogue, fix-binding exit/confirmation-buttons to the visible bottom part or allocate the Enter-Key / bottom right key of the virtual keyboard to a 'send' command could be helpful enhancements.\r\n\r\nThis is a \"small device/screen\"-issue, like Jelly/oldphone users.\r\n\r\nWorkaround was \"connecting pump via big-screen phone and import saved settings to Jelly\" \r\n\r\n(Screen was taken from a working phone though, just as a reference)\r\n![image](https://github.com/nightscout/AndroidAPS/assets/38337079/ba249ef0-6917-4630-bbaa-97678c0a7a8b)\r\n"
+  },
+  {
+   "id": 1791516028,
+   "user": "MilosKozak",
+   "created_at": "2023-11-02T20:47:03Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/bfacfd925590d458d08fd29ddbf09dcc3fd91996"
+  }
+ ]
+}

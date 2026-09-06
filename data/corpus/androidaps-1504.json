@@ -1,0 +1,51 @@
+{
+ "id": 1181583677,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1504,
+ "title": "Trend arrows are displayed incorrectly.",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1504",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-03-26T08:05:13Z",
+ "closed_at": "2022-04-01T10:08:38Z",
+ "comment_count": 6,
+ "body": "Trend arrows are displayed incorrectly.\r\nFor a long time I have observed that the divider arrows in AAPS are displayed incorrectly on high climbs. In XDrip, the are displayed correctly and forwarded to AAPS.\r\n\r\nd33ce02 Omnipod Dash/Libre2/Pixel 4a.\r\n![Screenshot_20220325-135031](https://user-images.githubusercontent.com/92778761/160230652-01c42f36-11ec-427d-a348-f45ecdcee3c1.png)\r\n![Screenshot_20220325-135047](https://user-images.githubusercontent.com/92778761/160230654-91f0bd67-dc1b-4f42-b25d-3d77c2fdb16e.png)\r\n\r\n",
+ "comments": [
+  {
+   "id": 1079771504,
+   "user": "MilosKozak",
+   "created_at": "2022-03-26T20:43:18Z",
+   "body": "you need to provide logs with time when this happen"
+  },
+  {
+   "id": 1079781498,
+   "user": "elgrupo123",
+   "created_at": "2022-03-26T21:52:07Z",
+   "body": "[AndroidAPS_LOG_1648328454277.log.zip](https://github.com/nightscout/AndroidAPS/files/8356435/AndroidAPS_LOG_1648328454277.log.zip)\r\n"
+  },
+  {
+   "id": 1080369069,
+   "user": "MilosKozak",
+   "created_at": "2022-03-28T08:48:53Z",
+   "body": "I need exact time + log from this time + screenshot \r\ntogether"
+  },
+  {
+   "id": 1080400745,
+   "user": "elgrupo123",
+   "created_at": "2022-03-28T09:19:47Z",
+   "body": "Here's another example.\r\nSunday, March 27, 2022 at 14.00\r\n\r\n![signal-2022-03-28-111321_002](https://user-images.githubusercontent.com/92778761/160367138-4ad7a8fc-6430-43bb-a286-af8e6238046d.png)\r\n![signal-2022-03-28-111321_001](https://user-images.githubusercontent.com/92778761/160367140-144c9c16-afbc-4937-b211-7b252f2be734.png)\r\n![signal-2022-03-28-111321_003](https://user-images.githubusercontent.com/92778761/160367143-3fff5052-7274-4dcd-b67b-ca9f8333d73c.png)\r\n\r\n[AndroidAPS_LOG_1648382552992.log.zip](https://github.com/nightscout/AndroidAPS/files/8361345/AndroidAPS_LOG_1648382552992.log.zip)\r\n\r\n"
+  },
+  {
+   "id": 1085710650,
+   "user": "MilosKozak",
+   "created_at": "2022-04-01T10:08:38Z",
+   "body": "`Received xDrip data: Bundle[{com.eveningoutpost.dexdrip.Extras.NoiseBlockLevel=200, com.eveningoutpost.dexdrip.Extras.BgSlope=8.652649374679686E-5, com.eveningoutpost.dexdrip.Extras.VersionInfo=2122032611 b66817e-2022.03.26, com.eveningoutpost.dexdrip.Extras.Raw=209.99999999999997, com.eveningoutpost.dexdrip.Extras.Time=1648382345344, com.eveningoutpost.dexdrip.Extras.CalibrationInfo=1648071747297, com.eveningoutpost.dexdrip.Extras.NsNoiseLevel=null, com.eveningoutpost.dexdrip.Extras.Noise=-9999.0, com.eveningoutpost.dexdrip.Extras.SensorBattery=-1, com.eveningoutpost.dexdrip.Extras.CalibrationPluginInfo=OOP , com.eveningoutpost.dexdrip.Extras.NoiseWarning=0, com.eveningoutpost.dexdrip.Extras.BgSlopeName=DoubleUp, com.eveningoutpost.dexdrip.Extras.BgEstimate=210.0, com.eveningoutpost.dexdrip.Extras.SourceDesc=Other App, com.eveningoutpost.dexdrip.Extras.SourceInfo=Libre2 Native, com.eveningoutpost.dexdrip.Extras.Collector.NanoStatus=}]`\r\n\r\n`Received NS Data: [{\"_id\":\"62405189e13c53240ae83f39\",\"mgdl\":210,\"mills\":1648382345344,\"device\":\"xDrip-NSFollower\",\"direction\":\"Flat\",\"filtered\":0,\"unfiltered\":0,\"noise\":1,\"rssi\":100,\"type\":\"sgv\",\"scaled\":210}]`\r\n\r\n* you receive from xDrip with correct direction\r\n* then you receive data from NS with direction \"Flat\", data is marked comming from xDrip-follower\r\n\r\nyou should definitely review your configuration and:\r\n* define single path to upload to NS\r\n* all other clients put to read only mode\r\n* disable download of Bg data from NS if you want to receive them from xDrip in AAPS"
+  },
+  {
+   "id": 1091285767,
+   "user": "elgrupo123",
+   "created_at": "2022-04-07T08:20:54Z",
+   "body": "thank you very much for the advice. \r\nIt worked!  Thanks!!!"
+  }
+ ]
+}

@@ -1,0 +1,97 @@
+{
+ "id": 709641332,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1453,
+ "title": "shift of calibration point in graph",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1453",
+ "state": "closed",
+ "labels": [
+  "question",
+  "ui",
+  "type-documentation"
+ ],
+ "created_at": "2020-09-27T01:00:25Z",
+ "closed_at": "2021-05-23T15:23:19Z",
+ "comment_count": 13,
+ "body": "Hello. I have a question in using Xdrip.\r\n\r\nI use Miao Miao 2 with libre. So my sugar data indicates on the Xdrip screen every 5 minutes.\r\n\r\nWhen I put the calibration data just after measuring my sugar data with my real blood, I can see that the red dot(calibration data on Xdrip graph) locates about 10minutes later. But it show the current time when I click it and see the time information. Only looks like for the gragh location.\r\n\r\nAs I know, libre shows me the sugar data for 10 or 15 minutes ago actually. So is it the caluation for the 10 or 15minutes delay time? or just a interface bug?",
+ "comments": [
+  {
+   "id": 700427110,
+   "user": "tolot27",
+   "created_at": "2020-09-29T05:00:06Z",
+   "body": "I discovered this, too."
+  },
+  {
+   "id": 700429753,
+   "user": "Nyan-Korea",
+   "created_at": "2020-09-29T05:09:37Z",
+   "body": "Sorry. I did not get it.\r\nCan you reply me the detail for my question please..?\r\n\r\nHave a good day."
+  },
+  {
+   "id": 701318489,
+   "user": "tzachi-dar",
+   "created_at": "2020-09-30T10:59:50Z",
+   "body": "The delay is intentional.\n\nOn Tue, 29 Sep 2020 at 08:09, Nyan-Korea <notifications@github.com> wrote:\n\n> Sorry. I did not get it.\n> Can you reply me the detail for my question please..?\n>\n> Have a good day.\n>\n> —\n> You are receiving this because you are subscribed to this thread.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/1453#issuecomment-700429753>,\n> or unsubscribe\n> <https://github.com/notifications/unsubscribe-auth/AB4TBZFTUQAU4CUE4JU57A3SIFT2BANCNFSM4R3HG4KQ>\n> .\n>\n"
+  },
+  {
+   "id": 723428907,
+   "user": "tolot27",
+   "created_at": "2020-11-07T10:34:54Z",
+   "body": "> The delay is intentional.\r\n\r\nPlease can you explain the rational behind it?\r\n\r\nEven if the bg value is not used for calibration, it is shifted in the graph."
+  },
+  {
+   "id": 734313191,
+   "user": "simonpickering",
+   "created_at": "2020-11-26T13:58:13Z",
+   "body": "The UI presents the data from the Libre or other glucose monitoring device at the time it was sensed. There is a lag between blood glucose level and that measured in the interstitial fluid (by the Libre, etc.). \r\n\r\nThat means that the calibration data you measure now from your blood sugar represents what you should see from the Libre in 10-15min time (assuming the rate of change of blood glucose doesn't vary too much).\r\n\r\nThe other way to present the data (i.e. the one which isn't used here), would be to \"back date\" the Libre values by 10-15min and use a projected value to tell you what's happening right now (and to also put blood glucose readings at their measurement time), there might be some merit to that, but I imagine that's a non-inconsequential code change."
+  },
+  {
+   "id": 734474745,
+   "user": "tolot27",
+   "created_at": "2020-11-26T20:55:15Z",
+   "body": "Okay, but if the BG value is not used for calibration, it is still shifted. That does not make sense, IMHO."
+  },
+  {
+   "id": 734503679,
+   "user": "simonpickering",
+   "created_at": "2020-11-26T23:09:32Z",
+   "body": "Consistency. \r\n\r\nEverything that is displayed is in terms of the delayed interstitial fluid response (i.e. Libre readings), so all blood glucose readings need to be shifted - even if a point isn't used for calibration you can still see whether it lines up (or not!) with the Libre readings.\r\n\r\nI also had this problem when I first started using the system, thought I'd entered something wrongly, etc. At the very least I guess a tutorial screen might be in order to tell people what to expect. \r\n\r\nWhat might be better, though I don't have time to volunteer to do it right now, is to allow the main screen to be shown either in terms of the delayed interstitial/Libre values as it currently is, or in terms of current/estimated BG values (which would push all the Libre readings back in time and place finger prick tests at the time at which they occur). There may already be an issue open for this latter idea, if not it will need a new one."
+  },
+  {
+   "id": 734812154,
+   "user": "tolot27",
+   "created_at": "2020-11-27T12:27:53Z",
+   "body": "> so all blood glucose readings need to be shifted - even if a point isn't used for calibration you can still see whether it lines up (or not!) with the Libre readings.\r\n\r\nI do not fully agree with this behavior. If someone just use a glucometer without a CGM/FGM, the values should be displayed at the point of measurement. It is also not dependent on the type of CGM/FGM; it depends more on the activity/meal intake whether it should be shifted or not. \r\n\r\nNevertheless, this issue was about shifting of calibration points not BG measurements in general. Hence, we should distinguish this and maybe create a separate issue for BG points."
+  },
+  {
+   "id": 734820775,
+   "user": "simonpickering",
+   "created_at": "2020-11-27T12:51:24Z",
+   "body": "Let's take it to another issue - I think there's something to be said for all values being the current blood glucose (or estimates thereof), which would allow use by those only doing finger prick tests as well as multiple interstitial devices in different locations (with different lags), and it would perhaps make it more understandable for users too. \r\n\r\nI'd be interested to understand your comment about dependence on meal/activity  - I agree there are different blood glucose responses (GI/GL & IS related) which I think are separate (and part of the prediction algorithm) vs changes in lag for the interstitial sensors based on temperature, muscle blood flow, etc. (which I think are directly relevant here)"
+  },
+  {
+   "id": 757976338,
+   "user": "Navid200",
+   "created_at": "2021-01-11T14:11:53Z",
+   "body": "I use Dexcom G6.  I experience a similar behavior and I have heard from others in the facebook group, using Dexcom G6 experiencing the same thing, which is unexpected.  I know this issue is about Libre and not Dexcom.  But, please hear me out.\r\n\r\nI have attached an image.\r\nI calibrated at 8:28.  The two readings I have circled (orange oval) existed when I entered the calibration.  But, they were in line with the previous reading.  They both moved up, by xDrip, because of the calibration.\r\n\r\nWhat makes no sense is that this is a G6 with an 8Q serial number.  Meaning it is running in native mode.  This transmitter does not transmit any raw data.  Therefore, xDrip does not do the calibration as it has no idea what the raw values are.  It is the transmitter that does the calibration.  I can see in the xDrip logs that my calibration has been queued to be sent to the transmitter at 8:28.\r\n\r\nSo, at 8:28, the transmitter still has no idea that we are calibrating.  Yet, xDrip has made a change to the graph as soon as I entered the calibration.  This suggests that xDrip manipulates the readings even in Native mode.\r\n\r\nI have disabled \"Rewrite History\" under Settings -> xDrip+ Display Settings -> Graph Settings.  It was disabled when I did this calibration.  Yet, xDrip seems to manipulate history.  And it is xDrip doing it, not the transmitter!\r\n\r\nxDrip's behavior makes no sense to me here.\r\n![2](https://user-images.githubusercontent.com/51497406/104192598-0a4b6580-53ed-11eb-810c-b7a8832f0a1b.png)\r\n\r\n"
+  },
+  {
+   "id": 830994116,
+   "user": "Navid200",
+   "created_at": "2021-05-03T02:45:59Z",
+   "body": "This must have been the commit that introduced this behavior.\r\n\r\n![Screenshot 2021-05-02 224307](https://user-images.githubusercontent.com/51497406/116837363-250e3980-ab98-11eb-9733-f25914353963.png)\r\n"
+  },
+  {
+   "id": 830997191,
+   "user": "Navid200",
+   "created_at": "2021-05-03T03:05:27Z",
+   "body": "I would like to close this issue.  The following is my thinking.  please let me know if anyone disagrees.\r\n\r\nAny blood glucose measurement, whether used for calibration or not, leads any interstitial fluid  glucose measurement.\r\nHow long the delay is depends on many factors and so is not a constant.\r\n\r\nThe blood glucose measurements entered, are entered and used for calibration with no delay other than the imposed delay (< 5 minutes for Dexcom and <1 minute for Libre?) due to the sampling nature of the system.\r\n\r\nHowever, on the graph only, any blood glucose measurement is intentionally delayed to account for the relative delay.\r\nSo, if you perform a measurement when your glucose is rising rapidly, without this delay, you would see a significant error between the CGM and your entered blood glucose.  If the trend is flat, this should not make any difference as far as the visual error is concerned.\r\n\r\nThis seems to be an intended behavior added by the (current) main xDrip developer.  \r\nIt is perfectly understandable if anyone disagrees with his thinking.\r\n\r\nIf you agree with my thinking and don't mind this issue to be closed, you can either let us know by posting or just forget about it.\r\nOn the other hand, if you disagree, and would like this behavior to be changed, please respond and let me know so that I know to keep this open and see if I can ask him to respond.\r\n"
+  },
+  {
+   "id": 846580199,
+   "user": "Navid200",
+   "created_at": "2021-05-23T15:23:19Z",
+   "body": "We can open this if needed.  But, please let me know why and let me know what you think about my explanation above.\r\nThanks"
+  }
+ ]
+}

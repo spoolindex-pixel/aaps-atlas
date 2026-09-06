@@ -1,0 +1,45 @@
+{
+ "id": 1032320627,
+ "repo": "nightscout/AndroidAPS",
+ "number": 769,
+ "title": "[AAPS 3.0-beta1] AAPS Showing 60% Profile, Pump Running 100%. Cancel Temp Profile Fails",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/769",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-10-21T10:24:38Z",
+ "closed_at": "2021-10-21T14:01:15Z",
+ "comment_count": 5,
+ "body": "Reporting bugs\r\n--------------\r\nVersion: 3.0-beta1 (Build 24a277bf1)\r\nTime of Issue: 21/10/2021 11:07 (local)\r\nPump: DanaRS  v3, Model 05, Protocol 11, Code F0\r\nCGM (Dexcom G6, Patched App) Not sending data due to sensor error.\r\n\r\nActions Taken:\r\n- AAPS Showed running 60% Temp Basal, attempted to cancel Temp basal which failed with \"Temp basal delivery\" error\r\nRefresh.\r\n- Checked Pump directly, found to be running a 100% basal\r\n- Forced a refresh from Pump screen, Basal still showing as 60%\r\n- Tried to cancel temp basal again, same error.\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/7388139/AndroidAPS.log)\r\n\r\n\r\n![PumpScreen](https://user-images.githubusercontent.com/38948885/138259228-ad4f7d00-89ac-479a-aded-4a8565cb62e6.png)\r\n![Screenshot_20211021_110751_info nightscout androidaps](https://user-images.githubusercontent.com/38948885/138259241-420a5815-c03b-454b-b8c8-7f5b2f9b7983.jpg)\r\n\r\n",
+ "comments": [
+  {
+   "id": 948474286,
+   "user": "AndyS117",
+   "created_at": "2021-10-21T10:29:02Z",
+   "body": "Update: When CGM resumed sending data (bad data - false low) the basal program between AAPS and Pump synced and agreed again. Was able to cancel an incorrect 0% Temp Basal caused by bad data without error.\r\n\r\nWould the difference between what pump was doing and AAPS running at be an issue since this would result in a difference in IOB?"
+  },
+  {
+   "id": 948521739,
+   "user": "Philoul",
+   "created_at": "2021-10-21T11:33:08Z",
+   "body": "When you have this issue, can you check in Action tab if a TBR is running, and also in Treatments activity (now in 3 dots menu), the TBR recorded in database.\r\n\r\nI sometimes had the same kind of issue in the past (not the same TBR value in overview compared to pump) but it was only a problem of refresh in Overview (in Action tab and in TBR tab in Treatments, I always got correct value consistent with the pump)."
+  },
+  {
+   "id": 948546532,
+   "user": "MilosKozak",
+   "created_at": "2021-10-21T12:06:03Z",
+   "body": "what do you see on treatments tab (screenshot)?"
+  },
+  {
+   "id": 948604934,
+   "user": "AndyS117",
+   "created_at": "2021-10-21T13:14:13Z",
+   "body": "TBR in Actions tab matched what was displayed in Overview.\r\nBasal rates on Treatments show the 60% set at 10:45-11:15.\r\nThe subsequent 10:50-11:05 didn't take it seems and the switch back to 0 at 11:25 is approximately when data started coming back from CGM. No record of my attempt to cancel TBR.\r\nBased on what I'm seeing there I would say I first cancelled at 11:05:55.\r\n\r\n![Screenshot_20211021_133653_info nightscout androidaps](https://user-images.githubusercontent.com/38948885/138284836-966197ef-4035-458c-9f4b-31ea4e6166f6.jpg)\r\n![Screenshot_20211021_141114_info nightscout androidaps](https://user-images.githubusercontent.com/38948885/138284860-ee422189-6a0d-4616-8920-a2f2525dc74e.jpg)\r\nScreenshots attached."
+  },
+  {
+   "id": 948648102,
+   "user": "MilosKozak",
+   "created_at": "2021-10-21T14:01:15Z",
+   "body": "fixed by https://github.com/nightscout/AndroidAPS/commit/d520c45aba655ef5c9212e66c9d3f9e7b7eb10e9\r\nThanks a lot. good catch!!"
+  }
+ ]
+}

@@ -1,0 +1,75 @@
+{
+ "id": 748798564,
+ "repo": "nightscout/AndroidAPS",
+ "number": 80,
+ "title": "Insight Pump data not shown on Nightscout",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/80",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2020-11-23T13:22:35Z",
+ "closed_at": "2020-11-27T09:44:15Z",
+ "comment_count": 16,
+ "body": "I am not sure whether this is an AAPS or NS problem, so I start with AAPS. It makes the connection to the Accu-Chek Insight pump, collects data, the NS Client is working and uploading data. Except the pump-related data. Tried to check the logs, but could not find anything meaningful (ie. error) there. \r\n\r\nI am using `niepi/cgm-remote-monitor:14.0.7` in docker container, with the following pump-relevant ENV settings:\r\n\r\n```\r\nENABLE=careportal boluscalc basal food rawbg iob maker bridge bwp bage cage iage sage pushover treatmentnotify loop pump profile openaps override dbsize\r\nDEVICESTATUS_ADVANCED=true\r\nPUMP_FIELDS=battery reservoir clock status device\r\nPUMP_RETRO_FIELDS=battery reservoir clock status device\r\nSHOW_FORECAST=openaps\r\nSHOW_PLUGINS=openaps pump iob sage cage careportal\r\nPUMP_ENABLE_ALERTS=true\r\nPUMP_URGENT_BATT_V=1.3\r\nPUMP_URGENT_RES=10\r\nPUMP_URGENT_CLOCK=30\r\n```\r\n\r\nAll the other data are being properly uploaded, except the pump-related ones:\r\n![image](https://user-images.githubusercontent.com/10846169/99966832-30626b00-2d97-11eb-9f3d-823a4f2d4541.png)\r\n\r\nDo any of you have any similar experience? Is the link between Insight <-> NS broken?\r\n",
+ "comments": [
+  {
+   "id": 733246238,
+   "user": "MilosKozak",
+   "created_at": "2020-11-24T21:33:35Z",
+   "body": "check records in mongo database\r\nhttps://yourns/api/v1/devicestatus.json"
+  },
+  {
+   "id": 734228790,
+   "user": "alfureu",
+   "created_at": "2020-11-26T10:56:33Z",
+   "body": "I am getting this: \r\n```\r\n{\"status\":401,\"message\":\"Unauthorized\",\"description\":\"Invalid/Missing\"}\r\n```\r\n\r\nPlease note that I am logged in in the tab on the basic page https://myns.com, however, when I add the part `/api/v1/devicestatus.json` it does not work."
+  },
+  {
+   "id": 734328721,
+   "user": "MilosKozak",
+   "created_at": "2020-11-26T14:29:04Z",
+   "body": "hmmm enable default read access or look directly into mongo database"
+  },
+  {
+   "id": 734337732,
+   "user": "alfureu",
+   "created_at": "2020-11-26T14:46:51Z",
+   "body": "I am already admin, using the standard API_SECRET in the browser.... did you have in mind something else? My AndroidAPS is logged in as admin, so should have all the access too"
+  },
+  {
+   "id": 734364316,
+   "user": "alfureu",
+   "created_at": "2020-11-26T15:35:52Z",
+   "body": "OK, I think I figured it out. So I set up my AndroidAPS' NS Client properly, the connection was working (please note I have also a VPN enabled). All the data have been uploaded, except the pump data. \r\n\r\nNow, things changed, when I rebooted the phone, the data from the pump appeared in NS. Hope this info is helpful. It would be nice if AndroidAPS could survive a VPN change, and the connection on the NS Client needs to be investigated thoroughly so no reboot is needed next time."
+  },
+  {
+   "id": 734436180,
+   "user": "alfureu",
+   "created_at": "2020-11-26T18:28:36Z",
+   "body": "Just a follow-up, I have an exception for Android APS to avoid the VPN connection and route outside of it, however, AndroidAPS somehow does not respect this setup. Using this app for VPN: https://play.google.com/store/apps/details?id=de.blinkt.openvpn&hl=en"
+  },
+  {
+   "id": 734718238,
+   "user": "MilosKozak",
+   "created_at": "2020-11-27T08:45:55Z",
+   "body": "what's the problem?"
+  },
+  {
+   "id": 734742777,
+   "user": "alfureu",
+   "created_at": "2020-11-27T09:39:56Z",
+   "body": "The problem is the following: I am using NS+mongo on my self-hosted rig, instead of Heroku+github and the other solutions. I have an OpenVPN access to my server, and some services I connect to through the Internet with my own domain name (example.com).\r\n\r\nI initially thought that I can set up NS+AAPS+CGM (Bubble's [DiaBox](https://www.bubblan.org/)) where all the data will be loaded into NS with the OpenVPN connection from my phone (not using xDrip+, 2 apps are enough for my battery life). The problem is that NS requires a valid SSL certificate to the server, which I am not able to obtain in my LAN (DNS challenge [does not work yet with GoDaddy and Caddy v2](https://github.com/caddy-dns)). \r\n\r\nThis forced me to open NS to the Internet. However, for some reason, DiaBox does not upload data to NS through `https`, so I have to VPN back home and use a LAN address to do it successfully (emailed the developers, waiting for their reply). NS cannot do this (see above), so I have to route it through the Internet in order to do this through `https`.  [Blinkt's OpenVPN app](https://play.google.com/store/apps/details?id=de.blinkt.openvpn&hl=en) can do the separation, so AndroidAPS connects through normal Wifi, all other connections go through OpenVPN. The connections are successful (I see all the pings in the logs), all the data are uploaded to NS, except one, and that is the pump status. **AndroidAPS uploads all the profiles, treatments, etc., to NS except the pump data. I guess this is some bug.** As soon as I disconnect from VPN and restart the phone, the pump data is uploaded correctly, but in this case Diabox cannot upload the BG results to NS. \r\n\r\nThe best option would be to allow for cases of selfhosting, i.e. for those who are non-stop connected to their self-hosted devices through VPN, to disable the requirement for `https` in AndroidAPS, as the connection **_is_ secured**, just not how it expects it. "
+  },
+  {
+   "id": 734744674,
+   "user": "MilosKozak",
+   "created_at": "2020-11-27T09:44:15Z",
+   "body": "i believe i cannot help. latest library used in AAPS requires https."
+  },
+  {
+   "id": 734746143,
+   "user": "alfureu",
+   "created_at": "2020-11-27T09:47:28Z",
+   "body": "So you do not find it weird that all data is uploaded except pump data (and OpenAPS)? :D I guess there is an issue in implementation, where pump+OpenAPS does not respect the VPN routing on Android..."
+  }
+ ]
+}

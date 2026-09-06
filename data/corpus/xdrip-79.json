@@ -1,0 +1,126 @@
+{
+ "id": 211962981,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 79,
+ "title": "Change \"4 minutes ago\" status line to read in seconds",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/79",
+ "state": "closed",
+ "labels": [
+  "enhancement",
+  "ui"
+ ],
+ "created_at": "2017-03-05T16:06:26Z",
+ "closed_at": "2023-08-14T20:59:20Z",
+ "comment_count": 18,
+ "body": "Currently there is a status line dedicated to \"x minutes ago\" for the length of time since last reading.  Would be convenient and time saving for the user if when the time is \"4 minutes ago\" to read \" in x seconds\".  For example, lets say there are 20 seconds left until the next reading, instead of showing \"4 minutes ago\" show \"in 20 seconds\"  ... \"in 19 seconds\" ... \"in 18 seconds\".  That way the user knows exactly when to come back and check and not simply be in the ballpark of \"4 minutes ago\".",
+ "comments": [
+  {
+   "id": 287815356,
+   "user": "gitanO0",
+   "created_at": "2017-03-20T16:28:02Z",
+   "body": "Better, and perhaps easier to implement would be to simply add the seconds piece of the time onto that line when it reaches four minutes.  So, when \"4 minutes ago\" is reached, append realtime seconds to that so it would read \"4 min 10 secs ago\"... \"4 min 11 secs ago\" ... etc... etc..."
+  },
+  {
+   "id": 287983936,
+   "user": "dronesalot",
+   "created_at": "2017-03-21T05:52:46Z",
+   "body": "How about one that shows how many seconds until the next update? \"Next reading expected 1:24...\" "
+  },
+  {
+   "id": 288133662,
+   "user": "tzachi-dar",
+   "created_at": "2017-03-21T16:22:13Z",
+   "body": "Please note that if one is using BT xDrip than we can have a good\nestimation of when the next reading will be.\nUsers of mongodb or parakeet, can not know exactly when the reading will\ncome.\n\nOn Tue, Mar 21, 2017 at 7:52 AM, Michael Richards <notifications@github.com>\nwrote:\n\n> How about one that shows how many seconds until the next update? \"Next\n> reading expected 1:24...\"\n>\n> —\n> You are receiving this because you are subscribed to this thread.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/79#issuecomment-287983936>,\n> or mute the thread\n> <https://github.com/notifications/unsubscribe-auth/AHkw5L6QNQ-jy0xSmSXLX8b5KYpDX6_Fks5rn2WvgaJpZM4MTdL3>\n> .\n>\n"
+  },
+  {
+   "id": 288135627,
+   "user": "dronesalot",
+   "created_at": "2017-03-21T16:28:05Z",
+   "body": "I don't really know what parakeet or mongodb are, but maybe the chosen data source module (however that's been designed in the code I haven't reviewed yet) can return an estimation of the time so the display can show it if and only if it's available? I just setup the android devel studio so it would likely be an easy first dive into the code."
+  },
+  {
+   "id": 308583073,
+   "user": "roycesimpson",
+   "created_at": "2017-06-14T23:07:37Z",
+   "body": "Any progress on this front?"
+  },
+  {
+   "id": 308602206,
+   "user": "dronesalot",
+   "created_at": "2017-06-15T01:23:40Z",
+   "body": "I was never able to get a build environment working so I wasn't able to make and compile any changes."
+  },
+  {
+   "id": 348546715,
+   "user": "gitanO0",
+   "created_at": "2017-12-01T16:50:16Z",
+   "body": "I'd like to bump this one again.  There are so many times where I'm in the car or in some environment where I'm tempted to stare at my phone waiting for the \"4 minutes ago\" to refresh with a new reading.  If I knew how many seconds were left until the next reading, I could dismiss the phone and come back to see... or conversely I could keep staring at the device if there was only like 5 seconds left. \r\n\r\nI like fastworks suggestion above:  'How about one that shows how many seconds until the next update? \"Next reading expected 1:24...'"
+  },
+  {
+   "id": 368810949,
+   "user": "s-diez",
+   "created_at": "2018-02-27T09:44:51Z",
+   "body": "Hi,\r\n\r\nI just had a look at the code. As mentioned there is no fixed knowledge about the next BG-Value. What I think is closest to the requested feature is the time to \"Next Wake up\" from the \"System Status\" page under \"BT Device\". This is the time the app will try again to recieve new BG-Values from the connected BT-Device. If one wake up is missed (last BG-value from 6 minutes ago for example) the wake up would continue to show an accurate estimate about the next update (in 4minutes in the given example).\r\n\r\nWould this be an acceptable solution? Configurable to show under settings and visible only if next wake up < 60seconds. On which places should this be visible? Only the main \"Home\" page?\r\n\r\n I just recently started using this App. I am a software developer but not usally android or java so if I should make a pull-request a bit of review would be appreciated. I chose this issue as a starting point as it seems quite simple and contained."
+  },
+  {
+   "id": 369076815,
+   "user": "tzachi-dar",
+   "created_at": "2018-02-28T00:28:24Z",
+   "body": "If going in that direction, there are a few things to note:\r\n1) As you said it does not match all devices. For example if one is using wifi, then it is not clear when exactly the data will reach. This can also happen because of clocks that are not fully synced.\r\n\r\n2) For some BT devices, then one can expect to have the next reading in 5 minutes, but then again, some devices are always connected, while other might disconnect and reconnect again letter, and in that case data will arrive later. (even after 6 minutes from previous reading).\r\nFor example xBridge will try to wake 40 seconds before the message is expected.\r\n"
+  },
+  {
+   "id": 369315449,
+   "user": "gitanO0",
+   "created_at": "2018-02-28T17:27:07Z",
+   "body": "s-diez & tzachi-dar, I'd be good with anything that gives me a time indicator that I should be expecting a reading soon... yes, on the main app screen would be fine.  \r\n\r\nI don't see any dynamic time stuff on that first \"classic status page\" area for \"bluetooth device\" that serves as a reference, but on the second \"g5 status\" page, there is some activity that takes place on the \"bluetooth link\" and \"last connected\" sections. \r\n\r\nAlternatively, possibly more simply to code, could you add a setting that turns on, all the time, a seconds readout?  So, on the main screen where it says \"n minutes ago\"... just have an optional setting that would change it to always have seconds on, for example, \"2m 31s ago\".... \"2m 32s ago\".  Doing that might circumvent the need to introspect all this logic and devices and differing times, etc...\r\n\r\nA use case for this feature would be as follows.  I'm standing around with friends at a dinner and need to look at my device/xdrip+ frequently to gauge my BG situation.  I look like a jerk and am rude doing this.  When it gets to \"4 minutes ago\" I find that I'm constantly pulling the phone out, checking that text, putting phone back, pulling it out... checking that text.... repeat until a new reading is there.  This becomes especially neurotic when it's on the \"4 minutes ago\" text because I don't know if it's 4 minutes 5 second ago or 4 minutes 59 seconds ago.  So I keep looking repeatedly.  If I could see right away that it's 4m 11s ago, I can gauge much more precisely when to have the next look at the phone.\r\n\r\nThanks so much for taking the time on this!\r\n\r\n\r\n"
+  },
+  {
+   "id": 369639817,
+   "user": "tzachi-dar",
+   "created_at": "2018-03-01T16:04:11Z",
+   "body": "Having this as an option is more reasonable.\r\nThere is one thing that you can do, without a change and that is to look at the bg data table. It shows the last reading with seconds. (you need to go to settings->less common settings->show databases).\r\ns-diez can you code a change to show also the seconds from last reading? You will need to change the timer to work every second and not every minute once this code is on (and of course, close the timer when the screen is off).\r\n"
+  },
+  {
+   "id": 369668329,
+   "user": "gitanO0",
+   "created_at": "2018-03-01T17:33:46Z",
+   "body": "tzachi-dar, is your suggestion for the \"datatables\" option meant for me, the user? I do have that enabled but not sure how to use that as a quick, easy reference for when the next reading should take place.  Perhaps that was meant for s-diez... "
+  },
+  {
+   "id": 369736280,
+   "user": "tzachi-dar",
+   "created_at": "2018-03-01T21:26:24Z",
+   "body": "you can simply look in the table and see when exactly was the last reading.\nIf it was on 10:03:27 seconds then next reading should be at: 10:08:27.\n\nBy the way, if you really want to know your BG all the time, maybe a watch\nwould be a better solution.\n\n\nOn Thu, 1 Mar 2018 at 19:34, gitanO0 <notifications@github.com> wrote:\n\n> tzachi-dar, is your suggestion for the \"datatables\" option meant for me,\n> the user? I do have that enabled but not sure how to use that as a quick,\n> easy reference for when the next reading should take place. Perhaps that\n> was meant for s-diez...\n>\n> —\n> You are receiving this because you commented.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/79#issuecomment-369668329>,\n> or mute the thread\n> <https://github.com/notifications/unsubscribe-auth/AHkw5LK5ObA2XfdZI_qeVNQyNsYsgAvvks5taDD7gaJpZM4MTdL3>\n> .\n>\n"
+  },
+  {
+   "id": 369740830,
+   "user": "gitanO0",
+   "created_at": "2018-03-01T21:42:57Z",
+   "body": "All good points.  I'm taking it that adding seconds to the main screen \"4 minutes ago\" text is not worth the work... and that buying another device is the solution. Or, conversely clicking through until I see the latest reading in the bg datatable and then doing mental math to extrapolate the next time...  \r\n\r\nThing is, I'm not \"always\" wanting to know my BG... it's only occasionally when it says \"4 minutes\" ago... then find myself checking my phone more than I would if I actually knew the seconds... This is a convenience thing.  You guys have stated above that this isn't an easy fix.  I can live with that."
+  },
+  {
+   "id": 370908677,
+   "user": "s-diez",
+   "created_at": "2018-03-06T19:59:31Z",
+   "body": "Hi sorry for the long delay.\r\nSo the conclusion is I'll take my effort to another less complicated issue :D\r\nIf an optional feature to always display seconds for the Time since last BG-reading would still be worth it, I can do that. All other solutions seem to be very specific for any given device and therefore require to much knowledge to be userfriendly and usefull for multiple devices. "
+  },
+  {
+   "id": 370914049,
+   "user": "gitanO0",
+   "created_at": "2018-03-06T20:18:27Z",
+   "body": "\"If an optional feature to always display seconds for the Time since last BG-reading would still be worth it, I can do that.\"  Absolutely...\r\n\r\nTo add to this discussion, something I'm noticing, and I don't know if it's always been doing this or what but my readings seem to be in-sync with by phone clock... so for example, when I look at my BG data table, I'm seeing that my readings are almost exactly on the 5 minute interval... 13:05, 13:10, 13:15, etc... I enabled the seconds display on my phone clock in the status bar that pretty much, currently anyway, is solving the entire issue.  So, when xdrip+ says \"4 minutes\" ago, I just look up at my clock in the status bar and it might say 13:14:49... i know I then have about 10 seconds left till the expected next reading.  Then about 10 seconds later, bam, my reading comes in.\r\n\r\nIf this holds, I can mark this issue closed.  I'm not sure what to expect on my next sensor placement though.  I have no idea how xdrip+ and the sensor and my phone clock are in-sync like this but if it lasts, sensor after sensor, I'd be 100% happy with that."
+  },
+  {
+   "id": 386835725,
+   "user": "old-square-eyes",
+   "created_at": "2018-05-05T21:18:56Z",
+   "body": "I just created an issue the same as this (but have now closed it)... below are my thoughts and reasoning. Coming late to the party by the looks. But I'd find this very useful (limitations above considered).\r\n\r\n> When testing, one gazes often at the 5 minute life cycle of a BG capture. Waiting for that 4 minute to tick over to 5 can take an eternity. Especially if up in the middle of the night waiting for multiple readings, struggling with issues or waiting for ideal calibration conditions.\r\n> \r\n> Propose: Status page & home page (in engineering mode or display settings), counts down in seconds for collector wake up (or up from last reading). Option also to add an audible beep in the process/cycle for testing various things so the phone doesn't have to be watched as closely when observing function."
+  },
+  {
+   "id": 1678052370,
+   "user": "Navid200",
+   "created_at": "2023-08-14T20:59:20Z",
+   "body": "I'm going to close this for the following reason.\r\n\r\nIt's already mentioned that if you are using xDrip as a follower from Nightscout (Mongo), there is no guarantee exactly when the next reading is going to be.\r\n\r\nIf you are using a G6 and xDrip is the collector, the system status page in fact shows scanning only for the last 5-10 seconds before the reading.  So, you will now when to expect the next reading.\r\n\r\nRegardless of all of that, all you need is to look at a clock with a seconds hand as soon as you see last connected 4 minutes.  Then, looking at that clock, you can tell exactly when to expect the next reading.\r\n\r\nWe can always reopen if this is deemed to be a necessary requirement."
+  }
+ ]
+}

@@ -1,0 +1,105 @@
+{
+ "id": 3869546936,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4519,
+ "title": "Medtronic 722 Version 2.2A Orange Pro fails to connect.",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4519",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2026-01-29T08:52:00Z",
+ "closed_at": "2026-02-13T15:26:36Z",
+ "comment_count": 15,
+ "body": "After updating to the new version 3.4.0.0 on a XIAOMI 14 phone, the Orange Pro Link app is unable to connect to the Medtronic 722 Version 2.2A insulin pump. After the first successful connection, the basal rate can be read, and the pump's time and settings can be retrieved. However, during subsequent connection attempts, the pump status shows a connection failure. It is impossible to connect to the pump to deliver bolus insulin or adjust the basal rate. Version 3.3.2.1 functions properly without these issues.",
+ "comments": [
+  {
+   "id": 3817221460,
+   "user": "andyrozman",
+   "created_at": "2026-01-29T12:02:50Z",
+   "body": "Did you run both AAPS versions on the same phone, or did you switch phones together with AAPS versions... Medtronic code hasn't change in quite a while now. Did you update Orange Pro Link too? \n\nAre there any error logs with this problem? Try to recreate this and send the logs, maybe we can see something there that is relevant to this... In log settings enable all pump options (I think there are 3)..."
+  },
+  {
+   "id": 3817311832,
+   "user": "haiweiaaa",
+   "created_at": "2026-01-29T12:22:11Z",
+   "body": "Thank you for your response. I tested two versions of AAPS on two separate phones. Both can connect on version 3.3.2.1. For version 3.4.0.0, it shows a successful connection on the first attempt, but the pump status then displays \"unreachable\" and cannot connect again afterward.\n\n\n         "
+  },
+  {
+   "id": 3818797570,
+   "user": "andyrozman",
+   "created_at": "2026-01-29T16:28:50Z",
+   "body": "Ok. We need to find out what is going on... Can you please supply the logs? "
+  },
+  {
+   "id": 3818982698,
+   "user": "haiweiaaa",
+   "created_at": "2026-01-29T16:59:00Z",
+   "body": "Hello, the log file from the phone has been sent to your email."
+  },
+  {
+   "id": 3820004804,
+   "user": "andyrozman",
+   "created_at": "2026-01-29T20:01:29Z",
+   "body": "You need to reproduce the error and give me timestamp when error happens... Its hard to look through 30 log files, while error might not be even shown... "
+  },
+  {
+   "id": 3820830571,
+   "user": "haiweiaaa",
+   "created_at": "2026-01-29T22:54:11Z",
+   "body": "Hello, I have reproduced the error and sent a new email with the log."
+  },
+  {
+   "id": 3826326335,
+   "user": "andyrozman",
+   "created_at": "2026-01-30T23:10:45Z",
+   "body": "I got logs from @haiweiaaa (will attach here)... From what I can see, soon after start we are starting to get back invalid pump responses. As I remember there was some change, when someone removed 500 ms delays from RileyLink communication... That could be the problem, why responses that come back are unrecognized. I currently don't have time to look into this. I would recommend that RL change gets reverted or at least configurable. But maybe I am wrong and this has some other reason...\n\n[AndroidAPS.log](https://github.com/user-attachments/files/24975441/AndroidAPS.log)\n\n"
+  },
+  {
+   "id": 3827390326,
+   "user": "haiweiaaa",
+   "created_at": "2026-01-31T03:52:09Z",
+   "body": "I have reconfigured the RileyLink file and changed the setting to 100 ms，The connection and communication are now working properly，Thank you!"
+  },
+  {
+   "id": 3839816490,
+   "user": "mifi100",
+   "created_at": "2026-02-03T08:24:47Z",
+   "body": "Hi,\nI've checked the logs and I can see there is a problem with the decoding of the message from RileyLink:\n```\n06:21:35.538 [pool-10-thread-1] D/PUMPCOMM: [MedtronicConverter.decodeModel():42]: PumpModel: [raw=�YV, resolved=Unknown_Device]\n```\nYesterday I helped with the similar problem that after upgrade from 3.3.2.0 to 3.4.0.0 with RileyLink+Medtronic722 it stopped working - after initial successful connection to pump the bolus attempt fails. And it has exactly the same invalid raw pump model in the logs:\n```\n17:04:44.223 [DefaultDispatcher-worker-4] D/PUMPCOMM: [MedtronicConverter.decodeModel():42]: PumpModel: [raw=�YV, resolved=Unknown_Device]\n```\nI proposed to go to the \"Medtronic Encoding\" setting and just switch the option from one to another. And that completely fixed the issue.\n\nI also checked timestamps of the messages in the provided logs - the answer delay from pump is more than 500 ms - so I just can't imagine how in this case absense of the delay could result of the issue. Maybe when you compile the version of AAPS with delays you reinstall it, not upgrade and that was what really fixed the issue.\n@haiweiaaa it would be great if you could reproduce the issue again and then try to switch the \"Medtronic Encoding\" from one option to another."
+  },
+  {
+   "id": 3840685498,
+   "user": "haiweiaaa",
+   "created_at": "2026-02-03T11:13:32Z",
+   "body": "Okay, I'm trying to reinstall the version that fails to connect again. I'll go to the \"Medtronic Coding\" settings and switch the options directly to see if this resolves the issue. I chose an upgrade installation instead of a clean reinstall when I installed it."
+  },
+  {
+   "id": 3840928138,
+   "user": "haiweiaaa",
+   "created_at": "2026-02-03T12:08:13Z",
+   "body": "Hi, I've tried installing the previously unconnectable version, went to the Medtronic Encoding setting, and toggled the option between different modes once. It can now connect and work normally. Thank you!"
+  },
+  {
+   "id": 3840953212,
+   "user": "mifi100",
+   "created_at": "2026-02-03T12:14:11Z",
+   "body": "@haiweiaaa \nThanks for your feedback. It means delays are not the root cause of the issue but something with the Medtronic Encoding setting which shows different behavior after upgrade.\n\n@andyrozman , it looks like it's a migration issue of Medtronic settings during version upgrade. I can see major Medtronic settings change in 3.4.0.0, here is the commit:\nhttps://github.com/nightscout/AndroidAPS/pull/3733/changes/ebb499447b57a3aa50a82fbb48e35bf24fa1cdeb\nFYI @MilosKozak "
+  },
+  {
+   "id": 3842253304,
+   "user": "mifi100",
+   "created_at": "2026-02-03T16:13:37Z",
+   "body": "Regarding the mentioned commit:\nChange in file RileyLinkEncodingType.kt look strange which might be related to the issue:\n```\n -   FourByteSixByteRileyLink(0x02, R.string.key_medtronic_pump_encoding_4b6b_rileylink),  // 4b6b encoding on RL (for Medtronic)\n -   FourByteSixByteLocal(0x00, R.string.key_medtronic_pump_encoding_4b6b_local),\n +   FourByteSixByteLocal(0x00, \"medtronic_pump_encoding_4b6b_local\", R.string.medtronic_pump_encoding_4b6b_rileylink),\n +   FourByteSixByteRileyLink(0x02, \"medtronic_pump_encoding_4b6b_rileylink\", R.string.medtronic_pump_encoding_4b6b_local),  // 4b6b encoding on RL (for Medtronic)\n```\nAfter the change display name FourByteSixByteLocal switched from .string.medtronic_pump_encoding_4b6b_local to R.string.medtronic_pump_encoding_4b6b_rileylink and vise versa for FourByteSixByteRileyLink. Make sense to check whether it's done intentionally or it's a bug."
+  },
+  {
+   "id": 3846005664,
+   "user": "mifi100",
+   "created_at": "2026-02-04T08:17:47Z",
+   "body": "Created pull request #4526 with fix proposal.\n\nOpen question here is that after upgrade from 3.4.0.0 to version with fix this encoding setting will be \"switched\" again so manual switch probably be required after such upgrade. So it makes sense to mention in the release notes that if after upgrade to 3.4.0.0 or from 3.4.0.0 pump work is unstable - try Medtronic Encoding setting switch because of the known bug."
+  },
+  {
+   "id": 3847085632,
+   "user": "haiweiaaa",
+   "created_at": "2026-02-04T12:11:45Z",
+   "body": "Yes, it is mentioned in the release notes that if the pump becomes unstable after upgrading to or from version 3.4.0.0, you can try toggling the Medtronic encoding setting. This will be extremely convenient for those encountering the issue."
+  }
+ ]
+}

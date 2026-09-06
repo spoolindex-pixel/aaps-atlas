@@ -1,0 +1,33 @@
+{
+ "id": 2205631797,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3279,
+ "title": "3.3 dev-b User entries duplicated for Carbs",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3279",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-03-25T12:25:18Z",
+ "closed_at": "2024-04-06T08:07:17Z",
+ "comment_count": 3,
+ "body": "As you can see in screenshot below, user entries are duplicated, first entry recorded within dialog (with correct icon) second entry recorded within PersistentLayerImpl (In think after analysis) with wrong icon (always Treatments icon) as source:\r\nNote that duplicated information is only for Carbs and is not for boluses...\r\n\r\n![image](https://github.com/nightscout/AndroidAPS/assets/52934600/0a97ed38-48ae-4e98-8bf8-127df63d43ca)\r\n\r\nI don't know the reason of this second entries within PersistentLayerImpl (but I think both could be removed in PersistentLayerImpl class because eather for a new entry or an update of an existing one, it should already be recorded with the correct icon where the action comes from (wear watch command, Carbs, Treatments, Calculator or QuickWizard dialogs, NS or SMS...)\r\n![image](https://github.com/nightscout/AndroidAPS/assets/52934600/fcf8e1f1-c816-424d-a672-77181c7e832c)\r\n",
+ "comments": [
+  {
+   "id": 2017895332,
+   "user": "Philoul",
+   "created_at": "2024-03-25T12:29:35Z",
+   "body": "Note, if you agree to my proposal to remove log command within insertOrUpdateCarbs, I can make a PR ;-)"
+  },
+  {
+   "id": 2020864279,
+   "user": "MilosKozak",
+   "created_at": "2024-03-26T16:15:06Z",
+   "body": "I'd keep logging in PersistentLayerImpl only to make the logging independent to UI and other code"
+  },
+  {
+   "id": 2021156969,
+   "user": "Philoul",
+   "created_at": "2024-03-26T18:12:23Z",
+   "body": "Ok, so I propose to use a dedicated icon / source for persistant layer (I suggest database icon), different than treatments icon used for Treatments Dialog in overview..."
+  }
+ ]
+}

@@ -1,0 +1,69 @@
+{
+ "id": 860432058,
+ "repo": "nightscout/AndroidAPS",
+ "number": 483,
+ "title": "Issues when doing profile switch on DANA R",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/483",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-04-17T15:12:08Z",
+ "closed_at": "2021-06-14T13:53:19Z",
+ "comment_count": 9,
+ "body": "I perform profile switch and it often leads to problems:\r\n\r\n* Today I received more than five notifications that profile was updated. During that time connection status bar shows lot of communication with pump. I'm adding logs. You can check from 10:31:52.\r\n\r\n* I have also older logs with same action but it was unable to properly connect and update basal in the pump.  Log from 14:00:10.\r\n\r\n[Profile_switching_problems.zip](https://github.com/nightscout/AndroidAPS/files/6329463/Profile_switching_problems.zip)\r\n\r\nMy configuration: AAPS 2.8.2, Nightscout: 14.2.1, Samsung Galaxy S10 Lite, DANA R Model: 03, Protocol: 03, Code: B3. I didn't noticed other communication problems between pump and phone.\r\n\r\nI see in logs also this part bellow - does it mean that multiple threads are trying to connect to pump?\r\n```\r\n14:00:28.567 [Thread-25153] D/PUMPQUEUE: [QueueThread.run():114]: connecting 17\r\n14:00:28.569 [Thread-25154] D/PUMPQUEUE: [QueueThread.run():114]: connecting 17\r\n14:00:28.570 [Thread-25157] D/PUMPQUEUE: [QueueThread.run():114]: connecting 17\r\n14:00:28.570 [Thread-25156] D/PUMPQUEUE: [QueueThread.run():114]: connecting 17\r\n14:00:28.571 [Thread-25155] D/PUMPQUEUE: [QueueThread.run():114]: connecting 17\r\n\r\n14:00:29.570 [Thread-25153] D/PUMPQUEUE: [QueueThread.run():114]: connecting 18\r\n14:00:29.571 [Thread-25157] D/PUMPQUEUE: [QueueThread.run():114]: connecting 18\r\n14:00:29.572 [Thread-25154] D/PUMPQUEUE: [QueueThread.run():114]: connecting 18\r\n14:00:29.572 [Thread-25156] D/PUMPQUEUE: [QueueThread.run():114]: connecting 18\r\n14:00:29.573 [Thread-25155] D/PUMPQUEUE: [QueueThread.run():114]: connecting 18\r\n\r\n14:00:30.573 [Thread-25156] D/PUMPQUEUE: [QueueThread.run():114]: connecting 19\r\n14:00:30.573 [Thread-25157] D/PUMPQUEUE: [QueueThread.run():114]: connecting 19\r\n14:00:30.573 [Thread-25153] D/PUMPQUEUE: [QueueThread.run():114]: connecting 19\r\n14:00:30.573 [Thread-25155] D/PUMPQUEUE: [QueueThread.run():114]: connecting 19\r\n14:00:30.574 [Thread-25154] D/PUMPQUEUE: [QueueThread.run():114]: connecting 19\r\n\r\n14:00:31.575 [Thread-25156] D/PUMPQUEUE: [QueueThread.run():114]: connecting 20\r\n14:00:31.575 [Thread-25157] D/PUMPQUEUE: [QueueThread.run():114]: connecting 20\r\n14:00:31.575 [Thread-25155] D/PUMPQUEUE: [QueueThread.run():114]: connecting 20\r\n14:00:31.575 [Thread-25153] D/PUMPQUEUE: [QueueThread.run():114]: connecting 20\r\n14:00:31.575 [Thread-25154] D/PUMPQUEUE: [QueueThread.run():114]: connecting 20\r\n```\r\n\r\nOr maybe this? Each thread with own counter value (also in UI the working status bar jumps forward and back... connecting 30, 38, 31, 39, ...)\r\n```\r\n14:02:53.263 [Thread-25333] D/PUMPQUEUE: [QueueThread.run():114]: connecting 30\r\n14:02:53.265 [Thread-25334] D/PUMPQUEUE: [QueueThread.run():114]: connecting 30\r\n14:02:53.395 [Thread-25157] D/PUMPQUEUE: [QueueThread.run():114]: connecting 38\r\n14:02:53.395 [Thread-25154] D/PUMPQUEUE: [QueueThread.run():114]: connecting 38\r\n14:02:53.395 [Thread-25155] D/PUMPQUEUE: [QueueThread.run():114]: connecting 38\r\n14:02:54.265 [Thread-25333] D/PUMPQUEUE: [QueueThread.run():114]: connecting 31\r\n14:02:54.266 [Thread-25334] D/PUMPQUEUE: [QueueThread.run():114]: connecting 31\r\n14:02:54.396 [Thread-25157] D/PUMPQUEUE: [QueueThread.run():114]: connecting 39\r\n14:02:54.397 [Thread-25154] D/PUMPQUEUE: [QueueThread.run():114]: connecting 39\r\n14:02:54.398 [Thread-25155] D/PUMPQUEUE: [QueueThread.run():114]: connecting 39\r\n14:02:55.266 [Thread-25333] D/PUMPQUEUE: [QueueThread.run():114]: connecting 32\r\n14:02:55.267 [Thread-25334] D/PUMPQUEUE: [QueueThread.run():114]: connecting 32\r\n14:02:55.397 [Thread-25157] D/PUMPQUEUE: [QueueThread.run():114]: connecting 40\r\n14:02:55.399 [Thread-25154] D/PUMPQUEUE: [QueueThread.run():114]: connecting 40\r\n14:02:55.400 [Thread-25155] D/PUMPQUEUE: [QueueThread.run():114]: connecting 40\r\n14:02:56.269 [Thread-25333] D/PUMPQUEUE: [QueueThread.run():114]: connecting 33\r\n14:02:56.270 [Thread-25334] D/PUMPQUEUE: [QueueThread.run():114]: connecting 33\r\n14:02:56.399 [Thread-25157] D/PUMPQUEUE: [QueueThread.run():114]: connecting 41\r\n14:02:56.400 [Thread-25154] D/PUMPQUEUE: [QueueThread.run():114]: connecting 41\r\n14:02:56.400 [Thread-25155] D/PUMPQUEUE: [QueueThread.run():114]: connecting 41\r\n```\r\n",
+ "comments": [
+  {
+   "id": 822013493,
+   "user": "MilosKozak",
+   "created_at": "2021-04-18T15:51:16Z",
+   "body": "this is wrong. there should be only 1 thread running and connecting to the pump\r\nit must be some underlaing problem causing this ie some crash before ....\r\ndefinitely it's not safe to use AAPS as it is now\r\ni'd recommend reinstall AAPS form scratch and import config and it not helps , factory reset the phone"
+  },
+  {
+   "id": 825121661,
+   "user": "vmichalec",
+   "created_at": "2021-04-22T19:21:11Z",
+   "body": "I reinstalled the app but doesn't helped at all.  Here are again some logs:\r\n\r\n```\r\n18:36:31.570 [RxCachedThreadScheduler-83] D/PROFILE: [CommandQueue$1.accept():114]: onProfileSwitch\r\n18:36:31.571 [RxCachedThreadScheduler-1518] D/PROFILE: [CommandQueue$1.accept():114]: onProfileSwitch\r\n18:36:31.570 [RxCachedThreadScheduler-82] D/DATATREATMENTS: [TreatmentsPlugin.initializeProfileSwitchData():232]: initializeProfileSwitchData\r\n18:36:31.572 [RxCachedThreadScheduler-1519] D/PROFILE: [CommandQueue$1.accept():114]: onProfileSwitch\r\n18:36:31.571 [RxCachedThreadScheduler-1518] D/PUMPQUEUE: [CommandQueue.setProfile():374]: Correct profile already set\r\n18:36:31.572 [RxCachedThreadScheduler-1520] D/PROFILE: [CommandQueue$1.accept():114]: onProfileSwitch\r\n18:36:31.573 [RxCachedThreadScheduler-83] D/PUMPQUEUE: [CommandQueue.setProfile():374]: Correct profile already set\r\n18:36:31.571 [RxCachedThreadScheduler-765] D/PROFILE: [CommandQueue$1.accept():114]: onProfileSwitch\r\n18:36:31.574 [RxCachedThreadScheduler-2609] D/PROFILE: [CommandQueue$1.accept():114]: onProfileSwitch\r\n18:36:31.594 [RxCachedThreadScheduler-1520] D/PUMP: [AbstractDanaRPlugin.isThisProfileSet():186]: Diff found. Hour: 11 Pump: 0.9 Profile: 0.8\r\n18:36:31.594 [RxCachedThreadScheduler-2609] D/PUMP: [AbstractDanaRPlugin.isThisProfileSet():186]: Diff found. Hour: 11 Pump: 0.9 Profile: 0.8\r\n18:36:31.595 [RxCachedThreadScheduler-765] D/PUMP: [AbstractDanaRPlugin.isThisProfileSet():186]: Diff found. Hour: 11 Pump: 0.9 Profile: 0.8\r\n18:36:31.595 [RxCachedThreadScheduler-1519] D/PUMP: [AbstractDanaRPlugin.isThisProfileSet():186]: Diff found. Hour: 11 Pump: 0.9 Profile: 0.8\r\n18:36:31.595 [RxCachedThreadScheduler-1520] D/PUMPQUEUE: [CommandQueue.isThisProfileSet():561]: Current profile: {MY_PROFILE_DATA}\r\n18:36:31.596 [RxCachedThreadScheduler-765] D/PUMPQUEUE: [CommandQueue.isThisProfileSet():561]: Current profile: {MY_PROFILE_DATA}\r\n18:36:31.596 [RxCachedThreadScheduler-1520] D/PUMPQUEUE: [CommandQueue.isThisProfileSet("
+  },
+  {
+   "id": 825744371,
+   "user": "MilosKozak",
+   "created_at": "2021-04-23T15:40:29Z",
+   "body": "would be nice to more of logs prior this"
+  },
+  {
+   "id": 825789784,
+   "user": "vmichalec",
+   "created_at": "2021-04-23T16:58:15Z",
+   "body": "Ok, I did next round:\r\n\r\n18:25 Profile switch -> 2x profile updated notification\r\n18:28 Profile switch -> 2x profile updated notification\r\n18:30 Profile switch -> 4x timeout error dialog, no success -> then at 18:35 3x profile updated notification\r\n18:38 Profile switch -> 3x timeout error dialog, no success -> 18:42 1x timeout error dialog, no success\r\n18:44 DanaR tab, clicking bluetooth icon to sync with the pump -> 1x profile updated notification (followed by some additional communication with pump, but finished)\r\n18:47 Done\r\n\r\n[20210423_ProfileSwitches.zip](https://github.com/nightscout/AndroidAPS/files/6366928/20210423_ProfileSwitches.zip)"
+  },
+  {
+   "id": 825867466,
+   "user": "vmichalec",
+   "created_at": "2021-04-23T19:17:58Z",
+   "body": "I have applied my change:\r\n\r\n```\r\n    @Volatile\r\n    private var thread: QueueThread? = null\r\n```\r\n\r\n20:09 APK with updated CommandQueue installed\r\n20:10 Profile switch -> 2x profile updated notification\r\n20:13 Profile switch -> 2x profile updated notification\r\n20:13 SMB\r\n20:15 Profile switch -> 2x profile updated notification\r\n20:16 Profile switch -> nothing happened until 20:18 -> SMB -> 2x profile updated notification\r\n20:20 Profile switch -> 2x profile updated notification\r\n\r\nEach time profile was updated successfully immediately (with 2x notification) or after some delay before pump communication. There were also some SMBs or other loop commands in between so there were more items in the queue sometimes (as expected). So for me it looks like it works. \r\n\r\n[20210423_ProfileSwitches_patched_with_volatile.zip](https://github.com/nightscout/AndroidAPS/files/6367579/20210423_ProfileSwitches_patched_with_volatile.zip)\r\n\r\n"
+  },
+  {
+   "id": 835849961,
+   "user": "vmichalec",
+   "created_at": "2021-05-09T17:35:36Z",
+   "body": "I have an update here. That `@Volalile` update is not fix of my problem. After few days of use it goes wrong again.\r\n\r\n`CommandQueue` is designed as `@Singleton`. That's ok and reasonable. But there is also `independentConnect` method called exclusively from `DanaRExecutionService` (I'm on Dana R). This method creates new instances of `CommandQueue` for some purposes. After some invocations there are 2 or more instances of `CommandQueue`. Are those new instances only temporal? I don't know. There is `CommandQueue::init` method where is registration of each `CommandQueue` instance to `.toObservable(EventProfileNeedsUpdate::class.java)` (therefore long living instances?). This is also the case for those instances created by `independentConnect`. \r\n\r\nHere I think it is not intended to handle profile switches multiple times by multiple concurrent `CommandQueue`s.\r\n\r\nI did some modification of logged messages with printing hashCode of instances:\r\n\r\n```\r\n// Application restarted by me followed by first CommandQueue instance with hashCode 150406160\r\n13:04:58.265 [RxCachedThreadScheduler-85] D/PUMPBTCOMM: [SerialIOThread.disconnect():200]: Disconnected: Application exit\r\n13:04:59.615 [main] D/PUMPQUEUE: [CommandQueue.<init>():109]: New CommandQueue instance created: 150406160, thread: Thread[main,5,main]\r\n\r\n// Here is independentConnect which creates another CommandQueue instance with hashCode 267532805\r\n15:16:25.856 [Thread-1100] D/PUMPQUEUE: [CommandQueue.independentConnect():215]: Starting new queue on Thread[Thread-1100,5,main]\r\n15:16:25.857 [Thread-1100] D/PUMPQUEUE: [CommandQueue.<init>():109]: New CommandQueue instance created: 267532805, thread: Thread[Thread-1100,5,main]\r\n15:16:25.858 [Thread-1100] D/PUMPQUEUE: [CommandQueue.independentConnect():217]: New queue on Thread[Thread-1100,5,main] started: 267532805\r\n15:16:25.859 [Thread-1100] D/PUMPQUEUE: [CommandQueue.add():164]: Adding: CommandReadStatus - READSTATUS bolusingInterrupted \r\n\r\n// Some profile switch later"
+  },
+  {
+   "id": 838528451,
+   "user": "MilosKozak",
+   "created_at": "2021-05-11T14:01:33Z",
+   "body": "it can be the issue. try call \r\n`tempCommandQueue.disposable.clear()` at the end of `independentConnect`\r\n`independentConnect` is used when connection is broken during communication with R pump. singleton instance can hold BT connection in undefined state and simply call `readStatus()` don't work"
+  },
+  {
+   "id": 860703009,
+   "user": "MilosKozak",
+   "created_at": "2021-06-14T13:53:19Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/fcf7faa3e05daf9c408821de1677ca1a6b6d7ab1"
+  },
+  {
+   "id": 861700465,
+   "user": "vmichalec",
+   "created_at": "2021-06-15T17:36:33Z",
+   "body": "Ok, from my point of view, this last fix solved the issues. Profile switching works as expected in few seconds without issues. Thanks"
+  }
+ ]
+}

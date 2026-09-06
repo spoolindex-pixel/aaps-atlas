@@ -1,0 +1,45 @@
+{
+ "id": 1051036355,
+ "repo": "nightscout/AndroidAPS",
+ "number": 904,
+ "title": "[2.8.2.10-dev] Wrong Basal IOB in CALCULATOR Button (if Extended bolus is running ?)",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/904",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-11-11T14:27:41Z",
+ "closed_at": "2021-11-11T21:42:19Z",
+ "comment_count": 5,
+ "body": "For my lunch I first opened twice Calculator (and cancel dialog) and I was surprised to see very different calculation for proposed bolus, so I took a series of screenshots (max 2 minutes between the fist screenshot and the last one) from the upper left to the lower right.\r\n\r\nTest done this way:\r\n=> Open Calculator, take the screenshot, cancel Calculator about 10 times, and one screenshot of detailled IOB to get real value\r\n\r\nNote: An extended bolus was running during these screenshots (from 14:08 to 14:12). I suppose it could be the reason of the bug because I made the same verification one hour later without extended bolus and everything was OK, but I'm not sure...\r\n\r\nsee below results: all basal IOB are different, and not consistent with IOB screenshot and of course results of wizard calculator are very different...\r\n![image](https://user-images.githubusercontent.com/52934600/141313093-49c782c2-647e-4df3-b552-49a05981aeb9.png)\r\n\r\nI look into log file but I found nothing interesting inside it (all dialogs where cancelled so I don't see detailled calculation of basal IOB)\r\n[AndroidAPS._2021-11-11_00-00-03_.17.zip](https://github.com/nightscout/AndroidAPS/files/7521049/AndroidAPS._2021-11-11_00-00-03_.17.zip)\r\n\r\n",
+ "comments": [
+  {
+   "id": 966427052,
+   "user": "MilosKozak",
+   "created_at": "2021-11-11T16:08:46Z",
+   "body": "i have the results absolutely consistent"
+  },
+  {
+   "id": 966460705,
+   "user": "MilosKozak",
+   "created_at": "2021-11-11T16:54:01Z",
+   "body": "if you can replicate the issue add more logging to `IobCobCalculator::calculateIobToTimeFromTempBasalsIncludingConvertedExtended`\r\nie # of records first, later records to find the difference"
+  },
+  {
+   "id": 966465510,
+   "user": "Philoul",
+   "created_at": "2021-11-11T17:00:43Z",
+   "body": "Later in the afternoon (without extended tbr) it was perfect, and then again during another extended bolus running, variation of basal IOB  and some inconsistancies... (not sure it's link to extended bolus but it seems to be the case).\r\nwhen I run several times (quickly) Calculator and Cancel, when it's perfect I always get same basal IOB (or only updated with -0.01 or -0.02 U). When the problem occurs, on each new Dialog, basal IOB is different (-0.2U, -0.4U, +0.1U...) and change in both direction (increase or decrease).\r\nI will try to add logs in BolusWizard and in iobCobCalculator to understand why..."
+  },
+  {
+   "id": 966569120,
+   "user": "Philoul",
+   "created_at": "2021-11-11T19:32:29Z",
+   "body": "I included some logs (see screenshot below, and I confirm there is an issue in IOB calculation for the contribution of a running Extended TBR (see global curves below):\r\nHere the results of 3min30s of Basal IOB calculation (first point at 18h45min41s and last point at 18h49min24s)\r\nAn extended bolus was running from 18h42 to 18h48\r\nA 0 TBR started after the Extended Bolus\r\nIn blue contribution of Basal to IOB, in Red contribution of all Extended Bolus and in green result (Total Basal IOB)...\r\n![image](https://user-images.githubusercontent.com/52934600/141353208-2a5b352b-8caf-4b04-aa55-33fff27fc208.png)\r\n\r\nBelow you see the contribution of running extended TBR in blue (values are wrong during the run and starts to be Ok after the end)\r\nI included the contribution of a previous Extended Bolus in red to compare\r\n![image](https://user-images.githubusercontent.com/52934600/141355063-fa0f47f9-efc2-4285-85d8-f76d1894ba74.png)\r\n\r\nNot very \"academic\" but see below the log added\r\n![image](https://user-images.githubusercontent.com/52934600/141355978-c82e7406-a4d2-4183-a8c3-6be54e5a0fbe.png)\r\n\r\n\r\nand extract of log of calculated IOB for the Extended TBR that started at 18h42\r\n```\r\n18:47:23.301 [main] D/CORE: [IobCobCalculatorPlugin.calculateIobToTimeFromTempBasalsIncludingConvertedExtended():637]: XXXX Ext11/11/2021 18:42:46 >>> 0.8446998888311451\r\n18:47:23.505 [main] D/CORE: [IobCobCalculatorPlugin.calculateIobToTimeFromTempBasalsIncludingConvertedExtended():637]: XXXX Ext11/11/2021 18:42:46 >>> 0.8441400119682051\r\n18:47:26.919 [main] D/CORE: [IobCobCalculatorPlugin.calculateIobToTimeFromTempBasalsIncludingConvertedExtended():637]: XXXX Ext11/11/2021 18:42:46 >>> 0.8337204659186268\r\n18:47:57.543 [main] D/CORE: [IobCobCalculatorPlugin.calculateIobToTimeFromTempBasalsIncludingConvertedExtended():637]: XXXX Ext11/11/2021 18:42:46 >>> 0.7509720444581759\r\n18:47:57.714 [main] D/CORE: [IobCobCalculatorPlugin.calculateIobToTimeFromTempBasalsIncludingConvertedExtended():637]: XXXX Ext1"
+  },
+  {
+   "id": 966646554,
+   "user": "MilosKozak",
+   "created_at": "2021-11-11T21:42:19Z",
+   "body": "great work @Philoul !!\r\nit was not one bug but two :(\r\nfixed by https://github.com/nightscout/AndroidAPS/commit/8bac46830641a36934813d16b98d5413723baff3\r\n"
+  }
+ ]
+}

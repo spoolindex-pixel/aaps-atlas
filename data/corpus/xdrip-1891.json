@@ -1,0 +1,255 @@
+{
+ "id": 1077807346,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1891,
+ "title": "Number wall on lock screen causing other apps to restart",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1891",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-12-12T13:29:32Z",
+ "closed_at": "2023-03-31T17:28:53Z",
+ "comment_count": 72,
+ "body": "External Android apps appear to restart at the precise Xdrip+ polling interval. (Chrome web content refreshes, clearing unsubmitted input fields; social media feeds refresh to the top of the scroll; YouTube videos stop and reset to the beginning; etc.)\r\n\r\nObserved after I migrated to a new phone. Current specs:\r\n\r\nGoogle Pixel 6 Pro\r\nAndroid 12 (5 Nov 2021 update) build number SD1A.210817.037.A1\r\nXdrip+ nightly build version efb7508-2021.12.02\r\nCollectors for Dexcom G6 on which behavior was observed: 640G/EverSense, Dexcom Share\r\n\r\nThe full narrative of the behavior observed was reported first in [this discussion thread](https://github.com/Navid200/xDrip/discussions/150).",
+ "comments": [
+  {
+   "id": 992615659,
+   "user": "Navid200",
+   "created_at": "2021-12-13T15:53:09Z",
+   "body": "Suggestion from @jamorham: \r\n\r\nIf apps are being interrupted generally when xDrip is doing something then I would expect it is memory pressure. If the user has a large number of historical readings they could enable the data retention settings to automatically prune the database and see if that helps. "
+  },
+  {
+   "id": 992705361,
+   "user": "CountScotula",
+   "created_at": "2021-12-13T17:28:44Z",
+   "body": "Thanks for passing on that suggestion @Navid200 , but I don't think limiting the history will help in this instance. This is a new phone (Pixel 6 Pro) and so it's a relatively new install of Xdrip+. The history only goes back to November 9, 2021. And I first noticed this behavior ... oh, about a week after that date."
+  },
+  {
+   "id": 992710151,
+   "user": "Navid200",
+   "created_at": "2021-12-13T17:34:24Z",
+   "body": "@CountScotula So, when you installed xDrip on this phone, you did not restore a database from your previous installations on your previous phones?"
+  },
+  {
+   "id": 992713927,
+   "user": "CountScotula",
+   "created_at": "2021-12-13T17:39:09Z",
+   "body": "@Navid200 I did not. I use Xdrip+ mainly for display on my watch and for its predictive features that seem more useful to me than my OmniPod bolus calculator. So, I only backed up and restored my settings from the old installation, not the db."
+  },
+  {
+   "id": 992769426,
+   "user": "Navid200",
+   "created_at": "2021-12-13T18:51:35Z",
+   "body": "What apps have you installed on the phone other than xDrip?\r\n\r\nI mean no matter how powerful your phone is, if you install enough apps on it, you can bring it to its knees."
+  },
+  {
+   "id": 992772462,
+   "user": "CountScotula",
+   "created_at": "2021-12-13T18:55:54Z",
+   "body": "Oh, very many. But fewer than on my Pixel 4 that preceded it with 6GB RAM. The Pixel 6 Pro has 12GB RAM. I really really don't think this is a resources problem. Remember too, I'm *only* seeing this happen when Xdrip+ polls. If I was blowing it out, I'd see this with many more intensive operations."
+  },
+  {
+   "id": 992780524,
+   "user": "Navid200",
+   "created_at": "2021-12-13T19:06:04Z",
+   "body": "There are other xDrip users who are using that same phone.\r\n\r\nSometimes, it's very easy to identify the cause of a problem.\r\nBut, that's not always the case.  Then, the only thing left to do is to suspect everything.\r\n\r\nConsidering there are other users who are using that phone with xDrip, I suspect you have an app that is the cause of the problem.\r\nMy suggestion is meant to help us identify that app."
+  },
+  {
+   "id": 992807619,
+   "user": "CountScotula",
+   "created_at": "2021-12-13T19:39:03Z",
+   "body": "Oh, I understand that. I'm just doubting the idea that the *number* of apps aren't bringing my phone \"to its knees.\"\r\n\r\nPresumably if it were a particular app, it would be one that the permission to run in the background, yes? As I understand Android, apps without this permission are held in stasis when not active. Would it be useful to know which apps on my phone have that permission?"
+  },
+  {
+   "id": 993417456,
+   "user": "drudeboy",
+   "created_at": "2021-12-14T10:52:03Z",
+   "body": "I came across this through Google. Pixel 5 with the same issue since the Android 12 update.\r\nEvery time xdrip polls Facebook or Web browser refreshes."
+  },
+  {
+   "id": 993593541,
+   "user": "tolot27",
+   "created_at": "2021-12-14T14:24:46Z",
+   "body": "I cannot image xDrip is the root cause of this behavior because xDrip does nothing special. Maybe, this is caused by the Bluetooth stack. Can anyone connect it to a computer and use logcat to monitor what happens?"
+  },
+  {
+   "id": 1019536377,
+   "user": "teamoth",
+   "created_at": "2022-01-23T18:03:05Z",
+   "body": "I'm just commenting to say that I'm also experiencing this issue on a Pixel 4a running Android 12 and xDrip+. I have barely any other apps on the phone. This definitely isn't a lack of resources issue. I have xDrip+ working with Freestyle Libre, miaomiao and Miband4 watch. It's got so bad that I am now carrying 2 phones, an old Pixel 1 for xDrip etc and my 4a for everything else. Someone on the xDrip Facebook page pointed me this way. It's nice to see that I'm not the only one with this issue! Tim"
+  },
+  {
+   "id": 1019537923,
+   "user": "Navid200",
+   "created_at": "2022-01-23T18:10:47Z",
+   "body": "| Who | Phone | Android | xDrip |  Collector |  \r\n|-------|--------|----------|-------|------------|    \r\n| @CountScotula | Pixel 6 pro | 12 | 2021.12.02 | 640G/EverSense, Dexcom Share |  \r\n| @drudeboy |Pixel 5 | 12 | | |  \r\n| @teamoth | Pixel 4a | 12 | 2022.01.15 | MiaoMiao |   \r\n| @michaeld427 | Pixel 6 | 12 | 2021.12.08 | Dex Share |  "
+  },
+  {
+   "id": 1019541343,
+   "user": "teamoth",
+   "created_at": "2022-01-23T18:31:13Z",
+   "body": "Thanks for doing that table. I've been trying various recent versions and they all have this issue. The latest I tried is: 2022-01-15\r\nAs there is some interest in this issue I'll switch back to using the 4a with xDrip+ again and endure the annoyance. Maybe I can help with some testing or something."
+  },
+  {
+   "id": 1046289024,
+   "user": "michaeld427",
+   "created_at": "2022-02-20T17:53:12Z",
+   "body": "Wow I've been experiencing this issue ever since getting my Pixel 6.  I always figured it was a bug in the new Android 12 system.  But I would post on reddit and could never really find anyone else having the issue.\r\n\r\nIf it is Xdrip causing this, it would explain why a lot of people aren't.\r\n\r\nI think we can rule out Bluetooth as the issue because my Bluetooth is never enabled.  I use Xdrip with the Dexcom Share setting.\r\n\r\nI'm using 2021-12-08.\r\n\r\nI'll start testing some settings now that this may be the culprit.\r\n\r\nI've tried toggling the following and the issue occurs no matter whether checked or not. \r\n- Aggressive Service Restarts\r\n- Run Collector in foreground\r\n- Samsung Workarounds"
+  },
+  {
+   "id": 1046318409,
+   "user": "teamoth",
+   "created_at": "2022-02-20T20:51:02Z",
+   "body": "Hi michaeld427. As I understand it from googling a while ago, this issue occurs with Dexcom as well as xDrip+. By that I mean that people solely using Dexcom (not in combination with xDrip+) are experiencing this, so in your case it may be Dexcom that is causing the issue. I was fairly certain this was a Bluetooth issue, but as I have no experience with Dexcom, I'm not aware of what communication protocol that uses."
+  },
+  {
+   "id": 1148793161,
+   "user": "Navid200",
+   "created_at": "2022-06-07T15:00:45Z",
+   "body": "@CountScotula Would it make sense to change the title to something like the following?  \r\nAnd regardless, thanks for figuring out what the cause was.\r\n  \r\n\"Number Wall on Lock Screen\" causing other apps to restart"
+  },
+  {
+   "id": 1148799623,
+   "user": "CountScotula",
+   "created_at": "2022-06-07T15:05:33Z",
+   "body": "Oh, thanks for the suggestion, @Navid200. Yes, it certainly would, so I've made that edit."
+  },
+  {
+   "id": 1148803473,
+   "user": "Navid200",
+   "created_at": "2022-06-07T15:08:46Z",
+   "body": "We may be able to find out why this happens and solve it.  So, I would like to keep this open please.  Please let me know if I am overlooking something in that respect."
+  },
+  {
+   "id": 1179808023,
+   "user": "mkitchingh",
+   "created_at": "2022-07-10T22:03:20Z",
+   "body": "Just wanted to add, I experience this too. My setup is accessing data from Dexcom share. I decided to to spend some time today focusing on what was causing it. For me, it force closes clash of clans and clash royal. It also causes the camera to quit recording if you have are actively recording. I narrowed it down to only occurring when xDrip+ refreshes. This is a new Pixel 6 pro with plenty of free resources. It happened on my previous Pixel 4XL as well. It started on that phone when I upgraded to Android 12. I have now disabled the lockscreen feature. \r\n**If it matters, the camera stopping recording occurred when there was a xDrip+ alert. It happened twice while I was recording my kid playing soccer. The Clash games issue happens on just a normal 5 minute cycle. \r\n** Removing the value from the lock screen has 100% fixed the issue."
+  },
+  {
+   "id": 1179811022,
+   "user": "michaeld427",
+   "created_at": "2022-07-10T22:22:06Z",
+   "body": "> Just wanted to add, I experience this too. I decided to to spend some time today focusing on what was causing it. For me, it force closes clash of clans and clash royal. It also causes the camera to quit recording if you have are actively recording. I narrowed it down to only occurring when xDrip+ refreshes. This is a new Pixel 6 pro with plenty of free resources. It happened on my previous Pixel 4XL as well. It started on that phone when I upgraded to Android 12. I have no disabled the lockscreen feature.\r\n\r\nDid you try disabling the lockscreen number display? That is what we have found to be causing it. "
+  },
+  {
+   "id": 1179811871,
+   "user": "mkitchingh",
+   "created_at": "2022-07-10T22:27:39Z",
+   "body": "> Did you try disabling the lockscreen number display? That is what we have found to be causing it\r\n\r\nI just did after finding this post. I had a typo in my comment. It should have said \"I have now disabled the lockscreen feature\". I will confirm it fixes it, but I definitely had this exact issue. It has been bugging me for a long time, and I decided to sit down today and really troubleshoot. "
+  },
+  {
+   "id": 1475383731,
+   "user": "mkitchingh",
+   "created_at": "2023-03-19T20:09:29Z",
+   "body": "Any news on this issue? Any hope for a fix?"
+  },
+  {
+   "id": 1477265456,
+   "user": "Navid200",
+   "created_at": "2023-03-21T04:27:27Z",
+   "body": "@mkitchingh Only developers who have a Pixel phone can work on this.  We already have a shortage of active developers.  This additional restriction does not help."
+  },
+  {
+   "id": 1483122721,
+   "user": "mkitchingh",
+   "created_at": "2023-03-24T16:58:06Z",
+   "body": "> @mkitchingh Only developers who have a Pixel phone can work on this. We already have a shortage of active developers. This additional restriction does not help.\r\n\r\nGot it. I was just checking. I didn't know this was an issue that was unique to Pixel phones. If it would help, I would be willing to donate and used pixel to the cause. I would just need to know what the oldeest acceptable model would be. "
+  },
+  {
+   "id": 1483134743,
+   "user": "jamorham",
+   "created_at": "2023-03-24T17:06:09Z",
+   "body": "I have pixel phone. Is there a simple way to reproduce the issue?"
+  },
+  {
+   "id": 1483152117,
+   "user": "mkitchingh",
+   "created_at": "2023-03-24T17:17:10Z",
+   "body": "Here's the easiest way. Have it set to pull data from Dexcom share. Play clash of clans, and have a active game while the lock screen does the 5 minute refresh."
+  },
+  {
+   "id": 1483322909,
+   "user": "jamorham",
+   "created_at": "2023-03-24T19:42:15Z",
+   "body": "@mkitchingh and what problem is seen when the 5 minute refresh happens?"
+  },
+  {
+   "id": 1483357253,
+   "user": "Navid200",
+   "created_at": "2023-03-24T20:15:18Z",
+   "body": "@CountScotula Can you answer JamOrHam?"
+  },
+  {
+   "id": 1483388165,
+   "user": "michaeld427",
+   "created_at": "2023-03-24T20:47:22Z",
+   "body": "> @mkitchingh and what problem is seen when the 5 minute refresh happens?\r\n\r\nIt crashes/resets your active app, there area lot of examples listed in prior comments.\r\n\r\n- Clash of Clans force closes \r\n- Clash Royale force closes\r\n- Brawl Stars force closes\r\n- Video recording is interrupted\r\n- Chrome browser like refreshes.  For example when typing up a response like this, if the Xdrip polled Chrome would like refresh and everything you had typed would have been lost.\r\n- It would lock up third party launchers and you would have to force kill Pixel Launcher or reboot your phone"
+  },
+  {
+   "id": 1483873144,
+   "user": "mkitchingh",
+   "created_at": "2023-03-25T17:11:28Z",
+   "body": "> @mkitchingh and what problem is seen when the 5 minute refresh happens?\r\n\r\nSorry. I was offline most of yesterday. 100% agree with @michaeld427 answer."
+  },
+  {
+   "id": 1490553741,
+   "user": "jamorham",
+   "created_at": "2023-03-30T16:01:10Z",
+   "body": "So testing with Pixel 4 XL. I have Numberwall enabled for lockscreen and I have an active game of Clash of Clans for 20+ minutes and I don't see any interruption or crash. If I lock the phone the lockscreen has the correct value there. I haven't been able to reproduce the issue yet."
+  },
+  {
+   "id": 1490579442,
+   "user": "Navid200",
+   "created_at": "2023-03-30T16:19:26Z",
+   "body": "@mkitchingh @teamoth @drudeboy @CountScotula @michaeld427 \r\n\r\nThis is an opportunity to resolve this.  Please respond and help us reproduce the problem.\r\nIf you need time, please tell us.  "
+  },
+  {
+   "id": 1490596043,
+   "user": "CountScotula",
+   "created_at": "2023-03-30T16:31:42Z",
+   "body": "Sorry, I no longer use xDrip on my phone, so I won't be able to assist."
+  },
+  {
+   "id": 1490744550,
+   "user": "mkitchingh",
+   "created_at": "2023-03-30T18:30:33Z",
+   "body": "> So testing with Pixel 4 XL. I have Numberwall enabled for lockscreen and I have an active game of Clash of Clans for 20+ minutes and I don't see any interruption or crash. If I lock the phone the lockscreen has the correct value there. I haven't been able to reproduce the issue yet.\r\n\r\nCan you confirm the Android OS version? It didn't start on my 4 XL until I updated to Android 12. I will try to reproduce on my 7 pro. "
+  },
+  {
+   "id": 1490756020,
+   "user": "michaeld427",
+   "created_at": "2023-03-30T18:40:30Z",
+   "body": "I stopped using it back when the issue was discovered (last March).  I turned it back on a bit ago to see if there was any more information I could provide.  So far it has not happened yet."
+  },
+  {
+   "id": 1490759115,
+   "user": "jamorham",
+   "created_at": "2023-03-30T18:43:14Z",
+   "body": "@mkitchingh Pixel 4 XL is on Android 13 in this test."
+  },
+  {
+   "id": 1490760537,
+   "user": "michaeld427",
+   "created_at": "2023-03-30T18:44:33Z",
+   "body": "I was on Android 12 last March, Android 13 currently.\r\n\r\nIs anyone on Android 13 still haven't the issue?"
+  },
+  {
+   "id": 1490853379,
+   "user": "mkitchingh",
+   "created_at": "2023-03-30T19:49:04Z",
+   "body": "I had it 100% of the time on Android 12. I am not currently able to reproduce it on Android 13. I will keep testing, but it seems it could be resolved. "
+  },
+  {
+   "id": 1492308289,
+   "user": "mkitchingh",
+   "created_at": "2023-03-31T17:21:29Z",
+   "body": "I believe this issue has been resolved. "
+  },
+  {
+   "id": 1492328713,
+   "user": "Navid200",
+   "created_at": "2023-03-31T17:28:53Z",
+   "body": "> I believe this issue has been resolved.\r\n\r\nMusic to my ears!\r\n\r\nWe can always reopen if needed.\r\nThanks"
+  }
+ ]
+}

@@ -1,0 +1,39 @@
+{
+ "id": 3616392677,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4304,
+ "title": "Browser build not possible from Windows PC",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4304",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-11-12T12:43:12Z",
+ "closed_at": "2025-11-13T13:38:54Z",
+ "comment_count": 4,
+ "body": "\nWhen trying to run a browser build on a Windows PC it’s not possible to proceed because a popup appears that redirects the user to the File Manager Plus app in the Android Play Store. This behavior prevents using the browser build outside of Android.\n\nThe issue seems to be caused by the following code block:\n\n```\nif (window.location.hostname !== '127.0.0.1' && window.location.hostname !== 'localhost') {\n  var msg = (i18nStrings && i18nStrings[lang] && i18nStrings[lang].fileManagerAlert);\n  alert(msg);\n  window.location.href = 'https://play.google.com/store/apps/details?id=com.alphainventor.filemanager';\n}\n\n```\nSteps to Reproduce:\n\nRun a browser build of AAPS on a Windows PC\n\n- open it in a local browser\n\n- observe the popup and redirection\n\nIf this redirect is intentional, please update the documentation accordingly:\n\nhttps://androidaps.readthedocs.io/en/latest/SettingUpAaps/BrowserBuild.html",
+ "comments": [
+  {
+   "id": 3522301749,
+   "user": "MilosKozak",
+   "created_at": "2025-11-12T14:43:13Z",
+   "body": "read different section based on where you run it"
+  },
+  {
+   "id": 3522333566,
+   "user": "cr582",
+   "created_at": "2025-11-12T14:50:22Z",
+   "body": "if you try to do it step by step according the documents its not clear that you have to run it from within a webserver. I'm sure I'm not the oly one who ran into this issue (and I already built it that way some weeks ago)."
+  },
+  {
+   "id": 3525790187,
+   "user": "winni67",
+   "created_at": "2025-11-13T06:42:03Z",
+   "body": "Why is the webserver necessary?  "
+  },
+  {
+   "id": 3527867294,
+   "user": "MilosKozak",
+   "created_at": "2025-11-13T13:38:55Z",
+   "body": "For google OAUTH callback"
+  }
+ ]
+}

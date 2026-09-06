@@ -1,0 +1,63 @@
+{
+ "id": 1969333513,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3009,
+ "title": "[DynISF] Between 23:00 - 00:00 TDD stats only 6 days",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3009",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-10-30T22:38:19Z",
+ "closed_at": "2023-11-03T13:04:31Z",
+ "comment_count": 8,
+ "body": "I noticed that DynISF stop working between 23:00 and 00:00. Culprit seem to be that for some reason only 6 days of TDD are shown in AAPS Statistics and thus DynISF stop working.\r\n\r\nReproduced in latest dev and master. Can easily be reproduced by manually altering time in android.\r\nLogs from AAPS 3.2 where DynISF was working then stopped working: \r\n[AndroidAPS_LOG_1698704407889.log.zip](https://github.com/nightscout/AndroidAPS/files/13210385/AndroidAPS_LOG_1698704407889.log.zip)\r\n\r\n\r\nBefore 23:00\r\n![image](https://github.com/nightscout/AndroidAPS/assets/114103483/96cfde43-7236-4e47-aa5a-20371a0b1b4b)\r\n![image](https://github.com/nightscout/AndroidAPS/assets/114103483/659d3fdf-dca6-473b-854b-b0a5a620c4da)\r\n\r\nAfter 23:00\r\n![image](https://github.com/nightscout/AndroidAPS/assets/114103483/e9526462-a098-4919-b6cf-e65c48b85591)\r\n![image](https://github.com/nightscout/AndroidAPS/assets/114103483/a7d10892-b6f9-4e0b-90d8-ee9d8700c038)\r\n\r\n",
+ "comments": [
+  {
+   "id": 1786639830,
+   "user": "MilosKozak",
+   "created_at": "2023-10-31T07:32:46Z",
+   "body": "wasn't it at DST change day?"
+  },
+  {
+   "id": 1786680567,
+   "user": "olorinmaia",
+   "created_at": "2023-10-31T07:50:19Z",
+   "body": "In Norway we adjusted time back 1 hour on the 29. October at 03:00."
+  },
+  {
+   "id": 1788103532,
+   "user": "olorinmaia",
+   "created_at": "2023-10-31T22:07:29Z",
+   "body": "If it matters, same issue happens today. Both dev + master"
+  },
+  {
+   "id": 1789761066,
+   "user": "jakobheyman",
+   "created_at": "2023-11-01T22:11:26Z",
+   "body": "I can confirm this issue in dev.\r\n![Screenshot_20231101-230621~2](https://github.com/nightscout/AndroidAPS/assets/9973815/c4cbfd97-4384-4f6f-82e0-d71277102313)\r\n"
+  },
+  {
+   "id": 1791687042,
+   "user": "TheNeskik",
+   "created_at": "2023-11-02T23:10:19Z",
+   "body": "I confirm this bug in master too.\r\n[AndroidAPS_LOG_1698965455785.log.zip](https://github.com/nightscout/AndroidAPS/files/13245500/AndroidAPS_LOG_1698965455785.log.zip)\r\n\r\n"
+  },
+  {
+   "id": 1792163263,
+   "user": "szantos",
+   "created_at": "2023-11-03T10:06:57Z",
+   "body": "Same here with dev"
+  },
+  {
+   "id": 1792404334,
+   "user": "MilosKozak",
+   "created_at": "2023-11-03T13:04:31Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/47758b6b27c6e8562d598e5c63ba0ffde6593cb3"
+  },
+  {
+   "id": 1799388545,
+   "user": "marjolijnvanekkendonk",
+   "created_at": "2023-11-07T18:17:03Z",
+   "body": "I can confirm in master 3.2.01. No daylight savings since I’ve started using 3.2 on October 30th and daylight savings happened on the 29th. \r\n![Uploading 29B42385-8ECB-4455-AA4D-7FAF67A42A96.jpeg…]()\r\n"
+  }
+ ]
+}

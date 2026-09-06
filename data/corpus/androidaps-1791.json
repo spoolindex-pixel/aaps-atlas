@@ -1,0 +1,65 @@
+{
+ "id": 1253108794,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1791,
+ "title": "BYODA calibration =》red triangle in AAPS",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1791",
+ "state": "closed",
+ "labels": [
+  "bug"
+ ],
+ "created_at": "2022-05-30T20:48:00Z",
+ "closed_at": "2022-07-13T08:54:09Z",
+ "comment_count": 8,
+ "body": "@MilosKozak I got the difficult to catch calibrating in BYODA giving a red triangle bug once more. I hope the logs will help you this time.\n\nAround 22h27, I calibrate in BYODA. It was showing sth like 190 and calibration was higher, sth like 215... Next BG read, BYODA and xDrip shows 216 but AAPS shows 195. I look in BYODA tab in AAPS, the time stamp is correct 22:27 but BG is not 216 as in xDrip and BYODA.\n\n5 min later, the BGs aligne on the 3 aps but I get the red triangle in AAPS.\n\n![Screenshot_20220529-183119_AndroidAPS.jpg](https://user-images.githubusercontent.com/76626474/171057482-29d56146-bd49-4f30-9bbc-0aa0f6d8dee1.jpg)\n\n![Screenshot_20220530-223318_AndroidAPS.jpg](https://user-images.githubusercontent.com/76626474/171057497-60eacac5-d811-4d07-91bf-dd325afe475f.jpg)\n\n![Screenshot_20220530-223533_xDrip+.jpg](https://user-images.githubusercontent.com/76626474/171057508-2ee2e860-432a-4a3e-9931-07661e6d4b04.jpg)\n\n![20220530_223740.jpg](https://user-images.githubusercontent.com/76626474/171057521-ffdeac8d-e2d8-4e28-a171-554115f5598e.jpg)\n\nAnd the logs. Look a bit before and after 22:27...\n\n![AndroidAPS_LOG_1653942984156.log.zip](https://github.com/nightscout/AndroidAPS/files/8800669/AndroidAPS_LOG_1653942984156.log.zip)",
+ "comments": [
+  {
+   "id": 1142642019,
+   "user": "MilosKozak",
+   "created_at": "2022-05-31T21:09:03Z",
+   "body": "this is impossible to detect from received batch (only 1 wrong value). The only way would be compare with database which would be expensive\r\nI'll keep this open to see if it's rare or not"
+  },
+  {
+   "id": 1143060350,
+   "user": "robertrub",
+   "created_at": "2022-06-01T02:49:05Z",
+   "body": "Ok. It is in fact rare as I didn't have this bug for over a month (and I calibrated around the 5 min delay often).\n\nWill come back if it happens again.\n"
+  },
+  {
+   "id": 1147410855,
+   "user": "vanelsberg",
+   "created_at": "2022-06-06T12:49:17Z",
+   "body": ">  ... in fact rare (?)\r\n\r\nInteresting. \r\nCalibrating G6/BUODA often (avg once every 2 days). Haven't seen any red triangles for a long time ..."
+  },
+  {
+   "id": 1147540588,
+   "user": "robertrub",
+   "created_at": "2022-06-06T14:55:55Z",
+   "body": "@vanelsberg You get it when you calibrate just after BYODA got the last reading. Can't say how distant the BG reading and calibration should be..."
+  },
+  {
+   "id": 1154248130,
+   "user": "vanelsberg",
+   "created_at": "2022-06-13T18:33:52Z",
+   "body": "Weird problem: Have seen this in the past (weeks ago).\r\nI cannot repro this. Tried several times.\r\nAlso I calibrate my G6 every 2 days on average. So I should see this at least occasionally "
+  },
+  {
+   "id": 1159564182,
+   "user": "robertrub",
+   "created_at": "2022-06-18T21:11:37Z",
+   "body": "Hi @MilosKozak Got the red triangle once more and this time I was about 3 min after the sensor BG measure. The difference between sensor and blood was important (G6 54 vs blood 70).\n\n![Screenshot_20220618-230541_AndroidAPS.jpg](https://user-images.githubusercontent.com/76626474/174457131-56052e8b-eebf-4bc0-85b8-e50de9dbd29a.jpg)\n\n![Screenshot_20220618-230648_Dexcom G6.jpg](https://user-images.githubusercontent.com/76626474/174457135-464390bb-3397-44eb-b657-ec2f022546ac.jpg)\n\n![AndroidAPS_LOG_1655586356150.log.zip](https://github.com/nightscout/AndroidAPS/files/8934357/AndroidAPS_LOG_1655586356150.log.zip)\n\nI hope you'll get more info from these logs.\n\n![20220614_083736.jpg](https://user-images.githubusercontent.com/76626474/174457174-3bd61342-1a51-4302-9158-5150ffa3e590.jpg)\n"
+  },
+  {
+   "id": 1182811773,
+   "user": "robertrub",
+   "created_at": "2022-07-13T06:18:39Z",
+   "body": "@MilosKozak I don't know if you did any work on the subject. I calibrated at 7:39 just after the 5 min top at 7:38.\n\nThere is a slide on the next BG in AAPS 7:44 that does not respect the 5 min intervals but had no flags.\n\nTo make it short : all is working ok.\n\n![IMG_20220713_080830.jpg](https://user-images.githubusercontent.com/76626474/178663481-8c6d23b3-4e57-406b-8de8-4317ecf64773.jpg)\n\n![IMG_20220711_140609.jpg](https://user-images.githubusercontent.com/76626474/178663536-1e443596-66ee-4f31-8a71-b5db6a866ed1.jpg)\n\nAfter 5 tries, I can't upload a logs :( The GitHub app needs debugging too :) Will try later"
+  },
+  {
+   "id": 1182814508,
+   "user": "robertrub",
+   "created_at": "2022-07-13T06:22:38Z",
+   "body": "<!-- Error while uploading AndroidAPS_LOG_1657692576173.log.zip -->\n\nOk, after 10 trials I give up. Tell me if you need the logs..."
+  }
+ ]
+}

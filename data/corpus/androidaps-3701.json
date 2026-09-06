@@ -1,0 +1,27 @@
+{
+ "id": 2769016585,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3701,
+ "title": "[3.3] DynISF adjustment factor issues after update",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3701",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-01-04T21:57:29Z",
+ "closed_at": "2025-01-06T19:08:38Z",
+ "comment_count": 2,
+ "body": "When updating from 3.2. using Dynamic ISF, the DynISF adjustment factor was reset to 100%. In our case I had both kids on 50% adjustment factor. I noticed immediately, but that may not be the case for all users, so I think it would be helpful to mention in the release notes/tips about the update where it mentions that DynISF is now a preferences option inside the SMB algorithm. \r\n\r\nAnother thing I noticed is that in the overview tab there are now two adjusted ISF values, one \"true\" DynISF like we knew it from previous version and one \"24h avg DynISF\" in ( ) which is also used in carb decay and bolus calculator. This is good, very helpful for when insulin needs are fluctuating a lot.  \r\n\r\nBUT an unintended effect I found, was that after reducing the DynISF adjustment factor, the \"24h ISF\" was still the same as before. For one kid, profile ISF is 2.2, DynISF at time of upgrade was 1.0 using 100% adj.factor, and 1.7 after reducing to 50% adj. factor. BUT the 24hISF stayed at 1.0 for a long time. After a few hours I exited the app from the menu, and on the next loop run after exit, suddenly 24hISF was at 1.7 like the DynISF value. I have tried replicating this afterwards, since my kid was higher than usual and planning to eat a bunch of candy. I set the adjustment factor to 75% for about 2 hours, waited to see if 24hISF came any closer to DynISF, and it didn't until I did a new Exit/restart of the app. So I think this calculation needs to be checked for if it is truly recalculating every loop run or has delays. If it would not be possible to improve automatically, maybe a text could be added to the DynISF adjustment factor preference with a hint to exit/restart app after changing. It's quite possible this is only an issue for people already using DynISF before update with a DynISF adj.factor much higher/lower than 100%, and only on the first day. \r\n\r\n\r\n\r\n\r\nBefore updating we would need to be careful about using bolus calculator too much when BG was low and insulin needs were lower than usual, especially if kid has many snacks in a row and boluses separately for each portion. The algorithm would account for DynISF but calculator would only have profile ISF, so when BG and IOB was low, it would give more insulin than needed, and conversely if BG was high, would underestimate required insulin due to high IOB from the algorithm using DynISF to give more insulin.\r\n\r\nI initially thought when I noticed the 24h ISF staying the same as the 100%adj factor DynISF value after adjusting to 50%, that the 24hISF would not take adjustment factor into account, and would not change, which would be just more of the same problem for using calculator (kid would need to consider for each portion/snack whether to use carbs or calc button to enter carbs). But now I think it's more pertinent to warn (parents especially) that A: dynISF adjustment factor need to be noted before update and replicated in preferences after, and B: After changing the adjustment factor, do an exit/restart, then keep watch for the next hours to ensure the 24h ISF looks right. \r\nHopefully with the new update we can now tell kids to always use calculator to add carbs, it will be smarter than before :) \r\n\r\n\r\n\r\n[AndroidAPS_LOG_1736026254996.log.zip](https://github.com/user-attachments/files/18308372/AndroidAPS_LOG_1736026254996.log.zip)\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\nReporting bugs\r\n--------------\r\n- **Note the precise time the problem occurred** and describe the circumstances and steps that caused\r\n  the problem\r\n- Note the Build version (found in the About dialog in the app, when pressing the three dots in the\r\n  upper-right corner).\r\n- Obtain the app's log files, which can be found on the phone in\r\n  _/storage/emulated/0/Android/data/info.nightscout.androidaps/_\r\n  See https://wiki.aaps.app/en/latest/GettingHelp/AccessingLogFiles.html\r\n- Open an issue at https://github.com/nightscout/AndroidAPS/issues/new\r\n",
+ "comments": [
+  {
+   "id": 2571434750,
+   "user": "MilosKozak",
+   "created_at": "2025-01-04T23:05:51Z",
+   "body": "DynISF conversion is already fixed in dev"
+  },
+  {
+   "id": 2573739517,
+   "user": "MilosKozak",
+   "created_at": "2025-01-06T19:08:38Z",
+   "body": "A: fixed \r\nB: is definitely not necessary"
+  }
+ ]
+}

@@ -1,0 +1,174 @@
+{
+ "id": 843440649,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1687,
+ "title": "Bluetooth, Android 10, disconnects when not on charge",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1687",
+ "state": "closed",
+ "labels": [
+  "device-dexcom",
+  "android10+"
+ ],
+ "created_at": "2021-03-29T14:40:46Z",
+ "closed_at": "2021-11-19T22:01:34Z",
+ "comment_count": 26,
+ "body": "### If you need support for xDrip, PLEASE DO NOT FILE A TICKET HERE\r\nWe went over this in the facebook group and tried all the recommendations.\r\n\r\n### Your environment\r\nxDrip: March 8, 2021\r\nG6 8P\r\nOppo Reno 2, Android 10\r\n\r\n\r\n### Expected behavior\r\nProper connectivity on or off charger\r\n\r\n### Actual behavior\r\nSince update to Android 10, there are frequent disconnects.  When the phone is on charge, there is no disconnect.\r\n\r\nAndroid settings have been adjusted not to optimize the battery use of xDrip and allow xDrip to run in the background.\r\n\r\nAfter installing Dexcom and disabling xDrip, the Dexcom app has no issue.",
+ "comments": [
+  {
+   "id": 809493150,
+   "user": "tolot27",
+   "created_at": "2021-03-29T15:52:39Z",
+   "body": "Is it Android 10 or device dependent? Hence, is it limited to Oppo Reno 2 or not?\r\nIs the Android 10 a custom or stock ROM?"
+  },
+  {
+   "id": 809497416,
+   "user": "Florinho55",
+   "created_at": "2021-03-29T15:56:50Z",
+   "body": "Its the OPPO stock ROM...Color OS 7.1"
+  },
+  {
+   "id": 809499375,
+   "user": "Navid200",
+   "created_at": "2021-03-29T15:58:12Z",
+   "body": "Every time I have seen this behavior, after an upgrade to Android 10, it has been resolved after the battery optimization was disabled and after the xDrip settings were corrected to match the recommended Android 10 xDrip settings.\r\n\r\nThis is the only case I have seen where the problem has persisted.\r\n\r\nI forgot to add to the first post, which I will add now, that the Dexcom app has no issue on the same phone."
+  },
+  {
+   "id": 809503675,
+   "user": "tolot27",
+   "created_at": "2021-03-29T16:01:03Z",
+   "body": "> Its the OPPO stock ROM...Color OS 7.1\r\n\r\nHence, it could also be a problem with the vendor specific adaptions to Android.\r\n\r\nI don't believe that his is a general issue with Android 10.\r\n\r\nAre there any uploader/follower services configured?"
+  },
+  {
+   "id": 809507527,
+   "user": "Florinho55",
+   "created_at": "2021-03-29T16:04:05Z",
+   "body": "Yes, Navid and me thought the same. OPPO has a very strict battery saving management, so probably thats a point. Yes, I use Nightscout. But the Upload ended after Update to Android 10, too. At least I guess it is the Upload - the page only says \"client loading\" forever and ever"
+  },
+  {
+   "id": 809511580,
+   "user": "tolot27",
+   "created_at": "2021-03-29T16:09:47Z",
+   "body": "@Florinho55 Can you disable Nightscout and test if BT disconnects still appear? Likely, they will appear because xDrip is now \"blacklisted\" as consuming too much energy."
+  },
+  {
+   "id": 809515308,
+   "user": "tolot27",
+   "created_at": "2021-03-29T16:15:25Z",
+   "body": "It is also likely that you can see a warning in the logs that NightscoutService does not have proper foreground permissions. I've tried fixing this but it's not easy because every xDrip service requests foreground bluetooth permissions and not foreground data transfer permissions."
+  },
+  {
+   "id": 809520397,
+   "user": "Navid200",
+   "created_at": "2021-03-29T16:23:07Z",
+   "body": "@Florinho55 When you have time to test the suggestions, please uninstall the Dexcom app first.\r\nThen, go back to xDrip and as suggested, disable Nightscout under Settings -> Cloud Upload -> Nightscout Sync (REST-API).\r\nThen, see if the occasional disconnects stop.\r\nIf it does, the problem then becomes how to fix Nightscout upload.\r\n\r\nI am sorry I suggested that we focus on the connectivity issue and forget the Nightscout issue.  It turns out they were directly related."
+  },
+  {
+   "id": 809559100,
+   "user": "Florinho55",
+   "created_at": "2021-03-29T17:20:44Z",
+   "body": "Like just disable the API-Upload? There is no specific Nightscout Sync at xdrip, but API Upload"
+  },
+  {
+   "id": 809577415,
+   "user": "tolot27",
+   "created_at": "2021-03-29T17:43:06Z",
+   "body": "As Navid200 posted. I've updated his comment."
+  },
+  {
+   "id": 809579244,
+   "user": "Navid200",
+   "created_at": "2021-03-29T17:46:03Z",
+   "body": "@Florinho55   This is what the page looks like.\r\n![Screenshot_20210329-134232](https://user-images.githubusercontent.com/51497406/112877698-13b3a800-9095-11eb-88ec-850557ed1245.png)\r\n\r\nJust disable at the top."
+  },
+  {
+   "id": 809581484,
+   "user": "Florinho55",
+   "created_at": "2021-03-29T17:49:47Z",
+   "body": "Interesting...its a bit different in the German version...\r\n<img src=\"https://user-images.githubusercontent.com/81444904/112878179-e7fde580-90c7-11eb-84ad-9f3cd77d3184.jpg\" width=\"300\" />\r\n"
+  },
+  {
+   "id": 809582846,
+   "user": "Navid200",
+   "created_at": "2021-03-29T17:51:53Z",
+   "body": "Looks like it is disabled already.\r\nDo you still get those xDrip logs about Nightscout?"
+  },
+  {
+   "id": 809584346,
+   "user": "tolot27",
+   "created_at": "2021-03-29T17:54:11Z",
+   "body": "> Interesting...its a bit different in the German version...\r\n\r\nNo, except the translation. You can swith to English (Settings -> xDrip+ Display Settings -> Force ... Text and Choose a specific language) for screenshots or to compare settings."
+  },
+  {
+   "id": 809591594,
+   "user": "Florinho55",
+   "created_at": "2021-03-29T18:04:53Z",
+   "body": "Since I installed xdrip again just like 20 Minutes ago it hasnt started collecting yet. The last time I re-installed it it needed some time to get the session again...\r\nIt just paired and collecting. We will see what happens after 10 minutes. It usually stops after that time\r\n\r\nLooking good after three rounds (3 x 10 min). Still collecting!\r\n"
+  },
+  {
+   "id": 809627061,
+   "user": "Florinho55",
+   "created_at": "2021-03-29T18:52:29Z",
+   "body": "Too happy too early...lost connections again :(\r\n![Screenshot_2021-03-29-20-51-54-59_2dd2c1bcb8f659cd696bcba2072f751b](https://user-images.githubusercontent.com/81444904/112885137-aaea2100-90d0-11eb-8b8e-8a00d63656b9.jpg)\r\n"
+  },
+  {
+   "id": 809628253,
+   "user": "Navid200",
+   "created_at": "2021-03-29T18:54:19Z",
+   "body": "And the logs.  The latest page should be good to start with."
+  },
+  {
+   "id": 809637508,
+   "user": "Florinho55",
+   "created_at": "2021-03-29T19:08:24Z",
+   "body": "![Screenshot_2021-03-29-21-08-09-94_2dd2c1bcb8f659cd696bcba2072f751b](https://user-images.githubusercontent.com/81444904/112887091-0ae1c700-90d3-11eb-897e-ecff2d20ac94.jpg)\r\n\r\nOnly my alert on low...not anything about disconnection as far as I see..."
+  },
+  {
+   "id": 809643522,
+   "user": "Florinho55",
+   "created_at": "2021-03-29T19:18:08Z",
+   "body": "Update: Android asked to get  xdripon Whitelist. I confirmed. And after like 5 minutes its now collecting again.\r\n\r\n![Screenshot_2021-03-29-21-17-56-91_2dd2c1bcb8f659cd696bcba2072f751b](https://user-images.githubusercontent.com/81444904/112888115-403ae480-90d4-11eb-9a1f-818edfe3e0d5.jpg)\r\n"
+  },
+  {
+   "id": 810183252,
+   "user": "Florinho55",
+   "created_at": "2021-03-30T12:30:49Z",
+   "body": "And another Update:\r\nToday xdrip is connecting itself and sometimes it works (without me pairing or anything else). But after like two or three collections it stops again"
+  },
+  {
+   "id": 810193864,
+   "user": "Navid200",
+   "created_at": "2021-03-30T12:41:33Z",
+   "body": "And it works perfectly if you put the phone on charge?"
+  },
+  {
+   "id": 810196601,
+   "user": "Florinho55",
+   "created_at": "2021-03-30T12:44:19Z",
+   "body": "Yes, without a problem"
+  },
+  {
+   "id": 826152457,
+   "user": "adanvdo",
+   "created_at": "2021-04-24T20:57:48Z",
+   "body": "I have a device with Android 10. A Moto E7. I have Battery Optimization disabled but run into frequent connection problems when the battery is below 15% I am not sure if there is another power profile on android where you can control these types of things.\r\n\r\nI also have the Allow OB1 unbonding unchecked. I have no problems with connectivity unless the transmitter is old or the battery is under 15% like said"
+  },
+  {
+   "id": 974490081,
+   "user": "tolot27",
+   "created_at": "2021-11-19T21:39:27Z",
+   "body": "@Navid200 Is this problem not related to Bluetooth?"
+  },
+  {
+   "id": 974492340,
+   "user": "Navid200",
+   "created_at": "2021-11-19T21:44:00Z",
+   "body": "@tolot27 This was a puzzle for me when it was posted in the facebook group.\r\nI opened this issue to bring it to the attention of the developers.\r\nNow, it seems to be better to be moved to the discussions."
+  },
+  {
+   "id": 974501153,
+   "user": "Navid200",
+   "created_at": "2021-11-19T22:01:34Z",
+   "body": "I am sorry that we were not able to solve this.\r\nBut, the symptoms suggest that Android interferes with xDrip, running in the background, in order to preserve battery.\r\nWe can always reopen this if it helps.  But, I am closing it now and ask that you open a thread in the discussions if the problem persists:\r\nhttps://github.com/Navid200/xDrip/discussions"
+  }
+ ]
+}

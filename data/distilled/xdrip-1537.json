@@ -1,0 +1,22 @@
+{
+ "issue_id": 1537,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/1537",
+ "title": "The glucose readings aren't added in 5 minute intervals anymore",
+ "symptom": "Glucose readings on the xDrip graph are not spaced evenly at 5-minute intervals; intervals vary from 2 to 8 minutes, making the dots unevenly spaced, though the data table and logs show correct 5-minute timestamps.",
+ "cause": "The FUZZER constant (2.5 minutes) used to place readings on a grid causes time shifts when the fractional part of the division is near 0 or 1, leading to occasional 2.5-minute shifts in graph display.",
+ "fix": "Update to xDrip release 2022.08.18 or later, which is supposed to fix the issue. Alternatively, lower the fuzzer to 37.5 seconds in engineering mode via advanced display settings.",
+ "settings_changed": [
+  "FUZZER → 37.5 seconds (via engineering mode option)"
+ ],
+ "devices": [
+  "Dexcom G6"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "FUZZER",
+  "BgGraphBuilder"
+ ],
+ "confidence": "high",
+ "evidence_quote": "This is supposed to have been fixed with August 18, 2022. https://github.com/NightscoutFoundation/xDrip/releases/tag/2022.08.18 Please update to that release or any after that, and please report if you ever still experience the reported issue."
+}

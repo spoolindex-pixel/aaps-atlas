@@ -1,0 +1,72 @@
+{
+ "id": 1100460684,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1161,
+ "title": "Connection to OL lost, unable to scan to reconnect.",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1161",
+ "state": "closed",
+ "labels": [
+  "rileylink",
+  "omnipod eros"
+ ],
+ "created_at": "2022-01-12T15:15:55Z",
+ "closed_at": "2022-01-14T12:47:08Z",
+ "comment_count": 9,
+ "body": "Problem occurred from around 9.30a.m. and was resolved around 14:30 12th Jan \r\n\r\nUsing Pixel 5 / Android 12 / Eros / OrangeLink v2.5 (not Pro) / Fossil Sport\r\nAAPS 3.0-rc1 2022.01.09-21:30\r\n\r\nNo connection to RileyLink status.  Have had this with 2.8.2 but did manage to resolve it by changing pump driver to VL and then back to Omnipod - this may be related.\r\n\r\nUnable to scan for OL.  Tried reflashing OL, reinstalling AAPS 3.0-rc1, removed all other BT devices, cleared phone BT storage and cache, multiple reboots etc.  and new batteries.  Still unable to scan for OL\r\n\r\nThroughout all attempts Pod Management Screen displayed \r\nErrors : 'Rileylink address invalid' \r\n \r\nThis was the same message in 2.8.2 which could eventually be resolved by changing the pump driver.\r\n\r\nWorkaround to resolve the problem:\r\nInstall 2.8.2 on top of 3.0 rebooted\r\nwait .... then pump driver changed......  OL connected and it was ready (first attempt I became impatient, scanned and it got stuck again so installed 2.8.2 twice)\r\nrebooted\r\ninstalled 3.0 on top of 2.8.2\r\nwatched and waited waited a bit ........ connected \r\n\r\nThis may be of no significance;  I only occasionally use Wear : 'resend data'  I did this morning sometime around time loss of connection.  \r\n\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/7855591/AndroidAPS.log)\r\n[AndroidAPS._2022-01-12_06-15-34_.0.zip](https://github.com/nightscout/AndroidAPS/files/7855594/AndroidAPS._2022-01-12_06-15-34_.0.zip)\r\n[AndroidAPS._2022-01-12_00-00-03_.0.zip](https://github.com/nightscout/AndroidAPS/files/7855598/AndroidAPS._2022-01-12_00-00-03_.0.zip)\r\n[AndroidAPS._2022-01-12_13-11-14_.0.zip](https://github.com/nightscout/AndroidAPS/files/7855600/AndroidAPS._2022-01-12_13-11-14_.0.zip)\r\n![PodManagementScreen](https://user-images.githubusercontent.com/25860284/149167612-087ea728-73d6-4420-bb22-8ba3b8c8d57d.jpeg)\r\n",
+ "comments": [
+  {
+   "id": 1011222499,
+   "user": "n0rbertg",
+   "created_at": "2022-01-12T16:22:41Z",
+   "body": "+1\r\n\r\nThe same happened to me as well. \r\n**Phone**: Pixel5 with Android 12 and OL Pro (but tried with other variants)\r\n**Ver**: AndroidAPS 3.0-rc1 (tried with other - older - dev builds as well and was unable to scan so not sure when was this introduced\r\n\r\nThe issue is easily reproducible by removing the RL, no device shows up in SCAN. (I have tried with OL Pro, EmaLink and original RL as well, none shows up). Only workaround is to add the RL using an old release and switch back.\r\n\r\nLog\r\n\r\n```16:02:39.720 [main] D/PUMPBTCOMM: [RileyLinkBroadcastReceiver.onReceive():104]: Received Broadcast: AAPS.RileyLink.RileyLink_Disconnect\r\n16:02:39.721 [main] W/PUMPBTCOMM: [RileyLinkBLE.disconnect():174]: Closing GATT connection\r\n16:02:39.728 [main] I/PUMP: [RileyLinkServiceData.workWithServiceState():95]: RileyLink State Changed: BluetoothReady \r\n16:02:39.734 [Binder:9731_6] W/PUMPBTCOMM: [RileyLinkBLE$1.onConnectionStateChange():362]: onConnectionStateChange SUCCESS DISCONNECTED\r\n16:02:39.734 [main] D/PUMPBTCOMM: [RileyLinkBroadcastReceiver.onReceive():104]: Received Broadcast: AAPS.RileyLink.RileyLink_Disconnected\r\n16:02:39.735 [main] I/PUMP: [RileyLinkServiceData.workWithServiceState():95]: RileyLink State Changed: BluetoothError  - Error State: RileyLinkUnreachable\r\n16:02:39.737 [Binder:9731_6] W/PUMPBTCOMM: [RileyLinkBLE$1.onConnectionStateChange():372]: RileyLink Disconnected.\r\n16:02:39.783 [main] D/CORE: [DummyService.onStartCommand():70]: Starting DummyService with ID 4711 notification Notification(channel=AndroidAPS-Ongoing shortcut=null contentView=null vibrate=null sound=null defaults=0x0 flags=0xa color=0x00000000 category=status vis=PRIVATE)\r\n16:02:39.813 [main] D/CORE: [DummyService.onStartCommand():70]: Starting DummyService with ID 4711 notification Notification(channel=AndroidAPS-Ongoing shortcut=null contentView=null vibrate=null sound=null defaults=0x0 flags=0xa color=0x00000000 category=status vis=PRIVATE)\r\n16:02:40.817 [RxCachedThreadScheduler-23] D/AUTOMAT"
+  },
+  {
+   "id": 1012847114,
+   "user": "happygirlnyc70",
+   "created_at": "2022-01-14T07:35:56Z",
+   "body": "Are you both using orange link v2.5? I had this issue as well but then flashed to the latest version 3.2, (there is a v3.2 for pro and non-pro), then it went away (pixel 4a 5g Android 12) https://getrileylink.org/orangelink-firmware"
+  },
+  {
+   "id": 1013003651,
+   "user": "n0rbertg",
+   "created_at": "2022-01-14T10:37:39Z",
+   "body": "> Are you both using orange link v2.5? I had this issue as well but then flashed to the latest version 3.2, (there is a v3.2 for pro and non-pro), then it went away (pixel 4a 5g Android 12) https://getrileylink.org/orangelink-firmware\r\n\r\nI have an Orangelink Pro with v3.2 (But as mentioned I tried it with Emalink and the original RileyLink as well and those didn't work either) "
+  },
+  {
+   "id": 1013030765,
+   "user": "Jane49",
+   "created_at": "2022-01-14T11:16:46Z",
+   "body": "> Are you both using orange link v2.5? I had this issue as well but then flashed to the latest version 3.2, (there is a v3.2 for pro and non-pro), then it went away (pixel 4a 5g Android 12) https://getrileylink.org/orangelink-firmware\r\n\r\nI flashed to 3.2 and then reflashed back to my original 2.5, it didn't make any difference for me.\r\n"
+  },
+  {
+   "id": 1013078466,
+   "user": "happygirlnyc70",
+   "created_at": "2022-01-14T12:30:50Z",
+   "body": "Hmmm missed that that you have other links.  I have emalink as well. Sorry that didn't fix it for you both"
+  },
+  {
+   "id": 1013083101,
+   "user": "andyrozman",
+   "created_at": "2022-01-14T12:38:17Z",
+   "body": "We are assuming at the moment this has to do with new Android 12 BT permissions. There is similar issue opened #1173 . I will probably look into this over weekend.. My test phone (S20) is just upgrading to Android 12, so I will have hardware to test this."
+  },
+  {
+   "id": 1013088846,
+   "user": "MilosKozak",
+   "created_at": "2022-01-14T12:47:07Z",
+   "body": "fixed by https://github.com/nightscout/AndroidAPS/commit/e2bdc348349e6894c05eb0ba9809e378e10cb9d1"
+  },
+  {
+   "id": 1013090547,
+   "user": "Jane49",
+   "created_at": "2022-01-14T12:49:58Z",
+   "body": "> We are assuming at the moment this has to do with new Android 12 BT permissions. There is similar issue opened #1173 . I will probably look into this over weekend.. My test phone (S20) is just upgrading to Android 12, so I will have hardware to test this.\r\n\r\nThank you :)\r\n\r\n"
+  },
+  {
+   "id": 1013097740,
+   "user": "n0rbertg",
+   "created_at": "2022-01-14T13:01:22Z",
+   "body": "Thank you, I can confirm the fix works, scanning works as intended"
+  }
+ ]
+}

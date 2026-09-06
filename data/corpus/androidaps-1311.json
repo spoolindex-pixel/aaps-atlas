@@ -1,0 +1,255 @@
+{
+ "id": 1133687536,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1311,
+ "title": "Negative IOB : shouldn't be used in insulin calculations ",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1311",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-02-12T07:58:16Z",
+ "closed_at": "2022-07-25T19:11:12Z",
+ "comment_count": 77,
+ "body": "There is a security risk with negative IOB. AAPS  always tries to inject the \"missing\" insulin which results in lows.\n\nThere is no \"negative\" IOB in our bodies. The pancreas releases or not insulin depending on BGs and their variations. It should be the same in AAPS.\n\nNegative IOB is an important information for the user (ie profile too strong) and should be indicated (message and text on the graphic) but should NOT enter in the formulas used to calculate the insulin amount to be injected.\n\n2 examples. This morning, my BGs were lower than usual (insulin working better than other mornings). AAPS does a great job and stops basal to prevent hypos. This generates negative IOB. I'm below target, no carbs. If I use the calculator, the negative IOB will be injected and I'll find myself in hypo. The calculator should not inject the negative IOB. Even without the calculator, AAPS should not try to fill in the \"missing\" insulin.\n\n![Screenshot_20220212-065218_AndroidAPS.jpg](https://user-images.githubusercontent.com/76626474/153702264-f281fad6-4162-458e-bb73-3162ce35b54c.jpg)\n\n![20220212_065316.jpg](https://user-images.githubusercontent.com/76626474/153702262-58051fd8-87b8-4901-b26a-cbce52672db6.jpg)\n\nExercice example. I eat carbs (that I don't tell AAPS) before exercise. I walk for 1 hour. I either didn't eat enough or the road was too steep and I ended in a negative IOB. The exercise results in insulin being more efficient. If AAPS tries to reinject the \"missing\" insulin, I'll end up in a hypo.\n\nI can't find even one reason to use negative IOB in the calculations.\n\nAAPS should alert the user that it is generating negative IOB but should never use IOB <0. \n\nIF IOB <0 THEN IOB=0 and FLAG _neg-IOB-alert_\n",
+ "comments": [
+  {
+   "id": 1037057591,
+   "user": "BRamine",
+   "created_at": "2022-02-12T08:11:16Z",
+   "body": "Another experience for me with -IOB :\n\nStarted TT for exercise, but ended up working more then intended. \nSituation is 0 COB, bg flat 100 with -0.45 IOB. TT ended and AAPS immediately started to compensate for the negative IOB and sent me straight to Hypo. \nI could have avoided that but TT again etc, but also the compensation for -IOB is completely not logic since like @robertrub said, -IOB = 0 IOB, if ∆ is not high, which in my case average ∆ was -1, can't find a reason to have insulin."
+  },
+  {
+   "id": 1037061034,
+   "user": "Philoul",
+   "created_at": "2022-02-12T08:21:04Z",
+   "body": "Negative IOB is required in oref algorithm.\r\nIf you want to disable it in wizard dialog, first disable COB (GA) in your screenshot..."
+  },
+  {
+   "id": 1037067628,
+   "user": "robertrub",
+   "created_at": "2022-02-12T08:39:21Z",
+   "body": "I don't know how negative IOB is used/useful in in OREF but the result is not good. We are obliged to cheat with high TT to prevent hypos which adds more neg IOB...\n\nI don't know what would change deactivating COB as it was 0 on my screen capture and unchecking it doesn't uncheck IOB. Once more, this is a cheat to counteract an incorrect reaction of AAPS."
+  },
+  {
+   "id": 1037076500,
+   "user": "chrisbev",
+   "created_at": "2022-02-12T09:03:51Z",
+   "body": "When autosens lowers to say 80% does anyone know what iob is calculated with respect to?  Is it 100% basal or 80% basal?  I've asked previously but got no replies as if 100% then changing to 80% could help, or could autosens say bleed iob another way (like cob decay) after a while?  For me I swing around plus or minus iob so 'think' settings are not too far off and autosens copes quite well with my variability but I quite often manually disconnect pump to 'help' -ve or 'prime' for +ve to hide from AAPS calculation. Just off the wall thoughts if rubbish as I don't know OREF workings please ignore."
+  },
+  {
+   "id": 1037088778,
+   "user": "BRamine",
+   "created_at": "2022-02-12T09:35:03Z",
+   "body": "> I don't know how negative IOB is used/useful in in OREF but the result is not good. We are obliged to cheat with high TT to prevent hypos which adds more neg IOB...\n> \n> I don't know what would change deactivating COB as it was 0 on my screen capture and unchecking it doesn't uncheck IOB. Once more, this is a cheat to counteract an incorrect reaction of AAPS.\n\nBy cheating we get even more -iob "
+  },
+  {
+   "id": 1037220302,
+   "user": "Philoul",
+   "created_at": "2022-02-12T13:04:32Z",
+   "body": "My answer was not to cheat, but to include or not negative IOB in wizard calculation. (after wizard you have a bolus so no more negative iob, it's just a way to limit risks of over dosing the bolus).\n\nNegative IOB is not bad when all your settings are good. If you look in detail all your IOB curves during a perfect night with a flat BG curve glued to your target. you will see that your IOB vary between positive and negative values.\nWithout negative value, the correction would be under estimated and the result worse than your perfect curve (you will get waves).\n\nYou always have insulin in your body, even with negative iob (just take a look on absolute iob that is always >0).\nNegative IOB signify lack of insulin compare to your basal profile.\n\nThe negative IOB is always the consequence of something else that is not correct (basal rate too high in your profile, sport, ...) and most of the time an hypo TT is the good way to correct the situation without cheating aaps."
+  },
+  {
+   "id": 1037222255,
+   "user": "vanelsberg",
+   "created_at": "2022-02-12T13:12:09Z",
+   "body": "_Another theoretical example (which I happen to experience regularly):_ \r\n\r\nAAPS tries to keep my BG at target using the **perfect profile**.\r\nThen my IC is a bit off (due to todays sensitivity) and maybe I was unable to calculate carbs absorbed exactly:\r\n\r\nAAPS/0Ref will attempt to compensate for this and keeping me at target (as designed)  by some 0-temping, \r\nIt does so perfectly, no problems until .... negative -IOB gets me in a hypo.\r\n\r\n_To clarify (its what i see happing when it occurs):_\r\nNegative -IOB results into an instable system that starts cycling between lows and -IOB about every 2-3 hours:\r\n```\r\n|---> Going below target -> 0-temp -> going to target with -IOB -> addtional insulin for -IOB -->--|\r\n^------------------<-------------------------------------------------------------------------<-----|\r\n```\r\nI can only break this cycle by taking carbs to get 2 points above target (target=5.0)\r\n\r\n* TT does not work here: it only worsens by generating more -IOB\r\n* Temporary lowering basal rate would help, but that would mean switching profile, resetting autosense as well as ending up with a BG higher then intended.\r\n\r\n"
+  },
+  {
+   "id": 1037224130,
+   "user": "vanelsberg",
+   "created_at": "2022-02-12T13:19:55Z",
+   "body": "> You always have insulin in your body, even with negative iob (just take a look on absolute iob that is always >0).\r\n> Negative IOB signify lack of insulin compare to your basal profile.\r\n\r\nThat is just the point with -IOB. It is just a trick to calculate \"virual\" insulin that was expected but not administered.\r\nIt most certainly can be taken in account for oRef calculation. \r\nBut it should *not* be compensated for by actually injecting this \"virtual\" insulin just to get to absolute insulin at \"0\"\r\n\r\n"
+  },
+  {
+   "id": 1037229112,
+   "user": "vanelsberg",
+   "created_at": "2022-02-12T13:41:19Z",
+   "body": "There should not be any need for \"tricks\", T-Temps or \"Basal rate lowering\" to prevent something like oRef negative -IOB from causing problems. \r\n\r\nEven after 2 years on the subject -IOB I have not seen any (acceptable) explanation on the purpose of compensating for -IOB with real insulin\r\n"
+  },
+  {
+   "id": 1037256956,
+   "user": "swissalpine",
+   "created_at": "2022-02-12T15:25:34Z",
+   "body": "I think you have to separate two things: Showing an insulin level below the actual basal level. This is where negative IOB makes sense and is very helpful information. Negative insulin (understood as a deviation from what the basal rate would have given) must exist and must be possible and must be enabled by the algorithm. This is a binse.\r\n\r\nThe \"enforced\" filling of the negative IOB as soon as an opportunity comes up (positive trend, calculator ...) has no logic in my eyes. Because the available insulin quantity (even if it is IOB negative), is exactly correct at this time and was also exactly so initially controlled by the algorithm! So why correct this \"correct\" amount of insulin on occasion incorrectly? ;-)\r\nThis is exactly why I have to set up automations, set Hypo-TT etc., in order to moderate this, in my eyes, usually not reasonable amount of insulin.\r\n\r\nAnd more fundamentally: I hope that AAPS will soon say goodbye to OREF and become independent.  There is so much developer potential here that we could finally deal with the algorithm itself. Because it is (see the numerous automations, not only in the negative IOB area) anything but always suitable and ideal - even if it is still one of the best on the market."
+  },
+  {
+   "id": 1037511255,
+   "user": "vanelsberg",
+   "created_at": "2022-02-12T21:54:37Z",
+   "body": "Seems this issue was already reported 6 years ago?\r\n_Issue Closed as: use autosense_ (?)\r\n\r\nhttps://github.com/openaps/oref0/issues/101 Improvements on recovering from a low\r\n\r\nActually this issue is exactly describing the problem I have with negative IOB.\r\n**Scot Leibrand** confirms the issue: \"_I think the solution to this is to use autosens.\r\nPlease reopen or open a new issue if you still see this after autosens is in place._\""
+  },
+  {
+   "id": 1038057827,
+   "user": "vanelsberg",
+   "created_at": "2022-02-13T12:02:52Z",
+   "body": "Trying to repro this problem:\r\n\r\nNote that in this case the issue will only occur when not taking carbs for a longer period (e.g when sleeping)\r\n\r\n1. Before going to sleep take some carbs or insulin and _overestimate_ (by for instance 20%) . You will end op below target forcing AAPS to start 0-temping for some time trying to keep you on target - while doing so building up negative IOB.\r\n2. Go a-sleep and prepare to be woken by a low or hypo alarm in 2-3 hours.\r\n3. When woken, take the _exact amount_ of carbs as suggested by AAPS calculator (or do a manual calculation based on your IC/ISF).\r\n4. Go a-sleep and be prepared to be woken again in 2-3 hours\r\n5. Go to step#3\r\n\r\nOnly way to break the cycle is tricking 0Ref by taking extra carbs at step#3 to get you above target without registering the extra carbs (and accept above target for the next 2-3 hours).\r\nOr just have a sleepless night and wait for breakfast to clear the problem :innocent: \r\n\r\n*Note*  on step#1:\r\nThis can happen, for instance by wrong calculations, unexpected sensitivity or sensor value temporarily going higher for some reason 😐 \r\n\r\n*Note*  on step#3:\r\nYou will see AAPS administering insulin for the carbs registered but do additional insulin to compensate negative IOB.\r\nAs a result you will be taken right back into the low/hypo.\r\n\r\n*Note*:\r\nProblem will probably not repro when you have set nightly basal rates (*to*) low and let SMB fill in. (YMMV:  Worse case, as max SMB is limited by max current/daily basal rates, SBM may not be able to get you to target)\r\n"
+  },
+  {
+   "id": 1038071009,
+   "user": "vanelsberg",
+   "created_at": "2022-02-13T12:22:04Z",
+   "body": "> Just a small change for 5.5mmol to the target was perfect\r\n\r\nI think this is actually a work-around to prevent going too low or even into hypo. It partly \"solves\" the problem (but also get you a higher HbA1c).  I also expect you are seeing \"waves\" in your BG curves with regular 0-temping where BG cycles around the higher target value? Did you try lowering basal rates at night?\r\n"
+  },
+  {
+   "id": 1038196834,
+   "user": "DigitalDan1",
+   "created_at": "2022-02-13T15:32:01Z",
+   "body": "I think negative IOB is useful in some cases and not in others:\r\n\r\n1. Useful when pump is stopped for 30 minutes to take a shower, it's usually good to top up any negative IOB after that.\r\n2. Not useful when it's one of those days/nights where the usual basal (that might have been perfect the day/night before) is just too high.  Topping up negative IOB after this will lead to another low, another temp zero, more negative IOB, and repeat...\r\n\r\nAutomatically detecting the difference between these is the tricky part.  Autosens can help but I find IOB can still become very negative.\r\n\r\n> When autosens lowers to say 80% does anyone know what iob is calculated with respect to? Is it 100% basal or 80% basal?\r\n\r\n[Autosens _is_ used in the IOB calculations](https://github.com/nightscout/AndroidAPS/blob/master/core/src/main/java/info/nightscout/androidaps/extensions/TemporaryBasalExtension.kt#L202-L209), but I think it's only applied at times where there's a Temporary Basal Rate (TBR) running.  At times when there's no TBR (i.e. normal profile basal running) there's no TBR to contribute to the IOB calculation, so effectively the full rate is used as the baseline for IOB.  I've previously wondered if this is an oversight in the algorithm (or maybe I've missed something).\r\n\r\ne.g. assume a profile basal of 1.0U/h and autosens is 100%\r\n- 1 hour TBR at 0% contributes -1.0U to IOB\r\n- then 1 hour normal profile basal contributes 0.0U to IOB\r\n- IOB over 2 hours = -1.0U\r\n\r\nIf autosens was 80%, then profile is adjusted to 0.8U/h, so I think the IOB calculation will be:\r\n- 1 hour TBR at 0% contributes -0.8U to IOB\r\n- then 1 hour at normal profile basal (1.0U/h) contributes 0.0U to IOB (but should be +0.2U I think)\r\n- IOB over 2 hours = -0.8U (but should be -0.6U I think)\r\n\r\nIf this is true, I wonder if it could explain (maybe only partly) some of the problems people are seeing with negative IOB?\r\n"
+  },
+  {
+   "id": 1038404681,
+   "user": "MilosKozak",
+   "created_at": "2022-02-13T20:24:12Z",
+   "body": "i understand your points but you can easy find and example where negative IOB must taken into a count to avoid high BGs after bolus, Simply ignore negative IOB is not a solution for every situation"
+  },
+  {
+   "id": 1086633842,
+   "user": "robertrub",
+   "created_at": "2022-04-02T12:53:03Z",
+   "body": "> No, I don't agree with you!\r\n> If \"neg IOB with overcorrection leading to hypo\" arrives 3 or 4 times per week it is the direct consequence of at least wrong basal settings.\r\n\r\nSo what ? The user has \"bad\" settings, we all do. Once more, you're stuck at the _why_ and not _what can be a solution_. I agree for a big red message telling that the user should check basal settings because s/he is getting regular neg IOBs but stop pulling her/him down trying to catch-up the neg IOB. "
+  },
+  {
+   "id": 1086633948,
+   "user": "vanelsberg",
+   "created_at": "2022-04-02T12:53:43Z",
+   "body": "@Philoul \r\n> If \"neg IOB with overcorrection leading to hypo\" arrives 3 or 4 times per week it is the direct consequence of at least wrong basal settings.\r\n\r\nIn theory yes, in praktice no:\r\n1. Due to sensitivity changes.\r\n2. Due to much insulin (slightly over estimating carbs or IC changes due to sensitivity\r\n\r\n> If your ABS is triggered every 2 days when you take your car, the 1st thing to do is to drive more slowly (reduce some of your basal rates).\r\n\r\nDuring wintertime on slippery roads my car's ABS & ESP are doing overtime even when driving slowly.... ;-)\r\n\r\n> No! It's normal to have during a day negative IOB ...\r\n\r\nIs that so? Please explain why this is normal? I do not get this.\r\nLess insulin required, that normal. But forcing insulin anyway because theory says so?\r\n\r\nAnd during the day same applies: I will be taking carbs as soon as I realize I'm getting to low. That happens. And when on -IOB I take **additional** carbs just for sake of compensating for -IOB (calculator does that for me). \r\nBut if I do **act** - or not able to get enough carbs in -  I will have the same problem.\r\n\r\n"
+  },
+  {
+   "id": 1086635151,
+   "user": "vanelsberg",
+   "created_at": "2022-04-02T12:59:57Z",
+   "body": "Actually I do not understand why we are discussing this.\r\n\r\noref0 is a model that happens to use -IOB to accomplish some of its requirements. But in real life it does not work or at least imho does more wrong then good.\r\n\r\nAnd the claim that -IOB in practice does **not** work is so easy to prove:\r\nJust stop taking carbs, and when on target give some additional insulin that without 0-TBR would result into a hypo (simulating overestimation or to high basal rate).\r\nWhen below target, take carbs to get back onto target.\r\nSee what happens!\r\nQED\r\n\r\nyes: \r\none can argue \"basal rate\" was wrong (yes that happens as basal rate is not a constant)\r\nor to much insulin given (yes that can happen as IC and ISF are not a constant + humans make errors).\r\n\r\nThat is just why AAPS is wonderfully compensating to real life. But under circumstances it can't because of -IOB."
+  },
+  {
+   "id": 1086639102,
+   "user": "vanelsberg",
+   "created_at": "2022-04-02T13:15:45Z",
+   "body": "Suggestion: maybe we should move this discussion to the oref0 dev community?\r\nI guess whatever we discuss here will not benefit or change oref ;-)\r\n\r\n@Philoul: please do not take this personally?! Always interesting get other views/opinions"
+  },
+  {
+   "id": 1086655753,
+   "user": "sprig3",
+   "created_at": "2022-04-02T14:49:52Z",
+   "body": "\r\n> When below target, take carbs to get back onto target.\r\n\r\nI think this is more because algorithm is expecting the increase to continue.  \r\n\r\n-IOB affects the next 5 hours (just like +IOB affects next 5 hours).  Algorithm will run you high by about half of IOB or low by about half of -IOB.  Dunno that there's much to improve that without autosense or automation or profile improvement.  (otherwise, I'd expect more reactive highs)\r\n\r\nBut... would be curious to see how the no -IOB when below target \"hack\" could work in practice."
+  },
+  {
+   "id": 1091597336,
+   "user": "Philoul",
+   "created_at": "2022-04-07T11:03:40Z",
+   "body": "> Just stop taking carbs, and when on target give some additional insulin that without 0-TBR would result into a hypo (simulating overestimation or to high basal rate).\r\nWhen below target, take carbs to get back onto target.\r\nSee what happens!\r\n\r\nI just do not understand what you want to demonstrate with this kind of test... AAPS is designed to always let you in a safe situation if for any reason your loop is broken (no battery in your phone, phone stolen, broken...)\r\nMy proposal is another test: check if you are safe during your nights with your profile: Stop your loop 2 or 3 hours before going to bed while stable on target, and let your basal manage your night. If everything is ok, you should should be stable all the night and be approximatively at the same BG value when you wake up. This kind of verification should be done by any looper regularly to check if basal is ok during night (no activity, no carbs...)\r\nIf you wake up during your night due to an hypo or hyper alert, or if you have important variations of your BG, you should adjust your basal rates.\r\n=> This is what autotune tries to do (but autotune works fine only if you don't cheat your data with for ex. missing carbs...)"
+  },
+  {
+   "id": 1092595608,
+   "user": "robertrub",
+   "created_at": "2022-04-08T08:28:17Z",
+   "body": "OK, here is a real life situation once more. Yesterday noon, I mess up my calculations (or I enter the wrong numbers in AAPS or the scale is not working well or the potatoes don't contain starch...). BGs are not going up as they should and AAPS stops the basals (very grateful for that :)  ). At around 14h, I still have neg delta and near 70, I eat a biscuit (without entering the carbs in AAPS). I hear regularly my \"Going to hypo\" automatism (AAPS sets a high temp to stop any insulin injection to catch up (!) the effects of neg IOB). I eat another biscuit at 16h (BG at 69). At 17h30, I end up with -2.5U IOB !!! \r\n \r\n2.5U neg IOB in English means \"your body is missing 2.5U insulin\"!!!! My body got TOO MUCH insulin and is in no way *missing* insulin. AAPS trying to catch up the neg IOB all afternoon kept me near (too near) the hypo line. \r\n\r\nQuestion : how to get rid of this totally wrong neg IOB ? I entered 2.5U insulin (register but do not inject) which brought the total IOB to 0 but I still have -2.5U basal IOB... The only way I found was to stop SMBs, eat without entering carbs so that AAPS would be forced to use up to 300% basal rates to clear the neg basal IOB... I don't find the necessity to \"cheat\" to solve a problem AAPS created (ok, I did the _initial_ mistake but who doesn't make mistakes ?)  not acceptable. \r\n\r\nAs you can see, this had nothing to do with my profile settings and can't be argued away with \"if the profile was correct...\". It was a plain, simple user error and AAPS kept pushing my head underwater :(\r\n\r\nNOBODY CAN BE MISSING INSULIN IF S/HE IS BELOW TARGET. Biologically, it is not possible. \r\n\r\n1/ There should be a \"Reset IOB to 0\" option somewhere. \r\n2/ There shouldn't be any neg IOB (but that is to be tested first). \r\n\r\nA simple (yes I'm exaggerating) *IF IOB<0 THEN IOB=0* statement before the loop starts the calculations would permit those who want to test the _no neg IOB_ theory to test and see if it works. Milos, you can even make a big tex"
+  },
+  {
+   "id": 1092837373,
+   "user": "sprig3",
+   "created_at": "2022-04-08T13:03:47Z",
+   "body": "Rob, the negative insulin doesn't mean \"missing insulin now\".  It means \"missing insulin activity in the future\".\r\n\r\nWRT \"nobody can be missing insulin if below target\", IOB doesn't include past activity of insulin, only \"future activity of insulin\".  \r\n\r\nSo, the -2.5U the loop has seen that 2.5 units worth of **future** insulin activity is missing.  The -IOB will decay with time, so the \"error\" does not stack up more than DIA (~5 hours) time worth.  \r\n\r\nThink about it this way (Assuming a 5 hour DIA):  If you suspend your basal for 1 hour.  In theory, it will have small effect for that hour (the 4 hours before that - your basal was on), but it will have a big effect for the next 3 hours (and then a little tail for hour 5, just like the reverse curve of a bolus injection).  \r\n\r\n(Not saying the modification you are suggesting shouldn't be done as an option for an essentially less aggressive mode.)"
+  },
+  {
+   "id": 1092977669,
+   "user": "robertrub",
+   "created_at": "2022-04-08T15:11:01Z",
+   "body": "You have the same logic as Philoul that really does NOT talk to me :( At a given moment, I have a certain amount of insulin in body, some part active, the other par will be active in the future. I think that we can agree on that.\r\n\r\nThere is no indication of what amount of insulin I'll need (or not) in the future. I might go for a walk and not at all need any insulin or I night stress and might need insulin to bring down hormone related BGs. At time zero, you CAN NOT tell if I'll need insulin or not in the near future. \r\n\r\nThe fact that the basal insulin was not given (because it was replaced by bolus insulin or activity or les carbs...) doesn't tell that I'll need something in the future.  If I don't tell that I'll have carbs or if my BG does not raise, no formula can guess what my future needs will be. \r\n\r\nNeg IOB is just doing that \"I did not give you your basal, thus I am asserting that you will need it in the future.\" That is a false assumption. The \"non given\" basal was not \"missed\", it was replaced, it was given under another \"name\". \r\n\r\nWithout a crystal ball ;), just by looking at the past, nobody can guess what insulin I'll need. \r\n \r\n\r\n\r\n"
+  },
+  {
+   "id": 1093001181,
+   "user": "Pamalosebi",
+   "created_at": "2022-04-08T15:24:22Z",
+   "body": "The last weeks I fokused more on my IOB. I have to say, I almost never experience negative IOB in AAPS.\r\nIs now something wrong at my profile? Should that be a thing?"
+  },
+  {
+   "id": 1093024577,
+   "user": "sprig3",
+   "created_at": "2022-04-08T15:47:51Z",
+   "body": "Yeah, loop can't predict the future, Rob, you're right.  It can only guess and get close.  \r\n\r\nIf you are 180 mg/dL and have +2.5 IOB, you would not say \"I should have 0 IOB, because the amount of insulin given has gotten me here\".  The 2.5 IOB is representative of what will happen in the future.  If you consistently have your basal set too low, you will always have positive IOB and be above target.  You will be closer to target than if you didn't have a loop, ofc! But, the loop won't bring you in for a landing at target (without Autosense I guess, eventually, Autosense might help out).\r\n\r\nSame is true of the -IOB (future insulin action, not past).  The loop can get you ~half-way, but it can't get you all the way or know that you will need less insulin in the future than what you told it (as you point out, those pesky Crystal balls just don't seem to work all the time).  \r\n\r\nIf you know that you'll need less insulin, there are ways to tell the system that - profile switch, record fake insulin, etc.  \r\n\r\nObviously, we all want less management, so I definitely applaud your effort to come up with some code that helps manage without intervention.  Perhaps it could even lead to a mode similar to how the basalIQ users hack their system (my endo does this):  set basal about 20-30% too high and let the basalIQ loop reduce/suspend over and over again to keep you out of hypo.  (of course, a problem if dex isn't working)"
+  },
+  {
+   "id": 1093467932,
+   "user": "Philoul",
+   "created_at": "2022-04-08T23:21:38Z",
+   "body": "@robertrub, I'll try to explain you another way. Forget the \"relative IOB\" (that can be positive or negative), and just focus on your absolute IOB (the absolute quantity of Insuline active in your body you need to keep your BG value within range).\r\nThis absolute IOB is ALWAYS positive (it equals to 0 if you unplug your pump for DIA duration or more...)\r\n\r\nNow forget also the loop algorythm and consider a day with this absolute quantity of insulin. This abolute IOB will also be the relative IOB calculated with a \"theoretial null profile\" (with all basal rates equals to zero). (neg IOB is completely removed...)\r\n\r\nWith exactly the same absolute amount of insulin in your body, if you now calculate a new relative IOB with another theoretical profile with all basal rates higher than the highest one received. With exactly the same amount of absolute insulin, your new calculated relative IOB will almost always be negative (positive only very few periods after meals with Boluses).\r\n\r\nNow consider your loop is trying to give you the absolute amount of insulin you need,, the higher your basal rates are in your profile, the lower (and too often for you), your relative IOB will be negative.\r\n\r\n> Question : how to get rid of this totally wrong neg IOB ?\r\n\r\nThe answer is: reducing the basal rates your profile will mathematically increase your IOB, the loop will still try to give you the same absolute quantity of insulin, but with more high TBR, less negative IOB, and these negative IOB will be  with \"higher value\" (closer to zero) and correctly managed by the loop (they will help you reach your targetand stabilize your BG and won't send you into an hypo)."
+  },
+  {
+   "id": 1093580596,
+   "user": "robertrub",
+   "created_at": "2022-04-09T01:57:55Z",
+   "body": "I give up. Last message.\n\nYou're all talking theory, I'm talking real life. I'm telling that in real life, your theory is not working but you don't want to hear it.\n\nHere is another real life situation where _neg IOB catch up_ pushed me to a hypo once more. Zoom the screen capture and you'll see.\n\nAt 2AM I'm starting the neg IOB trip. At 2:15 (approximately), I'm on target. Life is great. Basal stopped then reduced and generating neg IOB. At 2:30, I must have had a very little positif delta as AAPS sent an SMB and raised basal (I suppose to catch up neg IOB , as there is no other reason as I'm on target).\n\nAt 2:45, I'm below target but still on higher basal (still trying to catch up I suppose)... At 3AM, below target and going down but with still high basal.... my security automation kicks in and raises target to force AAPS to stop the basal and neg IOB catch up. It is not enough as I'm woken up in a hypo.\n\nYou can talk all the theory you want, the theory is *uking my life. If there was a _no neg IOB_ security setting, I wouldn't be in a hypo 59 at 4AM\n\n![Screenshot_20220409-031901_AndroidAPS.jpg](https://user-images.githubusercontent.com/76626474/162552139-ff84c24a-f4e5-4880-895a-d22bacbc8837.jpg)\n"
+  },
+  {
+   "id": 1093767024,
+   "user": "Philoul",
+   "created_at": "2022-04-09T07:16:41Z",
+   "body": "Look at your graph between 01:00 and 03:00, you have a majority of red deviations bars (you are more sensitive to insulin than expected by the loop).\nBetween 01:00 and 03:00 your BG curve is a straight line with a BG value decreasing from ~140mg/dl to ~80mg/dl (about -20mg/dl per hour)\nWhen I analyse your TBR curve, you got approximatively basals of your profile during all this period.\n\nYour BG drops down much quicker than expected by the loop, you are more sensitive to insulin. So reduce your basal  between ~23:00 and ~03:00. (it's possible ISF is also a bit too low)"
+  },
+  {
+   "id": 1093820834,
+   "user": "swissalpine",
+   "created_at": "2022-04-09T08:45:35Z",
+   "body": "@Philoul As already written above by others: Your suggestion fits to cure a recurring situation; but when it comes to a one-time event, the suggestion is useless because I do not adjust my basal in advance for lack of psychic abilities.\r\nIn my opinion, it is also not about the fundamental concept of a negative IOB (I bring negative IOB for sport on purpose!), but about the function to compensate negative IOB at the first best opportunity, as soon as even a positive delta shows up. To limit the algorithm here and to relativize the compulsive IOB compensation, the striving for 0 IOB, would be quite conceivable - then I would also no longer need an automation rule that prevents all SMB by a slightly increased temporary target (BG < 110 mg/dl => TT = 101). Because without this workaround, I irregularly experience exactly the situations @robertrub talks about."
+  },
+  {
+   "id": 1106718342,
+   "user": "robertrub",
+   "created_at": "2022-04-22T17:29:12Z",
+   "body": "I'll try one last example (yes, I'm stubborn...) I hope some OREF people are reading this discussion...\n\nWe'll look at the problem from another perspective. \n\nI want to drive from point A to point B, 100km away. My navigation app says \"Taking in consideration your car specs and the profile of the road, you'll use 10 lt of fuel\". For some reason (back wind, driving slowly...), I arrive at destination with only 9 lt fuel used. \n\nIt is not logical to go further away from destination to use the unused fuel. It is unlogical to says that for the next 100km, I'll use 11 lt. \n\nThe only conclusions we can have :\n\n1/ The calculations were wrong (for whatever reason)\n2/ Once on destination, no need to keep the old erroneous calculation results.\n3/ For the next 100km, I might use 9 lt again but I might as well use 10 lt. It is very unlikely (but not a 0 probability) that I might use any other number if the conditions change.\n\nReplace 100 km by 100g carbs and lt by units. The destination is target and the navigation app is AAPS/Oref.\n\nMy situation right now. 0 COB, below target (100), negative delta for some time, but as I have a neg IOB, AAPS is still giving me some basal... I know that the amount is ridiculously low but so is my neg IOB. With a stronger neg IOB, I'd get a higher basal.\n\nThe logic of it is wrong. There is no indication that the BG will raise but AAPS still wants me to _go further from destination as I didn't use all the fuel it had calculated..._\n\n![Screenshot_20220422-191011_AndroidAPS.jpg](https://user-images.githubusercontent.com/76626474/164764779-cd5c5f10-5d8f-4466-b500-0d09a666d480.jpg)\n"
+  },
+  {
+   "id": 1106777653,
+   "user": "sprig3",
+   "created_at": "2022-04-22T18:57:37Z",
+   "body": "Yeah, Rob, I get why you're pursuing this.  This is our lives.  Day in, day out, this stuff is big for us.  I also get your point that you're trying to get the algorithm to handle deviations from expected even more.  But, the loop isn't keeping track of historic missing insulin, only future missing insulin.  So, your car example isn't quite right.  \r\n\r\nI think what you are wanting is a more robust learning algorithm or a faster Autosens concept.  (One that takes into account observed increased sensitivity in the recent past maybe 2-4 hours rather than the past 8-24 hrs current autosens uses.)  \r\n\r\nThat logic you are describing is negating the idea of insulin on board either positive or negative.  If I am high and I just gave 5 units of insulin, and check 1 hour later and am still high, should I give 5 more units?  (obviously, some might take the extra insulin and just choose to eat some glucose on the other end, hehe!)  No, the loop will see that the 5 units given an hour before have ~4 IOB left (or something, based on curve and DIA) and will only give how much it thinks you need beyond that 4 IOB.  (theoretically just 1 more unit or something)\r\n\r\nThe same goes for negative insulin on board.  See how the prediction line shows that in about 3-4 hours, it expects you to be at target?\r\n\r\nAt t=0hrs, If you have a 1 u/hr basal rate and a 1:40 ratio and you suspend insulin for 1 hour, then you'd expect over the next ~5 hours to rise 40 mg/dL.  Past sensitivity doesn't enter into the equation.  (well, autosens might take into account the last 24 hours)\r\nSo, at t=1hr, you'd still be expecting a ~32 mg/dL rise. (iob = -0.8 approx) (math not precise, insulin decay is messy in basal, since it's dribbled in bit by bit)\r\nat t=2hr, the negative IOB would be \"decayed\" further, so iob would be about -0.5 and you'd expect bg to rise another 20 mg/dL over the next ~3 hours.\r\n\r\nIf we didn't do the neg IOB concept, then how would we avoid overcorrecting?  Do you just keep suspending ba"
+  },
+  {
+   "id": 1106813506,
+   "user": "robertrub",
+   "created_at": "2022-04-22T19:53:46Z",
+   "body": "Yes, I want a more aggressive hypo risk management. A hypo is a health risk, a momemtary hyper is not (and AAPS has largely the time to stop BGs going too high).\n\nI totally agree on positive IOB. AAPS is totally capable of calculating it's action over time. \n\nWhere I don't agree is deducting that I'll end up in hyper if the _not given insulin_ is \"discarded\". There is a reason the user ends up below target with neg IOB: either s/he got too much insulin or the insulin is acting more efficiently and the basal was stopped. You cannot deduct that the user will be _high_ if there is still a neg delta or a little positive delta and is under target. \n\nMy car analogy holds, if the back winds continue, the car will still need less fuel for the next trip and will choke if forced to use more ;)\n\nAll I can do actually is cheat with a reduced profile (limited to 70%...) in order to stop getting more neg IOB...\n\n![Screenshot_20220422-213549_AndroidAPS.jpg](https://user-images.githubusercontent.com/76626474/164784351-723fe414-96c3-4cc8-a875-b89740389ac0.jpg)\n"
+  },
+  {
+   "id": 1107348788,
+   "user": "robertrub",
+   "created_at": "2022-04-23T03:34:41Z",
+   "body": "@sprig3  Compare 2 situations. For both, target = 100, BG = 80, COB = 0\n\nA: There is a -1U IOB\nB: You did a db reset and COB and IOB are at 0\n\nWhich situation will bring you faster to target ? Definitely B. Will it end in a _High_ after reaching target ? I say _no_, you say _yes_ ;)\n\n@MilosKozak  is it possible to put a button or menu option to set basal IOB to 0 ? This way, no need to touch the algo, no automatic IOB change. Just a _neg basal IOB reset_ by user ? This way, a select few who want to test the _no neg IOB_ theory can test it without needing big algorithm and code changes.\n"
+  },
+  {
+   "id": 1107507771,
+   "user": "sprig3",
+   "created_at": "2022-04-23T14:23:34Z",
+   "body": "You can bolus and \"record only\".\r\n\r\nIn your A and B situation, you're making a judgement call.  Do you think you will need the future insulin or not?  \r\n\r\nI sometimes do that to force the loop to be more aggressive at treating a high (I will bolus 0.X units and then go to treatments page and remove the bolus).  It's risky, though, and definitely not something I'd want to trigger automatically.  "
+  },
+  {
+   "id": 1107517573,
+   "user": "robertrub",
+   "created_at": "2022-04-23T15:05:03Z",
+   "body": "Neg IOB is a result of the *past*. Adding insulin (_don't inject, record only_) is an action for the *future*. For the next 3 hours, AAPS will calculate important insulin activity when there is none...\n\nIt is not a solution to neg IOB."
+  },
+  {
+   "id": 1107659825,
+   "user": "sprig3",
+   "created_at": "2022-04-23T22:35:16Z",
+   "body": "The \"shape\" won't match exactly, but neg IOB is a result of the future insulin action (over those next X hours) that is missing.  So, it works pretty well in small quantities.  \r\n\r\nAnd... what you're trying to do is tell the loop that in the future, you won't need more insulin.  So, the fake bolus now would describe that pretty well.  \r\n\r\nYou can back-date (time-offset) the insulin as well, which could help match the shape of the neg basal pretty closely if you were trying to be more precise, but I've never seen the need to do that.  It's a guess anyways."
+  },
+  {
+   "id": 1110352179,
+   "user": "robertrub",
+   "created_at": "2022-04-26T23:43:43Z",
+   "body": "Ok, there is a bug with overlapping TBRs generating neg IOB but here is one more proof that neg IOB is wrong\n\n![Screenshot_20220427-013633_AndroidAPS.jpg](https://user-images.githubusercontent.com/76626474/165409954-e4f86415-ad2c-43c5-adb1-72272107856b.jpg)\n\nBecause of huge neg IOB, AAPS is killing me with a huge hypo. Everything is going towards a hypo (neg delta, no more carbs on body etc) but because of the \"need\" to \"cover\" the neg IOB, AAPS is going on with SMBs and over 100% basals...\n\nEven if the reason of the neg IOB is a bug in this case, the result really shows that neg IOB is dangerous and should NOT be acted upon by AAPS !"
+  },
+  {
+   "id": 1111010867,
+   "user": "robertrub",
+   "created_at": "2022-04-27T13:34:33Z",
+   "body": "@sprig3 ```\nneg IOB is a result of the future insulin action (over those next X hours) that is missing```. \nNo, neg IOB is only the result of the _past_ calculations, not about the future.\n\nThe logic is so evident and plain to me that I have difficulty understanding how you don't see it.\n\nAnother exemple. You're a manager (AAPS), you calculate and decide that you need to hire 10 people (units) to fill up a truck with 100 boxes (carbs). Only one person can fill the truck at a time, when he's used up/tired the next one takes up the job. For some reason (boxes are less heavy, they all used cocaïne... what ever), only 9 people did all the job. The 10th never worked (your neg IOB equivalent).\n\nAs a manager, for the next 100 boxes, will you hire 9, 10 or 11 people?\n\nDon't tell me 11 please ;)\n\n9 : you have a very active/fast Autosens that adjusts the future needs to the recent past usage.\n10 : you think that the formula/profile you use is rock solid and 9 people per 100 boxes was an exception.\n11 : It is the actual OpenAPS SMB / oref1 thinking that if you haven't used 1 person before, you'll need him for the next job... \n\nAs a manager, knowing that I can always call in another person (more insulin), while the truck is filling up but tiring/using up people faster than estimated (BGs staying higher), vs having to pay the 10th man hired but not usefull (going to hypo because of too much insulin), I vote for hiring 9 people only.\n"
+  },
+  {
+   "id": 1111048899,
+   "user": "sprig3",
+   "created_at": "2022-04-27T14:07:49Z",
+   "body": "Very confused by what about this pic is bad wrt neg iob.  So, from 20:00 until about 01:00, IOB was positive and BG was above target.  Then, at around 01:00, BG went below target and basal was suspended.  From the pic, it appears it remained suspended.  No additional insulin was given in this screenshot after that point.  (What am I missing?  Something about the bug you mention?)  I understand the situations where persistently too high set basal rates results in low blood sugar even using the loop, so I know examples of where this is a problem, but the above doesn't appear to be one.  (And wish they wouldn't happen and there was a way to solve it.)\r\n\r\nBut, I thought of another way to describe what the base basal rate means in the loop context.  \r\n\r\nWhen you tell your loop that (for example) your basal rate is 1U/hr, ICR is 1:10, and ISF is 1:50, you are sort of telling it that your liver will release 10 grams of glucose into the bloodstream per hour.  The loop doesn't do AI or auto-learning.  It is a slave to your settings.  If that 10g from your liver doesn't show up one hour and BG fluctuates, it will attempt to correct.  But, it will still assume that the NEXT hour, your liver will send the 10g.  \r\n\r\nLooking at it in that context, the loop isn't \"backfilling\" neg IOB so to speak, it is pre-bolusing for the future liver glucose you have told it to expect and it has calculated will bring you higher than target.  It will adjust for actual BG deviations and rate of change and use that as a big part of predicting future BG, but it is still expecting that future liver glucose release and will still be trying to keep that in target.  \r\n\r\nNeg IOB thought about in this context is an approximation of the amount of that liver glucose that is expected in the next X hours (where X is duration of insulin action) which has not been pre-bolused for.  \r\n\r\nI say this to try and convey that you can't get rid of the concept of neg IOB without just getting rid of IOB or basal insulin"
+  }
+ ]
+}

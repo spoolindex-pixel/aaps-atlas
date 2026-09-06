@@ -1,0 +1,33 @@
+{
+ "id": 1041000889,
+ "repo": "nightscout/AndroidAPS",
+ "number": 828,
+ "title": "NSClient 3.0-beta2 profile sync problem",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/828",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-11-01T10:09:35Z",
+ "closed_at": "2021-11-02T12:46:21Z",
+ "comment_count": 3,
+ "body": "NSClient 3.0-beta2\r\nBuild: f49c93f22-2021.10.30-14:48\r\nRemote: https://github.com/nightscout/AndroidAPS\r\nFlavor: nsclientrelease\r\nNightscout version: 14.2.4\r\nEngineering mode enabled\r\nDevice: Xiaomi MI 9, Android 11, MIUI 12.5.1\r\n\r\n1. Profile is synced correctly from AAPS to NS.\r\n2. Profile is not synced correctly from NS to NSClient.\r\n3. Wrong profile name is shown on NSClient main screen (top left), but correct profile name shows on profile switch box.\r\n3. BG is displayed in mmol/l, despite profile details shows units defined as mg/dl.\r\n4. 3-line menu->Profile: shows profile in RED with \"Error in ISF Values\" despite all profile values including ISF are shown correctly.\r\n5. Preferences->General->Units: None is checked.\r\n6. After checking mg/dl, main screen becomes distorted for a short period, than shows values as they should appear. Also 3-line menu->Profile, shows profile correctly with no error. After a few minutes, all is back to as described on section 3-5 above.\r\n\r\nHad same problem with 3.0-beta1\r\nTried Force stopping NSClient, Clear all data via android settings, delete app folders, reinstall.\r\nTried disabling/enabling sync from both AAPS and NSClient.\r\nCould not find the cause.\r\n\r\n\r\n\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/7452171/AndroidAPS.log)\r\n\r\n![Profile is synced correctly to NS](https://user-images.githubusercontent.com/36660177/139653050-69774189-17ca-45d9-934b-e1177010d5d4.jpg)\r\n![wrong profile name on main screen](https://user-images.githubusercontent.com/36660177/139653083-bc860d24-1795-476f-a041-21a6c1cc9473.jpg)\r\n![correct profile name on profile switch box](https://user-images.githubusercontent.com/36660177/139653137-11504b31-501b-4b99-a63a-43b2b5c0231a.jpg)\r\n![red profile page with ISF error](https://user-images.githubusercontent.com/36660177/139653286-c0dc387b-34e1-47a6-b91c-6be739e6968c.jpg)\r\n\r\n\r\n![preferences units type none is marked](https://user-images.githubusercontent.com/36660177/139653394-32cac646-9011-41d8-a34a-23cf6c04a8e5.jpg)\r\n![main screen distorded after selecting mgdl in preferences](https://user-images.githubusercontent.com/36660177/139653506-45fa55d0-9a64-4b07-b272-c6c16be339a6.jpg)\r\n![profile ok after selecting mgdl in preferences](https://user-images.githubusercontent.com/36660177/139654382-b84f3393-1fc9-4c05-8cd2-2431ed9d7053.jpg)\r\n\r\n",
+ "comments": [
+  {
+   "id": 956661905,
+   "user": "MilosKozak",
+   "created_at": "2021-11-01T21:41:14Z",
+   "body": "Unit settings is taken from AAPS preferences ... not from NS profile anymore"
+  },
+  {
+   "id": 956665681,
+   "user": "MilosKozak",
+   "created_at": "2021-11-01T21:43:01Z",
+   "body": "pm me your NS address"
+  },
+  {
+   "id": 957487329,
+   "user": "MilosKozak",
+   "created_at": "2021-11-02T12:46:21Z",
+   "body": "resolved in dev hopefully\r\nyou are running profile name Eitan which is not in profiles anymore\r\ndo a profile switch on aaps phone with existing profile"
+  }
+ ]
+}

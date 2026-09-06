@@ -1,0 +1,69 @@
+{
+ "id": 1861431738,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 3036,
+ "title": "Aidex values not broadcasting via API to watchdrip.",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/3036",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-08-22T13:08:43Z",
+ "closed_at": "2023-09-08T12:33:46Z",
+ "comment_count": 9,
+ "body": "### Discussed in https://github.com/NightscoutFoundation/xDrip/discussions/3035\r\n\r\n<div type='discussions-op-text'>\r\n\r\n<sup>Originally posted by **jiresongit** August 22, 2023</sup>\r\nI am trying to use watchdrip with xdrip and GlucoRX Aidex sensor.\r\n\r\nIt seems that the watchdrip app is not able to receive push notifications from xdrip of BG changes, only when watchdrip itself makes forced requests to xdrip.\r\n\r\nIn woking with @bigdigital (the author of watchdrip) , it seems that the xdrip Aidex code on the BgReading.bgReadingInsertFromInt has a last parameter of false, meaning that the notification to watchdrip etc does not occur.\r\n\r\nI am hoping that I have explained this ok and included as much information as needed.</div>",
+ "comments": [
+  {
+   "id": 1688162554,
+   "user": "Navid200",
+   "created_at": "2023-08-22T13:11:41Z",
+   "body": "@bigdigital \r\nWould you be able to open a PR and test?"
+  },
+  {
+   "id": 1688186549,
+   "user": "jiresongit",
+   "created_at": "2023-08-22T13:26:08Z",
+   "body": "I am happy to test when ready, I may just need to be sent an apk :)"
+  },
+  {
+   "id": 1688203965,
+   "user": "Navid200",
+   "created_at": "2023-08-22T13:35:37Z",
+   "body": "@andyrozman \r\nDo you have any thoughts?\r\nWhat are the ramifications of changing that from false to true?"
+  },
+  {
+   "id": 1688218144,
+   "user": "andyrozman",
+   "created_at": "2023-08-22T13:44:06Z",
+   "body": "Theoretically it should work, what my code does is to receive broadcast from Aidex application and converting them into valid BG records. We can try to changing it to true... Shouldn't make any problem, at least not in my code... Question would be, when paraemeter is true, do we need to have something set, that was not set before... But we won't know until we try."
+  },
+  {
+   "id": 1688225982,
+   "user": "Navid200",
+   "created_at": "2023-08-22T13:48:44Z",
+   "body": "Considering I don't wear a watch and don't use Aidex, I will be the worst person to make any changes to fix this since I will not be able to test.  But, more importantly, I don't have a direct feel for the problem.  \r\nI wanted to bring the right people together.  \r\n\r\nI leave it in everyone's hands who is here.\r\nIf I can help, please let me know."
+  },
+  {
+   "id": 1688277476,
+   "user": "jiresongit",
+   "created_at": "2023-08-22T14:17:33Z",
+   "body": "if someone is able to try and send me an apk i'm more than happy to try it out as i have aidex and the watch"
+  },
+  {
+   "id": 1694350012,
+   "user": "jiresongit",
+   "created_at": "2023-08-26T14:12:48Z",
+   "body": "So, @bigdigital sent me an apk with the change to test. Not only has it fixed the issue impacting watch drip but I'm now also getting readings read out in the car and more that stopped when I switched from libre to aidex.\r\n\r\nFrom my perspective would be great for the change to be made in the official codebase."
+  },
+  {
+   "id": 1711599336,
+   "user": "Navid200",
+   "created_at": "2023-09-08T12:33:46Z",
+   "body": "@jiresongit Would you please try the latest Nightly (https://github.com/NightscoutFoundation/xDrip/releases/tag/2023.09.08) and tell us if it works?\r\n\r\nI am closing this issue.\r\nWe can reopen if it has not been resolved.\r\n\r\nThanks @bigdigital for the PR"
+  },
+  {
+   "id": 1712504834,
+   "user": "jiresongit",
+   "created_at": "2023-09-09T12:53:46Z",
+   "body": "@Navid200 works great thank you"
+  }
+ ]
+}

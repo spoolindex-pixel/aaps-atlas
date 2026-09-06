@@ -1,0 +1,39 @@
+{
+ "id": 1956265798,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2969,
+ "title": "Disabling basal on no BG readings",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2969",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-10-23T03:08:14Z",
+ "closed_at": "2023-10-23T12:31:59Z",
+ "comment_count": 4,
+ "body": "Is there any setting to tell loop to disable basal after X minutes of missing BG readings? \r\n\r\nI had recently such case where BG was high because of night pressure, then sensor died for few minutes but basal was still kept high. This led to hypo later.\r\n\r\n![Screenshot_20231023_043746_Chrome](https://github.com/nightscout/AndroidAPS/assets/4493100/80e3c8fe-c015-47d1-b783-2a99a42f7e3f)\r\n",
+ "comments": [
+  {
+   "id": 1775021604,
+   "user": "MilosKozak",
+   "created_at": "2023-10-23T11:49:45Z",
+   "body": "expecting you are not using SMB?"
+  },
+  {
+   "id": 1775037515,
+   "user": "zibra",
+   "created_at": "2023-10-23T12:00:25Z",
+   "body": "Yes, I am using SMB"
+  },
+  {
+   "id": 1775067802,
+   "user": "zibra",
+   "created_at": "2023-10-23T12:19:03Z",
+   "body": "I know what was wrong. This failure was because of connection issue (device out of range), so AAPS was not able to disable basal because Omnipod was also not in range. I see no issue here. Probably it will be disabled otherwise if it will be just sensor error, right? We can close this issue"
+  },
+  {
+   "id": 1775071728,
+   "user": "MilosKozak",
+   "created_at": "2023-10-23T12:21:22Z",
+   "body": "SMB create TBR as long as it expects to be correct. so even when there are not new BGs after issuing TBR, it should result in \"good\" state"
+  }
+ ]
+}

@@ -1,0 +1,81 @@
+{
+ "id": 4739004678,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4927,
+ "title": "Battery drain issue",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4927",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2026-06-24T22:40:24Z",
+ "closed_at": "2026-07-28T13:16:54Z",
+ "comment_count": 11,
+ "body": "Recently bought a new phone, so I went from an old Samsung A71 running version 3.3.2.0 to a Pixel 10.\n\nBuild: 05a3433598-2026.06.04\n\nEver since the swap, the phone has had approximately 45-50% of its batterydrain due to AAPS background proccesses.\nIronicly, my ancient phone had more batterylife than this, so something cant be working as intended.\n\nNot sure if you needed all the files, so I just zip'ed them up just incase.\nLet me know if theres something I should check that the logfiles wont cover.\n\n[files.zip](https://github.com/user-attachments/files/29313156/files.zip)",
+ "comments": [
+  {
+   "id": 4845217302,
+   "user": "MilosKozak",
+   "created_at": "2026-06-30T15:27:51Z",
+   "body": "there is nothing special in logs. you may try to unpair watch and test"
+  },
+  {
+   "id": 4848084271,
+   "user": "ESpmdark",
+   "created_at": "2026-06-30T21:31:41Z",
+   "body": "Ill run a test without the watch connected (aswell as it being disabled within the AAPS settings).\n\nJust a question ahead of time:\nMight there have been an issue since I installed a new version on the watch, without uninstalling the old version first?\nI just assumed it would overwrite it, but might there be some duplicate calls coming from the watch?"
+  },
+  {
+   "id": 4848828618,
+   "user": "daniilaursulesei",
+   "created_at": "2026-06-30T23:40:47Z",
+   "body": "I confirm that AndroidAPS drains a lot of battery, without having a watch (I use a Pixel Watch 2 only a couple of days in a month). Together with Medtronic Guardian app for sensor (the other app that really steals energy), I get less than a half of day of battery (in days when even I have one or two hours of screen time). So I can give some rough numbers from today - I use Pixel 7 Pro:\n\nbattery from 100% to 93% (screen time 12 min):\nMedtronic Guardian 13% (background use 1h)\nGoogle Play services 12% (background use 1h)\nAndroid APS 8% (background use 1h 12 min)\nxDrip 5%\n...\nsystem apps 45%\n\n\nI don't have any hopes from Medtronic to optimize their app (they never consider users feedback), would be awesome if anything can be done to reduce the battery usage. I am glad to help with testing, I am not that familiar with coding Android applications, but I can catch up, so far I have experience in C; or at least collect logs or anything that might help.\n\nMany thanks!"
+  },
+  {
+   "id": 4848887185,
+   "user": "ESpmdark",
+   "created_at": "2026-06-30T23:50:03Z",
+   "body": "On my old phone the AAPS accounted for 10-20% of the total drain (I dont activly use the phone much)\nBut on the new phone (same level of usage from  my part), its in the range of 45-50%. Thats a extreme level of battery usage.\n\nAfter I've tested without the watch, I'll roll AAPS back to the version I was using on my old phone to see if there's a difference.\n\nI dont have the insight to judge where the majority of the battery usage from AAPS comes from. For all I know, there might be phone settings thats off on the new phone that allows AAPS to run spesific tasks more frequently on my new phone compared to the old one."
+  },
+  {
+   "id": 4852924647,
+   "user": "MilosKozak",
+   "created_at": "2026-07-01T09:46:56Z",
+   "body": "you can also test v4 (dev branch)\nit may spend more CPU when open = better UI, but it's more optimized on background"
+  },
+  {
+   "id": 4858757796,
+   "user": "ESpmdark",
+   "created_at": "2026-07-01T18:08:00Z",
+   "body": "After 2 cycles of full -> needs to be charged, without watch connected.\nthe range of usage ended up being 39-42%\n\nso about a 5% drop from not using a watch, but not the main culprit.\n\nI also realised I probably should'nt roll back to the old version, seing as that lacks the Android 16 connectivity fixes.\n\nBut I'm at a loss at what I can do here.\nFresh new phone. That lasts 9 hours on a full charge if I only ever touch my phone to give myself bolus injections.\n\nEdit: I'm sure I could try the dev branch, but this cant be how others experience the current version?\nThere has to be something wrong spesificly on my phone's environment?"
+  },
+  {
+   "id": 4886000245,
+   "user": "vanelsberg",
+   "created_at": "2026-07-05T12:16:01Z",
+   "body": "> After 2 cycles of full -> needs to be charged, without watch connected. the range of usage ended up being 39-42%\n\nTo rule out any other causes that drain the battery (including a bad preforming battery), you may consider installing the [Accu​Battery](https://play.google.com/store/apps/details?id=com.digibites.accubattery) app to see live details on battery usage?\n"
+  },
+  {
+   "id": 4980649991,
+   "user": "MilosKozak",
+   "created_at": "2026-07-15T12:38:06Z",
+   "body": "any news?"
+  },
+  {
+   "id": 4980781383,
+   "user": "ESpmdark",
+   "created_at": "2026-07-15T12:53:05Z",
+   "body": "Im sorry, life got in the way and I forgot to reply.\n\nI tried the suggested app, but without root access it could not inspect the CPU usage of each individual app. Meaning it didnt provide better insight in usage.\n\nFor one charge cycle, I also disabled my WiFi (my setting only allows nightscout syncing on WiFi) to see if it had any impact.\nBut no.\n\nOn an average where my usage of the phone is minimal, and most battery drain is background/screen off. AAPS remain within 38-50% of total drain according to Pixel's own info (seeing as they have full access to read CPU usage).\n\n\nI didnt want to tinker too much with my AAPS settings to blindly test, so I'm wondering if theres any suggestions to what I could try to narrow down what part of AAPS is the battery-hog?"
+  },
+  {
+   "id": 5049425187,
+   "user": "ESpmdark",
+   "created_at": "2026-07-22T17:38:44Z",
+   "body": "Update:\n\nForgot to charge before I went to bed yesterday. So woke up to a dead phone.\nCharged it to 90%.\n\n7 hours later, I'm at 80% (previously this would be expected to be down to 30% at this point).\n\nOther thing to take note of. The month I've had the phone, it's been running constantly \"warm\". Not overly hot, but at a temperature that would dictate that its being \"used\".\n\nToday its been cold.\n\nSo whatever was causing the drainage, must've been some stuck proccess that was there from when I first set up the phone. And the complete drain that happened today did some hard reset or something. Something that did not show up on any usage-tracking list (native Pixel overview, or through the battery apps I tested).\nYes, the % usage is still dominated by AAPS, but that might just be due to my severe lack of manual usage of the phone that scewes the % unfairly in AAPS light.\n\nI'm not closing the issue immediately. As I want to see if it stays healthy.\nMy main thought is that it might've been a proccess tied to the OS update that occurred during my first day with it. Albeit I dont know too much about this stuff, so it's pure guesswork."
+  },
+  {
+   "id": 5104635762,
+   "user": "ESpmdark",
+   "created_at": "2026-07-28T13:16:54Z",
+   "body": "Its been long enough to have had multiple pump changes and a CGM change since the battery started behaving.\nEverything is still functioning and no new proccess has gotten stuck.\nI'm closing the issue with the knowledge that should the problem return, I'll need to figure out what proccess is the culprit."
+  }
+ ]
+}

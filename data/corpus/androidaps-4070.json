@@ -1,0 +1,123 @@
+{
+ "id": 3265172875,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4070,
+ "title": "No more UAM ??",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4070",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-07-26T06:04:36Z",
+ "closed_at": "2026-02-06T15:18:06Z",
+ "comment_count": 18,
+ "body": "Very strangely,  I haven't seen any UAM bars on the graphs for some time now (several weeks). No idea why they stopped showing.\n\nRunning last dev. Logs if they can help.\n\n![Screenshot_20250722_182114_AAPS.jpg](https://github.com/user-attachments/assets/29bd9887-2aed-4f3e-8b21-499e58d32d43)\n\n![Screenshot_20250725_235409_AAPS.jpg](https://github.com/user-attachments/assets/80263d40-73eb-402d-b921-7113548ee81e)\n\n![Screenshot_20250725_235702_AAPS.jpg](https://github.com/user-attachments/assets/c1dd1e70-737d-4d43-91c4-024148ea5134)\n\n![AndroidAPS_LOG_1753480370135.log.zip](https://github.com/user-attachments/files/21441952/AndroidAPS_LOG_1753480370135.log.zip)\n\n",
+ "comments": [
+  {
+   "id": 3141918733,
+   "user": "robertrub",
+   "created_at": "2025-08-01T02:07:34Z",
+   "body": "Another case. Classic dinner, 45g carbs, a bit fatty compared to usual. Hypo before going to bed. I eat biscuits and maple syrup but don't tell those carbs to AAPS.\n\n![Screenshot_20250801_030338_AAPS.jpg](https://github.com/user-attachments/assets/735c22c9-2ba9-48f4-b40f-15ccaa57d3be)\n\nThere are no yellow UAM bars (and an ultra long COB decay).\n\nI think I haven't seen yellow UAM bars for quite some time now. Running latest dev.\n\nThe logs\n\n![AndroidAPS_LOG_1754010232871.log.zip](https://github.com/user-attachments/files/21540309/AndroidAPS_LOG_1754010232871.log.zip)\n\n"
+  },
+  {
+   "id": 3143597532,
+   "user": "MilosKozak",
+   "created_at": "2025-08-01T07:47:06Z",
+   "body": "I'm not aware of any changes. Rollback to older version to compare results"
+  },
+  {
+   "id": 3146178690,
+   "user": "robertrub",
+   "created_at": "2025-08-02T03:35:26Z",
+   "body": "Sorry but I can't test. I only keep the last and the one before last apks. I have total confidence in the _boss_ for never needing to go back several versions 😉"
+  },
+  {
+   "id": 3160792104,
+   "user": "Philoul",
+   "created_at": "2025-08-06T16:17:18Z",
+   "body": "I confirm I still have yellow bars on mý dev phone synchronized with latest dev branch (data 100% synchronized with my loop phone)."
+  },
+  {
+   "id": 3183703685,
+   "user": "jbr7rr",
+   "created_at": "2025-08-13T12:27:31Z",
+   "body": "Yellow UAM bars come from autosens plugin, so some options:\n- You changed autosens plugin to (older) version without UAM\n- Autosens is disabled? idk mostly it should show up, but I'm not on dev so don't know the exact behavoir there\n- Autosens UAM detection is generally: IOB > (2x basal), so maybe you changed your basal profile and this condition is not met"
+  },
+  {
+   "id": 3183732086,
+   "user": "robertrub",
+   "created_at": "2025-08-13T12:34:01Z",
+   "body": "Thanks for the AutoSens tip. It was turned OFF. \n\n![Screenshot_20250813_143221_AAPS.jpg](https://github.com/user-attachments/assets/875c65ca-2a6a-41a2-b3dd-508f622f8a9e)\n\nTurned it ON and will test again."
+  },
+  {
+   "id": 3197616803,
+   "user": "robertrub",
+   "created_at": "2025-08-18T16:28:08Z",
+   "body": "I was tracking IOB and BG raise. This time, IOB is over 3x the basal rate but I still don't have any yellow UAM bars. AutoSens is turned ON.\n\n![Screenshot_20250818_182406_AAPS.jpg](https://github.com/user-attachments/assets/af8fd0cf-430e-49b4-9c9f-0930222d662e)\n\n![Screenshot_20250818_182334_AAPS.jpg](https://github.com/user-attachments/assets/b3448f63-c69d-423c-b764-c77f76f75f3f)\n\n\n"
+  },
+  {
+   "id": 3197619265,
+   "user": "robertrub",
+   "created_at": "2025-08-18T16:28:42Z",
+   "body": "![Screenshot_20250815_191352_AAPS.jpg](https://github.com/user-attachments/assets/f55cc68a-8255-4b61-83a9-6e6be2928fff)\n\nLogs if they can help understand...\n\n![AndroidAPS_LOG_1755536973262.log.zip](https://github.com/user-attachments/files/21840914/AndroidAPS_LOG_1755536973262.log.zip)\n\n\n"
+  },
+  {
+   "id": 3330379187,
+   "user": "MilosKozak",
+   "created_at": "2025-09-24T19:34:11Z",
+   "body": "uam is logged only when `iob > 2 * currentBasal`"
+  },
+  {
+   "id": 3330676442,
+   "user": "robertrub",
+   "created_at": "2025-09-24T20:53:46Z",
+   "body": "> uam is logged only when `iob > 2 * currentBasal`\n\nYes, @Philoul said the same and I had IOB over 2xbasal rate of the moment but still no yellow bars."
+  },
+  {
+   "id": 3330690864,
+   "user": "MilosKozak",
+   "created_at": "2025-09-24T20:57:27Z",
+   "body": "<img width=\"271\" height=\"136\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/1ad0c895-722e-44ae-ae1e-2e240711e9f9\" />"
+  },
+  {
+   "id": 3331287271,
+   "user": "robertrub",
+   "created_at": "2025-09-25T00:46:03Z",
+   "body": "I don't know why I only have gray bars... IOB is over 2x basal.\n\n![Screenshot_20250925_024409_AAPS.jpg](https://github.com/user-attachments/assets/d4ee150b-4758-4dac-8c0b-23e847ed8144)\n\n![Screenshot_20250925_024327_AAPS.jpg](https://github.com/user-attachments/assets/4c9e24b0-4542-4d6b-92d3-eb9e66a5bf89)\n\n"
+  },
+  {
+   "id": 3510608126,
+   "user": "PoweRGbg",
+   "created_at": "2025-11-10T10:08:16Z",
+   "body": "I can also confirm that UAM bars are gone even with enabled UAM and AS. IOB is far greater than 2x Basal rate and the sensitivity change curve is rising which leads to increased AS and DynISF values. This happened on master and dev-d versions. Also seen on another user's phone. "
+  },
+  {
+   "id": 3808868757,
+   "user": "robertrub",
+   "created_at": "2026-01-28T04:22:40Z",
+   "body": "This problem is still not solved. Look around 1AM. IOB is over 5 times my profile basal and not a single yellow UAM bar. UAM is checked in settings of course.\n\n![Screenshot_20260128_045522_AAPS.jpg](https://github.com/user-attachments/assets/925792a9-3203-4a81-9099-282cc7d56285)\n![Screenshot_20260128_045847_AAPS.jpg](https://github.com/user-attachments/assets/063a3d7b-285f-41b5-adc2-9d523aaf5da5)\n![AndroidAPS_LOG_1769572941420.log.zip](https://github.com/user-attachments/files/24899801/AndroidAPS_LOG_1769572941420.log.zip)\n\n\n\n"
+  },
+  {
+   "id": 3832322008,
+   "user": "vanelsberg",
+   "created_at": "2026-02-01T23:59:01Z",
+   "body": "> ...not a single yellow UAM bar\n\nQ: Assuming you did check this is not only about UAM bar not visible in overview even while UAM is active?\nQ: Could this be an AutoISF problem?\n\n(Not using UAM and/or AutoISF: both do not work for me. Will see if I can repro this issue)\n"
+  },
+  {
+   "id": 3832695610,
+   "user": "robertrub",
+   "created_at": "2026-02-02T03:20:20Z",
+   "body": "I looked at the charts only. Didn't search in the loop run data.\n\nI thought a \"bad option setting\" in memory. UAM was checked in settings. I unchecked, force closed, delete cache, restart, check UAM, force close, delete cache, restart. Same result. No UAM bars.\n\nUAM is interesting to use as it gives more power to SMBs (if you setup more basal minutes to SMBs with UAM).\n\nNo idea why I have not a single yellow bars (for months now)."
+  },
+  {
+   "id": 3834386859,
+   "user": "vanelsberg",
+   "created_at": "2026-02-02T10:51:36Z",
+   "body": "> .. No idea why I have not a single yellow bars (for months now).\n\nI do have yellow bars now and then but nu UAM active.\nNeed to check again on the yellow bars ;-) and maybe also test UAM. Testing DASH atm (PR4499)"
+  },
+  {
+   "id": 3852537411,
+   "user": "robertrub",
+   "created_at": "2026-02-05T10:13:35Z",
+   "body": "Issue probably solved. If you use _AAPS sensibility_, you loose UAM. Using Oref1 sensitivity brings back the UAM.\n\nI set Oret1 and and am waiting for the next BG raise with COB = 0\n\nCan't understand why AAPS sensitivity zaps the UAM... \n\n![Screenshot_20260205_110241_AAPS.jpg](https://github.com/user-attachments/assets/1ea877c3-79e7-4e7f-b1a7-3e7d6224c6ae)\n\n"
+  }
+ ]
+}

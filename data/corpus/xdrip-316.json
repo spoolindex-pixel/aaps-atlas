@@ -1,0 +1,105 @@
+{
+ "id": 300034636,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 316,
+ "title": "xDrip+ can backfill a \"flat line\" of Libre values to Nightscout on restarting",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/316",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2018-02-25T15:24:38Z",
+ "closed_at": "2018-03-07T09:47:15Z",
+ "comment_count": 15,
+ "body": "Though xDrip+ sees the last 8 hours of glucose readings on a restart in the morning, it seems to send the last value for the previous 8 hours to Nightscout's REST API.\r\n\r\n![screenshot_2018-02-25-15-40-00](https://user-images.githubusercontent.com/890447/36642640-d7d0a96c-1a42-11e8-888d-1de1320aa2c2.png)\r\n\r\nThis first picture is a screenshot of xDrip+ (a recent nightly build) showing the values read from Libre. My setup is the Freestyle Libre, a Sony SW3 reads the Llibre for the Jamorham Libre Alarm as the collector and xDrip+ sends to Nightscout. I am unable to sleep with the SW3 - I seem to kill the Libre after only 7 days due to physically knocking it about too much while I sleep. Thus, I take and turn the SW3 off as I go to bed, I stop the Libre Alarm app on the phone and in the morning I turn everything back on and get them started again.\r\n\r\nAfter I get them started, the graph on Nightscout is a flat line: \r\n![img_0077](https://user-images.githubusercontent.com/890447/36643050-ede7c6f0-1a46-11e8-95b8-95758eebed85.PNG)\r\n\r\nEver since the 13th of Jan 2018, the data on Nightscout is a flat line of glucose values, starting 8 hours before the first Libre Alarm reading, and all at the value of whatever that first Libre Alarm reading was. I checked that it wasn't a rendering problem with Nightscout by looking at the individual `sgv` values in my mLab `entries` collection - they are all the same value: and hence this issue.\r\n\r\nHowever, I started with Libre Alarm and xDrip+ in Dec 2017 and for the first weeks this problem was not happening - but mid Jan was the time that I had to abandon trying to sleep the night wearing the SW3. I have not redeployed nor upgraded Nightscout during this time (I'm still successfully running my initial deployment). I _did_ upgrade xDrip+ from what was then the latest \"release\" version (early Nov I _think_, to a recent nightly build (a78dccd-2018.02.09), but that hasn't made a difference in this case.\r\n\r\nThis screen grab from Nightscout perhaps shows what happens a little more clearly: \r\n![nightscout gets flat lines](https://user-images.githubusercontent.com/890447/36643109-7e0fa00e-1a47-11e8-975f-3ef19d7dc77e.png)\r\n\r\nGiven that no-one else seems to have reported this issue, it may be that I am unusual in (a) reading a Libre via Libre Alarm and (b) not being to keep the system running all the time. It may of course be a case that I have an unusual combination of settings - but I need advice on what to try.\r\n",
+ "comments": [
+  {
+   "id": 369526400,
+   "user": "endafarrell",
+   "created_at": "2018-03-01T09:11:50Z",
+   "body": "I was looking to see if any of my settings were contributing to this, and I suspect that having two \"Cloud Upload > Nightscout Sync (REST-API)\" URLs might be unusual. So, this morning before restarting the SW3 and Libre Alarm, I edited the setting to just have one, but it did not seem to affect how the numbers were reported.\r\n\r\n"
+  },
+  {
+   "id": 369528086,
+   "user": "endafarrell",
+   "created_at": "2018-03-01T09:17:03Z",
+   "body": "![screenshot_2018-03-01-08-43-14](https://user-images.githubusercontent.com/890447/36836394-7fa4b2b6-1d39-11e8-9979-8f4e7bf3eead.png)\r\n\r\nHere, Nightscout has a \"flat line\" of Libre values, but xDrip+ itself has the \"correct\" values:\r\n\r\n![screenshot_2018-03-01-08-43-37](https://user-images.githubusercontent.com/890447/36836458-a447f6aa-1d39-11e8-8fcf-29cfbe3bd42c.png)\r\n"
+  },
+  {
+   "id": 369578231,
+   "user": "tzachi-dar",
+   "created_at": "2018-03-01T12:35:28Z",
+   "body": "Are you using Oop algorithm?\n\nOn Thu, 1 Mar 2018, 11:17 am Enda Farrell, <notifications@github.com> wrote:\n\n> [image: screenshot_2018-03-01-08-43-14]\n> <https://user-images.githubusercontent.com/890447/36836394-7fa4b2b6-1d39-11e8-9979-8f4e7bf3eead.png>\n>\n> Here, Nightscout has a \"flat line\" of Libre values, but xDrip+ itself has\n> the \"correct\" values:\n>\n> [image: screenshot_2018-03-01-08-43-37]\n> <https://user-images.githubusercontent.com/890447/36836458-a447f6aa-1d39-11e8-8fcf-29cfbe3bd42c.png>\n>\n> —\n> You are receiving this because you are subscribed to this thread.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/316#issuecomment-369528086>,\n> or mute the thread\n> <https://github.com/notifications/unsubscribe-auth/AHkw5Ix7Kx0KYv4f2vwpSACigh-rEwLgks5tZ7yQgaJpZM4SSVYw>\n> .\n>\n"
+  },
+  {
+   "id": 369592628,
+   "user": "endafarrell",
+   "created_at": "2018-03-01T13:34:16Z",
+   "body": "@tzachi-dar If \"Oop algorithm\" means \"Settings > Less common settings > Other misc options > Out of process blukon algorithm.\" then no, I'm not using it as I don't have a blukon device. "
+  },
+  {
+   "id": 369650938,
+   "user": "tzachi-dar",
+   "created_at": "2018-03-01T16:36:43Z",
+   "body": "Can you please update to the latest nightly, and see if the problem still exists?\r\nI have just checked it on my phone, and it seems to work OK.\r\nIf it does not, can you please do the following:\r\ngo to settings->less common settings->extra tags for logging and then add there: \"BgReading:v\"\r\nDo an upload, and send me the logs of it (use export database) and then share it with tzachi.dar@gmail.com"
+  },
+  {
+   "id": 369701799,
+   "user": "endafarrell",
+   "created_at": "2018-03-01T19:24:58Z",
+   "body": "Hi @tzachi-dar - thanks for looking at this.\r\n\r\nI've updated to https://github.com/NightscoutFoundation/xDrip/releases/tag/2018.02.28 (9e9ad76-2018.02.28 Code 1802281519) and stopped the Libre Alarm app on the phone before I ate. Then, an hour or so later, I started the Libre Alarm app again and the problem is still evident.\r\n\r\nxDrip+ shows the correct LibreAlarm values: \r\n![screenshot_2018-03-01-20-10-56](https://user-images.githubusercontent.com/890447/36864823-092cc952-1d8e-11e8-98b6-6f2b435ac1f7.png)\r\n\r\n... but what is sent to Nightscout is the \"flat line\":\r\n![screenshot_2018-03-01-20-13-08](https://user-images.githubusercontent.com/890447/36864852-22213e3e-1d8e-11e8-9c10-ee02b98cc9cf.png)\r\n\r\n\r\nI'll now set the extra tags for logging, and I'll upload tomorrow morning and share the results then."
+  },
+  {
+   "id": 369893641,
+   "user": "endafarrell",
+   "created_at": "2018-03-02T11:11:02Z",
+   "body": "(Earlier today, I emailed @tzachi-dar the logs from this morning)"
+  },
+  {
+   "id": 369996097,
+   "user": "jamorham",
+   "created_at": "2018-03-02T17:43:49Z",
+   "body": "Try turning off `Send Display Glucose` from the Nightscout Sync options in Cloud Upload settings and see if that makes any difference."
+  },
+  {
+   "id": 370135867,
+   "user": "endafarrell",
+   "created_at": "2018-03-03T10:05:32Z",
+   "body": "@jamorham I tried this by turning off Libre Alarm for an hour after breakfast - and it seems to have worked - instead of a \"flat line\", the Libre scanner, xDrip and Nightscout all show the same \"s\" curve I had this morning. \r\n\r\nMany thanks!\r\n\r\nIs there anything I can do/try/help with this - or should I just Close it?"
+  },
+  {
+   "id": 370271215,
+   "user": "tzachi-dar",
+   "created_at": "2018-03-04T22:41:45Z",
+   "body": "According to what I understand from getDisplayGlucose() it seems that it depends on readings arriving at order.\r\nThis is also the comment on: injectDisplayGlucose\r\n\r\nHowever in the function CalculateFromDataTransferObject This is not the case. We need to sort values, before sending them up.\r\n"
+  },
+  {
+   "id": 370369892,
+   "user": "endafarrell",
+   "created_at": "2018-03-05T10:06:18Z",
+   "body": "@tzachi-dar Do you think that sorting before sending would also \"fix\" #332?"
+  },
+  {
+   "id": 370370809,
+   "user": "tzachi-dar",
+   "created_at": "2018-03-05T10:09:44Z",
+   "body": "I believe that yes.\n\nOn 5 March 2018 at 12:06, Enda Farrell <notifications@github.com> wrote:\n\n> @tzachi-dar <https://github.com/tzachi-dar> Do you think that sorting\n> before sending would also \"fix\" #332\n> <https://github.com/NightscoutFoundation/xDrip/issues/332>?\n>\n> —\n> You are receiving this because you were mentioned.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/316#issuecomment-370369892>,\n> or mute the thread\n> <https://github.com/notifications/unsubscribe-auth/AHkw5JsIoj8QiYYmoXHD3XhsmJZSA0rvks5tbQ4bgaJpZM4SSVYw>\n> .\n>\n"
+  },
+  {
+   "id": 370921322,
+   "user": "jamorham",
+   "created_at": "2018-03-06T20:43:13Z",
+   "body": "Can you try re-enabling the send display glucose option and install the March 6th Nightly and let me know if that solves the issue. Thanks."
+  },
+  {
+   "id": 370927889,
+   "user": "blocklist",
+   "created_at": "2018-03-06T21:05:23Z",
+   "body": "For mit it works @jamorham no longer a flat line. The 8h was rebuild/send now correctly to nightscout."
+  },
+  {
+   "id": 371082968,
+   "user": "endafarrell",
+   "created_at": "2018-03-07T09:47:15Z",
+   "body": "@jamorham and @blocklist - I am delighted to confirm that, with the Code: [1803061753 APK](https://github.com/NightscoutFoundation/xDrip/releases/tag/2018.03.06) (from yesterday), and with ``Settings | Cloud Upload | Nightscout Sync (REST-API) | Send Display Glucose = \"ON\"``, I see the same data on Nightscout as I do in the xDrip+ UI. \r\nSuccess!\r\n\r\n![issue-316-is-fixed](https://user-images.githubusercontent.com/890447/37085156-97704850-21f4-11e8-9625-6e5168fe5749.PNG)\r\n\r\nThe image above shows Nightscout data the morning after restarting Libre Alarm which is not a \"flat line\", even though the \"Send Glucose = ON\" was smoothing out the noise that may have been present.\r\nMany thanks @jamorham and @tzachi-dar for all of this."
+  }
+ ]
+}

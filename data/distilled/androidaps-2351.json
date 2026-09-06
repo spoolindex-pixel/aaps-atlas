@@ -1,0 +1,21 @@
+{
+ "issue_id": 2351,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/2351",
+ "title": "[DEV][NSC V3] Pod/Canula change not reported to NS",
+ "symptom": "Pod and cannula changes are not reported to Nightscout (NS). The user switched from Insight to DASH and placed a new pod, but the pod change is not registered in NS. CAGE shows 4+ days from when using NSC V1. Manual entry via actions tab also does not work.",
+ "cause": "The Nightscout server rejected the treatment upload with HTTP 400 error: 'Field date cannot be modified by the client'. This caused the upload to fail and the queue to stall, preventing subsequent records from being sent.",
+ "fix": "The developer changed the processing to continue with upload when an error occurs, allowing subsequent records to be sent despite the faulty one.",
+ "settings_changed": [],
+ "devices": [
+  "Insight",
+  "DASH"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "NSC V3",
+  "NSClientV3Plugin"
+ ],
+ "confidence": "high",
+ "evidence_quote": "I changed processing to continue with upload when error occurs. Update"
+}

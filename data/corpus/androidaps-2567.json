@@ -1,0 +1,14 @@
+{
+ "id": 1740396864,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2567,
+ "title": "[DEV] Pump connection loss alarm is not working",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2567",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-06-04T14:11:55Z",
+ "closed_at": "2023-07-20T12:47:08Z",
+ "comment_count": 0,
+ "body": "AAPS will not alarm after 30 minutes of no conneciton to the pump as expected\r\n\r\nThis check in KeepAliveWorker:\r\n```\r\nrunningProfile.value.originalEnd < dateUtil.now())\r\n```\r\nIntroduced in 01bb554651f2dbfafdec7f069dd99f2ed16cc578\r\nAlways returns true when the current profile has no duration, always triggering the parent condition and preventing a statusUpdate to the pump\r\nThe condtition will return false when the profile has a duration, and triggering the statusUpdate for the pump\r\n\r\nThis results in the pump timeout not triggering for some pumps when a profile with no duration is set (currently facing this with a pump under development, but this condition also triggers when using virtual pump)\r\n\r\nI think its due to runningProfile.value.originalEnd only being set when there is a duration present.\r\n\r\nI hope this makes sense, otherwise I'm happy to explain futher in DM\r\n",
+ "comments": []
+}

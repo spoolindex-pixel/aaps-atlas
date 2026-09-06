@@ -1,0 +1,69 @@
+{
+ "id": 719227876,
+ "repo": "nightscout/AndroidAPS",
+ "number": 35,
+ "title": "[2.7.0]Minor bug: openaps SMB prediction not showing while CGM reading keep unchanged ~45m",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/35",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2020-10-12T09:34:35Z",
+ "closed_at": "2020-10-25T21:38:47Z",
+ "comment_count": 9,
+ "body": "**Edit:** It's mentioned like this. But may it be possible to just show a straight prediction line instead? Just no predition line generates a feeling of insecurity and leads to bugreports like this.\r\n\r\nMore information about this bug: (thanks to @ArthurusDent)\r\n> \r\n> \r\n> This is not a bug. You can read about it here:\r\n> [MilosKozak/AndroidAPS#2868 (comment)](https://github.com/MilosKozak/AndroidAPS/issues/2868#issuecomment-678638468)\r\n> [MilosKozak/AndroidAPS#2868 (comment)](https://github.com/MilosKozak/AndroidAPS/issues/2868#issuecomment-679153252)\r\n> \r\n> You have been the only one who is mentioning this so far (after the release of 2.7) so maybe I was wrong in thinking this behaviour would get quite some attention. Also see: [MilosKozak/AndroidAPS#2924](https://github.com/MilosKozak/AndroidAPS/issues/2924)\r\n\r\n\r\n**original text:**\r\nSee pictures. It only occures with the smb algorythm and only when my glucose levels are keeping strait. Since installation of v2.7.0 last afternoon, I had it twice (yesterday noon + this morning), always with the same symptoms and \"error\".\r\nIt's confusing, because you can't see any prediction and therefore don't know if there happened a big issue.\r\nAt the time the error ocurred, I was using temp target, but I mostly use it, so - I guess it won't affect the bug.\r\n\r\nPredictions where always enabled, CGM readings where correctly :) - I tried the AMA algorythm and everything was fine. Also with past versions of SMB algorythm.\r\n\r\nI'm using:\r\nAndroidAPS 2.7.0\r\nBuild: bc43a926f-2020.10.11-22:16\r\nRemote: https://github.com/nightscout/AndroidAPS\r\nFlavor: fullrelease\r\nNightscout-Version: 14.0.6\r\nDeveloper-Mode: activated\r\nAccucheck Insight firmware 3.x\r\nXdrip as BG source -> unit mmol/l\r\nLibre 2 with patched app\r\nHuawei Mate 10 pro, Android v. 10\r\n\r\n//AndroidAPS screen\r\n![picture](https://user-images.githubusercontent.com/65506676/95729483-41d73400-0c7d-11eb-9e1e-dbace6c64fb2.png)\r\n\r\n\r\n[AndroidAPS_LOG_1602492969986.log.zip](https://github.com/nightscout/AndroidAPS/files/5364142/AndroidAPS_LOG_1602492969986.log.zip)\r\n\r\n[Scrollshot SBM calculation sreen.zip](https://github.com/nightscout/AndroidAPS/files/5364209/Scrollshot.SBM.calculation.sreen.zip)\r\n",
+ "comments": [
+  {
+   "id": 707072171,
+   "user": "ArthurusDent",
+   "created_at": "2020-10-12T11:50:06Z",
+   "body": "This is not a bug. You can read about it here:\r\nhttps://github.com/MilosKozak/AndroidAPS/issues/2868#issuecomment-678638468\r\nhttps://github.com/MilosKozak/AndroidAPS/issues/2868#issuecomment-679153252\r\n\r\nYou have been the only one who is mentioning this so far (after the release of 2.7) so maybe I was wrong in thinking this behaviour would get quite some attention. Also see: https://github.com/MilosKozak/AndroidAPS/issues/2924"
+  },
+  {
+   "id": 707074899,
+   "user": "maheini",
+   "created_at": "2020-10-12T11:56:15Z",
+   "body": "> \r\n> \r\n> This is not a bug. You can read about it here:\r\n> [MilosKozak/AndroidAPS#2868 (comment)](https://github.com/MilosKozak/AndroidAPS/issues/2868#issuecomment-678638468)\r\n> [MilosKozak/AndroidAPS#2868 (comment)](https://github.com/MilosKozak/AndroidAPS/issues/2868#issuecomment-679153252)\r\n> \r\n> You have been the only one who is mentioning this so far (after the release of 2.7) so maybe I was wrong in thinking this behaviour would get quite some attention. Also see: [MilosKozak/AndroidAPS#2924](https://github.com/MilosKozak/AndroidAPS/issues/2924)\r\n\r\nThanks mate. Will read this and change my bug afterwards - does really looks like it would solve my question\r\n\r\n**Edit: That solves my insecure feeling and solves most of the issue. May it be possible to just show a straight line instead of nothing? Just no predition line generates a feeling of insecurity and leads to bugreports like this.**"
+  },
+  {
+   "id": 708353525,
+   "user": "wootmasterslick",
+   "created_at": "2020-10-14T11:58:11Z",
+   "body": "Would be nice if carb and insulin absorption calculation continued irrespective of BG values coming in. Now we often have that during a sensor swap the carbs are displayed as n/a because no BG values come in. "
+  },
+  {
+   "id": 709216519,
+   "user": "MilosKozak",
+   "created_at": "2020-10-15T11:23:48Z",
+   "body": "> Would be nice if carb and insulin absorption calculation continued irrespective of BG values coming in. Now we often have that during a sensor swap the carbs are displayed as n/a because no BG values come in.\r\n\r\nhmmm it's calculated from BG values"
+  },
+  {
+   "id": 713419360,
+   "user": "doraberta",
+   "created_at": "2020-10-21T08:57:13Z",
+   "body": "I'm sorry to have opened the post under the old repo (see the link from ArthurusDent) , so my last answer here again: \r\n\r\nI read the threat about the defective Libre sensor.\r\nThis is about a torn out sensor, which then sends values that are too low over a long period of time. For this particular situation, that's fine.\r\n\r\nThe message that I opened is about values that are too high and will not be corrected. Here, in my opinion, a distinction can be made, since sensors that are torn out never send values that are too high.\r\n\r\nFrom my point of view, the algorithm should be changed / corrected so\r\na) that with a flatline of low values the existing 45 min algorithm takes effect.\r\nb) With high values (= in my opinion all> 80 BG), the algorithm must not work. = standard work by AAPS"
+  },
+  {
+   "id": 713726379,
+   "user": "ToreBj",
+   "created_at": "2020-10-21T17:14:03Z",
+   "body": "Adding my comment from the old repo here:\r\n\r\nIs there a link to this Libre event?\r\n\r\nI question the general safety precaution introduced for all CGMs caused by this (one?) event.\r\nOne should not compare the Libre with the Dexcom. A dexcom G5/G6 in native mode has a lot of diagnostics enabled and would capture most failure scenarios. I know from the time I used G5 and could easily see that the native mode would make the sensor fail, but turning off the native mode you could continue reading \"raw\" values.\r\nThe same goes for Libre where you are actually collecting raw values and therefore bypassing any built-in diagnostics.\r\n\r\nFor Libre reference see: https://www.facebook.com/groups/LoopedUK/permalink/367511433884633\r\n\r\n\"After the swim, Spike read super high at 22 mmol and LOOP enacted a high temp basal. The Libre reader itself said ‘too cold to read’, and is still not reading 2 hours later. (I asssume the sensor is dead, still reading sensor error) However Spike was still getting readings at 22mmol and transmitting to LOOP to act on it.\"\r\n\r\nI trust my Dexcom G6 and would like to lower my BG in high BG situations. I've seen this precaution acting personally many times and propose to disable this for all \"safe\" CGMs (as with SMB, i.e. enabling SMB only for \"safe\" CGMs)."
+  },
+  {
+   "id": 716216296,
+   "user": "MilosKozak",
+   "created_at": "2020-10-25T21:38:47Z",
+   "body": "changed for Dexcom native app "
+  },
+  {
+   "id": 716224503,
+   "user": "ArthurusDent",
+   "created_at": "2020-10-25T22:42:02Z",
+   "body": "Is it possible to also change this for xDrip+ with Dexcom? "
+  },
+  {
+   "id": 738292345,
+   "user": "dv1",
+   "created_at": "2020-12-03T20:36:33Z",
+   "body": "> Is it possible to also change this for xDrip+ with Dexcom?\r\n\r\nI'd like to know that as well. If xDrip is used with native mode, it getting the same BG data the official app is receiving, and the transmitter will intervene if the values seem bogus."
+  }
+ ]
+}

@@ -1,0 +1,33 @@
+{
+ "id": 2778432283,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3724,
+ "title": "Version Checker not working on clean install of 3.2.0.4",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3724",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-01-09T17:49:40Z",
+ "closed_at": "2025-01-09T20:59:27Z",
+ "comment_count": 3,
+ "body": "I had to install AAPS on a backup phone due to damage to my primary phone. I installed the same APK I had been using (my own fork of autoISF on 3.2.0.4). After setup I was unable to get off of LGS and I noticed in the constraints that Version Checker was indicating an old version. I had limited time to get it to work so I removed the version checker code from my fork and was able to get it to close the loop. \r\n\r\nTo rule out any of my modifications I built a clean master version of 3.2.0.4 and installed on a different phone and am having the same issues. Screenshots and logs attached.\r\n\r\nI found one other comment on discord of someone having the same issue back in June: https://discord.com/channels/629952586895851530/629954570394533889/1251826771532320778\r\n[AndroidAPS_LOG_1736444630682.log.zip](https://github.com/user-attachments/files/18365242/AndroidAPS_LOG_1736444630682.log.zip)\r\n![Screenshot_20250109-113701](https://github.com/user-attachments/assets/a12337df-12ee-41e2-9340-438ea2e0a10c)\r\n![Screenshot_20250109-113619](https://github.com/user-attachments/assets/900042c1-1450-48d1-a620-7d5789bcebfa)\r\n![Screenshot_20250109-113638](https://github.com/user-attachments/assets/e578b7fb-d880-4c7b-b537-f5c1f9ee9467)\r\n\r\n",
+ "comments": [
+  {
+   "id": 2581236182,
+   "user": "MilosKozak",
+   "created_at": "2025-01-09T20:59:28Z",
+   "body": "3.2 is no more supported\r\nupgrade to latest version"
+  },
+  {
+   "id": 2581375413,
+   "user": "jbfeutz",
+   "created_at": "2025-01-09T22:36:38Z",
+   "body": "I understand that upgrading is a solution to this issue, but I believe the root cause should still be fixed. Ideally others can confirm this, but my experience has been that you cannot install on old version (even if it is still in the \"usable window\") once a new version is available. This would mean that you cannot quickly restore from a backup if a new version has been released since your last backup. I believe this to be a major safety concern and something that should be looked in to further. \r\n\r\nEdit to add: it is not possible to test or duplicate this bug on the most recent version since by nature it will only happen on an outdated version. "
+  },
+  {
+   "id": 2583350626,
+   "user": "jbfeutz",
+   "created_at": "2025-01-10T17:48:15Z",
+   "body": "Update in case others find this... the issue seems to be isolated to a single preferences file I was using as a backup. When I use a newer preferences file it allows me to close the loop but the older file, when imported, breaks it again. A discord user also tested this with an old preferences file and they DID NOT have the same issue so it appears to be isolated to this specific preferences file somehow. "
+  }
+ ]
+}

@@ -1,0 +1,117 @@
+{
+ "id": 461624901,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 936,
+ "title": "https (ssl) support for local web services?",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/936",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2019-06-27T16:20:41Z",
+ "closed_at": "2019-08-25T19:04:15Z",
+ "comment_count": 19,
+ "body": "Garmin has been threatening to remove http support (because Apple is pressuring them i believe) from their web request API... they may have just done it, as their latest app release no longer works properly with xdrip+ web services (see https://forums.garmin.com/developer/connect-iq/i/bug-reports/connect-version-4-20-broke-local-http-access).\r\n\r\nCan xdrip+ local web services add support for https?  It seems this could eventuallly be needed regardless of how that garmin issue turns out (it may indeed just be a bug)...",
+ "comments": [
+  {
+   "id": 506480052,
+   "user": "tynbendad",
+   "created_at": "2019-06-27T19:29:56Z",
+   "body": "Garmin just replied that it did intentionally remove http access."
+  },
+  {
+   "id": 506495930,
+   "user": "tynbendad",
+   "created_at": "2019-06-27T20:20:57Z",
+   "body": "(for tracking purposes, i've also opened a Spike issue here: https://github.com/SpikeApp/Spike/issues/204)"
+  },
+  {
+   "id": 506654374,
+   "user": "jamorham",
+   "created_at": "2019-06-28T08:40:22Z",
+   "body": "xDrip web services do already support SSL, see https://github.com/NightscoutFoundation/xDrip/blob/master/Documentation/technical/Local_Web_Services.md#ssl-option\r\n\r\nI think there will be some extra work needed though, as the certificate would likely fail the certificate chain verification as it isn't signed by a certification authority. \r\n\r\nUnless we can get hold of a valid signed certificate for `127.0.0.1` which last time I checked they wont allow then we would need to add the xDrip certificate to the android trust store so that it will accept it. \r\n\r\nI haven't investigated how to achieve this. Phones can be a bit touchy about things like that and display dire warnings in a persistent notification etc. It would need investigating.."
+  },
+  {
+   "id": 506724769,
+   "user": "thedewi",
+   "created_at": "2019-06-28T12:59:24Z",
+   "body": "Slightly off-topic workaround, in case anyone comes here looking for one: the Nightscout Garmin apps are still working if your Nightscout is on `https` with a valid certificate."
+  },
+  {
+   "id": 506740357,
+   "user": "dabear",
+   "created_at": "2019-06-28T13:47:42Z",
+   "body": "The most logical fix here imho would be to garmin allowing http for localhost addresses that cannot be used with a ssl certificate, and forcing https for every other site."
+  },
+  {
+   "id": 506807136,
+   "user": "tynbendad",
+   "created_at": "2019-06-28T17:03:34Z",
+   "body": "@jamorham fwiw I tried https to access xdrip on my datafield (it has a setting where you can put any url) and it didn't work..."
+  },
+  {
+   "id": 506838828,
+   "user": "tynbendad",
+   "created_at": "2019-06-28T18:43:34Z",
+   "body": "An alternative (that I'm sure Garmin will recommend) is to integrate xDrip with the Garmin sdk Android library... I don't have the time/patience/experience for it though, but someone else should go for it if they like."
+  },
+  {
+   "id": 507155231,
+   "user": "jamorham",
+   "created_at": "2019-07-01T07:47:44Z",
+   "body": "I'm not sure what the implications would be. @swissalpine would be the person to ask I think."
+  },
+  {
+   "id": 507723922,
+   "user": "tynbendad",
+   "created_at": "2019-07-02T15:19:52Z",
+   "body": "There is hope, Garmin just updated the issue that due to feedback they are considering an exception for localhost access!"
+  },
+  {
+   "id": 508936154,
+   "user": "swissalpine",
+   "created_at": "2019-07-06T15:54:54Z",
+   "body": "@jamorham Sorry for my late reply I'm for two weeks in the austrian alps.\r\nThere is a possibility to communicate direct with xdrip+ beside the web service but unfortunatly you can't integrate this in watchfaces or datafields afaik. You can build widgets and apps with this technology but widgets runs only if they are active and apps consumes a lot of energy and breaks the smartwatch functionality. Two years ago I tested this api and it was very buggy, from time to time you have to restart your phone to reenable the communication.\r\nInstead of changing the technology of the communication with xDrip+ I prefer to stay with the old version of Garmin Connect Mobile App (14.9.1) as long as possible.\r\nIf @tynbendad informations are correct this would be the better way!"
+  },
+  {
+   "id": 509387507,
+   "user": "swissalpine",
+   "created_at": "2019-07-08T20:53:18Z",
+   "body": "Today one of the Garmin People confirmed that they will allow again http requests to local ip adresses. The question seems to be how long this will last ... Garmin Connect Mobile App Updates are scheduled monthly and I don't think they do it this month."
+  },
+  {
+   "id": 511925867,
+   "user": "explodus",
+   "created_at": "2019-07-16T18:09:25Z",
+   "body": "isn't there another alternative? if we have the original .cer and .key file from the bks file, we should be able to import it on the local android device and trust them. or am i wrong with this?"
+  },
+  {
+   "id": 513229698,
+   "user": "ChrisJSLH",
+   "created_at": "2019-07-19T13:31:51Z",
+   "body": "A developer (akkaming) has posted what he believes to be a potential solution in the Connect IQ thread (https://forums.garmin.com/developer/connect-iq/i/bug-reports/connect-version-4-20-broke-local-http-access?CommentSortBy=CreatedDate&CommentSortOrder=Descending).\r\n\r\nIs he on to something?"
+  },
+  {
+   "id": 516401321,
+   "user": "jamorham",
+   "created_at": "2019-07-30T12:40:38Z",
+   "body": "@ChrisJSLH he is probably correct, Garmin would need to implement this or another fix which they haven't done so far."
+  },
+  {
+   "id": 520486387,
+   "user": "swissalpine",
+   "created_at": "2019-08-12T15:59:18Z",
+   "body": "Yeah! There is an official Garmin Statement posted today by Brandon from the IQ Team:\r\n`We have a fix implemented to include localhost (127.0.0.1) in the exceptions list for GCM, which should be available in an upcoming release.`"
+  },
+  {
+   "id": 524644215,
+   "user": "swissalpine",
+   "created_at": "2019-08-25T16:37:28Z",
+   "body": "Garmin has fixed their app Garmin Connect Mobile. With version 4.22 Garmin apps can communicate again with xDrip+.\r\n@jamorham You can close this issue."
+  },
+  {
+   "id": 524655455,
+   "user": "tynbendad",
+   "created_at": "2019-08-25T19:04:15Z",
+   "body": "Yup, as there doesn't seem to be a good alternative to allowing http localhost, I'll close it. Thanks for all the input."
+  }
+ ]
+}

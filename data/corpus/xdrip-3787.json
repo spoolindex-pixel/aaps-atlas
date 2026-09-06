@@ -1,0 +1,117 @@
+{
+ "id": 2701683840,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 3787,
+ "title": "Companion App - Incorrect deltas / trend arrows and issues with the time it syncs",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/3787",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-11-28T10:42:35Z",
+ "closed_at": "2026-08-04T23:52:27Z",
+ "comment_count": 17,
+ "body": "### Discussed in https://github.com/NightscoutFoundation/xDrip/discussions/3784\r\n\r\n<div type='discussions-op-text'>\r\n\r\n<sup>Originally posted by **petalina** November 26, 2024</sup>\r\nHello, since I switched from Dexcom One to Dexcom One+, using the Companion App as source, I have some issues with the arrows / difference of values and the time of update. I think somehow it is stuck in the time the older sensor used to update the values or something (eg some of the time points below - 1st pic: 8.47 / 103 mg/dl - 8.51 / 103 mg/dl - 8.56 / 103 mg/dl - 8.57 / 113 mg/dl, but delta: +41 mg/dl instead of 10 mg/dl) but I can't understand why the deltas it displays are so large even though the diagram and the values are correct. Also, at the same time the difference may be correct in the widget but with the wrong arrow (based on the real delta and xDrip's settings, not compared to the Dexcom app) and when I open the app both the arrow and difference are wrong. \r\nI installed the latest version of xDrip+ yesterday and also tried to Restart Collector and restart my phone.\r\n\r\n![Screenshot 2024-11-26 162155](https://github.com/user-attachments/assets/f2d94112-a6f4-4ca9-bd7e-a27cec0d57fb)\r\n![Screenshot 2024-11-26 163223](https://github.com/user-attachments/assets/678a3092-1cc5-4e76-ad6f-90d6dd4a3e99)</div>",
+ "comments": [
+  {
+   "id": 2526533680,
+   "user": "Qxlkdr",
+   "created_at": "2024-12-09T00:16:44Z",
+   "body": "I can agree. I'm using xDrip+ since 2 days ago and loves it. Only using it as follower using my kids credentials to follow his Dexcom share (Dex Share).\r\n\r\nDexcom Follow is showing a \"Falling slightly\" arrow but xDrip+ is showing a straight down arrow:\r\n![Screenshot_20241209-010810~2](https://github.com/user-attachments/assets/344b379c-7bc3-4759-8e32-4450ae4cf56b)\r\n\r\nAt the same time, this is the result from the Home Assistant integration:\r\n![Screenshot_20241209-010842](https://github.com/user-attachments/assets/3e3572e0-522a-415a-8dbe-1903344f4bd2)\r\n\r\n"
+  },
+  {
+   "id": 2532880779,
+   "user": "overfrenk",
+   "created_at": "2024-12-10T20:59:58Z",
+   "body": "Same problem with eversense in companion mode, without companion mode the problem disappears! I could not solve the problem in any way."
+  },
+  {
+   "id": 2532918143,
+   "user": "Navid200",
+   "created_at": "2024-12-10T21:21:49Z",
+   "body": "@Qxlkdr @overfrenk \r\nThe reason this issue was opened is the discrepancy between the difference between the last two xDrip readings and the xDrip delta value of 41 in the very first image in this thread.\r\nIf you look at that image, you can see that the difference between the last two readings is less than 41.  \r\n\r\nHowever, xDrip is not supposed to show the delta or the trend arrow that Dexcom app or any other app shows.  xDrip is supposed to calculate the delta from the current and previous reading and calculate the arrow from that as well.\r\nDexcom app does not do that and uses a filer to come up with the arrow xDrip does not.  We are not trying to present Dexcom app's arrow in xDrip.  \r\n\r\nIf that is what you are interested in, you can open a discussion and we can talk about it.  \r\nAny other post in this issue that is not about the real issue it represents may be ignored."
+  },
+  {
+   "id": 2532930767,
+   "user": "overfrenk",
+   "created_at": "2024-12-10T21:29:32Z",
+   "body": "The problem is the same, regardless of the BG source, just use companion mode! If you notice you will have several readings with intervals of 1 or 2 minutes instead of the classic 5 minutes. I also obviously have the trend arrow that shows badly and hallucinatory delta values ​​even at +/-50."
+  },
+  {
+   "id": 2532937833,
+   "user": "Navid200",
+   "created_at": "2024-12-10T21:34:05Z",
+   "body": "@overfrenk Why would the timing impact delta?  You would be right if xDrip showed the slope.  But, it does not.  It shows delta, which has nothing to do with the time axis.  Why would we get a delta of 40 instead of 10, as explained clearly in the very first post of this issue, just because the readings arrive at a timing other than once every 5 minutes?"
+  },
+  {
+   "id": 2538581400,
+   "user": "petalina",
+   "created_at": "2024-12-12T11:10:33Z",
+   "body": "This observation about the time interval and the incorrect delta seems to be correct and it was a thought I quote from the initial discussion:\r\n\"Is there any chance that it uses the +10 md/dl delta in 1 minute (according to the time points but not the reality / Dexcom app) as 10 mg/dl/min and converts it to an \"expected\" +41 mg/dl in 4 extra minutes?\"\r\n\r\nThe incorrect deltas are proportional to the 1 min. delta times ~4. \r\n"
+  },
+  {
+   "id": 2538888026,
+   "user": "Navid200",
+   "created_at": "2024-12-12T13:16:39Z",
+   "body": "@petalina Please forget the arrows for now.  \r\nxDrip calculates the arrows differently than Dexcom app.  We have no plan to change that.\r\n\r\nI asked this issue to be opened because I am not sure why there is an error in the delta.\r\nIf we address the delta, I will consider this closed.  \r\n\r\nWith respect to the delta, how long does the error last?\r\nI mean do you get this error for a few readings after you start a new sensor and then it goes away?"
+  },
+  {
+   "id": 2539008295,
+   "user": "petalina",
+   "created_at": "2024-12-12T13:48:02Z",
+   "body": "@Navid200 I didn't refer to the arrows in the last message but the incorrect deltas. The problem persisted for all the days the sensor lasted (10 days) though I changed back to Dexcom one to check what happens and there was no problem, the deltas are correct and a new value / point in the diagram is present every 5 minutes. \r\n\r\nWhen I use the Dexcom one+, after a couple of times having a new value every 5 minutes, I get a new one 1 minute after the last; that's the pattern. Also, whether the last value is 1 or 5 minutes apart from the previous, the widget always has the right delta and simultaneously the app and the notification the incorrect. But the widget, while having the correct delta has incorrect arrow according to this delta and xDrip's settings (not considering the Dexcom app). If the interval between the values is 5 minutes, there's no issue with the app / notification as well, so maybe the time interval plays some role."
+  },
+  {
+   "id": 2546662940,
+   "user": "overfrenk",
+   "created_at": "2024-12-16T20:28:36Z",
+   "body": "The \"only in companion mode\" problem of the delta and the arrow only happens with the readings strangely very close, normally they should be every 4/5 minutes but for some strange reason they randomly arrive at 1/2 minutes. Example with red circles. I repeat if I use the same \"eversense\" sensor with readings via xdrip and esel the problem disappears.\r\n![screen1](https://github.com/user-attachments/assets/1ed5ba7b-487d-4a02-9394-58ef75e28089)\r\n"
+  },
+  {
+   "id": 2551390397,
+   "user": "FinnyChase",
+   "created_at": "2024-12-18T13:56:57Z",
+   "body": "It's pretty sad how dismissive Navid is about this issue. It's very clear from hundreds of forums that this trend arrow mismatch is a problem and not what the majority of people want. Wish they would at least add an option to just read the dexcom reading and arrow "
+  },
+  {
+   "id": 2708987562,
+   "user": "RansomTime",
+   "created_at": "2025-03-09T17:54:10Z",
+   "body": "This is affecting me. I think the observation by petalina is matching the behaviour I'm seeing.\n\nCompaninon app got a reading at 17:33 of 13.5 and then 17:34 it picked up the updated reading of 12.9, \n\nDidn't get a screenshot of the delta, but it was\n\nI think this is stemming from the issue of it not always picking up the change until some time later.\n\nFor example, here is a reading on the pump app of 12.1 at 14:18, but xdrip is still showing 11.2\n\n![Image](https://github.com/user-attachments/assets/9ef94e47-3490-4494-99a9-35815542f10c)\n\n![Image](https://github.com/user-attachments/assets/e4b477a0-b932-4bc8-b145-e4c42e8d1d6a)\n\nand again there are several times where there's 2 identical readings on the medtronic, and odd spacing which implies these aren't 5 minute apart readings.\n\n![Image](https://github.com/user-attachments/assets/112b4dfb-df7e-47c9-802b-d7ecc3515fd5)"
+  },
+  {
+   "id": 2709054936,
+   "user": "overfrenk",
+   "created_at": "2025-03-09T20:33:37Z",
+   "body": "Same problem with eversense. It's a companion mode issue."
+  },
+  {
+   "id": 2907937136,
+   "user": "adayper",
+   "created_at": "2025-05-25T16:45:23Z",
+   "body": "I'm having the same problem with the delay in Xdrip+ reading the notification in \"companion app\" mode. Most of the time, the value updates about 30 seconds before the next Carelink value changes. Since Carelink changes every 5 minutes, Xdrip+ has a delay of about 4 minutes and 30 seconds.\n\nI don't think this happened a few months ago, or at least I didn't notice.\n\nI've tried reinstalling everything and reconfiguring it, and it still happens. Sometimes it updates correctly, right on time, but most of the time it doesn't."
+  },
+  {
+   "id": 5185519745,
+   "user": "Grntrenchman",
+   "created_at": "2026-08-04T22:56:25Z",
+   "body": "I am also getting this issue. The problem is that xDrip reads the data from the notification, but the data may be stale. Since readings are only accurate right when they happen, this causes some dissonance in the readings and delta. \n\nAs an example: at 3:31 and 3:36 xdrip reads 82.7 mg/dl, but both are from the same sensor reading. then at 3:40 it picks up 79.0, which was actually taken minutes ago. then at 3:41 it picks up the new reading much earlier at 74.0. Because of the 1 minute gap between these readings, it produces a large probable delta, calculating it as a drop of 5 mg/dl in one minute. \n\nIt fixes itself on the next read usually but this can cause confusion and false positives of low/high predictions and fall/climb rates, not to mention affecting suggested insulin/carb intake.\n\nAt least for G7, the Dexcom app doesn't give time of reading or delta in the notification, so I'm not sure how this can be fixed programmatically, except maybe some increased scanning in the beginning to find where the actual update happens and then only accepting one read per 5 minutes aligned with that.\n\n<img width=\"1080\" height=\"2400\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/e61048ce-0ca5-44fc-beb6-1e47ba75976a\" />\n<img width=\"2400\" height=\"1080\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/ccd6cd94-b0de-41af-841c-be30e1ee2be0\" />\n"
+  },
+  {
+   "id": 5185628981,
+   "user": "Navid200",
+   "created_at": "2026-08-04T23:12:20Z",
+   "body": "@Grntrenchman If you are using the companion app mode with a Dexcom device and experience the problem described here, it is 99% likely you have not enabled Companion Bluetooth.  You can see where it is here:\nhttps://navid200.github.io/xDrip/docs/Follow/CompanionApp.html "
+  },
+  {
+   "id": 5185726866,
+   "user": "FinnyChase",
+   "created_at": "2026-08-04T23:26:54Z",
+   "body": "> [@Grntrenchman](https://github.com/Grntrenchman) If you are using the companion app mode with a Dexcom device and experience the problem described here, it is 99% likely you have not enabled Companion Bluetooth. You can see where it is here: https://navid200.github.io/xDrip/docs/Follow/CompanionApp.html\n\nCompanion Bluetooth won't fix the issue. Navid knows this but refuses to acknowledge the problem. It's a problem with xdrip, he just doesn't know how to fix it and his ego is too big to admit it "
+  },
+  {
+   "id": 5185881518,
+   "user": "Navid200",
+   "created_at": "2026-08-04T23:51:03Z",
+   "body": "@FinnyChase You may be sick and frustrated.  \nBut, that does not make it alright to attack anyone here. \nI don't want these forums to become a place for juvenile personal attacks.  \n\nRemove your post or I will remove it and ask for your removal as well.   "
+  }
+ ]
+}

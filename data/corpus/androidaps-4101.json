@@ -1,0 +1,57 @@
+{
+ "id": 3323267542,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4101,
+ "title": "AAPS-CI build fails with Stack Overflow",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4101",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-08-14T18:58:12Z",
+ "closed_at": "2025-08-28T11:24:33Z",
+ "comment_count": 7,
+ "body": "@MilosKozak @Angus \nFor me, todays AAPS_CI builds were failing with a StackOverflow Error.\nIts not the code, my local build are just fine.\n\nLooks like AAPS-CI Gradle is running out of stack resources..\nI think there is a Gradle jvmargs option for this... 🤔\n\nHappend to me yesterday (1x) and today (2x)\n\n<img width=\"1510\" height=\"320\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/b491ef9c-a4ad-421c-80b3-2015cddd26e2\" />",
+ "comments": [
+  {
+   "id": 3189555793,
+   "user": "vanelsberg",
+   "created_at": "2025-08-14T18:59:17Z",
+   "body": "(I deleted yesterday's build workflow run from overview)\n\n<img width=\"1132\" height=\"376\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/47431214-8e95-4a75-837a-33701c2ba3a5\" />\n\n"
+  },
+  {
+   "id": 3189565445,
+   "user": "MilosKozak",
+   "created_at": "2025-08-14T19:02:43Z",
+   "body": "This is happening on my ci builds as well time to time"
+  },
+  {
+   "id": 3189598358,
+   "user": "andyrozman",
+   "created_at": "2025-08-14T19:13:58Z",
+   "body": "Happens to me (and some other people) even locally... I changed my values to:\norg.gradle.jvmargs=-Xmx8g -XX:+UseParallelGC \n\n# Kotlin compiler/daemon heap\nkotlin.daemon.jvm.options=-Xmx2g\nkotlin.compiler.execution.strategy=in-process\n\nHaven't had problem since... "
+  },
+  {
+   "id": 3189706637,
+   "user": "vanelsberg",
+   "created_at": "2025-08-14T19:56:04Z",
+   "body": "For me, today, in the past 4 hours, all build (4x) failed with StackOverFlow(). Fail location differs...\nTried release and debug builds.\n\nWhen developing my Docker Command line builds I was also seeing this. Solved by setting:\n_gradle_opts=(\n\"-Dorg.gradle.daemon=true\"\n\"-Dorg.gradle.workers.max=8\"\n\"-Dorg.gradle.jvmargs='-Xss1024m -Xms64m'\"\n\"-Dorg.gradle.caching=true\"\n\"-Dorg.gradle.configuration-cache.parallel=true\"\n)_"
+  },
+  {
+   "id": 3190309123,
+   "user": "Angus-repo",
+   "created_at": "2025-08-15T00:54:02Z",
+   "body": "Thank you all for testing, and also for suggesting adjustments.\n\nI’ll reply to everyone after the testing.\n"
+  },
+  {
+   "id": 3192221713,
+   "user": "Angus-repo",
+   "created_at": "2025-08-15T17:13:30Z",
+   "body": "@vanelsberg @andyrozman \nHello both,\nI’ve adjusted a new version based on your test results. Since I couldn’t reproduce the “Stack Overflow” issue in my environment, I only tested that aaps-ci runs normally. Please use this commit in your dev testing. Thanks.\n\n[PR#4104](https://github.com/nightscout/AndroidAPS/pull/4104)"
+  },
+  {
+   "id": 3192588696,
+   "user": "vanelsberg",
+   "created_at": "2025-08-15T20:03:26Z",
+   "body": "Hi Argus,\n\n> ... I only tested that aaps-ci runs normally.\n\nFor me the same, until it does not :-|\nYesterday it suddenly started failing up to 4 time is a row (during a period of 4 hours)\nToday it builds just fine again:\n<img width=\"779\" height=\"338\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/4e82231f-0a92-4310-9fe9-0203b0e75e7c\" />\n\n\n> Please use this commit in your dev testing. Thanks.\n\nTnx! Will test the coming days!\n\n"
+  }
+ ]
+}

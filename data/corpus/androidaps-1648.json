@@ -1,0 +1,45 @@
+{
+ "id": 1208480141,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1648,
+ "title": "The last layout changes are inconvenient for small devices",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1648",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-04-19T14:50:57Z",
+ "closed_at": "2022-04-21T11:10:32Z",
+ "comment_count": 5,
+ "body": "Yes, I use a smartphone with a small screen, but I think I'm not the only one. From there, you should be careful with layout changes that take up space and don't add functionality. That's what the changes Material Card View and Material Button do.\r\nMaybe it is possible to change the margin-top for small devices to 0 dp in the Material Card View (I changed it from 4 dp to 1 dp so I can see the graph again), how to adjust the material buttons is beyond me. Please revert this changes!\r\nNew Matieralbuttons:\r\n![Screenshot_20220419-154927](https://user-images.githubusercontent.com/12517693/164031188-c50ebcf9-469a-48b7-bbb6-cd2d614e1fa2.png)\r\n![Screenshot_20220419-154943](https://user-images.githubusercontent.com/12517693/164031505-8349053c-3e7a-429e-a2f6-42ff732cbdf8.png)\r\n\r\n----\r\n\r\nOld buttons:\r\n![Screenshot_20220419-155236](https://user-images.githubusercontent.com/12517693/164031404-4b7ac49d-bfc6-41b0-8a39-609f76489d3c.png)\r\n![Screenshot_20220419-155134](https://user-images.githubusercontent.com/12517693/164031625-bfba30f6-a129-41e7-aa61-599d1034c507.png)\r\n\r\nPlease undo at least the material button commit!\r\nAnd have an eye on the impact on small Screens as well for future layout changes (btw I liked the old layout!). Thanks!\r\n\r\n\r\n",
+ "comments": [
+  {
+   "id": 1102755178,
+   "user": "osodebailar",
+   "created_at": "2022-04-19T14:54:55Z",
+   "body": "@swissalpine  We can change the style to smaller text , so it fits again . \r\n\r\nAnd its a hard work to find all things fit for everyone. A PR is not the end of the road. After this changes can be made to handle things better. \r\nBut the main goal is to make AAPS ready for the next Android versions with a new and clean design."
+  },
+  {
+   "id": 1102901866,
+   "user": "Andries-Smit",
+   "created_at": "2022-04-19T17:23:04Z",
+   "body": "There are 2 types of users, users with a personal phone running AAPS, do have, in general, a large screen.\r\nAnd users with a designated device, which is quite often as small as possible.\r\n\r\nTo cater for both, we can easily distinguish using qualified resources. and then we can tweak for smaller screens, for example, setting some padding/margins/corner radius to 0.\r\n\r\nhttps://developer.android.com/guide/topics/large-screens/support-different-screen-sizes\r\n\r\n@swissalpine what device are you using?"
+  },
+  {
+   "id": 1103501464,
+   "user": "Philoul",
+   "created_at": "2022-04-20T05:59:42Z",
+   "body": "Even if it's not a small device, I think marging in material button should be reduced (close than half of the width is lost in overview)\n![Screenshot_20220420-075324_AndroidAPS.jpg](https://user-images.githubusercontent.com/52934600/164160640-cef909c7-a814-4c76-a099-fd68f6438f20.jpg)\n"
+  },
+  {
+   "id": 1103571626,
+   "user": "osodebailar",
+   "created_at": "2022-04-20T07:40:07Z",
+   "body": "> Even if it's not a small device, I think marging in material button should be reduced (close than half of the width is lost in overview) ![Screenshot_20220420-075324_AndroidAPS.jpg](https://user-images.githubusercontent.com/52934600/164160640-cef909c7-a814-4c76-a099-fd68f6438f20.jpg)\r\n\r\nChanged the former workaround margin:\r\nhttps://github.com/nightscout/AndroidAPS/pull/1652"
+  },
+  {
+   "id": 1105069662,
+   "user": "swissalpine",
+   "created_at": "2022-04-21T11:10:32Z",
+   "body": "Thanks for the effort and finding solutions!"
+  }
+ ]
+}

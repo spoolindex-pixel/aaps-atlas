@@ -1,0 +1,75 @@
+{
+ "id": 1688636918,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2523,
+ "title": "Glucomen daypump patch activation problem",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2523",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-04-28T14:13:52Z",
+ "closed_at": "2023-05-14T08:04:36Z",
+ "comment_count": 22,
+ "body": "I’m new here but i think it’s good to share with u:\r\n\r\nfor 2 months I’m using aaps with the Glucogen daypump.\r\nWhen I’m connecting a new patch expediently my screen switched from vertical to horizontal. What happened was that de app started the proces of connecting again. \r\nI wasn’t able to reconnect with the patch so I needed to pick up a new one. \r\n\r\nSo in short terms. The proces of connecting starts over when the screen rotates. This could be nice to be fixen.\r\n\r\nIs this something that can be fixed? Or is it only with my type of phone?\r\n\r\nI’m using aap 3.2.0.\r\nHaving a Motorola e22",
+ "comments": [
+  {
+   "id": 1527764005,
+   "user": "mtanjagithub",
+   "created_at": "2023-04-28T15:52:55Z",
+   "body": "I have the same problem. I have to wrap my old pod and paired watch in aluminum foil to prevent them from interfering with the BT connection. Then you'll be fine without losing a pod. \r\n\r\nI am using Galaxy Watch 5 pro \r\nGlucomen day pump with AAPS 3.2.0-DEV-i 39dd25af07 on Cubot Kingkong mini 2 pro\r\n\r\nI have not had this problem while using the Omnipod Dash with the same setup. I've had the Dash for 3 months"
+  },
+  {
+   "id": 1529509351,
+   "user": "fjpezuela",
+   "created_at": "2023-05-01T09:12:35Z",
+   "body": "Good morning. The same thing happened to me. I updated the AAPS version to the latest dev version available and started the patch change. I was able to correctly discard the previously active patch, but when I tried to activate the new one, it entered a loop and couldn't get past step 1. I switched back to the previous version of AAPS, but it was still stuck in the loop and I eventually lost the patch. I activated the next patch using the previous version I had, and everything worked correctly. I haven't dared to update again since I'm not sure if the problem is resolved, and I have few PODs.\r\n\r\nThe version when it happened to me was compiled on April 15th at 9:47 AM."
+  },
+  {
+   "id": 1541480685,
+   "user": "eduardomarron",
+   "created_at": "2023-05-10T07:20:23Z",
+   "body": "Same problem here, 3 pods worked like a charm but since yesterday it is not possible to pair the pods again. it gets stuck trying to connect and nothing happens.\r\nUsing AAPS-DEV version compiled last April, 21st, 2023\r\nSamsung A52s"
+  },
+  {
+   "id": 1546836128,
+   "user": "MilosKozak",
+   "created_at": "2023-05-14T08:04:36Z",
+   "body": "resolved by https://github.com/nightscout/AndroidAPS/commit/fba804b2cb29e7ca25bad43a696bd77e1bf54fdf"
+  },
+  {
+   "id": 1550935246,
+   "user": "eduardomarron",
+   "created_at": "2023-05-17T07:59:53Z",
+   "body": "Hello there,\r\nStill the same problem, this is the order I followed:\r\n\r\n1.- Update AAPS to 320 DEV-J build: c86edb94fd-2023.05.14\r\n2.- Deactivate the previous pod in AAPS\r\n3.- Link the new one. Pair identifier was shown twice as expected. Clicked OK.\r\n4.- AAPS gets stuck in \"Connecting\" and nothing happens.\r\n\r\nThen I tried\r\n\r\nRemove AAPS cache, didn't work.\r\nRemoved all data and restarted aaps configuration -> didn't work\r\n\r\nUsing Samsung A52s. Android 13."
+  },
+  {
+   "id": 1550941387,
+   "user": "MilosKozak",
+   "created_at": "2023-05-17T08:04:21Z",
+   "body": "without logs it's impossible to do anything"
+  },
+  {
+   "id": 1551445728,
+   "user": "eduardomarron",
+   "created_at": "2023-05-17T13:55:49Z",
+   "body": "attached log. Change was done yesterday 2023.05.16 around 21.30 aprox. Hope it helps. Thanks a lot.\r\n[AndroidAPS._2023-05-16_21-46-11_.3.zip](https://github.com/nightscout/AndroidAPS/files/11498863/AndroidAPS._2023-05-16_21-46-11_.3.zip)\r\n"
+  },
+  {
+   "id": 1552652852,
+   "user": "MilosKozak",
+   "created_at": "2023-05-18T07:36:20Z",
+   "body": "it seems aaps crashed but nothing is logged. sorry"
+  },
+  {
+   "id": 1552660078,
+   "user": "MilosKozak",
+   "created_at": "2023-05-18T07:40:23Z",
+   "body": "I found this on another place:\r\n```\r\n21:44:12.098 [RxComputationThreadPool-6] I/PUMP: [EopatchViewModel.updateSetupStep():597]: curSetupStep: SCAN_STARTED, newSetupStep: BONDING_STARTED\r\n21:44:12.100 [RxComputationThreadPool-6] D/PUMPCOMM: [TaskQueue.publishTicket():53]: publishTicket() Task #:17 is assigned func:START_BOND\r\n21:44:12.102 [RxComputationThreadPool-6] D/PUMPCOMM: [TaskQueue.lambda$isReady$4$info-nightscout-androidaps-plugins-pump-eopatch-ble-task-TaskQueue():40]: Task #:17 started     func:START_BOND\r\n21:44:13.536 [RxCachedThreadScheduler-44] D/AUTOMATION: [AutomationPlugin$onStart$11.accept():176]: Grabbed new BT event: EventBTChange[deviceAddress=F3:1B:D5:9B:C4:FA,deviceName=EO30-C4FA#0.2.41,state=CONNECT]\r\n21:44:13.548 [RxCachedThreadScheduler-44] D/AUTOMATION: [AutomationPlugin.processActions$automation_fullRelease():250]: processActions\r\n21:44:13.550 [RxCachedThreadScheduler-44] D/AUTOMATION: [TriggerBg.shouldRun():63]: NOT ready for execution: Glucose is greater than 160 MGDL\r\n21:44:13.552 [RxCachedThreadScheduler-44] D/AUTOMATION: [TriggerBg.shouldRun():63]: NOT ready for execution: Glucose is lesser than 85 MGDL\r\n21:44:14.044 [RxBleThread-1] D/PUMP: [PatchManagerImpl.lambda$onInit$4$info-nightscout-androidaps-plugins-pump-eopatch-ble-PatchManagerImpl():169]: Has the date or time changed? false\r\n21:44:14.071 [main] D/CORE: [DummyService.onStartCommand():68]: Starting DummyService with ID 4711 notification Notification(channel=AndroidAPS-Ongoing shortcut=null contentView=null vibrate=null sound=null defaults=0x0 flags=0xa color=0x00000000 category=status vis=PRIVATE semFlags=0x0 semPriority=0 semMissedCount=0)\r\n21:44:14.366 [RxSingleScheduler-1] D/PUMPCOMM: [TaskQueue.done():73]: done() Task #:17 completed   func:START_BOND  task remaining:0\r\n21:44:14.367 [RxSingleScheduler-1] E/PUMPCOMM: [StartBondTask.lambda$start$6$info-nightscout-androidaps-plugins-pump-eopatch-ble-task-StartBondTask():43]: StartBondTask error\r\n21:44:14.367 [RxSingleScheduler"
+  },
+  {
+   "id": 1552810671,
+   "user": "eduardomarron",
+   "created_at": "2023-05-18T09:49:07Z",
+   "body": "\r\n> this is related to android pairing problem. Did you respond to pairing dialog properly and asap?\r\n\r\nYes, I clicked OK twice when AAPS prompted me to pair."
+  }
+ ]
+}

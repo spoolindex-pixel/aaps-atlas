@@ -1,0 +1,153 @@
+{
+ "id": 2665783268,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3535,
+ "title": "[Dev 3.3.0-dev-d] Semi-tranparent dots mess up the glucose plot",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3535",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-11-17T11:50:09Z",
+ "closed_at": "2024-12-05T16:10:35Z",
+ "comment_count": 25,
+ "body": "Using version 3.3.0-dev-d with xdrip-G7 as data source and average smoothing ON, some datapoints on the BG plot appear semi transparent, but in a kind of alternate way - this just complicates the graph...\r\n![Screenshot_20241117_134312_AAPS](https://github.com/user-attachments/assets/f5c007f3-5409-4646-9686-d94ae21c8a7b)\r\n",
+ "comments": [
+  {
+   "id": 2481401191,
+   "user": "yhonatanb20",
+   "created_at": "2024-11-17T17:53:51Z",
+   "body": "I mean, look, this looks funny, right?\r\n![Screenshot_20241117_195232_AAPS](https://github.com/user-attachments/assets/45784116-2d0c-4956-b0f5-70392baa2b13)\r\n"
+  },
+  {
+   "id": 2481402173,
+   "user": "parapenT1sta",
+   "created_at": "2024-11-17T17:56:26Z",
+   "body": "Try with the latest commit: https://github.com/nightscout/AndroidAPS/commit/4373ecdde4a0fc3aaa3b74ae1b9da6a769007a4e"
+  },
+  {
+   "id": 2481439423,
+   "user": "yhonatanb20",
+   "created_at": "2024-11-17T19:24:35Z",
+   "body": "Thanks @parapenT1sta, installed latest dev, still facing same issue"
+  },
+  {
+   "id": 2482202483,
+   "user": "yhonatanb20",
+   "created_at": "2024-11-18T07:59:36Z",
+   "body": "@MilosKozak was commit 4373ecdde4a0fc3aaa3b74ae1b9da6a769007a4e meant to fix this issue?"
+  },
+  {
+   "id": 2482235518,
+   "user": "MilosKozak",
+   "created_at": "2024-11-18T08:16:31Z",
+   "body": "Transparent means recalculated gap"
+  },
+  {
+   "id": 2482245221,
+   "user": "yhonatanb20",
+   "created_at": "2024-11-18T08:21:27Z",
+   "body": "So I suspected. But when using average smoothing half of the values are recalculated, this makes visualization very messy:\r\n![Screenshot_20241118_101841_AAPS](https://github.com/user-attachments/assets/4e9a025a-d015-4313-9dd2-c81d855badb8)\r\nKnowing which values are recalculated is theoretically valuable, but practically it just makes the graph much less readable..."
+  },
+  {
+   "id": 2482250657,
+   "user": "MilosKozak",
+   "created_at": "2024-11-18T08:23:52Z",
+   "body": "well you should focus on why do you have so many gaps. this should be not common. for most people it's rare"
+  },
+  {
+   "id": 2482254741,
+   "user": "MilosKozak",
+   "created_at": "2024-11-18T08:25:52Z",
+   "body": "because there are original values visible on top of recalculated, expecting they are backfilled later"
+  },
+  {
+   "id": 2482269168,
+   "user": "yhonatanb20",
+   "created_at": "2024-11-18T08:32:45Z",
+   "body": "> well you should focus on why do you have so many gaps. this should be not common. for most people it's rare\r\n\r\nThese are not gaps in the readings, this results from the smoothing algorithms. I use Xdrip + G7, and \"Average Smoothing or Exponential Smoothing MUST be enabled for meaningful use of the G7 / ONE+ values.\" It is my understanding that this way inevitably many values will be \"smoothed\". Most values were recalculated by the native BYODA algorithm back on G6, right? But this did not affect visualization in AAPS because it wasn't an AAPS smoothing plugin, and I don't feel I lost valuable information there because of all points being opaque."
+  },
+  {
+   "id": 2482283462,
+   "user": "MilosKozak",
+   "created_at": "2024-11-18T08:39:38Z",
+   "body": "![image](https://github.com/user-attachments/assets/eccdbd5f-412c-48dd-9372-1f5a84746032)\r\nAt time of receiving this value, previous were missing. Otherwise it would be not transparent"
+  },
+  {
+   "id": 2482302758,
+   "user": "yhonatanb20",
+   "created_at": "2024-11-18T08:48:04Z",
+   "body": "> ![image](https://private-user-images.githubusercontent.com/11146458/387131906-eccdbd5f-412c-48dd-9372-1f5a84746032.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MzE5MjI2NjksIm5iZiI6MTczMTkyMjM2OSwicGF0aCI6Ii8xMTE0NjQ1OC8zODcxMzE5MDYtZWNjZGJkNWYtNDEyYy00OGRkLTkzNzItMWY1YTg0NzQ2MDMyLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNDExMTglMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjQxMTE4VDA5MzI0OVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTc5NDNmYTdjYTFmMzM2ZGY1NmIwOGVjOGNhOWNjZTMzN2E1OGFkZDkxMzNlMzcyNDFhYjllZTVkYjQ4N2U0Y2UmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.7K8YXV3bSc_KLO1OHzLrptkTtqj559prhSk1WLffr2g) At time of receiving this value, previous were missing. Otherwise it would be not transparent\r\n\r\n\r\nTwo slightly updated screenshots:\r\n\r\n![Screenshot_20241118_104127_AAPS](https://github.com/user-attachments/assets/39679431-faa6-4bf9-9def-108bd2c9f128)\r\n![Screenshot_20241118_104835_AAPS](https://github.com/user-attachments/assets/b31060c5-c8ee-4e22-a1ab-17893efa2a9e)\r\n\r\nThese transparent points change places all the time, it has nothing to do with missing values, the communication between G7 - XDrip - AAPS is fine, this does not represent backfilling."
+  },
+  {
+   "id": 2485693980,
+   "user": "t1dude",
+   "created_at": "2024-11-19T13:18:55Z",
+   "body": "I can confirm the same issue with G7 -> xDrip (companion mode) -> AAPS."
+  },
+  {
+   "id": 2487980488,
+   "user": "MilosKozak",
+   "created_at": "2024-11-20T09:14:33Z",
+   "body": "I never had this issue with BOYDA. Is it related only to xdrip?"
+  },
+  {
+   "id": 2487990074,
+   "user": "yhonatanb20",
+   "created_at": "2024-11-20T09:18:39Z",
+   "body": "> I never had this issue with BOYDA. Is it related only to xdrip?\r\n\r\nDefinetly, I too never had it with BYODA, it happens only with xdrip (which is nearly mandatory for G7)...\r\nThe issue seemed for now to disappear ~48h after the insertion of the sensor (so that the issue coinsides with the appearance of a yellow triangle)\r\nI will update whether this reccures with the next sensor"
+  },
+  {
+   "id": 2489307225,
+   "user": "olorinmaia",
+   "created_at": "2024-11-20T18:43:27Z",
+   "body": "This is not due to BYODA or xDrip but the fact that G7 got inbuilt transmitter while G6 you kept the same transmitter for 3 month and moved it between sensors. It is likely every G7 sensor change that this will happen because the time of BG arrival is unlikely to be the same interval.\r\n\r\nQuestion is though if it is needed to show this warning, because it got no effect on loop performance.\r\n\r\nI can improve the text in the box explaining this yellow warning sign, but to remove it completely or just for G7 is up to Milos. "
+  },
+  {
+   "id": 2489315921,
+   "user": "olorinmaia",
+   "created_at": "2024-11-20T18:48:38Z",
+   "body": "There is quite a few issues regarding this so it's clear it is of annoyance especially for G7 users. I've suggested a few solutions to this here and in other threads.\r\n\r\nSee\r\nhttps://github.com/nightscout/AndroidAPS/issues/3535\r\nhttps://github.com/nightscout/AndroidAPS/issues/3415\r\nhttps://github.com/nightscout/AndroidAPS/issues/3197\r\nhttps://github.com/nightscout/AndroidAPS/issues/3545"
+  },
+  {
+   "id": 2489329740,
+   "user": "yhonatanb20",
+   "created_at": "2024-11-20T18:56:45Z",
+   "body": "It indeed seems you are correct about the yellow triangle and it may be dispensable with G7. However it does not interfere with anything.\r\nThe semi-transparent dots seem to be a different issue, since I never got them with BYODA+G6 even when the yellow triangle was up (except the cases when there indeed was a gap in the data, which is a totally different story)."
+  },
+  {
+   "id": 2489340721,
+   "user": "olorinmaia",
+   "created_at": "2024-11-20T19:03:23Z",
+   "body": "I'm pretty sure we got this with BYODA and G6 😅 But since we changed transmitter so rarely it never bothered me to much. You can be lucky and hit the same time interval when changing transmitter or g7 and not experience this issue. It's not on the second it seems. "
+  },
+  {
+   "id": 2502035125,
+   "user": "Josch24",
+   "created_at": "2024-11-26T22:10:09Z",
+   "body": "I also had these Dots in Master 3.2.0.4. I use G6 with two xDrip-Version and two Anubis Transmitter. When i change from one xDrip to the other, i got this Dots. It took some Time and they are gone. But Loop is running fine. "
+  },
+  {
+   "id": 2505292528,
+   "user": "yhonatanb20",
+   "created_at": "2024-11-28T05:30:14Z",
+   "body": "> I'm pretty sure we got this with BYODA and G6 😅 But since we changed transmitter so rarely it never bothered me to much. You can be lucky and hit the same time interval when changing transmitter or g7 and not experience this issue. It's not on the second it seems.\r\n\r\nOK, I can now confirm that with the next sensor the issue **did not** recur. It's interesting that I do not seem to have hit the same interval - between the last old and first new sensor readings I had a 6-min interval, but still - no semi-transparent dots!"
+  },
+  {
+   "id": 2505392035,
+   "user": "olorinmaia",
+   "created_at": "2024-11-28T07:01:47Z",
+   "body": "So no yellow warning sign? Latest Dev? "
+  },
+  {
+   "id": 2505428438,
+   "user": "yhonatanb20",
+   "created_at": "2024-11-28T07:29:12Z",
+   "body": "Indeed"
+  },
+  {
+   "id": 2509733570,
+   "user": "robertrub",
+   "created_at": "2024-12-01T11:58:23Z",
+   "body": "I have the same problem with G6. I use 2 Anubis which means that every 12-14 days, I get the yellow triangle and AutoISF \"disconnects\" partially because it can't calculate the acceleration with the dark/light green dots. This lasts 36h, during the recalculation. Once the recalculated data ends, all work once more.\n\nNo smoothing in xDrip. Average smoothing in AAPS. Turning it OFF doesn't change the result :(\n\n**It is only related to the recalculation**. If my 2 Anubis are in phase, there are never those dark/light green dots.\n\nLook at the 2nd logs I sent in this issue\n https://github.com/nightscout/AndroidAPS/issues/3413\n"
+  }
+ ]
+}

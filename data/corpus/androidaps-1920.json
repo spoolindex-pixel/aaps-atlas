@@ -1,0 +1,81 @@
+{
+ "id": 1309974142,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1920,
+ "title": "3.1.0 White Theme Problems",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1920",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-07-19T19:52:57Z",
+ "closed_at": "2022-07-20T11:53:20Z",
+ "comment_count": 11,
+ "body": "When using Light Theme on a Pixel 5 App crashes and can't be restarted.\r\nKeeps on crashing and AAPS doesnt open again",
+ "comments": [
+  {
+   "id": 1189495063,
+   "user": "osodebailar",
+   "created_at": "2022-07-19T19:57:53Z",
+   "body": "What version before updating?\r\nTry a clean install and reimport your settings. "
+  },
+  {
+   "id": 1189500978,
+   "user": "m4nnihuber",
+   "created_at": "2022-07-19T20:05:03Z",
+   "body": "Came from 3.0.0.1 \r\n\r\nclean installation tried but no solution.\r\napp keeps crashing when switching to light theme"
+  },
+  {
+   "id": 1189505008,
+   "user": "osodebailar",
+   "created_at": "2022-07-19T20:09:52Z",
+   "body": "If you install it clean without import settings and than switch to white theme it also crashes ?"
+  },
+  {
+   "id": 1189515872,
+   "user": "m4nnihuber",
+   "created_at": "2022-07-19T20:23:13Z",
+   "body": "yes. same problem"
+  },
+  {
+   "id": 1189522373,
+   "user": "osodebailar",
+   "created_at": "2022-07-19T20:31:00Z",
+   "body": "That’s very strange .\r\nYou can send a logfile and maybe write me in messenger for further discussion if you want "
+  },
+  {
+   "id": 1189549644,
+   "user": "MilosKozak",
+   "created_at": "2022-07-19T21:06:07Z",
+   "body": "https://console.firebase.google.com/u/0/project/androidaps-c34f8/crashlytics/app/android:info.nightscout.androidaps/issues/e7837a05364e6f62fcace2ec3536caef?time=last-thirty-days&versions=3.1.0%20(1500);3.0.0.2-dev-o%20(1500)&sessionEventKey=62D70FE100B000017F956356B90FD450_1700624401145498450"
+  },
+  {
+   "id": 1189549905,
+   "user": "nielsmaerten",
+   "created_at": "2022-07-19T21:06:27Z",
+   "body": "Can confirm same behavior on a OnePlus 3. [Logfile here](https://www.dropbox.com/s/z7c83n4br1erjz0/AndroidAPS.log?dl=0).  \r\nThe logs start around 20:16, v3.0.0.1 is still installed and everything works fine.\r\n\r\nAt 22:35:52.073, v3.1.0 has been installed and boots for the first time. All good.  \r\nAround 22:40:52, the theme is set from dark mode to light mode. AAPS goes into a loop: crash, reboot, crash, reboot, ...\r\n\r\nAt 22:48:20.731 is me force installing my old apk of version 3.0.0.1. AAPS reboots and works normally again."
+  },
+  {
+   "id": 1189581725,
+   "user": "pimeys",
+   "created_at": "2022-07-19T21:46:10Z",
+   "body": "Can confirm same behavior on a OnePlus 8 Pro. Already downgraded, so sadly no logfile. Ping me in Discord if I can add something to the issue."
+  },
+  {
+   "id": 1189602723,
+   "user": "lua-vr",
+   "created_at": "2022-07-19T22:12:28Z",
+   "body": "Since people on discord were reporting the issue, I ran v3.1for the first time already with logcat, and when I changed the theme to white, it gave me this:\r\n```log\r\n--------- beginning of crash\r\n07-19 18:54:43.827 19270 19270 E AndroidRuntime: FATAL EXCEPTION: main\r\n07-19 18:54:43.827 19270 19270 E AndroidRuntime: Process: info.nightscout.androidaps, PID: 19270\r\n07-19 18:54:43.827 19270 19270 E AndroidRuntime: android.view.InflateException: Binary XML file line #68 in info.nightscout.androidaps:layout/overview_fragment: Binary XML file line #68 in info.nightscout.androidaps:layout/overview_fragment: Error inflating class <unknown>\r\n07-19 18:54:43.827 19270 19270 E AndroidRuntime: Caused by: android.view.InflateException: Binary XML file line #68 in info.nightscout.androidaps:layout/overview_fragment: Error inflating class <unknown>\r\n07-19 18:54:43.827 19270 19270 E AndroidRuntime: Caused by: java.lang.reflect.InvocationTargetException\r\n07-19 18:54:43.827 19270 19270 E AndroidRuntime: \tat java.lang.reflect.Constructor.newInstance0(Native Method)\r\n07-19 18:54:43.827 19270 19270 E AndroidRuntime: \tat java.lang.reflect.Constructor.newInstance(Constructor.java:343)\r\n07-19 18:54:43.827 19270 19270 E AndroidRuntime: \tat android.view.LayoutInflater.createView(LayoutInflater.java:858)\r\n07-19 18:54:43.827 19270 19270 E AndroidRuntime: \tat android.view.LayoutInflater.createViewFromTag(LayoutInflater.java:1010)\r\n07-19 18:54:43.827 19270 19270 E AndroidRuntime: \tat android.view.LayoutInflater.createViewFromTag(LayoutInflater.java:965)\r\n07-19 18:54:43.827 19270 19270 E AndroidRuntime: \tat android.view.LayoutInflater.rInflate(LayoutInflater.java:1127)\r\n07-19 18:54:43.827 19270 19270 E AndroidRuntime: \tat android.view.LayoutInflater.rInflateChildren(LayoutInflater.java:1088)\r\n07-19 18:54:43.827 19270 19270 E AndroidRuntime: \tat android.view.LayoutInflater.rInflate(LayoutInflater.java:1130)\r\n07-19 18:54:43.827 19270 19270 E AndroidRuntime: \tat android.view.LayoutInflater.rInflateChi"
+  },
+  {
+   "id": 1189644215,
+   "user": "osodebailar",
+   "created_at": "2022-07-19T23:23:23Z",
+   "body": "@lucasvreis thx for the log . Maybe it will help."
+  },
+  {
+   "id": 1190134392,
+   "user": "osodebailar",
+   "created_at": "2022-07-20T11:01:23Z",
+   "body": "@MilosKozak : solved with https://github.com/nightscout/AndroidAPS/pull/1926. Maybe you can make a hotfix for 3.1.0"
+  }
+ ]
+}

@@ -1,0 +1,27 @@
+{
+ "id": 1052951026,
+ "repo": "nightscout/AndroidAPS",
+ "number": 926,
+ "title": "Security feature request : Stop insulin if near hypo",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/926",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-11-14T14:18:43Z",
+ "closed_at": "2021-11-15T13:21:04Z",
+ "comment_count": 2,
+ "body": "This subject has been often discussed in the Discord forums. Several users (me included) don't feel secure when we are near the hypo limit, a zero or small positive delta, and the algorithm decides to send insulin, justified for AAPS according to the calculations and predictions.\r\n\r\nOne part of the problem is _emotional stress_ : \"I'm near hypo and I get injected insulin !\" In a manual control system, none would inject insulin at those conditions.\r\n\r\nThe second part of the problem is _personal input errors_ or _misjudged food estimations_ leading to inexact predictions. AAPS predicts a BG rise but that rise may come later than predicted (or, may not come at all).\r\n\r\nIt would be very helpful to either have a security option or an automation with the logic of :\r\n\r\nIf _BG_ =< x AND _DELTA BG_ =< y THEN stop all insulin injections till next BG reading.\r\n\r\nHere is a real life example... I'm way below my target, the delta is zero, total IOB is positive (basal IOB is negative) and AAPS sends SMBs.\r\n\r\n![Screenshot_20211111-224954_AndroidAPS](https://user-images.githubusercontent.com/76626474/141685114-eebf9144-1a28-4eaf-8351-e3b036b006b8.jpg)\r\n\r\n",
+ "comments": [
+  {
+   "id": 968904650,
+   "user": "MilosKozak",
+   "created_at": "2021-11-15T13:21:04Z",
+   "body": "this is how the alg works\r\nin default default installation there is a rule to set high TT if bg is below 4 mmol and SMB with high TT is disabled. This resolves issue you describe\r\nIf you change it it's up to you"
+  },
+  {
+   "id": 1944273737,
+   "user": "Mendanbar",
+   "created_at": "2024-02-14T17:21:02Z",
+   "body": "I came across this whole discussion in [Discord](https://discord.com/channels/629952586895851530/629954570394533889/909449476249370705), and I'm also frustrated by the apparent lack of understanding.  Most of the answers to this problem (which seem to appear a lot) seem to be: \"Your profile is not quite right\" or \"You need to use high temp targets\" etc, but I think this is oversimplifying the situation.  We all know that the body and carbs together make for a complex situation.  We do our best to estimate, and we are all trying to dial in our profiles to be \"correct\".  But there are times where we need a safety net to prevent very real danger.  I fail to see how implementing an emergency insulin stop as a safety feature could be rejected."
+  }
+ ]
+}

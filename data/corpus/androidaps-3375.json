@@ -1,0 +1,123 @@
+{
+ "id": 2387984858,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3375,
+ "title": "Communication failure in Omnipod Dash",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3375",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-07-03T08:15:07Z",
+ "closed_at": "2024-11-13T12:42:51Z",
+ "comment_count": 18,
+ "body": "\r\nAll users of the Blackview n6000 device report an error every few hours that AAPS does not find the pod the official bluetooth app crashes until the device crashes and restarts, the only solution I have found so far is to turn off the bluetooth until the AAPS direct protocol finds the pump with bluetooth off and then I Turns it back on so that the Dexcom will continue to work\r\nI looked for logs and I don't have any, I don't know why the device doesn't create logs\r\nI'm on version 3.3.0 dev b but most users are on version 3.2.0.4 and they too have the exact same phenomenon\r\nI will be very, very happy if someone finds a solution because we don't want to change a device, it finds the pod in one second and its battery is very strong\r\nIn short, we are very pleased with the device for AAPS\r\nThank you\r\nI will try to find logs and upload",
+ "comments": [
+  {
+   "id": 2210314052,
+   "user": "Philoul",
+   "created_at": "2024-07-05T07:03:39Z",
+   "body": "For log files, you can send them by mail from AAPS > Maintenance > Send log file by mail\n-> you can send them to you an then copy them here.\nYou can also see them from computer (smartphone connected by USB)\nGo to Android/data/info.nightscout.aaps/... (not sure of exact folder name).\n\nLog files can be hidden from phone on some Android versions."
+  },
+  {
+   "id": 2211967404,
+   "user": "gerison77",
+   "created_at": "2024-07-06T21:03:05Z",
+   "body": "Hi, I have 2 N6000 rigs running with dash. Can't confirm the reported behaviour. Just lost one pod instantly after activation. Once I had to restart phone to regain connection but since this was a onetimer I blame the pod, not the rig. Running on 3.2.0.4"
+  },
+  {
+   "id": 2212458526,
+   "user": "vanelsberg",
+   "created_at": "2024-07-07T13:52:32Z",
+   "body": "Afaik you can not run AAPS and DASH app concurrently (when the DASH app connects to the Pod it is blocking access for AAPS.\r\nUninstall the DASH app and try again?"
+  },
+  {
+   "id": 2212459793,
+   "user": "gerison77",
+   "created_at": "2024-07-07T13:57:23Z",
+   "body": "Ok, what do you mean by official Bluetooth app? There should be just AAPS connecting to the pod."
+  },
+  {
+   "id": 2217929889,
+   "user": "mk1950",
+   "created_at": "2024-07-09T14:48:19Z",
+   "body": "Hi, I'm also with N6000 and have a lot of problems,\r\nI have already tried many versions of Rom Stock: v06/v07/v08\r\nAll of them sometimes have problems with AAPS.\r\nDEXCOM G6 BYODA WORKS FINE ON THIS DEVICE, ONLY AAPS DOES PROBLEMS.\r\nSometimes there is an error not having a pump available,\r\nAnd when this happens, you see for a split second a message on the device: the Bluetooth app has stopped, this message lasts for a very short time and then disappears, as if the Bluetooth crashed for a second.\r\nI can go to sleep at night and then see that for several hours there was no communication with the pod.\r\nSometimes it can be two days that it works well, and then if I turn off - and restart Bluetooth by mistake, or I turn the device back on, it happens again that there is no communication with the pod.\r\nI got the impression that there was some problem in the way that: AAPS gets along with the bluetooth on this device.\r\n(I apologize if I'm not so clear, English is not my native language)"
+  },
+  {
+   "id": 2262284621,
+   "user": "gerison77",
+   "created_at": "2024-08-01T07:51:09Z",
+   "body": "\r\n> off the bluetooth until the AAPS direct protocol finds the pump with bluetooth off\r\n\r\nIf I understand your sentence right, AAPS can connect to Dash without bluetooth on?\r\n\r\nThe issue mentioned actually happend right now on a N6000. It reconnected, when I shut down the Diakemapp, but deaktivated bluetooth as well. Can there be a conncetion?\r\n\r\n\r\n"
+  },
+  {
+   "id": 2264092723,
+   "user": "vanelsberg",
+   "created_at": "2024-08-01T22:05:34Z",
+   "body": "> Ok, what do you mean by official Bluetooth app?\r\n\r\nActually, I meant the official DASH PDM (which is an app running on an Android PDM device):\r\nYou cannot have both AAPS and the DASH PDM connected on the same DASH pod\r\n\r\n"
+  },
+  {
+   "id": 2264102221,
+   "user": "vanelsberg",
+   "created_at": "2024-08-01T22:12:41Z",
+   "body": "> AAPS can connect to Dash without bluetooth on?\r\n\r\nNope. What I think writer meant (or is seeing) that turning BT _off_ and then _on_ again solves his problem.\r\n\r\n"
+  },
+  {
+   "id": 2264111025,
+   "user": "vanelsberg",
+   "created_at": "2024-08-01T22:18:57Z",
+   "body": "> Blackview n6000\r\n\r\nWe have seen some phone brands or models having BT connection instability problems or even unable to find the DASH Pod at all. As more users are reporting problems for the N6000, most likely it not compatible with DASH.\r\n"
+  },
+  {
+   "id": 2266644402,
+   "user": "gerison77",
+   "created_at": "2024-08-03T08:53:15Z",
+   "body": " N6000, most likely it not compatible with DASH.\r\n\r\nI wouldn't say that at this point. I have two N6000 rigs running and they are working. Since I restarted the diakem G7 app, the issue is gone. \r\n\r\n"
+  },
+  {
+   "id": 2267426643,
+   "user": "mordechi-david",
+   "created_at": "2024-08-04T08:25:57Z",
+   "body": "I meant as @gerison77 wrote that when I turn off the bluetooth it communicates in AAPS internal protocol and then it works fine\r\nUsually it also works with Bluetooth turned on, but sometimes problems suddenly start and it causes the Google Play Service application to crash, then the solution is to turn off Bluetooth\r\n\r\nhttps://github.com/user-attachments/assets/c62e2dc1-aa27-4dbb-a247-d4d21bad9084\r\n\r\n"
+  },
+  {
+   "id": 2267430944,
+   "user": "mk1950",
+   "created_at": "2024-08-04T08:33:13Z",
+   "body": "It doesn't help me, even if I turn off bluetooth for two hours it doesn't work."
+  },
+  {
+   "id": 2268332072,
+   "user": "gerison77",
+   "created_at": "2024-08-05T07:08:17Z",
+   "body": "> I meant as @gerison77 wrote that when I turn off the bluetooth it communicates in AAPS internal protocol and then it works fine Usually it also works with Bluetooth turned on, but sometimes problems suddenly start and it causes the Google Play Service application to crash, then the solution is to turn off Bluetooth\r\n> screen-20240804-112103.mp4\r\n\r\nHello! I as it was stated above, there is no internal protocol. There is only a Bluetooth connection.  Without Bluetooth enabled, connection can't be established to POD."
+  },
+  {
+   "id": 2268332690,
+   "user": "gerison77",
+   "created_at": "2024-08-05T07:08:42Z",
+   "body": "> It doesn't help me, even if I turn off bluetooth for two hours it doesn't work.\r\n\r\nCan you please state if you are using G7.\r\n"
+  },
+  {
+   "id": 2268338950,
+   "user": "mk1950",
+   "created_at": "2024-08-05T07:12:35Z",
+   "body": "> > It doesn't help me, even if I turn off bluetooth for two hours it doesn't work.\r\n> \r\n> Can you please state if you are using G7.\r\n\r\nDexcom g6 + Omnipod Dash "
+  },
+  {
+   "id": 2268411020,
+   "user": "mordechi-david",
+   "created_at": "2024-08-05T07:54:16Z",
+   "body": "It's a fact that when I turn off the bluetooth I manage to connect to the pod, I can upload more screen videos\r\nAnother fact is that the pod does not appear in the list of Bluetooth devices, which means that the pod certainly connects via Bluetooth and requires Bluetooth authorization, but not through the built-in Bluetooth application in Android but directly from the loop, so even when Bluetooth is turned off it works\r\nUnlike Dexcom, as soon as I turn off the Bluetooth, it stops working"
+  },
+  {
+   "id": 2295776841,
+   "user": "gerison77",
+   "created_at": "2024-08-19T06:38:35Z",
+   "body": "Having checked now this issue with two N6000 over the last two weeks. I can't confirm, that AAPS is able to establish a connection with bluetooth off.  Actualisation just fails. \r\n\r\nHowever, I made the observation, that connection can be re-established after a loss, by shutting down Diakem app.\r\n\r\nThere might be a conflict.\r\n\r\n"
+  },
+  {
+   "id": 2473513429,
+   "user": "MilosKozak",
+   "created_at": "2024-11-13T12:42:51Z",
+   "body": "I believe there is nothing we can do on AAPS side. Change your phone if the connection is not reliable"
+  }
+ ]
+}

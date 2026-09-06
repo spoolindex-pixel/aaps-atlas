@@ -1,0 +1,105 @@
+{
+ "id": 368772618,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 621,
+ "title": "Error: bgreadinginsertfromjson passed a null or zero length json",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/621",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2018-10-10T17:30:54Z",
+ "closed_at": "2021-02-26T17:53:20Z",
+ "comment_count": 15,
+ "body": "xdrip version: 2018.09.08\r\nnsclient version 1.58\r\nLoop version: 1.9.3\r\nI would like to use xdrip as nightscout viewer and followed these instructions: https://jamorham.gitbooks.io/xdrip-plus/content/xdrip-plus-nightscout-viewer.html\r\nI am using Loop, so it the json from Loop that gets into nightscout.\r\n\r\nI am getting data into the nsclient but I am only getting some of the treatemens-data into xdrip and I get none of the entry-data.\r\nI am getting this treatement:\r\n{\r\n    \"_id\": {\r\n        \"$oid\": \"c8bc850a6d6c433fb2651730\"\r\n    },\r\n    \"timestamp\": 1539186893000,\r\n    \"eventType\": \"Correction Bolus\",\r\n    \"enteredBy\": \"loop://iPhone\",\r\n    \"uuid\": \"c8bc850a-6d6c-433f-b265-17307690b980\",\r\n    \"insulin\": 3.5,\r\n    \"created_at\": \"2018-10-10T15:54:53Z\",\r\n    \"sysTime\": \"2018-10-10T17:54:53.000+0200\"\r\n}\r\n\r\nBut I am not getting the entries which all have the following json:\r\n{\r\n    \"_id\": {\r\n        \"$oid\": \"5bbe35f202aa6d8d3546c18c\"\r\n    },\r\n    \"sgv\": 274,\r\n    \"date\": 1539192000000,\r\n    \"device\": \"loop://iPhone\",\r\n    \"dateString\": \"2018-10-10T17:20:00Z\",\r\n    \"type\": \"sgv\"\r\n}\r\nIn xdrip event log I get the following every 5 minutes:\r\nbgreadinginsertfromjson passed a null or zero length json",
+ "comments": [
+  {
+   "id": 428689282,
+   "user": "jamorham",
+   "created_at": "2018-10-10T18:52:41Z",
+   "body": "Please update to the latest nightly and re-test to see if the problem persists:\r\n\r\nhttps://github.com/NightscoutFoundation/xDrip/wiki/How-to-get-the-Nightlies-on-Automatic-Update"
+  },
+  {
+   "id": 428952422,
+   "user": "cfaagaard",
+   "created_at": "2018-10-11T13:20:25Z",
+   "body": "Updated to version 5895747-2018.10.10. But still get the same error. Also uninstalled and installed again.\r\nNo luck.\r\n\r\n![screenshot_20181011-151740](https://user-images.githubusercontent.com/25353502/46806839-ea89ea80-cd68-11e8-9578-521cd29bd582.png)\r\n"
+  },
+  {
+   "id": 428957208,
+   "user": "cfaagaard",
+   "created_at": "2018-10-11T13:34:29Z",
+   "body": "Should I upload logs?"
+  },
+  {
+   "id": 429016401,
+   "user": "jamorham",
+   "created_at": "2018-10-11T16:09:29Z",
+   "body": "yes please upload logs and comment in them so I know who they are from. thanks"
+  },
+  {
+   "id": 429030501,
+   "user": "cfaagaard",
+   "created_at": "2018-10-11T16:46:38Z",
+   "body": "Log is uploaded with a reference to this issue.\r\n\r\nAnd thank you for your quick response. I really appreciate it."
+  },
+  {
+   "id": 429080167,
+   "user": "jamorham",
+   "created_at": "2018-10-11T19:02:19Z",
+   "body": "Please try the Oct 11th nightly (out now) as it should log more information about this problem."
+  },
+  {
+   "id": 429086807,
+   "user": "cfaagaard",
+   "created_at": "2018-10-11T19:24:51Z",
+   "body": "new log uploaded."
+  },
+  {
+   "id": 429087449,
+   "user": "cfaagaard",
+   "created_at": "2018-10-11T19:27:00Z",
+   "body": "this treatment-json has no problems (and get shown in xdrip):\r\n{\r\n    \"_id\": {\r\n        \"$oid\": \"5bbf82e402aa6d8d3576d6f4\"\r\n    },\r\n    \"enteredBy\": \"\",\r\n    \"eventType\": \"Note\",\r\n    \"reason\": \"\",\r\n    \"duration\": 0,\r\n    \"notes\": \"Pasta(50)\",\r\n    \"created_at\": \"2018-10-11T09:33:00.000Z\"\r\n}"
+  },
+  {
+   "id": 429088008,
+   "user": "cfaagaard",
+   "created_at": "2018-10-11T19:28:54Z",
+   "body": "But this entry-json is not going into xdrip:\r\n{\r\n    \"_id\": {\r\n        \"$oid\": \"5bbfa32602aa6d8d357bf256\"\r\n    },\r\n    \"date\": 1539285180000,\r\n    \"sgv\": 104,\r\n    \"dateString\": \"2018-10-11T19:13:00Z\",\r\n    \"device\": \"loop://Frederik - iPhone\",\r\n    \"type\": \"sgv\"\r\n}"
+  },
+  {
+   "id": 432842101,
+   "user": "cfaagaard",
+   "created_at": "2018-10-24T21:55:51Z",
+   "body": "Any updates om this issue?"
+  },
+  {
+   "id": 458335653,
+   "user": "fromorbonia",
+   "created_at": "2019-01-28T22:55:41Z",
+   "body": "@cfaagaard or @jamorham - did you get a break through with this problem? I'm getting that same error message.\r\nThe most noticeable symptom is that xDrip+ isn't picking up data from the NSClient (AndroidAPS installed is 2.0) and is stating \"signal missed\". If I specifically go into xDrip+ it sometimes restarts itself, other times I un-pause NSClient manually and that then works.\r\nThe error log message above occurs about 20 times at approximately the last time that there was a successful connection.\r\nI have just done a new install of LineageOS 15.1 (Oreo 8.1 from AOKP) on a Samsung Galaxy S4 Mini. Previous to that I was on KitKat and was having similar problems (hence the upgrade!).\r\nThanks"
+  },
+  {
+   "id": 458432189,
+   "user": "cfaagaard",
+   "created_at": "2019-01-29T07:14:58Z",
+   "body": "@fromorbonia Nope. It works on a Nexus p6 with android 8.1 (which I then use as my alarmclock), but I can't not get it to work on a Pixel 2 with android 9 (my personal phone)."
+  },
+  {
+   "id": 458995713,
+   "user": "fromorbonia",
+   "created_at": "2019-01-30T15:52:26Z",
+   "body": "@cfaagaard - I got a bit further with this, but I don't think it will help you. I'm still getting those error messages - but NSClient is now running. \r\nI'm on Azure for Nightscout, and I needed to turn on HTTP 2.0 and Websockets at the server host level - and now AndroidAPS / NSClient works consistently. If your issue was server side, I would have expected neither of your phones to work... "
+  },
+  {
+   "id": 459012608,
+   "user": "cfaagaard",
+   "created_at": "2019-01-30T16:34:17Z",
+   "body": "@fromorbonia I'm also on azure. Turned on http 2.0 and websockets. Downloaded nsclient and the newest drip+. And it works now! If it was the azure settings or a fix in the new clients i don't know. But it works.\r\n@jamorham do want me to close the issue or do you want to do it?\r\n"
+  },
+  {
+   "id": 786799219,
+   "user": "Navid200",
+   "created_at": "2021-02-26T17:53:20Z",
+   "body": "Thanks, closing"
+  }
+ ]
+}

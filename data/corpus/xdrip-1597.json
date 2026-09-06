@@ -1,0 +1,156 @@
+{
+ "id": 782072806,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1597,
+ "title": "Syncing Libre2 raw data",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1597",
+ "state": "closed",
+ "labels": [
+  "enhancement",
+  "device-libre"
+ ],
+ "created_at": "2021-01-08T12:05:24Z",
+ "closed_at": "2025-08-11T21:13:45Z",
+ "comment_count": 23,
+ "body": "Hello,\r\n\r\nFirst of all, thanks for the work you're doing here.\r\n\r\nWe're using xDrip+ with a patched LibreLink app, then syncing between master app (the one on the phone with patched app) and two more phones with xdrip sync.\r\n\r\nMaster xdrip+ shows Libre2 raw data as small white points around the normal graph. We've found that both infos (raw and processed) are very helpful together but they're only shown on master device.\r\n\r\nI've been unable to sync raw data (the white points) between devices, is it possible? It would be an interesting enhancement if it's not possible right now.\r\n\r\nThanks",
+ "comments": [
+  {
+   "id": 774724592,
+   "user": "jordipbou",
+   "created_at": "2021-02-07T18:13:27Z",
+   "body": "Hello again,\r\n\r\nI've asked about syncing with xdrip sync only, but it will be useful to send raw data to Nightscout also. I've been unable to do that also.\r\n\r\nBoth options, uploading raw data to xdrip-sync and nightscout are very interesting for my own case.\r\n\r\nAs I understand there's limited time to work on issues and that maybe this is not an important request, I would be glad to help trying to implement those features.\r\n\r\nI've cloned the repository and started analyzing source code to understand xdrip internals. Also, I've read the collaboration guidelines and it would be fantastic to talk to some developer to start guiding me on this. Of course, I understand the possibility of not wanting this feature to be added to the project.\r\n\r\nThanks"
+  },
+  {
+   "id": 803496334,
+   "user": "Navid200",
+   "created_at": "2021-03-21T01:28:02Z",
+   "body": "@jordipbou I am not a developer.\r\nBut, I am curious why you say that both raw and processed values are helpful.\r\nWould you please explain why?\r\n\r\nThe purpose of calibration is to correct a known error.  \r\nThe accuracy of calibration is paramount.  And, you can inspect the calibration graph any time you desire. \r\nBut, why would you want to see both raw and processed all the time?"
+  },
+  {
+   "id": 803563672,
+   "user": "jordipbou",
+   "created_at": "2021-03-21T11:54:08Z",
+   "body": "First of all, we are not calibrating because when started using xdrip four months ago we were looking for info and found posts commenting that Libre2 needed no calibration, so we started using it that way and have not found errors worth calibrating. So we don't know much about calibration procedure and calibration graph.\n\nBut we are using Libre2 raw data not for correcting errors but to see fast changes in trend.\n\nThe xdrip calculated glucose values give very good information for us showing current trend, but that can change very fast (we have a four year old daughter and I don't know if this happens to everyone) and then xdrip is slow in picking up that change (thanks to raw info we have been able to solve hypos even before Libre2 low alarm was activated).\n\nUsing raw data we can compare trend and raw immediate information to take decisions.\n\nI have implemented this sync myself and we are using it for two weeks now (I will make a push request soon) and having that information on our phones has become very valuable to avoid hypos when she's in school, for example.\n\nBest regards!"
+  },
+  {
+   "id": 803568186,
+   "user": "Navid200",
+   "created_at": "2021-03-21T12:20:29Z",
+   "body": "Thanks for explaining.\r\n\r\nDo you also use the xDrip's \"Forecast Lows\" alert?\r\nIf not, please give it a try.   "
+  },
+  {
+   "id": 808819126,
+   "user": "Navid200",
+   "created_at": "2021-03-27T23:51:41Z",
+   "body": "@jordipbou A developer may ask you the same question.\r\nEven if a developer goes ahead and implements this, before the implementation can be merged, the same question may come up.\r\n\r\nI ask the question again.\r\nHave you used the forecast low alarm to accomplish what you need?\r\nIf you can accomplish what you need with xDrip as is, there will be no need to modify xDrip."
+  },
+  {
+   "id": 808822700,
+   "user": "jordipbou",
+   "created_at": "2021-03-28T00:27:04Z",
+   "body": "Oh, I'm sorry, I thought the question was a suggestion and not needed an answer.\n\nNo, I have not used the forecast low alarm. As I said, raw data for libre changes a lot faster and glucose values calculated by xdrip add a lot of latency. If libre data is 10 minutes late of blood glucose values, on fast changing situations the smoothing of raw values made by xdrip can add 10 minutes more.\n\nWe have lots of situations where raw data is rising and xdrip is alerting of falling or of a low (because it's late).\n\nUsing raw data is not an ideal, as alarms will not work with it, but in some situations it has become very valuable for us.\n\nImplementation of raw value sharing adds the option of using that information on remote when its needed, or just ignore it if you don't need it. Alarms still are the best for situations where you are not aware of what its hapenning and need xdrip to alert you.\n\nAs I said, I already implemented it and we're using it daily, not just to alert of lows but to have better info on trend change (after giving some food, for example, we can see glucose values rising even 10 minutes before xdrip values are rising, allowing better decisions to maintain her in range).\n\nI will add a pull request shortly, I just need to take some time to do it.\n\nHope this answers the question, and again, sorry for not answering before."
+  },
+  {
+   "id": 808885120,
+   "user": "anyforwork",
+   "created_at": "2021-03-28T11:42:01Z",
+   "body": "@jordipbou We have 3 year old daughter and we look forward to your PR. It's really useful feature for us. \r\n\r\nFor example, we do not start taking meal until raw data shows a downward trend. If we will wait smoothed data we can lose dozen minutes and get hypo. If we do not take a pause we can get hyper. \r\n\r\nThis feature also is really useful when daughter is riding her scooter or in the play yard. We always have to be close to her to get possibility to see raw data. With your feature we can give her master phone and see raw data on the followers ones."
+  },
+  {
+   "id": 808927533,
+   "user": "tolot27",
+   "created_at": "2021-03-28T17:20:47Z",
+   "body": "> I have implemented this sync myself.\r\n\r\nThen just create a PR and we can review it. If jamorham decides, it is useful, he will merge it."
+  },
+  {
+   "id": 808931680,
+   "user": "tzachi-dar",
+   "created_at": "2021-03-28T17:49:39Z",
+   "body": "Are you using the patched app or oop2?\n\nבתאריך יום א׳, 28 במרץ 2021, 20:21, מאת Mathias Walter ‏<\n***@***.***>:\n\n> I have implemented this sync myself.\n>\n> Then just create a PR and we can review it. If jamorham decides, it is\n> useful, he will merge it.\n>\n> —\n> You are receiving this because you are subscribed to this thread.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/1597#issuecomment-808927533>,\n> or unsubscribe\n> <https://github.com/notifications/unsubscribe-auth/AB4TBZBR6B7KFHRGGFLXHY3TF5XQ3ANCNFSM4V2LOCTA>\n> .\n>\n"
+  },
+  {
+   "id": 808977013,
+   "user": "jordipbou",
+   "created_at": "2021-03-28T23:20:18Z",
+   "body": "@anyforwork You're describing our exact same scenario and the reasons to implement synchronization on raw values. \r\n\r\n@tolot27 I've created the pull request #1686 \r\n\r\n@tzachi-dar I don't know what oop2 is. We're using patched LibreLink app as hardware data source."
+  },
+  {
+   "id": 831266548,
+   "user": "Estetne",
+   "created_at": "2021-05-03T13:41:00Z",
+   "body": "@jordipbou Hello. We are waiting for this feature very much. You wrote that you are currently using raw data sync. Can we somehow get the app file and also use this possibility now? "
+  },
+  {
+   "id": 833316478,
+   "user": "jordipbou",
+   "created_at": "2021-05-06T07:58:43Z",
+   "body": "@Estetne @anyforwork I have uploaded my own build of xdrip to https://jordipbou.github.io/xdrip/xdrip-libre2-raw-sync.apk\r\n\r\nBe aware that this is my personal own build and has more changes other than libre2 raw sync, I'm using it daily without problems, but I can not support anyone so you're on your own. Changes are:\r\n* Libre2 raw sync between master and slaves and drawing of raw data on slaves\r\n* Height of treatment labels on graph modified. Food treatments around 180. Insulin treatments around insulin line. That way, treatments are not hidding important values when glucose is in the 100s range.\r\n* MiBand 5 integration but syncing every minute and with libre2 raw value instead of every 5 minutes with xdrip calculated value.\r\n* It also sends xdrip calculated value and libre2 raw value as intents to an external application we use at nights.\r\n"
+  },
+  {
+   "id": 834163551,
+   "user": "Estetne",
+   "created_at": "2021-05-07T08:18:26Z",
+   "body": "@jordipbou Thank you very much, we will try it"
+  },
+  {
+   "id": 873658382,
+   "user": "illepidus",
+   "created_at": "2021-07-04T20:39:53Z",
+   "body": "Any chance this feature would be added to any further xdrip version? That would be wonderful."
+  },
+  {
+   "id": 1270742342,
+   "user": "malloy139",
+   "created_at": "2022-10-06T22:00:11Z",
+   "body": "It is now over a year since the last comment. PR #1686 is still not merged but #1821 should address this? If this is working now I have not yet figured out how to activate the raw data on the follower. Is this working for anyone else?"
+  },
+  {
+   "id": 1310323118,
+   "user": "twinko",
+   "created_at": "2022-11-10T14:00:51Z",
+   "body": "would be great if we could implement this feature!"
+  },
+  {
+   "id": 1310867057,
+   "user": "malloy139",
+   "created_at": "2022-11-10T20:39:26Z",
+   "body": "Raising alerts based on raw values would also be very helpful"
+  },
+  {
+   "id": 2458688725,
+   "user": "tomascalta",
+   "created_at": "2024-11-06T04:10:27Z",
+   "body": "Yeah, it would be awesome if we could just disable BG values averaging at all with a setting when using FSL2 raw data."
+  },
+  {
+   "id": 2460650915,
+   "user": "BjoernPetersen",
+   "created_at": "2024-11-06T19:54:34Z",
+   "body": "I haven't looked at the code, but wouldn't it suffice to add one or two more options to the smoothing time window setting? Maybe 5 minutes and 1 minute? Setting it to 1 would essentially disable smoothing without changing any code, right? "
+  },
+  {
+   "id": 2560510726,
+   "user": "tomascalta",
+   "created_at": "2024-12-24T01:28:41Z",
+   "body": "> I haven't looked at the code, but wouldn't it suffice to add one or two more options to the smoothing time window setting? Maybe 5 minutes and 1 minute? Setting it to 1 would essentially disable smoothing without changing any code, right?\r\n\r\nYeah they just don't give a shit"
+  },
+  {
+   "id": 2560516062,
+   "user": "Navid200",
+   "created_at": "2024-12-24T01:35:35Z",
+   "body": "Any change has to be done by someone who is interested as a volunteer.  None of us is paid to do this.  \r\nIf someone who has experience with Libre and can code does not take the initiative, there is nothing I (who have never used Libre) can do to encourage them.  And I cannot hire anyone to do it either.  \r\n\r\nKeep the language professional and courteous or I will have no choice but to delete your post.  "
+  },
+  {
+   "id": 2575845628,
+   "user": "tomascalta",
+   "created_at": "2025-01-07T17:22:01Z",
+   "body": "Bro in one sentence you say only volunteers only volunteers yet in another one you say to keep the language professional. You are volunteer not a professional so keep yourself contained please.\r\n\r\nAnd that this project has basically no business plan (which is hampering its development severely) is even more worrying. I will keep my language professional after you figure out how to restructuralize this project into something that could economically sustain its own development. "
+  },
+  {
+   "id": 3176915533,
+   "user": "Navid200",
+   "created_at": "2025-08-11T21:13:27Z",
+   "body": "I am converting this to a discussion."
+  }
+ ]
+}

@@ -1,0 +1,33 @@
+{
+ "id": 1340791064,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2019,
+ "title": "Play Protect scan kills connection to Combo",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2019",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-08-16T19:31:42Z",
+ "closed_at": "2022-08-17T20:46:53Z",
+ "comment_count": 3,
+ "body": "Every scan of google play protect (manual or automatic triggered) kills the connection from AAPS to Combo on my new phone. Only way to re-establish connection to Combo is a forced close of AAPS and restart of AAPS, or restart of phone. This issue is reproduceable, happens every time: trigger play protect scan, give bolus in AAPS -> error message in AAPS\r\n\r\nAndroidAPS 3.1.0.3\r\nNothing Phone (1) with Android 12\r\nI did not have this issue on my old phone - Oneplus 7t with Android 11. There, AAPS and xDrip are working with play protect on.\r\n\r\nI now, the workaround is to switch off play protect, but when using an additional work profile on android (to connect to company mails and services), play protect can't be switched off (switch greyed out). I can live without that, but would be easier to have everything on one phone.\r\nThis is definitely not a problem for most of the users, but is there a possibility for improvement? Would be great.   \r\n \r\nAttached a logfile. play protect scan triggered 20:22, Bolus given 20:23\r\n\r\n```\r\n20:23:14.750 [Thread-82262] E/PUMP: [RuffyScripter.runCommand():360]: CommandException while executing command\r\ninfo.nightscout.androidaps.plugins.pump.combo.ruffyscripter.commands.CommandException: Unexpected exception while initiating/restoring pump connection\r\n\tat info.nightscout.androidaps.plugins.pump.combo.ruffyscripter.RuffyScripter.ensureConnected(RuffyScripter.java:512) ~[na:0.0]\r\n\tat info.nightscout.androidaps.plugins.pump.combo.ruffyscripter.RuffyScripter.runCommand(RuffyScripter.java:277) ~[na:0.0]\r\n\tat info.nightscout.androidaps.plugins.pump.combo.ruffyscripter.RuffyScripter.readPumpState(RuffyScripter.java:238) ~[na:0.0]\r\n\tat info.nightscout.androidaps.plugins.pump.combo.ComboPlugin.runOnConnectChecks(ComboPlugin.java:932) ~[na:0.0]\r\n\tat info.nightscout.androidaps.plugins.pump.combo.ComboPlugin.runCommand(ComboPlugin.java:874) ~[na:0.0]\r\n\tat info.nightscout.androidaps.plugins.pump.combo.ComboPlugin.deliverTreatment(ComboPlugin.java:512) ~[na:0.0]\r\n\tat info.nightscout.androidaps.queue.commands.CommandBolus.execute(CommandBolus.kt:26) ~[na:0.0]\r\n\tat info.nightscout.androidaps.queue.QueueThread.run(QueueThread.kt:131) ~[na:0.0]\r\nCaused by: android.os.DeadObjectException: null\r\n\tat android.os.BinderProxy.transactNative(Native Method) ~[na:0.0]\r\n\tat android.os.BinderProxy.transact(BinderProxy.java:571) ~[na:0.0]\r\n\tat org.monkey.d.ruffy.ruffy.driver.IRuffyService$Stub$Proxy.doRTConnect(IRuffyService.java:191) ~[na:0.0]\r\n\tat info.nightscout.androidaps.plugins.pump.combo.ruffyscripter.RuffyScripter.ensureConnected(RuffyScripter.java:488) ~[na:0.0]\r\n\t... 7 common frames omitted\r\n```\r\n\r\n\r\n",
+ "comments": [
+  {
+   "id": 1217075288,
+   "user": "tKostka",
+   "created_at": "2022-08-16T19:32:41Z",
+   "body": "[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/9353951/AndroidAPS.log)\r\n"
+  },
+  {
+   "id": 1218474803,
+   "user": "MilosKozak",
+   "created_at": "2022-08-17T20:46:53Z",
+   "body": "yes it's mentioned in wiki\r\nhttps://androidaps.readthedocs.io/en/latest/search.html?q=play+protect&check_keywords=yes&area=default"
+  },
+  {
+   "id": 1218475883,
+   "user": "MilosKozak",
+   "created_at": "2022-08-17T20:48:11Z",
+   "body": "the problem is comming from self signed certificate which is evaluated as suspicious by play protect. there is nothing we can do with it"
+  }
+ ]
+}

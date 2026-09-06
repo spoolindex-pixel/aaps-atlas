@@ -1,0 +1,77 @@
+{
+ "id": 1468982586,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 2514,
+ "title": "moved from heroku to google fine but looking to find the data api",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/2514",
+ "state": "closed",
+ "labels": [
+  "invalid"
+ ],
+ "created_at": "2022-11-30T03:11:10Z",
+ "closed_at": "2022-12-03T16:01:11Z",
+ "comment_count": 10,
+ "body": "Hi all\r\nIve moved over with no issues and thank you for the clear instructions. My boyfriend is also able to follow by using the token etc.\r\n\r\nI'm not overly technical hence why I am here. I use a fitbit for my hypo alerts as its the only thing that wakes me. The clock face that i use from pedantic avenger asks for the DATA API URL. His files haven't been updated yet so when I try using the old format from Heroku but with the new host site it wont allow me. I would appreciate any help if it can be done.\r\n\r\nThanks in advance.",
+ "comments": [
+  {
+   "id": 1331601811,
+   "user": "Navid200",
+   "created_at": "2022-11-30T03:33:42Z",
+   "body": "I can make a suggestion.\r\n\r\nYou can change a variable that I suspect will let fitbit behave as it did before.  However, this may result in cost for Google Cloud.  I have no idea how much.  And it may not even increase cost.  We are still gathering data.\r\n\r\nI suggest you make the change just to see if it enables the watch or not.  If it  doesn't you can change it back to the way it was because it is pointless.\r\nIf it makes the watch work fine, we can wait for more input from others and decide how to handle this.\r\n\r\nIf you like to try this, you need to change one variable.\r\nThe variable name is the following.\r\nAUTH_DEFAULT_ROLES\r\n\r\nThe value it is set to now on your system must be: denied\r\n\r\nIf you want to try the experiment, change it to: readable\r\n\r\nAfter you make the change, please don't forget to restart the server (restart Nightscout).  There is an option on the manu to restart.  After you restart, you need to wait 1 minute.  Then, you can try Nightscout again and see if the watch works.\r\n\r\nIf it still doesn't work, please make sure to edit the variable and change it back to denied.  And you will need to restart again.  Every time you change a variable, you need to restart.\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n"
+  },
+  {
+   "id": 1331602573,
+   "user": "osheagrainne",
+   "created_at": "2022-11-30T03:35:19Z",
+   "body": "Great. Thank you. I have also put a budget in place and to be notified if it reaches that. I will test that and see how it works. \r\nThank you again."
+  },
+  {
+   "id": 1331604061,
+   "user": "Navid200",
+   "created_at": "2022-11-30T03:38:08Z",
+   "body": "What I suspect is that fitbit does not know how to use a token.  The best solution is to figure out a way to have fitbit use a token and change the setting back to denied.\r\nBut, let's go one step at a time.  "
+  },
+  {
+   "id": 1331606901,
+   "user": "osheagrainne",
+   "created_at": "2022-11-30T03:44:48Z",
+   "body": "I was tempted to give building a clock face a go because other faces use the url fine but i love the look of this. I can always do the latter if the above doesn't work."
+  },
+  {
+   "id": 1336128648,
+   "user": "Felguera242",
+   "created_at": "2022-12-03T10:16:33Z",
+   "body": "i am moving from heroku to google cloud too. Followed some tutorials to do it and i configured vm in cloud , install nightscout with xdrip script ,and now i can acces from browser and upload measures from diabox.  The problem is that when i use xdrip as follower ,and put the url in the NS follower box , a message appears denying acces \"NS entries download was not succesful:401 unautorized\" .I created a NS subjet and used this url   ,but doesnt work. But it works in nightwatch app (api key doesnt work in this app ,but subject token does. Its very weird , i am desesperated , i used xdrip to send data to my watch ,but now i cant.\r\nI beg you to tell me wich tutorial did you follow to succeed . Thanks in advance."
+  },
+  {
+   "id": 1336133125,
+   "user": "Felguera242",
+   "created_at": "2022-12-03T10:47:48Z",
+   "body": "i managed to \"solve\" it by changing AUTH_DEFAULT_RULES nightscout variable to \"readable\" in the virtual machine trough ssh .\r\nDont know if this is the right solution , but is a workaround solution for me until i know why xdrip doesnt access ns like it was doing with heroku. "
+  },
+  {
+   "id": 1336168416,
+   "user": "Navid200",
+   "created_at": "2022-12-03T14:11:32Z",
+   "body": ">  until i know why xdrip doesnt access ns like it was doing with heroku.\r\n\r\nHeroku did not impose a limit on outgoing bandwidth.  On Google Cloud, if your outgoing bandwidth goes over 1GB/month, it will not be free.\r\nWe are not certain what will be the bandwidth and the resulting cost if crawlers also start reading if we open the site to the world for reading.\r\n\r\nSo, until we have more data, we decided to minimize the egress by default."
+  },
+  {
+   "id": 1336170382,
+   "user": "Felguera242",
+   "created_at": "2022-12-03T14:23:04Z",
+   "body": "Thanks for your quick response. So I suppose this is a common problem for\nall the people that is migrating from heroku to Google and not only mine.\nWe will wait for a solution that makes all people with less knowledge,\nmigrate without this problem. Thank you for your time and efforts.\n\nEl sáb, 3 dic 2022 15:11, Navid ***@***.***> escribió:\n\n> until i know why xdrip doesnt access ns like it was doing with heroku.\n>\n> Heroku did not impose a limit on outgoing bandwidth. On Google Cloud, if\n> your outgoing bandwidth goes over 1GB/month, it will not be free.\n> We are not certain what will be the bandwidth and the resulting cost if\n> crawlers also start reading if we open the site to the world for reading.\n>\n> So, until we have more data, we decided to minimize the egress by default.\n>\n> —\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/2514#issuecomment-1336168416>,\n> or unsubscribe\n> <https://github.com/notifications/unsubscribe-auth/AXJ4XW3CE2SZMKMN4KVJJEDWLNIJ7ANCNFSM6AAAAAASPE6UVM>\n> .\n> You are receiving this because you commented.Message ID:\n> ***@***.***>\n>\n"
+  },
+  {
+   "id": 1336172982,
+   "user": "Navid200",
+   "created_at": "2022-12-03T14:38:31Z",
+   "body": "@Felguera242 Please don't quote an entire message unless you really want to.  If the reason your post looks like that is that you are responding to an email to post here, please don't.  It make the thread hard to follow.\r\n\r\nThe solution is to use apps and devices that know how to use tokens.  \r\nBut, if you must use a device that is incapable of using a token, you have to open to the world for read.  \r\nI have no problem.\r\n\r\n"
+  },
+  {
+   "id": 1336188787,
+   "user": "Navid200",
+   "created_at": "2022-12-03T16:01:11Z",
+   "body": "@osheagrainne I just realized this was an issue.\r\nI wish I had noticed earlier.\r\nPlease do not open an issue when you have a question, concern, or want to report a bug.  Instead please open a discussion."
+  }
+ ]
+}

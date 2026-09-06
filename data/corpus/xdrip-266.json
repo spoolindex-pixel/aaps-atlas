@@ -1,0 +1,93 @@
+{
+ "id": 288065869,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 266,
+ "title": "Upload of \"eventType: Sensor Start\" to the Nightscout treatments works only to 1st NS site ",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/266",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2018-01-12T10:01:34Z",
+ "closed_at": "2025-04-25T11:00:01Z",
+ "comment_count": 14,
+ "body": "When starting new dex sensor it seems that, if there is more than one Nightscout sites (REST-API) in the Base URL settings (space delimited), the upload of the \"eventType: Sensor Start\" works only for the 1st (first) NS site in a row. All other NS sites are missing this data. I tried to confirm this with fresh setup of multiple NS sites and clean install of the xDrip+ app and can confirm this issue. I also tried to reorder the NS sites under Base URL settings and it is always only the first one in a row that receives the while all others are missing the \"eventType:\" \"Sensor Start\" data.\r\nxDrip + app ver latest stable: 2017-11-13 \r\nNS ver latest: 0.10.2-release-20171201",
+ "comments": [
+  {
+   "id": 370932696,
+   "user": "jamorham",
+   "created_at": "2018-03-06T21:21:58Z",
+   "body": "Can you try this again in the latest nightly? March 6th.. let me know if I have resolved it. Thanks "
+  },
+  {
+   "id": 371290332,
+   "user": "bordeb",
+   "created_at": "2018-03-07T21:26:09Z",
+   "body": "Thank you @jamorham ! Now I figured out - or better to say remembered (silly me) how I can easily test this without the real change of the sensor so I will test it and report here. I will make some test NS sites and fresh xdrip installation on spare phone (parakeet system) and test this and report here\r\n"
+  },
+  {
+   "id": 371322691,
+   "user": "bordeb",
+   "created_at": "2018-03-07T23:28:24Z",
+   "body": "Hi @jamorham , I have just tried with nightly 6th March and it seems that the issue is still not resolved. The behavior that I can see is still the same."
+  },
+  {
+   "id": 443485667,
+   "user": "bordeb",
+   "created_at": "2018-12-02T06:41:34Z",
+   "body": "HI! I just want to shed some attention to this old  issue. I am still experiencing this issue. With dexcom as well as with libre sensors."
+  },
+  {
+   "id": 779815591,
+   "user": "Navid200",
+   "created_at": "2021-02-16T12:49:05Z",
+   "body": "@bordeb Is the problem still there with more recent releases of xDrip and Nightscout?"
+  },
+  {
+   "id": 786761418,
+   "user": "Navid200",
+   "created_at": "2021-02-26T16:46:01Z",
+   "body": "Closing due to inactivity"
+  },
+  {
+   "id": 1290761527,
+   "user": "jonprogers",
+   "created_at": "2022-10-25T15:37:20Z",
+   "body": "This issue is still happening as reported here: https://github.com/NightscoutFoundation/xDrip/discussions/2299#discussioncomment-3842822 and here https://github.com/NightscoutFoundation/xDrip/discussions/2358#discussioncomment-3939664\r\n\r\n@Navid200 asked me to transfer the information to this thread.\r\n\r\nWhere there are two space separated URLs specified as the Base URL in xDrip settings;\r\n\r\n- glucose values (type sgv) are uploaded to both nightscout instances\r\n- CGM calibration events are uploaded to both nightscout instances\r\n- other treatments and events (for instance I've experienced it with:- carbs, insulin, CGM sensor start/stop) only go to the first URL specified\r\n\r\nSwapping around the order that the URLs are listed causes to carbs, insulin etc. to go to which ever nightscout instance islisted first.\r\n\r\nMy current configuration is two nightscout 14.2.5 instances, xDrip nightly from 2022.10.15 and dexcom g6 being read directly by xDrip with the G5/G6 Transmitter hardware data source and the Native Algorithm enabled."
+  },
+  {
+   "id": 1504159270,
+   "user": "TiagoPRSilva",
+   "created_at": "2023-04-11T21:54:59Z",
+   "body": "> When starting new dex sensor it seems that, if there is more than one Nightscout sites (REST-API) in the Base URL settings (space delimited), the upload of the \"eventType: Sensor Start\" works only for the 1st (first) NS site in a row. All other NS sites are missing this data. I tried to confirm this with fresh setup of multiple NS sites and clean install of the xDrip+ app and can confirm this issue. I also tried to reorder the NS sites under Base URL settings and it is always only the first one in a row that receives the while all others are missing the \"eventType:\" \"Sensor Start\" data. xDrip + app ver latest stable: 2017-11-13 NS ver latest: 0.10.2-release-20171201\r\n\r\nAfter all i found some relevant logs in nginx\r\n\r\n`tail -f access.log \r\nmy-redacted-public-ip - - [11/Apr/2023:22:49:22 +0100] \"GET /api/v1/treatments HTTP/2.0\" 200 2 \"-\" \"okhttp/3.12.13\"\r\nmy-redacted-public-ip - - [11/Apr/2023:22:49:22 +0100] \"GET /socket.io/?EIO=3&transport=polling HTTP/2.0\" 400 51 \"-\" \"okhttp/4.9.0\"\r\nmy-redacted-public-ip - - [11/Apr/2023:22:49:23 +0100] \"GET /socket.io/?EIO=3&transport=polling HTTP/2.0\" 400 51 \"-\" \"okhttp/4.9.0\"\r\nmy-redacted-public-ip - - [11/Apr/2023:22:49:25 +0100] \"GET /socket.io/?EIO=3&transport=polling HTTP/2.0\" 400 51 \"-\" \"okhttp/4.9.0\"\r\nmy-redacted-public-ip - - [11/Apr/2023:22:49:27 +0100] \"GET /socket.io/?EIO=3&transport=polling HTTP/2.0\" 400 51 \"-\" \"okhttp/4.9.0\"\r\nmy-redacted-public-ip - - [11/Apr/2023:22:49:32 +0100] \"GET /socket.io/?EIO=3&transport=polling HTTP/2.0\" 400 51 \"-\" \"okhttp/4.9.0\"\r\nmy-redacted-public-ip - - [11/Apr/2023:22:49:37 +0100] \"GET /socket.io/?EIO=3&transport=polling HTTP/2.0\" 400 51 \"-\" \"okhttp/4.9.0\"\r\nmy-redacted-public-ip - - [11/Apr/2023:22:49:43 +0100] \"GET /socket.io/?EIO=3&transport=polling HTTP/2.0\" 400 51 \"-\" \"okhttp/4.9.0\"\r\nmy-redacted-public-ip - - [11/Apr/2023:22:49:48 +0100] \"GET /socket.io/?EIO=3&transport=polling HTTP/2.0\" 400 51 \"-\" \"okhttp/4.9.0\"\r\nmy-redacted-public-ip - - [11/Apr/2023:22:49:53 +0100] \"GET /socket."
+  },
+  {
+   "id": 2597320050,
+   "user": "Navid200",
+   "created_at": "2025-01-17T02:46:00Z",
+   "body": "I wanted to fix this.  But, it is quite complicated.\n\nCan I ask why anyone would need to upload to more than one site other than for emergency?\nLet me explain what I mean by emergency.\nLet's say I use Nightscout as a part of a loop.  So, it is extremely important for me for it to be up and running with no interruptions.  \nTo address this, I set up xDrip to upload to two sites.  \nIf the main site breaks and the loop warns me, I will right away change the hostname in the loop to that of the emergency site, the second site.  Then, my loop will continue to function.\nWhen I get home, I will figure out what happened to my main site and fix it.  \nAfter I fix my main site, I will use the existing feature in xDrip to backfill the missing data in my main site and switch loop back to my main Nightscout site.\n\nSo, I use the capability of xDrip to upload to two sites the same way I use a spare tire in the trunk of my car.  I only use it to address an emergency.  But, I never use it under normal circumstances.\n\nIf that is why everyone uses multiple sites, then, this should not really be an issue, should it?"
+  },
+  {
+   "id": 2597647590,
+   "user": "bordeb",
+   "created_at": "2025-01-17T08:02:51Z",
+   "body": "Tnx for asking!\nOne real life example can be: For a child being followed and/or monitored through a NS sites, one might want that e.g. parents have highest info on one NS site, some other family members some other info on other NS site, and maybe some care giver/teacher/etc.. some minimal required information on third NS site."
+  },
+  {
+   "id": 2598269753,
+   "user": "Navid200",
+   "created_at": "2025-01-17T12:33:26Z",
+   "body": "> Tnx for asking! One real life example can be: For a child being followed and/or monitored through a NS sites, one might want that e.g. parents have highest info on one NS site, some other family members some other info on other NS site, and maybe some care giver/teacher/etc.. some minimal required information on third NS site.\n\nHow would you accomplish that?\nUnless I have misunderstood this issue, the request is to change xDrip so that it would upload treatments to all sites included in the base URL setting separated by spaces.  Then, all of your sites will become identical as far as what they contain.\nHow would you only have minimal information on one site and not the others?"
+  },
+  {
+   "id": 2598434881,
+   "user": "bordeb",
+   "created_at": "2025-01-17T14:02:48Z",
+   "body": "> > \n> \n> How would you accomplish that? Unless I have misunderstood this issue, the request is to change xDrip so that it would upload treatments to all sites included in the base URL setting separated by spaces. Then, all of your sites will become identical as far as what they contain. How would you only have minimal information on one site and not the others?\n\nFor example setting some plugins as enabled/disabled and/or shown/not shown and/or alarms active/disabled dependant on the specific NS site. In addition, from experiance, different High/Low thresholds (e.g. parents wirh little bit narrower targeted frame compared to caregivers, or vice versa) to be on the safe side, more or less conservative approach, etc.."
+  },
+  {
+   "id": 2598455456,
+   "user": "bordeb",
+   "created_at": "2025-01-17T14:11:43Z",
+   "body": "> > > \n> > \n> > \n> >\n> \n> For example setting some plugins as enabled/disabled and/or shown/not shown and/or alarms active/disabled dependant on the specific NS site. In addition, from experiance, different High/Low thresholds (e.g. parents wirh little bit narrower targeted frame compared to caregivers, or vice versa) to be on the safe side, more or less conservative approach, etc..\n\nTo sum up, I just want to help, and maybe my examples are not so relevant. Honestly, we are using xdrip and NS successfully for years and both are so high end, beautiful, powerful, usefull... pieces of software that it is almost unbelievable that it is all based on open source and volunteer experts like you and others. So, this is really not a big deal, my personal opinion is that it is fully up to you experts to decide if it is worth time and effort investing. In either way, both software remain undoubtedly excellent!"
+  }
+ ]
+}

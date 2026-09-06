@@ -1,0 +1,27 @@
+{
+ "id": 2153262297,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 3364,
+ "title": "UiBasedCollector + Medtronic Minimed Mobile = 5-minute delay in xDrip when IoB != 0",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/3364",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-02-26T05:04:19Z",
+ "closed_at": "2024-02-26T12:50:42Z",
+ "comment_count": 2,
+ "body": "Hi all, \r\nI just stumbled across the Companion App Mode, and although I was using xDrip for quite a while, I did not know it was there. Awesome, for having everything offline, without the minimed cloud!\r\n\r\nHowever, I have a problem with it. Everytime, when there is non-zero IoB, the app is 5 minutes delayed, i.e. delayed by one sgv reading. I closely observed the logs, and my suspicion is, that the problem is the order of updates of the Minimed App Status notification. When it's time for a new SGV (5 min after the last value), the app _first_ updates the \"insulin on board\" label, without changing the SGV. xDrip already interprets the value found in that notification as the new SGV! A few seconds later, the Minimed notification is updated again, now with the correct SGV. However, xDrip already processed the (wrong) sgv from one second before, when only the iob value was updated, and therefore reports a \"duplicate value\"\r\n\r\nhttps://github.com/NightscoutFoundation/xDrip/blob/e34ebac5d5e92650312b98deec8966b841b63bf7/app/src/main/java/com/eveningoutpost/dexdrip/services/UiBasedCollector.java#L328\r\n\r\nI'm not entirely sure how to solve this problem, but wanted to hear if anybody else has this problem?",
+ "comments": [
+  {
+   "id": 1963325863,
+   "user": "Trenar",
+   "created_at": "2024-02-26T05:05:14Z",
+   "body": "Addendum: I'm using the latest nightly build and disabled all battery optimization etc. All I did was setting up the Companion App Mode and enabling the local web service (for my watch to get the sgv)."
+  },
+  {
+   "id": 1963333418,
+   "user": "Trenar",
+   "created_at": "2024-02-26T05:14:31Z",
+   "body": "As I find it hard to understand myself, I now added a screenshot of the logs. \r\n\r\nWe see 3 updates of the notification. The lowest (red) at 21:04 is the \"old\" value 120 in this case. The yellow one appears exactly when a new value is expected, but contains the very same numbers (1,4 IoB and 120 mg/dL). This one is added as new database entry in xdrip. The third entry (green) appears only a few milliseconds later, with the correct \"new\" SGV reading (121). However, as the yellow value was already added as new database entry, this one is discarded / marked as \"duplicate value\".\r\n\r\nNote: I know that in this example the IoB number did not change, but I assume that internally, the minimed app updates this number before the SGV. I have seen this number changing in such an example, but just can't find it in my logs right now.\r\n\r\n![Screenshot_20240225-211148~2](https://github.com/NightscoutFoundation/xDrip/assets/31891152/3fb59e2f-01d4-445f-b966-aca495ee7a14)\r\n"
+  }
+ ]
+}

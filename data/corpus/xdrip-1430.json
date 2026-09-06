@@ -1,0 +1,78 @@
+{
+ "id": 692001255,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1430,
+ "title": "Implement the receiption of scanned Libre 2 values via patched LibreLink",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1430",
+ "state": "closed",
+ "labels": [
+  "enhancement",
+  "device-libre"
+ ],
+ "created_at": "2020-09-03T14:03:32Z",
+ "closed_at": "2023-05-30T20:33:17Z",
+ "comment_count": 10,
+ "body": "The patched LibreLink sends many intents beside the currently accepted ones by xDrip+. \r\n\r\nIt also sends an Intent \"com.librelink.app.ThirdPartyIntegration.SENSOR_SCAN\" with all the scanned values (historic and realtime). \r\n\r\nI tried it in a small test app and all the scanned values seem to be there.\r\n\r\nIt's just xDrip+, which doesn't take this intent and fills the gap with the scanned values.\r\n\r\nCouldn't xDrip+ implement the reception of this patched LibreLink intent?",
+ "comments": [
+  {
+   "id": 686751027,
+   "user": "Artemdrip",
+   "created_at": "2020-09-03T20:34:23Z",
+   "body": "Very good Idea.\r\nI would give $ 10 to someone who could implement this feature in Xdrip +"
+  },
+  {
+   "id": 687724074,
+   "user": "dideldum",
+   "created_at": "2020-09-06T08:26:06Z",
+   "body": "Unfortunately I have to add: the SENSOR_SCAN intent from the patched LibreLink doesn't contain the current 15 minute-by-minute values. So if you leave the phone for just a few minutes, it is not possible for xDrip+ to fill this current gap with the lost minute-by-minute values. Would be good, if the LibreLink patch developers just add a bundle with these 15 values. Probably xDrip+ developers could clarify this issue with the LibreLink patch developers?"
+  },
+  {
+   "id": 687803614,
+   "user": "MasterPlexus",
+   "created_at": "2020-09-06T14:25:05Z",
+   "body": "@dideldum as you write you have tested the Intend in a other app, how did you see there the values. In your second note you state that it is not in there. As far as I understand the patch and librelink code itself has never included the data.\r\nTo include it is easy said than done, because smali code is Hardcore ;)\r\nI don't think that the patch coders will try to implement that in the patch, as the last change itself was also not that problemfree... "
+  },
+  {
+   "id": 687819833,
+   "user": "dideldum",
+   "created_at": "2020-09-06T15:28:10Z",
+   "body": "@MasterPlexus Yes, I changed the patch to send the intents not to xDrip+, but to my own app.\r\nYou misunderstood my second post.\r\nThe patch always has sent the scanned data, xDrip+ just doesnt accept it. But the scanned data intent is not fully complete. It contains the 8 hours history with its \"every 15 minutes\"-values and the so called realtime values, which are the sensor values at the moment of scanning (not only the last scanned, but also a history of scanned values).\r\nThe only data, which is not included in the intent sent by the patch, are the 15 minute-by-minute values of the last 15 minutes, which are also stored in the sensor and (as far as I know) are transmitted from the sensor, when it is scanned.\r\nAbout which last change are you speaking? I only know the \"the patch\" itself, which was published once. There were never changes to the patch published, to my knowledge, "
+  },
+  {
+   "id": 687830151,
+   "user": "MasterPlexus",
+   "created_at": "2020-09-06T16:11:16Z",
+   "body": "@dideldum , yes, last Patch was first patch, so the same ;)\n\nInteresting, that in the dean intent also the values of 8houres are in, as I would that not see in the Patch. But this say nothing, as I said that smali is not really easy. \n\nBut I think there was a older cidepart of jamorham where he made the 8houres values fit into the 5 min area of older libre one scans. Maybe this could be used to transfer the 8houre values...\n\nIf the data is there I could maybe think about that, but can not say how long this could need."
+  },
+  {
+   "id": 687833681,
+   "user": "dideldum",
+   "created_at": "2020-09-06T16:25:45Z",
+   "body": "@MasterPlexus If you look into ThirdPartyIntegration.smali, which is the class for sending all intents, you can see a lot of \"send...broadcast\" methods (Only 2 of them are handled by xDrip+).  One of these many broadcasts is \"sendSensorScanBroadcast\". The data transmitted in this intent is in various bundles, which are built together in the method \"getSASFields\". One of the bundles is the 8hour-history, another bundle contains the scanned data itself. So this must be identical to the historic and scanned data received via a transmitter.\r\nIf you use bytecode viewer, you can even see the ThirdPartyIntegration as a java class and can find, that the \"sendSensorScanBroadcast\" is called from com.librelink.app.ui.common.ScanSensorFragment.class in method scanSensor.\r\nI'm still not informed enough, why here the \"latest-15minute\"-values are missing."
+  },
+  {
+   "id": 687834885,
+   "user": "MasterPlexus",
+   "created_at": "2020-09-06T16:30:41Z",
+   "body": "I have to digest that sometime if I find time. "
+  },
+  {
+   "id": 766754440,
+   "user": "jonaschn",
+   "created_at": "2021-01-25T11:35:25Z",
+   "body": "Any progress here?"
+  },
+  {
+   "id": 1568754536,
+   "user": "Navid200",
+   "created_at": "2023-05-30T16:46:17Z",
+   "body": "@psonnera  Would you please tell us what your view is?\r\nIs this something that has been recently addressed?\r\nIf not, is it something that can ever be fixed?\r\n\r\nIf not, I would like to close the issue."
+  },
+  {
+   "id": 1569009419,
+   "user": "psonnera",
+   "created_at": "2023-05-30T19:58:54Z",
+   "body": "I don't think the vendor app patch can be modified by anyone else than the original team. And I'm pretty sure they won't be working on it since there are other solutions available, furthermore as Libre 2 EU will slowly disappear for Libre 3.\r\nI don't see the interest of having scanned sensor values in xDrip+ as the main interest of the patched app is to have Libre 2 bluetooth values streamed into xDrip+. And the patched app doesn't allow backfilling anyway.\r\n\r\nI would close that."
+  }
+ ]
+}

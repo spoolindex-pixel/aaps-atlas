@@ -1,0 +1,33 @@
+{
+ "id": 777492840,
+ "repo": "nightscout/AndroidAPS",
+ "number": 172,
+ "title": "[2.8.0] unchanged CGM values error with patched Dexcom app ",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/172",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-01-02T17:08:32Z",
+ "closed_at": "2021-01-03T15:27:57Z",
+ "comment_count": 3,
+ "body": "Release notes states: removed \"Unchanged CGM values\" behavior in SMB for dexcom native app\r\n\r\nI get still the message with patched Dexcom app.\r\n\r\n`isSaveCgmSource` is true in the logs but still the message _\"Error: CGM data is unchanged for the past ~45m.\"_ appears.\r\n\r\n```\r\n16:24:58.757 [RxCachedThreadScheduler-1] D/APS: [DetermineBasalAdapterSMBJS.invoke():112]: isSaveCgmSource: true\r\n16:24:58.764 [RxCachedThreadScheduler-1] D/APS: [DetermineBasalAdapterSMBJS.invoke():165]: Result: {\"reason\":\"Error: CGM data is unchanged for the past ~45m. Replacing high temp basal of 3.125 with neutral temp of 1.25\",\"deliverAt\":\"2021-01-02T15:24:58.753Z\",\"temp\":\"absolute\",\"duration\":30,\"rate\":1.25}\r\n```\r\n\r\nLooks like `isSaveCgmSource` is not true in the `determine_basal` function.\r\nIt also looks like the current implementation will only dismiss the message _\"Error: CGM data is unchanged for the past ~45m\"_ if `isSaveCgmSource` is true, but will still change the results if the CGM data is unchanged, because `isSaveCgmSource` is missing in the second `if`.",
+ "comments": [
+  {
+   "id": 753513714,
+   "user": "rICTx-T1D",
+   "created_at": "2021-01-02T18:39:09Z",
+   "body": "What's your question or problem with this topic?"
+  },
+  {
+   "id": 753518856,
+   "user": "the-swish",
+   "created_at": "2021-01-02T19:26:02Z",
+   "body": "3442e29e5c95a50edf85f838b922bb6294df7091 should allow flat BGs with Dexcom, I think it was a change for issue https://github.com/nightscout/AndroidAPS/issues/35\r\nIt looks not to work like intended.\r\nBecause I get still the message _Error: CGM data is unchanged for the past ~45m_\r\n\r\nAnd if this will work the only thing it does is to remove the message _Error: CGM data is unchanged for the past ~45m_ but the change of the high/neutral basal still happens and no prediction line will be shown because it is missing `&& !isSaveCgmSource` in the second compare of `determine_basal`"
+  },
+  {
+   "id": 753633878,
+   "user": "MilosKozak",
+   "created_at": "2021-01-03T15:27:57Z",
+   "body": "fixed by https://github.com/nightscout/AndroidAPS/commit/34435d46847fd2f4783a97a5a90de5ba7bb41f98\r\nthanks, 2 bugs in a single commit. shame on me"
+  }
+ ]
+}

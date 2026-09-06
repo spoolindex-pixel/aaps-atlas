@@ -1,0 +1,21 @@
+{
+ "id": 3702409216,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4388,
+ "title": "[Dev] Issue with IOB / TBR sync when using Running Mode",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4388",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-12-06T21:17:46Z",
+ "closed_at": "2025-12-08T21:36:31Z",
+ "comment_count": 1,
+ "body": "AAPS 3.3.3.0-dev-d\nBuild: 0bfd830573-2025.12.06\nPump: Omnipod Dash\nNSClientV3 + V1\n\nHow to reproduce:\n**When using Disconnect Pump:**\n1) AAPS: Disconnect pump for 30 minutes, TBR 0 U/h 30 min is set on AAPS and synced to AAPSClient.\n2) AAPSClient: After a few minutes reconnect pump. Regular basal rate is set on AAPSClient. This does not sync to AAPS, and continues with 0 TBR until next loop run that set something else than TBR 0.\n\n**When using Suspend loop 1 hour:**\n1) AAPS: In this case a high TBR 0.9 U/h is set\n2) AAPSClient: Suspend loop 1 hour. Regular basal rate is set on AAPSClient. This does not sync to AAPS. \n3) AAPSClient: Resume Closed loop after a few minutes. AAPS Continues with a high TBR 0.9 U/h until a looprun later resets it to something else.\n\nThe problem in both these scenarios is that AAPSClient gets incorrect IOB from TBR's.\n\nRunning mode is syncing OK, but for this to work properly AAPS need to accept AAPSClient setting regular basal rate some how. Another solution could be that AAPSClient does not alter basal rates when setting Running Mode.\n\n| AAPS | AAPSClient |\n|--------|--------|\n| <img width=\"583\" height=\"1229\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/6ae221be-7326-4406-9e1c-fc95a4f55aec\" /> | <img width=\"583\" height=\"1229\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/59e63d82-c725-4f30-9c37-26971e1ffbaa\" /> |\n| <img width=\"583\" height=\"1229\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/28b453cf-d633-468b-a6b2-eec4ac8f997d\" /> | <img width=\"583\" height=\"1229\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/00421754-9e68-4348-a688-96d14ea72e60\" /> |\n\nLogs.\nAAPS: [AndroidAPS_LOG_1765045701876.log.zip](https://github.com/user-attachments/files/23998132/AndroidAPS_LOG_1765045701876.log.zip)\n\nAAPSClient: [AndroidAPS_LOG_1765045740139.log.zip](https://github.com/user-attachments/files/23998142/AndroidAPS_LOG_1765045740139.log.zip)",
+ "comments": [
+  {
+   "id": 3629103991,
+   "user": "MilosKozak",
+   "created_at": "2025-12-08T21:36:31Z",
+   "body": "fixed by  https://github.com/nightscout/AndroidAPS/commit/ae9feb66fc6772221fa9ede8c8035f6d18f5c7f4"
+  }
+ ]
+}

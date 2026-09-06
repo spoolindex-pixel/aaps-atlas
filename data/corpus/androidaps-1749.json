@@ -1,0 +1,45 @@
+{
+ "id": 1241671198,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1749,
+ "title": "[Safety] Stopping insulin delivery logs carbs which then triggers delivery",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1749",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-05-19T12:04:34Z",
+ "closed_at": "2022-06-08T13:17:16Z",
+ "comment_count": 5,
+ "body": "[v3.0.0.2 dev-k] but may affect master\r\nMay affect treatments button/quick wizard and any other situations where carbs and insulin are given/logged in one action.\r\nSee also #651\r\n\r\nI've used the bolus wizard, entered carbs and pressed OK to bolus.\r\nThen I've cancelled bolusing before injecting - no units have been delivered.\r\nCarbs got logged.\r\nOpening the wizard the carbs were there as COB - I have not reviewed this.\r\nI've entered carbs again as new carbs and bolused.\r\nBolus was for COB + new carbs so basically double amount.\r\n\r\nI understand, that I should have reviewed the details better before bolusing, and that this was mainly a user related error.\r\n\r\nWhen the user cancels bolusing, it is to prevent insulin delivery. But if carbs get logged it triggers insulin delivery - this is the opposite. If a careless user input happens on top of it (like described above), bolusing for the double amount is possible.\r\n\r\nPlease reconsider this behaviour:\r\n- carbs should not be logged \r\n- a message should show this \r\n- maybe if a partial injection has happened only that proportion of carbs could be logged (as a safe amount, but it makes this more complicated, it is easier without carb logging)\r\n\r\nWhat are the benefits of logging carbs if stop is pressed at all?",
+ "comments": [
+  {
+   "id": 1131640747,
+   "user": "MilosKozak",
+   "created_at": "2022-05-19T12:45:11Z",
+   "body": "in current version carbs are not logged if bolus is not successful (in oposition to previous versions)\r\nif you experienced this in current dev, provide logs nad usual info"
+  },
+  {
+   "id": 1132193494,
+   "user": "MilosKozak",
+   "created_at": "2022-05-19T20:46:13Z",
+   "body": "time?"
+  },
+  {
+   "id": 1132579704,
+   "user": "szantos",
+   "created_at": "2022-05-20T07:35:59Z",
+   "body": "> time?\r\n\r\nYeah, sorry 12:20"
+  },
+  {
+   "id": 1132748903,
+   "user": "MilosKozak",
+   "created_at": "2022-05-20T10:36:37Z",
+   "body": "12:20 is not in log file"
+  },
+  {
+   "id": 1132815876,
+   "user": "szantos",
+   "created_at": "2022-05-20T11:58:02Z",
+   "body": "It was my last logfile, but it is from the day before it happened. I do not have a log of the day it happened at all. How can this be?"
+  }
+ ]
+}

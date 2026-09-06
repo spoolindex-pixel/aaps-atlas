@@ -1,0 +1,93 @@
+{
+ "id": 1057782507,
+ "repo": "nightscout/AndroidAPS",
+ "number": 951,
+ "title": "[3.0-beta6] SMB are converted to meal bolus on app restart",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/951",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-11-18T20:43:18Z",
+ "closed_at": "2021-11-19T17:00:41Z",
+ "comment_count": 13,
+ "body": "When restarting AAPS (it's enough to end the app and start it again), all past SMB are converted to meal bolus in the graph.\r\nAAPS 2.8.2.11-dev @ https://github.com/nightscout/AndroidAPS/commit/b2c12d233cb06313797a4e948552787eeb71740f etc. - pump is Combo, BG via xDrip+/G6 local broadcast.\r\n\r\nBefore app restart:\r\n![Screenshot_20211118-213729_AndroidAPS](https://user-images.githubusercontent.com/13501427/142493333-8b93a029-9df1-4ab0-9a9a-8539b8a34a06.png)\r\nAfter restart while still reading pump history\r\n![Screenshot_20211118-213747_AndroidAPS](https://user-images.githubusercontent.com/13501427/142493330-1397855d-4ed9-4cb0-83be-a49d05174252.png)\r\nAfter completing initialization\r\n![Screenshot_20211118-213809_AndroidAPS](https://user-images.githubusercontent.com/13501427/142493335-1685954e-1db3-4512-ad0e-ca391548416d.png)\r\n",
+ "comments": [
+  {
+   "id": 973269595,
+   "user": "MilosKozak",
+   "created_at": "2021-11-18T21:04:29Z",
+   "body": "guessing you have xDrip synchronized with NS"
+  },
+  {
+   "id": 973271225,
+   "user": "savek-cc",
+   "created_at": "2021-11-18T21:06:39Z",
+   "body": "REST-API enabled, Send Display Glucose enabled, Download treatments enabled.\r\nWrong/incompatible settings?"
+  },
+  {
+   "id": 973272281,
+   "user": "savek-cc",
+   "created_at": "2021-11-18T21:08:02Z",
+   "body": "AAPS NS client: upload enabled, download profiles enabled; all other options are disabled."
+  },
+  {
+   "id": 973904066,
+   "user": "MilosKozak",
+   "created_at": "2021-11-19T09:30:47Z",
+   "body": "my experinece is that xDrip modify data and send back to NS.\r\nor better accepts data from NSClient (which is NS data aready) modify and upload to NS\r\nthis data is synced back to AAPS from NS and this leads to behavoir you observe now"
+  },
+  {
+   "id": 974005316,
+   "user": "savek-cc",
+   "created_at": "2021-11-19T11:50:55Z",
+   "body": "But why does AAPS take anything other than the configured items from NS? I only enabled:\r\n- upload\r\n- download profiles\r\nWhy does that affect the type of bolus? Apart from profiles (which I could disable now as it's converted to a local one) AAPS should not be downloading/syncing anything from NS?"
+  },
+  {
+   "id": 974066452,
+   "user": "MilosKozak",
+   "created_at": "2021-11-19T13:20:01Z",
+   "body": "hard to say and probably not a worth to spend time with digging in logs because in 3.0 this parts of code are completely new"
+  },
+  {
+   "id": 974079481,
+   "user": "savek-cc",
+   "created_at": "2021-11-19T13:36:52Z",
+   "body": "? This is current dev - i.e. 3.0."
+  },
+  {
+   "id": 974100542,
+   "user": "MilosKozak",
+   "created_at": "2021-11-19T14:04:38Z",
+   "body": "ahhhh ok. then when this happen again upload logs with maximum info pls "
+  },
+  {
+   "id": 974123791,
+   "user": "swissalpine",
+   "created_at": "2021-11-19T14:34:03Z",
+   "body": "I see this too and don't upload treatments to xDrip+, only from AAPS to Nightscout and vice versa. Next time I restart the app will share a log."
+  },
+  {
+   "id": 974167554,
+   "user": "swissalpine",
+   "created_at": "2021-11-19T15:26:56Z",
+   "body": "Perhaps these are reimported from the pump. Because at first the triangles are visible, then, during the pump initialization, they disappear and numbers appear:\r\n![Screenshot_20211119-161613](https://user-images.githubusercontent.com/12517693/142647003-8982c6da-b3ca-4843-af56-8e6d370e648b.png)\r\n![Screenshot_20211119-161641](https://user-images.githubusercontent.com/12517693/142647089-8a32d33c-11d5-494a-82cf-14d8eddd9d51.png)\r\n\r\nLog of the restart\r\n[Log.txt](https://github.com/nightscout/AndroidAPS/files/7571214/Log.txt)\r\n\r\n"
+  },
+  {
+   "id": 974169052,
+   "user": "swissalpine",
+   "created_at": "2021-11-19T15:28:36Z",
+   "body": "By the way: The message \"Pump driver changed\" isn't correct. Problem seems for me that the Omnipod driver is initialized (?) befor my real pump Spirit Combo."
+  },
+  {
+   "id": 974178811,
+   "user": "savek-cc",
+   "created_at": "2021-11-19T15:38:29Z",
+   "body": "It really happens on reading the pump history on app start. See two screenshots. First is before stopping AAPS - SMB all the way back to last night. Pump history (checked on pump) has entry 30/30 (oldest one) at 6:02.\r\nAfter AAPS start, the SMB are first still visible as SMB - until the history is read from the Combo - at which point they are converted to regular boli. **But only the ones that are present in the combo's internal history**.\r\nScreenshots and log attached.\r\n\r\n![Screenshot_20211119-163141_AndroidAPS](https://user-images.githubusercontent.com/13501427/142649429-f45b2026-b9cf-4757-8d3d-5b60f1375999.png)\r\n![Screenshot_20211119-163402_AndroidAPS](https://user-images.githubusercontent.com/13501427/142649434-dbbb7c43-f1fd-4d95-a02d-3bf41135d180.png)\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/7571290/AndroidAPS.log)\r\n"
+  },
+  {
+   "id": 974244321,
+   "user": "MilosKozak",
+   "created_at": "2021-11-19T17:00:41Z",
+   "body": "it was combo specific issue. fixed by https://github.com/nightscout/AndroidAPS/commit/f5faa3492288b97b49284e116c29720f50194560\r\nthanks!"
+  }
+ ]
+}

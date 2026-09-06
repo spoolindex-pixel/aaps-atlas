@@ -1,0 +1,27 @@
+{
+ "id": 2206806951,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3281,
+ "title": " java.lang.NumberFormatException: empty String in Full Synchronization of Treatments",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3281",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-03-25T22:07:44Z",
+ "closed_at": "2024-11-13T13:01:59Z",
+ "comment_count": 2,
+ "body": "- Every time I perform a full synchorization I get an error when retrieving the Treatment data\r\n- Build version: 3.3.0-dev-b\r\n- Nightscout 15.0.3 Dev\r\n\r\n[AndroidAPS_LOG_1711403420056.log.zip](https://github.com/nightscout/AndroidAPS/files/14749996/AndroidAPS_LOG_1711403420056.log.zip)\r\n\r\nException thrown:\r\n\r\n22:49:19.357 [OkHttp https://rxxxxxxxxde:15216/...] D/HTTP: [NSClientV3Plugin.setClient$lambda$6():344]: <-- END HTTP (249018-byte, 36028-gzipped-byte body)\r\n22:49:19.370 [DefaultDispatcher-worker-1] E/CORE: [LoadTreatmentsWorker.doWorkAndLog():83]: Error: \r\ncom.google.gson.JsonSyntaxException: java.lang.NumberFormatException: empty String\r\n\tat com.google.gson.internal.bind.TypeAdapters$7.read(TypeAdapters.java:251)\r\n\tat com.google.gson.internal.bind.TypeAdapters$7.read(TypeAdapters.java:241)\r\n\tat com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$1.readIntoField(ReflectiveTypeAdapterFactory.java:212)\r\n\tat com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$FieldReflectionAdapter.readField(ReflectiveTypeAdapterFactory.java:433)\r\n\tat com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$Adapter.read(ReflectiveTypeAdapterFactory.java:393)\r\n\tat com.google.gson.internal.bind.TypeAdapterRuntimeTypeWrapper.read(TypeAdapterRuntimeTypeWrapper.java:40)\r\n\tat com.google.gson.internal.bind.CollectionTypeAdapterFactory$Adapter.read(CollectionTypeAdapterFactory.java:82)\r\n\tat com.google.gson.internal.bind.CollectionTypeAdapterFactory$Adapter.read(CollectionTypeAdapterFactory.java:61)\r\n\tat com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$1.readIntoField(ReflectiveTypeAdapterFactory.java:212)\r\n\tat com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$FieldReflectionAdapter.readField(ReflectiveTypeAdapterFactory.java:433)\r\n\tat com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$Adapter.read(ReflectiveTypeAdapterFactory.java:393)\r\n\tat retrofit2.converter.gson.GsonResponseBodyConverter.convert(GsonResponseBodyConverter.java:40)\r\n\tat retrofit2.converter.gson.GsonResponseBodyConverter.convert(GsonResponseBodyConverter.java:27)\r\n\tat retrofit2.OkHttpCall.parseResponse(OkHttpCall.java:243)\r\n\tat retrofit2.OkHttpCall$1.onResponse(OkHttpCall.java:153)\r\n\tat okhttp3.internal.connection.RealCall$AsyncCall.run(RealCall.kt:519)\r\n\tat java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)\r\n\tat java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)\r\n\tat java.lang.Thread.run(Thread.java:1012)\r\nCaused by: java.lang.NumberFormatException: empty String\r\n\tat jdk.internal.math.FloatingDecimal.readJavaFormatString(FloatingDecimal.java:1842)\r\n\tat jdk.internal.math.FloatingDecimal.parseDouble(FloatingDecimal.java:110)\r\n\tat java.lang.Double.parseDouble(Double.java:660)\r\n\tat com.google.gson.stream.JsonReader.nextInt(JsonReader.java:1215)\r\n\tat com.google.gson.internal.bind.TypeAdapters$7.read(TypeAdapters.java:249)\r\n\t... 18 common frames omitted\r\n22:49:19.371 [DefaultDispatcher-worker-1] D/WORKER: [LoggingWorker$doWork$2.invokeSuspend():27]: Worker result FAILURE for class app.aaps.plugins.sync.nsclientV3.workers.LoadTreatmentsWorker Data {Error : java.lang.NumberFormatException: empty String, }\r\n22:49:19.372 [RxCachedThreadScheduler-41] D/NSCLIENT: [NSClientV3Plugin$onStart$9.accept():249]: ◄ ERROR java.lang.NumberFormatException: empty String\r\n",
+ "comments": [
+  {
+   "id": 2020857894,
+   "user": "MilosKozak",
+   "created_at": "2024-03-26T16:12:24Z",
+   "body": "It looks like misformatted json in NS. There is probably another app writing to NS"
+  },
+  {
+   "id": 2020944911,
+   "user": "rvilchez1",
+   "created_at": "2024-03-26T16:38:49Z",
+   "body": "Only 2 instances of NSClient and one of AndroidAPS.\r\n"
+  }
+ ]
+}

@@ -1,0 +1,59 @@
+{
+ "id": 802091372,
+ "repo": "nightscout/AndroidAPS",
+ "number": 283,
+ "title": "Incorrect treatments uploaded into nightscout",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/283",
+ "state": "closed",
+ "labels": [
+  "insight"
+ ],
+ "created_at": "2021-02-05T11:32:37Z",
+ "closed_at": "2021-12-07T21:02:13Z",
+ "comment_count": 7,
+ "body": "Pump: Insight.\r\nVersion 2.8.2\r\n\r\nIve noticed spurious entry's in nightscout of incorrect basal rates being uploaded into nightscout.\r\nI have removed all connections to nightscout from xdrip etc to make sure that android aps is the only one uploading.\r\n\r\nsee duplicate entries below. the 3.72 rate is way above any safety limits set on the loop. the basal is not being enacted on the pump. its just an incorrect upload of the data. \r\n\r\n{\r\n    \"_id\": \"601150becce8360004cf5b92\",\r\n    \"eventType\": \"Temp Basal\",\r\n    \"duration\": 9,\r\n    \"absolute\": 3.72,\r\n    \"rate\": 3.72,\r\n    \"pumpId\": 1595582019158,\r\n    \"created_at\": \"2021-01-27T11:28:39Z\",\r\n    \"enteredBy\": \"openaps://AndroidAPS\",\r\n    \"originalExtendedAmount\": 0.54,\r\n    \"NSCLIENT_ID\": \"1611747518967\",\r\n    \"carbs\": null,\r\n    \"insulin\": null\r\n  },\r\n  {\r\n    \"_id\": \"60114e84cce8360004cf5b8b\",\r\n    \"eventType\": \"Temp Basal\",\r\n    \"duration\": 30,\r\n    \"absolute\": 1.2000000000000002,\r\n    \"rate\": 1.2000000000000002,\r\n    \"pumpId\": 1595582019158,\r\n    \"created_at\": \"2021-01-27T11:28:39Z\",\r\n    \"enteredBy\": \"openaps://AndroidAPS\",\r\n    \"originalExtendedAmount\": 0.54,\r\n    \"NSCLIENT_ID\": \"1611746919601\",\r\n    \"carbs\": null,\r\n    \"insulin\": null\r\n  },\r\n",
+ "comments": [
+  {
+   "id": 933819888,
+   "user": "Philoul",
+   "created_at": "2021-10-04T20:13:28Z",
+   "body": "See below screenshots of AAPS compared to NS, everything is Ok for me:\r\nOn the 2 screenshots on the left we can see standard basal rates (with TBR emulation enabled)\r\n=> We have 2 extended bolus during this period\r\n\r\nThen I disabled TBR emulation and set manually an extended bolus for about 8 min\r\n\r\nAnd I enabled again in Insight settings TBR emulation to be able to compare the curves (2 screenshots on the left)\r\n\r\n![Screenshot_EB](https://user-images.githubusercontent.com/52934600/135917199-a8b1d73e-4e82-43e0-add5-0bf354525a5c.jpg)\r\n\r\n\r\n"
+  },
+  {
+   "id": 934123231,
+   "user": "dmelliott20",
+   "created_at": "2021-10-05T07:00:15Z",
+   "body": "It looks fine via screen shots on mine too it’s the, back end treatment data that’s the issue as I provided initially. \r\n\r\nIf you need more examples I can provide it but this issue isn’t resolved @MilosKozak can you keep open please\r\n"
+  },
+  {
+   "id": 934188324,
+   "user": "MilosKozak",
+   "created_at": "2021-10-05T08:32:31Z",
+   "body": "what version did you test? @dmelliott20 "
+  },
+  {
+   "id": 934307770,
+   "user": "dmelliott20",
+   "created_at": "2021-10-05T11:09:11Z",
+   "body": "Hi Milos\r\n\r\nIm on 2.82\r\n\r\nsee the treatments below. - they appear to be duplicated and are incorrect (they are way outside my safety nets set within android aps). The basals reported in the below attachment (nightscout report) are never executed on the pump\r\n\r\non the front end both in androidaps and nightscout the basal rates look correct and are reported correctly.\r\n\r\n![image](https://user-images.githubusercontent.com/13154453/136011902-099795de-8d89-4ac7-b142-4fbb7be71fb3.png)\r\n "
+  },
+  {
+   "id": 934308608,
+   "user": "dmelliott20",
+   "created_at": "2021-10-05T11:10:17Z",
+   "body": "![image](https://user-images.githubusercontent.com/13154453/136012063-27cc7ed4-2ec5-41d0-a406-9b000a197292.png)"
+  },
+  {
+   "id": 934733839,
+   "user": "MilosKozak",
+   "created_at": "2021-10-05T19:52:16Z",
+   "body": "@dmelliott20 we are working and adding changes to dev branch 2.8.2.5-dev currently\r\ndid you test this version?"
+  },
+  {
+   "id": 934740344,
+   "user": "dmelliott20",
+   "created_at": "2021-10-05T19:56:57Z",
+   "body": "Ah no I haven’t. I probably won’t be able to test this week.\r\n\r\nSent from my iPhone\r\n\r\nOn 5 Oct 2021, at 20:52, Milos Kozak ***@***.***> wrote:\r\n\r\n﻿\r\n\r\n@dmelliott20<https://github.com/dmelliott20> we are working and adding changes to dev branch 2.8.2.5-dev currently\r\ndid you test this version?\r\n\r\n—\r\nYou are receiving this because you were mentioned.\r\nReply to this email directly, view it on GitHub<https://github.com/nightscout/AndroidAPS/issues/283#issuecomment-934733839>, or unsubscribe<https://github.com/notifications/unsubscribe-auth/ADELRFPYFXOROGCQ2U6DPOLUFNJPXANCNFSM4XETNBCQ>.\r\nTriage notifications on the go with GitHub Mobile for iOS<https://apps.apple.com/app/apple-store/id1477376905?ct=notification-email&mt=8&pt=524675> or Android<https://play.google.com/store/apps/details?id=com.github.android&referrer=utm_campaign%3Dnotification-email%26utm_medium%3Demail%26utm_source%3Dgithub>.\r\n"
+  }
+ ]
+}

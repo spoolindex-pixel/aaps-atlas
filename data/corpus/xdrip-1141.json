@@ -1,0 +1,99 @@
+{
+ "id": 541041401,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1141,
+ "title": "considering speed of glucose changing and compare to blood glucose level",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1141",
+ "state": "closed",
+ "labels": [
+  "enhancement",
+  "device-libre",
+  "algorithmics",
+  "calibration",
+  "status-postponed"
+ ],
+ "created_at": "2019-12-20T15:07:40Z",
+ "closed_at": "2021-05-21T07:02:41Z",
+ "comment_count": 15,
+ "body": "Hello,\r\n\r\nI am using the xDrip+ and Libre 2. In xDrip+ several types of calibration exists. At the official website a video is shown (Last one with the train, title: How does the Sensor reading compare to Blood Glucose reading?) https://www.freestylelibre.com.au/resources#. \r\n\r\nImportant here is, that the blood glucose ist always faster, than the libre 2 values. This is important, if the blood glucose is changing. The more it changes, the bigger is the difference between Libre 2 Values and blood glucose values.\r\n\r\nWell I have the following question:\r\nDoes xDrip+ in the newest version considering this?\r\n\r\nI do not have any software developer skills, so I have the idea to include the following equation, if it is not already implemented.\r\n\r\nBC(t) = LC(t) + dLC(t)/dt * dt,xdrip+ * NB\r\n\r\nknown values\r\n--------------\r\nLC(t) = Libre glucose level, raw values (white dots in xDrip+)\r\ndLC/dt = Derivation according to time , average speed of last/newest 3 or 4 LC(t) values, here dt represents the whole time of 3 or 4 values.\r\ndt,xdrip+ = 5 min, every 5 mins the BC(t) will be updated\r\n\r\n![Libre2_RawValues](https://user-images.githubusercontent.com/59091948/113685153-3b72c380-96c6-11eb-8897-69dde0caa258.png)\r\n\r\nunknown values\r\n-----------------\r\nNB = calibration factor, i guess this will be between 0 and 1, easy to determine\r\n\r\ntarget value\r\n------------\r\nBC(t) = calculated blood glucose level, we want to know, ease to calculate now\r\n\r\n\r\n\r\nIf you use this equation, the BC value will be lower, if LC is falling. And BC will be higher, if LC is rising up, shown in the official video of libre 2.\r\n\r\nPlease, what Do you think about this?\r\n\r\nThank´s for your Answer.\r\n\r\nPlease excuse my bad english.\r\nGreetings\r\n\r\nBruno",
+ "comments": [
+  {
+   "id": 670378604,
+   "user": "birdfly",
+   "created_at": "2020-08-07T07:40:28Z",
+   "body": "good idea, but how we calculate the NB factor for you mentioned that it depend on personal data"
+  },
+  {
+   "id": 670494322,
+   "user": "Brunchen",
+   "created_at": "2020-08-07T12:34:24Z",
+   "body": "Hello, \r\n\r\nNB factor is an input value in xdrip+ and needs to be determined by finger stick measurment only once.\r\nPlease look in my attached excel sheet.\r\n\r\nThank you very much.\r\n\r\n[speed of glucose.xlsx](https://github.com/NightscoutFoundation/xDrip/files/5041363/speed.of.glucose.xlsx)\r\n"
+  },
+  {
+   "id": 670820822,
+   "user": "birdfly",
+   "created_at": "2020-08-08T04:12:18Z",
+   "body": "Hello,thanks for your info\r\n\r\nbased on the equation , it is still a liner model but with a fixed slope for Libre reading,the 2nd section【dLC/dt * dt * NB】work as offset. \r\n\r\nTheoretically, whatever calibration or correction ,we have to adjust both [slope] and [offset] at the same time . In your equation, the slope was fixed.\r\n\r\nBTW ,I am still confused about the NB ,what is the definition and the way about how to calculate .\r\n\r\nthanks\r\n\r\n "
+  },
+  {
+   "id": 671065335,
+   "user": "Brunchen",
+   "created_at": "2020-08-09T15:26:08Z",
+   "body": "Hello,\r\n\r\n> based on the equation , it is still a liner model but with a fixed slope for Libre reading,the 2nd section【dLC/dt * dt * NB】work as offset.\r\n\r\nyes, but this offset is not static/constant any more.\r\n\r\n\r\n> Theoretically, whatever calibration or correction ,we have to adjust both [slope] and [offset] at the same time . In your equation, the slope was fixed.\r\n\r\nwe have to pay attention to the difinition. you mean the slope of the function libre and blood glucose concentration.\r\nin my approach, the slope depends on libre/time. thats totally different.\r\n\r\n\r\n> BTW ,I am still confused about the NB ,what is the definition and the way about how to calculate .\r\nof course in my suggested model we can add an additionally parameter for the slope and offset.\r\n\r\nthey can be calculated really easy, if the real blood finger pick glucose concentration is known. maybe four values a day. and then wen can vary these unknowns by using the least square method. the aim must be to equalize the calculated blood glucose and the real mesured finger picks values. this must lead to a minimize problem. and then we will get the factor NB and the two additionally for the slope and offset (your suggestion).\r\n\r\n\r\nOf course, I am not am mathematican. If somebody has, please participate. :) \r\nBut I think, this is a new and more precise calibration method. If somebody will or can add this into xDrip+, I will test it extensively. I will compare with the conventionally finger pick values and correlate them. Afterwards I will share my opinion and the results. \r\n\r\nBest regards.\r\n\r\nBrunchen"
+  },
+  {
+   "id": 812158247,
+   "user": "Navid200",
+   "created_at": "2021-04-01T20:38:04Z",
+   "body": "I may be misunderstanding the whole concept.\r\n\r\nIf you only calibrate when your trend is flat (horizontal), you will be OK and there will be no need to worry about the delay.\r\n\r\nIf your objective is to allow users to calibrate even when the trend is not flat, I understand the hope.  But, I would suggest that you use the recommendation of calibrating only when the trend is flat and forget about this idea.\r\n\r\nThe delay figure is just an estimate.  It varies from person to person.  It varies even for the same person when going up versus when going down.  It also could vary based on the location on the body.  There are so many different factors.  "
+  },
+  {
+   "id": 812905410,
+   "user": "Brunchen",
+   "created_at": "2021-04-03T18:19:30Z",
+   "body": "The concept is based on the measurement type. Calibration ist not neccessary and does not depend on flat trend. I never calibrated xdrip+.\r\nThe libre 2 raw values are wrong, because they are always delayed. Thes come from interstitial fluid and are not equal to the blood sugar concentration. With my equation this deficiency can be solved. \r\n\r\nI would be really thankful, if the equation would be implemented in xdrip+. So every can decide, whether to use it or not. Very easy."
+  },
+  {
+   "id": 812908560,
+   "user": "Navid200",
+   "created_at": "2021-04-03T18:38:44Z",
+   "body": "Dexcom has a delay also. Any CGM does.  \r\nYou can have a simulation that predicts what will happen to your interstitial fluid glucose later.\r\n\r\nAre you suggesting that we use a formula and calculate what the blood glucose should be now and show that on screen?\r\nI don't think that's a good idea because many will get confused."
+  },
+  {
+   "id": 813962902,
+   "user": "Brunchen",
+   "created_at": "2021-04-06T09:10:16Z",
+   "body": "> Dexcom has a delay also. Any CGM does.\r\n\r\nYes, that why I want to adjust this disadvantage. No adjustment is currently being made in libre 2 and xdrip+.\r\n\r\n\r\n> You can have a simulation that predicts what will happen to your interstitial fluid glucose later.\r\n\r\nI think nobody wants to know the interstitial fluid glucose, because this one is not the real glucose level. The interstitial fluid glucose concentration is only required to calculate the above differential equation and should not be displayed in xdrip+. \r\n\r\n\r\n> Are you suggesting that we use a formula and calculate what the blood glucose should be now and show that on screen? I don't think that's a good idea because many will get confused.\r\n\r\nYes. I don't want anyone to get confused. I would like everyone to activate and test this correction themselves. Even if it were only possible in developer mode. \r\n\r\n\r\n"
+  },
+  {
+   "id": 814065127,
+   "user": "Navid200",
+   "created_at": "2021-04-06T12:03:32Z",
+   "body": "> If you use this equation, the BC value will be lower, if LC is falling. And BC will be higher, if LC is rising up, shown in the official video of libre 2.\r\n\r\nThat would be erroneous under certain circumstances (close to peaks and valleys, where the sign of the derivative changes).  In other words, there are times when your blood glucose is increasing while your interstitial fluid is decreasing, and vice versa.\r\n\r\nThink about when you have a meal.  The blood glucose starts going up and with a delay so does interstitial fluid glucose.  Eventually, your blood glucose reaches a peak and switches direction and starts going down.  However, your interstitial fluid glucose does not reach its peak at the same time.  It continues to go up for a while before it switches direction.\r\n\r\nAccording to what you are saying above, your calculation will constantly raise the calculated blood glucose as long as the interstitial fluid glucose is increasing.  But, that's not what always happens in reality."
+  },
+  {
+   "id": 815480853,
+   "user": "Brunchen",
+   "created_at": "2021-04-08T06:17:09Z",
+   "body": "I do not agree with you. I can not understand why the glucose concentration in the blood increases while the interstitial fluid decreases. Let us assume this is the case, then the libre 2 measuring system would lose its approval and will be no longer used.\r\n\r\nThe concentration of glucose in the interstitial fluid depends only on the glucose concentration in the blood, because it reacts much faster. Never the other way around.\r\nThis is important for understanding and the basis of the abbott libre 2 measurement system.\r\n\r\nThe discussion without graphs and data does not get us any further here. Therefore I propose the following, if the differential equation is implemented in xdip+ (for the calibration plugin \"none\"), I want to share my experience, parameters and graphs here and make them public to other users. I am very optimistic that this will be successful. The addition of a few lines in the source code is probably faster than long discussions here.\r\n\r\nThen we can scientifically analyze the data, discuss them and come to a conclusion. "
+  },
+  {
+   "id": 815764200,
+   "user": "Navid200",
+   "created_at": "2021-04-08T12:31:05Z",
+   "body": "Even if a developer does what you hope, it will not be merged before similar questions are answered.\r\n\r\nHave a look at the snapshot of the clip you linked in your first I have attached to this post.  You can see that blood glucose is going down while the interstitial fluid glucose is still going up.\r\n![Screenshot 2021-04-08 082752](https://user-images.githubusercontent.com/51497406/114026725-90d4df00-9844-11eb-8e3c-93ee48f886fa.png)\r\n\r\nIt's because of the delay.\r\nThere is no way to know what the slope of the blood glucose is if all you have is the slope of the interstitial fluid.\r\n"
+  },
+  {
+   "id": 844466979,
+   "user": "Navid200",
+   "created_at": "2021-05-19T20:56:51Z",
+   "body": "I would like to close this issue.\r\nYou can open a thread in the forums to discuss if you like.\r\nhttps://github.com/Navid200/xDrip/discussions"
+  },
+  {
+   "id": 845711190,
+   "user": "Brunchen",
+   "created_at": "2021-05-21T07:02:36Z",
+   "body": "The graphic is just a simple scheme. In my opinion this influence is available, but can be initially ignored. The first step must be to implement my above equation. That means, the locomotive(BG) and wagon(SG) are at the same side of the hill (increasing slope or decreasing slope). \r\n\r\n> It's because of the delay.\r\n> There is no way to know what the slope of the blood glucose is if all you have is the slope of the interstitial fluid.\r\n\r\nThe slope of the blood glucose is not needed. Please check equation.\r\n\r\nAfter this long and unsuccessful discussion, I have to assume that my equation suggested above will not find a way into xdrip + in the future. What a pity.\r\n\r\n"
+  }
+ ]
+}

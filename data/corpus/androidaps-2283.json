@@ -1,0 +1,27 @@
+{
+ "id": 1491438933,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2283,
+ "title": "[dev][dynISF] ISF value at 500 if no BG data is available within the past 24h",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2283",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-12-12T09:46:21Z",
+ "closed_at": "2022-12-15T12:26:12Z",
+ "comment_count": 2,
+ "body": "## What happened?\r\n\r\nI installed AndroidAPS, latest dev (11.12.2022) and somehow my previous values (treatments, BG etc.) got lost during the installation (this isn't the problem). I then enabled DynISF and after the first calculation, DynISF was at 500. it's slightly dropping since then, with a expected (actually credible) value after around 24h of BG values.\r\n\r\n### Steps to reproduce\r\n\r\nInstall AAPS without previous BG values, add new BG source and wait until DynISF is calculated for the first time.\r\n\r\n### What I checked\r\n\r\nThe profile is set, ISF within profile settings is 3.5 mmol. I tried to restart my whole setup, didn't changed a thing.\r\n\r\n### System & Logs\r\n\r\nSadly, I don't have a lot of informations (no logs 😢) - but this problem should be easy to replicate.\r\nSystem: EMUI 12.0.0 -> Android 11\r\nBG unit: mmol\r\n\r\n### Screenshot\r\n\r\n<details>\r\n  <summary>Open Screenshot</summary>\r\n  \r\n![Screenshot](https://user-images.githubusercontent.com/65506676/207013406-61229f10-c0ee-4e40-abca-198cf8b40e40.jpg)\r\n</details>",
+ "comments": [
+  {
+   "id": 1352847699,
+   "user": "MilosKozak",
+   "created_at": "2022-12-15T10:20:40Z",
+   "body": "https://github.com/nightscout/AndroidAPS/pull/2285 waiting for approval"
+  },
+  {
+   "id": 1352987881,
+   "user": "maheini",
+   "created_at": "2022-12-15T12:26:11Z",
+   "body": "Thank you Milos \r\nI just made a new build with this commit and it's working as intended (no ISF set until there is enought data)😄\r\n\r\nHowever, some strange behavior I noticed: After back filling BG & treatments from Nightscout, it's showing me a too low ISF (about half of my profile ISF), even though I was most of the time below target. Might be a problem on my side and I will comment on this if it keeps persistent."
+  }
+ ]
+}

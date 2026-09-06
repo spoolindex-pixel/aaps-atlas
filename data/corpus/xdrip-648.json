@@ -1,0 +1,257 @@
+{
+ "id": 374802490,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 648,
+ "title": "Improve support for Finowatch / Finow Q1 PRO",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/648",
+ "state": "closed",
+ "labels": [
+  "device-watch"
+ ],
+ "created_at": "2018-10-28T21:51:50Z",
+ "closed_at": "2021-11-04T20:38:28Z",
+ "comment_count": 47,
+ "body": "What is the current situation with xDrip+ support on this device? What are the issues? Please let me know! thanks",
+ "comments": [
+  {
+   "id": 433750243,
+   "user": "tzachi-dar",
+   "created_at": "2018-10-28T22:54:59Z",
+   "body": "As a collector of miaomiao this works well.\r\nThe q1 pro itself is a very low end watch. Battery might last from 7 hours to 18 hours with no good reason.\r\nkeyboard is almost useless. screen is low quality. (I guess that this is what you can get for 75 usd).\r\nThat said,  I'm not aware of issues as a collector."
+  },
+  {
+   "id": 434017274,
+   "user": "svirito4ka",
+   "created_at": "2018-10-29T18:04:42Z",
+   "body": "I used the watch Finow Q1 Pro with G5 as a collector in old mode, trying almost all versions of xDrip+ starting from August this year. The readings were received with intervals of 5 minutes and were transmitted to the Nightscout by the watch through 3G. But there was no stability, packet capture percentage was about 50-70 %. The collector used to terminate work when the charge was below 30 %. Ticked wakelocks and watchdogs could not prevent failure in operation. I think it depends on the in-build algorithm of energy saving. The battery life was 8-10 hours, Wi-Fi was disabled, BT and 3G were enabled, brightness was at the lowest level, and I made just a couple of messages (or calls).\r\nAlso I tried to use this watch as a collector in OB1 mode (including Native Algorithm). The readings were received with intervals of 10 minutes and were transmitted to the Nightscout by the watch through 3G. This interval was inacceptable for me, so I left this mode. "
+  },
+  {
+   "id": 443212067,
+   "user": "gordan1987",
+   "created_at": "2018-11-30T14:01:47Z",
+   "body": "My daughter use Finow Q1 Pro with G5(FW. 1.0.4.10).I set up them as a collector in OB1 mode with out native mode.In G5 Debug Settings mark only Use the OB1 Collector and Allow OB1 initiate bonding. And disable all in less common settings relates to bluetooth. Install root on watch and disabled all unused apps. Packet capture percentage about 85-95%.The readings  received with intervals of 5 minutes and  transmitted to the Nightscout by the watch through 3G. \r\nBut some time watch lose connection totally, helps only restart watch, or start receive data with intervals of 10 minutes. After 5 minutes when it no get data  I check in System Status - G5 Status - Phone Service Status it's show that it stuck on Connection request.\r\nSo I set up alarm on missing reading and just rerstart watch.\r\nAnd if I start mess with in less common settings or G5 Debug Settings I get no change in connections. \r\n"
+  },
+  {
+   "id": 443426779,
+   "user": "svirito4ka",
+   "created_at": "2018-12-01T13:35:12Z",
+   "body": "gordan1987, did you manage to unlock the bootloader on the finow q1 pro watch? This question was also asked @jamorham in gitter on 18th Nov. I think he has some ideas for improving collector service of this watch. And hope he is planning to realize “wearDemiGod” mode for this watch."
+  },
+  {
+   "id": 443502749,
+   "user": "gordan1987",
+   "created_at": "2018-12-02T12:09:25Z",
+   "body": "I upload all for [rooting to Mega](https://mega.nz/#F!fQkiyC7L!3NhHK9DpAO6bqVApPXnncA)\r\n"
+  },
+  {
+   "id": 451010873,
+   "user": "lmiekus",
+   "created_at": "2019-01-02T22:54:35Z",
+   "body": "I have enabled verbose longing for OB1 collector on this watch for Dexcom G6 sensor. The logs with the problematic situation as described by gordan1987 have been uploaded through xdrip with the information \"#648\" and my email address (lmiekus@gmail.com) The problem appeared at 23:10, since that time watch was unable to connect to the sensors. Only after restarting watch the connection have been restored . If you have any other questions please let me know. I am also attaching the exact configuration of the phone with all the important settings.\r\n[Settings.docx](https://github.com/NightscoutFoundation/xDrip/files/2722310/Settings.docx)\r\n"
+  },
+  {
+   "id": 452659455,
+   "user": "gordan1987",
+   "created_at": "2019-01-09T11:08:59Z",
+   "body": "It would be nice if xDrip had a possibility to restart the clock, if no data received. For me this only way to restore receiving data. "
+  },
+  {
+   "id": 452842604,
+   "user": "lmiekus",
+   "created_at": "2019-01-09T20:20:10Z",
+   "body": "Did you thought about trying less common settings > Bluetooth settings > Timer value for BT Watchdog  set to 6 minutes and Bluetooth Watchdog checkbox ticked? I am occasionally getting lost connections as described by you, we usually do smartwatch restart to solve it. But I am planing to try this option too.  That option to set timer value is not possible in last stable version of xdrip+. I found this one in nightly from 28.12.2018. "
+  },
+  {
+   "id": 453001003,
+   "user": "gordan1987",
+   "created_at": "2019-01-10T07:48:10Z",
+   "body": "I try set Timer value to 6 minutes in nightly. Still no luck, only restart helps.\r\n\r\n"
+  },
+  {
+   "id": 453026495,
+   "user": "svirito4ka",
+   "created_at": "2019-01-10T09:23:03Z",
+   "body": "Did someone try to run the old collector (without OB1) on this watch? On Russian diabet forum, people says that it works well with G5 transmitter. Also they say this watch works reliably with blucon and Miao-Miao (transmitters for Libre sensor)."
+  },
+  {
+   "id": 463987686,
+   "user": "gobeti",
+   "created_at": "2019-02-15T10:26:58Z",
+   "body": "I have the same issues with my daughter´s FINOW (+ Dexcom G6) working as a master. I realised that during the night (charging) it works perfectly (every 5 minutes reads and sends to nightscout) but then, once it is not charging, it becomes very unstable.\r\n\r\nThus, I am checking @imiekus´s guidelines this weekend to see whether it has something to do with battery optimization matters.\r\n\r\n\r\n\r\n> I have enabled verbose longing for OB1 collector on this watch for Dexcom G6 sensor. \r\n> [Settings.docx](https://github.com/NightscoutFoundation/xDrip/files/2722310/Settings.docx)\r\n\r\n"
+  },
+  {
+   "id": 464369393,
+   "user": "gobeti",
+   "created_at": "2019-02-16T18:23:02Z",
+   "body": "The settings put together by @lmiekus were great. I got Xdrip as a master in the FINOW pairing with a Dexcom G6 receiver. Much better connection and much more reliable (almost perfect). Still I had an issue today  where it lost connection and I had to restart the bluetooth system to get it working again.... I set up the automatic bluetooth restarting option but still it seems that once it enters into \"blocked\" status not event that feature would work. In any case, much better once battery optimization is not ticket for several services as described by @lmiekus "
+  },
+  {
+   "id": 464456838,
+   "user": "gobeti",
+   "created_at": "2019-02-17T13:24:45Z",
+   "body": "Eventually, I seemed to have found a good solution. Turned on all the BT special settings in Xdrip and I got readings every 5 minutes in the FINOW Q1 PRO. I tested it by putting the watch away for 25 minutes and, as soon as it was next to my daughter ´s Dexcom G6 started reading nicely every 5 minutes and uploading in nightscout. So far so good. That plus the battery settings from @lmiekus seems to make a very good combination. Above 90% readings... sweet. Thanks @jamorham \r\n\r\n"
+  },
+  {
+   "id": 465041264,
+   "user": "gobeti",
+   "created_at": "2019-02-19T08:46:07Z",
+   "body": "Still having issues with the BT connection, I am afraid. It is just unstable. It seemed to work but it still has issues when trying to link during the Wake Up of the transmitter. It just does not unless you force the BT off and on.... :-( Linked to #734 due to the same symptoms therein described. "
+  },
+  {
+   "id": 465651680,
+   "user": "lmiekus",
+   "created_at": "2019-02-20T16:28:06Z",
+   "body": "As the best solution for now is to restart the smartwatch. I thought that a quick workaround for existing problem would be to automate the restart with Tasker that is triggered by xdrip notification (alarm) \"BR Reading Missed\". The alarm would be triggered by xdrip if no BG reading is received for 6 minutes.  I have tested it on rooted phone and it works. Now the next step is to test it on finow without root privileges. This way you automatically preform restart without your own intervention. "
+  },
+  {
+   "id": 466932779,
+   "user": "lmiekus",
+   "created_at": "2019-02-25T09:14:33Z",
+   "body": "@gobeti  what version of xdrip did you use? I will try your approach as the next step. "
+  },
+  {
+   "id": 466937614,
+   "user": "gobeti",
+   "created_at": "2019-02-25T09:23:57Z",
+   "body": "> @gobeti what version of xdrip did you use? I will try your approach as the next step.\r\n\r\nI used the February one (no the nightly one) @ https://jamorham.github.io/#xdrip-plus\r\n\r\nBTW, FINOW reps told me that a new Firmware is on its way to be released very soon. I may/may not install it depending on how good the above method is in the medium/long term"
+  },
+  {
+   "id": 468903482,
+   "user": "chrisharris751",
+   "created_at": "2019-03-02T09:22:12Z",
+   "body": "Have you guys tried the official dexcom app at all? I'm running xdrip at the moment, but it still gets to the point where the only thing that gets it working again is a restart. I tried to automate a restart triggered from the missed reading alert with macrodroid, but I need root privileges for that."
+  },
+  {
+   "id": 469046549,
+   "user": "gobeti",
+   "created_at": "2019-03-03T17:49:58Z",
+   "body": "@chrisharris751 No, I have not tried it in the FINOW. And I will not because it serves little purpose for my daughter´s needs. Indeed, the watch, sometimes, does not connect to the transmitter. Only solution so far for me, to turn off and on the BT."
+  },
+  {
+   "id": 469057657,
+   "user": "gigich",
+   "created_at": "2019-03-03T19:55:10Z",
+   "body": "Anyone tried the 4g version with Android 6.0? Is it working as a standalone collector?"
+  },
+  {
+   "id": 469060220,
+   "user": "gobeti",
+   "created_at": "2019-03-03T20:22:27Z",
+   "body": "It does work but see above thread for information. "
+  },
+  {
+   "id": 472599469,
+   "user": "svirito4ka",
+   "created_at": "2019-03-13T20:48:37Z",
+   "body": "Did the watch start to work without any flaws after installing this year releases of xDrip+?\r\nI’ve installed Nightly build 13th Mar 2019. The OB1 collector of G5 (in non-native mode) was run on my watch only an hour ago, and it still works without any flaws. Last year I had bad luck with this configuration. Keep an eye on it.\r\nUpd. Unfortunately the watch failed after 2.5 hours, and I switched the collector from OB1 to OLD. It has been in operation for 8 hours. There was a loss of several readings at the begining of the data collection."
+  },
+  {
+   "id": 472938881,
+   "user": "gobeti",
+   "created_at": "2019-03-14T16:09:02Z",
+   "body": "@svirito4ka My watch is now running very well. It does not lose connection and, if it does, my daughter gets an alarm and she just turns off and on the Bluetooth. Pretty smooth. Thus, I did not update since 14 Feb 2019 the app. I just do not want to break anything.... :-)"
+  },
+  {
+   "id": 472952859,
+   "user": "svirito4ka",
+   "created_at": "2019-03-14T16:36:46Z",
+   "body": "@gobeti It is good news! Could you share the settings of xDrip+ and your watch? How often does your daughter switch over Bluetooth?"
+  },
+  {
+   "id": 473884626,
+   "user": "gobeti",
+   "created_at": "2019-03-18T12:11:12Z",
+   "body": "@svirito4ka This is what I did: reset to factory the watch (Deleted Xdrip since it was working awful), downloaded version 14 feb, didn't copy setting from my old device, set it up in the very same watch (hard to do since keyboard sucks), set up battery permissions for BTs and Xdrip... and that is it, seems to work much better."
+  },
+  {
+   "id": 475603295,
+   "user": "Wilmamee",
+   "created_at": "2019-03-22T12:30:28Z",
+   "body": "@gobeti new firmware works very well for us with libre/miaomiao (3 followers): 98% capture, 30 hrs batterylife in last 7 days. Only problem so far is that de finow does not autoconnect on startup, it does reconnect after out of reach. "
+  },
+  {
+   "id": 490289607,
+   "user": "dicko72",
+   "created_at": "2019-05-07T23:23:15Z",
+   "body": "@gobeti Looking to take your approach, although can't find 14th Feb version. Can you confirm the latest situation with this watch? Thanks\r\n\r\nP.S. This helps with fat fingers! https://android.jlelse.eu/https-medium-com-kaustavj-android-tools-scrcpy-vysor-pro-like-features-for-free-f6065aa76f4b\r\n"
+  },
+  {
+   "id": 490362129,
+   "user": "dicko72",
+   "created_at": "2019-05-08T06:16:22Z",
+   "body": "@jamorham is there anything I can give you that will help troubleshoot issues with this device? I'm going to grab the latest nightly and use a spare phone to change settings using QR code. Makes life easier with the small screen etc."
+  },
+  {
+   "id": 490462727,
+   "user": "gobeti",
+   "created_at": "2019-05-08T12:16:09Z",
+   "body": "@dicko72 The watch remains unstable when losing connection for the first time. The only solution I found is to turn off and on the BT. Then it reconnects and as soon as it remains stable is fine. Once it does not connect in the 5 minutes range who knows what can happen....\r\n\r\nI still use the 14 feb version and my daughter learned how to turn on/off the watch so... it works for us. I heard that Irist https://www.amazon.es/Intex-IRist-Smartwatch-Android-Color/dp/B019RNFSWU  is working much better but I did not try it. Just saying.\r\n\r\nUn saludo"
+  },
+  {
+   "id": 490674956,
+   "user": "dicko72",
+   "created_at": "2019-05-08T22:35:04Z",
+   "body": "@gobeti thanks for the update. I've reverted to using the phone with the watch as a follower. Despite the bulk my daughter really wants to ditch the phone at school. Maybe one day!"
+  },
+  {
+   "id": 491097103,
+   "user": "Wilmamee",
+   "created_at": "2019-05-09T23:00:44Z",
+   "body": "@dicko72 we use this watch for our daughter (libre/miao/action launcher/4g no wifi/2 followers/nightscout upload/OOPalgorithm) with the xdrip 20190110 release and have no (re)connection problems. Ticked are only: turn bluetooth on, bluetooth watchdog, close gatt, use scanning and trust auto connect. Not sure what al those options do, but it works just fine. Losing 3 a 4% battery in an hour, when charged overnight it gets us throug the day easily. Only downside we encounter is the chargercable, we sometimes misplace the pins."
+  },
+  {
+   "id": 491476243,
+   "user": "dicko72",
+   "created_at": "2019-05-11T03:41:21Z",
+   "body": "@Wilmamee thanks for that. Seemed to work perfectly for 3 hours. Every 5 minutes getting data. Then we left the house and it stopped. I'm assuming a coincidence. The only difference is we use a G5 and I have wifi turned on. What I do notice is if I turn Bluetooth off and then on xdrip has an error saying to turn Bluetooth on. Even though I have the turn Bluetooth on option enabled. Only way to recover seems to be a reboot. When it happens again I'm going to force stop xdrip and rerun to see if it recovers. Might need to root to automate the recovery. "
+  },
+  {
+   "id": 512943058,
+   "user": "1seam1",
+   "created_at": "2019-07-18T18:54:46Z",
+   "body": "I have the Finow Q1 Pro, can anyone please tell me how to use Live Wallpapers? I have been researching for days but have not been able to get any working.. :(   im running out of ideas"
+  },
+  {
+   "id": 620134073,
+   "user": "kenfred",
+   "created_at": "2020-04-27T17:46:03Z",
+   "body": "@dicko72 and @Wilmamee  Are you still using the Finow? Any connection issues?\r\n\r\nI picked one up. (Actually they sent me a Q2 Pro instead of a Q1). I have had super flaky connections and I'm looking for help on how to troubleshoot it. I'll make a small BT tweak and it's fixed for a bit, but then goes flaky again. Last night I reenabled \"close gatt\" and had a good long stretch, but now disconnected again."
+  },
+  {
+   "id": 620211135,
+   "user": "Wilmamee",
+   "created_at": "2020-04-27T20:18:42Z",
+   "body": "@kenfred Using a Q2 pro now, checked are:\r\nTurn Bluetooth on\r\nBluetooth watchdog\r\nUse scanning\r\nAllow blucon unbound\r\n\r\nOnly issue seems te be that i'ts signal strenght is weaker then de Q1pro. When lying on te sensor while sleaping the Q2 somtimes losses connection an it's distance to te sensor is only 3 meters at that moment. It will autoconnect.\r\n"
+  },
+  {
+   "id": 620260272,
+   "user": "kenfred",
+   "created_at": "2020-04-27T22:04:45Z",
+   "body": "@Wilmamee Thanks for that. I'd try these in the app settings. I'm also interested to know if you had to do something within the watch that's external to the xDrip app. I have tried to go through android's permissions to make sure xDrip has full access to bluetooth and location and is not affected by the battery manager. I'm not sure if I'm missing something."
+  },
+  {
+   "id": 620266855,
+   "user": "kenfred",
+   "created_at": "2020-04-27T22:22:26Z",
+   "body": "@jamorham are there any settings or logs I could provide that would help move this issue?  Thanks!\r\n"
+  },
+  {
+   "id": 620447266,
+   "user": "gobeti",
+   "created_at": "2020-04-28T08:02:11Z",
+   "body": "@kenfred I got the Q1 for my daughter and it just works fine. About 20 hours of battery with no major issues"
+  },
+  {
+   "id": 620729650,
+   "user": "kenfred",
+   "created_at": "2020-04-28T16:53:41Z",
+   "body": "@gobeti Thank for that data point. Can you tell me what your other hardware is and what settings you're using? We're on xDrip+G6+tSlim+Finow. xDrip was working great when we had a samsung phone as the collector. We switched to the Finow being the collector and the master of a sync group, but it is not staying connected.\r\n\r\nAre you using you own google account on the watch or did you create a google account for your daughter and manage it through Family Link?"
+  },
+  {
+   "id": 961399776,
+   "user": "Navid200",
+   "created_at": "2021-11-04T20:38:28Z",
+   "body": "Consolidated all watch support requests: https://github.com/NightscoutFoundation/xDrip/issues/1872"
+  }
+ ]
+}

@@ -1,0 +1,55 @@
+{
+ "id": 772109032,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1566,
+ "title": "xDrip application stops receiving data",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1566",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "device-libre",
+  "breaking"
+ ],
+ "created_at": "2020-12-21T11:55:48Z",
+ "closed_at": "2020-12-23T21:26:57Z",
+ "comment_count": 6,
+ "body": "### Subject of the issue\r\nxDrip foreground services seems to stop, no data is received in xDrip.\r\n\r\n### Your environment\r\n**xDrip version:** 2020.12.18\r\n**Datasource:** Libre2 (patched app)\r\n**Device:** Xiaomi Mi9\r\n\r\n### Expected behavior\r\nxDrip app should keep running in background, receive and show data sent by the Libre2 (patched) app.\r\n\r\n### Actual behavior\r\nIn Events log shows this:\r\n\r\n**FOREGROUND**\r\n```\r\nGot exception trying to use Android 10+ service starting for DoNothingService java.lang.IllegalArgumentException:\r\nforegroundServiceType 0x00000008 is not a subset of foregroundServiceType attribute 0x00000000 in service element of manifest file\r\n```\r\n\r\n\r\n### Screenshots\r\n\r\n<img src=\"https://user-images.githubusercontent.com/579465/102773956-59701e80-438a-11eb-8a6d-610eafe2a443.png\" width=\"250\" />\r\n",
+ "comments": [
+  {
+   "id": 748946433,
+   "user": "tolot27",
+   "created_at": "2020-12-21T12:21:21Z",
+   "body": "Which is the latest working version?"
+  },
+  {
+   "id": 748947931,
+   "user": "tolot27",
+   "created_at": "2020-12-21T12:25:07Z",
+   "body": "The exception can be fixed, easily. But I'm unsure whether this fixes the problem of not receiving data."
+  },
+  {
+   "id": 748969009,
+   "user": "alxsimo",
+   "created_at": "2020-12-21T13:18:35Z",
+   "body": "@tolot27 sorry but cannot remember, I always try to stay updated with the latest nightly\r\n\r\nMaybe getting the service not killed by Android is a first step. I'll happily add any needed info,"
+  },
+  {
+   "id": 748976410,
+   "user": "tim162",
+   "created_at": "2020-12-21T13:35:33Z",
+   "body": "I am having the exact same bug on Samsung Galaxy A50 @ Android 10 and Libre2 patched app. I'm currently using my own build but it's based on the latest commit to master branch that was done 3 days ago. This is when the bug started to appear, I haven't figured out if it's triggered by anything as sometimes it doesn't occur for several hours and sometimes it occurs several minutes after one another."
+  },
+  {
+   "id": 748983865,
+   "user": "alxsimo",
+   "created_at": "2020-12-21T13:51:29Z",
+   "body": "Yes, thanks also for the report @tim162, same behavior for me"
+  },
+  {
+   "id": 749267331,
+   "user": "tolot27",
+   "created_at": "2020-12-22T00:18:41Z",
+   "body": "@tim162 Please can you merge PR #1568 into your build and test whether it works?\r\n\r\nIMHO, this bug occurred due to some Android security patches because nothing has changed with the xDrip code related to background services and/or communication with devices and other apps."
+  }
+ ]
+}

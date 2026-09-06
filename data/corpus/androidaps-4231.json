@@ -1,0 +1,45 @@
+{
+ "id": 3521041919,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4231,
+ "title": "Feature Request: Time-Limited SMB Control in Automations",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4231",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-10-16T09:22:37Z",
+ "closed_at": "2025-10-16T12:58:05Z",
+ "comment_count": 5,
+ "body": "**Summary**\nIt would be helpful if automations in AndroidAPS could support temporary changes to the SMB (Super Micro Bolus) setting — for example, disable SMB for 30 minutes.\nCurrently, SMB can only be permanently turned on or off via automation, which requires an additional automation to revert the change.\n\n**Background**\nAt the moment, SMB control within automations offers only two fixed options:\n\n- Enable SMB\n- Disable SMB\n\nThese changes remain active until manually or automatically overridden by another rule.\nIf a user wants to temporarily disable SMB — for example, for physical activity — two automations are needed:\n\nOne to disable SMB\n\nOne to re-enable SMB after a set time\n\nIn everyday use, especially when multiple automations are active (e.g. school, sports, weekend), managing this becomes complex and hard to oversee.\n\n**Potential Benefit in Practice**\nA time-limited SMB control would make it easier to adapt therapy dynamically — for instance:\n\n- For exercise or intense play\n- During short-term stress \n- When glucose trends are less predictable\n\nEspecially relevant for children:\nChildren with Type 1 Diabetes often show rapid and unpredictable changes in insulin sensitivity due to growth, hormonal phases, or spontaneous activity.\nTemporarily disabling SMBs in such situations can help avoid unwanted insulin stacking and allow glucose patterns to settle — provided this is done for a limited time.\nHaving a “Disable SMB for 60 minutes” option could therefore be a useful tool to help manage these variations safely and more flexibly, and combine with another set of rules in one automation.\n",
+ "comments": [
+  {
+   "id": 3410031292,
+   "user": "andyrozman",
+   "created_at": "2025-10-16T09:37:39Z",
+   "body": "You can turn off SMB yourself, by setting target higher than 5.5mmolL/100mg and having setting \"Enable SMB with high temp targets\" disabled.\n\nSo in your case, when you need SMB disabled for 1 hour, just set Temporary Target for 1h to value 5.6 (or something) and this will disable SMB. And I would imagine that if you have intensive activity you would have to do this anyways... \n\nI use this every night (I set TT with automatiations for the night)."
+  },
+  {
+   "id": 3410050558,
+   "user": "gerison77",
+   "created_at": "2025-10-16T09:41:59Z",
+   "body": "Thanks! I’m aware of that workaround, but I don’t always want SMBs disabled with high temp targets. I need independent SMB control, because temp targets and SMB behavior serve different purposes — especially in pediatric use where timing and flexibility matter."
+  },
+  {
+   "id": 3410181791,
+   "user": "gerison77",
+   "created_at": "2025-10-16T10:19:24Z",
+   "body": "Plus, relying on high temp targets to disable SMBs would block automations like \"Compression Low\", which depend on the absence of a temp target to trigger — making the workaround unsuitable in those cases.\n\nexample:\nThis automation is designed to detect potential CGM compression lows during the night and respond automatically.\n\nConditions:\nTime between 22:00 and 08:00\nGlucose value ≤ 120 mg/dl\nDelta ≤ –10.0 mg/dl\nNo temp target currently active\n\nActions:\nStart a temporary target: 160 mg/dl for 30 minutes\nShow notification: \"Compression Low\"\n\n"
+  },
+  {
+   "id": 3410777887,
+   "user": "MilosKozak",
+   "created_at": "2025-10-16T12:58:05Z",
+   "body": "automation module is not designed for actions at the end of period. sorry"
+  },
+  {
+   "id": 3410792076,
+   "user": "gerison77",
+   "created_at": "2025-10-16T13:01:57Z",
+   "body": "Thank you Milos. I am not experienced enough to evaluate what is actually possible and what not. I only can attribute from a user perspective, and that would have been nice. "
+  }
+ ]
+}

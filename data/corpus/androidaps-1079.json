@@ -1,0 +1,39 @@
+{
+ "id": 1081795884,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1079,
+ "title": "[3.0 Beta 11] RileyLink appears not to be scanned (legibility problem)",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1079",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-12-16T05:46:41Z",
+ "closed_at": "2022-01-03T12:26:46Z",
+ "comment_count": 4,
+ "body": "Upon launching 2.8.2.18-dev, no connection to the OL was possible. Clearing cache, restarting the phone and reseting the OL had no effect. Deleting the OL and initiating a scan didn't resolve the issue either because AAPS failed to find the OL (I've _never_ observed this before)!\r\n\r\nThis was previously working with all earlier builds (last tested was 2.8.2.16).\r\n\r\nTested with 2.8.2.18-dev = B11 / S7 running Android 11 / OL firmware 2.5 / MDT 554\r\n\r\nEDIT: this log was taken immediately after attempting to Scan for the OrangeLink.\r\n[AndroidAPS_LOG_1639632763003.log.zip](https://github.com/nightscout/AndroidAPS/files/7724841/AndroidAPS_LOG_1639632763003.log.zip)\r\n\r\nEDIT2:\r\n- On launch, there was no prompt for any new Bluetooth permissions\r\n- The Setup Wizard didn't prompt for any new Bluetooth permissions either\r\n\r\n",
+ "comments": [
+  {
+   "id": 995461064,
+   "user": "rustymonkey",
+   "created_at": "2021-12-16T05:52:03Z",
+   "body": "Note: reverting to 2.8.2.16 solved the problem confirming that it's a recent regression."
+  },
+  {
+   "id": 996153794,
+   "user": "rustymonkey",
+   "created_at": "2021-12-16T20:02:06Z",
+   "body": "Further investigation reveals that this issue occurred due to a combination of:\r\n1) #474 : this issue sometimes occurs on reboot, the workaround requiring deletion/addition of the RL/OL\r\n2) On attempting the above workaround, a cosmetic bug in Beta 11 in the RileyLink configuration dialog caused the scanned OrangeLink to display almost invisibly, making it appear as if scanning didn't work. In other words, when the user presses [Scan] on the RileyLink configuration panel, the RL is scanned, but displays so faintly that it's almost invisible! See below:\r\n![AndroidAPS_RL-Scan-dialog-legibility](https://user-images.githubusercontent.com/34991028/146441134-0eb98801-b02e-42c5-8b2a-ee628e11ee97.png)\r\n "
+  },
+  {
+   "id": 1003752897,
+   "user": "Philoul",
+   "created_at": "2022-01-02T17:59:10Z",
+   "body": "@rustymonkey can you test PR #1120 and tell me if it fix your issue (black text...) ?"
+  },
+  {
+   "id": 1014111157,
+   "user": "rustymonkey",
+   "created_at": "2022-01-17T03:40:58Z",
+   "body": "Verified in 3.0 RC2. Thanks!"
+  }
+ ]
+}

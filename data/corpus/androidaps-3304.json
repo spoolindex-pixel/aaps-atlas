@@ -1,0 +1,23 @@
+{
+ "id": 2250005750,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3304,
+ "title": "ComboV2 TBR duration 24 hours is not recognized",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3304",
+ "state": "closed",
+ "labels": [
+  "combo"
+ ],
+ "created_at": "2024-04-18T07:53:44Z",
+ "closed_at": "2024-05-02T07:55:41Z",
+ "comment_count": 1,
+ "body": "AAPS Version 3.2.0.4\r\nBuild: 5d3e33ca8a\r\nNokia G21, Android 13\r\nNew Combo V2 Driver\r\n\r\nObjective 4 (OpenLoop, Accept TBR suggestions)\r\n\r\nBut wenn AAPS Req a TBR lower then 100%, the cant set the TBR Duration (stays on 24 hours), He checks it and because it didn't work, he undoes the TBR\r\n\r\nAn example, here AAPS requests a TBR 0% for 30 minutes, this is confirmed, in the video you can see that it activates TBR 0%, then jumps to duration, but it already 24:00 - according to the log, it tries Now with 2x up can change the duration from \"0\" (it probably doesn't recognize the 24 hours correctly) to 30 minutes, which doesn't work because it would have to go down 94 times\r\n\r\nLog:\r\n11:56:12.489 [Thread-86] D/PUMP: [Pump$setTbr$2.invokeSuspend():3592]: [Pump] Main screen content after setting TBR: Tbr(currentTime=0000-01-01T11:56, remainingTbrDurationInMinutes=0, tbrPercentage=0, activeBasalProfileNumber=1, currentBasalRateFactor=0, batteryState=FULL_BATTERY); expected TBR percentage / duration: 0 / 30\r\n11:56:12.490 [Thread-86] E/PUMP: [Pump$setTbr$2.invokeSuspend():3601]: [Pump] Mismatch between expected TBR and actually active TBR; expected TBR percentage / duration: 0 / 30; actual TBR: percentage / remaining duration: 0 / 0\r\n11:56:12.492 [DefaultDispatcher-worker-3] I/PUMP: [ComboV2Plugin.setDriverState():2283]: Setting Combo driver state:  old: info.nightscout.pump.combov2.ComboV2Plugin$DriverState$ExecutingCommand@74899fa  new: Error\r\n11:56:12.492 [Thread-86] D/PUMP: [Pump.setState():3615]: [Pump] Setting Combo driver state:  old: ExecutingCommand(description=info.nightscout.comboctl.main.Pump$SettingTbrCommandDesc@31ee425)  new: Error (\"Command execution error\"); throwable: info.nightscout.comboctl.main.Pump$UnexpectedTbrStateException: Expected TBR: 0% 30 minutes ; actual TBR: 0% 0 minutes\r\n\r\n\r\nWorkarround: Set with Combo Config Software max duration to 3 hours\r\n\r\n\r\nhttps://github.com/nightscout/AndroidAPS/assets/50150190/94ca3a91-79a2-44a3-94d1-53af8d1c3bbb\r\n\r\n\r\n\r\n[AndroidAPS._2024-04-17_14-00-26_.LOG](https://github.com/nightscout/AndroidAPS/files/15021594/AndroidAPS._2024-04-17_14-00-26_.LOG)\r\n",
+ "comments": [
+  {
+   "id": 2084502103,
+   "user": "dv1",
+   "created_at": "2024-04-30T06:47:03Z",
+   "body": "This is caused by a check in the TimeParser, which disallows the \"24:00\" text. I am fixing this by using a dedicated duration parser instead."
+  }
+ ]
+}

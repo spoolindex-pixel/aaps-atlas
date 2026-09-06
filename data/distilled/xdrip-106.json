@@ -1,0 +1,31 @@
+{
+ "issue_id": 106,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/106",
+ "title": "uploader Battery Stuck on latest release",
+ "symptom": "The battery status got stuck at 2% on the Sony Z3C used as an uploader after updating to version 1704030800. Deleting documents, restarting Azure, and rebooting the phone had no effect, and the issue disappeared after rolling back to version 1701201513.",
+ "cause": "The xDripKit bridge/wixel device was reporting a bogus/stuck 2-3% battery value, and this bridge battery reading was uploaded to Nightscout and shown in the battery pill, so the correct Sony uploader battery percentage was not displayed.",
+ "fix": "Update to the 25 April Nightly and uncheck 'Upload bridge battery' under Cloud Upload -> API Upload -> Extra Options to stop uploading the broken bridge battery to Nightscout. Optionally set DEVICESTATUS_ADVANCED=true in Nightscout environment variables to see the individual battery values on hover. The user confirmed unchecking the option resolved the issue.",
+ "settings_changed": [
+  "DEVICESTATUS_ADVANCED → true",
+  "Upload bridge battery → unchecked"
+ ],
+ "devices": [
+  "Sony Z3C",
+  "Dexcom G4",
+  "wixel"
+ ],
+ "android_versions": [
+  "android 6.0.1"
+ ],
+ "driver_tags": [
+  "xdrip",
+  "wixel",
+  "xbridge",
+  "nightscout",
+  "bridge battery",
+  "api upload"
+ ],
+ "confidence": "high",
+ "evidence_quote": "Okay, so the 25th April Nightly contains a new option within `Cloud Upload` -> `API Upload` -> `Extra Options` which is a checkbox for `Upload bridge battery` which you can uncheck if your bridge battery sensor is broken and this should stop it being uploaded to Nightscout."
+}

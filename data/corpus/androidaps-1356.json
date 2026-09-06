@@ -1,0 +1,27 @@
+{
+ "id": 1145129420,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1356,
+ "title": "[AAPS 3.0.0.1] Master password & biometric popup at the same time, on app start",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1356",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-02-20T20:45:06Z",
+ "closed_at": "2022-03-14T21:24:15Z",
+ "comment_count": 2,
+ "body": "Time of occurance in log: 20.02.2022, 21:37\r\n\r\nDescription: I have set all security settings to biometric:\r\n![Screenshot_20220220-181614_AndroidAPS](https://user-images.githubusercontent.com/64336417/154863154-a4552408-ed8c-4c4f-915c-284761c61edc.jpg)\r\nStill sometimes on app start there are two popups (In front: Biometric; in the back: master password) showing at the same time (I can't make a Screenshot of that, because of Android security reasons). So i first have to do biometrics validation, then I have to put in the master password.\r\n\r\nBuild: 479bfc410-2022.02.06-18:41",
+ "comments": [
+  {
+   "id": 1046317508,
+   "user": "JazzZ1",
+   "created_at": "2022-02-20T20:45:56Z",
+   "body": "[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/8104900/AndroidAPS.log)\r\n"
+  },
+  {
+   "id": 1059816450,
+   "user": "Andries-Smit",
+   "created_at": "2022-03-05T19:04:20Z",
+   "body": "App protection is called on resume, and did not care if it was already asking for authentication.... When the bio authentication is already active, Android cancels it. Therefor falling back to app master password.\r\nIt reproduce the issue, change orientation of the app. Or open and close app multiple times without authenticating.\r\n\r\nThis issue will be fixed in PR #1409 commit cfa64162b0b5c4d6a60916bec55087b2df758a0c\r\n"
+  }
+ ]
+}

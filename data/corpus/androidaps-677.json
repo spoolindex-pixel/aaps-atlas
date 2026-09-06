@@ -1,0 +1,21 @@
+{
+ "id": 999965965,
+ "repo": "nightscout/AndroidAPS",
+ "number": 677,
+ "title": "Minor bug / 2.8.2. Master and 2.8.2.2. dev / Duration of canula and insulin after déactivation",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/677",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-09-18T08:07:28Z",
+ "closed_at": "2021-09-18T12:15:41Z",
+ "comment_count": 1,
+ "body": "A minor bug, I'm not sure if it is necessary to resolve... Using Onmipod EROS (on 2.8.2 main) and DASH (2.8.2.2 Dev)\r\nThe time counter for canula and insulin age is reset to 0 when the pod is **activated**. This works well. \r\nIf you **deactivate** the pod BUT **do not restart another one** rapidly, the insulin age and canula age continue counting. There is no more canula or insulin but AAPS says that the age is overdue.\r\n\r\nDASH deactivated at 79h\r\n![image](https://user-images.githubusercontent.com/76626474/133881555-cecf6a87-1b74-43fb-9833-fae5d09422b8.png)\r\n\r\nAnd here is the screen capture a couple of hours later...\r\n![image](https://user-images.githubusercontent.com/76626474/133881566-7af34f9f-4fe2-4a61-b50a-d8860bee4ae0.png)\r\n\r\nIt would be better to reset the canula / insulin age to 0 when pod is deactivated and stop counting till pod activation. \r\n\r\nAs we usually put in a new pod just after deactivation of the old, I'm not sure if this bug needs to be solved. \r\n",
+ "comments": [
+  {
+   "id": 922267879,
+   "user": "MilosKozak",
+   "created_at": "2021-09-18T12:15:41Z",
+   "body": "this time is time elapsed since last reset. there is no way to keep it zero"
+  }
+ ]
+}

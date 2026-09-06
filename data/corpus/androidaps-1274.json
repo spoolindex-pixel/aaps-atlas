@@ -1,0 +1,39 @@
+{
+ "id": 1124008621,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1274,
+ "title": "3.0.0.1 Problems: Small Screen, Prediction of active Insulin, reuse Profile Switch",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1274",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-02-04T09:52:22Z",
+ "closed_at": "2022-02-24T19:27:34Z",
+ "comment_count": 4,
+ "body": "[AndroidAPS._2022-02-04_00-00-06_.2.zip](https://github.com/nightscout/AndroidAPS/files/8001718/AndroidAPS._2022-02-04_00-00-06_.2.zip)\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/8001720/AndroidAPS.log)\r\n[AndroidAPS._2022-02-04_00-00-06_.1.zip](https://github.com/nightscout/AndroidAPS/files/8001721/AndroidAPS._2022-02-04_00-00-06_.1.zip)\r\n![Screenshot_20220204-094018](https://user-images.githubusercontent.com/24695277/152507550-87efa4d0-aaa0-4e99-8811-1ffcc8eb2298.png)\r\n![Screenshot_20220204-094008](https://user-images.githubusercontent.com/24695277/152507558-7d46326a-c72c-49f9-abb2-2643d8c59268.png)\r\n![Screenshot_20220204-093940](https://user-images.githubusercontent.com/24695277/152507559-0925f6bb-6d30-4152-a452-e7556ebfc934.png)\r\n\r\nI use a Atom XL, it has a pretty small screen. In Treatments tab I can not delete some Treatments, I would have to rotate the screen, so I can delete treatments.\r\n\r\nAlso the Prediction of active Insulin is now missing, before the whole curve could be seen.\r\n\r\nWhen doing a Profile Switch and you want to reuse it (does not matter if the same Profile is inserted, or you change the values somehow) it will give an error and set -6 hours.\r\n\r\nWhen longpressing the old data takes long to load, I didnt test this now with these screenshots, so it may be not in the logs.\r\n\r\nTime in logs is 09:39-09:40 (see screenshots).",
+ "comments": [
+  {
+   "id": 1029881136,
+   "user": "Andries-Smit",
+   "created_at": "2022-02-04T10:59:32Z",
+   "body": "A quick response;\r\n- treatment size has to be fixed, good you have a workaround and remove might not be needed too often. For smaller screens, a popup with the details might be a better option.\r\n- Prediction issue might not be related to your screen size\r\n- Profile issue seems a bug, we have to investigate\r\n- What do you mean by \"long-pressing\" what data, what function? can you elaborate?"
+  },
+  {
+   "id": 1029889440,
+   "user": "McHoffi",
+   "created_at": "2022-02-04T11:09:48Z",
+   "body": "By long-pressing i meant the expanding of the overview (BG-values, Treatments, Basal, etc.) on the Overview page on more hours. So going from 3 hours into the past and so on. I attach screenshots and the logs from now.\r\n\r\n[AndroidAPS._2022-02-04_00-00-06_.5.zip](https://github.com/nightscout/AndroidAPS/files/8002502/AndroidAPS._2022-02-04_00-00-06_.5.zip)\r\n![Screenshot_20220204-120612](https://user-images.githubusercontent.com/24695277/152519128-5e800591-1482-4232-9639-5ec44d2d90dd.png)\r\n![Screenshot_20220204-120619](https://user-images.githubusercontent.com/24695277/152519131-3d680d5e-56c7-4cca-87b9-33b97b7cf2ce.png)\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/8002503/AndroidAPS.log)\r\n "
+  },
+  {
+   "id": 1030576448,
+   "user": "Philoul",
+   "created_at": "2022-02-05T08:24:49Z",
+   "body": "I made a PR #911 to (try to) fix graph rescale on long press (it shows quicker all the curves when rescale is done).\r\nUnfortunatly it seems they are still some issues with it in history browser (I could not reproduce myself)..."
+  },
+  {
+   "id": 1049876963,
+   "user": "Andries-Smit",
+   "created_at": "2022-02-24T13:47:09Z",
+   "body": "@McHoffi the treatment \"Remove\" buttons have been moved to the options menu in PR #1362 this makes the result in better screen usage."
+  }
+ ]
+}

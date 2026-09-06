@@ -1,0 +1,87 @@
+{
+ "id": 1564575202,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2383,
+ "title": "[3.1.0.3] NSClient synchronisation stops loop and is extemely slow",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2383",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-01-31T15:50:07Z",
+ "closed_at": "2023-05-14T08:44:14Z",
+ "comment_count": 12,
+ "body": "Hello there!\r\n\r\nI help someone with her loop, for some reason the Upload via NSClient was paused in AAPS (for quite some time I guess).\r\nIt had ~180k entries in the queue at the point the upload was started again.\r\n\r\nAfter 4.5 hours it was down to ~160k, but after that it pretty much stagnated at ~90k. It would have taken many months to complete the sync. Restarting the NSClient, AAPS, NS or the phone wasn't helping.\r\n\r\nAfter two days with little progress a full synchronization was started, which started with ~200k entries and was down to ~100k after half an hour. It stagnated again at ~90k and still is. Even worse: the count increased to > 100k temporarily, but decreased fast again.\r\n\r\nThe problem is that as long as the NSClient isn't paused or/and as long as it has internet access, the loop is not working.\r\nThe only \"solution\" that comes to mind is to delete all the data.\r\n\r\n----------------\r\n\r\nNightscout Version 14.2.6\r\nAndroidAPS Version 3.1.0.3 (master)\r\n\r\nThe NS instance supports HTTP/2 behind a nginx proxy and is self hosted.\r\n\r\n----------------\r\n\r\nMy naive approach is, that the loop should work independently of the NSClient upload.\r\nAlso it feels like the sync should be way faster.\r\n\r\nMight be related to #619 / 516630215c3adfb32577a27bea2d9a09be58b03b",
+ "comments": [
+  {
+   "id": 1416799968,
+   "user": "Root-Core",
+   "created_at": "2023-02-04T16:58:08Z",
+   "body": "Okay, I finally had the time and access to the device / logs and I observed some patterns.\r\n\r\nEach time I restarted the NSClient, the upload works okay. The log scrolls slower, but the queue count decreases at a steady pace. This is until there is a `PING received`, as then it waits for some time and does the next \"wave\". Then there are reoccurring ids, which are increased with each `PING received`. It might not be correlated tough, I don't know how to actually interpret the log messages.\r\n\r\nFor example the entry `DBADD Acked TemporaryBasal 63de797ef9566a015cadecdf` occurred 13 times after a 10 Minute test. The logs are scrolling fast then, but the queue entries are not decreased anymore.\r\n\r\nI tried to filter the relevant logs: [AndroidAPS_filtered.log](https://github.com/nightscout/AndroidAPS/files/10609134/AndroidAPS_filtered.log)\r\n```cat AndroidAPS_new.log | grep \"DBADD Acked\\|PING received\"```\r\n\r\n@MilosKozak  Could this be some kind of race condition? I sent the full logs via email.\r\n\r\n----------------------\r\n\r\nEDIT:\r\n\r\nOut of some coincidence the phone is still with me and the patient is out of the BT range. The upload works now and I can't spot duplicated ids. It might have to do with the missing xDrip+ local broadcast or that xDrip+ does not upload BG values to NS."
+  },
+  {
+   "id": 1418699186,
+   "user": "MilosKozak",
+   "created_at": "2023-02-06T08:32:48Z",
+   "body": "sync has been improved in dev a lot.\r\nDuplicated entries you mention can be related to too slow response of NS"
+  },
+  {
+   "id": 1418776656,
+   "user": "Root-Core",
+   "created_at": "2023-02-06T09:30:43Z",
+   "body": "This is unlikely, as deactivating the local broadcast and upload to NS in XDrip+ enabled us to upload all data in a couple of hours. Which is pretty much the same as no new values due to out of BT range.\r\n\r\nAlso is it intended behavior, that the loop stops working while the NSClient is uploading?\r\nAs soon as you pause it, it works as intended."
+  },
+  {
+   "id": 1419005065,
+   "user": "MilosKozak",
+   "created_at": "2023-02-06T12:28:45Z",
+   "body": "it's not intended .... it's a result of busy phone\r\ndisabling broadcast will speed up the process"
+  },
+  {
+   "id": 1419286685,
+   "user": "Root-Core",
+   "created_at": "2023-02-06T15:38:11Z",
+   "body": "The message was like \"no APS selected\" on manual runs, which does not sound like a busy phone to me. It also works if the phone is in heavy use, like gaming or benchmarking. If the upload is causing the loop to stop, it should be considered to suspend the upload until the loop has done it's calculations. Mutex or something.\r\n\r\nYou have clearly more knowledge about AAPS and I'm just trying to help, as I fear this could be a **serious** bug.\r\n\r\nAfter a restart it is doing okay and if there is no new data inserted, it works okay. If data is inserted, multiple workers point to the same entry. This seems like a typical race condition.\r\nI have not looked into the source code yet, but is the queue thread safe?\r\n\r\nBtw, thank you for your hard work. It really helps a lot of people."
+  },
+  {
+   "id": 1419338161,
+   "user": "MilosKozak",
+   "created_at": "2023-02-06T16:10:13Z",
+   "body": "1) try dev as app processing inside is mostly new\r\n2) if you are able to replicate it with dev I'm interrested in logs after manual run fail\r\n3) no aps selected could mean some timeout on reading from db (with internal crash afterwards)"
+  },
+  {
+   "id": 1419411009,
+   "user": "Root-Core",
+   "created_at": "2023-02-06T16:58:36Z",
+   "body": "I do not have access to the specific phone / setup right now and the sync was completed after stopping any incoming data. I might test it on another phone with virtual pump and do a full sync. I am not sure how good this is replicable in such a scenario.\r\n\r\nThe no APS selected message comes instantly as long as the NSClient is uploading. Once it is paused, it works as intended. \r\n\r\nI hope that I can reproduce it on 3.1.0.3 first with this test setup and retest it on the dev branch afterwards."
+  },
+  {
+   "id": 1419416315,
+   "user": "MilosKozak",
+   "created_at": "2023-02-06T17:01:22Z",
+   "body": "you can reset sync from 3dots menu"
+  },
+  {
+   "id": 1421518913,
+   "user": "Root-Core",
+   "created_at": "2023-02-07T22:02:13Z",
+   "body": "I thought the full sync is two way, but it seems to just upload local entries. So there are little elements in the queue on my test setup. I will try to copy the app data via some backup tool, once I got access to the original device again."
+  },
+  {
+   "id": 1426560998,
+   "user": "birdfly",
+   "created_at": "2023-02-11T01:37:58Z",
+   "body": "I have this issue ,too.\r\nThe Queue was 90K at the beginning ,then decreased to 30k，but after a while it started to increase to 50K"
+  },
+  {
+   "id": 1426801653,
+   "user": "MilosKozak",
+   "created_at": "2023-02-11T15:34:12Z",
+   "body": "count can increase because total value is not evaluated upfront"
+  },
+  {
+   "id": 1546843387,
+   "user": "MilosKozak",
+   "created_at": "2023-05-14T08:44:14Z",
+   "body": "sync is new in 3.2"
+  }
+ ]
+}

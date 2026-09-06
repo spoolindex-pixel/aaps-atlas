@@ -1,0 +1,42 @@
+{
+ "id": 1239168098,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 2131,
+ "title": "consolidate API-like interfaces",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/2131",
+ "state": "closed",
+ "labels": [
+  "sync",
+  "code:quality"
+ ],
+ "created_at": "2022-05-17T21:18:39Z",
+ "closed_at": "2025-07-16T16:11:53Z",
+ "comment_count": 4,
+ "body": "So from what I can tell, we have several API-like interfaces in Xdrip atm:\r\n\r\n---\r\n1. **SendXdripBroadcast** class - sends intent bundles from `VehicleMode.java` and `BroadcastGlucose.java` to another app, including things like collector status, glucose values, noise level, battery level, etc.\r\n\"Identify receiver\" field supports multiple package names separated by spaces.\r\n![image](https://user-images.githubusercontent.com/52087143/166091062-4c5ec94a-2972-47cb-93ea-dbc98f5e330a.png)\r\n\r\n---\r\n2. **NSClientReceiver** class - handles _incoming_ intents. Supports 3 different actions, corresponding to the first 3 ON/OFF switches in the photo.\r\n**ExternalStatusBroadcastReceiver** class - Allows external apps to set the status line string via intent (4th switch in photo). It also acts as an (unofficial) way to send xDrip the temp-basal rate (xDrip attempts to parse it from the string).\r\n![image](https://user-images.githubusercontent.com/52087143/166091083-d613ea95-5d76-4f87-b003-86035e7c8962.png)\r\n\r\n---\r\n3. **XdripWebService** - HTTP(s) server with different modules for interactions with various devices.\r\n[This constructor method appears to enumerate the implemented urls/modules](https://github.com/NightscoutFoundation/xDrip/blob/9824294838384c841f5d62a9412fb070b65c60ab/app/src/main/java/com/eveningoutpost/dexdrip/webservices/RouteFinder.java#L25-L56)\r\n**Examples:**\r\n- Desert Sync (see \"xDrip+ Sync settings\")\r\n- Glucose values and treatments\r\n- HR monitor\r\n- Tasker\r\n- Libre2\r\n\r\n![image](https://user-images.githubusercontent.com/52087143/166091039-0d59afca-51de-43fd-bdc9-3d2fc973d7dd.png)\r\n\r\n---\r\n\r\nI'll offer to rework/streamline the preferences hierarchy so they're all more user-friendly, but if we can consolidate down to one \"intent broadcast\" service, that would be much less chaotic.\r\n\r\n_Originally posted by @Lupum1001 in https://github.com/NightscoutFoundation/xDrip/issues/2004#issuecomment-1113935574_",
+ "comments": [
+  {
+   "id": 1129328629,
+   "user": "tolot27",
+   "created_at": "2022-05-17T21:20:46Z",
+   "body": "> I'll offer to rework/streamline the preferences hierarchy so they're all more user-friendly, but if we can consolidate down to one \"intent broadcast\" service, that would be much less chaotic.\r\n\r\n@Lupum1001 Thanks for investigating this. Having a centralized API would be a great step forward. We will discuss this further in our internal dev group before we proceed here."
+  },
+  {
+   "id": 1136270961,
+   "user": "tolot27",
+   "created_at": "2022-05-24T18:01:44Z",
+   "body": "We should start writing unit tests for a potential new API. These tests can be generalized from the existing APIs and can help verify the implementation of #2004."
+  },
+  {
+   "id": 2082492407,
+   "user": "SimonPhilpott",
+   "created_at": "2024-04-29T11:38:29Z",
+   "body": "It would need a review too. Endpoints that have been in place for a while only semi work. \r\nE.g. this works. \r\nhttp://127.0.0.1:17580/tasker/snooze \r\nBut this doesn't\r\nhttp://127.0.0.1:17580/tasker/restart%20collector"
+  },
+  {
+   "id": 3079316346,
+   "user": "Navid200",
+   "created_at": "2025-07-16T16:11:53Z",
+   "body": "I have made some changes to the user interface to improve it.  \nI would like to remove redundancy, and move common settings under submenus to help users easily find what they are looking for.\nThis will be an ongoing work. \n\nHelp in that respect is appreciated as long as it is done in small steps to improve the chances of approval.  \n\nThis will be an ongoing work.  We can improve the user interface.  But, there will always be room for improvement.   I don't believe this in itself should be considered an issue.\nI am closing this issue.\n\nIf anyone likes to improve xDrip, please open a PR or open a discussion to talk about it to see if anyone else is already working on it.\n\nThanks"
+  }
+ ]
+}

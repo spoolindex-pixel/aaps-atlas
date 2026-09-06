@@ -1,0 +1,39 @@
+{
+ "id": 2804551867,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3770,
+ "title": "Bug : Profile % doesn't change back",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3770",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-01-22T14:32:28Z",
+ "closed_at": "2025-01-23T04:51:36Z",
+ "comment_count": 4,
+ "body": "Last dev\n\n![Screenshot_20250121_130854_AAPS.jpg](https://github.com/user-attachments/assets/c917350b-e655-4d21-8cc8-33eb479805f7)\n\nThe automations do not stop\n\n![Screenshot_20250122_125934_AAPS.jpg](https://github.com/user-attachments/assets/3ed8f797-4855-451e-9030-20655c989304)\n\n![Screenshot_20250122_131318_AAPS.jpg](https://github.com/user-attachments/assets/763db0fd-4295-4ab5-b2c5-18b6b6d5d0d9)\n\n![AndroidAPS_LOG_1737551065304.log.zip](https://github.com/user-attachments/files/18506933/AndroidAPS_LOG_1737551065304.log.zip)\n\n",
+ "comments": [
+  {
+   "id": 2607858546,
+   "user": "robertrub",
+   "created_at": "2025-01-22T17:34:54Z",
+   "body": "Ok, after some more testing:\nAutomation starts TT and low profile for 15 min.\n15 min layer, TT gets back to normal target but profile stays stuck at low %. It needs to be reset manually.\n\nIt is not an automation bug.\nIt also happens with the dev 3 3.1.2 built yesterday.\n\n![Screenshot_20250122_182550_AAPS.jpg](https://github.com/user-attachments/assets/d3d012bb-9921-4efe-bbd3-88a97f6b534d)\n\n![Screenshot_20250122_182957_AAPS.jpg](https://github.com/user-attachments/assets/9c407362-49d3-4719-8a32-06abb4d3cf48)\n\n![Screenshot_20250122_182628_AAPS.jpg](https://github.com/user-attachments/assets/df6c4890-e2ec-4446-b7cd-ba3a7bd58c3c)\n\n"
+  },
+  {
+   "id": 2608081339,
+   "user": "MilosKozak",
+   "created_at": "2025-01-22T19:22:37Z",
+   "body": "no interesting time in logs"
+  },
+  {
+   "id": 2608293036,
+   "user": "robertrub",
+   "created_at": "2025-01-22T21:19:57Z",
+   "body": "Ok, sorry. Will keep an eye out and catch the correct logs.\n\nJust tried a manual profile switch for 10 min and it worked ok.\n\n![Screenshot_20250122_221627_AAPS.jpg](https://github.com/user-attachments/assets/e453c4b2-fa45-4d35-bdfd-d83937f533ff)\n\nWill try to see what happens if the profile change is triggered by the automation... Theoretically, the \"trigger\" shouldn't change anything but who knows.\n\nWBB if I catch something that might give you more information."
+  },
+  {
+   "id": 2608851433,
+   "user": "robertrub",
+   "created_at": "2025-01-23T04:50:54Z",
+   "body": "@MilosKozak I'm closing this issue as all started working ok as before.\nFYI, this is what I did ( but have no idea if one of these helped...)\nForce close AAPS and clear cache.\nClear APS results and clean (not _reset_ ) db in AAPS."
+  }
+ ]
+}

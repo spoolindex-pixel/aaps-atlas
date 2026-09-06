@@ -1,0 +1,99 @@
+{
+ "id": 760753291,
+ "repo": "nightscout/AndroidAPS",
+ "number": 109,
+ "title": "Carbs recommendation does not match calculator",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/109",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2020-12-09T23:31:27Z",
+ "closed_at": "2020-12-13T20:37:40Z",
+ "comment_count": 14,
+ "body": "- 09-Dec-2020 23:08 GMT - Carbs required icon was flashing red saying 29g required. If I open calculator, it instead says I need 0.61 units. I think these should be in sync. \r\n- Build version - 2.7.0\r\n\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/5669317/AndroidAPS.log)\r\n\r\n![Screenshot_20201209-230801](https://user-images.githubusercontent.com/42867381/101701275-7fd2b780-3a76-11eb-86d6-1ce2bb55cb46.png)\r\n\r\n![Screenshot_20201209-230754](https://user-images.githubusercontent.com/42867381/101701278-806b4e00-3a76-11eb-9288-cdc7cd5d25ef.png)\r\n\r\n\r\n",
+ "comments": [
+  {
+   "id": 742143965,
+   "user": "TwistaTim",
+   "created_at": "2020-12-10T00:10:18Z",
+   "body": "The Bolus Calculator is a very basic equation, the carbs requirement announcement is based off the reference design which is much more complex. The two should not be compared."
+  },
+  {
+   "id": 742162709,
+   "user": "osodebailar",
+   "created_at": "2020-12-10T00:59:25Z",
+   "body": "Maybe the Both Basics of the calculation are different.\nBut in the End that Must be the Same .\nI Know Some Patents who Told me the same question why we have an incosistenze here. "
+  },
+  {
+   "id": 742286855,
+   "user": "guydavies",
+   "created_at": "2020-12-10T07:03:08Z",
+   "body": "That's not how maths works! if you have two calculations, one based on the situation right now (the bolus calculator) and one based on now plus future predictions (the carbs needed) the likelihood of them coming to the same conclusion is negligible. That's like life. Those with different amounts of information on which to base their decisions in the same situation would come to a different conclusion. Trying to make them the same would require massive \"fudge factors\". "
+  },
+  {
+   "id": 742300619,
+   "user": "osodebailar",
+   "created_at": "2020-12-10T07:25:15Z",
+   "body": "And what will you das to a normal User who Must Decide what to do?\nA children for example ?\nMath Works different ok, But that is Not interessting for a normal User.\nIts definitiv wrong for the User to decide , taken a bolus of 1 Unit or eating 10g Carbs.\nThats very very confusing for Other People and Not the Right way. \n"
+  },
+  {
+   "id": 742358934,
+   "user": "osodebailar",
+   "created_at": "2020-12-10T08:14:30Z",
+   "body": "If there is no other way , than we have to make it very clear for every person that is only a proposal and can be wrong.\r\nMaybe we can disable the feature by default \r\nFor me I decided in the past to stop carb suggestion, because all suggestions were wrong for me. "
+  },
+  {
+   "id": 742362941,
+   "user": "guydavies",
+   "created_at": "2020-12-10T08:22:58Z",
+   "body": "Anyone who wants to just turn on an app and have it “just work” probably needs to look at an AI/ML-based system like CamAPS FX.  AAPS works on the application of the same maths that you’re required to do if you calculate everything manually.  It’s just much better (and quicker) at doing it and doesn’t care what time of day or night it is, it just does it every time new information is available and the min-SMB run time has expired.  You cannot simply do what AAPS tells you with no thought at all any more than you can do what your car’s satnav tells you to do without looking at the road signs and where the road ahead goes.  One day, we’ll have fully automated cars that will be sufficiently trustworthy to just drive on our roads with no human interaction except to open and close the doors/windows.  That day isn’t yet here.  Similarly, one day we’ll have an APS and analog insulins that can mimic the body’s behaviour sufficiently closely that we can just turn it on and forget it.  That day isn’t here either.\n\n> On 10 Dec 2020, at 09:14, Andreas <notifications@github.com> wrote:\n> \n> \n> If there is no other way , than we have to make it very clear for every person that is only a proposal and can be wrong.\n> Maybe we can disable the feature by default\n> For me I decided in the past to stop carb suggestion, because all suggestions were wrong for me.\n> \n> —\n> You are receiving this because you commented.\n> Reply to this email directly, view it on GitHub <https://github.com/nightscout/AndroidAPS/issues/109#issuecomment-742358934>, or unsubscribe <https://github.com/notifications/unsubscribe-auth/AAS7B3UQBW25T6WXRHBFERTSUB7PLANCNFSM4UUGU73Q>.\n> \n\n"
+  },
+  {
+   "id": 742374093,
+   "user": "osodebailar",
+   "created_at": "2020-12-10T08:45:56Z",
+   "body": "Than we had to make it very clear for all People.\nMy proposal is disabling the Feature by gefault and if the User enables the Featurehe Clan read a explanation that this is only a Suggestion and can be wrong Every time"
+  },
+  {
+   "id": 742406925,
+   "user": "TwistaTim",
+   "created_at": "2020-12-10T09:44:50Z",
+   "body": "I am somewhat surprised we are needing to have this discussion. APS as the name implies that the algorithm is taking care things for you. The Carb notification feature is by design a safety feature as it warns the person that the algorithm cant 0 temp its way out of a probable/possible hypo. It should not be disabled by default.\r\n\r\nComparing oref required carbs to the most simplest bolus calculation is simply illogical.\r\nThe bolus wizard as it's name implies is to calculate a bolus, not calculate required carbs or treatment carbs. Sure it can do this, but you should never take a number at face value. The tool should not be used blindly (nor should it be used blindly on a normal pump for that matter), its just simply to help calculate a bolus when it comes to eating/ and if necessary (in open loop/LGS) correcting.\r\n\r\nBolus Calculator = Manual Control\r\n\r\nAPS = Automatic\r\n\r\n"
+  },
+  {
+   "id": 742411725,
+   "user": "osodebailar",
+   "created_at": "2020-12-10T09:53:19Z",
+   "body": "You see we need the discussion . Here we have the first person who detect the inconsistency and make an issue.\r\nOther people also detect it . I myself know a mother and she ask me for her daughter for  a while about this and what to do ? \r\nMy answer was : ignore the carb suggestion and do what you every done in the past and what worked.\r\nAnd that was the best way for her.\r\nIf bolus calculate and algo differ in its result , we can detect it and inform the user, maybe in the carb suggestion that the system detects a different result .\r\n"
+  },
+  {
+   "id": 742426267,
+   "user": "TwistaTim",
+   "created_at": "2020-12-10T10:18:53Z",
+   "body": "Going onto a APS system requires learning and changing the way of managing diabetes. The carb required notifications were developed for a reason.\r\n\r\nIf the bolus wizard is going to be used all the time to determine treatment decisions, you are effectively fighting the oref algorithm which is dosing insulin automatically.\r\n\r\nUltimately it comes down to this, you have enlisted the help and putting trust into a DIY APS system which has the reference design at its core. This means letting go of some of the control so the algorithm can do it for you (that was its principle design on why it was developed).\r\n\r\nYou can not micromanage via bolus wizard with an APS system as you will end up fighting the algorithm and highlight situations such as the above.\r\n\r\nThe Bolus Wizard has no fancy algorithm behind it, it does not run constantly. Infact the Bolus Wizard Preview plugin is recommended to be disabled in Nightscout for that very reason. The 2 values should not be compared.\r\n\r\nThis topic really comes down to an issue of trust.\r\n\r\nTrusting the oref algorithm to do its thing as its running 24/7 or a manual instantaneous tool which has no APS integration at all (which well predates APS).\r\n\r\nI for myself use the bolus wizard, but I also take it with allot of salt too. APS just fills in the gaps for me.\r\n\r\n\r\n\r\n\r\n"
+  },
+  {
+   "id": 742432564,
+   "user": "osodebailar",
+   "created_at": "2020-12-10T10:30:24Z",
+   "body": "You are Right from the technical side. \nBut this is diffcult to tell to a non technical User , especially to a Child for example.\n\nI Think we had to make it more clear in the documentation, and on the Other side Tell the Users in the app if possible, that the Suggestions , one in the Calc and the other one in the algo ( Carb suggestion) differs and the decision therefore what to do must be taken more carefully .\nThat can be done with an additional Text or color in the calc, if difference were detected. "
+  },
+  {
+   "id": 742441274,
+   "user": "MilosKozak",
+   "created_at": "2020-12-10T10:46:22Z",
+   "body": "The meaning of the results is different: \r\nWizard tells you what to do to be in range after DIA [h] (which is perfectly OK when calculating food) \r\nAnnouncement is describing current situation"
+  },
+  {
+   "id": 742584683,
+   "user": "rachelwoods162",
+   "created_at": "2020-12-10T15:16:52Z",
+   "body": "Thank you all very much for all of the comments. Going forward from here:\r\n\r\nI see that the carbs required uses oref1, which takes into account current and future predictions. Bolus calculator is more simplistic, and tells you what to do right now to ensure that when calculating a meal you will end up in range after DIA. Personally, I am fine with these being different, but the first place I went to look for information (the docs) does not explain this. Would it be reasonable for me (or you, if you prefer?) to add the clarification to the docs, raise a PR, and close this as an issue? Or should I leave the issue open pending further discussion?"
+  },
+  {
+   "id": 744065005,
+   "user": "MilosKozak",
+   "created_at": "2020-12-13T20:37:40Z",
+   "body": "you can create PR to docs. or send text to any of devs"
+  }
+ ]
+}

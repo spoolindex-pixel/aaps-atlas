@@ -1,0 +1,75 @@
+{
+ "id": 775044758,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1577,
+ "title": "Capture G6 session from another smartphone",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1577",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2020-12-27T14:10:28Z",
+ "closed_at": "2021-02-12T07:46:00Z",
+ "comment_count": 10,
+ "body": "Yesterday, I started a new Dexcom G6 sensor with an new (refurbished G6 81xx) transmitter. The old sensor session witch a second transmitter was still running on my loop smartphone with an 80xx transmitter. When I want to switch the new sensor session to my loop smartphone, there is the problem, that I had to stop my old sensor session in xDrip+. There is no clear way for me to switch to the new, already running sensor session, without stopping the old sensor session before. On my Dexcom reader, it‘s the same problem. There, it is not possible to change the transmitter id, without stopping the old sensor session.\r\nPerhaps, it could be a new feature, to stop the running sensor session in xDrip+, without sending a „stop sensor“ to the old transmitter queue. If this feature is available, then I can switch to a second transmitter and start a new already started sensor session with xDrip+. The old sensor session witch the first transmitter is not stopped and I still can watch the glucose values from the old sensor on my Dexcom reader or another xDrip+ app.",
+ "comments": [
+  {
+   "id": 751483846,
+   "user": "JMgithubdex",
+   "created_at": "2020-12-27T15:55:41Z",
+   "body": "Dear winni67, \r\nYou have described a situation where you seemed to wish a parallel functioning of 2 independent sensors and transmitters on the same human body. Does this short period of change of one old sensor to a new one warrant a big software change? You might run 2 sensors plus 2 transmitters plus 2 smartphones on the same human body with complete independency. You would only need a second smartphone, okay?"
+  },
+  {
+   "id": 751518798,
+   "user": "winni67",
+   "created_at": "2020-12-27T21:36:24Z",
+   "body": "No, you are wrong. It‘s to prevent the data pause during the sensor change. For looping, the glucose data is necessary and a pause in glucose data is a pause in looping too. The software change is only very small. Prevent xDrip+ to send a „stop sensor“ into the transmitter queue during the session stop. It‘s silly to stop a running sensor session before starting a new second one."
+  },
+  {
+   "id": 751520551,
+   "user": "winni67",
+   "created_at": "2020-12-27T21:55:50Z",
+   "body": "I want to change the two receiving smartphones, but I don‘t want to stop one of the two sensor sessions. xDrip+ is not able to do this, because the „Stop sensor“ sends an „sensor stop“ to the G6 transmitter, that kills the running sensor session. I want to rotate the two receiving smartphones. The loop gets the glucose data from the already startet new sensor, the second smartphone or the receiver shows the values from the old sensors during the first hours. "
+  },
+  {
+   "id": 752802836,
+   "user": "nickb24",
+   "created_at": "2020-12-31T00:41:18Z",
+   "body": "Using the latest version of the code, there is a command you can enter: \"clear transmitter queue\"\r\nTo enter commands:\r\n\r\n1. tap on the character on the right of the xDrip+ start screen that represents a syringe\r\n2. then tap and hold on the microphone icon in the lower right corner\r\n3. In the text box that opens type \"clear transmitter queue\"\r\n4. click \"ok\"\r\n\r\nList of all commands can be found here: https://github.com/NightscoutFoundation/xDrip/blob/master/app/src/main/java/com/eveningoutpost/dexdrip/UtilityModels/VoiceCommands.java\r\n"
+  },
+  {
+   "id": 753528926,
+   "user": "winni67",
+   "created_at": "2021-01-02T20:58:05Z",
+   "body": "Thank‘s, but to avoid that the transmitter received the queued command, it‘s necessary to disable bluetooth before stopping the sensor. Another way is to do this directly after the last reading. But then the countdown is running. To avoid this, I hoped to get this function on the page „Sensor stoppen“ where I now can chose between „STOP SENSOR“ and „NICHT STOPPEN, NUR ALLE KALLIBRIERUNGEN LÖSCHEN“. I tought to name this option „STOP SENSOR ONLY IN XDRIP“."
+  },
+  {
+   "id": 774135742,
+   "user": "Navid200",
+   "created_at": "2021-02-05T16:23:11Z",
+   "body": "@winni67 Hi,\r\nWhat is the status of this?\r\nYou should be able to capture a session that started from another phone as long as you have disabled collection on that phone."
+  },
+  {
+   "id": 774246090,
+   "user": "winni67",
+   "created_at": "2021-02-05T19:39:00Z",
+   "body": "Yes, that should work, but my tests failed. I decided to use the variants versions parallel on one smartphone in the future."
+  },
+  {
+   "id": 774250919,
+   "user": "Navid200",
+   "created_at": "2021-02-05T19:49:23Z",
+   "body": "Do you think you can close this issue?  Or, do you think there is still a bug with xDrip not allowing a second phone to pick up a session?"
+  },
+  {
+   "id": 777778558,
+   "user": "winni67",
+   "created_at": "2021-02-11T20:46:23Z",
+   "body": "I have no second transmitter (battery replacement is necessary) to test this now. But in the future, I try to work with the variant versions of xDrip. So I can start two xDrip Versions on one smartphone and only switch on/off the broadcast from the two xDrip versions to AndroidAPS. Perhaps this could be integrated in one xDrip version to move from an old to a new sensor. With the G7 or Libre, that could be a nice feature."
+  },
+  {
+   "id": 777796193,
+   "user": "Navid200",
+   "created_at": "2021-02-11T21:15:30Z",
+   "body": "We have more than 800 open issues.  Not all of these open issues will be acted upon because that would be unreasonable.  xDrip is already a complicated code and there is no reason to make it more complicated to address every single request.\r\n\r\nA reasonable course of action is to prioritize the issues and close the ones that are support requests.\r\nThe title of this issue suggests that one cannot pick up a G6 session in progress with another phone.  I have confirmed that can be done.  So have others.  Therefore, this (what's described in the subject) can be done with the existing code.\r\n\r\nI understand that your main objective is to remove the 2-hour warm-up gap from your readings.  Not many members of the community need that capability.  Most people put up with a 2-hour gap once every 10 days (0.833%).  Not everyone has 2 operational transmitters at once.  You may have already seen the posts by the experienced individual, in the facebook group, who does that.  Reading your comment, about using variants, I suspect you have.\r\nYou can consult with him.   If you don't know him, ask me in the facebook group and I will put the two of you in contact.\r\n\r\nThis does not mean that what you need is not valuable.  \r\nIt only means that we can only do so much in order to address the requests.\r\n\r\nYou have opened 2 issues for the same final objective.  Unless you can convince us they are critically needed, I'm afraid neither will be prioritized."
+  }
+ ]
+}

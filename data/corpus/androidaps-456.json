@@ -1,0 +1,69 @@
+{
+ "id": 849093465,
+ "repo": "nightscout/AndroidAPS",
+ "number": 456,
+ "title": "[All lasts Dev's] AAPS entrys are deleted  in NightScout next morning",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/456",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-04-02T09:01:36Z",
+ "closed_at": "2021-06-23T20:34:27Z",
+ "comment_count": 9,
+ "body": "My system:\r\nAAPS latest Dev, Pixel 5 Phone, Medtronic 754, OrangeLink.\r\n\r\nTime of issue: Since a month, or longer, with different Dev versions.\r\n\r\nIssue:\r\nCanula-, Reservoir-, Battery- and Sensorchange, all of them are entered in AAPS from hand, or over pump history.\r\nAAPS load this changes up to NightScout and everything is fine.\r\nNext morning, all this changes are disappeared in NightScout and the old values are shown. This doesn't happen in AAPS.\r\n\r\nI have to enter all this changes from hand into NightScout, or have to do it with AAPS again, with using date and time of the changes from the day before, then they lasts in Nightscout.\r\n\r\nCan't attache log file, because my tablet and Smartphone doesn't download zip files.\r\nSo I mailed one to Andy Rozman. Perhaps I can attach it later with my pc.\r\n\r\nPS: \r\nI wonder that it seems, that I'm alone with this issue, because there is no open one.\r\nMy Database at Atlas is pretty empty, so this is not the case.",
+ "comments": [
+  {
+   "id": 812904768,
+   "user": "swissalpine",
+   "created_at": "2021-04-03T18:15:53Z",
+   "body": "No, you're not alone, I can confirm this issue: Canula etc. data aren't stored."
+  },
+  {
+   "id": 812945143,
+   "user": "andyrozman",
+   "created_at": "2021-04-04T00:09:49Z",
+   "body": "A lot of data is not stored into Nightscout... While you can go into stats and see pump history, not everything in pump history is stored in Nightscout.... Most of items are only in App history (not even in app database) and are reloaded when you start AAPS next. What we store is: Boluses, TBRs, Cannula change and Insulin.Reservoir change. Everything else is ignored. On every start we read history for 36 hours (so we usually read 1-3 history pages), and that history is cleaned every hours, so you can see only 36 hours of history... That is when you go into RL Stats window and use the last tab..."
+  },
+  {
+   "id": 813001371,
+   "user": "Alamo04",
+   "created_at": "2021-04-04T09:18:58Z",
+   "body": "@andyrozman \r\nThats ok, but Canula- and Reservoir change are deleted in Nightscout after a few hours, also batterie.- and sensor change.\r\nIn the past, AAPS stored this information in Nightscout and everything was fine. \r\n\r\nSince a month, or longer this entry's are deleted over night.\r\n\r\nI change my Sensor-, Canula- and Reservoir normally at evening, Batterie every 14+ days over the day after she was died. \r\nAll of this changes are shown correct in Nightscout, over the hole day and are deleted next day.\r\n\r\nAnd that has nothing to do with history read, this happens also if I use the action Tab for reservoir-,batterie- and Sensor change.\r\nSo it has nothing to do with history readings, or pump driver.\r\n\r\nThat's a core AAPS issue.\r\n\r\nPS: \r\nFor information:  @swissalpine is using a combo pump, with the same issue.\r\n\r\nHere is the Log attached\r\n[AndroidAPS_LOG_1617352925843.log.zip](https://github.com/nightscout/AndroidAPS/files/6254261/AndroidAPS_LOG_1617352925843.log.zip)\r\n, that I stored and mailed 02.04.2021"
+  },
+  {
+   "id": 813019685,
+   "user": "andyrozman",
+   "created_at": "2021-04-04T11:49:32Z",
+   "body": "OK. Since first pump mentioned was Medtronic, I though this was MDT problem, but yes you are right, most of this event are not triggered from pump... So it can't be my fault... \r\nGuys are still changing database AND nightscout client, so that might have to do something with that... Dev shouldn't be used for looping, until its stable and released."
+  },
+  {
+   "id": 813029467,
+   "user": "Alamo04",
+   "created_at": "2021-04-04T13:03:52Z",
+   "body": "I know that Dev versions are not stable, are still in development and can have multiple issues, thats why I wait so long to report this issue.\r\n\r\nI have 4 Medtronic pumps and 3 old and one new phones. 2 NightScout sites.\r\nI use one phone for looping and one for testing 24/7.\r\n\r\nThe testing system is only for finding issues in dev versions and report them, but perhaps you are right and it is not helpful to do so.\r\n\r\nI will stop testing dev versions and will do that only for Release Candidates and Master in the future.\r\n"
+  },
+  {
+   "id": 813030254,
+   "user": "swissalpine",
+   "created_at": "2021-04-04T13:09:02Z",
+   "body": "Here you can clearly see: In the past, data was saved, now it is not.\r\nBy the way: If nobody tests dev, not all bugs will be found. ;-)\r\n![grafik](https://user-images.githubusercontent.com/12517693/113509679-40653500-9557-11eb-918d-a70fb5d58ea7.png)\r\n![Screenshot_20210404-150521](https://user-images.githubusercontent.com/12517693/113509705-67236b80-9557-11eb-9288-25afda33f0d4.png)\r\n\r\nBuild: 1aa4d3a1b-2021.03.27-19:48\r\nLayout changes because of my small device"
+  },
+  {
+   "id": 817799887,
+   "user": "swissalpine",
+   "created_at": "2021-04-12T13:12:18Z",
+   "body": "Canula age seems to work now ... - all other values are not correct.\r\n\r\n![grafik](https://user-images.githubusercontent.com/12517693/114399651-716de700-9ba1-11eb-89f8-1cdea23665e1.png)\r\n"
+  },
+  {
+   "id": 818070511,
+   "user": "Alamo04",
+   "created_at": "2021-04-12T19:21:07Z",
+   "body": "@swissalpine \r\nI enter all this data now in AAPS first and then also in NightScout, to be sure that they don't be deleted.\r\n\r\nFor me, nothing has changed, also not canula age. Think you will see the next day that AAPS has delete that entry again.\r\nWill test it again with next Dev, but I'm still not sure if that is a bug. Perhaps it is intend ?\r\n\r\nDon't know what to do, should I close this issue, because it is a dev version ?\r\nLet Milos take this choise.\r\n\r\n@MilosKozak\r\nfeel free to close this issue, if it is not helpful, or the work in progress is the reason. "
+  },
+  {
+   "id": 867139009,
+   "user": "MilosKozak",
+   "created_at": "2021-06-23T20:34:27Z",
+   "body": "hopefully fixed by https://github.com/nightscout/AndroidAPS/commit/a70f24a68aca5d98300c6e622e7732a3b833e426"
+  }
+ ]
+}

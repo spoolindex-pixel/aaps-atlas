@@ -1,0 +1,33 @@
+{
+ "id": 1292437616,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1880,
+ "title": "PasswordReset not working on AccuCheck Insight",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1880",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-07-03T22:35:09Z",
+ "closed_at": "2022-07-15T08:12:46Z",
+ "comment_count": 3,
+ "body": "I tried to reset the master password on version 3.0.0.1 (Build: 479bfc4-2022.02.04-14:10) following the instructions given in the docs for v3.0 and above. I created the \"PasswordReset\" file in AAPS/extra and restarted the app. The file disappeared and the app showed a toast message stating that the password had been set. But the password still isn't the Insight's serial number. Looking at the logs, it seems the pump sometimes reports serial number as \"null\", so I tried that, but it didn't work either. \r\n\r\nI there something I'm doing wrong or overlooking? Or is there a different password for the Insight? \r\nHelp would be really appreciated.\r\n\r\nEdit: On closer inspection it seems that the app starts up with the generic pump driver activated and only after a few seconds changes over to the Insight driver and contacts the pump. As it seems as if the password was reset right on startup, maybe it detects the generic pump as active and sets the password based on this. What would the master password set for generic pumps be?",
+ "comments": [
+  {
+   "id": 1179794544,
+   "user": "Philoul",
+   "created_at": "2022-07-10T20:33:22Z",
+   "body": "I checked master password reset on my dev phone (3.0.0.2-dev-n version) and Insight pump v3, and it worked fine.\r\nCan you access to preferences or not ?\r\nIf preferences unlocked can you select Insight Driver > Preferences > Insight pairing\r\n=> You will see on the first line the serial number recorded (should be the same serial number writen in the back of your pump...)."
+  },
+  {
+   "id": 1180069150,
+   "user": "opal06",
+   "created_at": "2022-07-11T07:40:34Z",
+   "body": "Interesting... Yes, I can access settings and I have used the exact string you advised. I might build the dev version and check out if it works with it."
+  },
+  {
+   "id": 1180983493,
+   "user": "Philoul",
+   "created_at": "2022-07-11T22:46:21Z",
+   "body": "@opal06 The actions done during my verification was:\n1) connect phone to my computer to copy an empty file PasswordReset in extra folder\n2) exit aaps from 3 dots menu\n3) launch again aaps\n4) open 3 dots menu and select Preferences > General > Master password\n5) Aaps requests a password on a popup to change it : I entered pump serial number and Ok\n6) then I got the 2 fields to be able to enter a new Master password.\n7) After validation I could recover full access to aaps with my new Master password...\nOf course, it's important to export your settings immediatly after with your new password (all your old exports cannot be imported without your old password)...\n\nCan you check if it works on your side using the same process?"
+  }
+ ]
+}

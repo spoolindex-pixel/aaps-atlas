@@ -1,0 +1,259 @@
+{
+ "id": 403933184,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 764,
+ "title": "checksum failed with xdrip, miaomiao and Freestyle Libre 2",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/764",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "device-libre",
+  "device-miaomiao"
+ ],
+ "created_at": "2019-01-28T17:50:27Z",
+ "closed_at": "2021-03-20T19:19:37Z",
+ "comment_count": 53,
+ "body": "Hi,\r\n\r\nsince i have the new version of Freestyle Libre Version **2** i get the error message \"checksum failed\".\r\n\r\nSamsung Galaxy S9\r\nAndroid Version 8.0.0\r\nFreestyle Libre 2 \r\nxdrip+ Version 20190125-41e549\r\n\r\nI tired: \r\n- start new sensor (more than once) \r\n- restart bluetooth\r\n- restart mobile phone\r\n\r\n\r\nWhat can i do? \r\nIs the current version of xdrip able to scan values from Freestyle Libre 2? \r\nCould the new version of Freestyle Libre 2 the problem? \r\n\r\n\r\n![screenshot_20190128-185119_xdrip](https://user-images.githubusercontent.com/6576396/51855546-d4129980-232d-11e9-9345-961f889beeb3.jpg)\r\n![screenshot_20190128-184808_xdrip](https://user-images.githubusercontent.com/6576396/51855569-df65c500-232d-11e9-8683-0282bd9f7989.jpg)\r\n\r\n",
+ "comments": [
+  {
+   "id": 458290686,
+   "user": "dabear",
+   "created_at": "2019-01-28T20:34:03Z",
+   "body": "Libre 2 is currently not supported due to encryption. "
+  },
+  {
+   "id": 458605211,
+   "user": "brucke",
+   "created_at": "2019-01-29T16:22:59Z",
+   "body": "thx :) i thought so.\r\nMaybe i can fix it ;) "
+  },
+  {
+   "id": 462782638,
+   "user": "jason3109",
+   "created_at": "2019-02-12T14:35:29Z",
+   "body": "My wife just got a miaomiao and hers is doing the same thing. Were you able to ever get them to link up and not say checksum failed?"
+  },
+  {
+   "id": 464468908,
+   "user": "tzachi-dar",
+   "created_at": "2019-02-17T15:13:39Z",
+   "body": "Libre 2 is currently not supported due to encryption."
+  },
+  {
+   "id": 469226718,
+   "user": "dq1967",
+   "created_at": "2019-03-04T11:56:38Z",
+   "body": "I get a lot of checksum errors with Miaomiao and Libre (version 1).  I understand it is related to the contact between the MiaoMiao and the libre, but I am not so sure.  I get a multiple dropped signals and checksum errors in xDrip+ but none in Glimp using the same sensor / Miaomiao setup.  Is there a way to turn down xDrips sensitivity to these errors?"
+  },
+  {
+   "id": 473727257,
+   "user": "filipedanunes",
+   "created_at": "2019-03-17T23:37:33Z",
+   "body": "@bruke any development 😉?"
+  },
+  {
+   "id": 474152503,
+   "user": "brainopera",
+   "created_at": "2019-03-19T00:31:09Z",
+   "body": "I'm also getting checksum error on the a new libre one sensor. Reads fine on my libre reader device. Been happy past few months and trying to wrap my head around this issue. "
+  },
+  {
+   "id": 475946770,
+   "user": "brucke",
+   "created_at": "2019-03-24T10:38:39Z",
+   "body": "@filipedanunes : i started the first analysis but i have to less experience for that.\r\nAt the moment i have no further informations. "
+  },
+  {
+   "id": 475946793,
+   "user": "brucke",
+   "created_at": "2019-03-24T10:39:01Z",
+   "body": "sorry wrong button :) "
+  },
+  {
+   "id": 478393677,
+   "user": "pgraham9999",
+   "created_at": "2019-03-31T22:59:59Z",
+   "body": "Where can I find the log files?"
+  },
+  {
+   "id": 513525434,
+   "user": "m1st0",
+   "created_at": "2019-07-21T05:57:40Z",
+   "body": "Since the FreeStyle LibreLink software does read the 14-day US sensors and uploads the readings to [LibreView](https://www2.libreview.com/Accounts/Login/?lang=en&country=US), I was wondering as for a current (yet poor) workaround:\r\n\r\n- Allow a user to store LibreView credentials\r\n- Periodically (every 5/10/30 min?) login to LibreView and obtain CSV of latest readings (some specific POST operation should provide this I hope)\r\n- Use CSV as input to XDrip+\r\n- Per date/time operate just as if it was obtaining data from a CGM directly or by some allowance of a small delay\r\n- Would this be just another package folder for this follower source in xDrip/app/src/main/java/com/eveningoutpost/dexdrip/cgm ?\r\n\r\nI am supposing the CSV seems easily translatable into a XDrip+ database.  All that would need to be written is credential storage just as if we are following NightScout or DexShare and the operations to obtain data from LibreView and accurately process it."
+  },
+  {
+   "id": 513527019,
+   "user": "m1st0",
+   "created_at": "2019-07-21T06:31:29Z",
+   "body": "Well, for additional info, it is a POST operation to https://www2.libreview.com/Dashboard/ValidatePatientDownloadExport with some of the following headers (I removed the obvious ones sent with a POST):\r\n\r\n- Referer: https://www2.libreview.com//Dashboard/MyMeasurements?intervalPeriod=0&pageIndex=0\r\n- Content-Length: 513\r\n- DNT: 1\r\n- Connection: keep-alive\r\n- Cookie: userLanguage=en; userCountry=US; __RequestVerificationToken=[removed]; cookieBanner=1; _LVOAuth=[removed]; userSession=7/21/2019 6:13:22 AM\r\n- Upgrade-Insecure-Requests: 1\r\n\r\nAnd the request body:\r\n\r\n- __RequestVerificationToken=[removed]\r\n\r\nHowever, since they pose this behind a Google reCAPTCHA and verification token it appears they have worked to limit it to once per each user interaction."
+  },
+  {
+   "id": 515002649,
+   "user": "zackallan",
+   "created_at": "2019-07-25T11:10:31Z",
+   "body": "I updated the firmware of MM1 to version 38 which should bring support for the FreeStyle Libre 2 sensors. But unfortunately the \"Checksum failed\" error persists with the latest xDrip+ nightly."
+  },
+  {
+   "id": 519381497,
+   "user": "ledrexter",
+   "created_at": "2019-08-08T06:15:39Z",
+   "body": "> I updated the firmware of MM1 to version 38 which should bring support for the FreeStyle Libre 2 sensors. But unfortunately the \"Checksum failed\" error persists with the latest xDrip+ nightly.\r\n\r\nThe same situation here. version 38 and libre 2 get \"checksum failed\""
+  },
+  {
+   "id": 519393417,
+   "user": "MasterPlexus",
+   "created_at": "2019-08-08T06:58:17Z",
+   "body": "@zackallan and @ledrexter , please contact the Miaomiao company, as this issue after update of the Firmware with still checksum-errors for the Libre 2 is more related to the firmware then to xDrip in my eyes. "
+  },
+  {
+   "id": 525804044,
+   "user": "ppppd",
+   "created_at": "2019-08-28T15:44:44Z",
+   "body": "@tzachi-dar I have US 14 day sensors. No miaomiao, but droplet is on its way. Let me know if I can help."
+  },
+  {
+   "id": 525815614,
+   "user": "tzachi-dar",
+   "created_at": "2019-08-28T16:13:06Z",
+   "body": "@ppppd what I need you to do is start the sensor with abbott program (maybe you can connect to an already running sensor), and then run on it with xposed. (https://forum.xda-developers.com/showthread.php?t=3034811)\r\nThan with the information that you will give I can make sure that oop algorithm will work."
+  },
+  {
+   "id": 525864444,
+   "user": "ppppd",
+   "created_at": "2019-08-28T18:21:53Z",
+   "body": "@tzachi-dar Current sensor was started via librelink app on my phone 5 days ago. Phone can't run xposed but I have it on an old tablet (with NFC). Does this work?\r\n\r\nedit: my mistake, started sensor with reader device"
+  },
+  {
+   "id": 525940436,
+   "user": "tzachi-dar",
+   "created_at": "2019-08-28T22:03:31Z",
+   "body": "@ppppd this should probably work. Can you scan the same sensor with the tablet and see if you can get a reading with it?\r\n\r\n"
+  },
+  {
+   "id": 525987084,
+   "user": "ppppd",
+   "created_at": "2019-08-29T01:46:38Z",
+   "body": "@tzachi-dar tablet scans fine with librelink"
+  },
+  {
+   "id": 526059885,
+   "user": "tzachi-dar",
+   "created_at": "2019-08-29T07:20:47Z",
+   "body": "This is great news @ppppd \r\n[LibreXposed-v1.1-debug.txt](https://github.com/NightscoutFoundation/xDrip/files/3554296/LibreXposed-v1.1-debug.txt)\r\n\r\nWhat you need to do is:\r\n1) rename the file that I have attached to .apk\r\n2) Than install it on your tablet.\r\n\r\n3) make sure to enable it in xposed (they have a screen for that).\r\nAfter that reboot the tablet for the changes to take effect.\r\n\r\nlast step is to connect the tablet to a pc, and run:\r\nadb logcat | grep -i xposed > output.txt\r\n\r\nWait a few seconds, and then press ctrl c to exit the application.\r\n\r\nMake sure that the file that is created is not empty, and send it to tzachi.dar@gmail.com\r\n\r\n\r\nNext step\r\n"
+  },
+  {
+   "id": 530543523,
+   "user": "arty-name",
+   "created_at": "2019-09-11T20:04:41Z",
+   "body": "MiaoMiao/Tomato developers might not have an incentive to open up the protocol since they are charging hefty 25$/year for \"premium\" features of their app like custom alert sounds"
+  },
+  {
+   "id": 573570174,
+   "user": "LubomirKovalcik",
+   "created_at": "2020-01-13T09:15:20Z",
+   "body": "Anyone has managed to use miaomiao1 with fsl2 and xdrip? If yes what fw version and xdrip are you using? "
+  },
+  {
+   "id": 574159311,
+   "user": "brucke",
+   "created_at": "2020-01-14T12:51:32Z",
+   "body": "Hi \r\ni use https://github.com/jcwarrior/Libre2-patched-App \r\ninstead the official LibreLink App. \r\nWith FreeStyleLibre2 a BLE connection to mobile phone is already availalbe. \r\nThe patched libre link app receives the value and forwards the information to xDrip. \r\n\r\ni use this setup for 5 month and i have no problems. "
+  },
+  {
+   "id": 574203571,
+   "user": "LubomirKovalcik",
+   "created_at": "2020-01-14T14:37:24Z",
+   "body": "I have exactly same setup, but I have 2nd sensor and keeps giving me much lover readings. Also calibration in xDrip has no effect on this. Therefore I was looking for way to use MM with Libre2"
+  },
+  {
+   "id": 575187364,
+   "user": "steve8x8",
+   "created_at": "2020-01-16T14:53:06Z",
+   "body": "@LubomirKovalcik Readings of Libre 2 sensors 20 mg/dL below the finger-stick ones seem to be common, and not being able to set the \"low alarm\" below 60 isn't really nice.\r\nThe calibration limitation you're seeing is being discussed in #1138 - you may perhaps overcome it by inserting a fake calibration (max 20 off) before adding the final calib entry?"
+  },
+  {
+   "id": 575402981,
+   "user": "malloy139",
+   "created_at": "2020-01-16T23:58:40Z",
+   "body": "I also get the checksum error using MM1 and Libre2. No difference if firmware version 37, 38 or 39 is on MM. When using the OOP algorithm app in the log I see checksum_ok=true, but no BG is displayed. I also see these messages: \r\nGot null pointer trying to set CCCD descriptor.\r\nAnd:\r\nBacktrack: nfcreaderx:: handlegoodreading -> LibreBlock::createAndSave"
+  },
+  {
+   "id": 662346922,
+   "user": "elrufoelrufo",
+   "created_at": "2020-07-22T09:26:04Z",
+   "body": "> @filipedanunes : i started the first analysis but i have to less experience for that.\r\n> At the moment i have no further informations.\r\n\r\nHi @brucke , Any update on this? The patched app is not compatible with Wear OS collector. Would be nice to have a fix of this issue.\r\n\r\nThanks for your help"
+  },
+  {
+   "id": 662397551,
+   "user": "brucke",
+   "created_at": "2020-07-22T11:21:00Z",
+   "body": "Hi @elrufoelrufo , \r\nsorry i have no update on this topic. \r\nthe solution with the patched libre link app and xdrip works fine on Android! I have no problems. \r\n\r\nTherefore i stopped analyzing and working on this topic. \r\n\r\nBut i will a smart watch also. Good to know there are some problems with the patched app.\r\nWhats the problem with Wear OS and the patched app? \r\n"
+  },
+  {
+   "id": 662501690,
+   "user": "JoernL",
+   "created_at": "2020-07-22T14:55:24Z",
+   "body": "There is only a problem with wear os and the patched app when you want to collect readings without your phone. This works only with an extra transmitter and i would suggest the Bubble. I can confirm that bubble + xdrip + oop works with Libre 2 sensors. Dont't forget to install LibreOOP.apk on your watch, too. "
+  },
+  {
+   "id": 711084175,
+   "user": "LubomirKovalcik",
+   "created_at": "2020-10-17T21:44:41Z",
+   "body": "Any news on this problem? \r\nI have libre2 sensor with broken bluetooth probably, because scanning is still working, but alarms or patched libre app does not and I also have old miao1 laying around so i would like to use it. "
+  },
+  {
+   "id": 711126524,
+   "user": "tzachi-dar",
+   "created_at": "2020-10-18T07:01:17Z",
+   "body": "This is working now.\r\nSee instructions on https://medium.com/@miaomiaoreader/how-to-make-libre-us-14-days-sensors-work-with-miaomiao2-on-xdrip-35b431a40940"
+  },
+  {
+   "id": 711153178,
+   "user": "tolot27",
+   "created_at": "2020-10-18T11:19:10Z",
+   "body": "@tzachi-dar Can this issue be closed, if it \"is working now\"?"
+  },
+  {
+   "id": 711715067,
+   "user": "brucke",
+   "created_at": "2020-10-19T07:06:05Z",
+   "body": "thanks @tzachi-dar  for the link!\r\n\r\ni wont try it because i'm happy with my patched libre link app but for all the others the tutorial looks great. \r\n\r\nYou have tested it?\r\nI guess it works its a tutorial from MiaoMiao."
+  },
+  {
+   "id": 712036059,
+   "user": "tzachi-dar",
+   "created_at": "2020-10-19T10:49:25Z",
+   "body": "I did not test it personally, but many others did."
+  },
+  {
+   "id": 712089124,
+   "user": "malloy139",
+   "created_at": "2020-10-19T11:22:47Z",
+   "body": "It is still not working for me on a Motorola G5S with Android 8. Neither does it work on a Oneplus 6 with Android 10."
+  },
+  {
+   "id": 712096967,
+   "user": "JoernL",
+   "created_at": "2020-10-19T11:36:04Z",
+   "body": "I have tested this some months ago. Doesn't work with MM1. Bubble works!\r\n "
+  },
+  {
+   "id": 761029338,
+   "user": "jonathanmmm",
+   "created_at": "2021-01-15T16:04:11Z",
+   "body": "@JoernL or anybody else?\r\n\r\nDoes MM1 work now with Libre 2  + Xdrip+ and if yes, OOP1 or OOP2?"
+  },
+  {
+   "id": 761240886,
+   "user": "malloy139",
+   "created_at": "2021-01-15T23:00:46Z",
+   "body": "> Does MM1 work now with Libre 2 + Xdrip+ and if yes, OOP1 or OOP2?\r\n\r\nI used the \"LibreOOPAlgorithm_L2.apk\" as described on this site: https://miaomiaoreader.medium.com/how-to-make-libre-us-14-days-sensors-work-with-miaomiao2-on-xdrip-35b431a40940\r\n\r\nNeither on my Oneplus 6 nor on my old Redmi Note 4 this was working.\r\nOn a very old Samsung S3 Mini at least I got at the beginning some values but not anything after this."
+  },
+  {
+   "id": 803449501,
+   "user": "Navid200",
+   "created_at": "2021-03-20T19:19:36Z",
+   "body": "I see several comments stating that the issue (opened more than 2 years ago) has been resolved.  So, I am closing it.\r\nIf this particular issue is not resolved, you can open it.  But, please then clearly state what is not working and what you think can be done in xDrip to resolve it."
+  }
+ ]
+}

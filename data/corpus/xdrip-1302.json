@@ -1,0 +1,73 @@
+{
+ "id": 599505945,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1302,
+ "title": "xDrip+ refreshrate",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1302",
+ "state": "closed",
+ "labels": [
+  "duplicate",
+  "enhancement",
+  "sync-nightscout"
+ ],
+ "created_at": "2020-04-14T11:39:00Z",
+ "closed_at": "2021-03-15T18:05:39Z",
+ "comment_count": 9,
+ "body": "Hello,\r\n\r\ni am using xDrip with Nightscout, but my Sensor sends BG-data every 5 minutes, but xDrip refreshes every 10 minutes...\r\nIs there any way to change this?\r\nI looked into the code, but didn't find any way to change this...\r\n\r\nThanks in advance",
+ "comments": [
+  {
+   "id": 613630802,
+   "user": "markxoe",
+   "created_at": "2020-04-14T19:13:46Z",
+   "body": "After some reverse engineering and testing, [`final long grace = Constants.SECOND_IN_MS * 10;`](https://github.com/NightscoutFoundation/xDrip/blob/master/app/src/main/java/com/eveningoutpost/dexdrip/cgm/nsfollow/NightscoutFollowService.java#L131) is (in my case) too short, because my uploader is sending the data after about 20-30 seconds after that...\r\nA fix would be to let this value be changed by the User in the UI...\r\nCould some Dev integrate this please?\r\n\r\nThanks"
+  },
+  {
+   "id": 614669052,
+   "user": "akadismas",
+   "created_at": "2020-04-16T13:55:59Z",
+   "body": "I also found that time delay on xDrip when refreshing BG-data may be sensible to difference between system time on Nightscout and on the phone with xDrip+"
+  },
+  {
+   "id": 614670511,
+   "user": "markxoe",
+   "created_at": "2020-04-16T13:58:29Z",
+   "body": "> \r\n> \r\n> I also found that time delay on xDrip when refreshing BG-data may be sensible to difference between system time on Nightscout and on the phone with xDrip+\r\n\r\nI fixed it myself ( adjustable ): https://github.com/NightscoutFoundation/xDrip/pull/1307\r\nBut i have to wait, until someone looks at it"
+  },
+  {
+   "id": 614687957,
+   "user": "akadismas",
+   "created_at": "2020-04-16T14:27:41Z",
+   "body": "> I fixed it myself ( adjustable ): #1307\r\n> But i have to wait, until someone looks at it\r\n\r\nSuppose, it should be useful improvement, because eliminating system time gap won't solve the problem with uploader delay."
+  },
+  {
+   "id": 614691315,
+   "user": "markxoe",
+   "created_at": "2020-04-16T14:33:21Z",
+   "body": "> \r\n> \r\n> > I fixed it myself ( adjustable ): #1307\r\n> > But i have to wait, until someone looks at it\r\n> \r\n> Suppose, it should be useful improvement, because eliminating system time gap won't solve the problem with uploader delay.\r\n\r\nIn my case it helps tho....\r\nMy Uploader uploads the data to nightscout, but xdrip+ syncs before that..."
+  },
+  {
+   "id": 678800086,
+   "user": "markxoe",
+   "created_at": "2020-08-23T17:15:17Z",
+   "body": "Soo this won't be fixed?\r\nI really don't like an app that doesn't refreshes before the value is uploaded"
+  },
+  {
+   "id": 748955872,
+   "user": "tolot27",
+   "created_at": "2020-12-21T12:45:56Z",
+   "body": "Looks like a duplicate of #929."
+  },
+  {
+   "id": 799631689,
+   "user": "Navid200",
+   "created_at": "2021-03-15T18:05:39Z",
+   "body": "Closing because it is very similar to #929.  Please add any comments you may have to that issue.\r\nThanks"
+  },
+  {
+   "id": 1820840742,
+   "user": "Navid200",
+   "created_at": "2023-11-21T12:33:46Z",
+   "body": "The latest Nightly release (https://github.com/NightscoutFoundation/xDrip/releases/tag/2023.11.21) has a new setting when you select Nightscout follower as the data source.  It lets you delay when the follower reads from Nightscout.\r\nPlease try it out to see if it addresses this.  \r\n\r\nEdit:\r\nhttps://navid200.github.io/xDrip/docs/Follow/FollowNightscout.html"
+  }
+ ]
+}

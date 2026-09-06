@@ -1,0 +1,47 @@
+{
+ "id": 971398524,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1812,
+ "title": "migrate OkHttp2 to OkHttp3",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1812",
+ "state": "closed",
+ "labels": [
+  "code:quality"
+ ],
+ "created_at": "2021-08-16T06:07:36Z",
+ "closed_at": "2026-07-01T12:07:46Z",
+ "comment_count": 5,
+ "body": "[Some classes](https://github.com/NightscoutFoundation/xDrip/search?q=com.squareup.okhttp) still using `com.squareup.okhttp` (v2.x) which is [deprecated since 2016](https://square.github.io/okhttp/changelog_3x/#version-300-rc1). Many others using the newer v3.x. Using both major versions within a project can cause strange problems like https://github.com/square/okhttp/issues/2705.\r\nWe should migrate the code using the deprecated version to v3.\r\n\r\n",
+ "comments": [
+  {
+   "id": 2143870220,
+   "user": "tolot27",
+   "created_at": "2024-06-02T14:12:15Z",
+   "body": "The [best practice in OkHttp 3](https://square.github.io/okhttp/changelogs/changelog_3x/#version-300-rc1) is to create a single OkHttpClient instance and share it throughout the application. Requests that needs a customized client should call OkHttpClient.newBuilder() on that shared instance. This allows customization without the drawbacks of separate connection pools."
+  },
+  {
+   "id": 4042169873,
+   "user": "ahaarrestad",
+   "created_at": "2026-03-11T20:58:16Z",
+   "body": "@tolot27 I am trying to finish this task. Any comments on the PR's? Got one change left and then removal of OkHttp2 dependency"
+  },
+  {
+   "id": 4042688575,
+   "user": "tolot27",
+   "created_at": "2026-03-11T22:39:03Z",
+   "body": "> [@tolot27](https://github.com/tolot27) I am trying to finish this task. Any comments on the PR's? Got one change left and then removal of OkHttp2 dependency\n\nPuh. I did not work on xDrip for a long time (> 3 years), but have a local branch for dex follower improvements with partial migration of retrofit2 and newer OkHttp. Have to check your PRs but I'm busy at the moment."
+  },
+  {
+   "id": 4854528977,
+   "user": "Navid200",
+   "created_at": "2026-07-01T12:07:46Z",
+   "body": "If I'm not mistaken, we have actually upgraded to 4.  \nSo, I am closing this.\nWe can reopen if needed.  Please let me know if I have misunderstood the current status.  "
+  },
+  {
+   "id": 4858326695,
+   "user": "ahaarrestad",
+   "created_at": "2026-07-01T17:26:13Z",
+   "body": "@Navid200 we are on okttp3, but I have a PR to get us to okhttp4 on the way to okhttp5. So this discussion is correctly closed :-)"
+  }
+ ]
+}

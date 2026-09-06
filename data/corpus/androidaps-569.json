@@ -1,0 +1,33 @@
+{
+ "id": 925478749,
+ "repo": "nightscout/AndroidAPS",
+ "number": 569,
+ "title": "[dev e5]  Dana-i  - error reports data coming from different pump",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/569",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-06-19T22:32:29Z",
+ "closed_at": "2021-06-21T20:51:13Z",
+ "comment_count": 3,
+ "body": "Using latest code from dev branch at 18Jun2021\r\n![image](https://user-images.githubusercontent.com/55034864/122656869-62ce1e00-d156-11eb-99f9-8b3f3e524b75.png)\r\n\r\nProblem is intermittent/random?  In log files below, first instance of error at 16:17:35.310\r\nIf looks as if the pump sometimes returns DanaR rather than DanaRS, or the string is being truncated.\r\n\r\n16:17:35.310 [RxCachedThreadScheduler-1] D/NOTIFICATION: [NotificationStore.add():60]: Notification received: Data is coming from different pump. Change pump driver to reset pump state.\r\n16:17:35.311 [Binder:10606_4] E/PUMP: [PumpSyncImplementation.confirmActivePump():73]: Ignoring pump history record  Allowed: 18/06/2021 07:40:20 DanaR VBJ00081FI Received: 1624025039000 18/06/2021 15:03:59 DanaRS VBJ00081FI\r\n\r\nError seems to result in loss of returned data.  Commands execute ok but responses may be lost.  Occassionally, failure results in need to re-pair the pump to AAPS\r\nPump was received at the end of May.  \r\nCountry: GBR  Build date: 25/Jan 2021  Version: FPN-1.0.1\r\nAAPS reports:\r\nFirmware: Dana-i (BLE5) \r\nModel: 09\r\nProtocol: 12\r\nCode: 12\r\n\r\n[AndroidAPS._2021-06-18_21-36-28_.log](https://github.com/nightscout/AndroidAPS/files/6681377/AndroidAPS._2021-06-18_21-36-28_.log)\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/6681355/AndroidAPS.log)\r\n\r\nI have managed to \"work around\" the failures by modifying the confirmActivePump function in PumpSyncImplementation.kt\r\n\r\n**replacing:**\r\nif (type.description == storedType && serialNumber == storedSerial && timestamp >= storedTimestamp) {\r\n**by:**\r\nif (serialNumber == storedSerial) {\r\n            if(type.description != storedType) {\r\n                aapsLogger.warn(LTag.PUMP, \"MJS - ignoring pump type change - Expected: $storedType Received: ${type.description}\")\r\n            }\r\n\r\nThis code has now been running successfully for 24 hours, in open-loop mode, executing boluses and temporary basals and monitoring pump status with no visible errors - though the log file confirms that the errors still occur but are ignored.\r\n\r\n",
+ "comments": [
+  {
+   "id": 865335424,
+   "user": "MilosKozak",
+   "created_at": "2021-06-21T20:51:13Z",
+   "body": "fixed by https://github.com/nightscout/AndroidAPS/commit/d0365afe899d37ede3db1d931693edf4db09d76d\r\nyou need switch to virtual pump and back in order to proper initialization"
+  },
+  {
+   "id": 865336454,
+   "user": "MilosKozak",
+   "created_at": "2021-06-21T20:53:04Z",
+   "body": "thanks for catching this bug"
+  },
+  {
+   "id": 865407252,
+   "user": "MichaelJohnSmith",
+   "created_at": "2021-06-21T23:20:15Z",
+   "body": "Thanks for the quick fix.  Let me know if you need any testing effort."
+  }
+ ]
+}

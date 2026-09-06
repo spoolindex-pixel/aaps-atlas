@@ -1,0 +1,108 @@
+{
+ "id": 1067902643,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1884,
+ "title": "Dex Share follower does not receive data (with older EU account)",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1884",
+ "state": "closed",
+ "labels": [
+  "sync-dexcom",
+  "breaking"
+ ],
+ "created_at": "2021-12-01T03:07:48Z",
+ "closed_at": "2021-12-02T15:23:07Z",
+ "comment_count": 18,
+ "body": "**Subject of the issue**\r\nDex Share follower (using xDrip+) doesn't receive any data (worked fine for many months until November 30th). \r\n\r\n**Your environment**\r\nI don't believe this is related to my hardware/settings (Android 11). It worked fine until November 30th. No changes made to hardware and Android OS.\r\nSoftware: xDrip+ using Dex Share follower\r\nxDrip+ version is: 9ff5104-2021.11.23  (has been updated today because of the described problem; previous version showed the same problem)\r\nxDrip+ is used by me (= follower of my daughter) using \"Dex Share Follower\" as data source\r\nThe data is uploaded by the Dexcom G6 App (used by my daughter).\r\n\r\n**Expected behavior**\r\nDex Share follower (using xDrip+) should receive data from Dex share servers.\r\n\r\n**Actual behavior**\r\nNo data is received by xDrip+. Error message in the log file:\r\n\"Get Share Data Failed: java.lang.NumberFormatException: For input string: \"Flat\"\r\nThe Dexcom follow app functions normally.\r\n\r\n**Steps to reproduce the behavior:**\r\nSet xDrip+ to Dex Share follower with matching credentials and server. ",
+ "comments": [
+  {
+   "id": 983295839,
+   "user": "Navid200",
+   "created_at": "2021-12-01T05:11:56Z",
+   "body": "Is the user name an email address?"
+  },
+  {
+   "id": 983315112,
+   "user": "tolot27",
+   "created_at": "2021-12-01T06:00:15Z",
+   "body": "This issue is not related to the user name. It looks like Dexcom changed the BG arrow trend indicator value (slope) from a number to a string because the following exception is raised:\r\n\r\n```\r\nGet Share Data Failed:\r\njava.lang.NumberFormatException: For input string: \"Flat\"\r\n```\r\n"
+  },
+  {
+   "id": 983349629,
+   "user": "Harrinator",
+   "created_at": "2021-12-01T07:04:34Z",
+   "body": "No. It is a \"normal\" name (only characters).\r\n\r\n"
+  },
+  {
+   "id": 983351100,
+   "user": "Harrinator",
+   "created_at": "2021-12-01T07:06:16Z",
+   "body": "Okay, I see. So then other user are affected, too? What can be done to solve the problem?\r\n\r\n"
+  },
+  {
+   "id": 983351644,
+   "user": "SBee76",
+   "created_at": "2021-12-01T07:07:03Z",
+   "body": "I've also had this issue. Have not received data from dexcom share for 798 minutes. It is currently 17:04 AEST , 1 December, 2021. \r\n<img width=\"350\" src=\"https://user-images.githubusercontent.com/74168666/144187490-a4987379-ca1e-43e1-ab5e-21f7238c7815.jpg\" />\r\n\r\nI have not had any issues with receiving data from dexcom share before. I've sent through an error log via the xdrip app also. \r\n"
+  },
+  {
+   "id": 983365665,
+   "user": "tolot27",
+   "created_at": "2021-12-01T07:30:19Z",
+   "body": "@Harrinator You cannot do anything except waiting until we have fixed this issue in xDrip. I've explained the root of the issue already in https://github.com/NightscoutFoundation/xDrip/issues/1884#issuecomment-983315112.\r\n\r\nIt is unlikely that a solution will be available before tonight (20:00 CET). Hence, please be patient."
+  },
+  {
+   "id": 983369001,
+   "user": "andersgb1",
+   "created_at": "2021-12-01T07:36:10Z",
+   "body": "> @Harrinator You cannot do anything except waiting until we have fixed this issue in xDrip. I've explained the root of the issue already in [#1884 (comment)](https://github.com/NightscoutFoundation/xDrip/issues/1884#issuecomment-983315112).\r\n> \r\n> It is unlikely that a solution will be available before tonight (20:00 CET). Hence, please be patient.\r\n\r\nTonight at 20? That's damn fast and impressive! Thanks for fixing it."
+  },
+  {
+   "id": 983371761,
+   "user": "Harrinator",
+   "created_at": "2021-12-01T07:40:50Z",
+   "body": "> @Harrinator You cannot do anything except waiting until we have fixed this issue in xDrip. I've explained the root of the issue already in [#1884 (comment)](https://github.com/NightscoutFoundation/xDrip/issues/1884#issuecomment-983315112).\r\n> \r\n> It is unlikely that a solution will be available before tonight (20:00 CET). Hence, please be patient.\r\n\r\nThank you for you quick answer. A fix until this evening is much faster than I had expected. That is indeed very impressive. Thank you very much. xDrip is a great solution. I appreciate your work and efforts."
+  },
+  {
+   "id": 983491664,
+   "user": "bjornoleh",
+   "created_at": "2021-12-01T10:16:36Z",
+   "body": "> This issue is not related to the user name. It looks like Dexcom changed the BG arrow trend indicator value (slope) from a number to a string because the following exception is raised:\r\n> \r\n> ```\r\n> Get Share Data Failed:\r\n> java.lang.NumberFormatException: For input string: \"Flat\"\r\n> ```\r\n\r\nThanks for looking into this. I suppose you are aware of the potential solution they are working on for NS?\r\n\r\nhttps://github.com/nightscout/share2nightscout-bridge/pull/51"
+  },
+  {
+   "id": 983497140,
+   "user": "SBee76",
+   "created_at": "2021-12-01T10:23:21Z",
+   "body": "> @Harrinator You cannot do anything except waiting until we have fixed this issue in xDrip. I've explained the root of the issue already in [#1884 (comment)](https://github.com/NightscoutFoundation/xDrip/issues/1884#issuecomment-983315112).\r\n> \r\n> It is unlikely that a solution will be available before tonight (20:00 CET). Hence, please be patient.\r\n\r\nThanks. Just heard from a friend who actually spoke to AMSL (Dexcom Australia) today and apparently they did a big update and their servers have been down all day. Unsure if this is useful information for anyone, but thought I should mention it. My above post was also me just trying to offer information, as I can't help in any other way. I've always been happy to wait. "
+  },
+  {
+   "id": 983566684,
+   "user": "RayJayVaughn",
+   "created_at": "2021-12-01T11:53:43Z",
+   "body": "I got the same issue. The issue occured Nov 30th in the evening.\r\n\r\nI do suspect Dexcom having caused this by a change or incident within their environments.\r\n\r\nAt the same time xdrip lost the connection my original Dexcom app went down and was not usable anymore showing 'your device is not compatible' although it was officially declared as being compatible by dexcom. They seemed to have an serious incident which lasted at least one or two hours. Had to reinstall everything several times.\r\n\r\nDexcom service calling me today admitting they had an incident. \r\n\r\nNow the Dexcom app works again. The xdrip one does not.\r\n\r\nHope this information might help fencing it."
+  },
+  {
+   "id": 983778018,
+   "user": "savek-cc",
+   "created_at": "2021-12-01T15:53:13Z",
+   "body": "I think it's not only the follower function but also the uploading to dexcom servers from within xDrip+?"
+  },
+  {
+   "id": 983998038,
+   "user": "Jorge-1234",
+   "created_at": "2021-12-01T19:47:03Z",
+   "body": "I have the same problem. Dexcom share does not Work with xdrip. SOS"
+  },
+  {
+   "id": 984004830,
+   "user": "Navid200",
+   "created_at": "2021-12-01T19:57:09Z",
+   "body": "@Jorge-1234 \r\nPlease stop flooding this issue with help requests.  It doesn't help.  It only makes it harder for developers to get the info they are looking for, which is all contained in the very first post.\r\n\r\nYou can post in the discussions if you like to chat and share experiences and talk about alternatives while waiting for this to be fixed:\r\nhttps://github.com/Navid200/xDrip/discussions/130"
+  },
+  {
+   "id": 984192907,
+   "user": "tolot27",
+   "created_at": "2021-12-02T00:53:15Z",
+   "body": "> I think it's not only the follower function but also the uploading to dexcom servers from within xDrip+?\r\n\r\nI believe it is just the following function because now I can receive the old values sent from xDrip."
+  }
+ ]
+}

@@ -1,0 +1,258 @@
+{
+ "id": 509196169,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1061,
+ "title": "Android 10 BLE + G6 - Stuck in \"scanning\"",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1061",
+ "state": "closed",
+ "labels": [
+  "bluetooth",
+  "android10+"
+ ],
+ "created_at": "2019-10-18T16:48:44Z",
+ "closed_at": "2021-03-01T01:04:12Z",
+ "comment_count": 208,
+ "body": "I have a reproduceable problem with XDrip being stuck in Scanning.\r\n\r\n1) Reboot the device on Android 10\r\n2) Brain state is stuck in scanning\r\n\r\nSolution:\r\n1) Forget device in G5/G6 Status screen\r\n2) Next cycle it sucessfully reconnects and works from that point on... Until I reboot again/or the transmitter fails to connect once because of range etc.\r\n\r\nOneplus 7 Pro on the official Android 10 Version. Newest XDrip Nightly from October 11.",
+ "comments": [
+  {
+   "id": 545152030,
+   "user": "17gubbar",
+   "created_at": "2019-10-22T20:57:56Z",
+   "body": "Same problem"
+  },
+  {
+   "id": 545581657,
+   "user": "lkpod",
+   "created_at": "2019-10-23T18:41:47Z",
+   "body": "Same problem."
+  },
+  {
+   "id": 545590702,
+   "user": "nshtg",
+   "created_at": "2019-10-23T19:04:58Z",
+   "body": "Does my fix (\"Forget device\" in System status screen of XDrip) work for you too? For me it's an 100% success rate so far!"
+  },
+  {
+   "id": 545607076,
+   "user": "17gubbar",
+   "created_at": "2019-10-23T19:48:01Z",
+   "body": "It works, but i found a workaround for the problem now read #1067 :)"
+  },
+  {
+   "id": 545607661,
+   "user": "17gubbar",
+   "created_at": "2019-10-23T19:49:38Z",
+   "body": "Also besure to turn of bt watchdog and untick the ob1 collector allowed to unbond."
+  },
+  {
+   "id": 546314138,
+   "user": "ThoR294",
+   "created_at": "2019-10-25T11:19:03Z",
+   "body": "This did help, but mine keeps asking for calibrations right after I hit forget device.  im on a pixel 4 xl.\r\n\r\nok, i think it FINALLY worked.  it rejected my calibrations, then a few minutes later it says warming up\r\n"
+  },
+  {
+   "id": 547624615,
+   "user": "borijess",
+   "created_at": "2019-10-29T20:53:42Z",
+   "body": "I have the same issue. OnePlus 7 pro on Android 10 beta 4. "
+  },
+  {
+   "id": 547631653,
+   "user": "borijess",
+   "created_at": "2019-10-29T21:12:26Z",
+   "body": "> Also besure to turn of bt watchdog and untick the ob1 collector allowed to unbond.\r\n\r\nCan you post a pic of your settings here?\r\n\r\n![Screenshot_20191029-160131__01](https://user-images.githubusercontent.com/18737358/67809544-e2c9e080-fa66-11e9-88c7-1221636252df.jpg)\r\n![Screenshot_20191029-160136](https://user-images.githubusercontent.com/18737358/67809546-e2c9e080-fa66-11e9-976d-7a3ac7de0d0c.jpg)\r\n"
+  },
+  {
+   "id": 548917346,
+   "user": "yumtime",
+   "created_at": "2019-11-01T19:17:13Z",
+   "body": "Same issue with pixel 3 android 10. Getting this error:\r\n\r\n![Screenshot_20191101-151301](https://user-images.githubusercontent.com/37127272/68050002-abec0880-fcba-11e9-98ca-f6557a350b7b.png)\r\n"
+  },
+  {
+   "id": 549165036,
+   "user": "edisiENt",
+   "created_at": "2019-11-03T18:29:59Z",
+   "body": "Same issues on OnePlus 7 Pro Android 10.0.1 with G6.  Reverted phone back to Android 9.5 & saw good operation.  OnePlus refreshed my BT firmware, returned to 10.0.1 and BT problems returned.  Other BT devices (audio & car) work fine.  XDrip to G6 is the only BT problem I'm seeing.  G6 drops occur even while BT audio device is operating.\r\n\r\nWhile phone is charging, link to G6 is solid & works all night.  Within minutes of unplugging from power, Xdrip looses connection to G6 sensor."
+  },
+  {
+   "id": 549183091,
+   "user": "nshtg",
+   "created_at": "2019-11-03T21:55:50Z",
+   "body": "@edisiENt \r\nHave you tried forgetting the transmitter to see if it gets picked up again?"
+  },
+  {
+   "id": 549184121,
+   "user": "borijess",
+   "created_at": "2019-11-03T22:08:07Z",
+   "body": "> @edisiENt\r\n> Have you tried forgetting the transmitter to see if it gets picked up again?\r\n\r\nYes I have but it works for alittle while the the same thing again"
+  },
+  {
+   "id": 549499719,
+   "user": "edisiENt",
+   "created_at": "2019-11-04T19:03:41Z",
+   "body": "Yes.  While on battery power, the only way I can get Xdrip to acquire new data from my G6 transmitter is to tell Xdrip to forget the device via SystemStatus, turn-off bluetooth manually, then Restart Collector.  Frequently, multiple Restart Collectors are required but eventually Xdrip will read from my G6 transmitter.\r\n\r\nI definitely have the opinion that Xdrip to G6 transmitter link is much more stable while the phone is connected to power/charging.  This makes me wonder whether there is some new Android10 BT power state that Xdrip isn't dealing with correctly.  "
+  },
+  {
+   "id": 549519360,
+   "user": "nshtg",
+   "created_at": "2019-11-04T19:52:51Z",
+   "body": "@jamorham\r\nAny idea what may cause these problems on Android 10? As more and more providers push out Android 10 updates this becomes kind of an urgent probem."
+  },
+  {
+   "id": 549532529,
+   "user": "jamorham",
+   "created_at": "2019-11-04T20:28:41Z",
+   "body": "I don't know, there are often regressions in the Bluetooth stack with new android versions and manufacturer interpretations of those. I don't have any test devices which are using Android 10, what is the cheapest device on which these problems are reproducible?"
+  },
+  {
+   "id": 627270470,
+   "user": "thederekFawcett",
+   "created_at": "2020-05-12T11:00:31Z",
+   "body": "> Same problem on OnePlus 8 Pro with Android 10 on OxygenOS 10.5.5IN11BA.\r\n> Anyone has now a final proper setting to use with latest xDrip+ Nightly from April 19th?\r\n\r\n(Same device) I've been modifying every setting possible to attempt to maintain a connection. I think the longest I've maintained a connection is 5-6 hours. As many have said though, if the device reboots, goes out of range, or even \"goes to sleep\" (on nightstand while sleeping. Battery optimization is disabled for app), it will stop working.\r\nI originally imported my settings from my 7 Pro but they didn't work, I also don't remember what errors I was dealing with on my 7 Pro before it just started magically working one day.\r\nMy 8 Pro though now actually unpairs the transmitter. I can't figure out how to stop it..."
+  },
+  {
+   "id": 629850560,
+   "user": "iancj88",
+   "created_at": "2020-05-17T19:47:30Z",
+   "body": "Things were working very well over the past couple weeks with these updated settings on the 4-19 build. It's been awesome not having this drop it's connection during the middle of thenight!  Unfortunatley a new, but perhaps related, issue arose yesterday.\r\n\r\nMy phone ran out of battery. When it was rebooted after an hour, it would not reconnect with the transmitter. Attempts to stop the sensor and restart the transmitter with a new sensor has failed. Each request gets added to Queue Items. Brainstate is no longer stuck on scanning, but it's not giving much information other than Connection Status:Not Connected on classic status page.\r\n\r\nI'm not sure what i need to do clear the queue and 'reset' the connection with the transmitter. Tried the restart collector button, forget device and 'reload' buttons on the classic status page to no effect. I've been waiting the requisite 5-mins between changes. It's not clear what's going on. any ideas where to go from here?"
+  },
+  {
+   "id": 629854110,
+   "user": "tgessendorfer",
+   "created_at": "2020-05-17T20:14:54Z",
+   "body": "> Things were working very well over the past couple weeks with these updated settings on the 4-19 build. It's been awesome not having this drop it's connection during the middle of thenight! Unfortunatley a new, but perhaps related, issue arose yesterday.\r\n> \r\n> My phone ran out of battery. When it was rebooted after an hour, it would not reconnect with the transmitter. Attempts to stop the sensor and restart the transmitter with a new sensor has failed. Each request gets added to Queue Items. Brainstate is no longer stuck on scanning, but it's not giving much information other than Connection Status:Not Connected on classic status page.\r\n> \r\n> I'm not sure what i need to do clear the queue and 'reset' the connection with the transmitter. Tried the restart collector button, forget device and 'reload' buttons on the classic status page to no effect. I've been waiting the requisite 5-mins between changes. It's not clear what's going on. any ideas where to go from here?\r\n\r\nBackup settings, uninstall and reinstall App and restored settings without starting the sensor.\r\nAfter up to 5minutes xDrip will reconnect. That is what I have to do.\r\nWiping Bluetooth and xDrip storage/cache does not help.\r\nRebooting not required as well."
+  },
+  {
+   "id": 662041437,
+   "user": "sweetafro",
+   "created_at": "2020-07-21T18:47:26Z",
+   "body": "Same issue running Moto G7 Android 10, Dexcom G6 and xdrip build from 2020.07.13\r\n\r\nIt seems to disconnect when I'm away from the phone it doesn't reconnect OR, as of late, if my phone connects to another blue tooth device (e.g. my cars bluetooth or headset bluetooth). So far none of the workarounds have helped. If anyone wants to see logs, I will share them. "
+  },
+  {
+   "id": 671134002,
+   "user": "lillydexcom",
+   "created_at": "2020-08-10T02:01:41Z",
+   "body": "> Same issue running Moto G7 Android 10, Dexcom G6 and xdrip build from 2020.07.13\r\n> \r\n> It seems to disconnect when I'm away from the phone it doesn't reconnect OR, as of late, if my phone connects to another blue tooth device (e.g. my cars bluetooth or headset bluetooth). So far none of the workarounds have helped. If anyone wants to see logs, I will share them.\r\n\r\nPlease let me know if you find a fix. On Moto g7 also with same issue."
+  },
+  {
+   "id": 673135263,
+   "user": "hellis5544",
+   "created_at": "2020-08-12T22:09:48Z",
+   "body": "> \r\n> \r\n> Same issue running Moto G7 Android 10, Dexcom G6 and xdrip build from 2020.07.13\r\n> \r\n> It seems to disconnect when I'm away from the phone it doesn't reconnect OR, as of late, if my phone connects to another blue tooth device (e.g. my cars bluetooth or headset bluetooth). So far none of the workarounds have helped. If anyone wants to see logs, I will share them.\r\n\r\nSame here, using a Moto G7 Power which just updated to Android 10. Running nightly build 27 July 2020. It seemed to intermittently connect and disconnect, but overnight I had 2 hr and 4 hr gaps. Failing to reconnect this morning.\r\n\r\nTried the \"backup-delete-reinstall\" method suggested by tgessendorfer and it looked to work but issues still occurring. \r\n\r\nIn desperate need of help here! Wish I had never updated the phone software..."
+  },
+  {
+   "id": 673256117,
+   "user": "hellis5544",
+   "created_at": "2020-08-13T04:58:11Z",
+   "body": "OK so I have at least some success / promising results with another method.\r\n\r\nIt is a modified version of the \"backup - delete - reinstall method\"\r\nWhat I did was:\r\n\r\n1. backup settings to SD card \r\n2. delete Xdrip+\r\n3. clear bluetooth cache by opening Android settings > apps > hamburger menu top right, select show system apps > bluetooth > clear cache\r\n4. reinstall Xdrip+ (I am using latest nightly build, but some of the other comments I have seen mention better results with late Dec 2019 build)\r\n5. BEFORE opening Xdrip > Android Settings > Apps > Xdrip+ > Advanced > Select allow \"Modify System Settings\" & make sure location access is granted\r\n6. Open Xdrip, do not go through source setup but instead allow restore from backup\r\n7. Make sure all permissions Xdrip requests in notification area are allowed\r\n\r\nNot sure if step 3 or 5 was the magic bullet or if they both have to be done, but doing this has allowed me to reconnect to the G5 and get no dropped readings for the last 2.5 hrs. Hopefully this continues... I'll update if something goes wrong, but most promising results I've had since the update threw everything out of whack. Hope this helps someone else.\r\n\r\nUPDATE::\r\n\r\nAfter working fine for a few hours the bluetooth connection was lost and refused to connect again of its own accord.\r\n\r\nThis time I did the same procedure as above but used the Dec 22 2019 version mentioned earlier. I have been running this one for over 12 hours (overnight) with no issue so far. and it is unlikely I would have had no disconnections overnight, so I think it is reconnecting properly. Must be something about how newer versions of Xdrip don't play nice with their bluetooth implementation on Android 10...\r\n\r\nUPDATE 2::\r\n\r\nWell looks like my hopes were falsely high. Lost connection again today and failed to regain on its own. Back to the drawing board"
+  },
+  {
+   "id": 682021878,
+   "user": "hardaker",
+   "created_at": "2020-08-27T15:29:05Z",
+   "body": "Mine has been fairly consistent for a week now.  Even after a disconnect because the phone is too far away for too long, it seems to reconnect automatically again.  The things I did, of which some combination seemed to have worked:\r\n\r\n1. upgraded to a nightly build (~1.5 weeks ago)\r\n2. allowed location sharing with xdrip per many people's suggestions\r\n3. turned off battery saver mode on my android\r\n\r\nIt occurred to me that with battery saving mode on, recent versions of android restrict location sharing.  Unfortunately, I don't think there is a way to change the parameters of what battery saving mode does to allow location sharing but to keep doing all its other battery saving things.  Which is disappointing, since I have been running in always-on-battery-saving for ~2 years to get a longer time on battery."
+  },
+  {
+   "id": 727567207,
+   "user": "jamorham",
+   "created_at": "2020-11-15T13:08:14Z",
+   "body": "It isn't entirely clear what the cause of this issue is and although the unpairing work-around did seem to help in many cases it now causes problems with the november security patch and results in frequently pop-ups asking for pairing.\r\n\r\nAs such I have issued a new nightly (15th Nov) which disables the unpairing work-around by default (can be re-enabled with preference option) and introduces a new option `Avoid Scanning` which requires the `Minimize Scanning` feature to be enabled first.\r\n\r\nIf you have problems with the Android 10 work-around option causing pop-ups but it doesn't work (after a period of time) when you disable this feature, then please try using the `Avoid Scanning` feature to see if that resolves the issue for you.\r\n\r\nBecause of the fragmentation of the Android Bluetooth stack, in that on some platforms we must scan etc, and some devices have the Android 10 bonding issue and others have the pop-up issue, it is likely that using these preference settings will be the only way to reliably cover all the different combinations. I only have a limited number of handsets to test with this issue so please report back any findings. Thanks."
+  },
+  {
+   "id": 728044828,
+   "user": "Navid200",
+   "created_at": "2020-11-16T13:47:51Z",
+   "body": "I'm not sure what to tell people to do on facebook.\r\nI asked them to leave Android 10 workaround unchecked. And try \"Minimize Scanning\" both ways.\r\nMany claim neither works.\r\n\r\nI myself am still on Android 9, and Motorola.  So, I have no problem.  But, I don't think I can do any testing.\r\nIs there anything I can do to help?\r\nDo you have any suggestions for what I should suggest on facebook?"
+  },
+  {
+   "id": 728127873,
+   "user": "ghost",
+   "created_at": "2020-11-16T15:18:28Z",
+   "body": "I am still struggling myself but I believe it’s the sensor insertion this time. I will try a new one tonight.  They need to know things like expired very old dex g5 causes issues and wont pair a lot of the time. At least it wont for me .Some might not know basics like unpair old Dexcom’s from phone. Are they the running Dexcom app and the xdrip app? I believe a lot think they just download the one a file but I downloaded all three. Supporting software, location set to On, turn off battery saver, etc.  I would make a list of things to check off for them and and post that. You cant please everyone!!! You do amazing things to help others so thank you.\nJennifer Draney\n#utinsulin4all Lead Administrator\njenniferdraney@outlook.com<mailto:jenniferdraney@outlook.com>\n#allmyblueheartsare4type1\n\nSent from Mail<https://go.microsoft.com/fwlink/?LinkId=550986> for Windows 10\n\nFrom: Navid200<mailto:notifications@github.com>\nSent: Monday, November 16, 2020 6:48 AM\nTo: NightscoutFoundation/xDrip<mailto:xDrip@noreply.github.com>\nCc: Subscribed<mailto:subscribed@noreply.github.com>\nSubject: Re: [NightscoutFoundation/xDrip] Android 10 BLE + G6 - Stuck in \"scanning\" (#1061)\n\n\nI'm not sure what to tell people to do on facebook.\nI asked them to leave Android 10 workaround unchecked. And try \"Minimize Scanning\" both ways.\nMany claim neither works.\n\nI myself am still on Android 9, and Motorola. So, I have no problem. But, I don't think I can do any testing.\nIs there anything I can do to help?\nDo you have any suggestions for what I should suggest on facebook?\n\n—\nYou are receiving this because you are subscribed to this thread.\nReply to this email directly, view it on GitHub<https://github.com/NightscoutFoundation/xDrip/issues/1061#issuecomment-728044828>, or unsubscribe<https://github.com/notifications/unsubscribe-auth/AO4UACBWPEYVPOIZELZVHMTSQEURZANCNFSM4JCJ4CXQ>.\n\n"
+  },
+  {
+   "id": 728161719,
+   "user": "Quergestreift",
+   "created_at": "2020-11-16T16:11:54Z",
+   "body": "Jamoran's tip works. I have a Samsung S10+ mobile with Android 10 on it.\r\nTo solve the reconnection problem with the G6 transmitter, I installed the new xDrip+ nightly build version from 15/11/202020.\r\nUnder Settings>Advanced Settings>Bluetooth Settings I had initially only activated \"Trust Auto Restore\". So it ran for about an hour. But then I didn't get any more blood glucose values and I could do what I wanted, xdrip didn't get any information. \r\nSo I activated \"minimize scanning\" and \"avoid scanning\". I also still have activated \"Trust Auto Restore\". I haven`t disabled this function. Nevertheless the system works now about 16 hours."
+  },
+  {
+   "id": 731767779,
+   "user": "sweetafro",
+   "created_at": "2020-11-22T15:49:54Z",
+   "body": "Thank you @jamorham  So far so good with the 15 Nov release. I am running Android 10 on a Moto G Power (latest US version). Installed and running solidly for the last 18 hours. I did not have to change any of the default settings so far. Will update if there are any new issues. "
+  },
+  {
+   "id": 782718201,
+   "user": "Navid200",
+   "created_at": "2021-02-20T17:21:06Z",
+   "body": "@nshtg Can we close this issue?\r\nSince the November 27, 2020 release, we have had success with the recommended settings in the facbook group:\r\nhttps://www.facebook.com/groups/xDripG5\r\n\r\nNot everyone likes to use facebook.\r\nWe are working on that.  \r\n\r\nBut, keeping this issue open suggests that there is no solution.  The fact is that there is."
+  },
+  {
+   "id": 783436125,
+   "user": "Webifi",
+   "created_at": "2021-02-22T15:01:57Z",
+   "body": "@Navid200  In the absence of actual documentation, how about that solution in your facebook group get posted here where it can be useful to those of us that don't do facebook?  Then, if it works, this issue could be closed?"
+  },
+  {
+   "id": 783449494,
+   "user": "Navid200",
+   "created_at": "2021-02-22T15:20:20Z",
+   "body": "My current documentation on facebook is hierarchical.  That has allowed me to maintain the documentation, as different sections have evolved, without spending unnecessary extra time.  \r\n\r\nIf/when I am authorized to contribute to the Wiki here, I will start moving my documentation to the Wiki.  I may then spend some time maintaining both until it is confirmed that this the the right place for the documentation as opposed to facebook.\r\n\r\nAs is, I am not authorized to add to the Wiki.  \r\nCopying something here is dangerous.  Anyone else who has a facebook account can attempt to copy some of my documentation here.  I strongly advise against that.  The whole point of my efforts has been to provide documentation that remains valid as we move forward.\r\nCopying something here will only provide a snapshot.  I will not be able to maintain documentation at different places indefinitely.\r\n\r\nNow that we are talking, would someone explain to me why it is so difficult to create a facebook account?  There are xDrip developers who are administrators of those facebook groups.  Why are they doing it if it is so bad?  I don't want to start trolling here.  I am really curious what this resentment is all about.  We will never come to understanding if we don't communicate."
+  },
+  {
+   "id": 783466945,
+   "user": "hardaker",
+   "created_at": "2021-02-22T15:44:35Z",
+   "body": "@Navid200 -- IMHO, this ticket must still be open against the main project until the main project incorperates a solution or documentation about the solution.  At the minimum a link to the facebook documentation would be needed, but I personally would prefer the documentation is housed in github along with everything else for the project.  A separate place for documentation is challenging for long term maintaince.\r\n\r\nAs to facebook, I suspect that many people may not like facebook's tracking if they don't want their medical history tracked by facebook.  I suspect microsoft and github may not be appreciated by others, but I believe the general consensus is that facebook is a bit more invasive in their tracking of people and attributes about them.  And because the facebook group is private in the first place, it requires that you not just join facebook but also join the group in order to see the documentation -- ie, the documentation is not public."
+  },
+  {
+   "id": 783514636,
+   "user": "Navid200",
+   "created_at": "2021-02-22T16:52:21Z",
+   "body": "Starting a new Dexcom G6 sensor (or transmitter)\r\nhttps://www.facebook.com/groups/xDripG5/permalink/4838757582864365"
+  },
+  {
+   "id": 783718310,
+   "user": "Webifi",
+   "created_at": "2021-02-22T22:22:37Z",
+   "body": "@Navid200 Since that's a private link, it's useless to me.  Copy/pasting a snapshot is better than nothing."
+  },
+  {
+   "id": 783721681,
+   "user": "Navid200",
+   "created_at": "2021-02-22T22:28:25Z",
+   "body": "Anyone can join that group.  They ask if you have diabetes or a friend or family member.  You say yes, and they approve."
+  },
+  {
+   "id": 783723893,
+   "user": "Webifi",
+   "created_at": "2021-02-22T22:32:27Z",
+   "body": "And if I don't want to join Facebook?\r\n\r\nThere should be nothing secretive about this information.  Until a public wiki or the like is available,  please post and keep it updated publicly here, where it has relevance, and anyone can view it with or without an account of any type."
+  },
+  {
+   "id": 783724294,
+   "user": "Navid200",
+   "created_at": "2021-02-22T22:33:12Z",
+   "body": "@Webifi I already explained why it is not a good idea to copy and paste here.  It's pointless to ask the same question.  I am not going to repeat the answer."
+  },
+  {
+   "id": 783725752,
+   "user": "Webifi",
+   "created_at": "2021-02-22T22:35:57Z",
+   "body": "Then please stop asking to close issues like this that rely on proper documentation until there is proper, public, documentation."
+  },
+  {
+   "id": 784236289,
+   "user": "Navid200",
+   "created_at": "2021-02-23T14:20:28Z",
+   "body": "This was a bug that was addressed with Android 10 workarounds.  After the early November 2020 Android patch, Android 10 workaround resulted in frequent pair requests.  So, we had a new issue triggered by the Android update.  The developer used a different method to address this (and disabled Android 10 workarounds) that did not cause the frequent pair requests.  He released it on November 27, 2020.  Since then, both issues have been addressed.\r\nThe frequent pair request issue has been closed (https://github.com/NightscoutFoundation/xDrip/issues/1494).  So will this one.\r\n  \r\nIf anyone is experiencing this issue, if you restart your phone and your readings stop, and if you don't have a facebook account, post in the Gitter room.  We will walk you through the steps to fix it.  You can tag me in your post."
+  },
+  {
+   "id": 787568685,
+   "user": "Navid200",
+   "created_at": "2021-03-01T01:04:12Z",
+   "body": "If restarting your phone causes the xDrip readings to stop, please install an xDrip release of November 27, 2020 or later.\r\nAfter that, if you experience connectivity issues, you will need to disable battery optimization of xDrip by Android, enable background location access, and use the recommended xDrip settings.\r\n\r\nIf you need help, please use the support channels.\r\nhttps://www.facebook.com/groups/xDripG5\r\nhttps://gitter.im/jamorham/xDrip-plus"
+  }
+ ]
+}

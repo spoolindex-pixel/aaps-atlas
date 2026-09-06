@@ -1,0 +1,91 @@
+{
+ "id": 614009829,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1335,
+ "title": "libre 2 oop algorithm ",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1335",
+ "state": "closed",
+ "labels": [
+  "device-libre",
+  "sync-nightscout",
+  "calibration"
+ ],
+ "created_at": "2020-05-07T12:15:00Z",
+ "closed_at": "2021-01-18T15:02:53Z",
+ "comment_count": 12,
+ "body": "Hello,\r\ni'm testing the oop algorithm again. calibration works by activating the xDrip Original classic algorithm.\r\nthe calibrated values ​​are transferred to andriodAPS. Unfortunately, the uncalibrated values ​​will be transmitted after nightscout. This would make an evaluation or monitoring by nightscout incorrect.",
+ "comments": [
+  {
+   "id": 625512498,
+   "user": "tzachi-dar",
+   "created_at": "2020-05-07T21:43:03Z",
+   "body": "I think you are confusing two things here:\r\nAre you working with the oop or with the xDrip algorithm?\r\nThe oop can not be calibrated.\r\nBut you can only use one of them at any given time."
+  },
+  {
+   "id": 625535993,
+   "user": "RainerTischnet",
+   "created_at": "2020-05-07T22:50:20Z",
+   "body": "No, the values ​​are calibrated, only when I switch it off are the values ​​about 20 mg / dl lower."
+  },
+  {
+   "id": 632730363,
+   "user": "yosepito",
+   "created_at": "2020-05-22T14:47:04Z",
+   "body": "@tzachi-dar : I'm using a European Libre-2 and testing 2 options. (a) In one smartphone I run librelink patched and (b) in another I run it with OOP algorithm and MM2.\r\nI had to calibrate both, since in (a) raw data from Libre-2 is well below 30-40 mg/dl compared to finger pricks; (b) the same for OOP. I tried to use calibration with OOP, and tought it worked initially. But now I realize that it only recalculates the last reading but the next one goes down very fast as if it were falling very fast.\r\nDo you mean any attempt to calibrate OOP is useless and will simply yield the raw data coming from Libre-2?\r\n\r\nI really need a method to calibrate it. I cannot undestand why we cannot implement a calibration method from insanely wrong LIbre-2. Why can we calibrate Libre-1 and not LIbre-2? \r\n\r\nIf Xdrip receives data, it should not matter the source, but it ought to be the possibility to calibrate by a kind of statistical regression.\r\n\r\nI cannot share the idea that we should put limits to calibrations due to avoid the possibility of not acknowledging potential lows. We know the implications of using Xdrip and the user should choose whether to trust or not. But a limitation in slope or intercept is very limiting. I have used several Libre-1s yielding very low raw data and worked perfectly with calibrations in Xdrip.\r\n\r\nPlease: how can we calibrate Libre-2? I don't mind if it is done with patched librelink or OOP and MM2. But, please, we need to calibrate it. In some countries, Abbott only sells Libre-2 sensors and we cannot find libre-1 anymore.\r\n\r\nthanks!"
+  },
+  {
+   "id": 632756115,
+   "user": "RainerTischnet",
+   "created_at": "2020-05-22T15:32:37Z",
+   "body": "the oop algorithm is currently running on a unihertz atom with calibration, aaps and nightscout upload without any problems. i'm happy to finally be able to loop with libre 2 and the tiny atom. the trick is: connect the mm2 with xdrip, enable oop algorithm. if you see the values. settings / advanced settings / advanced calibration choose xdrip original. back to the xdrip start desktop. then there should be a P now. now you have to calibrate first. then save import / export settings. settings on SD card. save all settings on sd card. I don't have an SD card. the backup can be found under download / xdrip-export. I use the total commander app to send the xml to google drive. then edit on pc xml with notepad ++ enable true at calibrate_external_libre_algorithm.\r\nsave file back to drive download file on the smartphone, file is under download, total commander send file to total commander again save under download / xdrip-export xdrip import setting set calibration plugin to none. normal calibration is now running with nightscout and aaps. From then on, please measure and calibrate blood sugar regularly. I use contour next one. this sends the values ​​via bluetooth to xdrip and the calibration is delayed 15 minutes.\r\n for the next sensor, you have to set the value to false in the xml and back to true after the first calibration."
+  },
+  {
+   "id": 632771091,
+   "user": "tzachi-dar",
+   "created_at": "2020-05-22T16:09:32Z",
+   "body": "RainerTischnet and yosepito\n\nPlease be aware that if you calibrate the libre2 ,and your intercept is big\n(for example 30 mgdl) , it means that your system will not be able to\ndetect hypos.\nIn other words, you might have an alert on 70, and your bg will be at 20,\nand the alert will not fire!!!\nInsulin dosing might continue.\nSometimes intercept is even bigger, which means APS systems will not work\nwell.\nYou are risking your life. Please don't do this.\n\nThe difference between libre1 and libre2 is that for libre1 we knew the\nalgorithm, and therefor we could calibrate.\nFor libre 2 we don't know the algorithm. The minimum value that we get is\n40, and therefore we can not have a big intercept. (Minimum value is 40 +\nintercept which if intercept is 40 is too big).\n\nIf you don't understand the reasons I'll be happy to explain again.\n\nThanks\nTzachi\n\nOn Fri, 22 May 2020 at 18:32, RainerTischnet <notifications@github.com>\nwrote:\n\n> the oop algorithm is currently running on a unihertz atom with\n> calibration, aaps and nightscout upload without any problems. i'm happy to\n> finally be able to loop with libre 2 and the tiny atom. the trick is:\n> connect the mm2 with xdrip, enable oop algorithm. if you see the values.\n> settings / advanced settings / advanced calibration choose xdrip original.\n> back to the xdrip start desktop. then there should be a P now. now you have\n> to calibrate first. then save import / export settings. settings on SD\n> card. save all settings on sd card. I don't have an SD card. the backup can\n> be found under download / xdrip-export. I use the total commander app to\n> send the xml to google drive. then edit on pc xml with notepad ++ enable\n> true at calibrate_external_libre_algorithm.\n> save file back to drive download file on the smartphone, file is under\n> download, total commander send file to total commander again save under\n> download / xdrip-export xdrip import setting set calibration plugin to\n> none. normal calibration is now running with nightscout"
+  },
+  {
+   "id": 632801117,
+   "user": "yosepito",
+   "created_at": "2020-05-22T16:53:26Z",
+   "body": "Yes, I fully understand the reasons for loopers. That is not my case. I use Xdrip and no pump.\r\nI can understand the issue of \"40\" because of raw data yielded by Libre-2. However, I have sensors yielding data below 40.\r\n\r\nI honestly think that the problem of \"minimum 40\" can be solved by a regression. It can be linear or quadratic or whatever. What I'm asking for is to let the user decide.\r\n\r\nNow, I had to enable Xdrip as plugin but data saved to NS is wrong. I will try to enable the plugin overring all the other, just to check whether it solves the issue"
+  },
+  {
+   "id": 632807998,
+   "user": "yosepito",
+   "created_at": "2020-05-22T17:04:05Z",
+   "body": "BTW: I changed the setting \"\"use_pluggable_alg_as_primary\" to true, but Xdrip continues saving the raw data in the BG table, so when I upload the data to NS it will be wrong.\r\nIs there any option to change this, please? Now I'm in 114 while libre-2 says 74, which is wrong.\r\nThanks in advance!\r\n"
+  },
+  {
+   "id": 632825373,
+   "user": "RainerTischnet",
+   "created_at": "2020-05-22T17:43:50Z",
+   "body": "Hello, my low alarm is at 80. When I measure with my blood glucose meter, the difference to the calibrated values is minimal. I was recently in the pharmacy for one-time injections. My pump had an error. They measured my blood sugar and the value on my smartphone was almost the same as the Libre meter. but thanks for warning. but libr 2 patch values turn calibrated. the raw values are the same. then why not an equal calibration of the oop values. I am used with 2 smartphones. libre-patch and then mm2 on the same sensor. the values were also the calibrated values.\r\n\r\nMany greetings\r\nRainer"
+  },
+  {
+   "id": 715941653,
+   "user": "AnnekeHeelsum",
+   "created_at": "2020-10-24T15:37:14Z",
+   "body": "not sending calibrated values to nightscout is a problem with the Libre 1 as well. or can anyone tell me how to make this happen? the setting to send plugin-calibrated data (i used 'send display bglucose' in the api-rest upload settings) is set to on."
+  },
+  {
+   "id": 741712542,
+   "user": "patanito",
+   "created_at": "2020-12-09T11:29:11Z",
+   "body": "I think it can be closed. See https://github.com/NightscoutFoundation/xDrip/issues/1371#issuecomment-741710603"
+  },
+  {
+   "id": 741738522,
+   "user": "tolot27",
+   "created_at": "2020-12-09T12:25:18Z",
+   "body": "> I think it can be closed. See [#1371 (comment)](https://github.com/NightscoutFoundation/xDrip/issues/1371#issuecomment-741710603)\r\n\r\nIt will not be closed until #1524 is merged."
+  },
+  {
+   "id": 762178939,
+   "user": "jonaschn",
+   "created_at": "2021-01-18T11:12:22Z",
+   "body": "#1524 was merged"
+  }
+ ]
+}

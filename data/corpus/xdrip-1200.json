@@ -1,0 +1,108 @@
+{
+ "id": 554531107,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1200,
+ "title": "Problems with LinearTrapezoidInsulin.java [Incorrect Boundary Conditions]",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1200",
+ "state": "closed",
+ "labels": [
+  "insulin",
+  "type-discussion"
+ ],
+ "created_at": "2020-01-24T03:53:07Z",
+ "closed_at": "2021-08-06T13:17:39Z",
+ "comment_count": 15,
+ "body": "Hi jamorham/gruoner\r\n\r\nI found few problems with the LinearTrapezoidInsulin.java equations because the value of “onset” has not been properly accounted for in applying the boundary conditions during integration. \r\n\r\nHaving said that, the impact of the error is a strong function of the numerical value of the “onset” and the life of the insulin. Larger value of onset and shorter insulin life seems to have strong impact. Also, as implemented, the IOB value at transition points do not match, you can actually see with Toujeo, you can see a kink (see excel file).\r\n\r\nIts effect on affect rapid/short acting insulins like Fiasp is very small but more pronounced for long acting insulin, in particular, Toujeo which has a life of 180 minutes it is very noticeable (see the attached excel file). Even for Humalog, you can see the difference, which has an onset of 10 minutes, it is noticeable because of its life is only 180 minutes.\r\n\r\nAlso, I believe, IOB should be set to 1.0 for time between the dosage time and onset, current implementation is setting to zero.\r\n\r\nAs “onset” is subtracted from \"time\", I believe we need compare the corrected value of t1, t2 and t3, i.e. after subtracting “onset” to match the actual profile [assuming t1, t2 and t3 are uncorrected].  \r\n\r\nI used the following criteria to ensure that my derivations are correct and consistent.\r\n(a)\tAt each of the transition points, the IOB should remain the same (current implementation it does not).\r\n(b)\tAt the end of t3, IOB should become zero (current implementation it does not).\r\n\r\nYou may want to evaluate whether defining intermediate variables for the corrected values “t1 – onset”, “t2 – onset”, and “t3 – onset” is beneficial computationally.\r\n\r\nUnfortunately, I am new to GitHub community (and to java) and have not mastered the committing process and hence am providing a text file with the modified equations, as I can NOT attach a java file here. I am also attaching an excel file that compares predictions from new equations and current xDrip+ implementation. \r\n\r\nIf you want me to upload the derivations, I am more than happy to provide scanned copies of my derivations.\r\n\r\nThanks\r\n\r\n[LinearTrapezoidInsulin PS.txt](https://github.com/NightscoutFoundation/xDrip/files/4106849/LinearTrapezoidInsulin.PS.txt)\r\n\r\n[insulin-profiles-xDrip-compare.xlsx](https://github.com/NightscoutFoundation/xDrip/files/4106737/insulin-profiles-xDrip-compare.xlsx)\r\n",
+ "comments": [
+  {
+   "id": 578097946,
+   "user": "peeyes-dev",
+   "created_at": "2020-01-24T11:43:54Z",
+   "body": "GM jamorham/gruoner. \r\n\r\nI was looking at the java code and I believe we can directly use the uncorrected time which simplifies the code (uncorrected time is what I used in my derivation directly and accounted for \"onset\" explicitly.. I believe \"time\" is a local variable and so should not affect other modules. please confirm.\r\n\r\nI am attaching the zipped file that has the updated equations.\r\n\r\n[LinearTrapezoidInsulinUpdated.zip](https://github.com/NightscoutFoundation/xDrip/files/4108180/LinearTrapezoidInsulinUpdated.zip)\r\n\r\nThanks"
+  },
+  {
+   "id": 578426402,
+   "user": "gruoner",
+   "created_at": "2020-01-25T17:41:12Z",
+   "body": "@peeyes-dev \r\ni really appreciate your calculations as u are the first one really stressing my equations out.\r\nwhen i correctly understand you long posts (i'm not a native english speaker) u've found four issues with those equations:\r\n1. onset as a shift of time was not correctly implemented. it should also be subtracted from t1, t2, t3 instead of subtracting it from time.\r\n2. IOB in transition point doesn't stay stable\r\n3. IOB at the end is not zero\r\n4. IOB should start with 1.0 (or # of dose) right after injecting instead of right after onset-time\r\n\r\ndid i missed something?\r\n\r\nthe fourth one is a matter of personal preferences. As iActivity between injection (time zero) and onset is zero, there is no effect on BG-prediction when assigning 1.0 to IOB. The only effect (currently) is on the GUI as time \"when injection becomes activate\" is visible (marked as the solid green line suddenly rises). We can change this behaviour when community wants to (or when we get other effects, maybe something related to accumulation of repeated / regularly injections of the same profile which has be seen in clinical studies with very long acting basal insulin profiles)\r\n\r\nmajor root cause of our identified issues one to three is that the algorithm calculating IOB and iactivity has been completely changed. the \"old\" algorithm needed a really stepwise schema to calculate iActivity - the new one has a formula to calculate it and thus doesn't need it. So the \"old\" one has a one step decay (5 minutes) before \"time\" and that's a (lets say) timeshift. As a result treatments.ioBForGraph_new starts exactly one timeslice before \"time\" of the \"old\" one and the new algorithm has to compensate that. So we \"see\" a timeshift (of currently 5 min) between the output of the \"old\" and the \"new\" one. \r\nIssue 3 is directly an effect of this root cause - when you extend your excel u will see that it comes to zero (or even negative as it is linear).\r\nBy the way: our excel is getting more understandable whe"
+  },
+  {
+   "id": 578438865,
+   "user": "peeyes-dev",
+   "created_at": "2020-01-25T20:09:41Z",
+   "body": "Thank you for the feedback and explaining the underlying reasons for the quirkiness that I was observing. \r\n\r\nYou are absolutely correct with 1 and 2. If the “peak” and “duration” time can be timeshifted to account for “onset” in insulin-profiles.txt to address 1 and 2. Basically, if all times have the same datum (onset), the equations become consistent but because the stepwise schema, it may still have the issue, but may be less pronounced. \r\n\r\nIt was NOT clear to me to whether the timeshift has already been accounted for in the insulin-profiles.txt and that is part of my confusion. If times are already timeshifted for onset, and if a comment can be added to insulin-profiles.txt to help\r\n\r\nWith regards to 3, again it is only for consistency, as the value is so close to zero, it is NOT going to impact anything. I was using it as a check for my derivation, to ensure it is indeed zero at the end of “duration”. The java code actually sets the value to zero beyond “duration”. \r\n\r\nThe 4-th item until “onset”, activity is zero and hence, the IOB can be fixed at 1.0 and it is a boundary condition that we use in the derivation. Again it is not going to impact any calculations. May be just the insulin depletion curve will start immediately from the treatment instead of from the onset time. \r\n\r\nLet me know if you need any help.\r\n\r\nOn a site note, I am in the process of deriving the equations for NPH which someone pointed out has two peaks, although I am very interested in Tresiba functionality.\r\n\r\nThanks.\r\n"
+  },
+  {
+   "id": 578444410,
+   "user": "gruoner",
+   "created_at": "2020-01-25T21:25:48Z",
+   "body": "regarding u'r fourth issue: as said, it is a matter of personal preference. For me an information when injection takes action is more important than a \"correct\" line (correct in meaning: whats the semantics of \"insulin-on-board\" - when its injected it is \"on board\"). Btw. the time of injection is also shown as the injection/treatment icon.....\r\n\r\ni don't know how to define a comment in a JSON file, so i will write a comment in InsulinManager. Just to store upcomings of our discussion.\r\n\r\ni also experienced with profiles having 2 peaks (@stephencmorton also experienced with curves of 4 order) but currently such precisions aren't needed as we can't calculate influence of different carbs, sporting activities and illnesses. \"Prediction errors\" are mostly caused by not existing (or totally undifferentiated) influencers of BG value not by imprecise insulin profile curves. I'm afraid even the missing consideration of the accumulation effect has more impact on BG-prediction errors than this \"curve of fourth order\". Btw. i have no f..cking glue how to model these accumulation or concentration effects described in clinical studies on Toujeo (https://www.monitor-versorgungsforschung.de/news/nachhaltigere-blutzuckerkontrolle-unter-toujeo-im-vergleich-zu-lantus) and Tresiba #1153 \r\n"
+  },
+  {
+   "id": 579853621,
+   "user": "jamorham",
+   "created_at": "2020-01-29T16:54:16Z",
+   "body": "@stephencmorton do you also have an interest in this issue?"
+  },
+  {
+   "id": 579856862,
+   "user": "stephencmorton",
+   "created_at": "2020-01-29T17:01:09Z",
+   "body": "Oh, I meant to look at it but then I forgot. There wasn't an online diff, I had to download the file to diff it manually and that's when I forgot. I'll try to have a look tonight."
+  },
+  {
+   "id": 580053131,
+   "user": "stephencmorton",
+   "created_at": "2020-01-30T02:16:29Z",
+   "body": "@jamorham, Yes, @peeyes-dev is absolutely right, and his updated calculations look correct."
+  },
+  {
+   "id": 580545183,
+   "user": "peeyes-dev",
+   "created_at": "2020-01-31T01:47:57Z",
+   "body": "@stephencmorton \r\nThank you for cross-checking the calculations.\r\n@jamorham \r\nLet me know whether I need to do anything to close the issue once the equations are implemented. Thanks"
+  },
+  {
+   "id": 580553596,
+   "user": "stephencmorton",
+   "created_at": "2020-01-31T02:24:47Z",
+   "body": "As a meta-comment, although I've been a big fan of this feature in general, it is not really clear who would ever use it for long-acting insulin. Rapid acting insulins, absolutely, yes it makes sense.\r\n\r\nBut for long-acting...  Longer-acting insulins are usually used, at least in part, as basal insulins. Generally you do not record basal insulin and your basal-IOB and account for basal in your I:C ratio.  So you generally do not want them in your IOB curves and messing with your xDrip+ data.\r\n\r\nFor me, my son uses NPH as a basal+delayed-bolus. He can take NPH at breakfast time and it boluses for lunch, avoiding the need to have an insulin pen at school. But some of that NPH is basal too. So the only way to make it useful for me was to make a sort of custom NPH curve in the json file that subtracted some of that basal and I compiled it just for me. And I do not use that normally, it was just for the Christmas holidays when schedules and eating were very variable and it was very hard to keep track of COB and IOB. During school, everything is like clockwork.\r\n\r\nAll that to say I'd curious if there are any normal real valid use-cases for this feature and long-acting insulins. \r\n"
+  },
+  {
+   "id": 580717112,
+   "user": "peeyes-dev",
+   "created_at": "2020-01-31T12:37:42Z",
+   "body": "Thanks for your insight. You are correct @stephencmorton about this feature, in its current form, will not be as useful for long term insulin as it is for rapid/short acting insulins. Even now, I am only using Toujeo option to just log my Tresiba dose, and not for anything else. \r\n\r\nI was just plotting to test my equations and see the impact on all types in my excel file and to check whether transitions are continuous and provided as supporting evidence to help As you might have noted, in my write-up, I did observe that correction had more impact on Humalog than long-acting insulin and that disparity is a function of both large onset value and short life."
+  },
+  {
+   "id": 657747941,
+   "user": "gruoner",
+   "created_at": "2020-07-13T19:28:36Z",
+   "body": "@peeyes-dev \r\nyour code contains major error - read by comments on PR #1252 "
+  },
+  {
+   "id": 657957799,
+   "user": "peeyes-dev",
+   "created_at": "2020-07-14T04:22:28Z",
+   "body": "@gruoner \r\n\r\nSee my response to your comments on #1252. I do not spot any error, please do check the script against implemented equations in the pull request. \r\n\r\nwxMaxima does not provide a good view of the multiplication symbol. Here is the notepad version that pasted into wxMaxima.\r\n\r\nonset:10;\r\nt1:75;\r\nt2:75;\r\nt3:180;\r\nmax:2/(t2-t1+t3-onset);\r\nIOB1(x):=1.0-0.5*(x-onset)*(x-onset)*max/(t1-onset);\r\nIOB2(x):=1.0+0.5* max*(t1-onset)-max*(x-onset);\r\nIOB3(x):=0.5*(t3-x)*(t3-x)*max/(t3-t2);\r\nIOB(x):=if (0<=x and x<onset) then 1.0 else if (onset<=x and x<t1) then IOB1(x) else if (t1<=x and x<t2) then IOB2(x) else if (t2<=x and x<t3) then IOB3(x) else 0;\r\ndIOB1(x):=''(diff(IOB1(x), x, 1));\r\ndIOB2(x):=''(diff(IOB2(x), x, 1));\r\ndIOB3(x):=''(diff(IOB3(x), x, 1));\r\ndIOB(x):=abs(if (onset<=x and x<t1) then dIOB1(x) else if (t1<=x and x<t2) then dIOB2(x) else if (t2<=x and x<t3) then dIOB3(x) else 0);\r\nwxplot2d([IOB(x)], [x,-50,t3+30]);\r\nwxplot2d([dIOB(x)], [x,-50,t3+30]);\r\nsum(dIOB(x), x, 0, t3);"
+  },
+  {
+   "id": 657959265,
+   "user": "peeyes-dev",
+   "created_at": "2020-07-14T04:28:48Z",
+   "body": "@gruoner \r\n\r\nfor the heck of it, i set onset to zero, as you indicated, and still my equations holds good and sum from last line is spot on 1.0. "
+  },
+  {
+   "id": 787099667,
+   "user": "Navid200",
+   "created_at": "2021-02-27T16:38:28Z",
+   "body": "What is the status of this issue please?\r\nThanks"
+  },
+  {
+   "id": 894254129,
+   "user": "Navid200",
+   "created_at": "2021-08-06T13:17:39Z",
+   "body": "Closing due to inactivity"
+  }
+ ]
+}

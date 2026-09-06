@@ -1,0 +1,41 @@
+{
+ "id": 291826851,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 282,
+ "title": "Feature request - settings for Bluetooth devices",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/282",
+ "state": "closed",
+ "labels": [
+  "code:quality"
+ ],
+ "created_at": "2018-01-26T08:13:36Z",
+ "closed_at": "2022-12-13T14:17:20Z",
+ "comment_count": 4,
+ "body": "I would like to discuss to split the selection of the bluetooth device entry for bluereader, limitter, bluecon, sweetreader and so on. At the.moment we detect the right device while connecting, which caused some problems later on. For example if we want to give special settings for specific devices, this will be only seen if the device have a right connection. Also sometimes the checks within the recollection is also depended on the connection status, which is not clean in my point of view. So if you agree, I would like to try to implement a separation of the devices in the settings to have a clean switch then everywhere which device is used.  ",
+ "comments": [
+  {
+   "id": 361618215,
+   "user": "jamorham",
+   "created_at": "2018-01-30T14:56:31Z",
+   "body": "Can you explain a failure condition in more detail? I would prefer if the devices were automatically detected so the user has to do the smallest amount of configuration possible."
+  },
+  {
+   "id": 361662012,
+   "user": "MasterPlexus",
+   "created_at": "2018-01-30T17:04:16Z",
+   "body": "Just as an example, here we check if a bluecon or a bluereader exist to prevent the wrong error in the log for the serviceDiscovered:\r\nhttps://github.com/NightscoutFoundation/xDrip/blob/07ac772a814d95158de16dd6415c4fd66322ea0b/app/src/main/java/com/eveningoutpost/dexdrip/Services/DexCollectionService.java#L594-L596\r\n\r\nBut for the bluecon the first point to give the real static_use_blukon will be set later if those services will be tryed in the code:\r\nhttps://github.com/NightscoutFoundation/xDrip/blob/07ac772a814d95158de16dd6415c4fd66322ea0b/app/src/main/java/com/eveningoutpost/dexdrip/Services/DexCollectionService.java#L705-L734\r\n\r\nBut this is only set if the service runs well. So if the service runs not in the right connection, may the check for static_use_blukon will not fit. We see that, as in the log one time as xdrip will be startet first time, the wrong log entry appears, as the static_use_blucon is set later (for bluereader it was the same in the past for check nrf-service).\r\n\r\nI know, this is may a theoretical problem, and I have got that for the bluereader in a other way, as I get the information not from nrf_service but from the first time the bluereader is selected in the Bluetooth-connect-dialog from the name. \r\n\r\nI'm not really sure, if this could help to make some positions more stable, and the checks more reliable, as I think the user normally know which bluetooth device they have buyed ;) The only thing the user have todo is, to select the right device. But for sure, the refactoring will be a huge work for all bluetooth-transmitter-devs in a first step.  If the decision will be to leave it as it is, it will be ok for me. Its just to think a little about it."
+  },
+  {
+   "id": 1007000537,
+   "user": "tolot27",
+   "created_at": "2022-01-06T23:06:38Z",
+   "body": "Is this still relevant?"
+  },
+  {
+   "id": 1348662988,
+   "user": "Navid200",
+   "created_at": "2022-12-13T14:17:20Z",
+   "body": "I'm going to close this as it has been quiet for a very long time.  We can always reopen if/when needed."
+  }
+ ]
+}

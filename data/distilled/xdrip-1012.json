@@ -1,0 +1,18 @@
+{
+ "issue_id": 1012,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/1012",
+ "title": "Project doesn't build",
+ "symptom": "The project fails to build with Android Studio 3.5, with errors in wear dependencies and manifest merger failures. Users report various build errors and difficulty getting the project to compile.",
+ "cause": "The build failures are due to regressions introduced by Android Studio and poor stewardship of the maven repositories by Google, as stated by jamorham. Specific issues include missing wearable dependencies and manifest merger conflicts.",
+ "fix": "Workarounds include using Android Studio 3.4.1, uninstalling and cleaning Android Studio caches, and manually editing build files. wkochFPV provided specific steps: uncheck 'Only sync the active variant' in settings, add a meta-data element with tools:replace to the wear manifest, and change the google-services classpath to 3.2.0. Later, the project builds with current versions after merging PR #1160.",
+ "settings_changed": [
+  "Only sync the active variant → unchecked",
+  "google-services classpath → 'com.google.gms:google-services:3.2.0'"
+ ],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [],
+ "confidence": "medium",
+ "evidence_quote": "With these changes, the apk builds without errors."
+}

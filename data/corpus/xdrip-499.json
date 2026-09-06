@@ -1,0 +1,138 @@
+{
+ "id": 339213995,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 499,
+ "title": "Follower not getting readings",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/499",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "sync-local"
+ ],
+ "created_at": "2018-07-08T10:13:43Z",
+ "closed_at": "2021-02-25T18:01:14Z",
+ "comment_count": 27,
+ "body": "Hi Guys\r\nI've had my son's Libre - MiowMiew - Wear Watch (forced collector) - Android master - Android follower working fine for a couple of months now.\r\nHowever now, the follower isn't getting any of the readings (watch & master are fine). I've got the latest xDrip dated 6th July on both Androids. Follower Android is version 8.0 & the Master Android is version 7.0\r\nI've tried uninstalling & re-installing, I've cleared the xDdrip cache. I've tried rolling xDrip back to 7th April with the same issue.\r\nInterestingly, on the follower, the xDrip menu only has 4 options - Home - Add Calibration - System Status & Settings.\r\nIt could be an issue with v8 (Oreo), but I'm reluctant to roll it back to v7 (nougat) as it needs the phone to be completely wiped, & doesn't appear to be trouble free.\r\nAny ideas what else I can try?\r\nRegards\r\nAli\r\n",
+ "comments": [
+  {
+   "id": 403951973,
+   "user": "jamorham",
+   "created_at": "2018-07-10T20:17:22Z",
+   "body": "It isn't an issue with Android 8\r\n\r\nWhat does the `System Status` menu show in the follower tab?"
+  },
+  {
+   "id": 403970307,
+   "user": "TheMoirs",
+   "created_at": "2018-07-10T21:22:31Z",
+   "body": "![screenshot_20180708-105051_xdrip](https://user-images.githubusercontent.com/24193604/42538285-7166e328-848f-11e8-98aa-dd4fc955cdd8.jpg)\r\n![screenshot_20180710-221417_xdrip](https://user-images.githubusercontent.com/24193604/42538296-7df5142a-848f-11e8-90ba-89b39b9bb5dd.jpg)\r\n![screenshot_20180710-221939_xdrip](https://user-images.githubusercontent.com/24193604/42538309-850f4104-848f-11e8-8f50-db1d8155b4b7.jpg)\r\n![screenshot_20180710-221851_xdrip](https://user-images.githubusercontent.com/24193604/42538316-8efbdd76-848f-11e8-8751-bf8e7373aded.jpg)\r\n"
+  },
+  {
+   "id": 404913105,
+   "user": "jamorham",
+   "created_at": "2018-07-13T18:18:01Z",
+   "body": "Try repeating the set up for a follower:\r\n\r\nhttps://www.youtube.com/watch?v=LcgjfbYcWkE"
+  },
+  {
+   "id": 404941520,
+   "user": "TheMoirs",
+   "created_at": "2018-07-13T20:13:44Z",
+   "body": "Tried that & it prompted for an update. Did the update but still the same issue."
+  },
+  {
+   "id": 412271654,
+   "user": "TheMoirs",
+   "created_at": "2018-08-11T12:20:01Z",
+   "body": "I've tried setting up a different phone (different version of OS) as a follower & have got the same issue. \r\nHowever, I occasionally have had a brief message on the master saying that the Sync Log is full. Could that be the problem? How do you clear the sync log?"
+  },
+  {
+   "id": 412271797,
+   "user": "TheMoirs",
+   "created_at": "2018-08-11T12:23:20Z",
+   "body": "Sorry, exact message is 'Maximum Sync Queue size Exceeded'"
+  },
+  {
+   "id": 412286447,
+   "user": "jamorham",
+   "created_at": "2018-08-11T16:36:56Z",
+   "body": "It sounds like your google play services is having problems on the master. You can go to Android System App settings, find google play services and clear the data. This will affect quite a few things, for example you'll likely need to relogin to the google play store. I also recommend that when doing this you reboot the phone immediately after clearing the data for google play services."
+  },
+  {
+   "id": 412330172,
+   "user": "TheMoirs",
+   "created_at": "2018-08-12T09:27:45Z",
+   "body": "Hi Jamorham\r\nDone that. Same problem I'm afraid.\r\n"
+  },
+  {
+   "id": 412573590,
+   "user": "jweismann",
+   "created_at": "2018-08-13T16:11:15Z",
+   "body": "Hi Jamorham - I can reproduce the issue described by @alexmoir1 on a samsung galaxy s5 as follower and with xdrip from the 21th of july. I even tried to clean all data from google play service on the master and I cleaned all xdrip data on the follower but the problem seems to persist. In the past I always used to use NS and nsclient to sync several xdrip instances but wanted to to try the domestic sync follower out. \r\n\r\nNot sure what I should expect to see on the master in system status - should I see refs to the followers? I don't see that so maybe that could explain something. \r\n\r\nAnyway, I should also mention that if I start nsclient on the follower phone then data start to float to xdrip again.\r\n\r\nLet me know if there is something I could try to help pinpoint this one. Thanks."
+  },
+  {
+   "id": 412972631,
+   "user": "jweismann",
+   "created_at": "2018-08-14T18:34:33Z",
+   "body": "Update: I found that the QR scan failed and once I managed to get that right it worked as expected. I tried to add two followers to the same master and I noticed that system status on both follower phones showed the right master but one follower only had the master whereas the other follower had both master and follower1 mentioned in followers. Also Master only had follower1 in its system status. Is this as expected or ?\r\n\r\n@alexmoir1 - take note at 1:15 in the clip mentioned by @jamorham where it states that it loaded two prefernces - if you don't see this then it might be due to failed QR scan.\r\n"
+  },
+  {
+   "id": 413101627,
+   "user": "TheMoirs",
+   "created_at": "2018-08-15T05:57:51Z",
+   "body": "Yes the 2 QR preferences seem to load fine. Still getting 'Maximum Sync Queue size Exceeded' message on the master, despite clearing google play data."
+  },
+  {
+   "id": 422990347,
+   "user": "vawlk",
+   "created_at": "2018-09-19T23:24:57Z",
+   "body": "I have 3 followers of my son's phone and they all stopped receiving data at the same time.  It has been hit and miss over the last week where I could occasionally coax the system in to running again but it got worse and worse and failed the last two nights.  This time, I can't get it to start again at all.  I had to install NSClient and use local broadcasts to get it to pull data from my azurewebsite.  It is a functional workaround but I would prefer not to insert another point of failure in to the mix.\r\n\r\nI went so far as to completely delete the data for the app and then start fresh and I still couldn't get the followers to communicate with the master."
+  },
+  {
+   "id": 423724288,
+   "user": "nicola-iuretigh",
+   "created_at": "2018-09-22T07:35:17Z",
+   "body": "Hi.\r\nSame problem for me too.\r\nOne week ago the follower handset stopped receiving data. I've tried to \r\n+ clean the follower xDrip and reconfigure it,\r\n+ reinstall the app and then reconfigure it\r\n\r\nbut nothing worked.\r\nI've not ried to clear Google Play Services on the master because (whether right or wrong) I fear to corrupt the master xDrip too and I cannot permit that since I use it to monitor my child at school.\r\n\r\nCurrently on the follower handset I'm using the Nighscout site (through a browser) uploaded with data by the xDrip master. Unfortunately, this method does not permit to calibrate and and to insert other actions from the follower handset.\r\nIt's a pity.\r\n\r\n"
+  },
+  {
+   "id": 423731675,
+   "user": "TheMoirs",
+   "created_at": "2018-09-22T09:54:54Z",
+   "body": "I fixed the issue on the Master. Go to Settings - Apps - Xdrip - Storage - Clear Data - Then set up everything again. \r\n@jamorham any chance you could give the user an option to clear the sync queue data when the 'Maximum Sync Queue size Exceeded' message pops up?\r\n "
+  },
+  {
+   "id": 472523627,
+   "user": "darkos8",
+   "created_at": "2019-03-13T17:24:27Z",
+   "body": "Encountered this 'scary' problem too, clearing app cache alone didn't help, but creating new sync key for followers did help. So like this:\r\n1. Clearing cache (but maybe it is even not necessary, I recommend to start with step 2, only changing sync key and rebooting all devices first, because otherwise you have to go through the Bluetooth data collecting procedure for Master first)\r\n2. Entering a new custom sync key on master device (has to be longer than 16 characters) and copying it and sending to followers to be exactly copied in the sync key field\r\n3. Rebooting master and followers, checking in system status of followers if master Q1 is listed and -expecting only the best!\r\nGood luck\r\n"
+  },
+  {
+   "id": 753688711,
+   "user": "ehanoj",
+   "created_at": "2021-01-03T23:00:19Z",
+   "body": "I have similar problem, I read the thread and test the advice without success.\r\nI tried to use Samsung A3 2017 (SM-A320F, Android 8) as a \"XDrip+ Sync Follower\" or master for other followers. It failed with \"serialize error\" and in log is repeatedly \"MissedReadingSevice:Aggressively restarting collector service due to lack of reception\". Now I see, that probably once in a day get phone full data from master, but I do not why.\r\n\r\nThe alone connection beetween Libre BT and each from both phones work well.\r\n\r\nTested with latest stable XDrip 20200713."
+  },
+  {
+   "id": 753699182,
+   "user": "tolot27",
+   "created_at": "2021-01-04T00:23:58Z",
+   "body": "Please can you try the latest nightly after backing up the database and settings?"
+  },
+  {
+   "id": 758219236,
+   "user": "adanvdo",
+   "created_at": "2021-01-11T20:58:41Z",
+   "body": "My follower device randomly stopped receiving data yesterday. I updated both master and follower to the latest nightly and that did not fix it.  \r\nIt's a little frustrating that you can not reset the sync settings once they are enabled.  The problem with wiping the app data is that in order to get all of your settings back and collector configuration, you have to import ALL settings.  I tried just importing the general and collection settings but those did not include the G6 transmitter number, or any of my display/prediction settings.  \r\nUltimately, after spending way too much time trying to troubleshoot and fix this, I finally just decided to change the last 2 characters of the Sync Key on both devices.  Sync is now working again."
+  },
+  {
+   "id": 758565794,
+   "user": "ehanoj",
+   "created_at": "2021-01-12T10:36:15Z",
+   "body": "> Please can you try the latest nightly after backing up the database and settings?\r\n\r\nThanks for your request. I do not still tested latest night version. But now i see, that problem is with internet connectivity of this phone. Someone wifi has denied or limited access to internet for this phone and also GSM data is not always capable.\r\nAs I guess, master/following data transfer is only via Internet not via Bluetooth... It is true reason? I search this in manual but I do not find the capabilities for master/follow data communication.\r\n"
+  },
+  {
+   "id": 786092717,
+   "user": "Navid200",
+   "created_at": "2021-02-25T18:01:14Z",
+   "body": "The work-around for this is to use a Nightscout follower, which will not rely on Google play services.\r\n\r\nSince a work-around exists, I am going to close this.  We can always reopen it.  But, keeping issues open (when the developer has clearly stated what the cause of the problem is being out of his hands) will take attention from issues that have no work-around.  So, I hope you wouldn't reopen it.\r\n\r\nIf you need help setting up Nightscout, you can get support from many different sources.\r\nOne is this this facebook group:\r\nhttps://www.facebook.com/groups/cgminthecloud"
+  }
+ ]
+}

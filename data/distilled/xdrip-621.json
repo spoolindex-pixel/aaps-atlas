@@ -1,0 +1,24 @@
+{
+ "issue_id": 621,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/621",
+ "title": "Error: bgreadinginsertfromjson passed a null or zero length json",
+ "symptom": "When using xDrip as a Nightscout viewer with Loop, treatment data is received but entry data (sgv) is not. The event log repeatedly shows 'bgreadinginsertfromjson passed a null or zero length json' every 5 minutes.",
+ "cause": "The thread does not definitively identify a root cause. It is speculated that Azure server settings (HTTP 2.0 and WebSockets) may be involved, but it is not confirmed.",
+ "fix": "Turning on HTTP 2.0 and WebSockets at the Azure server host level resolved the issue for one user, and another user confirmed it worked after doing the same and updating clients. The exact fix is enabling HTTP 2.0 and WebSockets on the Azure hosting.",
+ "settings_changed": [
+  "HTTP 2.0 → on",
+  "WebSockets → on"
+ ],
+ "devices": [],
+ "android_versions": [
+  "Android 8.1",
+  "Android 9"
+ ],
+ "driver_tags": [
+  "nsclient",
+  "nightscout"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "I'm on Azure for Nightscout, and I needed to turn on HTTP 2.0 and Websockets at the server host level - and now AndroidAPS / NSClient works consistently."
+}

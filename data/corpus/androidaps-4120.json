@@ -1,0 +1,21 @@
+{
+ "id": 3362917662,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4120,
+ "title": "Freeze after BLE connection reset (DASH)",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4120",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-08-28T11:15:29Z",
+ "closed_at": "2025-09-04T19:15:35Z",
+ "comment_count": 1,
+ "body": "Hi there,\n\nI’ve been experiencing rare AAPS freezes since upgrading to a 3.3.3dev-based version. The app becomes unresponsive, and I need to force stop it. This has happened only three times in the last 30 days. I'm on AutoISF (A3.3.3.a+aisf3.1.0), but imho this issue is not related to any changes from AutoISF.\n\nI was able to pinpoint the freeze to around 6:15 and found the following log lines. Therefore, I suspect its something about the BLE reset. Full log attached. Just wanted to share my findings with you, hope it helps!\n\nI'm on Android 14, SGS24, Omnipod Dash, FSL3 (via Juggluco)\nBuild: I'm on the A3.3.3.a+aisf3.1.0 from https://github.com/T-o-b-i-a-s/AndroidAPS/tree/3.3.3.a+aisf3.1.0\n\n```\n06:15:41.385 [NSClientV3PluginHandler] D/EVENTS: [RxBusImpl.send():25]: Sending EventNSClientNewLog[action=● TICK,date=1756354541372,logText=,timeFormat=java.text.SimpleDateFormat@8140d380]\n06:15:41.393 [RxCachedThreadScheduler-57] D/EVENTS: [RxBusImpl.send():25]: Sending EventNSClientUpdateGuiData[]\n\n====\n06:15:41.396 [RxCachedThreadScheduler-57] D/NSCLIENT: [NSClientV3Plugin$onStart$10.accept():263]: ● TICK \n06:15:51.716 [binder:18323_7] D/PUMPBTCOMM: [BleCommCallbacks.onConnectionStateChange():38]: OnConnectionStateChange with status/state: 19/0\n06:15:51.718 [binder:18323_7] I/PUMPBTCOMM: [Connection.onConnectionLost():211]: Lost connection with status: 19\n06:15:51.718 [binder:18323_7] D/PUMPBTCOMM: [Connection.disconnect():131]: Disconnecting closeGatt=true\n06:15:51.736 [binder:18323_7] D/PUMPBTCOMM: [BleCommCallbacks.resetConnection():217]: Reset connection\n====\n\n06:15:51.739 [binder:18323_7] D/EVENTS: [RxBusImpl.send():25]: Sending EventOmnipodDashPumpValuesChanged[]\n06:15:51.746 [main] D/EVENTS: [RxBusImpl.send():25]: Sending EventBTChange[deviceAddress=80:4C:5D:80:8B:9A,deviceName=<null>,state=DISCONNECT]\n06:16:07.019 [main] D/WIDGET: [Widget.onReceive():97]: onReceive ScheduleEveryMin\n06:16:14.679 [OmnipodDashPumpPluginHandler] I/PUMP: [OmnipodDashPumpPlugin._init_$lambda$0():160]: statusChecker\n```\n\n[AndroidAPS._2025-08-28_06.log](https://github.com/user-attachments/files/22023232/AndroidAPS._2025-08-28_06.log)",
+ "comments": [
+  {
+   "id": 3255236651,
+   "user": "MilosKozak",
+   "created_at": "2025-09-04T19:15:35Z",
+   "body": "sorry dev-a is too old"
+  }
+ ]
+}

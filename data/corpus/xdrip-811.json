@@ -1,0 +1,87 @@
+{
+ "id": 417010736,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 811,
+ "title": "can't set alarms anymore",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/811",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2019-03-04T21:56:14Z",
+ "closed_at": "2019-03-07T23:05:29Z",
+ "comment_count": 12,
+ "body": "Hi, since i'm back to the master fork i have an empty alarm list with both nightlies from 23.02 and 04.03. and can't set new once.\r\nI've tried almost everything i can think of to find a solution.\r\nAll i get when trying to set an alert is: \r\n\"Warning! No active Low Alert exists,without this there will be no alert on low glucose! \r\nPlease add or enable a low alert.\" and a still empty list.\r\n",
+ "comments": [
+  {
+   "id": 469637055,
+   "user": "tzachi-dar",
+   "created_at": "2019-03-05T10:58:26Z",
+   "body": "Just to make sure, are you pressing save after creating the alert?\r\n\r\nAssuming that yes, very likely there is a problem with your sqllite db.\r\nCan you try to save your settings, restore them and try again?\r\n\r\nIf that does not help, can you try to backup your db, delete it and see if that solves the problem?\r\nYou can also try to backup it, than restore it and see if that will solve the problem."
+  },
+  {
+   "id": 469682133,
+   "user": "Klaus3d3",
+   "created_at": "2019-03-05T13:37:53Z",
+   "body": "I already tried all of this. Even when i setup an alarm with my old version installed...save settings.. deinstall old version...install theese new nightlies and try to restore the old settings, everything is fine (old settings are there) except the alarm list is empty again. "
+  },
+  {
+   "id": 469697444,
+   "user": "MasterPlexus",
+   "created_at": "2019-03-05T14:22:14Z",
+   "body": "@klaus3d3 could you please add in the extended Logging 'alarmlist:v' . Then retry the adding of an entry, and after that send a screenshot of the Log?\r\nMaybe we could see then what's happening."
+  },
+  {
+   "id": 469703690,
+   "user": "MasterPlexus",
+   "created_at": "2019-03-05T14:38:49Z",
+   "body": "@Klaus3d3 , sorry, please incrise the extended logging tag to the following:\r\nalarmlist:v;editalertactivity:v;alerttype:v\r\n\r\nAlarm-Entrys are a little bit more complex that I thinked ;)"
+  },
+  {
+   "id": 469822961,
+   "user": "MasterPlexus",
+   "created_at": "2019-03-05T19:22:25Z",
+   "body": "Sorry, I've made a second mistake. Please use \r\nalarmlist:v, editalertactivity:v ,alerttype:v\r\n\r\nThe seperator is , and not ; \r\n\r\nNot my best day I guess ;)"
+  },
+  {
+   "id": 469851087,
+   "user": "Klaus3d3",
+   "created_at": "2019-03-05T20:47:53Z",
+   "body": "I noticed this myself but sadly nothing popos up in the log when i try to save an alert.\r\n\r\nI've also did a full reset including flash of a new rom of my phone, but still no success."
+  },
+  {
+   "id": 469863627,
+   "user": "Klaus3d3",
+   "created_at": "2019-03-05T21:26:24Z",
+   "body": "maybe this helps:\r\n\r\n03-05 22:15:18.365 10588-10588/? E/SQLiteDatabase: Error inserting mp3_file= override_silent_mode=true end_time_minutes=1440 predictive=false active=true vibrate=true threshold=70.0 uuid=dd493d31-dc12-48f7-b996-1e616142024a default_snooze=35 volume=0 light=false minutes_between=1 above=false all_day=true name=Niedrig force_speaker=true _id=null text=null time_until_threshold_crossed=0.0 start_time_minutes=0\r\n    android.database.sqlite.SQLiteException: table AlertType has no column named force_speaker (code 1 SQLITE_ERROR): , while compiling: INSERT INTO AlertType(mp3_file,override_silent_mode,end_time_minutes,predictive,active,vibrate,threshold,uuid,default_snooze,volume,light,minutes_between,above,all_day,name,force_speaker,_id,text,time_until_threshold_crossed,start_time_minutes) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)\r\n        at android.database.sqlite.SQLiteConnection.nativePrepareStatement(Native Method)\r\n        at android.database.sqlite.SQLiteConnection.acquirePreparedStatement(SQLiteConnection.java:903)\r\n        at android.database.sqlite.SQLiteConnection.prepare(SQLiteConnection.java:514)\r\n        at android.database.sqlite.SQLiteSession.prepare(SQLiteSession.java:588)\r\n        at android.database.sqlite.SQLiteProgram.<init>(SQLiteProgram.java:58)\r\n        at android.database.sqlite.SQLiteStatement.<init>(SQLiteStatement.java:31)\r\n        at android.database.sqlite.SQLiteDatabase.insertWithOnConflict(SQLiteDatabase.java:1562)\r\n        at android.database.sqlite.SQLiteDatabase.insert(SQLiteDatabase.java:1433)\r\n        at com.activeandroid.Model.save(Model.java:153)\r\n        at com.eveningoutpost.dexdrip.Models.AlertType.add_alert(AlertType.java:319)\r\n        at com.eveningoutpost.dexdrip.EditAlertActivity$1.onClick(EditAlertActivity.java:552)\r\n        at android.view.View.performClick(View.java:6614)\r\n        at android.view.View.performClickInternal(View.java:6591)\r\n        at android.view.View.access$3100(View.java:786)\r\n  "
+  },
+  {
+   "id": 469867992,
+   "user": "MasterPlexus",
+   "created_at": "2019-03-05T21:39:14Z",
+   "body": "Thanks. Looks like a column is missing in the table when no entry is there\r\nandroid.database.sqlite.SQLiteException: table AlertType has no column named force_speaker (code 1 SQLITE_ERROR):\r\n\r\nWill check that tomorrow (or maybe @tzachi-dar ;) )"
+  },
+  {
+   "id": 469874809,
+   "user": "jamorham",
+   "created_at": "2019-03-05T21:59:30Z",
+   "body": "I think `AlertType.fixUpTable()` must be missing from `IdempotentMigrations` so the schema isn't properly set up before attempts are made to write the data.  I can add this for the next nightly."
+  },
+  {
+   "id": 469902726,
+   "user": "Klaus3d3",
+   "created_at": "2019-03-05T23:32:52Z",
+   "body": "This sounds promissing. But...am i the only one? "
+  },
+  {
+   "id": 470487308,
+   "user": "jamorham",
+   "created_at": "2019-03-07T11:15:27Z",
+   "body": "This should be resolved in the March 7th nightly. @Klaus3d3 you are probably not the only one so thanks for noticing the issue!!"
+  },
+  {
+   "id": 470737220,
+   "user": "Klaus3d3",
+   "created_at": "2019-03-07T23:05:29Z",
+   "body": "Hi, yes its working again. Thanks all. "
+  }
+ ]
+}

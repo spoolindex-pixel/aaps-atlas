@@ -1,0 +1,87 @@
+{
+ "id": 1960261117,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2977,
+ "title": "[Safety Question/Discussion] Change in bolus wizard - 100% Bolus",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2977",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-10-24T23:42:34Z",
+ "closed_at": "2023-11-02T21:23:34Z",
+ "comment_count": 12,
+ "body": "Not an issue but rather a question that concerns me when I was reading the specific changelog line:\r\n`Change in BolusWizard. If CGM is not available percentage is ignored (ie 100% is used)`\r\n\r\nI always get alarmed when I see functionality changed without internal warnings, that comes with the potential of people overdosing when perfoming actions in the same way they are used to before an update.\r\nIn this case: Somebody is used to ALWAYS perform 60% bolus via calculator (even without CGM data), and now does perform the same clicks without thinking/noticing, that person will perform an 100% bolus, correct? - Will he/she notice?\r\n\r\nI don't doubt there is a good reason for this implementation (I'd like to hear about it), but I'd like to see changes towards \"situation with potentially more insulin than expected\" being addressed with an in-app warning/confirmation-check\r\n\r\nEpic update nonetheless :+1: ",
+ "comments": [
+  {
+   "id": 1778444292,
+   "user": "jbowler",
+   "created_at": "2023-10-25T03:23:33Z",
+   "body": "Please post the URI of the commit, or the commit id, or the actual text of the subject line of the commit."
+  },
+  {
+   "id": 1778706384,
+   "user": "MilosKozak",
+   "created_at": "2023-10-25T07:50:28Z",
+   "body": "how these users give the missing 40%?"
+  },
+  {
+   "id": 1778832514,
+   "user": "olorinmaia",
+   "created_at": "2023-10-25T09:06:32Z",
+   "body": "Tip: If you enable Engineering mode you can adjust the time needed for this change to occur.  Commit: 6cd32e84\r\n\r\nBut I agree that when CGM readings are missing, best practice is to bolus 100%. "
+  },
+  {
+   "id": 1779394351,
+   "user": "mSternEU",
+   "created_at": "2023-10-25T14:21:42Z",
+   "body": "> how these users give the missing 40%?\r\n\r\nI do understand, that 'no CGM data' for itself is a special occasion. I am just trying to gage whether unintended 'underdosing' or 'overdosing' is the more critical situation to prevent. (Most 'no/wonky CGM data'-situations I witness resolve themselves after 2-3 ticks)\r\n\r\n> Tip: If you enable Engineering mode you can adjust the time needed for this change to occur. Commit: [6cd32e8](https://github.com/nightscout/AndroidAPS/commit/6cd32e84fe006bcdfe89a9d1c93aa6e3472f5033)\r\n\r\nThat indeed is a nice workaround, thanks for that option :+1: \r\n\r\n> But I agree that when CGM readings are missing, best practice is to bolus 100%.\r\n\r\nI think I agree with you in general, 100% is fine. I am just worried of situations when default-steps the user is used to suddenly result in higher dosing than expected - without giving him/her a one-time warning during the process.\r\nI'd love to see that kind of precaution / info dialogue whenever routine changes may result in overdosing.\r\n\r\nI know I might be biased with overdosing topics, that's probably a side-effect of the amount of kids/parents I supervise and coach. (That's also why I don't like the calculator ignoring TTs per default but that's another issue)\r\nMaybe a 'let users set own default behaviour' option could work."
+  },
+  {
+   "id": 1784922675,
+   "user": "szantos",
+   "created_at": "2023-10-30T10:44:31Z",
+   "body": "Bolusing 100% in this case can cause serious hypos. And if CGM is not coming back in time, the user won't see any declining SGVs or be warned in any way - IMHO a very dangerous situation without any protection.\r\n\r\nI hear the argument of dosing the rest. I'd suggest not to touch the bolus delivery %. Instead if there was a % at bolusing and the CGM remains absent after bolusing, there could be delayed notifications (for example after 1-2-3 hours) that the user has to review and dose manually the missing part of the bolus. Or any other solution.\r\n\r\nPeople, who use a % (<100) do it, because they think, the full amount of bolus upfront would be too much and cause early pp hypos (and would like to preserve more agressivity with COB). Overriding this with 100% bolus sets the user towards hypo, and there is no CGM to give any warning.\r\n\r\nAfter a bolus (with CGM data) often TBR=0 is set for longer periods. If CGM is missing AAPS will start to give base basal, which means even more insulin.\r\n\r\n@mSternEU , @MilosKozak may it be worth to reopen and reconsider?"
+  },
+  {
+   "id": 1785476211,
+   "user": "MilosKozak",
+   "created_at": "2023-10-30T15:33:17Z",
+   "body": "most people uses  <100% because it's recommended and it's how SMB alg was designed. \r\nnot because of possible hypo after bolus but to give to alg working space to adjust dosing based on real cabs income\r\nif you are using AAPS different way than it was designed it's up to you to deal with consequences\r\n"
+  },
+  {
+   "id": 1785483302,
+   "user": "MilosKozak",
+   "created_at": "2023-10-30T15:36:49Z",
+   "body": "and .... without CGM .... it will need user interaction from everyone anyway. maybe in different form but still"
+  },
+  {
+   "id": 1785514601,
+   "user": "jbowler",
+   "created_at": "2023-10-30T15:51:59Z",
+   "body": "I looked at the change, so far as I can see it only changes the initial value when the dialog is opened and that initial value is only displayed if the checkbox is checked; the checkbox is persistent across dialog invocations the percentage isn't.  Supposedly there is a way to change the default %; I can see where it's loaded from the resources but I couldn't find any way in the UI to change it.\r\n\r\nIn any case the change is just to display 100% *initially*, when the dialog is opened, if no CGM readings have been received for 6 minutes.  I guess it's going to annoy people who know how to change the default value; 6 minutes is a single dropped reading from a Dexcom and maybe the smoothing delays further delay the CGM readings.\r\n\r\nNevertheless it can be changed and it only matters if the checkbox is left checked.  So far as I could see if the checkbox is unchecked then checked in the dialog the resource value is loaded anyway, without attention to the CGM timeout (I have no way of testing this as I can't set the default).  Certainly the % can be changed in the dialog.\r\n\r\nI may not have engineering mode enabled but I certainly can't see the later (engineering) option to change the timeout in the UI either, so I don't know whether the default for that is still set to 6 minutes.\r\n\r\nThis all seems like a storm in a teacup.  If there is an issue it's the lack of discoverable documentation.  Tooltips on the bolus calculator dialog would help a lot."
+  },
+  {
+   "id": 1785590133,
+   "user": "mSternEU",
+   "created_at": "2023-10-30T16:30:30Z",
+   "body": "> Supposedly there is a way to change the default %; I can see where it's loaded from the resources but I couldn't find any way in the UI to change it.\r\n\r\nThe setting you are looking for is is:\r\nThree-Dot-Menu\r\nPreferences\r\nSection \"Overview\"\r\nAdvanced settings\r\n\r\nI don't really question that 'getting to 100%' is a correct decision. To come up with striking car comparisons: If I as your car mechanic change your cars ECU to make it go faster - should I better tell you, or should I let you find out while performing actions you are used to? :)\r\nMaybe the underlying discussion could be used as a small step towards a 'which changes in therapy-relevant systems might get equipped with a one-time user-confirmation dialogue'-thought from now on.\r\n![Screenshot_20231030-172541~2](https://github.com/nightscout/AndroidAPS/assets/38337079/fe157307-f8d2-422b-ad65-823866a81807)\r\n\r\nThat is the value that gets the \"no CGM = 100% override\"\r\n"
+  },
+  {
+   "id": 1785865851,
+   "user": "MilosKozak",
+   "created_at": "2023-10-30T19:03:44Z",
+   "body": "well default value of missing readings is 16 min (and it means in case of dexcom even no BGs for at least next 19 min) and you can change this threshold in engineering mode.\r\nI'm not getting what more do you want "
+  },
+  {
+   "id": 1785868341,
+   "user": "MilosKozak",
+   "created_at": "2023-10-30T19:05:31Z",
+   "body": "it you want to update UI just offer something"
+  },
+  {
+   "id": 1786223067,
+   "user": "jbowler",
+   "created_at": "2023-10-30T23:53:55Z",
+   "body": "> The setting you are looking for is is: Three-Dot-Menu Preferences Section \"Overview\" Advanced settings\r\n\r\nAh there is is!  Engineering mode adds another entry below that, \"Old glycemia time threshold [min]\", with a default of 16 minutes and a minimum of 6 minutes."
+  }
+ ]
+}

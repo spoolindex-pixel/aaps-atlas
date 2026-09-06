@@ -1,0 +1,69 @@
+{
+ "id": 429505137,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 842,
+ "title": "Tidepool integration - upload errors",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/842",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2019-04-04T22:11:58Z",
+ "closed_at": "2021-02-18T02:50:43Z",
+ "comment_count": 9,
+ "body": "The Tidepool integration can fail with the error \"400 Bad Request\", leading to \"stuck\" uploads.\r\n\r\nThis occurs when there are invalid values in xDrip that the Tidepool servers will not accept, resulting in the 400 response (such as negative CGM values).\r\n\r\nWe need to add a data validation step before uploading to Tidepool",
+ "comments": [
+  {
+   "id": 480082518,
+   "user": "pazaan",
+   "created_at": "2019-04-04T22:12:12Z",
+   "body": "@jamorham - you can assign this one to me :)"
+  },
+  {
+   "id": 498923484,
+   "user": "imakeinterfaces",
+   "created_at": "2019-06-05T03:17:22Z",
+   "body": "@pazaan The way I experienced was that the first phone i enabled tidepool on had no problems whatsoever. However that phone died and i had to switch to an interim phone which experiences this problem. I also bought a third phone to replace the interim one and now that one experiences the error as well.\r\n\r\nThe problem both of them exhibit `Found Existing Remote Dataset` followed by `Data Upload was not Sucessful: 400 Bad Request.` There's a big thread on this here https://forum.fudiabetes.org/t/xdrip-integration-with-tidepool/5653/5 I suspect this is an issue with multiple devices."
+  },
+  {
+   "id": 518749647,
+   "user": "tzachi-dar",
+   "created_at": "2019-08-06T16:42:43Z",
+   "body": "I have seen a case where upload fails, probably because there is a negative value on calculated_value.\r\nData is: \r\n\r\n\"51926\"\t\"51926\"\t\"0.0\"\t\"0.012\"\t\"0.0\"\t\"0.0\"\t\"-26.6857484754007\"\t\"0.0\"\t\"78\"\t\"0\"\t\"81b473fe-70c8-48ad-869c-46b1eb93280d\"\t\t\"0.0\"\t\"0.0\"\t\"-26.6857484754007\"\t\"0.012\"\t\"1\"\t\"0\"\t\"0\"\t\"0.0\"\t\"0.0\"\t\"0.012\"\t\"0.0\"\t\"0.0\"\t\"10\"\t\"626ce774-4bd1-4488-b73e-83cd61835654\"\t\t\"1256437385.0\"\t\"1560865244888\"\t\"2489687d-cb1c-43b3-8bec-963662f4e0de\"\r\n\r\nSee the -26 there. I'll create a fix and see if it will help.\r\nFix has to be in ESensorGlucose\r\n\r\n"
+  },
+  {
+   "id": 520181837,
+   "user": "tzachi-dar",
+   "created_at": "2019-08-10T21:45:33Z",
+   "body": "@pazaan I'm looking for the checks that tidepool is doing to verify the entries.\r\nFor example, i have noticed that some BG values are too small/big.\r\nBolus values also have some limitations. \r\n\r\nCan you tell me what this limitations are, so I can add them to xdrip?"
+  },
+  {
+   "id": 520195276,
+   "user": "pazaan",
+   "created_at": "2019-08-11T02:44:35Z",
+   "body": "Thanks @tzachi-dar. I obviously haven't got around to this yet (soooo many open source projects to work on!).\r\nYou can find [Tidepool's data model documentation at the developer portal](https://developer.tidepool.org/data-model). There are a couple of models of interest for [this integration](https://github.com/NightscoutFoundation/xDrip/tree/master/app/src/main/java/com/eveningoutpost/dexdrip/tidepool): [`cbg`](http://developer.tidepool.org/data-model/device-data/types/cbg.html) (for ESensorGlucose), [`smbg`](http://developer.tidepool.org/data-model/device-data/types/smbg.html) (for EBloodGlucose), [`basal` (with `automated` subtype)](http://developer.tidepool.org/data-model/device-data/types/basal/automated.html) (for EBasal), [`bolus` (with `normal` subtype)](http://developer.tidepool.org/data-model/device-data/types/bolus/normal.html) (for EBolus) and [`wizard`](http://developer.tidepool.org/data-model/device-data/types/wizard.html) (for EWizard)."
+  },
+  {
+   "id": 520206221,
+   "user": "tzachi-dar",
+   "created_at": "2019-08-11T07:16:14Z",
+   "body": "Thanks, this is what I was looking for. Hope to have my pr ready soon."
+  },
+  {
+   "id": 522270556,
+   "user": "tzachi-dar",
+   "created_at": "2019-08-17T21:05:47Z",
+   "body": "Created a fix in: https://github.com/NightscoutFoundation/xDrip/pull/983"
+  },
+  {
+   "id": 780989613,
+   "user": "Navid200",
+   "created_at": "2021-02-18T02:08:42Z",
+   "body": "@pazaan Can we close this issue if it has been resolved?\r\nThanks"
+  },
+  {
+   "id": 781005818,
+   "user": "pazaan",
+   "created_at": "2021-02-18T02:50:35Z",
+   "body": "Yep, looks good to me 👍🏻 "
+  }
+ ]
+}

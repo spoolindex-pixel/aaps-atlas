@@ -1,0 +1,57 @@
+{
+ "id": 2868333093,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3842,
+ "title": "AutoISF : No variable_ISF curve if it's alone",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3842",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-02-21T08:17:07Z",
+ "closed_at": "2025-02-22T14:18:35Z",
+ "comment_count": 7,
+ "body": "@Philoul and @ga-zelle If I set variable ISF curve with the IOB and COB graph, or with the dev graph it's visible.\n\n![Screenshot_20250221_091225_AAPS.jpg](https://github.com/user-attachments/assets/8c5a4248-c9a3-4bcb-baa2-0454168efdde)\n\n![Screenshot_20250221_091254_AAPS.jpg](https://github.com/user-attachments/assets/4a374be8-9eda-4108-b3c7-e42a8942421f)\n\nBut, if it's alone,  the curve is not visible. \n\n![Screenshot_20250221_053425_AAPS.jpg](https://github.com/user-attachments/assets/31f05baf-7c51-4f68-a2af-f251e95ad6a6)\n\nOr, sometimes, only some dots are visible...\n\n![Screenshot_20250221_091329_AAPS.jpg](https://github.com/user-attachments/assets/0a436e1d-b677-49c6-8be6-68be72332c38)\n\nIf needed, the logs. Look at 5:30 AM when I set it up on an individual graph.\n\n![AndroidAPS_LOG_1740112478210.log.zip](https://github.com/user-attachments/files/18903315/AndroidAPS_LOG_1740112478210.log.zip)\n\n\n\n",
+ "comments": [
+  {
+   "id": 2674141353,
+   "user": "Philoul",
+   "created_at": "2025-02-21T10:16:28Z",
+   "body": "I think it's just a refresh of the graph scale.\nCan you try to close and open AAPS to check if it fix the scale?\n\nBTW keep this issue open, we will have to analyze code and ensure scale is correctly updated on each update of subgraphs.\n\n![Screenshot_20250221-111707_AAPS.jpg](https://github.com/user-attachments/assets/12a682b2-005f-4217-8fce-4d4d5836fed6)\n\n"
+  },
+  {
+   "id": 2674379265,
+   "user": "robertrub",
+   "created_at": "2025-02-21T12:05:24Z",
+   "body": "Yes, you're correct. Close and start AAPS solved it.\n\nChanging the duration of the graphs (from 6h to 12h to back to 6h) doesn't solve the problem.\n\nRestarting AAPS solves the problem. "
+  },
+  {
+   "id": 2674690789,
+   "user": "ga-zelle",
+   "created_at": "2025-02-21T14:25:52Z",
+   "body": "@Philoul I won't have time during the day. But some graphs look like the last data point of VSENS might be missing. Also, I'll try DynISF on a test phone to see, whether it behaves the same way."
+  },
+  {
+   "id": 2674998797,
+   "user": "Philoul",
+   "created_at": "2025-02-21T16:25:07Z",
+   "body": "Ok, understood the issue and I could reproduced it:\nSubGraph vertical scale is given by the first selected item in menu or in item list in upper left of each graph.\n\nIf you switch V_SENS graph within another graph with a higher priority item like IOB, DEV..., then graph values are calculated again to fit the new scale.\n\nIt seems like when you switch back the V_SENS curve to be the master scale (alone or with lower priority curves like STEP or HR), then scale is correctly updated on the left of the subgraph. but the curve points are not so they remains with the value of previous graph (so with an IOB scale for ex.).\n\nI will now analyse code (above analysis only managed playing within the app on my phone 😉), to fix it..."
+  },
+  {
+   "id": 2676073005,
+   "user": "Philoul",
+   "created_at": "2025-02-22T07:31:26Z",
+   "body": "I made a PR to fix this issue #3844 if you want to test it...\n\nIt works fine now on my side 😉 ..."
+  },
+  {
+   "id": 2676161898,
+   "user": "robertrub",
+   "created_at": "2025-02-22T11:45:43Z",
+   "body": "@Philoul Built it. Working OK. I can change the place of v_ISF and it is always visible, even when it's by itself. "
+  },
+  {
+   "id": 2676211330,
+   "user": "ga-zelle",
+   "created_at": "2025-02-22T13:24:27Z",
+   "body": "Tested OK. Is very robust, I cannot break it with various combinations.\n\nHowever, when starting fresh the very first VSENS value is not displayed although the scaling is already updated from NaN and shown correctly. This may be a different issue."
+  }
+ ]
+}

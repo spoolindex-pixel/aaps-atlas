@@ -1,0 +1,120 @@
+{
+ "id": 597743993,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1297,
+ "title": "Connectivity problem reaching Share servers",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1297",
+ "state": "closed",
+ "labels": [
+  "sync-dexcom",
+  "type-documentation"
+ ],
+ "created_at": "2020-04-10T07:31:32Z",
+ "closed_at": "2023-05-30T16:40:28Z",
+ "comment_count": 17,
+ "body": "Since approximately 8.30am CET on April 9th I get the problem \"Connectivity problem reaching Share servers\". I use dexcom share/ follow to get readings for my xdrip app and nightscout website. The website didn't get readings since ca. 1am the same day. So both sources have a problem getting share data. Interestingly enough, my dexcom follower through the official app still get readings without any changes.\r\n\r\nThe exact wording in the event log of xdrip is the following: \"Get Share Data Failed: java.io.EOFException: End of input at line 1 column 1 path $\" \r\n\r\nLocated in Europe, if that has to do with server. Updated to the latest nightly as well. \r\nHas anyone had the same problem? Any idea how to fix it? ",
+ "comments": [
+  {
+   "id": 611957864,
+   "user": "Josef-A",
+   "created_at": "2020-04-10T09:30:15Z",
+   "body": "I have the same problem as iqhu. \r\nSeveral users in Sweden does have the same problem. But there also users with no problem at all.\r\nIssue in nightscout:\r\nnightscout/cgm-remote-monitor#5608"
+  },
+  {
+   "id": 612630441,
+   "user": "iqhu",
+   "created_at": "2020-04-12T15:06:40Z",
+   "body": "Just to update here as well: I didn't get it fixed but switched to using my Galaxy S10 through xdrip as a collector again (which now actually works again).  "
+  },
+  {
+   "id": 618867366,
+   "user": "Josef-A",
+   "created_at": "2020-04-24T08:04:22Z",
+   "body": "It seems that the problem is because of other character then a-z in the user name.\r\nSee the discussion in nightscout/cgm-remote-monitor#5608\r\n\r\nUnfortunately you can't switch the user name. You have to set up a new account.\r\nI wrote down some instructions how to change the Dexcom account.\r\nhttps://github.com/Josef-A/sugarmate2nightscout/blob/master/how_to_fix_en.md\r\n\r\nThe instructions is written for Nightscout users. But it's nearly the same for xDrip."
+  },
+  {
+   "id": 618870517,
+   "user": "Josef-A",
+   "created_at": "2020-04-24T08:11:09Z",
+   "body": "It would be good if the problem with user Dexcom user name can be mentioned in the documentation for xDrip. \r\nI do not have that much experience of Github pull request. So if someone can fix that it would be great.\r\nAfter that I think we can close this issue."
+  },
+  {
+   "id": 798838629,
+   "user": "Navid200",
+   "created_at": "2021-03-14T05:42:35Z",
+   "body": "@Josef-A refer to the documentation for xDrip.\r\nWhat do you mean by that?\r\nThere are a lot of capabilities that are not documented.  We definitely can improve that and create documentation.\r\nBut, I don't think we should have an open issue for every item that has no documentation.\r\n\r\nPlease let me know if you disagree.\r\nOtherwise, I would like to close this issue.\r\nThanks"
+  },
+  {
+   "id": 798877228,
+   "user": "Josef-A",
+   "created_at": "2021-03-14T09:39:53Z",
+   "body": "This problem with other character then a-z seems hard to troubleshoot. Some people have the problem some don’t. When this thread opened it seems to be many that had the same problem. After that I haven’t heard so much about it. Maybe one user per month.\r\n\r\nI understand that it’s natural in these kind of project that the documentation is lagging behind the features.\r\n\r\nIn the end it is a tradeoff between the time you spent updating documentation and the time spent troubleshooting for users.\r\nI think you @Navid200 have the best insight in both sides of that.\r\n\r\nIt’s alright for me if you close it. I guess that people getting the same problem will still be able to find the closed issue and get help from that.\r\n"
+  },
+  {
+   "id": 864697384,
+   "user": "Navid200",
+   "created_at": "2021-06-21T03:26:56Z",
+   "body": "Thanks.\r\nI agree"
+  },
+  {
+   "id": 985102200,
+   "user": "fzelins",
+   "created_at": "2021-12-03T00:08:18Z",
+   "body": "I did not have this problem and xdrip was working fine, now suddenly I have this problem and xDrip is not working. Issue should be reopened. I have my dex account linked to Diasend of my clinic and I can not create new, without updating it there... "
+  },
+  {
+   "id": 985125652,
+   "user": "Navid200",
+   "created_at": "2021-12-03T00:59:57Z",
+   "body": "@fzelins Please post here:\r\nhttps://github.com/Navid200/xDrip/discussions"
+  },
+  {
+   "id": 985291680,
+   "user": "tolot27",
+   "created_at": "2021-12-03T07:55:07Z",
+   "body": "Please add \"ShareFollowDL:v,ShareFollowEP:v\" to the extra logging tags and report if there are more information in the error logs."
+  },
+  {
+   "id": 988582087,
+   "user": "tolot27",
+   "created_at": "2021-12-08T07:59:40Z",
+   "body": "Is anyone able to use adb logcat on a computer connected to phone? If yes, I can provide a debug version which collects HTTP responses and sends them to logcat. But since this version is not signed, the currently installed version has to be removed (backup of settings and db is required beforehand).\r\n\r\nI'm also trying to get the preference \"Store logs for troubleshooting\" to work for the phone app. Currently, it works only on Wear OS."
+  },
+  {
+   "id": 997321658,
+   "user": "samgray85",
+   "created_at": "2021-12-19T03:09:46Z",
+   "body": "Following. Having the same issue\r\n Username has numbers in it"
+  },
+  {
+   "id": 997396826,
+   "user": "tolot27",
+   "created_at": "2021-12-19T13:58:11Z",
+   "body": "It is very likely that this issue will be fixed together with the fix for #1882."
+  },
+  {
+   "id": 1031947020,
+   "user": "charli144",
+   "created_at": "2022-02-07T21:31:55Z",
+   "body": "i have a similar problem but i get a different error message: ShareFollowCallback\r\nlogin failed:java.security.cert.CertPathValidatorException: Trust anchor for certification path not found. "
+  },
+  {
+   "id": 1032233267,
+   "user": "tolot27",
+   "created_at": "2022-02-08T05:39:04Z",
+   "body": "Please can you try the apk I've provided in https://github.com/NightscoutFoundation/xDrip/issues/1882#issuecomment-1026294458?\r\nIf it still does not work, please follow https://github.com/NightscoutFoundation/xDrip/issues/1882#issuecomment-1026609865 and report it here."
+  },
+  {
+   "id": 1034134108,
+   "user": "tolot27",
+   "created_at": "2022-02-09T19:50:15Z",
+   "body": "The newest [nightly](https://github.com/NightscoutFoundation/xDrip/releases/tag/2022.02.09) contains the fix for #1882. Please try it and report back whether it solves your problem(s) as well."
+  },
+  {
+   "id": 1107939990,
+   "user": "Navid200",
+   "created_at": "2022-04-24T23:36:44Z",
+   "body": "Is anyone still experiencing this issue with the current stable release (January 31, 2022)?"
+  }
+ ]
+}

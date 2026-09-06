@@ -1,0 +1,50 @@
+{
+ "id": 637613062,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1365,
+ "title": "Dexcom G6 Checking Auth Errors",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1365",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "duplicate",
+  "device-dexcom",
+  "bluetooth"
+ ],
+ "created_at": "2020-06-12T09:21:06Z",
+ "closed_at": "2020-11-20T11:20:25Z",
+ "comment_count": 5,
+ "body": "With the latest nightly build I have the following error messages in the log when trying to receive readings from the G6 transmitter.\r\n\r\nOb1G5StateMachine\r\nCould not read after AuthRequestTX:\r\ncom.polidea.rxandroidble2.exceptions.BleGattCannotStartException:\r\nGATT exception from MAC address …, with type\r\nBleGattOperation{description='CHARACTERISTIC_READ'}\r\n\r\nauthentication notification  throwable: (CHECK_AUTH)\r\ncom.polidea.rxandroidble2.exceptions.BleDisconnectedException:\r\nDisconnected from MAC='XX:XX:XX:XX:XX:XX' with status 19\r\n(GATT_CONN_TERMINATE_PEER_USER)\r\n\r\nWhen the phone connects to the transmitter the system status page shows several error messages: Power connect Errors, Examining Errors, Checking Auth Errors and Scanning Errors Errors. They accumulate every 5 minutes.\r\nDue to the issue it is not possible to receive any readings from the transmitter.\r\n\r\nPhone reboot, forgetting transmitter device and reinstalling xdrip+ did not help. The problem even persists when trying to connect with xdrip+ from another Android phone.\r\n\r\nThe Dexcom receiver does receive readings. BlueJay watch receives readings when using receiver slot and fails when using phone slot.\r\n\r\nThe issue occurred on transmitter day 4. On the first three days xdrip+ received readings without any problems.\r\n\r\nThe error log messages seem to be similar to issue #732 . As I was not able to reopen the issue and updating to the latest xdrip+ version did not solve the problem I opened a new issue.\r\n\r\nDexcom G6, 8Kxxxx Transmitter\r\nTransmitter firmware: 2.18.2.98\r\nPhone model: Nexus 6P\r\nOS phone: Android 8.1.0\r\nxdrip+: 9cfe91f-2020.06.11",
+ "comments": [
+  {
+   "id": 667681103,
+   "user": "obodeldog",
+   "created_at": "2020-08-02T14:29:45Z",
+   "body": "Same here. Is there an solution? "
+  },
+  {
+   "id": 667703277,
+   "user": "zackallan",
+   "created_at": "2020-08-02T17:37:12Z",
+   "body": "Unfortunately I had to replace the transmitter. I assume that the transmitter was in a faulty status as the Dexcom G6 app did not work either."
+  },
+  {
+   "id": 730021327,
+   "user": "fclingen",
+   "created_at": "2020-11-18T23:28:36Z",
+   "body": "I am currently seeing this problem.   Transmitter 8LQM1P on firmware 2.18.2.98.  The transmitter is only 84 days old,  and my next transmitter is stuck in medical insurance limbo so if anyone has s suggestion other than \"replace the transmitter\" i would greatly appreciate it"
+  },
+  {
+   "id": 731110674,
+   "user": "tolot27",
+   "created_at": "2020-11-20T11:20:25Z",
+   "body": "Closing in favor of #1279 "
+  },
+  {
+   "id": 731161809,
+   "user": "zackallan",
+   "created_at": "2020-11-20T13:11:32Z",
+   "body": "In fact, I think that #1279 is a different issue. The error messages are not identical and when running into this issue the phone stops receiving any readings.\r\nHowever you can keep this issue closed because I think that xDrip is not the cause of the problem as the official Dexcom app could not handle the transmitter either."
+  }
+ ]
+}

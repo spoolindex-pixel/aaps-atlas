@@ -1,0 +1,45 @@
+{
+ "id": 2066085801,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 3273,
+ "title": "Bluetooth may be disabled by airplane mode",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/3273",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-01-04T17:47:01Z",
+ "closed_at": "2024-01-07T15:52:57Z",
+ "comment_count": 5,
+ "body": "I've opened this issue as instructed by @Navid200  via [this ](https://github.com/NightscoutFoundation/xDrip/discussions/3270)discussion.\r\n\r\nThe following is only a summary, please refer to the above discussion for more details.\r\n\r\nGoogle has relaxed how it implements airplane mode and it seems that xdrip+ is at odds with how it implements airplane mode restriction vs how Google/Android handles airplane mode.\r\n\r\n[Google allows airplane mode to be enabled on Android devices (at Android 14+) while keeping Bluetooth and WIFI turned on.](https://www.sammobile.com/news/android-14-smarter-flight-mode-samsung-galaxy-phones/)\r\nXdrip+ has had a limitation where it stops collecting if airplane mode is turned on.  I believe the issue arises from the following scenario:  Airplane mode is enabled and wifi and BT remain turned on.  If you step away from your phone and lose connection and the BT watchdog becomes active, it will try to reconnect BT which then fails due to airplane mode being turned on.  There is an xdrip event log entry that states, \"Not setting Bluetooth to state: true due to airplane mode being enabled\".\r\n\r\nWould like it if xdrip could ignore airplane mode during its BT Watchdog processes and simply continue to function, if that is in fact the issue.  \r\n",
+ "comments": [
+  {
+   "id": 1879286925,
+   "user": "Navid200",
+   "created_at": "2024-01-05T21:39:51Z",
+   "body": "@gitanO0 Please try the latest xDrip release and see if it makes a difference and please report.\r\nThanks"
+  },
+  {
+   "id": 1879287190,
+   "user": "Navid200",
+   "created_at": "2024-01-05T21:40:09Z",
+   "body": "https://github.com/NightscoutFoundation/xDrip/releases/tag/2024.01.05"
+  },
+  {
+   "id": 1879287387,
+   "user": "gitanO0",
+   "created_at": "2024-01-05T21:40:24Z",
+   "body": "On it. "
+  },
+  {
+   "id": 1879297763,
+   "user": "gitanO0",
+   "created_at": "2024-01-05T21:52:04Z",
+   "body": "Preliminary test is positive. I enabled airplane mode and then turned off BT. Waited until the next collection cycle and BT was auto turned on and the data came through. Yes! I suspect that this is a good fix. I'll need to wait a little longer to do the other edge case scenario where airplane mode is enabled. Bluetooth is on but then I go out of sensor range and Bluetooth starts doing the watch dog thing and tries to toggle Bluetooth. But then before the fix it wouldn't have been able to work because of the airplane mode situation. But now it seems that it will just turn on automatically and things should work. "
+  },
+  {
+   "id": 1880096178,
+   "user": "Navid200",
+   "created_at": "2024-01-07T15:52:57Z",
+   "body": "Closing as it seems it has been addressed by this release: https://github.com/NightscoutFoundation/xDrip/releases/tag/2024.01.05\r\n\r\nWe can reopen if not.  "
+  }
+ ]
+}

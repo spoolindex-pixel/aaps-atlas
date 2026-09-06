@@ -1,0 +1,111 @@
+{
+ "id": 1949507435,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2938,
+ "title": "Nightscout : missing BGs",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2938",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-10-18T11:23:07Z",
+ "closed_at": "2023-10-22T21:30:30Z",
+ "comment_count": 16,
+ "body": "Not sure if it is a NS or AAPS bug... Using last Dev for both.\nIn AAPS, NS is set to update only when charging. Usually, when charging the last BGs are filled up. They are no more filled. There are holes in the BGs on NS \n\n![Screenshot_20231018_131759_DuckDuckGo.jpg](https://github.com/nightscout/AndroidAPS/assets/76626474/f4989fee-8459-4e26-b2fa-ca1e9ec5e77e)\n\n![Screenshot_20231018_132152_AAPS.jpg](https://github.com/nightscout/AndroidAPS/assets/76626474/069059de-27a5-4b2c-b338-a7ea34364f9d)\n\nTrying a full resync of NS in AAPS. 350k entries to update...",
+ "comments": [
+  {
+   "id": 1768273088,
+   "user": "robertrub",
+   "created_at": "2023-10-18T11:43:07Z",
+   "body": "I see this alert on my NS. I don't know if it's related and why there was this alert.\n\n![Screenshot_20231018_134133_DuckDuckGo.jpg](https://github.com/nightscout/AndroidAPS/assets/76626474/bd2b8c4f-fa39-4140-8893-6335615ba3dc)\n\nFull resync is uploading ok for the moment."
+  },
+  {
+   "id": 1768424704,
+   "user": "MilosKozak",
+   "created_at": "2023-10-18T13:11:13Z",
+   "body": "without logs i cannot resolve anything"
+  },
+  {
+   "id": 1768442487,
+   "user": "robertrub",
+   "created_at": "2023-10-18T13:17:44Z",
+   "body": "After a full resync, the holes are there.\n\nSorry for the logs. Here they are\n\n![AndroidAPS_LOG_1697634941992.log.zip](https://github.com/nightscout/AndroidAPS/files/13025621/AndroidAPS_LOG_1697634941992.log.zip)\n\nYou have the approximate times on the graph."
+  },
+  {
+   "id": 1768446273,
+   "user": "robertrub",
+   "created_at": "2023-10-18T13:19:50Z",
+   "body": "It looks like AAPS is uploading only during _in charge_ but doesn't fill up the past BGs.\n\nSetting is G6 to xDrip to AAPS. AAPS does the BG upload to NS."
+  },
+  {
+   "id": 1768506643,
+   "user": "robertrub",
+   "created_at": "2023-10-18T13:50:52Z",
+   "body": "More info : When I set xDrip to upload to NS and to fill in _the past 48h_, all the holes are filled up."
+  },
+  {
+   "id": 1768567918,
+   "user": "MilosKozak",
+   "created_at": "2023-10-18T14:18:57Z",
+   "body": "I need logs 8-10AM"
+  },
+  {
+   "id": 1768603075,
+   "user": "robertrub",
+   "created_at": "2023-10-18T14:34:56Z",
+   "body": "Sorry, bizarre but I have a huge hole in the logs too. I'll recreate the situation and will come with newer logs."
+  },
+  {
+   "id": 1768736725,
+   "user": "robertrub",
+   "created_at": "2023-10-18T15:28:04Z",
+   "body": "Ok, advancing :) Might be related to the token.\n\nThere was a hole while I was walking. Once back home, I connected to the charger. Couldn't read on the NS tab as it goes very fast. Once the queue was at zero, I looked at my NS page and saw that\n1/ there are missing BGs\n2/ there is also a connection alert 1 min ago.\n\n![Screenshot_20231018_172141_DuckDuckGo.jpg](https://github.com/nightscout/AndroidAPS/assets/76626474/6c9eff38-4967-4625-b3a0-26ba93c4af3e)\n\n![Screenshot_20231018_172201_DuckDuckGo.jpg](https://github.com/nightscout/AndroidAPS/assets/76626474/76a36466-1e0a-4b15-98be-6e11da34d992)\n\nI think that when AAPS reconnects there is a handshake problem. Don't know why AAPS doesn't send (or NS doesn't receive) some BGs.\n\nThe logs. Look around 17:20\n\n![AndroidAPS_LOG_1697642531984.log.zip](https://github.com/nightscout/AndroidAPS/files/13030553/AndroidAPS_LOG_1697642531984.log.zip)\n\n"
+  },
+  {
+   "id": 1770398727,
+   "user": "MilosKozak",
+   "created_at": "2023-10-19T09:15:36Z",
+   "body": "if you are using v3 nothing else using v1( xdrip) must upload to NS"
+  },
+  {
+   "id": 1770414198,
+   "user": "robertrub",
+   "created_at": "2023-10-19T09:23:40Z",
+   "body": "Till the \"bug\" only AAPS was uploading to NS and via API V3.\nI used xDrip and v1, just to fill in the holes after the bug."
+  },
+  {
+   "id": 1773413829,
+   "user": "MilosKozak",
+   "created_at": "2023-10-20T21:25:04Z",
+   "body": "Around 17.20 there are upload errors caused by using xdrip uploads before"
+  },
+  {
+   "id": 1773472117,
+   "user": "robertrub",
+   "created_at": "2023-10-20T22:33:36Z",
+   "body": "Yes possible as I had used xDrip just before testing to fill in the holes.\n\nJust tested now again (no xDrip connection for hours) but still not uploading.\n\nWill build again and test tomorrow with your last commit on NSCV3 start."
+  },
+  {
+   "id": 1773712250,
+   "user": "robertrub",
+   "created_at": "2023-10-21T08:04:33Z",
+   "body": "@MilosKozak Sorry but your last commit did not solve the problem of filling the past BGs. No xDrip/V1 connection for over 18 hours.\n\n![Screenshot_20231021_100101_Firefox.jpg](https://github.com/nightscout/AndroidAPS/assets/76626474/8809fd6f-4f45-45c4-be33-a625e71e5984)\n\nLook around 9:56 when I reconnected the phone to the charger.\n\n![AndroidAPS_LOG_1697875146048.log.zip](https://github.com/nightscout/AndroidAPS/files/13060226/AndroidAPS_LOG_1697875146048.log.zip)\n\nSeems like this time, there are no more the connection errors alerts I had on my NS page. So the commit solved one problem for sure 😃"
+  },
+  {
+   "id": 1773861644,
+   "user": "MilosKozak",
+   "created_at": "2023-10-21T16:59:26Z",
+   "body": "i see data properly uploaded to NS\r\nbut i see errors like HTTP FAILED: java.io.IOException: unexpected end of stream on ...\r\nwhich are related to your NS instance"
+  },
+  {
+   "id": 1773866166,
+   "user": "robertrub",
+   "created_at": "2023-10-21T17:12:00Z",
+   "body": "I see that NS Master reverted and updated to 15.0.1 Will update my NS and check again.\nBBS"
+  },
+  {
+   "id": 1773869318,
+   "user": "robertrub",
+   "created_at": "2023-10-21T17:23:27Z",
+   "body": "Ok, I'm back to NS v15.0.2 Dev.\n\nGood news : the missing BG backfill was a NS bug. Now, when on charge, AAPS is backfilling the BGs. There are no more holes.\n\nThe less good news : I got the _Failed authentication error_ on my NS page when AAPS connected :( But the data got updated anyway. I don't know if this is a NS or AAPS bug... \n\nMaybe we can close this issue and keep an eye on the _Failed auth error_ problem later in another issue."
+  }
+ ]
+}

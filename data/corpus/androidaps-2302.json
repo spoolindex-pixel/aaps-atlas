@@ -1,0 +1,135 @@
+{
+ "id": 1511075305,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2302,
+ "title": "time of sync on xDrip and AAPS 3.1.0.3-dev-f dont match",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2302",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-12-26T16:33:48Z",
+ "closed_at": "2022-12-28T23:54:22Z",
+ "comment_count": 20,
+ "body": "last AAPS verson DEV  (3.1.0.3-dev-f), the time between sensor reading is not sync on xDrip and AAPS even with Smoothing disabled. AAPS reading from xdrip\r\n\r\nXdrip 09.12.2022\r\n\r\n![aaps](https://user-images.githubusercontent.com/48919798/209567954-7a6674bf-9274-4b02-a91a-3eca91192ed8.jpg)\r\n![xdrip](https://user-images.githubusercontent.com/48919798/209567963-bc547be1-e62d-476e-a541-7c5e944ec322.jpg)\r\n",
+ "comments": [
+  {
+   "id": 1365303730,
+   "user": "ct2iqj",
+   "created_at": "2022-12-26T17:47:00Z",
+   "body": "I have de same problem. "
+  },
+  {
+   "id": 1365497187,
+   "user": "MilosKozak",
+   "created_at": "2022-12-26T23:02:50Z",
+   "body": "not possible to resolve without logs\r\nwhat cgm?"
+  },
+  {
+   "id": 1365722886,
+   "user": "MilosKozak",
+   "created_at": "2022-12-27T08:52:49Z",
+   "body": "... and timestamps on xDrip tab match xdrip?"
+  },
+  {
+   "id": 1365764084,
+   "user": "idalioreis",
+   "created_at": "2022-12-27T09:46:27Z",
+   "body": "> not possible to resolve without logs what cgm?\r\n\r\nCGM is libre2\r\n\r\nwith smoothing on, the time of reading on aaps increase\r\n![image](https://user-images.githubusercontent.com/48919798/209646373-f7ce39ac-c976-4bb5-a25e-ab793604ba55.png)\r\n![image](https://user-images.githubusercontent.com/48919798/209646402-cfeaa612-58aa-4ea5-bc32-4553a2be0409.png)\r\n[AndroidAPS_LOG_1672132132250.log.zip](https://github.com/nightscout/AndroidAPS/files/10307298/AndroidAPS_LOG_1672132132250.log.zip)\r\n\r\n\r\nwith smoothing off and when xdrip read sensor (0m) the AAPS change to 1m\r\n![image](https://user-images.githubusercontent.com/48919798/209646458-cb26cc1a-5091-44e7-affe-01307387f4f9.png)\r\n![image](https://user-images.githubusercontent.com/48919798/209646471-aa27a08b-0721-4b95-9c1f-6c085ab41cff.png)\r\n[AndroidAPS_LOG_1672133977692.log.zip](https://github.com/nightscout/AndroidAPS/files/10307301/AndroidAPS_LOG_1672133977692.log.zip)\r\n\r\n\r\n![image](https://user-images.githubusercontent.com/48919798/209647467-e0b14ad0-a9d1-445f-9935-6cdae57b4eaa.png)\r\n![image](https://user-images.githubusercontent.com/48919798/209647513-cd8ce811-359f-4c60-a36f-09050f5cbe91.png)\r\n\r\n"
+  },
+  {
+   "id": 1366138275,
+   "user": "MilosKozak",
+   "created_at": "2022-12-27T19:52:46Z",
+   "body": "there is BG every 6 min in AAPS"
+  },
+  {
+   "id": 1366141228,
+   "user": "MilosKozak",
+   "created_at": "2022-12-27T19:58:06Z",
+   "body": "I checked log\r\n```\r\n06:57:22.068 [androidx.work-4] D/BGSOURCE: [XdripPlugin$XdripWorker.doWorkAndLog():101]: Received xDrip data: Bundle[{com.eveningoutpost.dexdrip.Extras.NoiseBlockLevel=200, com.eveningoutpost.dexdrip.Extras.BgSlope=1.7834293414914097E-6, com.eveningoutpost.dexdrip.Extras.VersionInfo=2122122416 689d22a-2022.12.24, com.eveningoutpost.dexdrip.Extras.Raw=116.48398911466458, com.eveningoutpost.dexdrip.Extras.Time=1672124241706, com.eveningoutpost.dexdrip.Extras.CalibrationInfo=1672041037019, com.eveningoutpost.dexdrip.Extras.NsNoiseLevel=null, com.eveningoutpost.dexdrip.Extras.Noise=-9999.0, com.eveningoutpost.dexdrip.Extras.SensorBattery=0, com.eveningoutpost.dexdrip.Extras.BgSlopeName=Flat, com.eveningoutpost.dexdrip.Extras.BgEstimate=116.4839891146646, com.eveningoutpost.dexdrip.Extras.SourceDesc=LimiTTer}]\r\n07:03:22.802 [androidx.work-3] D/BGSOURCE: [XdripPlugin$XdripWorker.doWorkAndLog():101]: Received xDrip data: Bundle[{com.eveningoutpost.dexdrip.Extras.NoiseBlockLevel=200, com.eveningoutpost.dexdrip.Extras.BgSlope=1.7820248795108606E-6, com.eveningoutpost.dexdrip.Extras.VersionInfo=2122122416 689d22a-2022.12.24, com.eveningoutpost.dexdrip.Extras.Raw=117.12664431101236, com.eveningoutpost.dexdrip.Extras.Time=1672124602338, com.eveningoutpost.dexdrip.Extras.CalibrationInfo=1672041037019, com.eveningoutpost.dexdrip.Extras.NsNoiseLevel=null, com.eveningoutpost.dexdrip.Extras.Noise=-9999.0, com.eveningoutpost.dexdrip.Extras.SensorBattery=0, com.eveningoutpost.dexdrip.Extras.BgSlopeName=Flat, com.eveningoutpost.dexdrip.Extras.BgEstimate=117.12664431101236, com.eveningoutpost.dexdrip.Extras.SourceDesc=LimiTTer}]\r\n07:09:23.054 [androidx.work-2] D/BGSOURCE: [XdripPlugin$XdripWorker.doWorkAndLog():101]: Received xDrip data: Bundle[{com.eveningoutpost.dexdrip.Extras.NoiseBlockLevel=200, com.eveningoutpost.dexdrip.Extras.BgSlope=2.0068313867680362E-6, com.eveningoutpost.dexdrip.Extras.VersionInfo=2122122416 689d22a-2022.12.24, com.eveningoutpost.dexdrip.E"
+  },
+  {
+   "id": 1366155852,
+   "user": "idalioreis",
+   "created_at": "2022-12-27T20:19:32Z",
+   "body": "> I checked log\r\n> \r\n> ```\r\n> 06:57:22.068 [androidx.work-4] D/BGSOURCE: [XdripPlugin$XdripWorker.doWorkAndLog():101]: Received xDrip data: Bundle[{com.eveningoutpost.dexdrip.Extras.NoiseBlockLevel=200, com.eveningoutpost.dexdrip.Extras.BgSlope=1.7834293414914097E-6, com.eveningoutpost.dexdrip.Extras.VersionInfo=2122122416 689d22a-2022.12.24, com.eveningoutpost.dexdrip.Extras.Raw=116.48398911466458, com.eveningoutpost.dexdrip.Extras.Time=1672124241706, com.eveningoutpost.dexdrip.Extras.CalibrationInfo=1672041037019, com.eveningoutpost.dexdrip.Extras.NsNoiseLevel=null, com.eveningoutpost.dexdrip.Extras.Noise=-9999.0, com.eveningoutpost.dexdrip.Extras.SensorBattery=0, com.eveningoutpost.dexdrip.Extras.BgSlopeName=Flat, com.eveningoutpost.dexdrip.Extras.BgEstimate=116.4839891146646, com.eveningoutpost.dexdrip.Extras.SourceDesc=LimiTTer}]\r\n> 07:03:22.802 [androidx.work-3] D/BGSOURCE: [XdripPlugin$XdripWorker.doWorkAndLog():101]: Received xDrip data: Bundle[{com.eveningoutpost.dexdrip.Extras.NoiseBlockLevel=200, com.eveningoutpost.dexdrip.Extras.BgSlope=1.7820248795108606E-6, com.eveningoutpost.dexdrip.Extras.VersionInfo=2122122416 689d22a-2022.12.24, com.eveningoutpost.dexdrip.Extras.Raw=117.12664431101236, com.eveningoutpost.dexdrip.Extras.Time=1672124602338, com.eveningoutpost.dexdrip.Extras.CalibrationInfo=1672041037019, com.eveningoutpost.dexdrip.Extras.NsNoiseLevel=null, com.eveningoutpost.dexdrip.Extras.Noise=-9999.0, com.eveningoutpost.dexdrip.Extras.SensorBattery=0, com.eveningoutpost.dexdrip.Extras.BgSlopeName=Flat, com.eveningoutpost.dexdrip.Extras.BgEstimate=117.12664431101236, com.eveningoutpost.dexdrip.Extras.SourceDesc=LimiTTer}]\r\n> 07:09:23.054 [androidx.work-2] D/BGSOURCE: [XdripPlugin$XdripWorker.doWorkAndLog():101]: Received xDrip data: Bundle[{com.eveningoutpost.dexdrip.Extras.NoiseBlockLevel=200, com.eveningoutpost.dexdrip.Extras.BgSlope=2.0068313867680362E-6, com.eveningoutpost.dexdrip.Extras.VersionInfo=2122122416 689d22a-2022.12.24, com.eveningout"
+  },
+  {
+   "id": 1366156444,
+   "user": "mjhuisman",
+   "created_at": "2022-12-27T20:20:58Z",
+   "body": "Got the same since updated dev to latest commit.\r\nXdrip is sending bg every 5 minutes, but bg of aaps is different from bg of xdrip.\r\nI use fsl2 with patched app.\r\n\r\nEdit: aaps is getting correct bg from xdrip but display some other bg.\r\n"
+  },
+  {
+   "id": 1366158427,
+   "user": "macarolobe",
+   "created_at": "2022-12-27T20:25:36Z",
+   "body": "Same problem with smooth or without![Screenshot_20221227_212338_AAPS.jpg](https://user-images.githubusercontent.com/58631766/209718784-50ece50c-3f43-4637-bd70-b753b45f5b32.jpg)![Screenshot_20221227_212333_AAPS.jpg](https://user-images.githubusercontent.com/58631766/209718820-32ef8fc5-6748-4671-accc-8aa8ec9c65a3.jpg)"
+  },
+  {
+   "id": 1366160622,
+   "user": "mjhuisman",
+   "created_at": "2022-12-27T20:31:08Z",
+   "body": "Reinstalled previous version from 5 days ago and everything fine. "
+  },
+  {
+   "id": 1366177240,
+   "user": "MilosKozak",
+   "created_at": "2022-12-27T20:57:17Z",
+   "body": "the mode has changed. \r\nBefore smoothing AAPS displayed BG like it was received from BG source\r\nSince smoothing is in place AAPS displays bucked data ie data after recalculation to 5 min like they are used in algorihtm.\r\nIsn't it the reason?\r\nAnyway this issue has a reason of 6 min data.\r\nIf it's not your case create another issue with screenshots, logs atc"
+  },
+  {
+   "id": 1366568965,
+   "user": "mjhuisman",
+   "created_at": "2022-12-28T11:06:45Z",
+   "body": "It has 6 min in my case also, but the main problem is that between 3 bg readings aaps isnt working because of no bg and/or no delta s."
+  },
+  {
+   "id": 1366572483,
+   "user": "MilosKozak",
+   "created_at": "2022-12-28T11:12:14Z",
+   "body": "resolve primary issue first. you need 5 min or less"
+  },
+  {
+   "id": 1366573437,
+   "user": "macarolobe",
+   "created_at": "2022-12-28T11:13:43Z",
+   "body": "I'm 5 minutes (and one or two seconds) data and even with no smoothing there is a delay beetween xdrip bg and aaps bg. It's not always, sometimes there is no delay when bg is flat. It seems that the delay increase when bg increase or decrease."
+  },
+  {
+   "id": 1366579681,
+   "user": "mjhuisman",
+   "created_at": "2022-12-28T11:23:28Z",
+   "body": "> resolve primary issue first. you need 5 min or less\r\n\r\nHow?"
+  },
+  {
+   "id": 1366580504,
+   "user": "MilosKozak",
+   "created_at": "2022-12-28T11:24:56Z",
+   "body": "go to xDrip groups"
+  },
+  {
+   "id": 1366581273,
+   "user": "MilosKozak",
+   "created_at": "2022-12-28T11:26:30Z",
+   "body": "> I'm 5 minutes (and one or two seconds) data and even with no smoothing there is a delay beetween xdrip bg and aaps bg. It's not always, sometimes there is no delay when bg is flat. It seems that the delay increase when bg increase or decrease.\r\n\r\nthen create another issue with screenshots, logs etc"
+  },
+  {
+   "id": 1366591607,
+   "user": "parapenT1sta",
+   "created_at": "2022-12-28T11:46:56Z",
+   "body": "> > resolve primary issue first. you need 5 min or less\r\n> \r\n> How?\r\n\r\nAre you using OOP2? Maybe we need to ask xDrip developers to check if there is any issue due OOP2."
+  },
+  {
+   "id": 1366611424,
+   "user": "idalioreis",
+   "created_at": "2022-12-28T12:19:56Z",
+   "body": "> > > resolve primary issue first. you need 5 min or less\r\n> > \r\n> > \r\n> > How?\r\n> \r\n> Are you using OOP2? Maybe we need to ask xDrip developers to check if there is any issue due OOP2.\r\n\r\nOOP2 read sensor evrey 2m, so 3 read give 6m, maybe OOP2 or bluetooth issue\r\n\r\n\r\n![image](https://user-images.githubusercontent.com/48919798/209811010-46fa17ca-f676-41a5-8c68-8ed79c6c0c9e.png)\r\n"
+  },
+  {
+   "id": 1366986456,
+   "user": "idalioreis",
+   "created_at": "2022-12-28T23:52:31Z",
+   "body": "Until now its working fine, the issue was fixed at newest version. thanks "
+  }
+ ]
+}

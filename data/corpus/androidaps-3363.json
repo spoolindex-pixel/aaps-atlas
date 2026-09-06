@@ -1,0 +1,81 @@
+{
+ "id": 2339465895,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3363,
+ "title": "SECURITY discussion : temporary profile change ",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3363",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-06-07T02:36:05Z",
+ "closed_at": "2024-07-08T07:01:47Z",
+ "comment_count": 14,
+ "body": "This discussion might end up in a lot of work for all (?) the pump drivers but I feel that it is necessary to discuss the subject.\n\nThere is a security issue with temporary profile changes.\n\nCase 1 (not problematic): User sets a \"temporarily profile\" change with **no time duration**.  User changes profile % because s/he needs more or less insulin for a couple of days. If phone is lost/broken, user goes on with a \"valid\" profile on the pump. All is OK.\n\nCase 2 (the risk is here): User sets a temp profile change **for a duration**. Exercise is a regular _low_ profile situation. Going out and eating heavier foods at the restaurants or hay fever season and steroid treatments are exemples for _high_ profile situations.\n\nIn case 2, what we really want is \nA/ on phone : AAPS keeps a more/less agressive algorithm for more/less IOB.\nB/ on pump : a high/low basal rate.\n\nWe don't need a **new** profile on the phone as the situation is **temporary**. We only want more/less SMBs and basal for a time. \n\nIn case 2, if the phone is lost/broken, the user is stuck with a wrong profile on the pump. That is a risk. It can be and should be reduced.\n\nThe change I propose is to send a new profile to the pump ONLY if the profile change is _without_ duration.\n\nIf the profile change is _with_ a duration, then send only a temporary new basal to the pump for the needed duration.\n\nI know that we don't break/loose phones regularly but it happens.\n\nI don't know if this new logic can/will break other cogs in the whole system.\n\nThe idea is open to discussion ;)",
+ "comments": [
+  {
+   "id": 2154130462,
+   "user": "Der-Schubi",
+   "created_at": "2024-06-07T05:50:20Z",
+   "body": "Just two counter-arguments from me:\r\n1) There is a much common \"risk\": Losing communication to the pump. And I believe this is the reason why we send a new profile to the pump, so when communication is lost, it continues wit 100% TBR of the \"new\" temporary profile.\r\n2) In case of a lost/broken phone every AAPS user should have a recent settings export from AAPS with the correct profile in it."
+  },
+  {
+   "id": 2154174000,
+   "user": "koelewij",
+   "created_at": "2024-06-07T06:26:15Z",
+   "body": "First of all, I would give a solution for this a very low priority. \r\nSome arguments for my low priority:\r\n\r\n- It only concerns pumps that do not have its own interface like most patch pumps. Other pumps can be set back to another basal profile manually. \r\n\r\n- If your phone is lost or broken you need to get a replacement phone soon or use the original remote to take over. Since you cannot give a bolus also.  And with the original remote most of the time the running pump cannot be taken over so a new one is required anyway. \r\n\r\n- Losing the phone also loses connection to CGM so it is required to have spare glucose meter also. To get CGM up and running a new phone is required anyway. \r\n\r\n- When losing / breaking your phone results in a stressful situation so you need to be prepared with backup material anyway. The stress itself could already cause your BG to deviate from normal so resetting the original basal might not help anyway. \r\nWorst case scenario where pump is stuck on a high basal you can compensate by removing pump or just eat more to compensate.  \r\n\r\n- What to do when the duration of the temp profile is set to more than 12hrs?\r\n\r\nTo my opinion a good documented backup scenario would be a lot more useful than trying to modify something might not even help?\r\n\r\n"
+  },
+  {
+   "id": 2154733036,
+   "user": "ga-zelle",
+   "created_at": "2024-06-07T12:26:48Z",
+   "body": "I assuem all pumps have morfe thasn 1 storage slot and can therefore hold more than 1 profile. My ideal scenario would be to have slot 0 as the acitve one being modulated by AAPS through the profile percentages anbd slot 1 always being th e100% versin of the acitve prfile. Thenswitching back to 100 % would just be changing the slot. However, that may not be availabe as a remote command for all pumps.\r\n\r\nFor me the worst case scenario is being away from home for several days and then loosing comms pump/phone while I am not in a 100% profile. My \"theoretical\" backup scenario always was to have my favorite profiles stored in the other slots on my Combo. Triggered by this discussion my weekend resolution is therefore to use the 360 degree software and put those profiles into the other slots. Thus I have a manual method to select profiles directly on the pump. "
+  },
+  {
+   "id": 2154849077,
+   "user": "andyrozman",
+   "created_at": "2024-06-07T13:32:19Z",
+   "body": "There are 2 problems I see:\r\n1. Most of drivers (if not all) use just 1 profile, even if pump has more than 1\r\n2. Not all pumps have their own UI and in most cases where pumps/pods have controller (for example: Omnipod) they can be tied only to 1 controller... So if AAPS stops working while you have active Pod, that Pod is gone, and no way to change profile back... \r\n \r\nI myself do profile switch only twice a year (time change) and if I travel and my TZ changes. Outside of this I never change profile. But I imagine some people do change their profiles quite often (I never changed profiles even before I started looping)."
+  },
+  {
+   "id": 2155271213,
+   "user": "Philoul",
+   "created_at": "2024-06-07T17:50:38Z",
+   "body": "This topic justify why we have inbuilt limits to profile switch percentage, so we cannot set any values:\n\n- from Automation, you can only set a Profile Switch percentage between 50% and 130%\n- for a manual profile switch, its between 30% and 250%.\n\nThe change proposed by @robertrub (using TBR instead of profile switch with duration) is far to be equivalent...\n- When you make a temporary PS to manage an exercise (main usage I think), you not only need a lower basal rate, but also a higher ISF and IC to have a less aggressive profile during exercise...\n\nI think current compromise remains the best one. We could imagine to tune a bit these limits if considered as too wide for manual PS, but when it's a manual command, the user is fully aware of the risks and can check everything...\n\nOn my side I wouldn't change anything within current compromise..."
+  },
+  {
+   "id": 2155291410,
+   "user": "robertrub",
+   "created_at": "2024-06-07T18:05:30Z",
+   "body": "_When you make a temporary PS to manage an exercise (main usage I think), you not only need a lower basal rate, but also a higher ISF and IC to have a less aggressive profile during exercise..._\n\nYes but all that is done in the phone. Nothing goes to the pump (talking about patch pumps, with no possible user interaction). Sending a new profile to the pump is NOT necessary, only the temp low basal rate is what counts for the pump.\n\nI know that this is a very marginal case and I'm not sure if it justifies the time needed to discuss it and to code."
+  },
+  {
+   "id": 2155534772,
+   "user": "olorinmaia",
+   "created_at": "2024-06-07T20:59:56Z",
+   "body": "I fail to see why this is an issue that needs addressing. Some times it's useful for a temporary profile switch, some times a switch without duration due to sickness etc.\r\n\r\nThe past week my son has been ill and I've been running 150% profile without duration. It's very clear in UI, both in AAPS, AAPSClient that the profile is adjusted and the user is well aware since the app is visited several times a day. If the phone is lost there is a matter of minutes / hours before connection is re-established. \r\n\r\nEvery night when he starts sleeping we strengthen the profile temporarily with 2 hours duration due to growth hormones etc.\r\n\r\nSo we need the ability to both temporary and permanent change the profile in strength. A change in this will make AAPS a worse system the way I see it for us.\r\n\r\nIt's a greater risk for hypo (more dangerous than hyper) that a strengthened profile that can't be temporary with this change will be forgotten to be reverted to normal profile. "
+  },
+  {
+   "id": 2155818928,
+   "user": "Philoul",
+   "created_at": "2024-06-08T05:31:29Z",
+   "body": "@robertrub  Hum, I think I understand better your proposa (still not completly sure)l. But I'm afraid you will just shift the problem and not fix it...\n\nKéep in mind that loop continue to send TBR during a PS (temporary or not)\n- that means that during a temporary % PS, you will have to continuously merge (multiply % values) a \"Profile TBR\" and loop TBRs, but the ĺàst TBR command sent to the pump should have a duration aligned to shorter duration between PS TBR duration and loop TBR duration, and then send again the Profile TBR for the remaining duration of PS...\n- So if you lost phone you will not switch back to profile % value, but switch back to profile 100% and much more sooner (min \"loop TBR duration\" can be 15min, 30min according to pump...) than the profile switch duration you set...\n\nPS constraints for duration is max 168h = 7 days, but TBR max duration is between 8h and 24h according to pump capabilities...\n- either you limit PS max duration to maxTBR duration to remain consistant (but it's a huge reduction of profile switch max duration from 168h to 8 or 24h), or you shift the problem and not fix it...\n-  So if you lost phone you can stop profile % earlier and not until the end of duration set within PS command.\n\nSo (if I now correctly understood your idea), don't you think side effects or çonstraints can be worse or at least not better than current solution (with a more complicated code) ?"
+  },
+  {
+   "id": 2212303115,
+   "user": "mountrcg",
+   "created_at": "2024-07-07T03:10:49Z",
+   "body": "> * So if you lost phone you will not switch back to profile % value, but switch back to profile 100% and much more sooner (min \"loop TBR duration\" can be 15min, 30min according to pump...) than the profile switch duration you set...\r\n\r\nAre you sure that is the case? If the comms is lost to pump it, after whatever time it should revert to whatever is programmed in the pump. With a %PS that is the Profiles adjusted basal rate to my understanding. @Philoul \r\n\r\n"
+  },
+  {
+   "id": 2212388379,
+   "user": "Philoul",
+   "created_at": "2024-07-07T09:40:14Z",
+   "body": "\n\n@robertrub 's proposal was to always keep Profile 100% in case of temporary profile switch and manage Basal rate and TBR from phone, using only TBR.\nSo if during exercice you loose communication with pump, you will switch back to 100% profile and not a 80%TBR (if PS was set to 80% for xx hours)..."
+  },
+  {
+   "id": 2213193029,
+   "user": "MilosKozak",
+   "created_at": "2024-07-08T07:01:47Z",
+   "body": "from my point of view current solution doesn't add aditional risk compared to common pump therapy. either you have the possibility to control pump without AAPS or remote control in case of lost/damage and you can deal with this situation (classic pumps) or you don't have and you have to look for a different solution immediately (patch pumps)"
+  }
+ ]
+}

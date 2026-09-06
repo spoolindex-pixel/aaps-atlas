@@ -1,0 +1,14 @@
+{
+ "id": 1144687399,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1346,
+ "title": "OpenAPS SMB Dynamic ISF, SMB reports limiting max_iob to 1.5U (not following preference settings?)",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1346",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-02-19T12:31:40Z",
+ "closed_at": "2022-02-20T17:26:15Z",
+ "comment_count": 0,
+ "body": "**AndroidAPS version**: 10\r\n**Build number**: 3.0.0.1-dev-8, build fef8421e7\r\n**Flavor**: fullrelease\r\n\r\n## Phone: ##\r\n\r\nSamsung Note 9\r\n\r\n## Problem description: ##\r\nWhile testing OpenAPS SMB Dynamic ISF I noticed staying on high BG's for far to long while 0-Temping and SMB not kicking in. Looking into this found the SMB tab reporting constraints \"_Safety: Limiting IOB to 1.5U because of max value in preferences_\". \r\n\r\nWhen switched back to standard \"OpenAPS SMB\" constraint reported \"_Safety: Limiting IOB to 8.0U because of max value in preferences_\" as expected.\r\n\r\nLooks like OpenAPS SMB Dynamic ISF is not following the settings from preferences?\r\nUnless this is part of the \"Dynamic ISF\" functionality, I would say that is a bug?\r\n\r\n_Additional information and reproduction steps:_\r\n\r\nUsing \"Sensitivity Oref1\" or \"OpenAPS AMA\" \r\n\r\n1. Make sure \"_OpenAPS SMB_\" is selected for APS\r\n2. Under preferences, make a note of max_iob settings\r\n3. Check the SBM tab under constraints. It should report a limiting value as configured in setting  under (2)\r\n4. Switch to the new \"_OpenAPS SMB Dynamic ISF_\" plugin\r\n5. Under preferences, check if the max_iob settings is showing?\r\n6. Check the SBM tab under constraints. Confirm It now reports a limiting value for max_iob, different form settings.\r\n\r\nIn general, I notice SMB is not kicking in while IOB is over 1.5U\r\n\r\n![Screenshot_20220219-123339_AndroidAPS](https://user-images.githubusercontent.com/45144129/154800489-a9a0d059-9aab-4f68-9f29-5b5f954e5660.jpg)\r\n![image](https://user-images.githubusercontent.com/45144129/154802993-0f4d1410-da33-4d0b-a2f0-dce78570b251.png)\r\n\r\n## Logfiles: ##\r\nAround 13:25h\r\nRestarted AAPS\r\nRun SMB\r\nRun SMB\r\nSelect \"_OpenAPS SMB Dynamic ISF_\"\r\nRestarted AAPS\r\nRun SMB\r\nRun SMB\r\nExport logfiles\r\n\r\n[AndroidAPS._2022-02-19_13-26-05_.0.zip](https://github.com/nightscout/AndroidAPS/files/8102160/AndroidAPS._2022-02-19_13-26-05_.0.zip)\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/8102161/AndroidAPS.log)\r\n\r\n",
+ "comments": []
+}

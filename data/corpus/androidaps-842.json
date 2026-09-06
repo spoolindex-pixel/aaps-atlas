@@ -1,0 +1,36 @@
+{
+ "id": 1044701908,
+ "repo": "nightscout/AndroidAPS",
+ "number": 842,
+ "title": "Profile doesnt successfully activate if basal rate not adjusted",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/842",
+ "state": "closed",
+ "labels": [
+  "question - more info needed",
+  "combo"
+ ],
+ "created_at": "2021-11-04T12:16:04Z",
+ "closed_at": "2021-11-04T14:59:38Z",
+ "comment_count": 3,
+ "body": "[3.0-beta3] (previously on beta 1 & 2) I made a change to my profile, the only change i made was one of my ISF rates, then I activated it and completed a profile switch.\r\n\r\nThe profile shows as changed in the profile plugin and uploads to correct values to nightscout\r\n\r\nHowever the profile is not updated in the profile bar on the home screen, nor is the change taken into account for calculations, and no profile change is shown on the main graph as it normally would.\r\n\r\nI am using a Combo pump.\r\n\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/7474603/AndroidAPS.log)\r\n\r\nI have attached the log. At 09:47 I changed the ISF from 8.5mmol/U to as 9mmol/U (for the 7am to 10pm time period)\r\n\r\nLine 38 shows the new rate\r\n\r\n`09:47:16.997 [main] D/PROFILE: [LocalProfilePlugin.storeSettings():211]: Storing settings: {\"defaultProfile\":\"LocalProfile\",\"startDate\":\"2021-11-03T09:47:16.9960000Z\",\"store\":{\"LocalProfile\":{\"dia\":6,\"carbratio\":[{\"time\":\"00:00\",\"timeAsSeconds\":0,\"value\":18},{\"time\":\"11:00\",\"timeAsSeconds\":39600,\"value\":14.5},{\"time\":\"16:00\",\"timeAsSeconds\":57600,\"value\":18}],\"sens\":[{\"time\":\"00:00\",\"timeAsSeconds\":0,\"value\":8},{\"time\":\"07:00\",\"timeAsSeconds\":25200,\"value\":9},{\"time\":\"22:00\",\"timeAsSeconds\":79200,\"value\":8}],\"basal\":[{\"time\":\"00:00\",\"timeAsSeconds\":0,\"value\":0.55},[other rates removed to reduce log],{\"time\":\"23:00\",\"timeAsSeconds\":82800,\"value\":0.66}],\"target_low\":[{\"time\":\"00:00\",\"timeAsSeconds\":0,\"value\":6},{\"time\":\"08:00\",\"timeAsSeconds\":28800,\"value\":5.6}],\"target_high\":[{\"time\":\"00:00\",\"timeAsSeconds\":0,\"value\":6},{\"time\":\"08:00\",\"timeAsSeconds\":28800,\"value\":5.6}],\"units\":\"mmol\",\"timezone\":\"Europe\\/London\"}}}`\r\n\r\nLine 135 and subsequent entries shows the old rate of 153 (i.e. 8.5mmol/U) being used:\r\n\r\n`09:50:36.524 [RxCachedThreadScheduler-4] D/APS: [DetermineBasalAdapterSMBJS.invoke():73]: Profile: {\"max_iob\":7,\"type\":\"current\",\"max_daily_basal\":0.72,\"max_basal\":2.16,\"min_bg\":100.8,\"max_bg\":100.8,\"target_bg\":100.8,\"carb_ratio\":18,\"sens\":153,\"max_daily_safety_multiplier\":3,\"current_basal_safety_multiplier\":4,\"high_temptarget_raises_sensitivity\":false,\"low_temptarget_lowers_sensitivity\":false,\"sensitivity_raises_target\":true,\"resistance_lowers_target\":false,\"adv_target_adjustments\":false,\"exercise_mode\":false,\"half_basal_exercise_target\":160,\"maxCOB\":120,\"skip_neutral_temps\":false,\"remainingCarbsCap\":90,\"enableUAM\":true,\"A52_risk_enable\":false,\"SMBInterval\":3,\"enableSMB_with_COB\":true,\"enableSMB_with_temptarget\":true,\"allowSMB_with_high_temptarget\":true,\"enableSMB_always\":false,\"enableSMB_after_carbs\":false,\"maxSMBBasalMinutes\":120,\"maxUAMSMBBasalMinutes\":70,\"bolus_increment\":0.1,\"carbsReqThreshold\":1,\"current_basal\":0.7,\"temptargetSet\":false,\"autosens_max\":1.2,\"out_units\":\"mmol\\/L\"}`\r\n\r\nThe profile switch doesn't successfully change, if adjustments are only made to IC, ISF or Targets.  It only successfully updates if I change a rate in the basal profile.",
+ "comments": [
+  {
+   "id": 960858693,
+   "user": "MilosKozak",
+   "created_at": "2021-11-04T12:54:50Z",
+   "body": "* pump connections was in bad state\r\n```\r\n09:47:23.725 [Thread-6675] W/info.nightscout.androidaps.plugins.pump.combo.ruffyscripter.RuffyScripter: Disconnect not happy\r\njava.lang.NullPointerException: Attempt to invoke virtual method 'void org.monkey.d.ruffy.ruffy.driver.PumpData.incrementNonceTx()' on a null object reference\r\n\tat android.os.Parcel.createException(Parcel.java:2077) ~[na:0.0]\r\n\tat android.os.Parcel.readException(Parcel.java:2039) ~[na:0.0]\r\n\tat android.os.Parcel.readException(Parcel.java:1987) ~[na:0.0]\r\n\tat org.monkey.d.ruffy.ruffy.driver.IRuffyService$Stub$Proxy.doRTDisconnect(IRuffyService.java:216) ~[na:0.0]\r\n\tat info.nightscout.androidaps.plugins.pump.combo.ruffyscripter.RuffyScripter.disconnect(RuffyScripter.java:199) ~[na:0.0]\r\n\tat info.nightscout.androidaps.plugins.pump.combo.ComboPlugin.disconnect(ComboPlugin.java:252) ~[na:0.0]\r\n\tat info.nightscout.androidaps.queue.QueueThread.run(QueueThread.kt:133) ~[na:0.0]\r\n```\r\n\r\n* no other pump logging is in log file"
+  },
+  {
+   "id": 960898305,
+   "user": "markvader",
+   "created_at": "2021-11-04T13:13:57Z",
+   "body": "okay, have added the additional pump logging back in.\r\n\r\nAt 12.57 I changed IC from 14.6 to 14.5\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/7474961/AndroidAPS.log)\r\n\r\n`12:57:27.952 [main] D/PROFILE: [LocalProfilePlugin.storeSettings():211]: Storing settings: {\"defaultProfile\":\"LocalProfile1\",\"startDate\":\"2021-11-04T12:57:27.9510000Z\",\"store\":{\"LocalProfile1\":{\"dia\":6,\"carbratio\":[{\"time\":\"00:00\",\"timeAsSeconds\":0,\"value\":18},{\"time\":\"11:00\",\"timeAsSeconds\":39600,\"value\":14.5},{\"time\":\"16:00\",\"timeAsSeconds\":57600,\"value\":18}],\"......`"
+  },
+  {
+   "id": 961117900,
+   "user": "MilosKozak",
+   "created_at": "2021-11-04T14:59:38Z",
+   "body": "fixed by https://github.com/nightscout/AndroidAPS/commit/ebeac72e7412f1ec9e372962d0ce96f0ce64dee7"
+  }
+ ]
+}

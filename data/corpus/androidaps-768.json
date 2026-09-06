@@ -1,0 +1,51 @@
+{
+ "id": 1032235091,
+ "repo": "nightscout/AndroidAPS",
+ "number": 768,
+ "title": "[AAPS 3.0-beta1] Local Profile not shown",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/768",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-10-21T08:57:46Z",
+ "closed_at": "2021-10-23T22:20:37Z",
+ "comment_count": 6,
+ "body": "When selecting the tab PROFILE, the local Profile is not shown in the Dropdown menue. I have disabled the AAPS upload to Nightscout, because it’s my test system. Only the existing Nightscout profiles are shown in the Dropdown menue.",
+ "comments": [
+  {
+   "id": 948407857,
+   "user": "MilosKozak",
+   "created_at": "2021-10-21T09:03:59Z",
+   "body": "NS profiles are probably synced to your profile. "
+  },
+  {
+   "id": 948447163,
+   "user": "winni67",
+   "created_at": "2021-10-21T09:54:58Z",
+   "body": "I created a new local Profile LocalProfile1. But this is not shown in the dropdown menu. After changing the Profile to one of the Nightscout profiles, the LocalProfile1 is lost (not selectable)."
+  },
+  {
+   "id": 948451470,
+   "user": "MilosKozak",
+   "created_at": "2021-10-21T10:00:19Z",
+   "body": "sorry i'd need a bit better description. step by step how to reproduce the issue"
+  },
+  {
+   "id": 948468412,
+   "user": "winni67",
+   "created_at": "2021-10-21T10:21:15Z",
+   "body": "1.) fresh installation. 2.) creating new profile. 3.) import of old configuration. 4.) disable „Daten zu NS hochladen“, „Gespeicherte Profile abrufen“ is still activated. 5.) recreate LocalProfile1, because I believe it was missing after the configuration import. 6. Activate new LocalProfile1. 7.) In the Profile Dropdown menu, LocalProfile1 is missing, even after an profile switch to another shown Nightscout profile. 8. Disabling of the option „Gespeicherte Profile abrufen“, recreating of the LocalProfile1 and activating it, helps. Then this profile is shown in the PROFILE dropdown menu. But as expected, no Nightscout Profiles are shown anymore. "
+  },
+  {
+   "id": 948542573,
+   "user": "MilosKozak",
+   "created_at": "2021-10-21T12:01:29Z",
+   "body": "well you cannot keep different profiles in AAPS and NS and have NS sync turned ON. \r\nSet sync ON and clean up profile at one place. They will appear on second place\r\nbtw.\r\nimport revrites profiles including old timestamp so they will be very likely replaced by \"newer\" profile in NS"
+  },
+  {
+   "id": 950225603,
+   "user": "MilosKozak",
+   "created_at": "2021-10-23T22:20:37Z",
+   "body": "fixed by https://github.com/nightscout/AndroidAPS/commit/3b30f732093a2ed722e1b80dd131c619095ab557"
+  }
+ ]
+}

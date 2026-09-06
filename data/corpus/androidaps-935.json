@@ -1,0 +1,155 @@
+{
+ "id": 1053747225,
+ "repo": "nightscout/AndroidAPS",
+ "number": 935,
+ "title": "2.8.2.10-dev Omnipod Dash - lost BT connection on 2 pods",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/935",
+ "state": "closed",
+ "labels": [
+  "omnipod dash"
+ ],
+ "created_at": "2021-11-15T14:45:31Z",
+ "closed_at": "2023-08-17T14:52:28Z",
+ "comment_count": 23,
+ "body": "Reporting bugs\r\n--------------\r\n- At or around 1pm EST, AAPS lost connection to Dash Pod.  It could read what was previously stored in the Pod (maybe on last connect) but could not communicate with the Pod no matter what I did.  I tried force closing AAPS, exit (3 dots), switch Pump to Virtual and back to Dash, turn BT off then on.  Restart phone.  Nothing worked, was forced to deactivate Pod (manually)\r\n- Build version: 54b8d0613-2021.11.12-18:44 of 2.8.2.10-dev  \r\n[AndroidAPS_LOG_1636919800184.log.zip](https://github.com/nightscout/AndroidAPS/files/7539391/AndroidAPS_LOG_1636919800184.log.zip)\r\n\r\nThis is the second of around 6 Pods that this happened to.  Running Pixel Pro 6 on Android 12\r\n",
+ "comments": [
+  {
+   "id": 969250719,
+   "user": "avereha",
+   "created_at": "2021-11-15T19:35:33Z",
+   "body": "After reading the logs it looks like the pod services are somehow cached on the phone:\r\n```\r\n14:56:16.737 [RxCachedThreadScheduler-54] D/PUMPBTCOMM: [ServiceDiscoverer.discoverServices():28]: Discovering services\r\n14:56:16.926 [Binder:31845_4] D/PUMPBTCOMM: [BleCommCallbacks.onServicesDiscovered():50]: OnServicesDiscovered with status: 0\r\n....\r\nightscout.androidaps.plugins.pump.omnipod.dash.driver.comm.exceptions.ConnectException: Service not found: 1a7e-4024-e3ed-4464-8b7e-751e03d0dc5f\r\n....\r\n```\r\n\r\nNot sure how to reset the Bluetooth cache on the phone and if this is possible.\r\nMy suggestion: if you get this multiple times mark the phone model as 'yellow'\r\n"
+  },
+  {
+   "id": 969305381,
+   "user": "Alamo04",
+   "created_at": "2021-11-15T20:45:49Z",
+   "body": "@tswire \r\nTo clear Bluetooth Cache (Pixel 5)\r\n- go to Settings\r\n- go to  Storage\r\n- choose Apps\r\n- over the 3 dots above choose \"Show System Apps\"\r\n- search for Bluetooth \r\n- choose Bluetooth and clear the cache."
+  },
+  {
+   "id": 969310745,
+   "user": "tswire",
+   "created_at": "2021-11-15T20:53:10Z",
+   "body": "> @tswire To clear Bluetooth Cache (Pixel 5)\r\n> \r\n> * go to Settings\r\n> * go to  Storage\r\n> * choose Apps\r\n> * over the 3 dots above choose \"Show System Apps\"\r\n> * search for Bluetooth\r\n> * choose Bluetooth and clear the cache.\r\n\r\nwell darn, this was what I was looking for when scrambling to have it come back to life.  I will make note and if happens again, I will try this.  If successful, might be a good solution for others no matter the phone.  As long as the Pod is not screaming, it SHOULD be available to communicate with.  Kinda like Eros pods with Rileylink (or similar) when sometimes you had to restart the Rileylink and exit (3 dots) the AAPS app.  Then it would reconnect fine.  I know we are dealing with BT here.....but maybe this will help restore the connection!\r\n"
+  },
+  {
+   "id": 969328806,
+   "user": "Alamo04",
+   "created_at": "2021-11-15T21:16:06Z",
+   "body": "Didn't have this Issue on Pixel 5.\r\nI'm testing Dash, but only on my 3. one."
+  },
+  {
+   "id": 985134252,
+   "user": "tswire",
+   "created_at": "2021-12-03T01:20:36Z",
+   "body": "Adding additional log from today with what looks like same issue at 16:38\r\n[AndroidAPS._2021-12-02_00-00-05_.3.zip](https://github.com/nightscout/AndroidAPS/files/7646099/AndroidAPS._2021-12-02_00-00-05_.3.zip)\r\n"
+  },
+  {
+   "id": 985432863,
+   "user": "Lastof",
+   "created_at": "2021-12-03T11:11:57Z",
+   "body": "Looking at the logs from my Pixel 6 Pro which hasn't lost any pods I do have two instances of similar logs, one from the 28th with\r\n\r\n> 00:19:26.484 [RxCachedThreadScheduler-66] D/PUMPBTCOMM: [ServiceDiscoverer.discoverServices():28]: Discovering services\r\n> < three sameTimeZone messsages >\r\n> 00:19:26.486 [Binder:17244_2] D/PUMPBTCOMM: [BleCommCallbacks.onServicesDiscovered():50]: OnServicesDiscovered with status: 0\r\n> < another sameTimeZone messsage >\r\n> 00:19:26.486 [RxCachedThreadScheduler-66] D/PUMPBTCOMM: [ServiceDiscoverer.discoverServices():44]: Services discovered\r\n> 00:19:26.487 [RxCachedThreadScheduler-66] D/PUMPBTCOMM: [Connection.disconnect():119]: Disconnecting closeGatt=false\r\n> 00:19:26.487 [RxCachedThreadScheduler-66] D/PUMPBTCOMM: [BleCommCallbacks.resetConnection():213]: Reset connection\r\n> 00:19:26.488 [Binder:17244_2] D/PUMPBTCOMM: [BleCommCallbacks.onConnectionStateChange():38]: OnConnectionStateChange with status/state: 0/0\r\n\r\nand one from last night\r\n\r\n> 02:12:45.383 [RxCachedThreadScheduler-88] D/PUMPBTCOMM: [ServiceDiscoverer.discoverServices():28]: Discovering services\r\n> 02:12:45.385 [Thread-15239] D/PUMPBTCOMM: [BleCommCallbacks.resetConnection():213]: Reset connection\r\n> 02:12:45.387 [Thread-15239] D/PUMPQUEUE: [Command.cancel():53]: Result cancel\r\n> 02:12:45.388 [Thread-15239] D/PUMPQUEUE: [QueueThread.run():81]: no connection possible\r\n> 02:12:45.388 [Thread-15239] I/PUMP: [OmnipodDashPumpPlugin.disconnect():266]: disconnect reason=Queue empty\r\n> 02:12:45.389 [Thread-15239] D/PUMPBTCOMM: [Connection.disconnect():119]: Disconnecting closeGatt=false\r\n> 02:12:45.389 [Thread-15239] D/PUMPBTCOMM: [BleCommCallbacks.resetConnection():213]: Reset connection\r\n> 02:12:45.390 [RxCachedThreadScheduler-88] D/PUMPBTCOMM: [ServiceDiscoverer.discoverServices():44]: Services discovered\r\n> 02:12:45.391 [Thread-15239] D/PUMPQUEUE: [QueueThread.run():150]: thread end\r\n> 02:12:45.394 [RxCachedThreadScheduler-88] D/PUMPBTCOMM: [Connection.disconnect():119]"
+  },
+  {
+   "id": 987648162,
+   "user": "avereha",
+   "created_at": "2021-12-07T07:33:44Z",
+   "body": "Added more logging in https://github.com/nightscout/AndroidAPS/pull/1043, please share the logs when this happens again."
+  },
+  {
+   "id": 996760324,
+   "user": "tswire",
+   "created_at": "2021-12-17T14:23:00Z",
+   "body": "Adding another log based on 3rd random \"disconnect\"  See log, seems to have started at 15:58:06 and I do see a lot more logging of COMM issues. \r\n[AndroidAPS._2021-12-16_00-00-05_.3.zip](https://github.com/nightscout/AndroidAPS/files/7735704/AndroidAPS._2021-12-16_00-00-05_.3.zip)\r\n "
+  },
+  {
+   "id": 997090690,
+   "user": "tswire",
+   "created_at": "2021-12-17T23:33:52Z",
+   "body": "adding another log where at 18:22:50 it timed out (greater than 120 seconds) on a command....never had that where it would reconnect again (and did so by my refreshing status on Dash screen in AAPS\r\n[AndroidAPS_LOG_1639783444586.log.zip](https://github.com/nightscout/AndroidAPS/files/7738282/AndroidAPS_LOG_1639783444586.log.zip)\r\n."
+  },
+  {
+   "id": 997954133,
+   "user": "tswire",
+   "created_at": "2021-12-20T14:06:35Z",
+   "body": "Another random disconnect on Pixel Pro 6.  Log attached, started at 22:42:37.  Was sleeping and woke up to 60 min alarm for pump unreachable....same symptoms...not reconnect possible.  This pod was from new box (new order from Omnipod) but seems to have same firmware/bluetooth as previous pod\r\n[AndroidAPS._2021-12-19_00-00-12_.txt](https://github.com/nightscout/AndroidAPS/files/7745813/AndroidAPS._2021-12-19_00-00-12_.txt)\r\ns"
+  },
+  {
+   "id": 1001294182,
+   "user": "static1333",
+   "created_at": "2021-12-27T02:18:01Z",
+   "body": "I have had issues similar to what is described by tswire over the last few days. I am using beta 11 and lost two pods which I couldn't regain connection. Every time I tried to refresh then the connection would time out after ~120secs. I discarded both pods as I couldn't regain connection after restarting the bluetooth/aaps/phone and clearing the bluetooth cache. I'm on samsung S8 using android v9.\r\n\r\nAttached are my logs for the latest instance where the connection failure starts at 14:55.\r\n[AndroidAPS_Dec26 Pod Connection Fail.log](https://github.com/nightscout/AndroidAPS/files/7777999/AndroidAPS_Dec26.Pod.Connection.Fail.log)\r\n.\r\n\r\nFYI, I looked through the log and this seems to be the first error message relevant to my problem. It looks like it could be different from what tswire is experiencing.\r\n\r\n14:55:21.561 [RxCachedThreadScheduler-36] E/PUMP: [OmnipodDashPumpPlugin.executeProgrammingCommand$lambda-47():1327]: Error executing command\r\ninfo.nightscout.androidaps.plugins.pump.omnipod.dash.driver.comm.exceptions.MessageIOException: Could not read response: CommandReceiveError(msg=Could not read response)\r\n\tat info.nightscout.androidaps.plugins.pump.omnipod.dash.driver.comm.OmnipodDashBleManagerImpl.sendCommand$lambda-0(OmnipodDashBleManagerImpl.kt:79) ~[na:0.0]"
+  },
+  {
+   "id": 1003454763,
+   "user": "tswire",
+   "created_at": "2021-12-31T21:38:26Z",
+   "body": "another pod disconnect at 1 day 21 hours for absolutely no reason.  Logs attached approx 15:57:55 forward you can see the errors.  PLEASE, what is going on here\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/7797093/AndroidAPS.log)\r\n?"
+  },
+  {
+   "id": 1003630381,
+   "user": "avereha",
+   "created_at": "2022-01-01T22:45:12Z",
+   "body": "Here is what I found in the logs, maybe we can see a pattern\r\n 1. AndroidAPS.2021-12-16_00-00-05.3.zip : this is expected. Dash does not maintain a connection, it creates one for each command. Not a bug.\r\n 2. AndroidAPS.2021-12-19_00-00-12.txt -> connection timeouts can happen and this is expected. Something interesting is that around that time I noticed\r\n```\r\n18:21:36.815 [main] D/CORE: [NetworkChangeReceiver.grabNetworkStatus():51]: NETCHANGE: Mobile connected. Roaming: false Metered: true\r\n18:21:36.816 [main] D/CORE: [NetworkChangeReceiver.grabNetworkStatus():56]: EventNetworkChange[metered=true,mobileConnected=true,roaming=false,ssid=,vpnConnected=false,wifiC\r\nonnected=true]\r\n```\r\nit looks like at exactly the same time the phone lost connection to the WiFi too. \r\n 3 . AndroidAPS.2021-12-19_00-00-12.txt -> this is the first real issue. The error is not as before. It timed out in the middle of the connection. Something interesting is that this timeout happened when Dexcom connected:\r\n```\r\n22:42:57.725 [RxCachedThreadScheduler-31] D/AUTOMATION: [AutomationPlugin.onStart$lambda-9():140]: Grabbed new BT event: EventBTChange[deviceAddress=DC:CA:B3:A3:1F:D1,device\r\nName=Dexcom4W,state=CONNECT]\r\n```\r\nAfter that, all connections failed with \r\n```\r\nOnConnectionStateChange with status/state: 133/0\r\n```\r\nThis is interesting!\r\n4. AndroidAPS_Dec26 Pod Connection Fail.log -> \r\nThe connections seems to fail with the same status:\r\n```\r\n15:49:22.733 [Binder:28796_2] D/PUMPBTCOMM: [BleCommCallbacks.onConnectionStateChange():38]: OnConnectionStateChange with status/state: 133/0\r\n15:49:22.735 [Binder:28796_2] I/PUMPBTCOMM: [Connection.onConnectionLost():190]: Lost connection with status: 133\r\n```\r\n5.AndroidAPS.log -> Connection fails with 'service not found'. This is the original failure.\r\n"
+  },
+  {
+   "id": 1003737524,
+   "user": "tswire",
+   "created_at": "2022-01-02T16:02:07Z",
+   "body": "adding another.  1 day 18 hours in to new pod this time.  seems to have disconnected around 10:08:41\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/7799368/AndroidAPS.log)\r\n"
+  },
+  {
+   "id": 1011337525,
+   "user": "tswire",
+   "created_at": "2022-01-12T18:33:09Z",
+   "body": "Another one today but I am having a hard time finding the exact issue in the logs.  It was between 12:10 and 12:20 when it lost connection (last connection was 12:10:38 then after that it was not able to connect.  2 logs attached. \r\n[AndroidAPS._2022-01-12_00-00-00_.3.log](https://github.com/nightscout/AndroidAPS/files/7856844/AndroidAPS._2022-01-12_00-00-00_.3.log)\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/7856845/AndroidAPS.log)\r\n\r\n "
+  },
+  {
+   "id": 1012484586,
+   "user": "tmarini1",
+   "created_at": "2022-01-13T20:18:57Z",
+   "body": "This is @supertones. Pixel 6. Attaching the log file from my second pod loss (out of twenty something) due to unable to connect. Last connection time was around 10:37. Talking on Bluetooth headset so thinking that is related.\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/7865744/AndroidAPS.log)\r\n\r\n"
+  },
+  {
+   "id": 1016255901,
+   "user": "madebyjonas",
+   "created_at": "2022-01-19T09:41:29Z",
+   "body": "Hi, I am not sure if this is the same issue. But I have had more than one time that my pump (Omnipod Dash) became unreachable for no reason. (+/- 1 time / day, differte time in day). What I did notice is that when I restart my phone, the connection is perfectly fine again. This keeps a nasty bug for when it occures at night and I don't wake up from the alarm I got that the connection has failed.\r\n\r\nMy Phone: OnePlus 9 with Android 12 (OxygenOS)\r\nMy AndroidAPS: 3.0-rc1 (waiting to update to RC - 3 in a day, when my pump needs to be replaced) but I had the issue in the latest beta as well.\r\n\r\nI added the logfile from this night. Cut to the part where the connection error occures (multiple times). This keeps going like that until I restart my phone.\r\n[log Jonas Peeters.txt](https://github.com/nightscout/AndroidAPS/files/7895873/log.Jonas.Peeters.txt)\r\n\r\nIf more information is needed, or this isn't the correct issue to post in, please let me know. I will be happy to help.\r\n"
+  },
+  {
+   "id": 1018683505,
+   "user": "tswire",
+   "created_at": "2022-01-21T16:51:29Z",
+   "body": "> Hi, I am not sure if this is the same issue. But I have had more than one time that my pump (Omnipod Dash) became unreachable for no reason. (+/- 1 time / day, differte time in day). What I did notice is that when I restart my phone, the connection is perfectly fine again. This keeps a nasty bug for when it occures at night and I don't wake up from the alarm I got that the connection has failed.\r\n> \r\n> My Phone: OnePlus 9 with Android 12 (OxygenOS) My AndroidAPS: 3.0-rc1 (waiting to update to RC - 3 in a day, when my pump needs to be replaced) but I had the issue in the latest beta as well.\r\n> \r\n> I added the logfile from this night. Cut to the part where the connection error occures (multiple times). This keeps going like that until I restart my phone. [log Jonas Peeters.txt](https://github.com/nightscout/AndroidAPS/files/7895873/log.Jonas.Peeters.txt)\r\n> \r\n> If more information is needed, or this isn't the correct issue to post in, please let me know. I will be happy to help.\r\n\r\nDefinitely seems like similar \"bug\" and now that it's on a different phone (we now have 3....Pixel 6, Samsung S? and OnePlus 9) I think there is something going on here.  @avereha I know you were away but anything connecting these ?"
+  },
+  {
+   "id": 1018788088,
+   "user": "static1333",
+   "created_at": "2022-01-21T19:14:02Z",
+   "body": "I'm just going to leave an early indicator on a new phone that I am using and have tested for ~24 hours. I replaced my Samsung S8 (which was giving ~70-80% connection quality and a couple failed pods in the past) with the new S21 FE. The signal quality has shot up to 100% for the ~24 hrs that I have been using the new phone. No problems connecting now but it's still early (note that I also upgraded to rc3 at the same time). Assuming the underlying cause of some of the problems are tied to connection quality then my new phone is providing a significantly better experience. I'll comment again if anything changes."
+  },
+  {
+   "id": 1020289077,
+   "user": "tswire",
+   "created_at": "2022-01-24T16:30:32Z",
+   "body": "> I'm just going to leave an early indicator on a new phone that I am using and have tested for ~24 hours. I replaced my Samsung S8 (which was giving ~70-80% connection quality and a couple failed pods in the past) with the new S21 FE. The signal quality has shot up to 100% for the ~24 hrs that I have been using the new phone. No problems connecting now but it's still early (note that I also upgraded to rc3 at the same time). Assuming the underlying cause of some of the problems are tied to connection quality then my new phone is providing a significantly better experience. I'll comment again if anything changes.\r\n\r\nany update?  Thinking about the S21 FE or even S21+ or even S20 FE to have more confidence in my connection vs Pixel 6 Pro\r\n"
+  },
+  {
+   "id": 1020373059,
+   "user": "static1333",
+   "created_at": "2022-01-24T17:48:31Z",
+   "body": "Still nearly 100% connection after ~4 days (only 3 missed connections out of ~350 with one or two of those when I walked 20+ feet away). It's a massive improvement. I still have to run some distance tests but at this point it's a huge positive for me.\r\n\r\nBTW I grabbed the S21 FE due to the battery size and cheaper price compared the other S21 offerings. Early indications are a smaller battery on the S22 which will be formally announced in a few weeks (so I decided not to wait)."
+  },
+  {
+   "id": 1026409704,
+   "user": "tswire",
+   "created_at": "2022-02-01T02:06:20Z",
+   "body": "As per Discord....at approx 19:03 (in the logs, this seems to be when it started) pod could not connect.  Approx 10 minutes before this, I had just paired and connected Buds Live headphones for a conference call.  This CANNOT be a coincidence as so many with pod failures are seeing them when using another peripheral.  For me prior to this, it SEEMED to be coming from a program called Gadgetbridge which is connecting my Fossil Hybrid HR watch.  I stopped using that 2 weeks ago, on Galaxy Watch 4 now and for over those 2 weeks, been perfect.  The second I pair a new BT device, it causes a Pod failure.  @avereha  hopefully you can see something in this new log that points to more consistent and comparable issues to others!\r\n[AndroidAPS._2022-01-31_17-41.txt](https://github.com/nightscout/AndroidAPS/files/7975393/AndroidAPS._2022-01-31_17-41.txt)\r\n!"
+  },
+  {
+   "id": 1682427386,
+   "user": "MilosKozak",
+   "created_at": "2023-08-17T14:52:28Z",
+   "body": "Closed for inactivity. Create new issue is if you still see the problem on latest branch"
+  }
+ ]
+}

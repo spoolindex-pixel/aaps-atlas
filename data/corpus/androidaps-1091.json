@@ -1,0 +1,45 @@
+{
+ "id": 1086561657,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1091,
+ "title": "[Latest dev] No profile change if only the target area was changed",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1091",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-12-22T08:09:34Z",
+ "closed_at": "2021-12-30T21:50:40Z",
+ "comment_count": 5,
+ "body": "If I change the target area in a Local Profile and save it, then trigger a profile change, the profile change is not performed and the previous targets remain active.\r\nWorkaround: Start a profile for a few minutes with a percentage change, then - when switching back - the changed Local Profile with the changed targets is active.\r\nVersion: Latest devs (already for a longer time)\r\nPump: Combo",
+ "comments": [
+  {
+   "id": 1002524158,
+   "user": "Alamo04",
+   "created_at": "2021-12-29T10:27:04Z",
+   "body": "Confirmed\r\nThere are some fixes done in the past, but they didn't help in that case.\r\n\r\nYou must always have a small change in your basal profile (0,01) then the profile switch works without to change to a different profile first. Same with Medtronic pump and I think it has nothing to do with the pumpdriver."
+  },
+  {
+   "id": 1003133142,
+   "user": "MilosKozak",
+   "created_at": "2021-12-30T18:13:16Z",
+   "body": "hmmm it works properly for RS/i"
+  },
+  {
+   "id": 1003136242,
+   "user": "MilosKozak",
+   "created_at": "2021-12-30T18:22:59Z",
+   "body": "looking at the code it should work for Combo as well\r\nPlease provide logs"
+  },
+  {
+   "id": 1003144444,
+   "user": "Alamo04",
+   "created_at": "2021-12-30T18:50:27Z",
+   "body": "Forced it for you @MilosKozak .\r\nChanged only Target fom 100 and 90 to only 100.\r\n\r\nShown in treatment but nothing happens in AAPS, but profile change was reported in NightScout  as done.\r\n\r\nLog is under screenshots.\r\n\r\n![Screenshot_20211230-193610](https://user-images.githubusercontent.com/36486505/147779612-7ef7038a-1326-4f09-8976-e6f19f67b8ab.png)\r\n![Screenshot_20211230-193644](https://user-images.githubusercontent.com/36486505/147779621-fcb74cf7-2d01-4d37-aef4-fcac765272d8.png)\r\n\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/7794204/AndroidAPS.log)\r\n\r\n"
+  },
+  {
+   "id": 1003192106,
+   "user": "MilosKozak",
+   "created_at": "2021-12-30T21:50:40Z",
+   "body": "fixed by https://github.com/nightscout/AndroidAPS/commit/7243f8fb6645b8de9271f1a0b55352231b2c9015"
+  }
+ ]
+}

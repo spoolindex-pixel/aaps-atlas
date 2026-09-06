@@ -1,0 +1,26 @@
+{
+ "issue_id": 1310,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/1310",
+ "title": "G6 / 8G: \"Cannot send calibration older than 1 hour to transmitter\"",
+ "symptom": "When calibrating with the syringe icon, the error \"Cannot send calibration older than 1 hour to transmitter\" is shown, and only the \"Initial Calibration\" menu item works. Multiple users report the same issue with G6 transmitters/sensors.",
+ "cause": "The error appears because xDrip's timestamp check sees the calibration as older than one hour (since > HOUR_IN_MS is true), but the underlying reason is not definitively identified. Some speculate timezone changes or an xDrip regression after the 2019.10.27 nightly caused it; Navid200 later states the transmitter actually accepts calibrations and the xDrip logs are confusing.",
+ "fix": "Enable 'Advanced Calibration/Automatic Calibration (experimental)' — after doing this, syringe calibrations are sent and accepted by the transmitter. Justinthomas also successfully reverted to the 2019.10.27 nightly build, and Jamorham said the 26 May nightly should resolve related issues.",
+ "settings_changed": [
+  "Advanced Calibration/Automatic Calibration (experimental) → ON",
+  "Go on without Calibrations → ON",
+  "Authenticate G5 before each read → ON"
+ ],
+ "devices": [
+  "G6"
+ ],
+ "android_versions": [
+  "Android 10"
+ ],
+ "driver_tags": [
+  "native",
+  "ob1"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "I additionally switched **\"Advanced Calibration/Automatic Calibration (experimental)\" ON** ---> now when using the syringe \"(1) calibration\" is sent to the tx and it's accepted, showing in Event Log!!"
+}

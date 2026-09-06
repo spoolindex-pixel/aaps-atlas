@@ -1,0 +1,75 @@
+{
+ "id": 2794017581,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3749,
+ "title": "3.3.1.2 Continual Bluetooth Pairing Requests",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3749",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-01-16T23:34:17Z",
+ "closed_at": "2025-01-19T21:10:12Z",
+ "comment_count": 10,
+ "body": "Using Omnipod Dash. The Bluetooth Pairing Requests started mid-pod as soon as I upgraded from. 3.3.1.0 to 3.3.1.2.\n\nEach time AAPS connects to the pod I receive a series of 3 pairing requests, with the device matching the MAC of the pod.\n\nAccepting the pairing request breaks connectivity between AAPS and the pod. Once the pod is unpaired the communication works.\n\nIn this state every few minutes my phone is flooded with pairing requests as AAPS sends instructions to the pod, or each time I change a setting.\n\nWill upload logs.",
+ "comments": [
+  {
+   "id": 2597134797,
+   "user": "olorinmaia",
+   "created_at": "2025-01-16T23:45:37Z",
+   "body": "I'm guessing your on android 15. Did you have issues with Dash before upgrading to 3.3.1.2?"
+  },
+  {
+   "id": 2597138783,
+   "user": "32423676573",
+   "created_at": "2025-01-16T23:49:13Z",
+   "body": "Hey Alf,\nYou're right, My device is a OnePlus 11 5G on oxygen OS 15 (Android 15).\nI've confirmed it's 3.3.3.2 specific as I've rolled back to 3.3.1.0 and the Bluetooth prompts went away.\nLet me know if there's anything else I can provide to assist.\n-------- Original Message --------On 2025-01-16 4:45 p.m., Alf Einar Johnsen  wrote:\nI'm guessing your on android 15. Did you have issues with Dash before upgrading to 3.3.1.2?\n\n—Reply to this email directly, view it on GitHub, or unsubscribe.You are receiving this because you authored the thread.Message ID: ***@***.***>\n[\n{\n***@***.***\": \"http://schema.org\",\n***@***.***\": \"EmailMessage\",\n\"potentialAction\": {\n***@***.***\": \"ViewAction\",\n\"target\": \"https://github.com/nightscout/AndroidAPS/issues/3749#issuecomment-2597134797\",\n\"url\": \"https://github.com/nightscout/AndroidAPS/issues/3749#issuecomment-2597134797\",\n\"name\": \"View Issue\"\n},\n\"description\": \"View this Issue on GitHub\",\n\"publisher\": {\n***@***.***\": \"Organization\",\n\"name\": \"GitHub\",\n\"url\": \"https://github.com\"\n}\n}\n]"
+  },
+  {
+   "id": 2597142450,
+   "user": "olorinmaia",
+   "created_at": "2025-01-16T23:52:33Z",
+   "body": "Hi again! I would like to know if you got a stable connection to dash with android 15 in 3.3.1.0😉 "
+  },
+  {
+   "id": 2597144478,
+   "user": "32423676573",
+   "created_at": "2025-01-16T23:54:28Z",
+   "body": "You got it. No problems at all with Android 15 on 3.3.1.0\n-------- Original Message --------On 2025-01-16 4:52 p.m., Alf Einar Johnsen  wrote:\nHi again! I would like to know if you got a stable connection to dash with android 15 in 3.3.1.0😉\n\n—Reply to this email directly, view it on GitHub, or unsubscribe.You are receiving this because you authored the thread.Message ID: ***@***.***>\n[\n{\n***@***.***\": \"http://schema.org\",\n***@***.***\": \"EmailMessage\",\n\"potentialAction\": {\n***@***.***\": \"ViewAction\",\n\"target\": \"https://github.com/nightscout/AndroidAPS/issues/3749#issuecomment-2597142450\",\n\"url\": \"https://github.com/nightscout/AndroidAPS/issues/3749#issuecomment-2597142450\",\n\"name\": \"View Issue\"\n},\n\"description\": \"View this Issue on GitHub\",\n\"publisher\": {\n***@***.***\": \"Organization\",\n\"name\": \"GitHub\",\n\"url\": \"https://github.com\"\n}\n}\n]"
+  },
+  {
+   "id": 2597151355,
+   "user": "olorinmaia",
+   "created_at": "2025-01-17T00:00:49Z",
+   "body": "@MilosKozak also see my comment in https://github.com/nightscout/AndroidAPS/issues/3471#issuecomment-2592338943\n\nI think the best way forward is to revert this change for Dash in Master branch or keep it in a separate branch. If you want to keep it in Master we should make it an option in Dash settings defaulted off. \n\nI got a strong feeling that for many it will make things worse. And for the ones having issues they can try enabling option for manual bonding. "
+  },
+  {
+   "id": 2598466337,
+   "user": "m4nnihuber",
+   "created_at": "2025-01-17T14:17:01Z",
+   "body": "I am having same issues regarding Android 15.\nsee Issue #3746 \nAlso no Problems on 3.3.1.0 and below"
+  },
+  {
+   "id": 2598705298,
+   "user": "mjhuisman",
+   "created_at": "2025-01-17T16:15:46Z",
+   "body": "Here same problem: Android 15 with dash at 3.3.1.0 no issues, but at 3.3.1.2 i have to bond pod, but after bonding its impossible for aaps to connect. Aaps got stuck with handshaking.\nIm using Xiaomi Redmi note 13 pro."
+  },
+  {
+   "id": 2599749328,
+   "user": "m4nnihuber",
+   "created_at": "2025-01-18T14:53:44Z",
+   "body": "Looks like it gets way better when i delete old \"twi boards\" in bluetooth list before starting new pod"
+  },
+  {
+   "id": 2599771852,
+   "user": "Not-AriStienfeld",
+   "created_at": "2025-01-18T16:10:04Z",
+   "body": "Same issue, it goes away after unpairing and repairing but comes back after less than a minute"
+  },
+  {
+   "id": 2601022893,
+   "user": "MilosKozak",
+   "created_at": "2025-01-19T21:10:12Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/8abfbd51842f6f9344f5764bd93f5a78113753a0"
+  }
+ ]
+}

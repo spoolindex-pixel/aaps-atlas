@@ -1,0 +1,39 @@
+{
+ "id": 4491035589,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4848,
+ "title": "AAPS continuously attempts to connect to Omnipod after deactivating",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4848",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2026-05-21T01:42:01Z",
+ "closed_at": "2026-05-25T20:05:16Z",
+ "comment_count": 4,
+ "body": "Reporting this issue still exists: https://github.com/nightscout/AndroidAPS/issues/4542\n\nA14, AAPS 3.4.2.2.  AAPS continuously tries to connect to a pod after deactivating an active pod. \n\n<img width=\"1080\" height=\"1955\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/73c4ba80-ea87-419b-8850-238342477350\" />",
+ "comments": [
+  {
+   "id": 4505769415,
+   "user": "chrisbev",
+   "created_at": "2026-05-21T07:30:48Z",
+   "body": "Also same stays 0/0 :0% connecting for xxx s.  Don't know if it is trying or the counter is just running.  After new active pod visit to Dash tab shows constant (seconds not counting) 0/0:: 0% Connecting for 123 s (I think no picture) although populated with priming amount etc.  Didn't try refresh but made bolus and returned and seemed to be working.\nSamsung A55, Android 14, UI 6.1, AAPS 3.4.2.2."
+  },
+  {
+   "id": 4513373570,
+   "user": "nl-ruud",
+   "created_at": "2026-05-21T22:47:24Z",
+   "body": "Agree, the issue is not fixed yet.\n\nThere seems to be some ambiguity in the `Pump.kt` interface around the semantics of `isInitialized()`, `isConnected()` and `isBusy()`. At least their semantics seems to differ across drivers (e.g. Dana, Dash, and Medtrum), so it’s not entirely clear what the intended contract is.\n\nMy current understanding is that `isBusy()` returns `true` when activationProgress is `NOT_STARTED`. This prevents the exit conditions in `QueueWorker` from ever firing, resulting in an infinite loop (as `isConnected()` also returns `true`). Excluding `NOT_STARTED` from the “busy” range would resolve this issue. However, given the ambiguity in the interface semantics, I don’t think this is a straightforward change and it probably deserves a more thorough review.\n\nIf my understanding is correct, the fix would be in `OmnipodDashPumpPlugin.kt`:\n\n```kotlin\noverride fun isBusy(): Boolean {\n    // prevents the queue from executing commands\n    return podStateManager.activationProgress != ActivationProgress.NOT_STARTED &&\n        podStateManager.activationProgress.isBefore(ActivationProgress.COMPLETED)\n}\n```"
+  },
+  {
+   "id": 4526595891,
+   "user": "nl-ruud",
+   "created_at": "2026-05-23T21:40:24Z",
+   "body": "The fix resolves the issue - will promote it to PR\n\n![image](https://github.com/user-attachments/assets/99314144-774e-4617-8f07-fe5647f52ab6)"
+  },
+  {
+   "id": 4529322413,
+   "user": "belevine",
+   "created_at": "2026-05-24T16:22:00Z",
+   "body": "Thank you, will test this PR tomorrow during the pod change. "
+  }
+ ]
+}

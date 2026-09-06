@@ -1,0 +1,158 @@
+{
+ "id": 301408917,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 325,
+ "title": "Android Wear Complication displays \"Null, Null\" with NSClient follower",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/325",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "duplicate",
+  "ui",
+  "device-wear"
+ ],
+ "created_at": "2018-03-01T13:43:59Z",
+ "closed_at": "2021-09-11T14:53:26Z",
+ "comment_count": 23,
+ "body": "Xdrip+ used as a Sync follower with NSClient app as local broadcaster. BG data displays on the phone app, on the Xdrip+ watchfaces, but not on the Xdrip+ Complication.\r\n\r\nLogs sent from Xdrip+ app. I'm trying to pull logs from the watch itself, but haven't gotten adb connected from the phone as of yet.\r\n\r\nPhone: Pixel XL, Android 8.1\r\nWatch: Ticwatch e, AW 2.9.0.185193291\r\n\r\n![image](https://user-images.githubusercontent.com/6577649/36846701-ad061fc0-1d29-11e8-9019-8f35c2d2af2b.png)",
+ "comments": [
+  {
+   "id": 388508372,
+   "user": "jamorham",
+   "created_at": "2018-05-11T23:17:34Z",
+   "body": "Try the May 11th nightly. This should be fixed now"
+  },
+  {
+   "id": 397806560,
+   "user": "sfe87",
+   "created_at": "2018-06-16T11:36:07Z",
+   "body": "Hi there, firstly thanks for all the great work.\r\n\r\nI've got the same issue as the original post, same setup / phone / watch, and watch faces work but complications just say null. \r\n\r\nI've tried to nightly build as suggested, and the usual restarting of phone and watch etc is there anything else I can look at? \r\n\r\nThanks in advance,\r\nCheers"
+  },
+  {
+   "id": 397892572,
+   "user": "ins5736",
+   "created_at": "2018-06-17T17:11:04Z",
+   "body": "Sorry for the delayed response. I still do not get data on the xdrip+ complication using the nightly build."
+  },
+  {
+   "id": 397974537,
+   "user": "KennyZR",
+   "created_at": "2018-06-18T08:08:44Z",
+   "body": "Same issue here on Michael Kors Access Greyson Wear 2.0 smartwatch, \r\n\r\n\r\n"
+  },
+  {
+   "id": 399607782,
+   "user": "mustacheride",
+   "created_at": "2018-06-22T23:17:11Z",
+   "body": "Same issue on Skagen Falster Wear 2.0 with Pixel 2 on Android 8.1"
+  },
+  {
+   "id": 415466747,
+   "user": "Evanvanovermeiren",
+   "created_at": "2018-08-23T15:48:51Z",
+   "body": "Same issue for me as well.  Pixel 2/xdrip follower/fossil explorist"
+  },
+  {
+   "id": 415879880,
+   "user": "jamorham",
+   "created_at": "2018-08-24T20:54:48Z",
+   "body": "If you are experiencing this issue, please let me know which xDrip+ version you are using and the collector type.\r\n\r\nI have tested this with G5 native on 21st Aug nightly and complications are working fine here. \r\n\r\nIf you are not using the latest nightly please update to it and also uninstall and reinstall the app from your watch (if it is running AW2.0) as on android wear 2 the app doesn't automatically update."
+  },
+  {
+   "id": 415922419,
+   "user": "Evanvanovermeiren",
+   "created_at": "2018-08-25T01:48:29Z",
+   "body": "watch 55dcd85\r\nphone 55dcd85 set as xdrip follower\r\nusing nightscout\r\ndexcom g6 - iphone6 with dexcom g6 app\r\n"
+  },
+  {
+   "id": 415958032,
+   "user": "jamorham",
+   "created_at": "2018-08-25T09:58:49Z",
+   "body": "@Evanvanovermeiren so your phone is a follower from nightscout, are you using NSClient with it?"
+  },
+  {
+   "id": 415961068,
+   "user": "sfe87",
+   "created_at": "2018-08-25T10:55:35Z",
+   "body": "I was on 24f1ee2-2018.07.26 both phone / watch and now 55dcd85-2018.08.21 on both, still showing null unfortunately!.\r\n\r\nCurrently iPhone SE with Dexcom G6 app (but had same issue with G5) to Nightscout (0.10.2-release-20171201). \r\n\r\nThis is then going to a Pixel XL running Android 9 (Was 8 with same issue) with AndroidAPS 2.0-RC4 (Similarly this was NSClient but tried this as a newer version to see if helped), with finally xDrip+ running as xDrip+ Sync Follower\r\n\r\nThanks!"
+  },
+  {
+   "id": 415966289,
+   "user": "Evanvanovermeiren",
+   "created_at": "2018-08-25T12:33:39Z",
+   "body": "@jamorham - yes I'm using nsclient"
+  },
+  {
+   "id": 415966335,
+   "user": "Evanvanovermeiren",
+   "created_at": "2018-08-25T12:34:28Z",
+   "body": "@jamorham - and in using version 1.58"
+  },
+  {
+   "id": 415991897,
+   "user": "ins5736",
+   "created_at": "2018-08-25T19:38:32Z",
+   "body": "@jamorham xdrip+ sync with nsclient 1.58\r\n\r\nUpdated to 8/21 nightly, and reinstalled watch app. Restarted both both phone and watch, but complication still reads null.\r\n\r\nPixel XL, ticwatch e"
+  },
+  {
+   "id": 415999941,
+   "user": "jamorham",
+   "created_at": "2018-08-25T22:15:27Z",
+   "body": "@sfe87 so you are both using NSClient with the phone in follower mode. I expect that is the code path which isn't populating the complication correctly. I will check it out."
+  },
+  {
+   "id": 416364534,
+   "user": "sfe87",
+   "created_at": "2018-08-27T20:52:00Z",
+   "body": "@jamorham Yup! Cheers for looking into this its much appreciated, its not really a critical issue compared to the scope of the rest of the app so thank you!"
+  },
+  {
+   "id": 435644272,
+   "user": "Evanvanovermeiren",
+   "created_at": "2018-11-04T05:51:58Z",
+   "body": "@jamorham - any updates?"
+  },
+  {
+   "id": 473563047,
+   "user": "ins5736",
+   "created_at": "2019-03-16T16:35:46Z",
+   "body": "Continue updating the latest beta xdrip+ but the issue persists.\r\n1/10/19 xdrip\r\n1.58 nsclient"
+  },
+  {
+   "id": 589251303,
+   "user": "BigWebstas",
+   "created_at": "2020-02-20T18:54:57Z",
+   "body": "Does anything differ from nsclient to xdripfollower? i am not using nightscout to sync just the built in xdrip follower and i am getting the Null/null issue as well"
+  },
+  {
+   "id": 612664747,
+   "user": "gregorybel",
+   "created_at": "2020-04-12T19:30:14Z",
+   "body": "Hi all, \r\nI have same issue with aaps as data source, I tracked the issue and found a workaorund, see my branch rebase on current xdrip master:\r\n\r\nhttps://github.com/gregorybel/xDrip/commits/gregorybel-workaround-complication-null\r\n\r\nMaybe you want to try it and check wether it solves issue for you too. But please note this is only a dirty workaround, not a proper solution. \r\n\r\nMaybe this will help somebody else find the correct solution.\r\n\r\nGregory"
+  },
+  {
+   "id": 738016396,
+   "user": "rustymonkey",
+   "created_at": "2020-12-03T14:08:22Z",
+   "body": "Hi I'm seeing this as well. Using Xdrip+ 2020.11.27 on a Pixel 2 XL (running Android 11) with Android Wear on a Fossil Gen 5. \r\nXdrip+ is configured with: Hardware data source: Nightscout follower; 'Download treatments' enabled. A separate NS client is not installed.\r\n\r\nXdrip+ displays BG data correctly on the phone, and on the xDrip Watchface. However, the xdrip+ watch complication shows 'Null', 'Null'."
+  },
+  {
+   "id": 739031728,
+   "user": "tolot27",
+   "created_at": "2020-12-04T21:31:06Z",
+   "body": "@gregorybel Do you think this is a duplicate of #303? They are quite similar."
+  },
+  {
+   "id": 739148694,
+   "user": "gregorybel",
+   "created_at": "2020-12-05T08:50:21Z",
+   "body": "I think so, at least the root cause."
+  },
+  {
+   "id": 917420285,
+   "user": "Navid200",
+   "created_at": "2021-09-11T14:53:26Z",
+   "body": "Please let me know if you think this should have a dedicated open issue and why.\r\nhttps://github.com/NightscoutFoundation/xDrip/issues/303"
+  }
+ ]
+}

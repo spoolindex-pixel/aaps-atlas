@@ -1,0 +1,26 @@
+{
+ "issue_id": 1573,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/1573",
+ "title": "xDrip cannot start a G6 sensor in no-code mode with a new (8J) transmitter",
+ "symptom": "With newer transmitters (8J), after entering 0000 as the calibration code in no-code mode, no readings are ever provided after the warm-up period, and the transmitter eventually issues an error. The Dexcom app can start a sensor with a new transmitter in no-code mode, but xDrip cannot.",
+ "cause": "The issue is likely due to more security measures for anti-restart that Dexcom has put into their new transmitters (as suspected by Jon). Additionally, calibration errors may occur after warm-up in no-code mode, which are not specific to xDrip but also occur with the Dexcom app.",
+ "fix": "One user (Navid200) successfully restarted using 0000 through xDrip after re-enabling 'Double Calibration' under Advanced Calibrations. However, later he lost connectivity and had to forget the device and re-pair. Another user (nickb24) overcame calibration errors by entering 3 glucose values at the same time with the same value, after checking the transmitter queue. The thread also suggests improving error messages to indicate waiting at least 15 minutes before another calibration.",
+ "settings_changed": [
+  "Double Calibration → enabled",
+  "Double Calibration → disabled"
+ ],
+ "devices": [
+  "Dexcom G6"
+ ],
+ "android_versions": [
+  "Android 9"
+ ],
+ "driver_tags": [
+  "native mode",
+  "no-code mode",
+  "collector"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "The only thing I did differently this time is that I re-enabled \"Double Calibration\" under Advanced Calibrations. Previously, I had it disabled when a restart with code 0000 had failed."
+}

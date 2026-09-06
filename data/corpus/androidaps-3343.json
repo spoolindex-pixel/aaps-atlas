@@ -1,0 +1,105 @@
+{
+ "id": 2304647864,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3343,
+ "title": "Auto-increase CHO and not decrease problem",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3343",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-05-19T14:53:37Z",
+ "closed_at": "2024-12-04T14:22:42Z",
+ "comment_count": 15,
+ "body": "Install yesterday the latest dev build eb3fa57744-2024.05.18.\r\n\r\nI see my cho inserted with calc or normally, not decrease with time, sometimes autoincrease, very dangerous.\r\nYesterday i eat 189 CHO at 18.25 p.m. and this morning at 7 oclock i have 70cho remains, and after 10 minutes, increased to 80cho, without doing nothing.\r\n\r\nDynamicISF enable.\r\n\r\nSame thing happens with 3bb0705a03-2024.04.02\r\nI try everything : \r\n\r\nstop app and reopen\r\nreboot phone\r\nclean stats\r\nclean db\r\nsuspect for ns 15.0.3 dev (but with another previous build installed, all work normally and cho decrease with time)\r\n\r\nSee the attachments (pay attention to the graphs of the first photo from yesterday)\r\n\r\n![photo_1_2024-05-19_16-51-14](https://github.com/nightscout/AndroidAPS/assets/39415490/cf801b53-c423-45c5-84f1-9ff575f0f736)\r\n![photo_3_2024-05-19_16-51-14](https://github.com/nightscout/AndroidAPS/assets/39415490/0393a4d0-dc58-4c34-9b03-f9fb5caa4ed8)\r\n![photo_4_2024-05-19_16-51-14](https://github.com/nightscout/AndroidAPS/assets/39415490/0b588698-56c7-4851-b4ce-e187536a59fa)\r\n\r\ni also attach the full log and the defaults log\r\n\r\n[AndroidAPS_LOG_1716129971548.log.zip](https://github.com/nightscout/AndroidAPS/files/15369820/AndroidAPS_LOG_1716129971548.log.zip)\r\n[AndroidAPS_LOG_1716129949467.log.zip](https://github.com/nightscout/AndroidAPS/files/15369821/AndroidAPS_LOG_1716129949467.log.zip)\r\n\r\n",
+ "comments": [
+  {
+   "id": 2122253662,
+   "user": "robertrub",
+   "created_at": "2024-05-21T10:03:24Z",
+   "body": "It doesn't increase in my case but the carb reduction is much slower than usual. 37g after 3 hours are still there...\n\nI use \"basic\" OpenAPS SMB algorithm.\n\n![Screenshot_20240521_120142_AAPS.jpg](https://github.com/nightscout/AndroidAPS/assets/76626474/d5961734-a9b9-4d97-9515-5cb5aea57e25)\n\n![Screenshot_20240519_173817_AAPS.jpg](https://github.com/nightscout/AndroidAPS/assets/76626474/cad33b2e-8cb7-4ff8-b7ba-34103c0823b7)\n\n"
+  },
+  {
+   "id": 2122330416,
+   "user": "lostboy86",
+   "created_at": "2024-05-21T10:42:48Z",
+   "body": "Yes, sometimes too slow also for me the decrease\r\n\r\nIl mar 21 mag 2024, 12:03 Robrub ***@***.***> ha scritto:\r\n\r\n> It doesn't increase in my case but the carb reduction is much slower than\r\n> usual. 37g after 3 hours are still there...\r\n>\r\n> Screenshot_20240521_120142_AAPS.jpg (view on web)\r\n> <https://github.com/nightscout/AndroidAPS/assets/76626474/d5961734-a9b9-4d97-9515-5cb5aea57e25>\r\n>\r\n> Screenshot_20240519_173817_AAPS.jpg (view on web)\r\n> <https://github.com/nightscout/AndroidAPS/assets/76626474/cad33b2e-8cb7-4ff8-b7ba-34103c0823b7>\r\n>\r\n> —\r\n> Reply to this email directly, view it on GitHub\r\n> <https://github.com/nightscout/AndroidAPS/issues/3343#issuecomment-2122253662>,\r\n> or unsubscribe\r\n> <https://github.com/notifications/unsubscribe-auth/AJMW5QQCNUVSVH2V4OUB5W3ZDMLYFAVCNFSM6AAAAABH6NZNAOVHI2DSMVQWIX3LMV43OSLTON2WKQ3PNVWWK3TUHMZDCMRSGI2TGNRWGI>\r\n> .\r\n> You are receiving this because you authored the thread.Message ID:\r\n> ***@***.***>\r\n>\r\n"
+  },
+  {
+   "id": 2138815871,
+   "user": "Philoul",
+   "created_at": "2024-05-30T07:00:06Z",
+   "body": "Sorry for having being slow to understand your screenshots...\n16h36 49g (DynISF selected ISF 169 instead of 60 in profile)\n16h26 48g (but here I don't see variable ISF value).\n=> was DynISF enabled at 16h26?\n\nIn 16h26 screenshot I can see an issue in -BGI curve at about 15h10 that have been fixed in screenshot done at 16h36. (your secondary curves settings definitively doesn't help analysis with too many things not comparable together). Please don't mix DEV and -BGI (generally together alone on same subgraph) with COB.\n\nFor your safety, forget DynISF for now... When you see an ISF value 2.5 higher (or lower) than your profile, it's OFF so not working for you..."
+  },
+  {
+   "id": 2138829432,
+   "user": "lostboy86",
+   "created_at": "2024-05-30T07:08:45Z",
+   "body": "The problem Is not the graphs, but the COB value.\r\n\r\nSometimes cob for example was 70, After 10 minutes , its 80.\r\n\r\nSometimes its 0 cob (end decay cob meal) but goes up After 10 minutes to 1\r\nor 2 cho.\r\n\r\nFor me the Dynamic work very well, 92-97% in range with 1500gr cho for 3\r\ndays, but i suspect this problem not related with DynISF, because on fb\r\ngroup aaps users there Is others users with cho very long  decay problem\r\n\r\n\r\nIl gio 30 mag 2024, 09:00 Philoul ***@***.***> ha scritto:\r\n\r\n> Sorry for having being slow to understand your screenshots...\r\n> 16h36 49g (DynISF selected ISF 169 instead of 60 in profile)\r\n> 16h26 48g (but here I don't see variable ISF value).\r\n> => was DynISF enabled at 16h26?\r\n>\r\n> In 16h26 screenshot I can see an issue in -BGI curve at about 15h10 that\r\n> have been fixed in screenshot done at 16h36. (your secondary curves\r\n> settings definitively doesn't help analysis with too many things not\r\n> comparable together). Please don't mix DEV and -BGI (generally together\r\n> alone on same subgraph) with COB.\r\n>\r\n> For your safety, forget DynISF for now... When you see an ISF value 2.5\r\n> higher (or lower) than your profile, it's OFF so not working for you...\r\n>\r\n> —\r\n> Reply to this email directly, view it on GitHub\r\n> <https://github.com/nightscout/AndroidAPS/issues/3343#issuecomment-2138815871>,\r\n> or unsubscribe\r\n> <https://github.com/notifications/unsubscribe-auth/AJMW5QRDC7IDVWOVICOFFJLZE3FA3AVCNFSM6AAAAABH6NZNAOVHI2DSMVQWIX3LMV43OSLTON2WKQ3PNVWWK3TUHMZDCMZYHAYTKOBXGE>\r\n> .\r\n> You are receiving this because you authored the thread.Message ID:\r\n> ***@***.***>\r\n>\r\n"
+  },
+  {
+   "id": 2138878819,
+   "user": "robertrub",
+   "created_at": "2024-05-30T07:40:46Z",
+   "body": "@lostboy86 The COB value (residual CHO) is calculated using ISF. When your ISF changes drastically (as it happens with DynISF), your COB will change too.\n\nIf you turn _OFF_ DynISF, you can check if COB values get back to normal. This test will enable all to see where the problem originates.\n\nAlso, 500g carbs (CHO) per day will take a very long time to be used."
+  },
+  {
+   "id": 2138921106,
+   "user": "lostboy86",
+   "created_at": "2024-05-30T08:03:10Z",
+   "body": "Thanks for explaining well.\r\nWith calculation ISF, the COB value can be increase automatically with\r\nDynISF?\r\n\r\nIl giorno gio 30 mag 2024 alle ore 09:41 Robrub ***@***.***>\r\nha scritto:\r\n\r\n> @lostboy86 <https://github.com/lostboy86> The COB value (residual CHO) is\r\n> calculated using ISF. When your ISF changes drastically (as it happens with\r\n> DynISF), your COB will change too.\r\n>\r\n> If you turn *OFF* DynISF, you can check if COB values get back to normal.\r\n> This test will enable all to see where the problem originates.\r\n>\r\n> —\r\n> Reply to this email directly, view it on GitHub\r\n> <https://github.com/nightscout/AndroidAPS/issues/3343#issuecomment-2138878819>,\r\n> or unsubscribe\r\n> <https://github.com/notifications/unsubscribe-auth/AJMW5QTHHCEAUDJ7UIODWV3ZE3JZHAVCNFSM6AAAAABH6NZNAOVHI2DSMVQWIX3LMV43OSLTON2WKQ3PNVWWK3TUHMZDCMZYHA3TQOBRHE>\r\n> .\r\n> You are receiving this because you were mentioned.Message ID:\r\n> ***@***.***>\r\n>\r\n"
+  },
+  {
+   "id": 2138986725,
+   "user": "lostboy86",
+   "created_at": "2024-05-30T08:22:19Z",
+   "body": "https://www.facebook.com/groups/AndroidAPSUsers/permalink/3775078956046827/\r\n\r\nIs this related?"
+  },
+  {
+   "id": 2140068086,
+   "user": "Philoul",
+   "created_at": "2024-05-30T16:01:36Z",
+   "body": "To explain how calculation is done for COB decay, you start from Insulin activity in Units per 5min (how many units are absorbed between 2 BG values (see Insulin curves)\n\nWith ISF you calculate how many you BG value should decrease due to insulin only (mg/dl /5min or mmol/l / 5min)\n=> this is -BGI curve (always shown in mg/dl in curve scale whatever unit selected by user).\n\nThen the Real BG value is received, and often different that the one calculated with insulin only. The difference between BG received from CGM and BG expected with insulin only is called deviation (mg/dl / 5min) and will be used to calculate amount of Carbs consumed to \"increase\" BG value during 5 min... (DEV curve).\n\n For example if BG should decrease by 10mg/dl during 5 min due to insulin, but in reality it increased by 5 mg/dl. then deviation bar will be 5 mg/dl greater than -BGI curve, and the 15 mg/dl value (+5 - (-10)) will be used to calculate COB decay.\n\nThe factor to convert Deviation (mg/dl / 5min) to Absorbed Carbs is IC/ISF... (IC/ISF is also called Carb Sensitivity Factor (CSF) and unit is g / mg/dl ), so Deviation * CSF will be in g / 5min, so number of Carbs absorbed during 5min. This iterative calculation is done again every 5 min...\n\nIf Deviation value is too small (so carbs absorption too small), then there is a safety parameter (min_5m_carbimpact) that will fix the minimum value to calculate COB absorption (and the minimum reduction slope of COB will be min_5m_carbimpact * IC /ISF).\n\nhaving an ISF value 3 or 4 times higher can have a huge impact on COB absorption speed if IC remains unchanged.\n\nWe should also check the impact on COB value shown in overview when you have important variation of ISF during the period of meal absorption...\n\nThere is an additional safety parameter (max meal duration), that will directly replaced remaining COB of a meal to 0 if meal is too old..."
+  },
+  {
+   "id": 2140783209,
+   "user": "ArthurusDent",
+   "created_at": "2024-05-30T20:06:05Z",
+   "body": "I have seen problems with carb decay twice now. I'm on bb1a276078, which is the regular 3.2.0.3. \r\n\r\nI'm using OpenAPS SMB.\r\n\r\nNightscout 15.0.2.\r\n\r\nThis occurred on 27-05-24. \r\n\r\nOther than re-adding the carbs as described below, I didn't try anything else to solve the problem, so no restarts, no database reset.\r\n\r\nI didn't take a screenshot from AAPS at the time but it was still visible in NS:\r\n![Screenshot_20240530_213713](https://github.com/nightscout/AndroidAPS/assets/6848629/a45c6150-c8b6-4776-87e4-7bd5fece9fc1)\r\n\r\nWhen I noticed that the 45 g of carbs did not decay correctly, I deleted the carb entry in AAPS and then re-added the carbs, once as 45 g, then deleted those again and re-added just 35 g. This is what you can see here. Keep in mind that in the list this seems to have happened at around 10:15, when in reality re-adding happened maybe three or more hours later.\r\n![Screenshot 2024-05-30 at 21-35-24 204 3 →](https://github.com/nightscout/AndroidAPS/assets/6848629/f949e12a-c7b0-46c7-b002-5a0b2c2d994b)\r\n\r\nLogs:\r\n[AndroidAPS._2024-05-27_02-00-19_1.zip](https://github.com/nightscout/AndroidAPS/files/15505175/AndroidAPS._2024-05-27_02-00-19_1.zip)\r\n[AndroidAPS._2024-05-27_02-00-19_2.zip](https://github.com/nightscout/AndroidAPS/files/15505176/AndroidAPS._2024-05-27_02-00-19_2.zip)\r\n"
+  },
+  {
+   "id": 2143547692,
+   "user": "lostboy86",
+   "created_at": "2024-06-01T18:50:42Z",
+   "body": "![Screenshot_2024-06-01-15-05-58-99_3eaa31bb2c2a38a1c605d9dc918cf694](https://github.com/nightscout/AndroidAPS/assets/39415490/df78aba3-d573-4170-b6fa-769bfd422db0)\r\n![Screenshot_2024-06-01-15-07-59-50_572064f74bd5f9fa804b05334aa4f912](https://github.com/nightscout/AndroidAPS/assets/39415490/edaf3917-f1be-4574-a838-39e7c9f145f7)\r\n![Screenshot_2024-06-01-15-08-35-17_3eaa31bb2c2a38a1c605d9dc918cf694](https://github.com/nightscout/AndroidAPS/assets/39415490/8ad61854-6d13-4b2b-96e3-a9da425bfe7d)\r\n![Screenshot_2024-06-01-15-12-34-73_3eaa31bb2c2a38a1c605d9dc918cf694](https://github.com/nightscout/AndroidAPS/assets/39415490/6bfd9d1f-c341-4cff-9863-2cc5170b106e)\r\n![Screenshot_2024-06-01-15-01-43-39_3eaa31bb2c2a38a1c605d9dc918cf694](https://github.com/nightscout/AndroidAPS/assets/39415490/71ee32d9-812b-4659-9097-08be2a51720c)\r\n\r\n\r\nI screenshot the bug (pay attention with COB value and phone timestamp in the upper status bar.\r\n\r\nCob increase from 1 tò 2, then 0, then lockscreen 2, etc"
+  },
+  {
+   "id": 2143565744,
+   "user": "robertrub",
+   "created_at": "2024-06-01T19:54:51Z",
+   "body": "@lostboy86 In this case, the differences are very small and can be related to your changing ISF (due to DynISF) and rounding up or down. 0.5g will be rounded to 1 but 0.4 will be rounded to 0.\n\nI copied them in chronological order\n\n![Screenshot_20240601_215130_Samsung Notes.jpg](https://github.com/nightscout/AndroidAPS/assets/76626474/60ca9456-d6e1-4b75-8b7d-a92dc1f212f4)\n\n\n    "
+  },
+  {
+   "id": 2143570942,
+   "user": "lostboy86",
+   "created_at": "2024-06-01T20:12:14Z",
+   "body": "I have found (no screenshot) the case then i have 70, then 84, then 68 in\r\n10 minutes\r\n\r\nIl sab 1 giu 2024, 21:55 Robrub ***@***.***> ha scritto:\r\n\r\n> @lostboy86 <https://github.com/lostboy86> In tviscase, the differences\r\n> are very small and can be related to your changing ISF (due to DynISF) and\r\n> rounding up or down. 0.5g will be rounded to 1 but 0.4 will be rounded to 0.\r\n>\r\n> I copied them in chronological order\r\n>\r\n> Screenshot_20240601_215130_Samsung.Notes.jpg (view on web)\r\n> <https://github.com/nightscout/AndroidAPS/assets/76626474/60ca9456-d6e1-4b75-8b7d-a92dc1f212f4>\r\n>\r\n> —\r\n> Reply to this email directly, view it on GitHub\r\n> <https://github.com/nightscout/AndroidAPS/issues/3343#issuecomment-2143565744>,\r\n> or unsubscribe\r\n> <https://github.com/notifications/unsubscribe-auth/AJMW5QST4OTILNF46ZR5CG3ZFIRKBAVCNFSM6AAAAABH6NZNAOVHI2DSMVQWIX3LMV43OSLTON2WKQ3PNVWWK3TUHMZDCNBTGU3DKNZUGQ>\r\n> .\r\n> You are receiving this because you were mentioned.Message ID:\r\n> ***@***.***>\r\n>\r\n"
+  },
+  {
+   "id": 2143573342,
+   "user": "robertrub",
+   "created_at": "2024-06-01T20:19:32Z",
+   "body": "@lostboy86 As I said, it depends on your ISF and that changes all the time with DynISF. You need COB and ISF\n\n\n    "
+  },
+  {
+   "id": 2143575985,
+   "user": "lostboy86",
+   "created_at": "2024-06-01T20:26:54Z",
+   "body": "Yes, but this not the decay, but the value of COB.\r\n\r\nCob its impossible to increase, wherever the isf value.\r\n\r\n\r\nIl sab 1 giu 2024, 22:19 Robrub ***@***.***> ha scritto:\r\n\r\n> @lostboy86 <https://github.com/lostboy86> As I said, it depends on your\r\n> ISF and that changes all the time with DynISF. You need COB and ISF\r\n>\r\n> —\r\n> Reply to this email directly, view it on GitHub\r\n> <https://github.com/nightscout/AndroidAPS/issues/3343#issuecomment-2143573342>,\r\n> or unsubscribe\r\n> <https://github.com/notifications/unsubscribe-auth/AJMW5QVKDQLAYYJN7DRRIGDZFIUGTAVCNFSM6AAAAABH6NZNAOVHI2DSMVQWIX3LMV43OSLTON2WKQ3PNVWWK3TUHMZDCNBTGU3TGMZUGI>\r\n> .\r\n> You are receiving this because you were mentioned.Message ID:\r\n> ***@***.***>\r\n>\r\n"
+  },
+  {
+   "id": 2517585403,
+   "user": "MilosKozak",
+   "created_at": "2024-12-04T14:22:42Z",
+   "body": "COB decaying is improved in 3.3.0-dev-e"
+  }
+ ]
+}

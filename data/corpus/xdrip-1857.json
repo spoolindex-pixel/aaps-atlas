@@ -1,0 +1,79 @@
+{
+ "id": 1030017214,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1857,
+ "title": "Sending activity level and heart beat rate to nightscout",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1857",
+ "state": "closed",
+ "labels": [
+  "enhancement",
+  "sync-nightscout",
+  "activity"
+ ],
+ "created_at": "2021-10-19T08:34:36Z",
+ "closed_at": "2024-05-31T14:32:48Z",
+ "comment_count": 10,
+ "body": "In xDrip it is possible to collect these data, it would be nice if we could have them on Nightsout also.\r\nActivity level, in particular for children, is an important factor for low predictions.\r\nBesides, heart beat level is also important to decide on the current state of activities.\r\n\r\n",
+ "comments": [
+  {
+   "id": 946743739,
+   "user": "Navid200",
+   "created_at": "2021-10-19T13:49:39Z",
+   "body": "@tolot27 I see this closely related to the following.\r\nhttps://github.com/NightscoutFoundation/xDrip/issues/1476\r\nOf course, this one wants to upload to Nightscout and other wants to upload to tidepool.  Someone may want to open another one for uploading the same to another server.  \r\nBut, what is common between all of these is what is requested from xDrip to upload.\r\n\r\nIf the person who has to approve uploading such data doesn't feel that the data should be uploaded (I'm not saying that's the case), he/she is not going to approve any of them.  Is there really a benefit in having more requests?\r\nIn my opinion, we should combine related requests.  If some day a developer creates a PR for only uploading to Nightscout but not to tidepool, the combined issue will remain open because it hasn't been addressed fully.\r\n\r\nSo, if you agree, I would ask @pooyaww to add their request to the linked existing issue, and close this one."
+  },
+  {
+   "id": 946922869,
+   "user": "pooyaww",
+   "created_at": "2021-10-19T17:02:58Z",
+   "body": "@Navid200 I agree. I already searched for similar issues but my  choice of keywords were not similar :-). So I close it and lets continue on the same existing issue."
+  },
+  {
+   "id": 946929491,
+   "user": "Navid200",
+   "created_at": "2021-10-19T17:10:57Z",
+   "body": "@pooyaww Thanks"
+  },
+  {
+   "id": 947348904,
+   "user": "tolot27",
+   "created_at": "2021-10-20T05:49:27Z",
+   "body": "@sulkaharo I saw this closed issue: https://github.com/nightscout/cgm-remote-monitor/issues/3337. What is the status of the implementation?\r\n@PieterGit You have created this comment: https://github.com/nightscout/cgm-remote-monitor/issues/3337#issuecomment-365446080. Does this still work with xDrip in Engineering mode?"
+  },
+  {
+   "id": 947351462,
+   "user": "tolot27",
+   "created_at": "2021-10-20T05:55:29Z",
+   "body": "> But, what is common between all of these is what is requested from xDrip to upload.\r\n> In my opinion, we should combine related requests. If some day a developer creates a PR for only uploading to Nightscout but not to tidepool, the combined issue will remain open because it hasn't been addressed fully.\r\n\r\n@Navid I can follow you intention and already thought about refactoring the different sync features into a centralized sync framework. That would allow us to implement the features for all sync targets at the same time. But as long as we have target-specific issues, we should keep it separate. Otherwise, comments will be mixed and it is hard to follow.\r\n\r\n> So, if you agree, I would ask @pooyaww to add their request to the linked existing issue, and close this one.\r\n\r\nPlease keep the issues separated by the sync target/source."
+  },
+  {
+   "id": 1007015521,
+   "user": "tolot27",
+   "created_at": "2022-01-06T23:39:43Z",
+   "body": "@pooyaww It looks like the data can be synced if engineering mode is enabled. Did you try that? What is the source of the heart beat? A pebble watch or did you enable the \"Smartwatch Sensors\" in xDrip?\r\n\r\nThe feature should be easy to implement."
+  },
+  {
+   "id": 1008351763,
+   "user": "pooyaww",
+   "created_at": "2022-01-09T18:39:31Z",
+   "body": "@tolot27 How can I enable Engineering mode? In my phone it is grayed out.\r\nThe source of the heart beat is a Fitbit Versa 3 , and I have enabled Smartwatch Sensor in xDrip."
+  },
+  {
+   "id": 1008357436,
+   "user": "Navid200",
+   "created_at": "2022-01-09T19:15:16Z",
+   "body": "@pooyaww https://github.com/Navid200/xDrip/wiki/Engineering-mode"
+  },
+  {
+   "id": 1008430583,
+   "user": "pooyaww",
+   "created_at": "2022-01-09T21:50:42Z",
+   "body": "@tolot27 I enabled engineering mode, but nothing happened about activity level."
+  },
+  {
+   "id": 1009422927,
+   "user": "tolot27",
+   "created_at": "2022-01-10T22:48:54Z",
+   "body": "Please can you post a screenshot which shows the data collected in xDrip?\r\n\r\nPlease also enable extra logging tag for \"NightscoutUploader:v\" and report, if you see anything like \"Processing (heartrate|steps|motion tracking) for RESTAPI\" over time in the logs."
+  }
+ ]
+}

@@ -1,0 +1,21 @@
+{
+ "id": 1186788233,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1522,
+ "title": "[3.0.0] Dash priming failure",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1522",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-03-30T17:45:27Z",
+ "closed_at": "2022-03-30T18:20:36Z",
+ "comment_count": 1,
+ "body": "Tried to activate new pod. AndroidAPS reported that it couldnt find any pods.\r\nLog file looks like this\r\n```\r\n20:15:52.334 [RxCachedThreadScheduler-34] I/PUMPBTCOMM: [OmnipodDashBleManagerImpl.pairNewPod$lambda-2():192]: Starting new pod activation\r\n20:15:52.337 [RxCachedThreadScheduler-34] D/PUMP: [OmnipodDashManagerImpl$PodEventInterceptor.accept():667]: Intercepted PodEvent in OmnipodDashManagerImpl: Scanning\r\n20:15:52.345 [RxCachedThreadScheduler-34] D/PUMPBTCOMM: [PodScanner.scanForPod():27]: Scanning with filters: BluetoothLeScanFilter [mDeviceName=null, mDeviceAddress=null, mUuid=000\r\n04024-0000-1000-8000-00805f9b34fb, mUuidMask=null, mServiceSolicitationUuid=null, mServiceSolicitationUuidMask=null, mServiceDataUuid=null, mServiceData=null, mServiceDataMask=null\r\n, mManufacturerId=-1, mManufacturerData=null, mManufacturerDataMask=null, mOrganizationId=-1, mTDSFlags=-1, mTDSFlagsMask=-1, mWifiNANHash=null], mGroupBasedFiltering=false setting\r\nsandroid.bluetooth.le.ScanSettings@8f7aaae\r\n20:15:57.365 [RxCachedThreadScheduler-34] D/PUMPBTCOMM: [ScanCollector.collect():32]: ScanCollector looking for podID: 4294967294\r\n20:15:57.367 [RxCachedThreadScheduler-34] I/PUMPBTCOMM: [OmnipodDashBleManagerImpl.disconnect():239]: Trying to disconnect a null connection\r\n20:15:57.368 [RxCachedThreadScheduler-34] D/PUMP: [OmnipodDashManagerImpl$ErrorInterceptor.accept():743]: Intercepted error in OmnipodDashManagerImpl: info.nightscout.androidaps.plugins.pump.omnipod.dash.driver.comm.exceptions.ScanException: Not found\r\n20:15:57.372 [RxCachedThreadScheduler-34] E/PUMP: [DashInitializePodViewModel$doExecuteAction$1$1.invoke():66]: Error in Pod activation part 1\r\ninfo.nightscout.androidaps.plugins.pump.omnipod.dash.driver.comm.exceptions.ScanException: Not found\r\n    at info.nightscout.androidaps.plugins.pump.omnipod.dash.driver.comm.scan.PodScanner.scanForPod(PodScanner.kt:34) ~[na:0.0]\r\n    at info.nightscout.androidaps.plugins.pump.omnipod.dash.driver.comm.OmnipodDashBleManagerImpl.pairNewPod$lambda-2(OmnipodDashBleManagerImpl.kt:198) ~[na:0.0]\r\n    at info.nightscout.androidaps.plugins.pump.omnipod.dash.driver.comm.OmnipodDashBleManagerImpl.$r8$lambda$ZLoeafUkGEvZyrDuWqO3VDtWN_s(Unknown Source:0) ~[na:0.0]\r\n    at info.nightscout.androidaps.plugins.pump.omnipod.dash.driver.comm.OmnipodDashBleManagerImpl$$ExternalSyntheticLambda0.subscribe(Unknown Source:2) ~[na:0.0]\r\n    at io.reactivex.internal.operators.observable.ObservableCreate.subscribeActual(ObservableCreate.java:40) ~[na:0.0]\r\n    at io.reactivex.Observable.subscribe(Observable.java:12284) ~[na:0.0]\r\n    at io.reactivex.internal.operators.observable.ObservableDefer.subscribeActual(ObservableDefer.java:40) ~[na:0.0]\r\n    at io.reactivex.Observable.subscribe(Observable.java:12284) ~[na:0.0]\r\n    at io.reactivex.internal.operators.observable.ObservableConcatMap$ConcatMapDelayErrorObserver.drain(ObservableConcatMap.java:475) ~[na:0.0]\r\n    at io.reactivex.internal.operators.observable.ObservableConcatMap$ConcatMapDelayErrorObserver.onSubscribe(ObservableConcatMap.java:330) ~[na:0.0]\r\n    at io.reactivex.internal.operators.observable.ObservableFromArray.subscribeActual(ObservableFromArray.java:31) ~[na:0.0]\r\n    at io.reactivex.Observable.subscribe(Observable.java:12284) ~[na:0.0]\r\n    at io.reactivex.internal.operators.observable.ObservableConcatMap.subscribeActual(ObservableConcatMap.java:55) ~[na:0.0]\r\n    at io.reactivex.Observable.subscribe(Observable.java:12284) ~[na:0.0]\r\n```\r\n\r\nAfter this I tried to activate the pod using PDM but that also failed. \r\nSo I guess this is an pod error. ",
+ "comments": [
+  {
+   "id": 1083466969,
+   "user": "MilosKozak",
+   "created_at": "2022-03-30T18:20:36Z",
+   "body": "yes. it seems pod was not found"
+  }
+ ]
+}

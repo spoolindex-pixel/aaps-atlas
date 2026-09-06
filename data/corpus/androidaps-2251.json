@@ -1,0 +1,45 @@
+{
+ "id": 1475029404,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2251,
+ "title": "[DEV] Overlapping temp basals in history possibly causing wrong IOB",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2251",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-12-04T17:44:54Z",
+ "closed_at": "2022-12-07T14:58:58Z",
+ "comment_count": 5,
+ "body": "Build: 4b46ea8363-2022.12.04 Merged at: https://github.com/nightscout/AndroidAPS/commit/9a35579d66b8f01d0a5610d7485ced848e736f7e\r\nPump Used: EOPatch\r\nTime: See screenshot (2022-12-04 18:23 and 18:03 would be times of interest)\r\n\r\nI noticed basals not cancelling correctly (or not showing up in history at least) causing wrong IOB results. See screenshot:\r\n![WhatsApp Image 2022-12-04 at 18 35 01](https://user-images.githubusercontent.com/60566713/205506577-e6085f06-5c68-4c00-8d29-21b11c92f488.jpeg)\r\n\r\nLogs:\r\n[AndroidAPS_2022-12-04-jb.zip](https://github.com/nightscout/AndroidAPS/files/10149125/AndroidAPS_2022-12-04-jb.zip)\r\n\r\nEdit: Looking back at the history I see this happinging on older builds as well. Looking further back I also saw some instances of this behaviour with the Combo (new driver). Will start a DASH when this one needs changing and see if it happens there as well. Removing the EOPatch tag.\r\n",
+ "comments": [
+  {
+   "id": 1336520775,
+   "user": "vanelsberg",
+   "created_at": "2022-12-04T21:23:55Z",
+   "body": "Can not see the problem here.\r\nE.g. 17:38h 120m basal is replaced with a 5 min basal at 18:03h. Nothing wrong with that...\r\nPlease explain?"
+  },
+  {
+   "id": 1336569891,
+   "user": "jbr7rr",
+   "created_at": "2022-12-05T00:27:18Z",
+   "body": "> Can not see the problem here. E.g. 17:38h 120m basal is replaced with a 5 min basal at 18:03h. Nothing wrong with that... Please explain?\r\n\r\nPlease look again, the basal did not end it was overlapping. In fact AAPS was thinking it was still running, the IOB counter for the one at 18:18 was still going up every 5 min.\r\n\r\nHere is another example, please note the end time of the first temp basal. It later then the next one started\r\n\r\n![Screenshot_20221205-012129](https://user-images.githubusercontent.com/60566713/205525188-ee882271-5135-49c6-9c84-425f200d6041.png)\r\n"
+  },
+  {
+   "id": 1340079510,
+   "user": "vanelsberg",
+   "created_at": "2022-12-06T22:14:06Z",
+   "body": "Bot sure. I read this as\r\n22:48h - Started temp basal of 0,30 E/u for 30 minutes\r\n22:53h - Changed to basal to 0,00 E/u for XX minutes.\r\n\r\nThe \"0 minuten\" on your latest screenshot however looks weard unless it is followed with a new basal rate at 22:53?\r\n\r\nWill double check my AAPS on this."
+  },
+  {
+   "id": 1340084285,
+   "user": "vanelsberg",
+   "created_at": "2022-12-06T22:19:05Z",
+   "body": "Any relation with an overlapping problem that was solved for DASH?\r\nhttps://github.com/nightscout/AndroidAPS/issues/1597"
+  },
+  {
+   "id": 1341090421,
+   "user": "MilosKozak",
+   "created_at": "2022-12-07T14:58:57Z",
+   "body": "fixed by https://github.com/nightscout/AndroidAPS/commit/d261bbad09a04d854ee3169eaf927f5502d8c7a2"
+  }
+ ]
+}

@@ -1,0 +1,79 @@
+{
+ "id": 704675436,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1438,
+ "title": "failed to register application for bluetooth scan during reconnect to BlueJay watch",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1438",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "device-bluejay",
+  "bluetooth"
+ ],
+ "created_at": "2020-09-18T21:44:03Z",
+ "closed_at": "2023-08-14T21:46:50Z",
+ "comment_count": 12,
+ "body": "After the bluejay was in range of the phone, no values were transfered to the xDrip. A scan in the BlueJay Admin panel is not successfull and prints the following error to the log:\r\n\r\n```\r\n2020-09-18 23:24:52.230 com.eveningoutpost.dexdrip W/ScanMeister: Failed to register application for bluetooth scan\r\n                        com.polidea.rxandroidble2.exceptions.BleScanException: Scan failed because application registration failed (code 6)\r\n```",
+ "comments": [
+  {
+   "id": 695101483,
+   "user": "tolot27",
+   "created_at": "2020-09-18T21:49:39Z",
+   "body": "Sending the log terminates with error: `Error sending feedback: ` (no response message)."
+  },
+  {
+   "id": 695102771,
+   "user": "tolot27",
+   "created_at": "2020-09-18T21:53:47Z",
+   "body": "The scan works after disabling and enabling bluetooth but neither the transmitter status nor values were received from the BlueJay. After rebooting the phone, connection works without any problems."
+  },
+  {
+   "id": 695109469,
+   "user": "tolot27",
+   "created_at": "2020-09-18T22:13:24Z",
+   "body": "Here is are the log entries from the database export:\r\n\r\n```\r\n_id\tmessage\r\n39189\tcalled with string ScanMeister:v\r\n39190\tAdding tag with VERBOSE ScanMeister\r\n39191\tNo valid timestamp stored for transmitter: 8H0K2U\r\n39192\tstopScan called from: Scan start\r\n39193\tstartScan called: hunting: null null\r\n39194\tOverriding with custom filter\r\n39195\tonScanFailure: com.polidea.rxandroidble2.exceptions.BleScanException: Scan failed because application registration failed (code 6)\r\n39196\tFailed to register application for bluetooth scan com.polidea.rxandroidble2.exceptions.BleScanException: Scan failed because application registration failed (code 6)\r\n39197\tScan failure: Failed to register application for bluetooth scan\r\n39198\tProcessing callbacks for NULL SCAN_FAILED\r\n39199\tCallback2: ThinJamActivity\r\n39200\tstopScan called from: Scan failure\r\n39201\tstopScan stopped scan\r\n39202\tAggressively restarting collector service due to lack of reception: backoff: 300\r\n```"
+  },
+  {
+   "id": 695191967,
+   "user": "NStrakhov",
+   "created_at": "2020-09-19T09:44:44Z",
+   "body": "Hello!\r\nXdrip aacd466b0-2020.06.16 code 2006160054\r\nLibre Honor 7s\r\nThe phone stopped to receive data.\r\nAfter 2 hours I tried to restart collector but it started to work only after I restarted phone.\r\nI've noticed error: scan failed. \r\nIn app log: \"scan meister: failed to register application for Bluetooth scan\""
+  },
+  {
+   "id": 697198438,
+   "user": "jamorham",
+   "created_at": "2020-09-23T07:53:35Z",
+   "body": "This probably means the bluetooth of your android phone has crashed, a restart is often the only way to fix it. There isn't a great deal I can do to help with this in the application I don't think. Which Android version is your phone running?"
+  },
+  {
+   "id": 697257362,
+   "user": "NStrakhov",
+   "created_at": "2020-09-23T09:48:01Z",
+   "body": "Android 8.1.0 Honor 7s\nMoly.lr12a.r2.tc3.dura.sp.v1.p70\n\nср, 23 сент. 2020 г., 10:53 JamOrHam <notifications@github.com>:\n\n> This probably means the bluetooth of your android phone has crashed, a\n> restart is often the only way to fix it. There isn't a great deal I can do\n> to help with this in the application I don't think. Which Android version\n> is your phone running?\n>\n> —\n> You are receiving this because you commented.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/1438#issuecomment-697198438>,\n> or unsubscribe\n> <https://github.com/notifications/unsubscribe-auth/ALFW5LJKJTEZ3ULKU55SFIDSHGSQ5ANCNFSM4RSRW6YQ>\n> .\n>\n"
+  },
+  {
+   "id": 697258620,
+   "user": "NStrakhov",
+   "created_at": "2020-09-23T09:50:30Z",
+   "body": "I don't understand,... Can you help with this situation?\r\nWhen I switch off BT scanning, there is no problem with getting data"
+  },
+  {
+   "id": 697274904,
+   "user": "tolot27",
+   "created_at": "2020-09-23T10:24:17Z",
+   "body": "I'm on Android 8.1 with LineageOS an a Samsung Galaxy S4 mini. It worked a long time (February - April) without any problem. After Corona lockdown and all nightly updates (now on 2009212340) it does not work anymore, if the connection is lost for about more than an hour during watch not in range. Previously, phone and bluejay connected automaticaly after they were in range.\r\nI did not perform any LineageOS updates for two years. Hence, it is likely a problem with xDrip. I'll investigate this deeper and also try to downgrade to version 2020.02.19."
+  },
+  {
+   "id": 862350651,
+   "user": "Navid200",
+   "created_at": "2021-06-16T12:48:00Z",
+   "body": "@tolot27 Can you verify if you can resolve the problem by going back to a previous version of xDrip?\r\nIf not, can we remove the bug label please?"
+  },
+  {
+   "id": 1678118552,
+   "user": "Navid200",
+   "created_at": "2023-08-14T21:46:50Z",
+   "body": "Closing due to inactivity"
+  }
+ ]
+}

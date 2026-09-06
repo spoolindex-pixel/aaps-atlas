@@ -1,0 +1,75 @@
+{
+ "id": 2177165036,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3259,
+ "title": "Accu-Check Insight Bluetooth Pairing \"Connection failed\" on P7 Android 14 QPR2 update",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3259",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-03-09T10:07:05Z",
+ "closed_at": "2024-04-06T08:48:25Z",
+ "comment_count": 10,
+ "body": "Hi all, not sure whether anyone is experiencing this problem. This morning I received a warning that my phone cannot reach my pump, tried repairing as I usually did before, but always getting \"Connection failed\" when the phone lists the Insight pump's bluetooth. It was working before without any issues\r\n\r\nAndroid: GrapheneOS latest (build no 2024030800) with Android 14 QPR2 on Pixel 7\r\nAAPS: 3.2.0.4\r\nPump: Accu-Chek Insight",
+ "comments": [
+  {
+   "id": 1986880411,
+   "user": "alfureu",
+   "created_at": "2024-03-09T15:07:33Z",
+   "body": "Further details with logs: https://discuss.grapheneos.org/d/11383-request-for-testing-and-feedback-with-bluetooth-on-android-14-qpr2-grapheneos"
+  },
+  {
+   "id": 1986887225,
+   "user": "Philoul",
+   "created_at": "2024-03-09T15:33:28Z",
+   "body": "@alfureu Correct me if I'm wrong, but I understood this issue started after an update of Android phone with latest version of Android 14 with BT increase of security...\r\n@MilosKozak , I have no skills in BT connexion myself to fix or test it, and I don't know if this kind of BT connexion issue could impact other pump drivers or only Insight driver..."
+  },
+  {
+   "id": 1986888467,
+   "user": "alfureu",
+   "created_at": "2024-03-09T15:36:31Z",
+   "body": "> @alfureu Correct me if I'm wrong, but I understood this issue started after an update of Android phone with latest version of Android 14 with BT increase of security... \r\n\r\nCorrect, but since this update is upstream to regular stock Android on Pixel 7 from Google so problems might be ahead for many users with this phone and beyond, I wonder whether anyone with a Pixel 7 can confirm such an issue with the QPR2 update\r\n\r\n"
+  },
+  {
+   "id": 1987914021,
+   "user": "MilosKozak",
+   "created_at": "2024-03-11T09:00:04Z",
+   "body": "I don't have Pixel to be able test it"
+  },
+  {
+   "id": 1987920200,
+   "user": "alfureu",
+   "created_at": "2024-03-11T09:03:34Z",
+   "body": "> I don't have Pixel to be able test it\r\n\r\nIt appears to be a bigger issue, that most likely affects not only the GrapheneOS ROM but stock Pixel devices post-QPR2 update. I suspect that this major security update that significantly affects bluetooth functions will be a problem on any other device with Android 14. More details about the discussions: https://discuss.grapheneos.org/d/11383-request-for-testing-and-feedback-with-bluetooth-on-android-14-qpr2-grapheneos\r\n\r\nIf I can provide any logs, please let me know, I am quite upset that this got broken, already thinking of buying another phone, which will be _very_ impractical"
+  },
+  {
+   "id": 1994349523,
+   "user": "Jared-Is-Coding",
+   "created_at": "2024-03-13T12:58:10Z",
+   "body": "Just wanted to chime in with my experience here. Pixel 7a, Android 14, Omnipod DASH: I've noticed that I get random bluetooth \"hangs\" where my phone will attempt to connect to the pump for an infinite amount of time until I cycle bluetooth off and on. Last occurrence was just last night for a 25 minute period.\r\n\r\nPerhaps related, just wanted to keep the discussion going. Is there anything more specific I can do to help testing? Not sure if Dash vs Accu-Check will be of any use.\r\n\r\nThanks."
+  },
+  {
+   "id": 1994358148,
+   "user": "alfureu",
+   "created_at": "2024-03-13T13:02:31Z",
+   "body": "hm, most likely unrelated, had similar before my bluetooth connection worked, as I rotated sometimes during my sleep with the duvet, I might have weakened the BT signal to a degree that it disrupted the connection. \r\n\r\nThe current issue is specifically related to a very recent Android QPR2 update which broke the BT connection between Pixel 7 and Insight pump. This security update comes to all the devices in the future..."
+  },
+  {
+   "id": 1994402033,
+   "user": "Jared-Is-Coding",
+   "created_at": "2024-03-13T13:25:33Z",
+   "body": "> hm, most likely unrelated, had similar before my bluetooth connection worked, as I rotated sometimes during my sleep with the duvet, I might have weakened the BT signal to a degree that it disrupted the connection.\r\n> \r\n> The current issue is specifically related to a very recent Android QPR2 update which broke the BT connection between Pixel 7 and Insight pump. This security update comes to all the devices in the future...\r\n\r\nI wonder if this update would only cause issues with a _running_ session, but not affect future sessions started after the update?"
+  },
+  {
+   "id": 2041012423,
+   "user": "Philoul",
+   "created_at": "2024-04-06T08:10:58Z",
+   "body": "@alfureu Do you know if there is any updates / fixes on android side on this topic?"
+  },
+  {
+   "id": 2041020520,
+   "user": "alfureu",
+   "created_at": "2024-04-06T08:48:25Z",
+   "body": "> @alfureu Do you know if there is any updates / fixes on android side on this topic?\r\n\r\nOh yeah, as far as I understood the issue, apparently Google messed up with the bluetooth firmware/security patch tagging, the devs at GrapheneOS implemented it quickly from AOSP and it broke things. Since then they reverted the changes, so all good now. I am closing, and remain hopeful that this does not happen again. The details are on the link shared earlier\r\n\r\nThanks for the follow-up!"
+  }
+ ]
+}

@@ -1,0 +1,96 @@
+{
+ "id": 1007780383,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1839,
+ "title": "Invalid slope/intercept values generated from BG report",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1839",
+ "state": "closed",
+ "labels": [
+  "device-libre",
+  "calibration"
+ ],
+ "created_at": "2021-09-27T07:08:17Z",
+ "closed_at": "2024-08-12T23:32:49Z",
+ "comment_count": 13,
+ "body": "### Subject of the issue\r\nWhen blood glucose test result is entered (either manual or from bluetooth-enabled meter) xdrip can generate invalid slope/intercept values for calibration when 'Non-fixed Libre slopes' option is enabled. These values will be then ignored with 'invalid intercept value' error, so impossible to use for calibration.\r\n\r\n### Your environment\r\n- xdrip 2105010118\r\n- libre 1 with miao2\r\n- `Non-fixed Libre slopes` enabled\r\n\r\n### Expected behavior\r\nXdrip **must not** generate invalid slope/intercept values for calibrations. Maybe values must be checked against currently enabled calibration plugin and re-calculated in case of need.\r\n\r\n### Actual behavior\r\nPretty common situation is when sensor acts differently on high and low BG values.\r\nFor example I've made these calibrations on low and high BG:\r\n```\r\n| value    | raw      | slope | intercept |\r\n| 192.7947 | 184.0958 | .9676 | 16.0282   |\r\n| 104.5056 | 86.1176  | 1     | 18.3879   |\r\n```\r\nBut time goes by, sensor sensitivity changes and it goes out of sync on low. I make new BG test, add it and xdrip generates this values for it to be added for calibration\r\n```\r\n| 106.3074 | 66.2344  | .8045 | 44.0635   |\r\n```\r\nBut 44 is invalid value for intercept, it will never be applied as calibration because of [hardcoded](https://github.com/NightscoutFoundation/xDrip/blob/38fee03be56da6ce9cbe90e08dbe8e4b651c6edc/wear/src/main/java/com/eveningoutpost/dexdrip/calibrations/CalibrationAbstract.java#L28) limit, resulting with `invalid intercept value` error in log.\r\nSame value could be written like this, for example:\r\n```\r\n| 106.3074 | 66.2344  | 1.153 | 20       |\r\n```\r\nStill `sane` intercept and no so big difference in slope. So slope/intercept calculation code could check it over current calibration plugin and re-calculate in case if it is invalid.\r\n\r\nThe main problem with current behavior is that it forces to completely wipe all the calibrations without any guarantee that new additions will be calculated correctly.\r\nI've seen buggy behavior on new sensor first calibration, **single** blood test value were added as two independent calibrations:\r\n- first as slope 1 and intercept ~15\r\n- second as ~0.5 and intercept ~60\r\n\r\nSo any following BG were added again with slope ~0.6 and intercept 45..50, resulting in xdrip totally ignoring all the calibrations. So I were forced to disable `Non-fixed libre slopes` setting for first calibration and then enable it again. But after some days this situation repeated because low BG sensor reading became out of sync and all the measurements entered were calculated with low slope and too high intercept.\r\n\r\n### Steps to reproduce the behavior:\r\n- Enable `Non-Fixed Libre slopes` in Settings -> Less common -> Advanced calibration\r\n- Start new sensor with single BG check\r\n\r\nTwo calibrations will be added and in most situations one of`em will already be invalid.\r\n\r\n## Screenshots\r\nSensor start with `Double calibration` option enabled. Two very close readings result in totally different slope/intercept values\r\n![image](https://user-images.githubusercontent.com/4157587/134860064-0b8eaf80-5948-4e30-b969-9722a1a0400d.png)\r\n\r\nError when trying to calibrate over BG reading imported from bluetooth-enabled reader (contour plus one)\r\n![image](https://user-images.githubusercontent.com/4157587/134860293-f6718584-0e3d-47b3-bcfa-0a88eee71705.png)\r\n\r\n",
+ "comments": [
+  {
+   "id": 1148785079,
+   "user": "Navid200",
+   "created_at": "2022-06-07T14:54:11Z",
+   "body": "@psonnera Would you please tell us what you think about this?"
+  },
+  {
+   "id": 1148859299,
+   "user": "psonnera",
+   "created_at": "2022-06-07T15:55:53Z",
+   "body": "@Navid200 this has been the first reason for which I decided to stick to OOP1 (vendor algorithm) unless calibration was necessary. I think the original algorithm was done for Dex G4 and reused for Libre but slope calculation is not what I would expect. In order to get it to work normally I usually deselect Non Fixed Slope to force slope to 1, then perform first calibration but deselect double calibration (which just duplicates the same value). Then I enable Non Fixed Slope to perform the next calibration. As you see in the calibration trace, blood tests are validated 5 minutes apart. First one generates the intercept and slope is fixed to 1, which is expected. Second one defines the slope using 5 minutes apart calibrations and generate the invalid slope as explained above. I don't know how to define it, a weakness or a bug but it sure makes many Libre users miserable. Anyway, this is my workaround. I'd rather force intercept to zero or 39 when first calibration doesn't pass slope/intercept sanity check but I understand that modifying calibration algo in xDrip+ should be approached with caution."
+  },
+  {
+   "id": 1148965264,
+   "user": "justmara",
+   "created_at": "2022-06-07T17:27:45Z",
+   "body": "This behavior occurs sporadically on adding calbrations for already working sensor. When sensitivity changes one would like to add addition calibration points to correct the calibration graph, but even new point can be ignored because of this 'invalid slope' error.\r\nThe most annoying scenario is when \r\n1. you add new point and see that old one draws too much _attention_ forcing graph to slide in undisired direction.\r\n2. then you go to calibrations data table and remove that old point\r\n3. xdrip+ recalculates calibration and shows 'invalid slope error'\r\n4. this makes xdrip ignore last (new good one) point\r\n5. and if there is only one old point left - xdrip falls into `start sensor` state because of insufficient count of calibrations."
+  },
+  {
+   "id": 1148971169,
+   "user": "Navid200",
+   "created_at": "2022-06-07T17:33:57Z",
+   "body": "What you describe is expected at least, in my opinion.\r\nIf xDrip has enough calibration points, it can retire the old ones.\r\nBut, if xDrip only has two calibration points, as you describe, and you add a third, you shouldn't be surprised if all the three points are taken into account.\r\n\r\nYou are supposed to calibrate on a regular basis.\r\nIt is unfortunate that some people say you don't.  \r\nNo matter how accurate your calibration parameters are now, there is no guarantee they will still be accurate tomorrow.  The only way to remedy that is to calibrate on a regular basis at least once a day.\r\nIf you do that and removing a single point after 5 days causes a problem, then, we have an xDrip problem.\r\nOtherwise, this just sounds like user error to me.\r\n"
+  },
+  {
+   "id": 1149043403,
+   "user": "justmara",
+   "created_at": "2022-06-07T18:50:33Z",
+   "body": "Regular calibrations needed to mediate calibration graph, leveraging glucometer's precision. And re-calibration is really needed once there is a sudden change (it happens, really). I've observed many times on my little daughter stable **accurate** 14 days on libre1 without recalibrations, and ocassional shifts somewhere on 5th..7th day, that stays still stable till sensor end.\r\nIf you do frequent calibrations - you'll have 3-to-4 days of slow sliiiide to actual calibration data while old values are disposing below 4 days range and new data takes priority.\r\nMostly this problem is solved using detricsae calibration algorithm. It takes freshness of point into weight so graph moves to newer points much faster. But it is always WAY more accurate and fast to add 2 new points (low+hight) and deactivate the old ones. You get accurate graph instantly. \r\nIF xdrip does not fail with this 'invalid slope' bug :)"
+  },
+  {
+   "id": 1149161137,
+   "user": "psonnera",
+   "created_at": "2022-06-07T20:58:52Z",
+   "body": "Totally agree with @justmara for Libre. Many don't need more than the initial calibration until they start degrading. Dateicsae and other plugins just bypass all safety precautions in terms of slope and intercept and this is why they're popular. I'm very concerned by people trusting a LO alarm that might be unreachable in these conditions."
+  },
+  {
+   "id": 1149195961,
+   "user": "Navid200",
+   "created_at": "2022-06-07T21:40:14Z",
+   "body": "Stating that regular calibrations are unsafe and worrying about LO alarms when you perform regular calibrations makes no sense.\r\nOf course, if we are talking about Dexcom G6, which is an evolution and step forward, calibrations should be done as a last resort and preferably avoided.\r\n\r\nBut, saying that you need calibrations, yet, you only need two is contradictory in terms.\r\n\r\nNo matter what scheme the code uses, the sensitivity of the sensor to glucose changes with time.  Dexcom G6 takes that into account relying in a factory calibration code that removes production spread of the sensors from the equation.\r\nSo, I cannot emphasize enough that I am not talking about G6.\r\n\r\nIf you have only 2 calibration points and you delete one of them, how do you expect xDrip to still have a valid slope?  Can you explain that?"
+  },
+  {
+   "id": 1149473593,
+   "user": "psonnera",
+   "created_at": "2022-06-08T05:18:21Z",
+   "body": "@Navid200 talking about plugins, see below resulting slope and intercept. Libre sensors are very specific as they're not linear in raw response, mainly in the high range. Users calibrating in the high range take risks in the low range, which is exactly against all safety precautions.\r\n![image](https://user-images.githubusercontent.com/33809361/172537404-65090335-b1e2-4495-bacf-622bdf7fe43c.png)\r\n"
+  },
+  {
+   "id": 1149812265,
+   "user": "Navid200",
+   "created_at": "2022-06-08T11:47:50Z",
+   "body": "That makes sense.\r\nI understand if you tell people not to calibrate when higher than a specific value in order to address this particular concern.\r\n\r\nI'm just not clear how calibrating only twice instead of regularly is going to address this or anything else other than less pain on the fingers and less money for test strips.\r\nI understand all of that.\r\nWhat I don't understand is just stating that calibrating regularly is not a good thing without clarifying that you mean calibrating at high values.\r\n\r\nIf you don't have enough calibrations, you cannot retire, or delete, the old calibrations.  "
+  },
+  {
+   "id": 1149822889,
+   "user": "psonnera",
+   "created_at": "2022-06-08T12:00:30Z",
+   "body": "@Navid200 you're right. My message wasn't clear. I tried to summarize here. https://xdrip.readthedocs.io/en/latest/calibrate/calibrate/#first-calibration but still, unlike Dexcom that has a proprietary algorithm and internal safety mechanisms, Libre was not made to be calibrated and results vary. This is why using an OOP is the easiest approach when possible."
+  },
+  {
+   "id": 1150414581,
+   "user": "justmara",
+   "created_at": "2022-06-08T21:06:07Z",
+   "body": ">If you have only 2 calibration points and you delete one of them, how do you expect xDrip to still have a valid slope? Can you explain that?\r\n\r\nNo, I'm saying about situation like this:\r\n1. you have 2 old points\r\n2. you add 2 new ones after sensor sensitivity shift\r\n3. you deactivate first old point - calibration recalculated\r\n4. you deactivate second OLD point (wishing to leave two new ones so the old ones do not affect calibrations) - calibration recalculates again and NOW it assigns invalid intercept to the NEW point (because it is last), making it inactive, leaving you with 1 point instead of 2 and instantly dropping xdrip to 'add initial calibrations' mode\r\n\r\nalso on step 3 you have a chance of getting even more weird behavior: after recalculation you get 'invalid intercept' assigned to your last point, disabling it. and now you have one old and one new point. and in case if these both are on low - you can get extremely inaccurate slope from these two points. and the stupid part is that there is no any sanity check for slope. only for intercept."
+  },
+  {
+   "id": 1151370918,
+   "user": "psonnera",
+   "created_at": "2022-06-09T16:54:15Z",
+   "body": "@justmara yes I've seen this too. Initial calibration is a couple of measurements and usually work together. I'm surprised you could delete first point without invalidating the second one. As said above the workaround is to set fixed slope for first calibration and perform it at low range BG. This defines a much better intercept. Once done (I mean that's once every two weeks) you can restore non fixed slope and get the slope right with other calibrations. Then I'd agree with Navid that since you perform at least daily BG checks you can add calibration points when necessary since xDrip+ will expire old calibrations hence reduce the weight of your initial calibration. Still agree that something is clunky somewhere but doubt anybody will dare modifying it. How would you see a safe and reliable calibration strategy avoiding the use of plugins?"
+  },
+  {
+   "id": 1249511170,
+   "user": "Navid200",
+   "created_at": "2022-09-16T15:34:30Z",
+   "body": "@tzachi-dar Would you please tell us what you think about this?\r\nShould we make a change to xDrip to address this?"
+  }
+ ]
+}

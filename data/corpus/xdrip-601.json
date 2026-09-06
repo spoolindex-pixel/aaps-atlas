@@ -1,0 +1,51 @@
+{
+ "id": 365217663,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 601,
+ "title": "Copying of Callibration settings",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/601",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2018-09-30T11:35:21Z",
+ "closed_at": "2019-03-15T20:44:50Z",
+ "comment_count": 6,
+ "body": "Could you please clarify how to copy just _callibration settings_ from one device to another? For example  from time to time my little daughter uses the smartwatch (Finow Q1 Pro, Android 6.0) and the mobile phone (Sony Xperia Z5 Compact, Android 7.1.1) as collector for one and the same transmitter Dexcom G5. The smartwatch is more comfortable at the school while the mobile phone at home.",
+ "comments": [
+  {
+   "id": 425715356,
+   "user": "tzachi-dar",
+   "created_at": "2018-09-30T11:51:49Z",
+   "body": "The fastest way to do that is to copy the calibration data manually. \r\n\r\nThat is \"enter engineering mode\" on the watch. \r\nAfter that, calibrate on the phone.\r\nwait 10 minutes for calibration data to be stabilize on phone.\r\n\r\non the watch, go to calibration graph, and (if you are in engineering mode) you can set the slope and intercept to follow the data on the watch.\r\n\r\nOne more question: how old is your son? does he look at values on the watch, or are you only looking at it?"
+  },
+  {
+   "id": 425716030,
+   "user": "svirito4ka",
+   "created_at": "2018-09-30T12:02:50Z",
+   "body": "Thanks for your prompt answer, I'll try it! I monitor BG values remotly (by mobile Internet on the smartwatch of my daughter). When she (7 years) is at school she doesn't look at them, as a rule."
+  },
+  {
+   "id": 425716410,
+   "user": "tzachi-dar",
+   "created_at": "2018-09-30T12:09:12Z",
+   "body": "I'm facing a similar issue with libre.\r\nThe direction that I'm going in is to have xdrip to only receive data and upload it to the other xdrip.\r\nI did not do this for the g5 since I had no one to test it. Do you want to try and test such a solution (I'm not sure that I'll have time to implement it, but maybe in the future).\r\nThis will probably require installing new versions, collecting logs and so on..."
+  },
+  {
+   "id": 425718236,
+   "user": "svirito4ka",
+   "created_at": "2018-09-30T12:42:34Z",
+   "body": "I don't quite catch your idea. I do have G5 and it works with one xDrip+ as master (receive and upload BG data) and another one as follower (watch BG data). It works through Nightscout or mongoDB server. Do you mean automatic copying for callibration data (not BG data) from one device (as a mastrer) to another (as a master too)?"
+  },
+  {
+   "id": 425723461,
+   "user": "tzachi-dar",
+   "created_at": "2018-09-30T14:09:33Z",
+   "body": "No, I mean that the watch will use it's BT to get data from the g5.\r\nThe watch will then upload data to a mongodb.\r\nThe master xdrip on phone will get the g5 data from xdrip and apply calibration on it (and send it to NS and followers)."
+  },
+  {
+   "id": 425724031,
+   "user": "svirito4ka",
+   "created_at": "2018-09-30T14:19:16Z",
+   "body": "My watch works on Android 6.0 and xDrip+ was installed on it. The watch gets BG data from G5 by bluetooth connection (this watch has bluetooth, GPS and 4G module) and uploads them to Nightscout (mongoDB). Also xDrip+ installed on my phone (as follower). I suppose I can change calibration data in xDrip+ on the watch (a master) using xDrip+ on my phone (a follower). I saw the corresponding setting (called Add Calibration) in a follower, but I didn't use it."
+  }
+ ]
+}

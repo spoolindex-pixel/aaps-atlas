@@ -1,0 +1,75 @@
+{
+ "id": 1234360148,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1726,
+ "title": "Wear OS DigitalStyle watchface time is missing minutes",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1726",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-05-12T18:48:17Z",
+ "closed_at": "2022-05-16T09:11:06Z",
+ "comment_count": 10,
+ "body": "On the latest 3.0.0.2 dev k build 49163c43d, the digitalstyle watch face seems to have font issues (too big when set to AM/PM vs 24 hr) or missing info in the time.  See pic below.\r\n![Screenshot_20220512_100432_sysui](https://user-images.githubusercontent.com/30097654/168147056-3c808384-2596-495c-bc05-50606d010bcb.png)\r\n\r\n",
+ "comments": [
+  {
+   "id": 1125356407,
+   "user": "vanelsberg",
+   "created_at": "2022-05-12T19:39:31Z",
+   "body": "Using 24 hrs format. For me is shows ok"
+  },
+  {
+   "id": 1125358137,
+   "user": "tswire",
+   "created_at": "2022-05-12T19:41:55Z",
+   "body": "Must be the AM PM view only then. Hopefully someone can look at it as all these wear os faces were working perfectly before 3.0.0.2 build "
+  },
+  {
+   "id": 1126785900,
+   "user": "jgslade",
+   "created_at": "2022-05-14T18:01:09Z",
+   "body": "I've also got the big font for the am/pm on digital style.\r\n![Screenshot_20220514_115706_sysui](https://user-images.githubusercontent.com/29897815/168443386-0bfbee0a-c7ce-4af3-899c-76ba212336a9.png)\r\n"
+  },
+  {
+   "id": 1126823151,
+   "user": "jgslade",
+   "created_at": "2022-05-14T22:52:19Z",
+   "body": "I was looking at the code to see how it all works (duct know Java/kotlin but have done some c, python, html, and sql).\r\nI adjusted the font sizes in DigitalStyleWatchface.kt and adjusted the layout a bit on round/activity_digitalstyle.xml. It looks like the am/pm info is being passed with the hour info. \r\n\r\n![Screenshot_20220514_164119_sysui](https://user-images.githubusercontent.com/29897815/168450459-a5b1d22c-1899-4607-a1b1-4d0d3af82bfa.png)\r\n"
+  },
+  {
+   "id": 1126828263,
+   "user": "jgslade",
+   "created_at": "2022-05-14T23:51:29Z",
+   "body": "I think I found a fix:\r\n\r\nIf this class\r\n```\r\nfun hourString(mills: Long): String {\r\n        var format = \"hha\"\r\n        if (android.text.format.DateFormat.is24HourFormat(context)) {\r\n            format = \"HH\"\r\n        }\r\n        return DateTime(mills).toString(DateTimeFormat.forPattern(format))\r\n    }\r\n```\r\n\r\nin\r\ninfo/nightscout/androidaps/utils/DateUtil.kt\r\n\r\nis changed to \r\n```\r\nfun hourString(mills: Long): String {\r\n        var format = \"hh\"\r\n        if (android.text.format.DateFormat.is24HourFormat(context)) {\r\n            format = \"HH\"\r\n        }\r\n        return DateTime(mills).toString(DateTimeFormat.forPattern(format))\r\n    }\r\n```\r\n\r\nThe display looks correct.\r\n![Screenshot_20220514_174908_sysui png](https://user-images.githubusercontent.com/29897815/168451636-5de61a93-5df0-4394-a42b-a3717be8faa3.jpg)\r\n\r\n"
+  },
+  {
+   "id": 1126829658,
+   "user": "tswire",
+   "created_at": "2022-05-15T00:05:26Z",
+   "body": "> I think I found a fix:\r\n> \r\n> If this class\r\n> \r\n> ```\r\n> fun hourString(mills: Long): String {\r\n>         var format = \"hha\"\r\n>         if (android.text.format.DateFormat.is24HourFormat(context)) {\r\n>             format = \"HH\"\r\n>         }\r\n>         return DateTime(mills).toString(DateTimeFormat.forPattern(format))\r\n>     }\r\n> ```\r\n> \r\n> in info/nightscout/androidaps/utils/DateUtil.kt\r\n> \r\n> is changed to\r\n> \r\n> ```\r\n> fun hourString(mills: Long): String {\r\n>         var format = \"hh\"\r\n>         if (android.text.format.DateFormat.is24HourFormat(context)) {\r\n>             format = \"HH\"\r\n>         }\r\n>         return DateTime(mills).toString(DateTimeFormat.forPattern(format))\r\n>     }\r\n> ```\r\n> \r\n> The display looks correct. ![Screenshot_20220514_174908_sysui png](https://user-images.githubusercontent.com/29897815/168451636-5de61a93-5df0-4394-a42b-a3717be8faa3.jpg)\r\n\r\nAwesome work!!!  Thanks. \r\n\r\nHow can this code have changed when it was working perfect before?  Are there controls in place to prevent something like this from happening?  Just curious. "
+  },
+  {
+   "id": 1126836515,
+   "user": "jgslade",
+   "created_at": "2022-05-15T01:11:40Z",
+   "body": "Considering they just did a complete refactor of the wear code, it's not unheard of to have small bugs like this pop up."
+  },
+  {
+   "id": 1126842890,
+   "user": "tswire",
+   "created_at": "2022-05-15T02:09:05Z",
+   "body": "> Considering they just did a complete refactor of the wear code, it's not unheard of to have small bugs like this pop up.\r\n\r\nWhat was the reason for this \"refactor\" of code?  Will it provide additional stability and benefits or functionality?  Curious "
+  },
+  {
+   "id": 1127235174,
+   "user": "Der-Schubi",
+   "created_at": "2022-05-16T05:26:06Z",
+   "body": "> What was the reason for this \"refactor\" of code? Will it provide additional stability and benefits or functionality? Curious\r\n\r\nParts of the code were rewritten in Kotlin, before they were in Java."
+  },
+  {
+   "id": 1127378837,
+   "user": "MilosKozak",
+   "created_at": "2022-05-16T08:25:50Z",
+   "body": "main reason is the code was based on code from different sources including 8yo xdrip early versions, running on old google play libraries without possibility to upgrade without complete rewrite, lot of duplicated code (# of lines lowered by 3000) etc "
+  }
+ ]
+}

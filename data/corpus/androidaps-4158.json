@@ -1,0 +1,53 @@
+{
+ "id": 3419491530,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4158,
+ "title": "Too frequent basal updates may cause basal insulin delivery problems with Omnipod Dash",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4158",
+ "state": "closed",
+ "labels": [
+  "omnipod dash"
+ ],
+ "created_at": "2025-09-15T20:56:53Z",
+ "closed_at": "2026-06-10T07:12:22Z",
+ "comment_count": 6,
+ "body": "- AAPS version 3.3.1.3\n- Using closed loop with SMB enabled\n- Pump: Omnipod Dash\n- Glucose sensor: FSL3\n- BG values coming every 1 minute from Juggluco\n\n**Problem description:**\n\nToo frequent basal rate changes may cause basal insulin delivery problems when using Omnipod Dash pump (may also affect other pump models).\n\nOmnipod Dash uses a timer for giving small 0.05u doses of basal, with an interval defined by set basal rate. For example, basal rate of 0.6u/h results in 0.05u dose of insulin given every 5 minutes. Dose is given at the end of each timer interval, ie. if basal rate is set to 0.6u/h, the first dose will be given after 5 minutes have elapsed since setting basal rate.\n\nWhen using 1-minute blood glucose values from Juggluco, AAPS loop updates once every minute. This may lead to basal rate changes happening once a minute. Every time basal rate is updated to the Dash, also the timer on the pump is reset to zero. If basal rate is changed too often, it may lead to a situation where zero basal is actually delivered, since the pump timer keeps resetting.\n\nI have verified that insulin delivery from the Dash indeed stops by changing basal rates too often. I disabled AAPS Loop, and manually changed temp basal rates from AAPS about once every 30 seconds. Basal rates were changed from 0.8U/h to 3.0U/h. By continuously switching the basal rate, no insulin was delivered for a full 10 minutes (verified by listening for the \"click\" sound the pump makes when delivering 0.05U).\n\n**Suggestions for improvement:**\n\n- Disable 1-minute Loop updates when using Omnipod Dash pump. Only allow loop updates / basal rate changes once every 5 minutes\n- Include a warning in AAPS documentation which describes that 1-minute BG updates may lead to incorrect basal delivery, particularly when using Omnipod Dash pump\n",
+ "comments": [
+  {
+   "id": 3621515815,
+   "user": "planiitis",
+   "created_at": "2025-12-07T02:39:42Z",
+   "body": "If I understand the issue correctly, then limiting updates to once every 5 minutes will still result in a basal rate deficiency of up to 0.05 U every five minutes = 0.6 U/h.\n\nIt seems to me the correct approach would be to keep an accumulator in the pump driver that increases by the amount of basal insulin missing after every basal rate change (calculated from the pump's reported total amount delivered vs the value and duration of the last basal rate, subtracting any bolus of course) and inserting a bolus of 0.05 U each time this accumulator passes 0.05 U."
+  },
+  {
+   "id": 3685104797,
+   "user": "nl-ruud",
+   "created_at": "2025-12-23T04:56:49Z",
+   "body": "I believe the severity of this issue is actually bigger than the initial report suggests. Limiting SMB’s to every 5 minutes as the docs currently state may reduce the issue but is not a workaround.\n\nEven with 5-minute updates, basal changes below 0.6U/hr and more generic: basals that are not a multiple of 0.6U/hr seem to be problematic and result in under-delivery. And even the multiples of 0.6 may be an issue when the time between changes is a few seconds less than the timer interval.\n\nWhen using the algorithm there are changes from 0.25 to 0.15 to 0 to 0.20 U/hr and these changes seem to result in skipping basals and as a result of that SMB’s, invalid IOB en false UAM.\n\nWhat I see is a blood glucose level that is not going to its target level (especially visible during the night). With suspended loop, the result is a flat blood glucose level that night. So the basal setting in the profile are fine (note: I switched from a Medtrum pump).\n\nJust wanted to leave this addition to be sure the full scope of the issue is considered."
+  },
+  {
+   "id": 3694087615,
+   "user": "nl-ruud",
+   "created_at": "2025-12-27T16:46:19Z",
+   "body": "Today I have had some time to check my assumptions with my daughter’s basal delivery. I have been running a manual change of temp basal when the loop was paused. Even though the basal has been above 0.55 for half an hour, no basal has been delivered due to basal changes. Also if basal changes are >5 minutes apart and (as I suspected) even if the basal changed are _exactly_ 5 minutes apart with a basal of 0.60/h. There were no SMB’s.\n\nThe good news: it’s detectable as the Dash driver tells the total insuline released and you can see the total amount of insuline released is stable at 3.6E for half an hour in this case.\n\nHope this helps!\n\n![Image](https://github.com/user-attachments/assets/f86965e2-3741-400e-9c22-e5339c661400)\n\n… and now I knew what to look for, I found some logging that shows the same behaviour with no basal released from 4:55-5:40 in the night due to basal changes (by the loop)\n\n<img width=\"1080\" height=\"1043\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/f7578eec-b9a7-41a4-b65d-0c3ab6c7cfcd\" />"
+  },
+  {
+   "id": 3703603747,
+   "user": "nl-ruud",
+   "created_at": "2026-01-01T11:38:05Z",
+   "body": "Doing some work on it in https://github.com/nl-ruud/AndroidAPS/tree/issue-4158 \n\nStatus quo is to try to get accurate logging of the basal drift."
+  },
+  {
+   "id": 3765587164,
+   "user": "nl-ruud",
+   "created_at": "2026-01-18T18:36:31Z",
+   "body": "@SetaHemuli @planiitis earlier today I submitted PR #4499 that fixes this issue. If you like: in my repo under AndroidAPS there is an “issue-4158-fix” branch which is 3.4.0.0 master with this fix applied. Feedback welcome."
+  },
+  {
+   "id": 4664558046,
+   "user": "nl-ruud",
+   "created_at": "2026-06-09T22:12:12Z",
+   "body": "@MilosKozak this issue can be closed now as 3.4.2.3 is released"
+  }
+ ]
+}

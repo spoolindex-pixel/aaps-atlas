@@ -1,0 +1,39 @@
+{
+ "id": 1511890444,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2304,
+ "title": "TempTarget-triggered loop run does not see TT itself",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2304",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-12-27T15:10:06Z",
+ "closed_at": "2022-12-27T19:04:42Z",
+ "comment_count": 4,
+ "body": "check the log\r\n17:37:05.116 NSClient event for TT hypo set to 6.5: `\"created_at\":\"2022-12-27T14:13:41.000Z\",\"timestamp\":1672150421000`\r\n17:37:05.125 NSClient event for new TT of 6.0 received `\"created_at\":\"2022-12-27T14:36:27.000Z\",\"timestamp\":1672151787000`\r\n17:37:05.128 [ENPlugin.invoke():109]: invoke from EventTempTargetChange\r\n17:37:05.139 D/DATABASE: [NSClientAddUpdateWorker.doWork():186]: Inserted TemporaryTarget  record\r\n17:37:10.183 loop started but it has `\"temptargetSet\":false`\r\n\r\nold TT was not canceled, only new one started.  but loop run got `false` for temptargetSet in profile data. so all the safety of disabled 'allow smb on high tt' failed.\r\npotentially pretty dangerous behaviour.\r\n\r\n[AndroidAPS_TT.log](https://github.com/nightscout/AndroidAPS/files/10309233/AndroidAPS_TT.log)\r\n",
+ "comments": [
+  {
+   "id": 1366102799,
+   "user": "MilosKozak",
+   "created_at": "2022-12-27T18:47:07Z",
+   "body": "what version is this?\r\nI improved this area recently to process records comming from NS in batch. This doesn't seem to include it or?\r\n\r\nHere is this problem that loop was triggered by 1st change before second was applied"
+  },
+  {
+   "id": 1366110565,
+   "user": "justmara",
+   "created_at": "2022-12-27T19:02:13Z",
+   "body": "Im running master for my kid.\r\nYou say this behaviour changed in current dev? Will wait for next release then, being careful. It was first time I'v met such behaviour and it is a really weird one."
+  },
+  {
+   "id": 1366114636,
+   "user": "MilosKozak",
+   "created_at": "2022-12-27T19:04:24Z",
+   "body": "👍 sequetial procesing caused more issues not only this one. But they were random and not easy to catch"
+  },
+  {
+   "id": 1366117208,
+   "user": "justmara",
+   "created_at": "2022-12-27T19:06:02Z",
+   "body": "> Here is this problem that loop was triggered by 1st change before second was applied\r\n\r\nDoesn't seem to be. Loop run has read for treatments and did not found both these TT records for some reason. Even though hypo TT was set long time ago. I've checked treatments log in AAPS and it shows original TT set time, not the real one applied by AAPS - that could be the problem too. While nsclient and NS see the TT, AAPS can be missing it, but when it receives - it adds it to log like it were there all that time."
+  }
+ ]
+}

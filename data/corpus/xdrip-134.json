@@ -1,0 +1,54 @@
+{
+ "id": 237266517,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 134,
+ "title": "New Feature Request - Purge Old Data",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/134",
+ "state": "closed",
+ "labels": [
+  "enhancement",
+  "database"
+ ],
+ "created_at": "2017-06-20T16:12:16Z",
+ "closed_at": "2021-02-22T15:12:51Z",
+ "comment_count": 6,
+ "body": "I would like to add a feature request to (optionally) purge old data, either on demand, or periodically with intents.\r\n\r\nThis feature would purge old data beyond 90 days - but keeping all data from sensors active within 90 days - for instance, if a sensor was inserted 95 days ago, and was still active 90 days ago, all data from that sensor would remain.\r\n\r\nI am requesting this feature because large databases tend to slow down the app.  A while back I had a database containing data for about 10 months, and it became very tedious to do some tasks.  Eventually my database file became corrupt, and I believe the root cause was the size of the database.\r\n\r\nI don't see any reason to keep data beyond 90 days, as the statistical analysis screens do not go any further than that.  However, if don't have an issue with purging data for a different period, such as older than 6 months.",
+ "comments": [
+  {
+   "id": 310259425,
+   "user": "bryanw20",
+   "created_at": "2017-06-22T02:38:40Z",
+   "body": "I 2nd this request, an option to at user request, delete old data at X point in time, or by timeframe. 90 days seems acceptable as most reports, doc's etc are only interested in the last 90 days anyway.\r\n\r\nCan I piggy back, or make a new request to delete unwanted data?\r\nFor example during a sensor change, my reading went wild, 45-721 and back for about 30min, so if I could delete an exact data entry, or wipe a time frame, say 8-9pm on xx date."
+  },
+  {
+   "id": 351145461,
+   "user": "th122",
+   "created_at": "2017-12-12T18:35:10Z",
+   "body": "While for performance reasons it might be desirable to work on a reduced time horizon, \r\nI'd rather archive the entire dataset to actively work upon and analyze, especially since some patterns will not be visible within shorter timeframes.\r\n\r\n- hormonal rythms don't only come in circadian patterns, they also follow your weekday schedule, which in many cases (for example outdoor sports and activities) change in the course of a year and its seasons.\r\n- for women there's the occasional need to revert back to pre-pregnancy patterns, or, in a more regular but  shorter timeframe, deal with the insulin resitance influenced by their monthly hormonal rythm.\r\n- and then there's medical treatments that might have a major effect on insulin sensitivity, such as thyroxin substitution (or the lack thereof), or cortisol. \r\n\r\nSo maybe there could be a hierarchical storage model, keeping a round-robin cache of recent data for the active loop, and the entire history accumulating in its uncensored glory for analysis and retrieval of data?\r\n\r\nAs to erroneous data, such as sensors going haywire - I'd think that could profit from a means to mark it up as invalid other than notes and comments. Otherwise we're running the risk of obfuscating patterns by garbage.\r\n\r\nJust a few thoughts..."
+  },
+  {
+   "id": 351148638,
+   "user": "AdrianLxM",
+   "created_at": "2017-12-12T18:43:57Z",
+   "body": "@th122 in the data table (you might need to enable them in the settings) you can long-press a reading to mark it invalit and be excluded for the stats."
+  },
+  {
+   "id": 351250327,
+   "user": "th122",
+   "created_at": "2017-12-13T01:21:31Z",
+   "body": "@AdrianLxM thanks! That's nice to know. Even if it's probably rather tedious if an entire series of readings from a sensor is affected, it's great to have a means to mark these things (and since it seems to be in the data model, it should be possible to find a way to block-mark a series within a timeframe if needed)."
+  },
+  {
+   "id": 783378328,
+   "user": "Navid200",
+   "created_at": "2021-02-22T13:35:38Z",
+   "body": "Is this still an issue?\r\nI have never deleted any xDrip data from my current phone and I even imported the database from my previous phone when I go this one.  So, it now has my readings from the past 3 years or more.\r\nBut, I don't see any issues.\r\nLooking in Android settings, I see 118MB user data, and 426kM Cache.\r\n\r\nIf this is not an issue any longer, can we close it?"
+  },
+  {
+   "id": 783443662,
+   "user": "tolot27",
+   "created_at": "2021-02-22T15:12:31Z",
+   "body": "This feature is already implemented as \"Glucose Retention\" in the \"Less Common Settings\".\n\n> if a sensor was inserted 95 days ago, and was still active 90 days ago, all data from that sensor would remain.\n\nYou likely mean transmitter instead of sensor. Anyway, in such case simply set it to the theoretical maximum time (e.g. 110 days for G6)."
+  }
+ ]
+}

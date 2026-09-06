@@ -1,0 +1,57 @@
+{
+ "id": 3001765943,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3949,
+ "title": "Carb timestamp and carb reminder are desynchronized",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3949",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-04-17T08:09:39Z",
+ "closed_at": "2025-05-14T12:51:14Z",
+ "comment_count": 7,
+ "body": "**Version:** 3.3.2.0 (ba55)\n\n**Issue:**\n\nThis PR (#3818) changed the way the timer is set for reminder to eat. But it did not update the carb timestamp AAPS uses in the treatment logs (https://github.com/nightscout/AndroidAPS/blob/master/core/objects/src/main/kotlin/app/aaps/core/objects/wizard/BolusWizard.kt#L521). Which means the timer and the log entry do not match up.\n\nOverall I think this change is not an improvement for everyone. My pump (touchcare nano) can take sometimes like 6 minutes delivering a bolus. So this additional delay is quite unexpected for me. So I agree with @kagilgin's comment:\n\n> I would like to request that this update be changed to optional. Those who want it should run the timer at the time of the order to send insulin, those who want it should run the timer when the insulin delivery is completed. Also by default the bolus wizard already assigns the carbohydrate time according to the start of the insulin order, not according to the alarm. I think setting the timer at the start of insulin delivery is better for managing my sugar. @MilosKozak\n\n_Originally posted by @kagilgin in https://github.com/nightscout/AndroidAPS/issues/3818#issuecomment-2764602765_\n\nMy suggestion is to revert this change for now due to the desynchronization issue, and then look into a way to make this configurable for users, while making sure the timer and the carb timestamp match. And perhaps, if it is possible, to automatically cancel the timer if an error occurs while delivering insulin.\n\nSidenote: I am very new to AAPS, let me know if I missed anything or did anything wrong 😄 ",
+ "comments": [
+  {
+   "id": 2815134943,
+   "user": "MilosKozak",
+   "created_at": "2025-04-18T10:10:17Z",
+   "body": "the time can be different only by duration of bolus delivery. what's the problem?"
+  },
+  {
+   "id": 2815225457,
+   "user": "BuggStream",
+   "created_at": "2025-04-18T10:41:41Z",
+   "body": "> the time can be different only by duration of bolus delivery. what's the problem?\n\nI don't know how it works for other pumps, but for my medtrum touchcare nano pump this takes like 6 minutes on average and even longer with bigger boluses (I timed it this morning). So a difference of that size is quite unexpected. Which also means that my alarm goes off 6 minutes after AAPS thinks carbs are on board. @MilosKozak "
+  },
+  {
+   "id": 2815455808,
+   "user": "kagilgin",
+   "created_at": "2025-04-18T13:30:23Z",
+   "body": "> the time can be different only by duration of bolus delivery. what's the problem?\n\nWhen logging carbs, it logs them according to the Carb Time specified in the calculator. It starts the timer when the bolus ends. So it delays it for the duration of the bolus. For me it is the right thing to do both according to the moment I entered in the calculator. Setting this up after insulin delivery causes hypoglycemia. The insulin starts entering my body when I order it. @MilosKozak "
+  },
+  {
+   "id": 2816813742,
+   "user": "jgr-lab",
+   "created_at": "2025-04-19T18:19:41Z",
+   "body": "I think everybody will be satisfied if we can schedule alarm at the beginning of the bolus delivery? That way long latency from AC Combo and medtrum nano long delivery time won't be an issue. I don't know how medtrum works but from discord discussion it seems you can force pump to deliver bolus slowly. For small snack it call deliver insulin within minute and for big meals in several minutes so you can't shorten carbs time because it would depend on bolus size. On the other hand scheduling everything at the beginning of the bolus delivery would solve everyone issue. The problem is if we can cancel alarm if bolus is failed? "
+  },
+  {
+   "id": 2816816414,
+   "user": "jgr-lab",
+   "created_at": "2025-04-19T18:27:51Z",
+   "body": "Just to clarify, by start of bolus delivery I meant actual insulin delivery by pump, not scheduling task in AAPS to do it"
+  },
+  {
+   "id": 2816837886,
+   "user": "BuggStream",
+   "created_at": "2025-04-19T19:32:18Z",
+   "body": "> I think everybody will be satisfied if we can schedule alarm at the beginning of the bolus delivery? That way long latency from AC Combo and medtrum nano long delivery time won't be an issue. I don't know how medtrum works but from discord discussion it seems you can force pump to deliver bolus slowly. For small snack it call deliver insulin within minute and for big meals in several minutes so you can't shorten carbs time because it would depend on bolus size. On the other hand scheduling everything at the beginning of the bolus delivery would solve everyone issue. The problem is if we can cancel alarm if bolus is failed?\n\n@mushroom-dev \nI think your suggestion makes a lot of sense, seems to be the best of both worlds I guess. And according to the docs there should be a way to cancel the timer we set: https://developer.android.com/develop/background-work/services/alarms/schedule#cancel"
+  },
+  {
+   "id": 2880134859,
+   "user": "MilosKozak",
+   "created_at": "2025-05-14T12:51:14Z",
+   "body": "resolved in https://github.com/nightscout/AndroidAPS/commit/5aa8ab96e205ed18ffa98f415ab05f85c29e3949"
+  }
+ ]
+}

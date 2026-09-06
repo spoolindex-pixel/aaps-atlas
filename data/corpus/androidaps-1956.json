@@ -1,0 +1,75 @@
+{
+ "id": 1315757595,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1956,
+ "title": "[3.1.0] [master or dev] Error \"Wrong pump device\" on virtual pump after restart",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1956",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-07-23T22:24:54Z",
+ "closed_at": "2022-10-04T10:45:41Z",
+ "comment_count": 10,
+ "body": "* choose a virtual pump, subtype is unspecified \r\n* give some insulin or use calculator \r\n* quit the app by app-menu or android control panel or restart your phone \r\n* start aaps\r\n* wait some times\r\n* give some insulin or use calculator \r\n* the empty progress bar will show , #1955 \r\n* error is present- Wrong pump device\r\n* switch in configuration menu to a other physical pump and back to virtual pump \r\n* give insulin or use calculator \r\n* everything worked fine, until next app start\r\n\r\n\r\n",
+ "comments": [
+  {
+   "id": 1193197410,
+   "user": "rICTx-T1D",
+   "created_at": "2022-07-23T22:29:31Z",
+   "body": "![Screenshot_20220724-002734_AndroidAPS](https://user-images.githubusercontent.com/8592414/180624972-68035dd3-d40b-4cef-a691-1a2fedcea579.jpg)\r\n"
+  },
+  {
+   "id": 1200943639,
+   "user": "libxmike",
+   "created_at": "2022-08-01T09:21:03Z",
+   "body": "can report same issue on 3.1.02 (dev) but not doing anything special, using all the time same pump driver."
+  },
+  {
+   "id": 1202099956,
+   "user": "mpessnegger",
+   "created_at": "2022-08-02T07:05:27Z",
+   "body": "can report the very same behaviour on 3.1.0.2 (fullrelease). i just press \"dismiss\" and the app works properly (Accu Check Combo, Decom G6"
+  },
+  {
+   "id": 1203212097,
+   "user": "rICTx-T1D",
+   "created_at": "2022-08-02T21:03:50Z",
+   "body": "Additional I will report, that when error message is shown,  the insulin injection was not save in database or nightscout. After switching pump driver to an other  and back, all working fine with saving the data."
+  },
+  {
+   "id": 1207340692,
+   "user": "muthijammy",
+   "created_at": "2022-08-07T06:26:06Z",
+   "body": "Every restart of AAPS 3.1.0.2 reports the same error. Changing to virtual pump & then physical combo pump fixes till next restart. Not sure if it is impacting any other functionality. But error msg fills the screen and so graph1 on home screen is truncated on s9 plus mobile which has bigger screen compared to even more smaller mobile."
+  },
+  {
+   "id": 1211619179,
+   "user": "Pallesauka",
+   "created_at": "2022-08-11T07:00:07Z",
+   "body": "Not sure if you are referring to the full release but we have similar issues with NSClient v 3.1.0.3. we are two parents following our sons master through NSClient. We have dana-I pump. Both NSClient instances get this error. Switching to virtual pump and back (on master) does not resolve the issue. Switching to different pump/MDI and back on NSClient does not resolve it either."
+  },
+  {
+   "id": 1211644451,
+   "user": "VoronMods",
+   "created_at": "2022-08-11T07:33:24Z",
+   "body": "@Pallesauka @muthijammy and others, switching back and fort between pumps will do nothing, this is an issue in the Java Code, it is a bug. @MilosKozak any info on this issue/bug?"
+  },
+  {
+   "id": 1211964352,
+   "user": "muthijammy",
+   "created_at": "2022-08-11T13:06:26Z",
+   "body": "For everyone interested, I found following workaround suggested in fb works for me as well when error msg popsup:\r\n\r\nchoose a virtual pump, subtype is AAPS generic\r\nSnooze popup error msg\r\nKill AAPS\r\nReopen AAPS. No error msg\r\nSwitch to needed pump. Error msg no longer popsup after restart of AAPS or mobile\r\n\r\n\r\n\r\n\r\n\r\n"
+  },
+  {
+   "id": 1212058230,
+   "user": "VoronMods",
+   "created_at": "2022-08-11T14:23:09Z",
+   "body": "> For everyone interested, I found following workaround suggested in fb works for me as well when error msg popsup:\r\n> \r\n> choose a virtual pump, subtype is AAPS generic Snooze popup error msg Kill AAPS Reopen AAPS. No error msg Switch to needed pump. Error msg no longer popsup after restart of AAPS or mobile\r\n\r\nits not about suppressing the error message, but about the error itself.\r\nYour solution doesn't work, it's not a permanent solution, the error comes on the AAPS screen and comes from AAPS"
+  },
+  {
+   "id": 1266757022,
+   "user": "MilosKozak",
+   "created_at": "2022-10-04T10:45:41Z",
+   "body": "resolved by https://github.com/nightscout/AndroidAPS/commit/3f3cdde53bcff139515cf9cdfb9bb5dbd68a4ca2"
+  }
+ ]
+}

@@ -1,0 +1,34 @@
+{
+ "issue_id": 609,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/609",
+ "title": "Android 9.0 xDrip+ won't connect",
+ "symptom": "After phone updated to Android Pie 9.0 on Oneplus 6, xDrip+ cannot connect to Blucon. It finds Blucon but connection status is not connected and no values are shown. Disconnecting, uninstalling app, resetting phone, resetting Blucon, and replacing Libre sensor did not help.",
+ "cause": "The thread identifies that the issue is related to Android 9.0 and Bluetooth settings. Specifically, the 'Trust Auto-connect' option (or 'Trust Android Auto Connect') being enabled can prevent connection. Also, other devices like Fitbit keeping Bluetooth connection alive can interfere. The thread does not establish a single definitive root cause but points to these settings and potential OS issues.",
+ "fix": "Turn off 'Trust Auto-connect' option in xDrip+ settings (under Less common settings -> Bluetooth settings). Also, some users found success by disabling the OB1 Collector (Settings -> G5/G6 Debug Settings -> Use The OB1 Collector) and by disabling 'close GATT on ble disconnect' (though this was suggested as better enabled). Additionally, turning off Fitbit's keep Bluetooth connection alive option helped one user.",
+ "settings_changed": [
+  "Trust Auto-connect → off",
+  "Use The OB1 Collector → off",
+  "close GATT on ble disconnect → enabled"
+ ],
+ "devices": [
+  "Blucon",
+  "Oneplus 6",
+  "Libre sensor",
+  "Miaomiao",
+  "Fitbit"
+ ],
+ "android_versions": [
+  "Android 9.0",
+  "Android 9",
+  "Android Pie"
+ ],
+ "driver_tags": [
+  "bluetooth",
+  "OB1 Collector",
+  "Trust Auto-connect",
+  "close GATT on ble disconnect"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "You have to turn off \"Trust Auto-connect\" option in the settings. This worked for me."
+}

@@ -1,0 +1,22 @@
+{
+ "issue_id": 1853,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/1853",
+ "title": "Omnipod EROS: There is no way to forcefully wipe/reset the pod state in case of \"emergency\"",
+ "symptom": "The Omnipod EROS driver has a bug that can lead to a situation where users get stuck with a pod registration that can not be continued or discarded. Several users reported running into this problem as a result of Pod activation failure. In that state both the 'Deactivate Pod' and 'Discard Pod' buttons are disabled/invisible.",
+ "cause": "The underlying problem is in not discarding/handling pod state correctly. The 'Discard' button is active and responsive but pressing it does not have the expected effect (no errors), assuming the underlying code does not allow discarding while the pump is in this state.",
+ "fix": "A fix is being prepared through issue #1882, and the commit 00f0446c21e059f1287333fc72578daeb6f8c8c2 is proposed to be left in (developer mode) as an optional escape. The workaround for not losing objectives is importing 3.0 settings in AAPS version 2.8.1, discard the Pod and then export preferences that can be imported by AAPS 3.0.",
+ "settings_changed": [],
+ "devices": [
+  "Omnipod EROS",
+  "Omnipod DASH"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "omnipod eros",
+  "omnipod dash",
+  "developer mode"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "Discarding Pod is not Discarding properly.... Think I found the (underlying) problem is in not discarding/handling pod state correctly. Have to look into this ... Will do a PR this week"
+}

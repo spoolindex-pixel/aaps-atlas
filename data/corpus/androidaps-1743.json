@@ -1,0 +1,81 @@
+{
+ "id": 1239155777,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1743,
+ "title": "No syncing between NSClients -> AAPS",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1743",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-05-17T21:04:03Z",
+ "closed_at": "2022-06-08T13:18:18Z",
+ "comment_count": 11,
+ "body": "I did not notice it first, but now I am sure:\r\nActions taken from NSClient are **not** synced to AAPS master, for example  entering carbs or setting a temp target like \"eating soon\" , although they are synced to Nightscout.\r\n\r\nSyncing \"the other way\" from AAPS to NSClients and Nightscout works fine.\r\n\r\nAs using NSClient to handle the most common actions remotely without the need to have kid's AAPS phone in hands, I would be really happy if syncing would work properly again (as it did in 2.8, at least for us).\r\n\r\nAs always: thank you!",
+ "comments": [
+  {
+   "id": 1129333321,
+   "user": "bchris21",
+   "created_at": "2022-05-17T21:27:34Z",
+   "body": "Same here, tested yesterday with Dev-K and nothing synced (carbs, TBR, etc)."
+  },
+  {
+   "id": 1129825715,
+   "user": "MilosKozak",
+   "created_at": "2022-05-18T10:11:29Z",
+   "body": "i just tested it on latest dev and it works. i'd need an example with logs from both NSClient and master (latest dev version)"
+  },
+  {
+   "id": 1129884429,
+   "user": "reijoahola-nightscout",
+   "created_at": "2022-05-18T11:19:48Z",
+   "body": "I tested this with the latest dev-k build 2022.05.16 and NSClient -> AAPS syncing worked.\r\nAre you sure that you have enabled NSClient / Synchronisation settings in AAPS app Config Builder ?"
+  },
+  {
+   "id": 1130311344,
+   "user": "bchris21",
+   "created_at": "2022-05-18T17:46:48Z",
+   "body": "> i just tested it on latest dev and it works. i'd need an example with logs from both NSClient and master (latest dev version)\n\nDev-K on both AAPS and NSClient.\n\nLogs attached from both. Logs exported right after trying to send bolus, TBR and insulin (record only) from NSClient to AAPS.\n\nHad same issue in the past and option for slower data send was added which never fixed the issue. \n\n![AndroidAPS_LOG_1652895704948.log.zip](https://github.com/nightscout/AndroidAPS/files/8718865/AndroidAPS_LOG_1652895704948.log.zip)\n\n![AndroidAPS_LOG_1652895738792.log.zip](https://github.com/nightscout/AndroidAPS/files/8718869/AndroidAPS_LOG_1652895738792.log.zip)"
+  },
+  {
+   "id": 1130370607,
+   "user": "zwackelfuss",
+   "created_at": "2022-05-18T18:31:06Z",
+   "body": "Yes, syncing in AAPS settings (accepts carbs, accept temp targets...) is enabled.\r\n\r\nTried it again: setting a temp target of 89 for 4 minutes in NSClient:\r\n<img width=\"317\" alt=\"image\" src=\"https://user-images.githubusercontent.com/46249367/169117240-d34645b1-3b94-48fe-90d0-93b0f5175aca.png\">\r\n\r\nTT is uploaded to Nightscout...\r\n<img width=\"316\" alt=\"image\" src=\"https://user-images.githubusercontent.com/46249367/169116865-af3230b0-3fe7-4f00-843a-1480e9cd87cd.png\">\r\n.. and NS-Website accepts this TT:\r\n<img width=\"376\" alt=\"image\" src=\"https://user-images.githubusercontent.com/46249367/169116966-509a2a5e-2fe5-4c7f-8f2c-938f6d551cf1.png\">\r\n\r\nBut in AAPS, TT of 89 is not displayed, loop runs still normal target.\r\n<img width=\"463\" alt=\"image\" src=\"https://user-images.githubusercontent.com/46249367/169117584-811874c2-9c98-450f-8902-70e182f352e7.png\">\r\n\r\nLog AAPS master:\r\n[AndroidAPS_LOG_1652897739962.log.zip](https://github.com/nightscout/AndroidAPS/files/8719240/AndroidAPS_LOG_1652897739962.log.zip)\r\n\r\nLog NSClient:\r\n[AndroidAPS_LOG_1652897809214.log.zip](https://github.com/nightscout/AndroidAPS/files/8719245/AndroidAPS_LOG_1652897809214.log.zip)\r\n\r\n"
+  },
+  {
+   "id": 1132195314,
+   "user": "MilosKozak",
+   "created_at": "2022-05-19T20:48:38Z",
+   "body": "I see there are 2 TTs with similiar time. there is a bug in NS. could you try it with dev version of NS?"
+  },
+  {
+   "id": 1132252822,
+   "user": "bchris21",
+   "created_at": "2022-05-19T22:08:19Z",
+   "body": "Just tried with both Dev-k versions in NSClient and AAPS.\n\nFor me TBR is not passed to Nightscout at all.\n\n**NSClient TBR 150mg/dl**\n![Screenshot_20220519_235838.jpg](https://user-images.githubusercontent.com/4725280/169412180-53d02317-fc75-496e-970a-22922d979882.jpg)\n\n**NSClient not passing the TBR**\n![Screenshot_20220519_235950.jpg](https://user-images.githubusercontent.com/4725280/169412197-a1ef84eb-8e9c-4f01-90b1-cde523a5f335.jpg)\n\n**Nightscout not reflecting the TBR**\n![Screenshot_20220520_000035.jpg](https://user-images.githubusercontent.com/4725280/169412222-655e28ed-fb44-4f77-932d-87f62a5c456c.jpg)\n\n**TBR not passed to AAPS**\n![Screenshot_20220520_000229.jpg](https://user-images.githubusercontent.com/4725280/169412232-c3f1ee2d-a3ca-464e-84ce-a670ba5461ff.jpg)\n\n![Screenshot_20220520_000703.jpg](https://user-images.githubusercontent.com/4725280/169412614-e4429ba1-2c56-4e36-b53a-9222a0830606.jpg)\n\n![Screenshot_20220520_000800.jpg](https://user-images.githubusercontent.com/4725280/169412626-22c8d93c-2df8-481a-adcf-092324d3ae7f.jpg)"
+  },
+  {
+   "id": 1132541950,
+   "user": "MilosKozak",
+   "created_at": "2022-05-20T06:57:42Z",
+   "body": "I mean NS not NSClient"
+  },
+  {
+   "id": 1138860276,
+   "user": "bchris21",
+   "created_at": "2022-05-26T17:56:49Z",
+   "body": "NS upgraded to Dev (14.2.6 - 555f699e) \n\nI canceled a TBR but still nothing is passed on NSClient. \n\n![Screenshot_20220526_194815.jpg](https://user-images.githubusercontent.com/4725280/170547236-c75dddac-dc73-4daf-8b66-bc4b12cd149e.jpg)\n\n![Screenshot_20220526_194726.jpg](https://user-images.githubusercontent.com/4725280/170547277-b3f99c39-5d7a-4319-96ae-478974d89fab.jpg)\n\n![Screenshot_20220526_194932.jpg](https://user-images.githubusercontent.com/4725280/170547350-16bf57ad-749d-4612-a49b-ed136680c0e2.jpg)\n\nAny advice for further troubleshooting?\n\nThank you in advance. \n\nChris"
+  },
+  {
+   "id": 1138929319,
+   "user": "MilosKozak",
+   "created_at": "2022-05-26T19:22:43Z",
+   "body": "if you mean TT (not TBR) i tested now and it's working\r\nguesing you don't have it enable in NSclient synchronization on AAPS side"
+  },
+  {
+   "id": 1139085621,
+   "user": "bchris21",
+   "created_at": "2022-05-26T21:39:51Z",
+   "body": "Issue fixed for my case. \n\nBuilt and installed NSClient2 which works fine. Upgrading to NS Dev did not work.\n\nApparently something was corrupted on previous installation.\n\nAgain thanks for your support."
+  }
+ ]
+}

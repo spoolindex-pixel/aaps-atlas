@@ -1,0 +1,119 @@
+{
+ "id": 3425797661,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 4173,
+ "title": "New Polish Libre 2 14 day Sensor 7F 0E 30",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/4173",
+ "state": "closed",
+ "labels": [
+  "device-libre"
+ ],
+ "created_at": "2025-09-17T11:03:06Z",
+ "closed_at": "2025-09-29T16:23:36Z",
+ "comment_count": 17,
+ "body": "Hi,\r\n\r\nI have Libre2 (not plus, at least nothing on the box says it is one) with S/N: 301U.... (bought in Poland)\r\nUpgraded OOP2 to` 27da3f5-2025.06.12`\r\nUpgraded xDrip to `0c3b4ad-2025.09.05`, hardware data source set to Libre Bluetooth\r\nRestarted the phone. Started the sensor (notifications says \"Please wait while sensor warms up!\"), upon NFC scanning I get \"Incorrect NFC data\" and xDrip logs show:\r\n\r\n![Screenshot_2025-09-16-21-46-11-76_2dd2c1bcb8f659cd696bcba2072f751b](https://github.com/user-attachments/assets/e75ea671-6eef-4f30-b9d9-7fbdcd0fcdd9)\r\n\r\nAm I missing something to get it to work?\r\n\r\nEdit: ok, I see it's 0x7f0e30 not 0x7f0e31\r\n\r\n_Originally posted by @jsPl in https://github.com/NightscoutFoundation/xDrip/discussions/4028#discussioncomment-14420377_",
+ "comments": [
+  {
+   "id": 3303680125,
+   "user": "jsPl",
+   "created_at": "2025-09-17T16:08:02Z",
+   "body": "Thanks @PhilTU for creating this issue.\n\nxDrip doesn't properly recognize latest Libre 2 sensors we get in Poland, with the serial number starting with 301 (treating them as Libre 1 fallback):\n\n![Image](https://github.com/user-attachments/assets/c0a8528d-3f3e-45f5-ad31-d6f6c21a687d)\n\nThis is a regular 14 day Libre 2 sensor (at least nothing suggests otherwise - see box above).\n"
+  },
+  {
+   "id": 3303780541,
+   "user": "PhilTU",
+   "created_at": "2025-09-17T16:36:36Z",
+   "body": "confirmation form another Polish user on Facebook with same issue \n\n<img width=\"317\" height=\"72\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/e6080e0e-b4ad-491f-bf83-3ef43ba4a470\" />"
+  },
+  {
+   "id": 3315309905,
+   "user": "tzachi-dar",
+   "created_at": "2025-09-20T22:54:14Z",
+   "body": "Can you try this oop2 and see if it solves the problem\nhttps://drive.google.com/file/d/1106h2s12b3Ev9gKCTU2G75q8h9ChHjcz/view?usp=sharing\nYou will need to use it with the code from here - https://github.com/NightscoutFoundation/xDrip/pull/4180"
+  },
+  {
+   "id": 3315445186,
+   "user": "Navid200",
+   "created_at": "2025-09-21T02:26:11Z",
+   "body": "The following is an xDrip_Test release I have created just for this test.  \nhttps://drive.google.com/file/d/16hejdqWHdq1TCQU8g_EVi6MWB0qO3bAp/view?usp=sharing\n\nYou should create a backup of your xDrip just in case even though you don't need to uninstall your xDrip.\nhttps://navid200.github.io/xDrip/docs/Backup-Database.html "
+  },
+  {
+   "id": 3315492864,
+   "user": "jsPl",
+   "created_at": "2025-09-21T04:32:12Z",
+   "body": "Thanks guys. @Navid200 is that xdrip based on tzachi-dar's PR? I've installed it but NFC scanning on the sensor doesn't seem to do anything. \n\nLogs for reference \n![Image](https://github.com/user-attachments/assets/8b565922-8009-4a28-a9b9-bb37a2e6982d)\n\n![Image](https://github.com/user-attachments/assets/eae145f4-293b-4022-8e4e-8bba7944f494)"
+  },
+  {
+   "id": 3315540796,
+   "user": "PhilTU",
+   "created_at": "2025-09-21T06:34:06Z",
+   "body": "I would turn on Foreground service in OOP2 can you show the NFC reader part of the log.\n\nAlso review the settings in case a test release overwrites previous.- I installed it and NFC is off initially \n\n<img width=\"1200\" height=\"2670\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/8931d84b-b897-42a4-905b-50f343c19265\" />"
+  },
+  {
+   "id": 3315547765,
+   "user": "PhilTU",
+   "created_at": "2025-09-21T06:49:26Z",
+   "body": "> The following is an xDrip_Test release\n\nI don't have the Polish sensor but I can confirm the test version NFC scans the UK 301 sensor ok."
+  },
+  {
+   "id": 3315702794,
+   "user": "jsPl",
+   "created_at": "2025-09-21T08:14:30Z",
+   "body": "The test version seems to have this 'nfc scan features '  (left the settings as is) which the regular app didn't have. Upon installing I had to accept some Android version incompatibility notice (I'm using Android 15) .Moreover, it installed as a separate instance so now I have 2 icons in app drawer.\n\nWhen it comes to testing:\nI've made oop use foreground service \nMade sure regular xdrip and librelink are force closed\nChose 'libre bluetooth ' as hardware data source in xdrip_test\nStarted sensor, scanned it with NFC, some sound trigger but no other action from xdrip.\n\nLogs after these operations:\n\n![Image](https://github.com/user-attachments/assets/4514676b-acf8-4a04-a671-ccf7a99066f3)"
+  },
+  {
+   "id": 3315895584,
+   "user": "jsPl",
+   "created_at": "2025-09-21T10:12:13Z",
+   "body": "Got it working, sorry for the confusion. I just enabled this setting (switched off by default)\n\n![Image](https://github.com/user-attachments/assets/097a4bc3-f273-4ab2-be24-9812be60eb41)\n\nNow the logs show \n\n![Image](https://github.com/user-attachments/assets/1509f33c-3f9a-4168-9b82-830c4ee555b8)\n\n![Image](https://github.com/user-attachments/assets/122e1360-b4ec-4eb1-88c7-f07e4c6e64ca)\n\nSo it's recognized as Libre2Plus, but I get the readings."
+  },
+  {
+   "id": 3315915081,
+   "user": "PhilTU",
+   "created_at": "2025-09-21T10:51:07Z",
+   "body": "It says it is connected. Does OOP2 show 1 minute values arriving ?\n\nLibrelink icon is in notifications - force stop it if there are issues."
+  },
+  {
+   "id": 3315917924,
+   "user": "jsPl",
+   "created_at": "2025-09-21T10:57:09Z",
+   "body": "> It says it is connected. Does OOP2 show 1 minute values arriving ?\n\n![Image](https://github.com/user-attachments/assets/bda49348-a032-46ea-beef-be96a2934d7f)\n \n\n> Librelink icon is in notifications - force stop it if there are issues.\n\nAll good it seems, Librelink and xdrip don't interfere each other. I have readings in both, Librelink has alerts switched off.\n"
+  },
+  {
+   "id": 3315918498,
+   "user": "PhilTU",
+   "created_at": "2025-09-21T10:58:28Z",
+   "body": "So it's working. \n\nThe duplicates are because of Librelink \n\nIf it identifies as a Libre Plus the expiry date is incorrect?"
+  },
+  {
+   "id": 3315970764,
+   "user": "Navid200",
+   "created_at": "2025-09-21T12:40:05Z",
+   "body": "For now, let's forget what it is called (2 or 2+).\nBut, is there any functionality that is wrong or missing?  "
+  },
+  {
+   "id": 3315979224,
+   "user": "PhilTU",
+   "created_at": "2025-09-21T12:56:34Z",
+   "body": "Only thing to check is indicated life. Is that showing as 15 days (2+) or 14 (Libre 2)"
+  },
+  {
+   "id": 3315981028,
+   "user": "Navid200",
+   "created_at": "2025-09-21T13:00:14Z",
+   "body": "It is going to show 15 days.  But, what we need to know is if it stops working after 14 days or 15.  Please tell us.  "
+  },
+  {
+   "id": 3315992299,
+   "user": "jsPl",
+   "created_at": "2025-09-21T13:20:26Z",
+   "body": "Yes, it shows 15 days sensor life (I'm on 5th day right now). Normally, the previous Libre 2 line available in Poland (S/N starting with 3MH) would last 14.5 days in xdrip (so a bit longer than librelink app). I will report here in 10 days.\n\nOther than that, it all seems to be working fine. There is some occasional connection loss, but affecting both librelink and xdrip.\n\nGreat stuff guys, hope to bring these changes to the main release soon!\n"
+  },
+  {
+   "id": 3347941810,
+   "user": "Navid200",
+   "created_at": "2025-09-29T16:23:36Z",
+   "body": "As of the 2025.09.26 release, this sensor is recognized.\n\nFor that reason, I am closing this issue.\n\nIf there is an issue with sensor expiry notification, we can hopefully take measures to address it."
+  }
+ ]
+}

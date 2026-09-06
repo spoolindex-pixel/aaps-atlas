@@ -1,0 +1,27 @@
+{
+ "issue_id": 1768,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/1768",
+ "title": "Wrong IOB, because boluses are shown twice",
+ "symptom": "In AndroidAPS 3.0, some meal-boluses and SMBs are shown twice in the treatments-tab, while the pump shows them only once, leading to incorrect (too high) IOB.",
+ "cause": "The timestamp of a bolus was not adjusted to the time it was actually received by the pump; it kept the time the command was sent. This caused a mismatch when pairing with pump history, leading to duplicate entries. This behavior was lost during refactoring to Kotlin and new database code.",
+ "fix": "Adjust the timestamp of the bolus entry to the time it was received on the pump (instead of the time the command was sent), so that when history is read, the bolus can be correctly paired with the pump history entry. This fix is implemented in branch bug1768_2xbolus and PR #1825.",
+ "settings_changed": [],
+ "devices": [
+  "Medtronic 754",
+  "Samsung A52 5G",
+  "S22 Ultra",
+  "522 OL Pro",
+  "Rileylink W2"
+ ],
+ "android_versions": [
+  "Android 12.0"
+ ],
+ "driver_tags": [
+  "Medtronic",
+  "Rileylink",
+  "OL"
+ ],
+ "confidence": "high",
+ "evidence_quote": "So when we do bolus on pump, before entry is written into database, timestamp is adjusted (it doesn't contain previous timestamp, when AAPS/orefx sent bolus command, but timestamp when bolus was received on pump), so when history comes back it will easily be tied to actual bolus record. This might prevent double bolus..."
+}

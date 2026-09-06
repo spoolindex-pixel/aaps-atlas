@@ -1,0 +1,103 @@
+{
+ "id": 861261550,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1700,
+ "title": "Local Broadcast of calibation from AAPS aren't  registered in calibation data table or graph.",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1700",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "device-libre",
+  "calibration"
+ ],
+ "created_at": "2021-04-19T12:34:24Z",
+ "closed_at": "2022-06-07T14:30:44Z",
+ "comment_count": 17,
+ "body": "### Your environment\r\n- xDrip 18885dd-2020.12.23\r\n- AAPS 2.8.2 build 194549adc-2021.01.31-15:50\r\n- Hardware data source: Libre 2 and Librelink patched app.\r\n- Issue happens on my OnePlus 6T running OxygenOS 10.3.9 (Android 10), but I doubt it's device specific\r\n- Inter-app settings and auto calibration activated.\r\n\r\n### Expected behavior\r\nBroadcasted calibration should always be taken into account, or an error message should be displayed in the log explaining why the calibration was not used.\r\n\r\n### Actual behavior\r\nWhen using the calibation feature of AAPS, I get the toast notification \"Calibration sent to Xdrip+\" in AAPS and I can see a 'jamorham nsreceiver' event log saying \"Processing broadcasted calibation: X.XX offset ms: YY\" in Xdrip+ log, but the calibation isn't taken into account as it is not visible in Calibation Data table or Calibation graph. No other event related to the calibation are visible in the log after that.\r\nI tried maybe 20 times and 2 times it worked normaly, but I can't identify why it worked on these 2 specific attempts.\r\n\r\nWhen adding the same calibration directly in Xdrip+, it's always working fine.\r\nI'm always doing calibration when BG is stable for 15min and around 4-7 mmol/l.\r\n\r\n### Steps to reproduce the behavior:\r\nFor example:\r\n1. Enable Local Broadcast in AAPS: Preferences >NSClient>Advanced Settings> Activate 'Enable Local Broadcasts\"\r\n2. Enable Inter-app communication in Xdrip+: Settings>Inter-app settings> Enable below options:\r\n'Broadcast locally'\r\n'Compatible Broadcast'\r\n'Accept Treatments'\r\n'Accept Calibrations'\r\n\r\n### Screenshots\r\n<img width=\"400\" src=\"https://user-images.githubusercontent.com/73880107/115236727-00d44680-a11c-11eb-992d-8e7355d9e0e1.jpg\" /><img width=\"400\" src=\"https://user-images.githubusercontent.com/73880107/115236734-016cdd00-a11c-11eb-8374-0d084090db13.jpg\" />\r\n\r\n",
+ "comments": [
+  {
+   "id": 894217073,
+   "user": "Navid200",
+   "created_at": "2021-08-06T12:11:14Z",
+   "body": "@capflamme \r\nThe data in the calibration graph (and likewise, calibration table) is only meaningful if calibration is done by xDrip.\r\nIs calibration not native (not done by xDrip) in the situation you are describing?"
+  },
+  {
+   "id": 894798523,
+   "user": "capflamme",
+   "created_at": "2021-08-08T13:32:30Z",
+   "body": "Hello,\nThe calibration is done by using the calibration button in AAPS. I think it just send the calibration value to Xdrip and then Xdrip is supposed to process it as it was inputed directly in Xdrip.\n________________________________\nFrom: Navid ***@***.***>\nSent: Friday, August 6, 2021 2:11:25 PM\nTo: NightscoutFoundation/xDrip ***@***.***>\nCc: capflamme ***@***.***>; Mention ***@***.***>\nSubject: Re: [NightscoutFoundation/xDrip] Local Broadcast of calibation from AAPS aren't registered in calibation data table or graph. (#1700)\n\n\n@capflamme<https://github.com/capflamme>\nThe data in the calibration graph (and likewise, calibration table) is only meaningful if calibration is done by xDrip.\nIs calibration not native (not done by xDrip) in the situation you are describing?\n\n—\nYou are receiving this because you were mentioned.\nReply to this email directly, view it on GitHub<https://github.com/NightscoutFoundation/xDrip/issues/1700#issuecomment-894217073>, or unsubscribe<https://github.com/notifications/unsubscribe-auth/ARTVEK3F5RZFBLWQ7ATGNTTT3PGO3ANCNFSM43FXVTXQ>.\nTriage notifications on the go with GitHub Mobile for iOS<https://apps.apple.com/app/apple-store/id1477376905?ct=notification-email&mt=8&pt=524675> or Android<https://play.google.com/store/apps/details?id=com.github.android&utm_campaign=notification-email>.\n"
+  },
+  {
+   "id": 894802857,
+   "user": "Navid200",
+   "created_at": "2021-08-08T14:04:30Z",
+   "body": "@capflamme \r\n\r\nCalibration is creating an association between the interstitial fluid glucose and blood glucose.\r\nThis association is done by a formula.  The entity that is responsible for creating, editing, and maintaining the formula is not always xDrip.\r\n\r\nI personally use Dexcom.  The G5 Dexcom transmitter transmits raw values as well as calculated blood glucose values.\r\nxDrip allows the user to choose to use native or non-native mode.  \r\n\r\nIf the user uses non-native mode, xDrip maintains the formula.  Now, the calibration graph and calibration data table show important information that represent the formula in effect.\r\n\r\nBut, if the user uses the native mode, it's the Dexcom transmitter that does the calibration.  But, since the transmitter transmits raw values, the xDrip code continues to create a calibration graph.  In this case, the calibration graph is pointless.  It absolutely has nothing to do with the real calibration formula maintained by the transmitter in this case.\r\n\r\nI currently use a G6 transmitter.  This G6 transmitter does not transmit raw values.  I have no choice but to use the native mode.  When I look at the calibration table, it is empty.  This is because there are no raw values to use to create a calibration graph.  And it would be useless anyway as the calibration is not done by xDrip.\r\n\r\nSo, just because a calibration value goes through xDrip does not mean that xDrip is maintaining the formula.\r\n\r\nWhat device is responsible for calibration is your system?"
+  },
+  {
+   "id": 894807601,
+   "user": "capflamme",
+   "created_at": "2021-08-08T14:40:00Z",
+   "body": "I use Librelink patched app as hardware source. Sensor is therefore freestyle libre 2.\nIf I input the calibration within Xdrip it's working fine everytime. Calibration is put in table and graph and BG is modified accordingly. When I do it through AAPS, the calibration is only taken into account sometimes, most of the time it isn't. I am not able to understand why it's working sometimes only.\nThere is definitely something odd/buggy happening here. Maybe something related to the time when the calibration is added relative to the BG update time/frequency. Just a supposition, though.\n________________________________\nFrom: Navid ***@***.***>\nSent: Sunday, August 8, 2021 4:04:42 PM\nTo: NightscoutFoundation/xDrip ***@***.***>\nCc: capflamme ***@***.***>; Mention ***@***.***>\nSubject: Re: [NightscoutFoundation/xDrip] Local Broadcast of calibation from AAPS aren't registered in calibation data table or graph. (#1700)\n\n\n@capflamme<https://github.com/capflamme>\n\nCalibration is creating an association between the interstitial fluid glucose and blood glucose.\nThis association is done by a formula. The entity that is responsible for creating, editing, and maintaining the formula is not always xDrip.\n\nI personally use Dexcom. The G5 Dexcom transmitter transmits raw values as well as calculated blood glucose values.\nxDrip allows the user to choose to use native or non-native mode.\n\nIf the user uses non-native mode, xDrip maintains the formula. Now, the calibration graph and calibration data table show important information that represent the formula in effect.\n\nBut, if the user uses the native mode, it's the Dexcom transmitter that does the calibration. But, since the transmitter transmits raw values, the xDrip code continues to create a calibration graph. In this case, the calibration graph is pointless. It absolutely has nothing to do with the real calibration formula maintained by the transmitter in this case.\n\nI currently use a G6 transmitter. This G6 transmitter does not transm"
+  },
+  {
+   "id": 894810212,
+   "user": "Navid200",
+   "created_at": "2021-08-08T15:00:33Z",
+   "body": ">When I do it through AAPS, the calibration is only taken into account sometimes\r\n\r\nPlease state how you know that a calibration is, or is not, taken into account.  Please don't base it on whether it appears in the xDrip calibration graph or calibration data table."
+  },
+  {
+   "id": 894822472,
+   "user": "capflamme",
+   "created_at": "2021-08-08T16:33:39Z",
+   "body": "As said previously, when I do it in Xdrip, it's always added to the table/graph.\nMoreover, I dont really understand how it could be taken into account if not added to the calibration table and graph.\nThere is no way to calibrate natively FSL2 sensor with librelink, it's not at all like dexcom sensor.\n________________________________\nFrom: Navid ***@***.***>\nSent: Sunday, August 8, 2021 5:00:44 PM\nTo: NightscoutFoundation/xDrip ***@***.***>\nCc: capflamme ***@***.***>; Mention ***@***.***>\nSubject: Re: [NightscoutFoundation/xDrip] Local Broadcast of calibation from AAPS aren't registered in calibation data table or graph. (#1700)\n\n\nWhen I do it through AAPS, the calibration is only taken into account sometimes\n\nPlease state how you know that a calibration is, or is not, taken into account. Please don't base it on whether it appears in the xDrip calibration graph or calibration data table.\n\n—\nYou are receiving this because you were mentioned.\nReply to this email directly, view it on GitHub<https://github.com/NightscoutFoundation/xDrip/issues/1700#issuecomment-894810212>, or unsubscribe<https://github.com/notifications/unsubscribe-auth/ARTVEK6OGIUAU7NA7OQQM23T32LZZANCNFSM43FXVTXQ>.\nTriage notifications on the go with GitHub Mobile for iOS<https://apps.apple.com/app/apple-store/id1477376905?ct=notification-email&mt=8&pt=524675> or Android<https://play.google.com/store/apps/details?id=com.github.android&utm_campaign=notification-email>.\n"
+  },
+  {
+   "id": 894822702,
+   "user": "Navid200",
+   "created_at": "2021-08-08T16:35:32Z",
+   "body": "@tzachi-dar @keencave \r\nWhat is the FSL2 calibration mechanism like?  Is it done by xDrip?"
+  },
+  {
+   "id": 894829664,
+   "user": "capflamme",
+   "created_at": "2021-08-08T17:32:08Z",
+   "body": "Yes, it's done by Xdrip with fixed slope. Only intercept can be modified within a secure range of around 2mmol/L, I think.\n________________________________\nFrom: Navid ***@***.***>\nSent: Sunday, August 8, 2021 6:35:44 PM\nTo: NightscoutFoundation/xDrip ***@***.***>\nCc: capflamme ***@***.***>; Mention ***@***.***>\nSubject: Re: [NightscoutFoundation/xDrip] Local Broadcast of calibation from AAPS aren't registered in calibation data table or graph. (#1700)\n\n\n@tzachi-dar<https://github.com/tzachi-dar> @keencave<https://github.com/keencave>\nWhat is the FSL2 calibration mechanism like? Is it done by xDrip?\n\n—\nYou are receiving this because you were mentioned.\nReply to this email directly, view it on GitHub<https://github.com/NightscoutFoundation/xDrip/issues/1700#issuecomment-894822702>, or unsubscribe<https://github.com/notifications/unsubscribe-auth/ARTVEK375WPYNQZG3Y3CQZLT32W6BANCNFSM43FXVTXQ>.\nTriage notifications on the go with GitHub Mobile for iOS<https://apps.apple.com/app/apple-store/id1477376905?ct=notification-email&mt=8&pt=524675> or Android<https://play.google.com/store/apps/details?id=com.github.android&utm_campaign=notification-email>.\n"
+  },
+  {
+   "id": 896803620,
+   "user": "tzachi-dar",
+   "created_at": "2021-08-11T12:56:57Z",
+   "body": "I'm afraid I'm not familiar with libre2 calibrations."
+  },
+  {
+   "id": 897608208,
+   "user": "tolot27",
+   "created_at": "2021-08-12T12:43:56Z",
+   "body": "We have to investigate why `NSClientReceiver` does not perform the calibration even if it is logged. It would help to see a log from the rare cases; 2 out of 20 as you reported above."
+  },
+  {
+   "id": 897617430,
+   "user": "capflamme",
+   "created_at": "2021-08-12T12:58:03Z",
+   "body": "Hello Mathias,\r\nWhen you speak about the rare cases, you mean the cases when calibration inputted in AAPS is taken into account in Xdrip?\r\nI would be glad to provide you with logs, but I'm not sure how to get/generate these logs. Can you explain me?"
+  },
+  {
+   "id": 897622052,
+   "user": "tolot27",
+   "created_at": "2021-08-12T13:04:28Z",
+   "body": "> When you speak about the rare cases, you mean the cases when calibration inputted in AAPS is taken into account in Xdrip?\r\n\r\nYes, I mean exactly what you reported with:\r\n\r\n> I tried maybe 20 times and 2 times it worked normaly, but I can't identify why it worked on these 2 specific attempts.\r\n\r\n> I would be glad to provide you with logs, but I'm not sure how to get/generate these logs. Can you explain me?\r\n\r\nSimilar to the logs you provided above. Much better would be an exported xDrip database. It is an SQlite database and you can remove everything except the calibration and usererror table and you can limit the data to a specific time range.\r\nIf it is too complicated to filter the data and you don't worry about privacy too much, you can upload the export to a safe place and provide the link to me, privately (E-Mail or Gitter)."
+  },
+  {
+   "id": 965322855,
+   "user": "Navid200",
+   "created_at": "2021-11-10T14:53:40Z",
+   "body": "@capflamme Can you provide the data requested by tolot27 please?"
+  },
+  {
+   "id": 1148755723,
+   "user": "Navid200",
+   "created_at": "2022-06-07T14:30:44Z",
+   "body": "We can reopen this as soon as the required data is provided.\r\nOtherwise, for all we know, there is no problem any longer."
+  }
+ ]
+}

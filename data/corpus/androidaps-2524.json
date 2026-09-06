@@ -1,0 +1,81 @@
+{
+ "id": 1689990919,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2524,
+ "title": "[DEV] DASH: Temp basal cancelled/stopped by pod for unkown reason, AAPS History not updated",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2524",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-04-30T16:46:45Z",
+ "closed_at": "2023-06-01T19:36:20Z",
+ "comment_count": 11,
+ "body": "Build: 34e7a9ad52-dev-i (personal branch) merged at 6cfd5b0c1673a79d9d33498ee2a7031b54ccd6c4\r\nPump: Dash\r\nTime: Temp basal start at 11:52:37.814. Reconnect where we find the changed deliveryStatus from deliveryStatus=TEMP_BASAL_ACTIVE to deliveryStatus=BASAL_ACTIVE at 17:04:08.902\r\nLogs: [AndroidAPS_LOG_1682783403444.log.zip](https://github.com/nightscout/AndroidAPS/files/11361767/AndroidAPS_LOG_1682783403444.log.zip)\r\n\r\nContext: On this day I went to the pool, set a 10 hour long basal at 11:52, did a few bolus after that, but did not change the basal or profile. The phone was stored in the locker so had no contact with the pod for some time, at 17:00 the pool closed so I went home. In the car I noticed my dash ticking while AAPS reported still a 0 temp basal. so I checked the status screen. found this:\r\n\r\n<img src=\"https://user-images.githubusercontent.com/60566713/235364857-dc7449a9-e093-4f7e-8c4b-4ac0dd0ff386.jpeg\" width=\"200\"> <img src=\"https://user-images.githubusercontent.com/60566713/235364858-e473df41-9dc3-4dbb-b21e-44601be7ee84.jpeg\" width=\"200\">  <img src=\"https://user-images.githubusercontent.com/60566713/235420568-12ae2511-798d-42f6-80da-6f8005143fa7.jpeg\" width=\"200\">\r\n\r\nAs you can see according to AAPS there was still a 0 temp active. But on the dash tab the deliveryStatus of the pod was BASAL_ACTIVE. I have not received any alarm other then no BG and no pump connection. And I know for sure that the DASH pod was delivering Insulin (looking back at events it makes sense I had to correct with food more often then I used to after 16:00)\r\n\r\nI see 2 problems here:\r\n\r\n1. Why did the pod stop the TBR? I have no real answer to this other then some guesses: \r\n    a. maybe the pod got damaged during the wild water slide, the pod was pretty banged up and had some faint yellow stains inside. \r\n    b. Or maybe the pod cancels the TBR when the controlling device is out of range for x amount of time? I intent on testing this hypotheses\r\n\r\n2. The pod rapported it had not TBR active anymore but according to AAPS there was a 0 temp active. I expect the history and tbr status to be updated, this did not happen. However I did dive a bit into this part of the dash code and the status message, it is hard to know at what time the TBR was stopped, but we can make an educated guess by comparing the delivered insulin. I can implement something for that\r\n\r\nAny other guesses/input? Especially on why the pod had stopped the TBR?\r\n\r\n**UPDATE:**\r\nAfter testing a 600min TBR is cancelled after 4:15 minutes on a different phone and POD, see \"How to reproduce\" below. So this rules out the options listed above that the pod got damaged or the POD cancels the TBR because out of range. I will dive into the code and do some more testing on why this happens. \r\n",
+ "comments": [
+  {
+   "id": 1529140760,
+   "user": "vanelsberg",
+   "created_at": "2023-04-30T21:13:55Z",
+   "body": "@jbr7rr \r\n\r\n> **The phone was stored in the locker so had no contact with the pod for some time**\r\n\r\nThis is by Insulet design for both EROS and DASH.\r\n(edit) For safety reasons the Pod should always fall back to its programmed basalrate.\r\n\r\nSo what you describe is expected behavior when using the PDM and also AAPS.\r\n"
+  },
+  {
+   "id": 1529418680,
+   "user": "jbr7rr",
+   "created_at": "2023-05-01T07:02:48Z",
+   "body": "> @jbr7rr\r\n> \r\n> > **The phone was stored in the locker so had no contact with the pod for some time**\r\n> \r\n> This is by Insulet design for both EROS and DASH. For safety reasons the Pod will always fall back to it programmed basalrate when it does not received communication for 30 minutes.\r\n> \r\n> So what you describe is expected behaviour when using the PDM and also AAPS.\r\n\r\nI did some digging in the manual:\r\nhttps://www.omnipod.com/sites/default/files/2021-04/Omnipod-DASH_User-Guide_English.pdf\r\n\r\n----------------\r\n### On page 15:\r\nNote: Even when there is no\r\ncommunication, the Pod continues\r\ndelivering insulin according to the\r\ninstructions it was given. See \"What the\r\nPod can do between PDM instructions\"\r\non page 148 for details.\r\n\r\n### on page 148:\r\nWhat the Pod can do between PDM instructions\r\nOnce activated, the Pod can perform the following **without input** from the PDM:\r\n• Deliver insulin according to the active Basal Program's schedule. The Pod\r\nhas a built-in clock that allows it to track the timing of the Basal Program's\r\nsegments.\r\n**• Stop delivery of a temp basal at the scheduled time and resume delivery of the\r\nactive Basal Program**.\r\n...\r\nAuto-off\r\nThe optional Auto-off feature is useful if you are prone to hypoglycemia\r\nunawareness. When you enable the Auto-off feature, you define a length of time\r\nfor an Auto-off countdown timer. The Pod and PDM will sound an alarm if you\r\ndo not use your PDM within that amount of time. To change the Auto-off setting,\r\nsee \"Pod Auto-off\" on page 109.\r\n\r\n-------------\r\n\r\nThere is no stopping of the temp basal on loss of connection mentioned anywhere. and according to the manual, insulin delivery (including TBR's) should continue as programmed. The Auto-off feature is hardcoded to be disabled in the DASH driver if I'm correct (I will check this). If you have any other source saying something else, please let me know\r\n\r\nGiven this I would say that the behavoir in AAPS is not as expected Note: On 2 points, as menti"
+  },
+  {
+   "id": 1530061002,
+   "user": "vanelsberg",
+   "created_at": "2023-05-01T18:42:54Z",
+   "body": ">  17:05 Regained connection with POD, Home screen stil showing 0 Basal, while DASH tab states BASAL_ACTIVE\r\n\r\nAAPS Overview/Homescreen is know to lag behind, only updating when a new BG is received triggering oRef calculations.\r\nAlso note one needs to push the refresh button. AAPS is not auto refreshing the Pod status and will only update after executing a command.\r\n\r\n> - 11:52 Start 0 Temp for 600 minutes\r\n\r\nHow does one set a 0-temp for 600 minutes? I do not think that is possible - not even through a basal setting in the profile.\r\nOr do you mean \"**suspend loop**\"?\r\nI think suspend loop just cancels any running TBR and stops sending commands (so Pod falls back to programmed basal rates)\r\nSo this is not a 0-Temp?\r\n\r\n> - ~15:55 TBR Stopped by POD\r\n> \"calculated by tracing back the delivered insulin based on my basal schedule\"\r\n\r\nInitial TBR was started at 11:52, repeating every 30 mins. So last TBR \"repeat\" command was at approx. 13:52h. From there no connection - so this last TBR command ran for 120 minutes and stopped at 15:52h, falling back at programmed basal rate.\r\n\r\n> There is no stopping of the temp basal on loss of connection mentioned anywhere.\r\n\r\nYou may be right on that and there is no mention on this in the DASH manual. So actually it is not the Pod...\r\nConfused: But the 30mins/120mins mentioned above ensures a programmed TBR will _always end_ after max 120mins in case AAPS can not connect to the Pod to stop or reschedule...\r\n"
+  },
+  {
+   "id": 1531259773,
+   "user": "jbr7rr",
+   "created_at": "2023-05-02T10:48:04Z",
+   "body": "> AAPS Overview/Homescreen is know to lag behind, only updating when a new BG is received triggering oRef calculations. Also note one needs to push the refresh button. AAPS is not auto refreshing the Pod status and will only update after executing a command.\r\n\r\nSee screenshots above, these are way after first reconnect with DASH, and yes I did hit refresh button multiple times after I suspected something was wrong. But this did not change. Also history in NS did not show the TBR cancalled\r\n\r\n> How does one set a 0-temp for 600 minutes? I do not think that is possible - not even through a basal setting in the profile. Or do you mean \"**suspend loop**\"? I think suspend loop just cancels any running TBR and stops sending commands (so Pod falls back to programmed basal rates) So this is not a 0-Temp?\r\n\r\nSee \"Steps to reproduce\" below\r\nYes it is a 0 Temp Basal, as in 0U/h for 600 minutes\r\nNote: Up to 12Hour temp basal is supported by DASH according to the user manual\r\n\r\n> Initial TBR was started at 11:52, repeating every 30 mins. So last TBR \"repeat\" command was at approx. 13:52h. From there no connection - so this last TBR command ran for 120 minutes and stopped at 15:52h, falling back at programmed basal rate.\r\n\r\nThis is wrong, It was/is a single TBR command for setting a TBR of 600 minutes, AAPS does not divide this in multiple TBR's and won't repeat it as far as I know and can see from logs and code. \r\n\r\n> You may be right on that and there is no mention on this in the DASH manual. So actually it is not the Pod... Confused: But the 30mins/120mins mentioned above ensures a programmed TBR will _always end_ after max 120mins in case AAPS can not connect to the Pod to stop or reschedule...\r\n\r\nThis only applies when loop mode is active, In manual mode it is a different story and the user can do whatever they want. Also keep in mind that the pumpcontrol apk is freely downloadable and quite some dash users seem to use that as a starting point. "
+  },
+  {
+   "id": 1531300158,
+   "user": "jbr7rr",
+   "created_at": "2023-05-02T11:23:06Z",
+   "body": "I was able to reproduce it on my test phone using the following steps:\r\n\r\n# Steps to reproduce:\r\n\r\n- Deactivate loop (theoretically this also effects pump control apk, not tested yet)\r\n- In action tab start temp basal: 0U/h for 600 min\r\n- Check DASH tab: Delivery Status should read: TEMP_BASAL_ACTIVE and Temp basal active 0.00U/h\r\n- Keep phone close to pod, but no further input into AAPS\r\n- After 4:15 :\r\n    - Refresh from DASH tab\r\n    - Expected behavior: Delivery Status: TEMP_BASAL_ACTIVE and temp basal active 0.00U/h and pod not delivering insulin\r\n    - Actual behavior: Delivery Status: BASAL_ACTIVE and temp basal active 0.00U/h (according to AAPS) and pod is delivering insulin\r\n\r\nScreenshots of test:\r\n<img src=\"https://user-images.githubusercontent.com/60566713/235647463-7f786b41-84a8-496e-944f-a336011267bc.png\" width=\"200\"> <img src=\"https://user-images.githubusercontent.com/60566713/235647468-fbe353e8-2a48-4d37-8e93-e48729b974c5.png\" width=\"200\"> <img src=\"https://user-images.githubusercontent.com/60566713/235647471-c05a7358-4d86-4175-9cbd-7f6c2c663d04.png\" width=\"200\">\r\n\r\n"
+  },
+  {
+   "id": 1532039066,
+   "user": "vanelsberg",
+   "created_at": "2023-05-02T19:34:38Z",
+   "body": "Ah! Now get you are running in AAPS _disable loop mode_ or \"manual/PDM\" mode. Do not think usage like this was ever anticipated or tested for with DASH. Not saying it should not work when user is allowed to do such. \r\n\r\nInteresting. Curious on what the Pod history shows. Any command send to the Pod should show up there."
+  },
+  {
+   "id": 1532052446,
+   "user": "vanelsberg",
+   "created_at": "2023-05-02T19:45:40Z",
+   "body": "Interesting details: original DASH beta/dev driver had a separate suspend button on the DASH tab. When activated it cacled all running TBR's and blocked any Pod command until unsuspended.\r\n\r\nShortly after merge/release to main AAPS dev it was removed arguing this to be functionally identical to the AAPS suspend mode and only confusing users.\r\n"
+  },
+  {
+   "id": 1532091985,
+   "user": "vanelsberg",
+   "created_at": "2023-05-02T20:16:46Z",
+   "body": "I do not think \"manual\" usage as described above was covered nor tested for during DASH development.\r\n\r\n@MilosKozak This could lead to unexpected and possible dangerous situations where the user is not aware of the Pod delivering insulin while setting a long duration 0-TBR.\r\n\r\nAs I have no insight on cause or a possible way to fix, I would propose the following:\r\n1. Warn dev users\r\n2. Until this is fixed, disable the option to manually set a TBR (activity button) when _loop is disabled_ (maybe only enable for developer mode)\r\n\r\n@jbr7rr **Good find!** \r\nInterested in your view on this!\r\n"
+  },
+  {
+   "id": 1532741122,
+   "user": "jbr7rr",
+   "created_at": "2023-05-03T09:49:18Z",
+   "body": "> I do not think \"manual\" usage as described above was covered nor tested for during DASH development.\r\n> \r\n> @MilosKozak This could lead to unexpected and possible dangerous situations where the user is not aware of the Pod delivering insulin while setting a long duration 0-TBR.\r\n> \r\n> As I have no insight on cause or a possible way to fix, I would propose the following:\r\n> \r\n>     1. Warn dev users\r\n> \r\n>     2. Until this is fixed, disable the option to manually set a TBR (activity button) when _loop is disabled_ (maybe only enable for developer mode)\r\n> \r\n> \r\n> @jbr7rr **Good find!** Interested in your view on this!\r\n\r\nI think that this issue also applies for master, I did not test, but not much has changed in these parts of the code since then. So we need to take that into account as well.\r\n\r\nA proper fix needs more investigation, I will do this in the coming weekend.\r\nIf a proper fix cannot be implemented soon, or requires lots of testing. I will propose a hotfix by limiting the TBR range to 4 hours (Will need to test if that works properly as well), This is easier to implement then disabling manual TBR.\r\n"
+  },
+  {
+   "id": 1562701856,
+   "user": "avereha",
+   "created_at": "2023-05-25T10:58:00Z",
+   "body": "\r\nMaybe we don't serialize the tempBasal correctly, will try to check this in the next days.\r\n\r\nFrom what I see in the manual, max temp basal is 12h."
+  },
+  {
+   "id": 1562721664,
+   "user": "jbr7rr",
+   "created_at": "2023-05-25T11:13:05Z",
+   "body": "> Maybe we don't serialize the tempBasal correctly, will try to check this in the next days.\r\n\r\nHey! I think the serialization is not the problem, as Loop (iOS) had the same problem, I implemented a work around for the core issue in https://github.com/nightscout/AndroidAPS/pull/2531 which has been tested exenstivly, and with that fix all basal rates works for all TBR rates"
+  }
+ ]
+}

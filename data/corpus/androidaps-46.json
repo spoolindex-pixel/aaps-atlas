@@ -1,0 +1,75 @@
+{
+ "id": 727306298,
+ "repo": "nightscout/AndroidAPS",
+ "number": 46,
+ "title": "AAPS not sending basal to xDrip",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/46",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2020-10-22T11:34:50Z",
+ "closed_at": "2021-01-17T19:02:38Z",
+ "comment_count": 12,
+ "body": "Good evening. Since I updated to AAPS version 2.7 xdrip doesn't receive basals. I have Local Braodcast enabled in AAPS and Allow treatments enabled in xDrip, and it receives carbs and bolus but not basals. Any help is welcome.\r\nThank you in advance and regards\r\n\r\nEdit: xDrip is receiving cabs and bolus from Nightscout, not AAPS. If I disable data (wifi and 4G) no bolus or carbs is received even with NSClient local broadcasting. I don't know what I'm doing wrong...\r\n",
+ "comments": [
+  {
+   "id": 714652399,
+   "user": "Amidamaru",
+   "created_at": "2020-10-22T17:41:53Z",
+   "body": "I have the same issue.\r\nin advance: sorry, for hijacking, but it seems and general issue.\r\nxDrip is not getting any data/treatment whatelse from AAPS v2.7 -> the only thing which is working is to push calibration from AAPS to xDrip.\r\nin AAPS I've tried setting up NS without an valid URL ( since I am not using NS and I won't in near future hehe), because only then the extended setting is listed: \"Local Broadcast\". But it seems this local broadcast does not really broadcast anything by itself to xDrip/local.\r\nImho it would be better to have this option \"local broadcast\" separated from NS plugin. Any information on that, why local broadcast is within the NS plugin?"
+  },
+  {
+   "id": 716789915,
+   "user": "TwistaTim",
+   "created_at": "2020-10-26T20:01:19Z",
+   "body": "Enable Xdrip Statusline plugin from the configBuilder"
+  },
+  {
+   "id": 716850091,
+   "user": "ArthurusDent",
+   "created_at": "2020-10-26T22:06:42Z",
+   "body": "@Tornado-Tim Ok, that's at least something. The status line does show the current basal rate, even when I do not have internet access. That means AndroidAPS sends the data successfully and xdrip receives it. But on my phone xdrip still does not draw the basal rate in blue at the top of the screen. \"Show basal TBR\" is enabled. \r\n\r\nIt's a weird problem and I remember that several people have that problem. Looking at xdrip's issue tracker there does not seem to exist an issue for this problem, though. I'll try to create an issue in the next few days and post a link to it here.\r\n\r\nEDIT:\r\nMy setup: \r\nOneplus 3T, LineageOS 17.1\r\nAAPS 2.7\r\nxdrip nightly from 1st of October\r\nMedtronic 554\r\nDexcom G6"
+  },
+  {
+   "id": 717365688,
+   "user": "JimZam",
+   "created_at": "2020-10-27T16:30:05Z",
+   "body": "I did it there at the same time as here\r\nhttps://github.com/NightscoutFoundation/xDrip/issues/1481\r\n"
+  },
+  {
+   "id": 720112784,
+   "user": "teleriddler",
+   "created_at": "2020-11-01T16:16:58Z",
+   "body": "Also having the exact same issue (and have had it since Dec of last year).  I mostly live in AAPS so I monitor my basal from there and Nightscout successfully plots my basal as well.  I have tried all recommendations from the Gitter room to no avail.  This is the first I have heard of trying to turn on the xDrip+ statusline in the config builder.  I have done this, restarted both apps and still no basal plots.  Curious to see the outcome of this issue.\r\n\r\nMy setup:\r\n\r\nSamsung Galaxy S7 Edge - Android 8.1\r\nAAPS 2.7 (AAPS-Omni branch)\r\nxDrip+ nightly build from 01.10.2020\r\nOmnipod Eros\r\nLibre 2 (with patched app)\r\n"
+  },
+  {
+   "id": 744624389,
+   "user": "andyrozman",
+   "created_at": "2020-12-14T18:24:55Z",
+   "body": "This worked in very old AAPS (1.5.x I think), but I haven't seen any of my basal data in Xdrip+ in last 3 years. But I can't say exactly when it stopped working.  "
+  },
+  {
+   "id": 744638792,
+   "user": "JimZam",
+   "created_at": "2020-12-14T18:51:58Z",
+   "body": "It's strange, it works since a couple of weeks ago, in my old phone and in my new one (installed everything from scratch three days ago)"
+  },
+  {
+   "id": 745542633,
+   "user": "AdrianLxM",
+   "created_at": "2020-12-15T20:18:26Z",
+   "body": "AAPS never sent basals to xDrip.\r\nxDrip was parsing those from the watch data. That was about to fail.\r\n\r\nWe could send the data in any form needed that it doesn't need to be parsed."
+  },
+  {
+   "id": 749000303,
+   "user": "ArthurusDent",
+   "created_at": "2020-12-21T14:26:09Z",
+   "body": "I would like to remind everybody that this issue is about at least two different problems/bugs.\r\n\r\nThe first one is the one mentioned in the headline: xdrip doesn't receive basals.\r\n\r\nThe second one is that xdrip doesn't receive bolus and carb entries once there is no connection to the internet. This has only been mentioned in the edited version of the first post.\r\n\r\nIt looks like the first problem could be worked on now.\r\n\r\nConcerning the second problem, 4RK4N on the xdrip gitter channel might have found the problem: to him it looks like nsclient stops broadcasting locally once there is no internet connection available. This is of course not how this should work. \r\n\r\nHopefully this will help one of the devs to fix this problem."
+  },
+  {
+   "id": 749683905,
+   "user": "PedanticAvenger",
+   "created_at": "2020-12-22T17:44:34Z",
+   "body": "I particularly noticed this issue when I re-installed and tried to cleanup information flows when I was setting up tidepool.  My current setup involved NOT having xDrip talking to nightscout at all and when I broke that connection I lost all display of treatments in xDrip.  I'm willing to entertain the possibility that I've misconfigured something but I've iterated a LOT on this. Otherwise everything else works fine, xDrip sends BG to AAPS fine and uploads to tidepool fine, AAPS sends everything to nightscout fine too.\r\nBasal display used to work for me in xDip but that was back in OpenAPS days, from other discussions I've had on the xDrip side I am not confident it's worked directly with AAPS but only as a result of other plugins that have massaged the data to make it appear to xDrip like something it previously expected."
+  }
+ ]
+}

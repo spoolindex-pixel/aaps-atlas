@@ -1,0 +1,63 @@
+{
+ "id": 255378284,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 168,
+ "title": "Connect/disconnect during connection with blukon",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/168",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2017-09-05T19:10:17Z",
+ "closed_at": "2017-09-14T17:43:34Z",
+ "comment_count": 8,
+ "body": "Hi Jon\r\n\r\nplease see this typical logcat during connection with blucon:\r\n\r\n```\r\n09-05 21:05:25.775 16968-16968/com.eveningoutpost.dexdrip I/DexCollectionService: attemptConnection: Connection state: DISCONNECTED\r\n09-05 21:05:25.785 16968-16968/com.eveningoutpost.dexdrip I/DexCollectionService: connect: going to connect to device at address: C9:BC:F9:...............\r\n09-05 21:05:25.785 16968-16968/com.eveningoutpost.dexdrip I/DexCollectionService: connect: mBluetoothGatt isnt null, Closing.\r\n09-05 21:05:25.785 16968-16968/com.eveningoutpost.dexdrip I/DexCollectionService: connect: Trying to create a new connection.\r\n09-05 21:05:37.850 16968-16968/com.eveningoutpost.dexdrip I/DexCollectionService: attemptConnection: Connection state: DISCONNECTED\r\n09-05 21:05:37.855 16968-16968/com.eveningoutpost.dexdrip I/DexCollectionService: connect: going to connect to device at address: C9:BC...............\r\n09-05 21:05:37.855 16968-16968/com.eveningoutpost.dexdrip I/DexCollectionService: connect: mBluetoothGatt isnt null, Closing.\r\n09-05 21:05:37.855 16968-16968/com.eveningoutpost.dexdrip I/DexCollectionService: connect: Trying to create a new connection.\r\n09-05 21:05:47.100 16968-16990/com.eveningoutpost.dxdrip I/DexCollectionService: onConnectionStateChange: Connected to GATT server.\r\n09-05 21:05:47.115 16968-16990/com.eveningoutpost.dexdrip I/DexCollectionService: attemptConnection: Connection state: CONNECTED\r\n09-05 21:05:47.115 16968-16990/com.eveningoutpost.dexdrip I/DexCollectionService: attemptConnection: Looks like we are already connected, ready to receive\r\n09-05 21:05:47.300 16968-16990/com.eveningoutpost.dexdrip W/DexCollectionService: onServicesDiscovered: xdrip service 0000ffe0-0000-1000-8000-00805f9b34fb not found\r\n09-05 21:05:47.335 16968-16990/com.eveningoutpost.dexdrip I/DexCollectionService: Found Blucon device\r\n09-05 21:05:47.335 16968-16990/com.eveningoutpost.dexdrip I/DexCollectionService: Bluetooth Notification Descriptor found: 00002902-0000-1000-8000-00805f9b34fb\r\n09-05 21:05:49.375 16968-17256/com.eveningoutpost.dexdrip I/DexCollectionService: onCharacteristicChanged entered \r\n                                                                                  0x00000000 CB 01 00 00                                     ....\r\n09-05 21:05:49.375 16968-17256/com.eveningoutpost.dexdrip I/Blukon: BlueCon data: cb010000\r\n09-05 21:05:49.375 16968-17256/com.eveningoutpost.dexdrip I/Blukon: wakeup received\r\n09-05 21:05:49.380 16968-17256/com.eveningoutpost.dexdrip I/Blukon: wakeup received\r\n09-05 21:05:49.380 16968-17256/com.eveningoutpost.dexdrip I/Blukon: getPatchInfo\r\n09-05 21:05:49.380 16968-17256/com.eveningoutpost.dexdrip I/DexCollectionService: sendBtMessage: entered\r\n09-05 21:05:49.380 16968-17256/com.eveningoutpost.dexdrip I/DexCollectionService: sendBtMessage: sending message: \r\n                                                                                  0x00000000 01 0D 09 00                                     ....\r\n09-05 21:05:49.510 16968-17902/com.eveningoutpost.dexdrip I/DexCollectionService: onCharacteristicChanged entered \r\n                                                                                  0x00000000 8B D9 04 82 BE 62 00 00 A0 07 E0 F3 07 7D BF 80 .....b.......}..\r\n                                                                                  0x00000010 55 05 00 03                                     U...\r\n09-05 21:05:49.510 16968-17902/com.eveningoutpost.dexdrip I/Blukon: BlueCon data: 8bd90482be620000a007e0f3077dbf8055050003\r\n09-05 21:05:49.510 16968-17902/com.eveningoutpost.dexdrip I/Blukon: Patch Info received\r\n09-05 21:05:49.510 16968-17902/com.eveningoutpost.dexdrip I/Blukon: Send ACK\r\n09-05 21:05:49.510 16968-17902/com.eveningoutpost.dexdrip I/DexCollectionService: sendBtMessage: entered\r\n09-05 21:05:49.515 16968-17902/com.eveningoutpost.dexdrip I/DexCollectionService: sendBtMessage: sending message: \r\n                                                                                  0x00000000 81 0A 00                                        ...\r\n09-05 21:05:49.630 16968-17902/com.eveningoutpost.dexdrip I/DexCollectionService: onCharacteristicChanged entered \r\n                                                                                  0x00000000 8B 0A 00                                        ...\r\n09-05 21:05:49.630 16968-17902/com.eveningoutpost.dexdrip I/Blukon: BlueCon data: 8b0a00\r\n09-05 21:05:49.630 16968-17902/com.eveningoutpost.dexdrip I/Blukon: Got ACK\r\n09-05 21:05:49.630 16968-17902/com.eveningoutpost.dexdrip I/Blukon: getUnknownCmd1: 010d0b00\r\n09-05 21:05:49.630 16968-17902/com.eveningoutpost.dexdrip I/DexCollectionService: sendBtMessage: entered\r\n09-05 21:05:49.635 16968-17902/com.eveningoutpost.dexdrip I/DexCollectionService: sendBtMessage: sending message: \r\n                                                                                  0x00000000 01 0D 0B 00                                     ....\r\n09-05 21:05:50.895 16968-16968/com.eveningoutpost.dexdrip I/DexCollectionService: attemptConnection: Connection state: CONNECTED\r\n09-05 21:05:50.900 16968-16968/com.eveningoutpost.dexdrip I/DexCollectionService: attemptConnection: Looks like we are already connected, ready to receive\r\n09-05 21:06:00.090 16968-16968/com.eveningoutpost.dexdrip E/jamorham graph: Exception doing iob values in bggraphbuilder: java.lang.IndexOutOfBoundsException: Invalid index 0, size is 0\r\n09-05 21:06:00.100 16968-16968/com.eveningoutpost.dexdrip I/jamorham graph: Raw points size is zero\r\n09-05 21:06:00.105 16968-16968/com.eveningoutpost.dexdrip I/jamorham JoH: Benchmark: Default lines create - bggraph builder 15.0 ms\r\n09-05 21:06:00.125 16968-16968/com.eveningoutpost.dexdrip I/jamorham JoH: Benchmark: Clone preview data 12.0 ms\r\n09-05 21:06:00.250 16968-16968/com.eveningoutpost.dexdrip I/AppCompatViewInflater: app:theme is now deprecated. Please move to using android:theme instead.\r\n09-05 21:06:00.255 16968-16968/com.eveningoutpost.dexdrip I/View: ssignParent(ViewParent parent) parent is: android.widget.ListView{2d91f671 IFED.VC. ......ID -480,112-0,1134 #7f0e0085 app:id/navigation_drawer}\r\n09-05 21:06:00.255 16968-16968/com.eveningoutpost.dexdrip I/AppCompatViewInflater: app:theme is now deprecated. Please move to using android:theme instead.\r\n09-05 21:06:00.255 16968-16968/com.eveningoutpost.dexdrip I/View: ssignParent(ViewParent parent) parent is: android.widget.ListView{2d91f671 IFED.VC. ......ID -480,112-0,1134 #7f0e0085 app:id/navigation_drawer}\r\n09-05 21:06:00.255 16968-16968/com.eveningoutpost.dexdrip I/AppCompatViewInflater: app:theme is now deprecated. Please move to using android:theme instead.\r\n09-05 21:06:00.255 16968-16968/com.eveningoutpost.dexdrip I/View: ssignParent(ViewParent parent) parent is: android.widget.ListView{2d91f671 IFED.VC. ......ID -480,112-0,1134 #7f0e0085 app:id/navigation_drawer}\r\n09-05 21:06:00.255 16968-16968/com.eveningoutpost.dexdrip I/AppCompatViewInflater: app:theme is now deprecated. Please move to using android:theme instead.\r\n09-05 21:06:00.255 16968-16968/com.eveningoutpost.dexdrip I/View: ssignParent(ViewParent parent) parent is: android.widget.ListView{2d91f671 IFED.VC. ......ID -480,112-0,1134 #7f0e0085 app:id/navigation_drawer}\r\n09-05 21:06:00.260 16968-16968/com.eveningoutpost.dexdrip I/AppCompatViewInflater: app:theme is now deprecated. Please move to using android:theme instead.\r\n09-05 21:06:00.260 16968-16968/com.eveningoutpost.dexdrip I/View: ssignParent(ViewParent parent) parent is: android.widget.ListView{2d91f671 IFED.VC. ......ID -480,112-0,1134 #7f0e0085 app:id/navigation_drawer}\r\n09-05 21:06:00.260 16968-16968/com.eveningoutpost.dexdrip I/AppCompatViewInflater: app:theme is now deprecated. Please move to using android:theme instead.\r\n09-05 21:06:00.260 16968-16968/com.eveningoutpost.dexdrip I/View: ssignParent(ViewParent parent) parent is: android.widget.ListView{2d91f671 IFED.VC. ......ID -480,112-0,1134 #7f0e0085 app:id/navigation_drawer}\r\n09-05 ",
+ "comments": [
+  {
+   "id": 327283945,
+   "user": "jamorham",
+   "created_at": "2017-09-05T19:50:29Z",
+   "body": "The disconnect is coming from the device turning off its bluetooth during sleep I think. The attempt connection method will only actually try to initiate a connection if the bluetooth device is in the disconnected state already.\r\n\r\nIf you mean the gatt close, you can control this via the setting `Close GATT on BLE disconnect` in `Settings` -> `Less common Settings` -> `Bluetooth Settings`  - See if that makes any difference?"
+  },
+  {
+   "id": 327289288,
+   "user": "gregorybel",
+   "created_at": "2017-09-05T20:11:18Z",
+   "body": "No I think the main issue is the connect attempt during cmd exchange:\r\n```\r\n09-05 21:05:50.895 16968-16968/com.eveningoutpost.dexdrip I/DexCollectionService: attemptConnection: Connection state: CONNECTED\r\n09-05 21:05:50.900 16968-16968/com.eveningoutpost.dexdrip I/DexCollectionService: attemptConnection: Looks like we are already connected, ready to receive\r\n```\r\n"
+  },
+  {
+   "id": 327299722,
+   "user": "gregorybel",
+   "created_at": "2017-09-05T20:52:15Z",
+   "body": "new try by removing options `Close GATT on BLE disconnect` and `close GATT on disconnect` and found something:\r\n\r\ngood:\r\n\r\n```\r\n09-05 22:37:21.080 30223-30348/com.eveningoutpost.dexdrip I/Blukon: block Number is 11\r\n09-05 22:37:21.080 30223-30348/com.eveningoutpost.dexdrip I/Blukon: getNowGlucoseData\r\n09-05 22:37:21.080 30223-30348/com.eveningoutpost.dexdrip I/DexCollectionService: sendBtMessage: entered\r\n09-05 22:37:21.080 30223-30348/com.eveningoutpost.dexdrip I/DexCollectionService: sendBtMessage: sending message: \r\n                                                                                  0x00000000 01 0D 0E 01 0B                                  .....\r\n09-05 22:37:21.175 9209-9364/? W/bt-btif: HAL bt_gatt_callbacks->client->write_characteristic_cb\r\n09-05 22:37:21.220 9209-9364/? W/bt-btif: HAL bt_gatt_callbacks->client->notify_cb\r\n```\r\n\r\nbad:\r\n```\r\n09-05 22:42:22.295 30223-32763/com.eveningoutpost.dexdrip I/Blukon: block Number is 11\r\n09-05 22:42:22.295 30223-32763/com.eveningoutpost.dexdrip I/Blukon: getNowGlucoseData\r\n09-05 22:42:22.300 30223-32763/com.eveningoutpost.dexdrip I/DexCollectionService: sendBtMessage: entered\r\n09-05 22:42:22.300 30223-32763/com.eveningoutpost.dexdrip I/DexCollectionService: sendBtMessage: sending message: \r\n                                                                                  0x00000000 01 0D 0E 01 0B                                  .....\r\n09-05 22:42:33.410 9209-9364/? W/bt-btif: HAL bt_gatt_callbacks->client->notify_cb\r\n09-05 22:42:33.420 30223-30244/com.eveningoutpost.dexdrip I/DexCollectionService: onCharacteristicChanged entered \r\n                                                                                  0x00000000 8B 1A 02 00 14                                  .....\r\n09-05 22:42:33.420 30223-30244/com.eveningoutpost.dexdrip I/Blukon: BlueCon data: 8b1a020014\r\n09-05 22:42:33.420 30223-30244/com.eveningoutpost.dexdrip E/Blukon: Got NACK on cmd=010d0e010b with error=0014\r\n```\r\n\r\nso bt_gatt_callbacks-"
+  },
+  {
+   "id": 327420772,
+   "user": "jamorham",
+   "created_at": "2017-09-06T08:58:00Z",
+   "body": "If you look at the code path of `attemptConnection()` if the device is already connected it doesn't do anything."
+  },
+  {
+   "id": 327524906,
+   "user": "jamorham",
+   "created_at": "2017-09-06T15:40:55Z",
+   "body": "Good catch noticing the write_characteristic_cb missing, try the latest version since this commit: https://github.com/NightscoutFoundation/xDrip/commit/05c51872b19c643eb5146e5c5d86844d03d4baf4"
+  },
+  {
+   "id": 327734261,
+   "user": "jamorham",
+   "created_at": "2017-09-07T08:48:08Z",
+   "body": "Do we think this is resolved now?"
+  },
+  {
+   "id": 327854668,
+   "user": "gregorybel",
+   "created_at": "2017-09-07T16:35:53Z",
+   "body": "I think so, you can close if you want, thank you. "
+  },
+  {
+   "id": 329556991,
+   "user": "jamorham",
+   "created_at": "2017-09-14T17:43:34Z",
+   "body": "marking as resolved"
+  }
+ ]
+}

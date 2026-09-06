@@ -1,0 +1,159 @@
+{
+ "id": 225427243,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 111,
+ "title": "XDrip not backfilling data to nightscout",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/111",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2017-05-01T12:25:59Z",
+ "closed_at": "2017-05-31T22:01:20Z",
+ "comment_count": 24,
+ "body": "I have been using xdrip+ for several months, but due to an upcoming endo appointment I started looking at the best way to generate reports and Nightscout seemed to be the seamless way.  I'm a software dev, so the complicated setup didn't bother me.\r\n\r\nI went through all the setup to get nightscout up and running, and my xdrip app is uploading current blood sugar readings as expected.  However, it's been about 18ish hours since I got it running and as of yet it hasn't uploaded any of my several months worth of back data.\r\n\r\n![image](https://cloud.githubusercontent.com/assets/540587/25579645/a217a63c-2e47-11e7-8264-bc59e92718c3.png)\r\n\r\nI've been told in the xdrip+ facebook group that it should be uploading the back data, so since it's not I'm filing this issue.  Thanks!",
+ "comments": [
+  {
+   "id": 298337458,
+   "user": "tzachi-dar",
+   "created_at": "2017-05-01T13:56:57Z",
+   "body": "Hi, \r\nxDrip+ will not load data that was not set to be uploaded when it was created.\r\n\r\nThere is probably a simple way around it, (Simple here is relative, if you are a dev that is familiar with java, and sqllite, this will be easy...).\r\n\r\nThere is an uploader queue (file UploaderQueue.java). For each new bg, there is an entry created there, (see UploaderQueue newEntry). \r\nWhat you should do, is save the xdrip db to file, open an sqllite browser and have an entry on the uploaderqueue table for each bg that you want to upload). Once the db file has changed, copy it back to xDrip and it will upload the data.\r\nYou can do the this, using SQL lite operations, or using local java code on pc (or python on pc) or even do it on the android code itself.\r\nMake sure that you backup your xDrip data before you begin.\r\n\r\nHTH\r\nTzachi"
+  },
+  {
+   "id": 298345884,
+   "user": "StormeHawke",
+   "created_at": "2017-05-01T14:44:27Z",
+   "body": "> xDrip+ will not load data that was not set to be uploaded when it was created.\r\n\r\nPerhaps this could be considered a feature request in that case, maybe an option somewhere under the uploader to enqueue all bloodsugars that haven't yet been uploaded.  It seems like this is something that any user who started with xdrip and later set up nightscout would want"
+  },
+  {
+   "id": 298346092,
+   "user": "StormeHawke",
+   "created_at": "2017-05-01T14:45:28Z",
+   "body": "Otherwise can you point me to instructions for saving off the db file and reimporting it? "
+  },
+  {
+   "id": 298347430,
+   "user": "tzachi-dar",
+   "created_at": "2017-05-01T14:51:57Z",
+   "body": "On the right side of xDrip on the top there is a menu.\r\nSelect import/export features there."
+  },
+  {
+   "id": 298372008,
+   "user": "StormeHawke",
+   "created_at": "2017-05-01T16:50:05Z",
+   "body": "Looks straightforward enough, except for these fields:\r\n\r\naction|bitfield_complete|bitfield_wanted\r\n\r\nHow would I determine which values to insert for these fields?\r\n"
+  },
+  {
+   "id": 298441588,
+   "user": "tzachi-dar",
+   "created_at": "2017-05-01T21:47:25Z",
+   "body": "operation_type = \"create\"\r\nbitfield_wanted = NIGHTSCOUT_RESTAPI (==2)\r\nbitfield_complete = 0 "
+  },
+  {
+   "id": 298471629,
+   "user": "StormeHawke",
+   "created_at": "2017-05-02T00:59:54Z",
+   "body": "awesome, I think I have it uploading data (at least, there are data points for 3 months ago).  Seems to be taking a while though - how frequent are the upload batches?"
+  },
+  {
+   "id": 298531086,
+   "user": "tzachi-dar",
+   "created_at": "2017-05-02T07:41:21Z",
+   "body": "I think that uploader batched are 5 minutes apart.\r\nIt seems that there number is being set on the function UploaderQueue.getPendingbyType() and the default number is 300.\r\nSo, if I'm correct, you should be fine by now (uploading about a day data every 5 minutes), but if I'm wrong, you can try changing the default to something bigger to speed things up.\r\n"
+  },
+  {
+   "id": 298613361,
+   "user": "StormeHawke",
+   "created_at": "2017-05-02T11:48:21Z",
+   "body": "So far my mlab db has ~4200 entries out of the ~17000 entries that were in the db yesterday when I hacked it.  Can't tell if it is still uploading them other than the data for the current time"
+  },
+  {
+   "id": 298664692,
+   "user": "StormeHawke",
+   "created_at": "2017-05-02T15:10:43Z",
+   "body": "No more records have been uploaded today.  "
+  },
+  {
+   "id": 298669601,
+   "user": "tzachi-dar",
+   "created_at": "2017-05-02T15:27:39Z",
+   "body": "Is the current reading being sent to mlab?\r\nCan you look at azure resource status? maybe you have uploaded too much data there?"
+  },
+  {
+   "id": 298711442,
+   "user": "StormeHawke",
+   "created_at": "2017-05-02T17:55:16Z",
+   "body": "It's possible.  I wasn't seeing the current value for a while last night.  I'm using heroku.  I'd be willing to privately give you access to my site if it would help you diagnose, with the understanding that i'd change the passwords and such when we're done.  Passwords are already unique, not using them elsewhere"
+  },
+  {
+   "id": 298762389,
+   "user": "tzachi-dar",
+   "created_at": "2017-05-02T21:10:53Z",
+   "body": "I'm afraid I can not look in the heroku site.\r\nYou can try and look in the xDrip logs and see if you can see any errors there. (start in the right top menu again).\r\nYou can also try to upload using the direct mongo method and see if that is working. There is no limit on the amount of data that you can use there."
+  },
+  {
+   "id": 298766991,
+   "user": "jamorham",
+   "created_at": "2017-05-02T21:29:14Z",
+   "body": "I think I probably need to add a mechanism to allow for back-filling of the data as the current implementation wasn't designed with that in mind but it shouldn't be too hard. \r\n\r\nI don't know whether doing this is going to introduce the potential for problems with duplicate data at nightscout though."
+  },
+  {
+   "id": 298807661,
+   "user": "AdrianLxM",
+   "created_at": "2017-05-03T02:01:46Z",
+   "body": "Nightscout does upserts if some data item is set correctly. I believe it was the \"dateString\" and type that had to match.\r\nFor the mongo upload it was this PR from tzachi: https://github.com/StephenBlackWasAlreadyTaken/xDrip-Experimental/commit/28c11dbee64fa0a7557839e1ba83d0ea4ea84d0a#diff-05711f4dc7a2fe190a27f694e738fe24\r\n\r\nThis would mean uploading the same data twice wouldn't cause duplicaitons."
+  },
+  {
+   "id": 301337590,
+   "user": "bryanw20",
+   "created_at": "2017-05-14T20:26:14Z",
+   "body": "I'd also like this feature added, or a way to force it myself. I'm not a programmer; I may try to teach myself.\r\nBut I'm using xdrip+ as a T2; didn't need any followers when starting out; didn't think about no Clarity link; finding it difficult to make reports any other way besides NS; so now I'd like to have a 3mo or so backlog of xdrip data sent to NS for making reports."
+  },
+  {
+   "id": 303656218,
+   "user": "jamorham",
+   "created_at": "2017-05-24T08:33:32Z",
+   "body": "The latest nightly has an option to backfill data. Find it in `Settings` -> `Cloud Upload` -> `API Upload` -> `Extra Options` ->`Back fill data` "
+  },
+  {
+   "id": 303681305,
+   "user": "StormeHawke",
+   "created_at": "2017-05-24T10:17:24Z",
+   "body": "Outstanding! Thank you! "
+  },
+  {
+   "id": 303713676,
+   "user": "bryanw20",
+   "created_at": "2017-05-24T12:49:42Z",
+   "body": "Yes thank you!"
+  },
+  {
+   "id": 305158746,
+   "user": "jamorham",
+   "created_at": "2017-05-31T11:07:21Z",
+   "body": "@StormeHawke @bryanw20 Were you able to test this feature? "
+  },
+  {
+   "id": 305163884,
+   "user": "AdrianLxM",
+   "created_at": "2017-05-31T11:33:34Z",
+   "body": "I tested it and it worked very well to backfill 2 to 3 months of data in about 30 to 40 minutes.\r\nMany positive feedback on facebook, :+1: "
+  },
+  {
+   "id": 305196813,
+   "user": "bryanw20",
+   "created_at": "2017-05-31T14:04:37Z",
+   "body": "Yes, it's working great! Thanks!\r\nJust wish I paid attention when my phone died a couple months ago that the xdrip export saved to internal memory, not my SD card; so I lost all my old data :(\r\nBut yes NS now hass all the data my phone does. \r\nThanks again!"
+  },
+  {
+   "id": 305229534,
+   "user": "StormeHawke",
+   "created_at": "2017-05-31T15:46:05Z",
+   "body": "Having manually hacked my data into the upload queue for an endo appointment I don't really have any data to upload that hasn't already been uploaded.  That said, I'm fine with you marking this closed on the basis of others testing it successfully"
+  },
+  {
+   "id": 305330519,
+   "user": "jamorham",
+   "created_at": "2017-05-31T22:01:20Z",
+   "body": "Okay thanks everyone. Marking as resolved."
+  }
+ ]
+}

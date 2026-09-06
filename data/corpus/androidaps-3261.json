@@ -1,0 +1,71 @@
+{
+ "id": 2178733237,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3261,
+ "title": "Wrong COB in AAPS due to dependenies of I/C an ISF on carbimpact and therfore the calc of carbdecay in combination with Autosens",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3261",
+ "state": "closed",
+ "labels": [
+  "for_discussion"
+ ],
+ "created_at": "2024-03-11T10:07:58Z",
+ "closed_at": "2025-12-03T12:01:34Z",
+ "comment_count": 9,
+ "body": "Hello all.\r\nSeveral times now I observed a wrong display of COB in AAPS . \r\nI allready discussed this on discord, and want to bring this issue now to github.\r\n\r\nIf COB is calculated and displayed wrong, the bolus calculator delivers wrong suggestions, leading to the administration of too much or too little insulin. Simply put, endangering the user.\r\n\r\nThis is most critical in a parental setup, where caretakers (not having the routing and insight) **rely on carb counting** and the **use of the bolus calculator**. \r\n\r\nSince decay of Carbs is calculated by carbimpact and carbimpact is the ratio ISF/IC. Changing either one of these values leaving the other unchanged will result in a different carbimpact, leading to a shorter or longer calculationof carbdecay and display of COB in AAPS.\r\n\r\nThat established. Even if you change just ISF, according to the common opinion that a smaller ISF leads to more agressive SMBs, this will lead to a wrong (shorter) calculation and dispaly of COB in AAPS, and could eventually result in even weaker SMBs since less or no COB would be taken into calculation (though they might sill be there). \r\n\r\nAutosens  just changes ISF (as I understood it) which could lead to a false display of COB.\r\nI learned that this could affects DynISF as well, which I don't use right now.\r\n\r\nGiven a fixed ratio of ISF and I/C wich leads to a correct Dispaly of COB in AAPS, increasing ISF by Autosens will lead to a longer calculation and display of COB. Leading to wrong suggestions by the bolus calculator. \r\n\r\n**As it is my understading. There is only one valid ratio of I/C ans ISF leading to a given carbimpact at a time, which actually matches reality.** \r\n\r\nI tried to solve this issue by finding an I/C that works, and adjusting an ISF to it which leads to DEV=0 when COB=0. If I have to change I/C or ISF I will alter the other factor accordingly in order to keep the \"tested\" carbimpact constant. \r\n\r\nI made this really basic excell sheet to manipulate these factors and see its results. [https://1drv.ms/x/s!AoYrzhT9OIxfxwMiLsZap29Ubsgu?e=LBoIca]\r\n\r\nI have been following this method since the recent weeks, and it worked well. \r\nBut as soon as I use Autosens, only ISF is adjusted, the ratio of ISF / IC changes and COB is displayed not correctly. Leading to either too small or too large SMBs, and wrong suggestions in the calculator, leading to to severe hypos or hypers.\r\n\r\nI consider this as a security issue. I might be totally wrong, but in the end I just described what I observed in reality. \r\n\r\n\r\n",
+ "comments": [
+  {
+   "id": 1988112489,
+   "user": "MilosKozak",
+   "created_at": "2024-03-11T10:35:39Z",
+   "body": "If we talk about SMB only (not DynISF):\r\nAutosens adjusts ISF only in oref decision alg. COB is calculated from IC and ISF values in profile\r\n\r\nAnd yes you are describing how the implementation works. Maybe @scottleibrand can provide more info"
+  },
+  {
+   "id": 1990836837,
+   "user": "scottleibrand",
+   "created_at": "2024-03-12T06:29:04Z",
+   "body": "Autosens does not (primarily/just) adjust ISF. It adjusts the sensitivityRatio, which primarily changes the assumed basal requirements, which in turn adjusts the calculations of IOB. For example, if you have a normal basal of 1.0 U/hr but are running more sensitive than normal and have a sensitivityRatio of 0.8, then it assumes you need 0.8 U/hr of basal. If you actually got 1.0U/hr for the last few hours, then it will treat that as a high temp and calculate net IOB as being positive (probably around 0.3 U or so, depending on insulin decay time).\r\n\r\nIMO you should not be adjusting ratios manually to get a desired outcome. You should ideally be using autotune to determine the body's real underlying ratios. If that's not possible, you could also do a controlled test of actual IC ratio and ISF, and using those values.\r\n\r\nIC ratio and ISF are not knobs to adjust to tweak the system. They are representations of physiological reality, and should be set to reflect such as closely as possible."
+  },
+  {
+   "id": 1999164201,
+   "user": "gerison77",
+   "created_at": "2024-03-15T08:32:01Z",
+   "body": "@scottleibrand With my statement that there is actually only one valid combination of ISF and IC which leads to a given carbimpact, I expressed the same. That theses factors are not to be changed just to get a different behaviour of SMBs for example. I agree.\r\n\r\nI just observed that the time for decay of COB in AAPS is altered when Autosens is adjusting ISF. I therefore came to the conclusion that AAPS changes the mentioned ratio of ISF and IC by altering just one factor only. \r\n\r\nCorrect display and count of COB is crucial for the use of the bolus calculator. For anyone who counts carbs, this matters.\r\n\r\nI am not able to do tests with five years old. But I can observe the impact of a certain I/C. By just observing the overlay of COB and DEV in AAPS I can observe as well when COB dosen't lead to any DEV anymore. At this point I know not only that I/C is right, but ISF is too. If not, I can adjust carbimpact by altering the ISF only until COB=0 and DEV=0 at the same time given the tested (observed) I/C. I'm quite sure, I nailed an ISF who would withstand a real test.\r\n\r\nNevertheless wrong COB count in AAPS is a real issue, leading to wrong treatments. \r\n"
+  },
+  {
+   "id": 1999948786,
+   "user": "scottleibrand",
+   "created_at": "2024-03-15T15:48:10Z",
+   "body": "Ok. The challenge here is that COB is not externally observable, and must be estimated. We do so in oref0 by observing how much positive impact has been observed on blood sugar, presumably due to carb absorption. We have to use the baseline of assumed insulin impact to determine whether a given deviation is greater than expected from insulin alone, and therefore represents carb_impact. To handle the cases where carbs are digested but don’t impact BG (such as due to activity or because they were directly stored as glycogen by the liver before hitting the peripheral vasculature) we have a min_5m_carbimpact setting. Have you tried setting that to see if you get more consistent results?"
+  },
+  {
+   "id": 1999969147,
+   "user": "gerison77",
+   "created_at": "2024-03-15T15:59:28Z",
+   "body": "Thank you for your fast answer, and the insight. Very much apreciated.\r\n\r\nI have (almost) consistent cob decay in AAPS if I turn Autosens off. \r\nI have determined carbimpact by sheer observation over several weeks now with the described method.\r\nI am able to keep the \"visual\" carb decay in AAPS almost constant in any case I have to adjust ISF or I/C due to changing conditions by keeping carbimpact constant. Which is currentyl in the case of my son a value of 8.45. min_5m_carbimpact is set and working as well. \r\n\r\nBut as I understodd @MilosKozak COB calculation in AAPS is always based on profile values. Given that, I must have been misled that Autosens has an impact on the Display of COB.\r\n\r\n\r\n\r\n\r\n"
+  },
+  {
+   "id": 2000180415,
+   "user": "MilosKozak",
+   "created_at": "2024-03-15T18:05:23Z",
+   "body": "> Thank you for your fast answer, and the insight. Very much apreciated.\r\n> \r\n> I have (almost) consistent cob decay in AAPS if I turn Autosens off. I have determined carbimpact by sheer observation over several weeks now with the described method. I am able to keep the \"visual\" carb decay in AAPS almost constant in any case I have to adjust ISF or I/C due to changing conditions by keeping carbimpact constant. Which is currentyl in the case of my son a value of 8.45. min_5m_carbimpact is set and working as well.\r\n> \r\n> But as I understodd @MilosKozak COB calculation in AAPS is always based on profile values. Given that, I must have been misled that Autosens has an impact on the Display of COB.\r\n\r\nIn master version yes, in dev only for SMB (not DynISF)"
+  },
+  {
+   "id": 2108551441,
+   "user": "vanelsberg",
+   "created_at": "2024-05-13T18:39:14Z",
+   "body": "Confirming this is a problem and (in my personal experience) can lead to unpredictable or even dangerous events.\r\n**Apart from carbs absorption I think there is an additional problem**: _calculator also does not use ISF from profile, which can lead to completely wrong calculations.\r\n\r\nWhat happend: I decided to retry Dynamic sensitivity. My 4th, previous did not work for me. Initially it seemed to do just fine, but on the 4th day it got me (almost) in real trouble:\r\n\r\nIt started with me having a rather carbs-rich meal (80grs) and then forgetting to enter them in AAPS. As a result, my BG had a steep rise to 16 mmol which for me is unusually high. Due to this, dynamic ISF was lowered from 2.8 to 0.7. Carbs I then entered almost vanished in no time and SMB calculated (mostly based on ISF=0.7 while being at 16mmol) I needed more then double the amount of insuline I actually needed!\r\n\r\nI found this out while using calculator to do additional insulin and not wait what OpenSMB was doing. Calculator suggested an additional amount of insulin which would have lead to IOB=28+ (my profile IC=6.6, so an equivalent of 185 grams of carbs :-| \r\n abort!)\r\n"
+  },
+  {
+   "id": 2121154009,
+   "user": "vanelsberg",
+   "created_at": "2024-05-20T20:27:25Z",
+   "body": "Related? https://github.com/nightscout/AndroidAPS/issues/3343"
+  },
+  {
+   "id": 3606465202,
+   "user": "gerison77",
+   "created_at": "2025-12-03T11:43:53Z",
+   "body": "@MilosKozak I think this issue is resolved and subject to be closed, isn't it?"
+  }
+ ]
+}

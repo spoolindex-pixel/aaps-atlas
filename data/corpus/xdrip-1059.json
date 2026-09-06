@@ -1,0 +1,39 @@
+{
+ "id": 508422871,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1059,
+ "title": "miaomiao2: could retrieve libre history from blukon be applied? Not working now",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1059",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2019-10-17T11:52:06Z",
+ "closed_at": "2020-04-08T15:37:29Z",
+ "comment_count": 4,
+ "body": "Just a small issue related to MM2. Eventually, it may loose connection by any reason, but it quickly reconnects. The issue is that if the disconnection lasts more than 10 minutes, it will loose readings. I have activated \"retrieving libre history\" just in case it could work with MM2, but it is not the case.\r\n\r\nIs there any possibility to integrate the same feature for MM2? Although MM2 is meant to be used permanently even for taking a shower, it is not fully protected against water, so when swimming it could be affected. There are many other situations that lead users to wear it out, so I was wondering whether that utility may be implemented within the same feature\r\n\r\nthanks\r\n\r\nMy setting for MM2 (working on Xiaomi Redmi 3S, android 6.0.1, MIUI 8.5.4.0 Global Stable):\r\nturned on: \r\n*Turn BT on\r\n*Trust auto-connect (although may be useless for MM2 since it has no pin code, but need it for Blukon)\r\n*allow blucon unbonding (simply the MM2 seems to reconnect faster with this on if you turn off the phone)\r\n*Aggresive service restarting\r\n* run collector in foreground\r\n* smooth libre data\r\n* retrieve libre history\r\n*Samsung Workaround\r\n\r\nI do not recommend to use any utility turning BT on/off simply because MM2 requires much time to reconnect when for instance rebooting the phone. You can short it by pressing MM2 reset but with the BT settings commented above there is no need to do so.\r\n\r\nThe issue of Samsung Workaround is because blukon works better in Xiaomi with that enabled. Needless to say I use blukon while charging MM2, but I'd rather MM2 because the battery an be recharged and it has lesser BT issues than blukon\r\n\r\nthanks for your support",
+ "comments": [
+  {
+   "id": 543156766,
+   "user": "tzachi-dar",
+   "created_at": "2019-10-17T12:43:59Z",
+   "body": "What sensor are you using?\n\nבתאריך יום ה׳, 17 באוק׳ 2019, 14:52, מאת yosepito ‏<notifications@github.com\n>:\n\n> Just a small issue related to MM2. Eventually, it may loose connection by\n> any reason, but it quickly reconnects. The issue is that if the\n> disconnection lasts more than 10 minutes, it will loose readings. I have\n> activated \"retrieving libre history\" just in case it could work with MM2,\n> but it is not the case.\n>\n> Is there any possibility to integrate the same feature for MM2? Although\n> MM2 is meant to be used permanently even for taking a shower, it is not\n> fully protected against water, so when swimming it could be affected. There\n> are many other situations that lead users to wear it out, so I was\n> wondering whether that utility may be implemented within the same feature\n>\n> thanks\n>\n> My setting for MM2 (working on Xiaomi Redmi 3S, android 6.0.1, MIUI\n> 8.5.4.0 Global Stable):\n> turned on:\n> *Turn BT on\n> *Trust auto-connect (although may be useless for MM2 since it has no pin\n> code, but need it for Blukon)\n> *allow blucon unbonding (simply the MM2 seems to reconnect faster with\n> this on if you turn off the phone)\n> *Aggresive service restarting\n>\n>    - run collector in foreground\n>    - smooth libre data\n>    - retrieve libre history\n>    *Samsung Workaround\n>\n> I do not recommend to use any utility turning BT on/off simply because MM2\n> requires much time to reconnect when for instance rebooting the phone. You\n> can short it by pressing MM2 reset but with the BT settings commented above\n> there is no need to do so.\n>\n> The issue of Samsung Workaround is because blukon works better in Xiaomi\n> with that enabled. Needless to say I use blukon while charging MM2, but I'd\n> rather MM2 because the battery an be recharged and it has lesser BT issues\n> than blukon\n>\n> thanks for your support\n>\n> —\n> You are receiving this because you are subscribed to this thread.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFou"
+  },
+  {
+   "id": 543689775,
+   "user": "yosepito",
+   "created_at": "2019-10-18T11:34:43Z",
+   "body": "Thanks for the reply tzachi-dar, and for your excelent developments \r\n\r\nI'm using Libre-1 European version. From time to time I shift from blukon to MM2. Blukon depicts the dots retrieved after losing connection. MM2 does not. Neither are those missing dots in data table.\r\nIn logs, I can see that MM2 sends 16 raw values each time (from 0 to 15), and I selected smooth libre data with last 5 points, which is fine in both cases. However, MM2 seems not to gather history on reconnections (logs say nothing on that) while Blukon does (logs say retrieving libre history....... and the like and the missing raw values appear in the logs)\r\nthanks!\r\n"
+  },
+  {
+   "id": 544201280,
+   "user": "tzachi-dar",
+   "created_at": "2019-10-19T22:09:41Z",
+   "body": "This seems very strange, to say the least.\r\n\r\nMM2, should be using the same values as mm1, and mm1 was able to handle gap closing...\r\n\r\nCan you please do the following:\r\n\r\ngo to settings->less common settings->extra logging settings->extra tags for logging, and put there:\r\njamorham librereceiver:v,BgReading:v\r\n\r\nMake sure there is a 25 minutes gap, and then send me the logs.\r\n\r\nTo send the logs, please do the following: \r\nImport export features->export database \r\nand then share it with tzachi.dar@gmail.com\r\n\r\nThanks"
+  },
+  {
+   "id": 544905103,
+   "user": "yosepito",
+   "created_at": "2019-10-22T10:49:33Z",
+   "body": "will do, thanks. I've been out for a while. I will do that today late after starting a new sensor. I'm afraid I'm using blukon simply because I replaced MM2 (to charge it) with it and got glued to sensor due to the old sticker of MM2. Amazing, but I was unable to unglue it so decided to use blukon until the old sensor finish. This is relevant for others using MM2: the glue of double-sided stickers will stay on top of sensor unless cleaned. Since blukon fit perfectly on top, one will be unable to remove it!!"
+  }
+ ]
+}

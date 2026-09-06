@@ -1,0 +1,45 @@
+{
+ "id": 562202500,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1234,
+ "title": "No intial calibration with 0000",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1234",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2020-02-09T16:29:24Z",
+ "closed_at": "2021-02-27T17:09:39Z",
+ "comment_count": 5,
+ "body": "If you start a G6 sensor with the code 0000 using a firmware that does not output raw data then after two hours the screen will display a sensor state \"Needs Initial Calibration\". However the \"Initial Calibration\" option in the three bar pull down menu (top left) does not appear so you cannot provide the calibration needed. If you start with any other code then the menu item appears after 2-3 glucose values are received. My guess is that you need to turn the menu on so that a calibration can be given. This would resolve many issues with restarted sensors.",
+ "comments": [
+  {
+   "id": 583885763,
+   "user": "emp-00",
+   "created_at": "2020-02-09T19:52:52Z",
+   "body": "[as follows I have added the initial conversation from gitter with additional concrete proposals by oakeley - might be helpful]\r\n\r\n--cut---\r\n@oakeley thank you so much for the detailed help, I really appreciate it. Wow, that is a real step backwards compared to the 81x transmitters where I was successfully using preemptive restarts perfectly with no jump in the graph and very good accuracy. I will try another restart but as a looper with a busy life I predict they will be too much trouble to bother with, and I'll have to just stick to the 10 days. Is there much hope for the future of these 8G issues being sorted?\r\n\r\n@jamespaulley doesn't look like it. The problem remains unfixed sadly. There is a method that almost works which is to start the sensor with the code 0000. If you do this then it will ask for a calibration like on the G5. BUT, xdrip has a bug so the menu item for initial calibration never appears with a 0000 start. If you use the patched Dexcom app then you can restart a sensor with zeros and calibrate. Unfortunately the Dexcom app is incompatible with the Atom phone screen format (my phone). Most loopers now use the patched Dexcom app if they want to restart. Feature request for @jamorham please add the initial calibration option to sensors started with 0000\r\n\r\n@jamorham I \"think\" that when you use a number to start a sensor (like 9551) the sensor eventually returns a glucose value and after it has something like 2-3 values the initial calibration menu appears. Because the G6 no longer gives raw data, if you start it with 0000 you are stuck because the sensor is waiting for a calibration before it gives a glucose value and xdrip is waiting for a glucose value before it allows calibration... A check like \"if sensor state == needs initial calibration; activate menu\" seems to be needed. If this worked everything would be so much easier! Any thoughts?\r\n--cut---"
+  },
+  {
+   "id": 588636610,
+   "user": "oakeley",
+   "created_at": "2020-02-20T06:45:07Z",
+   "body": "Any thoughts on this one?"
+  },
+  {
+   "id": 589010959,
+   "user": "jamorham",
+   "created_at": "2020-02-20T13:02:35Z",
+   "body": "Try this version: https://github.com/NightscoutFoundation/xDrip/releases/download/2020.02.20b/xDrip-plus-20200220-33e5f35.apk"
+  },
+  {
+   "id": 778532680,
+   "user": "Navid200",
+   "created_at": "2021-02-13T00:52:00Z",
+   "body": "@oakeley Would you please close this issue if it has been addressed?\r\nOtherwise, please update.\r\nThanks"
+  },
+  {
+   "id": 787103849,
+   "user": "Navid200",
+   "created_at": "2021-02-27T17:09:39Z",
+   "body": "I have successfully used an 8QXXXX transmitter in no-code mode with xDrip by entering 0000 as the calibration code.\r\nOf course, doing that disables factory calibration.  I tried it once after a restart and indeed there was no error after the 2-hour warm-up.\r\nHowever, I prefer using the 4-digit code even after a restart and putting up with the two required calibrations after to correct the error."
+  }
+ ]
+}

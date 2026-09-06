@@ -1,0 +1,89 @@
+{
+ "id": 1755277088,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2582,
+ "title": "After application startup loop fails with \"Pump not initialized!\" until manual connection to pump initiated",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2582",
+ "state": "closed",
+ "labels": [
+  "question - more info needed"
+ ],
+ "created_at": "2023-06-13T16:29:55Z",
+ "closed_at": "2023-08-04T08:24:22Z",
+ "comment_count": 12,
+ "body": "AndroidAPS `f1118e238d-2023.06.11`\r\n\r\nWhenever AAPS is (re)started, loop is not functional, failing with \"Pump not initialized!\" error, until I go into the pump tab and click on the bluetooth status to initiate a connection. Yes, it may be hours in this state before a manual connection will be made, after which everything works.\r\n\r\nPump is an old Dana R.\r\n\r\nMay or may not be related to https://github.com/nightscout/AndroidAPS/issues/2567",
+ "comments": [
+  {
+   "id": 1589664684,
+   "user": "jbr7rr",
+   "created_at": "2023-06-13T16:39:51Z",
+   "body": "Can you add logs?"
+  },
+  {
+   "id": 1590080920,
+   "user": "viq",
+   "created_at": "2023-06-13T22:01:21Z",
+   "body": "[AndroidAPS._2023-06-13_19-37-53_.5313.txt](https://github.com/nightscout/AndroidAPS/files/11739836/AndroidAPS._2023-06-13_19-37-53_.5313.txt)\r\nThis one is from around the restart time. After restarting I went to loop, tried to run it, it failed, I went to pump, clicked on pump, then loop succeeded.\r\nI'll have in a moment a log where there's more time between restart and connecting to pump."
+  },
+  {
+   "id": 1590093166,
+   "user": "viq",
+   "created_at": "2023-06-13T22:05:32Z",
+   "body": "In this log AAPS was restarted around `23:54`, failed to run loop at `23:55` and `00:00`, and at `00:02` I connected manually to pump, after which loop succeeded.\r\n[AndroidAPS._2023-06-13_23-54-24_.5321.txt](https://github.com/nightscout/AndroidAPS/files/11739862/AndroidAPS._2023-06-13_23-54-24_.5321.txt)\r\n[AndroidAPS._2023-06-13_23-54-24_.5321.zip](https://github.com/nightscout/AndroidAPS/files/11739864/AndroidAPS._2023-06-13_23-54-24_.5321.zip)\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/11739865/AndroidAPS.log)\r\n"
+  },
+  {
+   "id": 1590962392,
+   "user": "MilosKozak",
+   "created_at": "2023-06-14T10:53:59Z",
+   "body": "It's a mess when you try to connect manualy.\r\nRestart AAPS, keep it trying to connect for 15 min, then send log from this time"
+  },
+  {
+   "id": 1591097334,
+   "user": "viq",
+   "created_at": "2023-06-14T12:28:37Z",
+   "body": "New batch of logs. AAPS has been restarted at `13:48`, and manual connection to pump has *not* been establish until moment of log upload at `14:26`\r\n[AndroidAPS._2023-06-14_13-48-19_.2245.zip](https://github.com/nightscout/AndroidAPS/files/11745653/AndroidAPS._2023-06-14_13-48-19_.2245.zip)\r\n[AndroidAPS._2023-06-14_13-48-19_.2246.zip](https://github.com/nightscout/AndroidAPS/files/11745654/AndroidAPS._2023-06-14_13-48-19_.2246.zip)\r\n[AndroidAPS._2023-06-14_13-48-19_.2247.zip](https://github.com/nightscout/AndroidAPS/files/11745655/AndroidAPS._2023-06-14_13-48-19_.2247.zip)\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/11745657/AndroidAPS.log)\r\n"
+  },
+  {
+   "id": 1592327057,
+   "user": "chrisdex",
+   "created_at": "2023-06-15T04:16:59Z",
+   "body": "I'm also having this issue (or similar) for a few weeks now. Running 3.1 Master and the loop just wont run for hours on end. I can't figure out when it stops working or why. \r\nWhen i open AAPS there is often a delay in showing the BG curve when this happens and the Basal is just on running on preprogrammed Profile levels. But not SMBs no Temp Basals.\r\nThis is obviously very aannoying and has repeatedly caused me unexpected hyperglycemias. \r\nWhat should i do ? Re-build the app ? \r\nAAPS has all the bakground permissions and Play Protect is off. S22+, OP_Dash, Libre 3"
+  },
+  {
+   "id": 1599582825,
+   "user": "ex-citer",
+   "created_at": "2023-06-20T21:26:57Z",
+   "body": "I can confirm heavy connection/BLE issues on Android 13 using AAPS 3.0.0.1 + ruffy+ combo and sometimes acceptable BLE issues on Android 13 using AAPS 3.2 dev + combo with integrated pump driver. The connection issues could be acceptable if it happens 2-3 times per week. But in addition I experience that the Pump Alarm sound/notification is not triggered at all. This leads to several hours of unexpected hypos due to the missing alarm. Should I raise another issue for this or use this issue? I can provide logfiles of 30 minutes of operation with a threshold set to 30 mins and no alarm is triggered. Sensor alarms are triggered, this is working well."
+  },
+  {
+   "id": 1663997570,
+   "user": "MilosKozak",
+   "created_at": "2023-08-03T13:35:28Z",
+   "body": "try dev with https://github.com/nightscout/AndroidAPS/commit/1d6a48d01dcd16a5767940f9e04e3003af60e713"
+  },
+  {
+   "id": 1664458497,
+   "user": "viq",
+   "created_at": "2023-08-03T18:41:51Z",
+   "body": "[AndroidAPS._2023-08-03_20-30-26_.400.zip](https://github.com/nightscout/AndroidAPS/files/12254065/AndroidAPS._2023-08-03_20-30-26_.400.zip)\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/12254066/AndroidAPS.log)\r\nDoesn't seem to have helped."
+  },
+  {
+   "id": 1664460140,
+   "user": "viq",
+   "created_at": "2023-08-03T18:43:10Z",
+   "body": "....and just as I said that, after a few cycles of doing nothing, and seeing \"pump not initialized\" message in logs, it seems to have managed to connect and issue SMB without me clicking on the pump connection. I'll observe more and report."
+  },
+  {
+   "id": 1664504809,
+   "user": "viq",
+   "created_at": "2023-08-03T19:19:21Z",
+   "body": "OK, it takes a few minutes, but it does connect to pump and succeeds with dosing changes after an application restart, without me having to manually click on pump connection. Should I close this issue, or is there anything more you want to look at here?"
+  },
+  {
+   "id": 1665212709,
+   "user": "MilosKozak",
+   "created_at": "2023-08-04T08:24:22Z",
+   "body": "primary reason is that pump disconnects unexpectly which is an error state. AAPS can recover from this state now better"
+  }
+ ]
+}

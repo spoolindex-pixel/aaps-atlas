@@ -1,0 +1,123 @@
+{
+ "id": 1154531843,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1395,
+ "title": "SMB bolus cancelled without alerts - OmnipodDash - DynISF specific ",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1395",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-02-28T20:45:17Z",
+ "closed_at": "2023-03-27T16:25:31Z",
+ "comment_count": 18,
+ "body": "Hello,\r\n\r\nVersion 3.0.1 dev branch 27/02/2022, with DynISF.\r\nPump Omnipod Dash\r\nNo timeout or communication problems with the pump\r\nSMB always true\r\n\r\nI noticed that for several hours I had no SMB. AAPS offered to inject some but it never happened.\r\n\r\nSMB works well in master version 3.0.0 or in GitHub.com/tim2000s/AndroidAPS-2\r\n\r\nI notice that the SMB is cancelled in the logs.\r\n\r\nIt could be interesting to have an alert in the interface in case of injection problem. Like during a timeout\r\n\r\n\r\n```\r\n15:30:16.029 Microbolusing 1.3U\r\n15:30:16.575 [RxCachedThreadScheduler-28] D/PUMPQUEUE: [CommandQueueImplementation.add():149]: Adding: CommandSMBBolus - SMB BOLUS 1.30 U\r\n...\r\n15:30:16.580 [Thread-453] D/PUMPQUEUE: [QueueThread.run():113]: connect\r\n15:30:16.581 [Thread-453] D/EVENTS: [RxBus.send():23]: Sending EventPumpStatusChanged[error=,performingAction=,secondsElapsed=0,status=CONNECTING]\r\n15:30:16.582 [Thread-453] I/PUMP: [OmnipodDashPumpPlugin.connect():233]: connect reason=Connection needed\r\n15:30:16.583 [Thread-453] D/EVENTS: [RxBus.send():23]: Sending EventOmnipodDashPumpValuesChanged[]\r\n...\r\n15:30:17.585 [Thread-453] D/PUMPQUEUE: [QueueThread.run():107]: connecting 1\r\n15:30:17.586 [Thread-453] D/EVENTS: [RxBus.send():23]: Sending EventPumpStatusChanged[error=,performingAction=,secondsElapsed=1,status=CONNECTING]\r\n15:30:18.587 [Thread-453] D/PUMPQUEUE: [QueueThread.run():107]: connecting 2\r\n15:30:18.589 [Thread-453] D/EVENTS: [RxBus.send():23]: Sending EventPumpStatusChanged[error=,performingAction=,secondsElapsed=2,status=CONNECTING]\r\n15:31:13.261 [RxCachedThreadScheduler-34] D/PUMP: [OmnipodDashManagerImpl$PodEventInterceptor.accept():667]: Intercepted PodEvent in OmnipodDashManagerImpl: Connected\r\n15:31:13.359 [Thread-453] D/PUMPQUEUE: [QueueThread.run():122]: connection time 56s\r\n15:31:13.364 [Thread-453] D/PUMPQUEUE: [QueueThread.run():128]: performing SMB BOLUS 1.30 U\r\n15:31:13.365 [Thread-453] D/EVENTS: [RxBus.send():23]: Sending EventQueueChanged[]\r\n15:31:13.369 [Thread-453] D/EVENTS: [RxBus.send():23]: Sending EventPumpStatusChanged[error=,performingAction=SMB BOLUS 1.30 U,secondsElapsed=0,status=PERFORMING]\r\n15:31:13.698 [Thread-453] D/PUMPQUEUE: [CommandSMBBolus.execute():26]: Last bolus: 1646049702024 28/02/2022 13:01:42\r\n15:31:13.704 [Thread-453] D/PUMPQUEUE: [CommandSMBBolus.execute():34]: SMB bolus canceled. deliverAt: 28/02/2022 15:29\r\n15:31:13.706 [Thread-453] D/PUMPQUEUE: [CommandSMBBolus.execute():36]: Result success: false enacted: false\r\n```\r\n\r\n[AndroidAPS._2022-02-28_15-42-10_.log](https://github.com/nightscout/AndroidAPS/files/8156567/AndroidAPS._2022-02-28_15-42-10_.log)\r\n\r\n",
+ "comments": [
+  {
+   "id": 1056702557,
+   "user": "antoinekh",
+   "created_at": "2022-03-02T09:45:23Z",
+   "body": "Different version: GitHub.com/tim2000s/AndroidAPS-2\r\n\r\nSame issue.\r\nSMB was working well until then.\r\n\r\nI see it because in the curve the basal went to 0 because of the SMB (which is not injected) then resumed at the maximum\r\n\r\n```\r\n10:31:03.145 [RxCachedThreadScheduler-4] D/APS: [DetermineBasalAdapterSMBJS.invoke():141]: Result: {\"temp\":\"absolute\",\"bg\":187,\"tick\":\"+15\",\"eventualBG\":217,\"targetBG\":100,\"insulinReq\":1.96,\"deliverAt\":\"2022-03-02T09:30:46.063Z\",\"sensitivityRatio\":1,\"predBGs\":{\"IOB\":[187,185,183,180,178,175,172,168,165,161,157,152,148,143,139,135,132,129,126,123,120,118,115,113,111,110,108,107,105,104,103,102,101,100,99,98,98,97,97,96,96,96,95,95,95,94],\"ZT\":[187,178,170,162,154,147,141,134,128,123,117,112,108,103,99,95,92,88,85,83,80,77,75,73,71,69,68,66,65,64,63,62,61,60,59,58,58,57,57,56,56,55,55,55,54,54,54,54],\"COB\":[187,185,184,182,181,180,179,179,178,177,177,177,176,176,176,176,176,176,175,175,175,175,175,174,174,173,173,172,171,170,169,168,167,166,166,165,164,164,163,163,162,162,162,161],\"UAM\":[187,198,207,216,224,232,238,244,249,252,255,258,259,259,259,257,255,251,248,246,243,240,238,236,234,232,231,229,228,227,226,225,224,223,222,221,221,220,220,219,219,218,218,218,217]},\"reason\":\"COB: 37.9, Dev: 123, BGI: -9, ISF: 31, CR: 10.5, Target: 100, minPredBG 160, minGuardBG 185, IOBpredBG 94, COBpredBG 161, UAMpredBG 217; Eventual BG 217 >= 105,  insulinReq 1.96; setting 60m low temp of 0U/h. Microbolusing 0.95U. \",\"COB\":37.85041666666665,\"IOB\":4.228,\"units\":0.95,\"rate\":0,\"duration\":60}\r\n10:31:03.157 [RxCachedThreadScheduler-4] D/APS: [Profiler.log():15]: >>> SMB calculation <<< executed in 17256 milliseconds\r\n10:31:03.159 [RxCachedThreadScheduler-4] D/EVENTS: [RxBus.send():23]: Sending EventOpenAPSUpdateGui[]\r\n...\r\n10:31:50.842 [Thread-382] D/PUMPQUEUE: [CommandSMBBolus.execute():34]: SMB bolus canceled. deliverAt: 02/03/2022 10:30\r\n10:31:50.844 [Thread-382] D/PUMPQUEUE: [CommandSMBBolus.execute():36]: Result success: false enacted: false\r\n```"
+  },
+  {
+   "id": 1056712371,
+   "user": "antoinekh",
+   "created_at": "2022-03-02T09:50:31Z",
+   "body": "[AndroidAPS._2022-03-02_09-49-12_.log](https://github.com/nightscout/AndroidAPS/files/8168504/AndroidAPS._2022-03-02_09-49-12_.log)\r\n"
+  },
+  {
+   "id": 1056736953,
+   "user": "antoinekh",
+   "created_at": "2022-03-02T10:03:45Z",
+   "body": "So it seems to be random. As one SMB was just given with success "
+  },
+  {
+   "id": 1059980209,
+   "user": "antoinekh",
+   "created_at": "2022-03-06T15:11:11Z",
+   "body": "I came back to OpenapsSMB, and the problem seems to have disappeared.\r\n\r\nSo this is related to DynamicISF, maybe a timeout problem because the SMB calculation is longer, close to a minute for my entry level phone.\r\nBut there is no information about the reason of the bolus cancellation in the logs"
+  },
+  {
+   "id": 1060013942,
+   "user": "antoinekh",
+   "created_at": "2022-03-06T18:22:23Z",
+   "body": "Works well in OpenAPS SMB so it is related to DynISF.\r\nMaybe the SMB calculation: 60000 to 100 000ms in DynISF vs 1000ms in OpenAPS SMB"
+  },
+  {
+   "id": 1079670031,
+   "user": "antoinekh",
+   "created_at": "2022-03-26T11:52:44Z",
+   "body": "The problem seems to be the calculation of the TDD, because it is also very long in the statistics page.\r\nMaybe modify the database to calculate the day once it is finished"
+  },
+  {
+   "id": 1123818374,
+   "user": "amatsoukas",
+   "created_at": "2022-05-11T14:09:29Z",
+   "body": "I have the same exact  issue. I tried the DynISF and Boost variants and on both of them i basically have almost no SMBs delivered causing the BG to spike after meals and eventually AAPS to correct only with the help of TBR. My phone is not that old (Galaxy Note9)."
+  },
+  {
+   "id": 1153700083,
+   "user": "antoinekh",
+   "created_at": "2022-06-13T09:39:22Z",
+   "body": "I tried with the last dev, with the cache TDD. Everything is smoother but same issue "
+  },
+  {
+   "id": 1153997579,
+   "user": "antoinekh",
+   "created_at": "2022-06-13T14:30:40Z",
+   "body": "![777C4C8F-B0F5-41A2-986A-F7228D0ECA05](https://user-images.githubusercontent.com/52744345/173377109-501d2090-b717-4dbf-84ea-b28a0fe99fb1.jpeg)\r\n"
+  },
+  {
+   "id": 1154000582,
+   "user": "antoinekh",
+   "created_at": "2022-06-13T14:33:31Z",
+   "body": "Link to log file\r\nhttps://www.icloud.com/iclouddrive/0fec20hV3Bm-QYWyZNGT8Yhvg#AndroidAPS._2022-06-13_07-30-17_"
+  },
+  {
+   "id": 1154013321,
+   "user": "MilosKozak",
+   "created_at": "2022-06-13T14:43:37Z",
+   "body": "it's because of min distance between boluses"
+  },
+  {
+   "id": 1154018707,
+   "user": "antoinekh",
+   "created_at": "2022-06-13T14:48:12Z",
+   "body": "I don’t think so as no blouses where enacted for more than an hour.\r\n\r\nThey were suggested in the script (and not limited by the minimum duration between two injections) but no injections.\r\nThey are cancelled without information"
+  },
+  {
+   "id": 1154021879,
+   "user": "MilosKozak",
+   "created_at": "2022-06-13T14:51:08Z",
+   "body": "sorry right, canceled because the execution (start of delivery) took longer than 3 min"
+  },
+  {
+   "id": 1154034798,
+   "user": "antoinekh",
+   "created_at": "2022-06-13T15:01:18Z",
+   "body": "Any ideas to found what is the root cause of this delay? "
+  },
+  {
+   "id": 1154178597,
+   "user": "MilosKozak",
+   "created_at": "2022-06-13T17:15:42Z",
+   "body": "first example in this issue is combination of:\r\n* run just after app start when phone is still very busy\r\n* 1 min to connect to pump\r\n"
+  },
+  {
+   "id": 1154181257,
+   "user": "MilosKozak",
+   "created_at": "2022-06-13T17:18:27Z",
+   "body": "i checked the code again and the limit is 1 min only"
+  },
+  {
+   "id": 1154187436,
+   "user": "antoinekh",
+   "created_at": "2022-06-13T17:25:01Z",
+   "body": "Ok, thanks for the explanation 👍🏻.\r\nIt may be a problem between my cheap phone and the pump. It must take less than a minute to connect."
+  },
+  {
+   "id": 1157769336,
+   "user": "antoinekh",
+   "created_at": "2022-06-16T15:06:53Z",
+   "body": "What is strange it’s I have a little bit this issue also on non dynISF version on the dev but not on the master."
+  }
+ ]
+}

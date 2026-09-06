@@ -1,0 +1,41 @@
+{
+ "id": 2739773278,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3617,
+ "title": "Bluetooth connection issues AAPS 3.2.0.4 and Accu-Chek Insight pump and with Dexcom G7 CGM (Samsung A54B with Android 14)",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3617",
+ "state": "closed",
+ "labels": [
+  "insight"
+ ],
+ "created_at": "2024-12-14T10:52:38Z",
+ "closed_at": "2025-04-09T19:50:22Z",
+ "comment_count": 4,
+ "body": "Context:\r\n* Phone: Samsung A54B with Android 14 \r\n* APS: AAPS 3.2.0.4 Master \r\n\r\n> * Build: 3df83535f9-2024.12.13\r\n> * Remote: https://github.com/nightscout/AndroidAPS.git\r\n> * Flavor: fullrelease\r\n> * Nightscout versie: 15.0.2\r\n> * Engineering modus is activated\r\n\r\n* CGM: Dexcom G7 via Official Dexcom G7 app. Xdrip as Companion app [2024.11.26](https://github.com/NightscoutFoundation/xDrip/releases/tag/2024.11.26))\r\n* Pump: Accu-Chek Insight pump\r\n\r\nI'm having a lot of(bluetooth) connection issues between both APS-Insight Pump and the Samsung Phone and Dexcom G7 CGM.\r\nI seems to be more severe with Android 14, and especially since the \"Samsung 1 November 2024 security upgrade\"\r\n(OneUI 6.1, Android version 14,  A546BXXUBCXK1 / A546BOXMBCXK3 / A546BXXUBCXK3).\r\n\r\n\r\n\r\n# Example\r\nI added an Automation to set a Nightscout notification if there has not been 16 minutes or more no contact with the pump.\r\nThat yields this example where the phone was approx 1 meter from PWD. After a microbolus of 0.19 at 09:02 it reported no connection at 09:20 and it the connection was restored at 09:42 with a 0.5 SMB.\r\n\r\n![image](https://github.com/user-attachments/assets/7497b1c4-1857-49f0-b40a-ea5c7d925683)\r\n\r\nIf others experience similar issues please add info on phone/cgm/pump and android (14) version you are experiencing this.\r\n\r\nI managed to get it better. I think using the Samsung Apps in Android 14 likeGood Guardians and Galaxy app booster seems to have made it occur less, see https://dontkillmyapp.com/samsung \r\n\r\n**I will investigate logs further and see if I can get more details.**\r\n",
+ "comments": [
+  {
+   "id": 2545693020,
+   "user": "MilosKozak",
+   "created_at": "2024-12-16T13:54:01Z",
+   "body": "provide logfiles"
+  },
+  {
+   "id": 2579657112,
+   "user": "alfureu",
+   "created_at": "2025-01-09T10:03:56Z",
+   "body": "Pixel 7 with [GrapheneOS build 2025010700](https://grapheneos.org/releases#2025010700) (updated today), I lost connection to Insight with AAPS 3.3.1.0. Some logs below, if it helps...\r\n\r\n```\r\n01-09 09:55:50.856 16312 16312 D CORE    : [main]: [MainApp.onCreate():92]: onCreate\r\n01-09 09:55:50.861 16312 16312 I Choreographer: Skipped 99 frames!  The application may be doing too much work on its main thread.\r\n01-09 09:55:50.873 16312 16328 D CORE    : [DefaultDispatcher-worker-1]: [MainApp$onCreate$1.invokeSuspend():108]: Version: 3.3.1.0\r\n01-09 09:55:50.875 16312 16328 D CORE    : [DefaultDispatcher-worker-1]: [MainApp$onCreate$1.invokeSuspend():109]: BuildVersion: 2ac634c908-2025.01.07\r\n01-09 09:55:50.876 16312 16328 D CORE    : [DefaultDispatcher-worker-1]: [MainApp$onCreate$1.invokeSuspend():110]: Remote: https://github.com/nightscout/AndroidAPS\r\n01-09 09:55:50.881 16312 16312 D CORE    : [main]: [DummyService.onCreate():42]: Starting DummyService with ID 4711 notification Notification(channel=AndroidAPS-Ongoing shortcut=null contentView=null vibrate=null sound=null defaults=0 flags=ONGOING_EVENT|ONLY_ALERT_ONCE color=0x00000000 category=status vis=PRIVATE)\r\n01-09 09:55:50.883 16312 16328 D CONFIGBUILDER: [DefaultDispatcher-worker-1]: [ConfigBuilderPlugin.loadSettings():109]: Loading stored settings\r\n01-09 09:55:50.885 16312 16328 D CORE    : [DefaultDispatcher-worker-1]: [PluginBase.setPluginEnabled():81]: Starting: Ongoing Notification\r\n01-09 09:55:50.890 16312 16328 D CONFIGBUILDER: [DefaultDispatcher-worker-1]: [ConfigBuilderPlugin.loadPref():123]: Loaded: ConfigBuilder_GENERAL_PersistentNotificationPlugin_Enabled:true\r\n01-09 09:55:50.891 16312 16328 D CONFIGBUILDER: [DefaultDispatcher-worker-1]: [ConfigBuilderPlugin.loadPref():129]: Loaded: ConfigBuilder_GENERAL_PersistentNotificationPlugin_Visible:false\r\n01-09 09:55:50.893 16312 16328 D CORE    : [DefaultDispatcher-worker-1]: [PluginBase.setPluginEnabled():81]: Starting: Overview\r\n01-09 09:55:50.900 16312 163"
+  },
+  {
+   "id": 2708851606,
+   "user": "Philoul",
+   "created_at": "2025-03-09T13:16:15Z",
+   "body": "@PieterGit Do you still have a lot of connection issue with your Insight pump?\nI'm not sure if I correctly understood your comment talking about Insight pump and Dexcom G7 🤔\nIf you lost connection with both devices (pump and CGM sensor), you should probably look within android config...\nI don't see anything relevant with copy of logfile content (log should be copied immediatly and PUMP should be enabled in Maintenance > Log Settings to record information).\nIf now issue is fixed (with Android update /tuning ...) can you please close this issue, or give more information?"
+  },
+  {
+   "id": 2790834926,
+   "user": "PieterGit",
+   "created_at": "2025-04-09T19:50:22Z",
+   "body": "Sorry, for not responding. The problems were with the APS-pump (Insight) connection. \nThe issue has been resolved with one of the optimazations of the phone such as \nGood Guardians or Galaxy app booster. See more tips at https://dontkillmyapp.com/samsung\nI cannot reproduce it anymore and I am affraid the PUMP log setting was not enabled :(\nClosing this issue because it's not reproducable anymore and no log exists.\nIf others have solver problems with APS-Pump communication and have more info, please reopen or add a new issue and perhaps link this issue."
+  }
+ ]
+}

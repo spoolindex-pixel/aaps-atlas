@@ -1,0 +1,23 @@
+{
+ "id": 1261107009,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1810,
+ "title": "[Safety] SMB interval is ignored when SMB is counted as meal bolus due to errors",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1810",
+ "state": "closed",
+ "labels": [
+  "medtronic"
+ ],
+ "created_at": "2022-06-05T16:58:48Z",
+ "closed_at": "2022-12-05T00:22:58Z",
+ "comment_count": 1,
+ "body": "AndroidAPS: **3.0.0.2-dev-j**\r\nThe pump: **Medtronic 715**\r\nThe precise time the problem occurred: **2022-06-04 03:20-04:10**\r\n\r\nThe problem's description: **SMB interval is ignored when SMB is counted as meal bolus due to errors.**\r\n**[AndroidAPS._2022-06-04_00-00-00_.1.zip](https://github.com/nightscout/AndroidAPS/files/8840347/AndroidAPS._2022-06-04_00-00-00_.1.zip)**\r\n\r\nI discovered that in addition to SMBs there were SEVERAL meal boluses at night.\r\nHence AndroidAPS ignored SMB interval and gave insulin every 2-3 minutes. But in my case I have 9 mins SMB interval!\r\n\r\nGood SMB has:\r\n```03:26:40.193 [Thread-6297] D/PUMPQUEUE: [CommandSMBBolus.execute():36]: Result success: true enacted: true```\r\nBad SMB has:\r\n```03:23:51.471 [Thread-6252] D/PUMPQUEUE: [CommandSMBBolus.execute():36]: Result success: false enacted: false```\r\n\r\nBUT! Due to the connection problems these \"bad\" SMBs were marked as a \"meal bolus\" not as SMB. Though aaps counted the given insulin.\r\n\r\nAs you can see - there are no any manual boluses at night 03:20-04:10 but the most of SMBs are counted as \"meal boluses\":\r\n\r\n<div float=\"left\">\r\n<img src=\"https://user-images.githubusercontent.com/5793551/172060600-a4dbe73c-5da0-47e8-833e-378ae5df270c.png\" width=\"250\">\r\n<img src=\"https://user-images.githubusercontent.com/5793551/172060123-7607e72c-e95b-4b1d-9530-97bb63a0434e.png\"  width=\"250\">\r\n<img src=\"https://user-images.githubusercontent.com/5793551/172060694-56588dce-ba57-478c-88a6-49ad1dd0bcba.png\"  width=\"250\">\r\n</div>\r\n\r\nOne possible solution (offered by lucasvr at Discord):\r\n<img src=\"https://user-images.githubusercontent.com/5793551/172061154-1542a653-8f63-42b8-a5d2-743f09959df2.png\">\r\n\r\nI think this idea about max(3min, smb_interval) is great! It would be a really quick and easy fix that would work very well. Though the reason of the problem will not be resolved but the fix will add extra safety for sure.\r\n\r\nOne more thought from Discord:\r\n<img width=\"863\" alt=\"image\" src=\"https://user-images.githubusercontent.com/5793551/172061371-9a77638f-3fc2-4140-9a09-f1c85c9d0209.png\">\r\n\r\nI can confirm that there were connection problem for about 1 hour before the first SMB (you can see it in the log-file).",
+ "comments": [
+  {
+   "id": 1146853054,
+   "user": "ArthurusDent",
+   "created_at": "2022-06-05T17:29:02Z",
+   "body": "Just wanted to mention that those two issues might be connected: https://github.com/nightscout/AndroidAPS/issues/830#issuecomment-1087982826\r\n"
+  }
+ ]
+}

@@ -1,0 +1,47 @@
+{
+ "id": 4048320319,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4594,
+ "title": "Safety issue! Medtrum Nano pump (on-body) was reported falling back to priming stage after activation failed.",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4594",
+ "state": "closed",
+ "labels": [
+  "bug"
+ ],
+ "created_at": "2026-03-09T22:48:02Z",
+ "closed_at": "2026-03-31T13:40:11Z",
+ "comment_count": 5,
+ "body": "Medtrum Nano **Safety problem?**\n\nAt least 2 users reported on Discord a situation where the Medtrum nano, while already on body with needle pressed, fell back to priming stage. As a result user was administered full priming insulin (which could be up-to 10 Units of insulin).\n\nAs it should not be possible to happen and can create life‑threatening situations Ik think this needs further investigation.\n\n**Suggestions to test:**\n\nA) _Using a nano Pod not on-body (or without inserting the needle)_\n1. During Medtrum activation, make it fail\n2. Then press \"Cancel\" instead of Retry?\n3. Press Next\nDoes this maybe retrigger priming phase (while obviously, pump is then already onbody with needle inserted)?\n",
+ "comments": [
+  {
+   "id": 4060201908,
+   "user": "jbr7rr",
+   "created_at": "2026-03-14T10:03:49Z",
+   "body": "Which AAPS version was used? \n\nMissing a lot of information here"
+  },
+  {
+   "id": 4155405208,
+   "user": "peppek092-bot",
+   "created_at": "2026-03-30T14:16:17Z",
+   "body": "Discord user here that reported the issue. \n\nWhen:\n08 March 2026  (around 6 - 6:30 , pump time)\n\n[AndroidAPS._2026-03-08_00-00-07_.1.txt](https://github.com/user-attachments/files/26352364/AndroidAPS._2026-03-08_00-00-07_.1.txt)\n\n## What happened\n- Normal activation: priming completed → patch attached → needle inserted  \n- During final step, received an error (“activation failed”, exact wording unclear)  \n- After pressing retry/back, the pump started priming again  \n- This occurred while the patch was already inserted in the body  \n\n## Outcome\n- ~40 minutes later: glucose dropped from 180 → 20 mg/dL  \n- AndroidAPS showed 0 IOB  \n- Severe hypoglycemia symptoms (cold, sweating, unresponsive)  \n- Treated with dextrose (glucagon not needed)  \n- Estimated unintended insulin delivery: ~5–10 U  \n\n## Expected\n- No priming allowed when patch is already on-body  \n- Or a clear instruction to discard the patch after activation failure  \n\n## Actual\n- System allowed re-priming without warning  \n- No clear safety message shown  \n\n## Device info\n- Phone: Poco X3 NFC (Android 12, MIUI 14.0.5)  \n- Pump: MD8201  \n- Firmware: 1.80.83  \n- AAPS version: 3.3.1.0  \n\n## Notes\n- Another user reported similar behavior  \n- Logs attached  \n\n## Suggestion\n- Block re-priming if the patch is already inserted  \n- Add a critical warning after activation failure  \n- Prevent reuse or restart of patch activation  "
+  },
+  {
+   "id": 4156092784,
+   "user": "MilosKozak",
+   "created_at": "2026-03-30T15:49:07Z",
+   "body": "## Log Analysis — Root Cause Identified\n\nI analyzed the attached log file (`AndroidAPS._2026-03-08_00-00-07_.1.txt`) and can confirm the re-priming happened. Here's the exact sequence:\n\n### Timeline\n\n| Time | Event |\n|------|-------|\n| 06:16:50 | **1st priming starts** (normal) |\n| 06:19:22 | Priming complete → EJECTED. UI moves to ATTACH_PATCH |\n| 06:20:24 | **BLE disconnects** while user is attaching patch |\n| 06:20:28 | BLE reconnects — `SynchronizePacket` reports pump state as **FILLED** (not EJECTED) |\n| 06:20:28 | SetupStep regresses: PRIMED → **FILLED** |\n| 06:20:55 | User tries to activate — **fails** (pump is FILLED, not PRIMED) |\n| 06:21:04–06:22:26 | **6 more activation retries, all fail** |\n| 06:22:30 | User cancels |\n| 06:22:37 | User enters **RETRY_ACTIVATION_CONNECT** flow |\n| 06:22:40 | Reconnects — pump still reports **FILLED** |\n| 06:22:42 | `MedtrumRetryActivationConnectFragment` sees FILLED → **`forceMoveStep(PatchStep.PRIME)`** |\n| 06:22:43 | **2nd priming starts — patch is already on body with needle inserted** |\n| 06:25:04 | 2nd priming completes (~2.5 min of insulin delivery into body) |\n| 06:25:29 | Activation finally succeeds |\n\n### Root Cause — Two issues combined\n\n**1. BLE disconnect during ATTACH_PATCH causes state regression**\n\nWhen BLE disconnected at 06:20:24 and reconnected at 06:20:28, the `SynchronizePacket` reported the pump state as `FILLED` instead of `EJECTED`/`PRIMED`. This caused the internal `SetupStep` to regress from `PRIMED` back to `FILLED`, making all subsequent activation attempts fail.\n\n**2. Retry flow navigates to PRIME when it sees FILLED state**\n\nIn [`MedtrumRetryActivationConnectFragment.kt` line 39](https://github.com/nightscout/AndroidAPS/blob/master/pump/medtrum/src/main/kotlin/app/aaps/pump/medtrum/ui/MedtrumRetryActivationConnectFragment.kt#L39):\n```kotlin\nMedtrumViewModel.SetupStep.FILLED -> forceMoveStep(PatchStep.PRIME)\n```\n\nWhen the retry-activation flow sees `SetupStep.FILLED`, it assumes the patch was n"
+  },
+  {
+   "id": 4158777099,
+   "user": "vanelsberg",
+   "created_at": "2026-03-30T23:25:30Z",
+   "body": "> ## Log Analysis — Root Cause Identified\n\nThanks Milos. Great Analysis and suggested fix!"
+  },
+  {
+   "id": 4162729070,
+   "user": "MilosKozak",
+   "created_at": "2026-03-31T13:40:11Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/66baca4dc1772deb4661d1f8861d5b98fcf4934f"
+  }
+ ]
+}

@@ -1,0 +1,39 @@
+{
+ "id": 2790342694,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3745,
+ "title": "GarmingPlugin local server at /sgv.json endpoint returns constant tbr:0",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3745",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-01-15T16:50:27Z",
+ "closed_at": "2025-01-27T08:02:40Z",
+ "comment_count": 4,
+ "body": "Just like in the title, tested on Android Pixel+Spirit Combo and emulator+virtual pump, latest version of AAPS 3.3.1.0\r\n\r\nWhatever the temp basal actually is, the endpoint will always return `0`.\r\n\r\n**Current behavior, given basal rate 90:**\r\n```jsonc\r\nGET http://127.0.0.1:28891/sgv.json?brief_mode=true&count=1\r\n[\r\n  {\r\n    \"tbr\": 0\r\n    // other fields irrelevant\r\n  }\r\n]\r\n```\r\n\r\n**Expected behavior, given basal rate 90:**\r\n```jsonc\r\nGET http://127.0.0.1:28891/sgv.json?brief_mode=true&count=1\r\n[\r\n  {\r\n    \"tbr\": 90\r\n    // other fields irrelevant\r\n  }\r\n]\r\n```\r\n\r\nSimple POC fix I did is just a copy & paste from XDrip plugin like so:\r\n```diff\r\n--- a/plugins/sync/src/main/kotlin/app/aaps/plugins/sync/garmin/LoopHubImpl.kt\r\n+++ b/plugins/sync/src/main/kotlin/app/aaps/plugins/sync/garmin/LoopHubImpl.kt\r\n@@ -89,8 +91,8 @@ class LoopHubImpl @Inject constructor(\r\n     /** Returns the factor by which the basal rate is currently raised (> 1) or lowered (< 1). */\r\n     override val temporaryBasal: Double\r\n         get() {\r\n-            val apsResult = loop.lastRun?.constraintsProcessed\r\n-            return if (apsResult == null) Double.NaN else apsResult.percent / 100.0\r\n+            val tbr = processedTbrEbData.getTempBasalIncludingConvertedExtended(System.currentTimeMillis())?.rate\r\n+            return if (tbr == null) Double.NaN else tbr / 100.0\r\n         }\r\n\r\n     override val lowGlucoseMark get() = profileUtil.convertToMgdl(\r\n```\r\nUnit tests didn't catch that because they are mocked at higher level.\r\n\r\nShould I create PR? Please advise, have a nice day 🙂",
+ "comments": [
+  {
+   "id": 2601023585,
+   "user": "MilosKozak",
+   "created_at": "2025-01-19T21:12:29Z",
+   "body": "@swissalpine "
+  },
+  {
+   "id": 2613213284,
+   "user": "swissalpine",
+   "created_at": "2025-01-24T19:12:46Z",
+   "body": "I can't reproduce this problem, as I have already changed it for myself privately. \nThe reason was not that the function did not work, but rather the occasional deviation from the real values.\nBecause here @buessow used the result of the algorithm, not what actually arrives at the pump. For example, despite disconnecting the pump, the calculated TBR is output, e.g. 280%, although running a zero temp is running.\nI have therefore set the overview data as a string for myself.\nI can live with the fix, but I don't know what @buessow thinks, who, as far as I know, also uses this data."
+  },
+  {
+   "id": 2614297926,
+   "user": "buessow",
+   "created_at": "2025-01-26T09:37:38Z",
+   "body": "Thanks for adding me @swissalpine and proposing a fix @suside. I don't really understand why my implementation doesn't work (anymore?) but anyway, it would be great if you'd fix it!"
+  },
+  {
+   "id": 2614307708,
+   "user": "suside",
+   "created_at": "2025-01-26T10:04:29Z",
+   "body": "Thanks for the feedback guys, PR on the way."
+  }
+ ]
+}

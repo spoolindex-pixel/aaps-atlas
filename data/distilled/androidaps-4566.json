@@ -1,0 +1,20 @@
+{
+ "issue_id": 4566,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/4566",
+ "title": "Feature Request: Ability to backfill to Nightscout",
+ "symptom": "If Nightscout upload fails for any reason, it would help to be able to upload past data to fill gaps. The user switched Nightscout sites for an experiment and when switching back, had a gap of about 40 minutes. Full synchronization does not fill it.",
+ "cause": "AAPS has the first Nightscout server '_id' already populated in its database for data that was successfully created in Nightscout. Data with a Nightscout '_id' are not synced again, so when switching to another Nightscout instance, the data is not uploaded.",
+ "fix": "No definitive fix is provided. MilosKozak states that with NSCv3 Fullsync uploads all data stored in AAPS database, and that AAPS tracks db changes and stores last successful timestamp, so enabling upload continues from there. However, tests by Navid200 and psonnera showed full sync did not fill the gap. psonnera suggests deleting the '_id' in AAPS might help but could generate duplicates. No concrete resolution is given.",
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [
+  "NSCv3",
+  "fullsync",
+  "full synchronization",
+  "backfill"
+ ],
+ "confidence": "low",
+ "evidence_quote": "For AAPS, data with a Nightscout \"_id\" don't need to be sync'd with Nightscout since they should be already present. And this is why it fails to upload to another Nightscout instance."
+}

@@ -1,0 +1,27 @@
+{
+ "id": 1892240898,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2770,
+ "title": "AAPSclient could read IOB, COB, activity from devicestatus.json instead of calculating",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2770",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-09-12T10:44:32Z",
+ "closed_at": "2023-09-12T16:31:11Z",
+ "comment_count": 2,
+ "body": "AAPS (master) calculates IOB, COB, activity and uploads it to devicestatus.json in NS. AAPSclient could read and display this data, instead of doing the calculation on its own.\r\n\r\nIf not every treatment gets synced, AAPSclient displays incorrect values, which can lead wrong decisions. See \"missing insulin\" here - follower could think, there was a missed bolus:\r\nhttps://github.com/nightscout/AndroidAPS/issues/2748#issuecomment-1713246889\r\n\r\nThe benefits would be:\r\n- higher consistency\r\n- less mistakes\r\n- less workload for the AAPSclient device\r\n- (ideally AAPSclient should not calculate anything, to ensure 100% consistency with master)\r\n\r\n![Unbenannt](https://github.com/nightscout/AndroidAPS/assets/64865503/3cca98ce-7cd9-4e1d-975c-6db03c45952c)\r\n",
+ "comments": [
+  {
+   "id": 1716055303,
+   "user": "MilosKozak",
+   "created_at": "2023-09-12T16:30:53Z",
+   "body": "This is not how aapsclient works. It internally replays data on virtual pump.\n\nEvery solution has it's pros and cons. Depending on device status would mean absolutely no data without connection or not up to date device status.\n\nSolution is to find the reason for missing data. Not changing this behavior."
+  },
+  {
+   "id": 1717038695,
+   "user": "szantos",
+   "created_at": "2023-09-13T06:43:34Z",
+   "body": "@MilosKozak \r\nAs long as the client calculates something on its own, it can happen, that it produces another result than the master - implications are obvious. (If the cause is a missed treatment, which got not synced, or something else is indifferent - the missed treatment was only an example.)\r\n\r\nBigger problem is, that the client does not even know, that it displays an inconsistent situation.\r\n\r\nProposal:\r\n- taking the results from master\r\n- if these are not available, or too old, fallback to current method and at least display a warn signal\r\n(similar to SGV: if too old, it gets crossed out)"
+  }
+ ]
+}

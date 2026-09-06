@@ -1,0 +1,27 @@
+{
+ "id": 4058789230,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4601,
+ "title": "Tidepool stopped uploading on latest 3.4.0/1 dev versions",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4601",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2026-03-11T15:04:12Z",
+ "closed_at": "2026-03-30T16:38:16Z",
+ "comment_count": 2,
+ "body": "**AndroidAPS 3.4.1.0-dev**: Latest dev builds\n**Flavor**: fullrelease\n\n**Problem**:\nSince latest 3.4.0/1 dev versions, Tidepool stopt uploading.\n\n**Observation:**\nI can reestablish uploading by logging off and then login again, followed by \"upload now\" or \"Full Sync\"\n\nIn the logfiles I find:\n\n      15:54:35.406 [RxCachedThreadScheduler-20] D/TIDEPOOL: [TidepoolPlugin.doUpload():152]: doUpload from=EventTidepoolDoUpload isAllowed=true status=SESSION_ESTABLISHED\n      15:54:35.408 [RxCachedThreadScheduler-20] E/CORE: [TidepoolUploader.doUpload():226]: Session is null, cannot proceed _\n\n<img width=\"1465\" height=\"293\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/c2f37dab-fbfe-4e20-9ca5-26a941687d4f\" />\n\nLooks like session is not persisted/recreated on AAPS (re)starts?\n\n**logcat**:\n<img width=\"1589\" height=\"412\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/7fc46ac7-5591-4af9-9fa7-dec73f31c592\" />\n\n**Logfiles:**\n\n[AndroidAPS.log](https://github.com/user-attachments/files/25911966/AndroidAPS.log)\n[AndroidAPS_LOG_1773244646221.log.zip](https://github.com/user-attachments/files/25911973/AndroidAPS_LOG_1773244646221.log.zip)\n",
+ "comments": [
+  {
+   "id": 4132748704,
+   "user": "jimk9",
+   "created_at": "2026-03-26T08:46:36Z",
+   "body": "3.4.1.0, same issue. Logging out and then back in resolved the issue for a few days but then it stopped again. I upgraded from 3.3.2.1. prior to upgrade no issues."
+  },
+  {
+   "id": 4156470992,
+   "user": "MilosKozak",
+   "created_at": "2026-03-30T16:38:16Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/4d7af889a4f01ed18f9e630f2b53bf195ee3a5a7"
+  }
+ ]
+}

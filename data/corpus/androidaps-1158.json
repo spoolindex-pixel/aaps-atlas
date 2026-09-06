@@ -1,0 +1,45 @@
+{
+ "id": 1100050337,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1158,
+ "title": "[3.0 RC1] VersionChecker - logs on the first day that the new RC1 version is expired",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1158",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-01-12T08:50:38Z",
+ "closed_at": "2022-01-14T12:16:37Z",
+ "comment_count": 5,
+ "body": "Yesterday I have installed the 3.0 RC1 and in the evening I got a notification:\r\n\r\nNotification received: Neue Version seit mindestens 1 Tagen verfügbar! Rückfall zur sensorunterstützten Pumpentherapie nach 7 Tagen, Loop wird nach 14 Tagen deaktiviert.\r\n\r\nLooks like some bug in the version checker handing:  3.0 RC1 was published yesterday and the notification says it is already expired and some newer version is available since at least one day (but 3.0 RC1 is the newest one).\r\n\r\nIn log I have found:\r\n21:04:03.542 [RxCachedThreadScheduler-9] D/NOTIFICATION: [NotificationStore.add():60]: Notification received: Neue Version seit mindestens 1 Tagen verfügbar! Rückfall zur sensorunterstützten Pumpentherapie nach 7 Tagen, Loop wird nach 14 Tagen deaktiviert.\r\n21:04:03.546 [RxCachedThreadScheduler-19] D/APS: [APSResult.isChangeRequested():310]: DEFAULT: Closed mode\r\n21:04:03.551 [RxCachedThreadScheduler-19] D/APS: [APSResult.isChangeRequested():310]: DEFAULT: Closed mode\r\n...\r\n21:04:03.590 [Thread-2564] D/CORE: [VersionCheckerUtils.onOlderVersionDetected():113]: Version newer than master. Are you developer?\r\n21:04:03.616 [Thread-2563] D/CORE: [VersionCheckerUtils.onOlderVersionDetected():113]: Version newer than master. Are you developer?\r\n21:04:03.630 [Thread-2564] D/CORE: [VersionCheckerUtils.onExpiredVersionDetected():142]: Version 3.0-rc1 expired.\r\n21:04:03.630 [Thread-2563] D/CORE: [VersionCheckerUtils.onExpiredVersionDetected():142]: Version 3.0-rc1 expired.\r\n21:04:03.632 [RxCachedThreadScheduler-9] D/NOTIFICATION: [NotificationStore.add():60]: Notification received: Version 3.0-rc1 läuft am 31.01.22 ab\r\n\r\n",
+ "comments": [
+  {
+   "id": 1011331222,
+   "user": "mxsrm",
+   "created_at": "2022-01-12T18:25:03Z",
+   "body": "Can confirm this bug is still existing, even after the `versions` branch was updated."
+  },
+  {
+   "id": 1012233301,
+   "user": "winni67",
+   "created_at": "2022-01-13T15:18:20Z",
+   "body": "I can confirm this behavior."
+  },
+  {
+   "id": 1013069563,
+   "user": "MilosKozak",
+   "created_at": "2022-01-14T12:16:36Z",
+   "body": "it looks like this behavior is correct. RC really expires"
+  },
+  {
+   "id": 1013072525,
+   "user": "filipwoz",
+   "created_at": "2022-01-14T12:21:24Z",
+   "body": "@MilosKozak: but as far as I understand it expires on 31.01.22 and the error message says:\r\n**\"Neue Version seit mindestens 1 Tagen verfügbar!\"**\r\nBehavior might be correct but the message was confusing also for other uses in the de.loopercommunity.org, as it suggests that a newer version than the RC1 already exists."
+  },
+  {
+   "id": 1013121978,
+   "user": "mxsrm",
+   "created_at": "2022-01-14T13:34:11Z",
+   "body": "Yes but rc1 is telling us there is a new version available for at least 1 day and it will fallback to LGS in 7 days. "
+  }
+ ]
+}

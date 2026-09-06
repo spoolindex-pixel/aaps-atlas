@@ -1,0 +1,19 @@
+{
+ "issue_id": 3226,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/3226",
+ "title": "[DEV] Error \"Profile sensitivity value\" is out of hard limits when enabling \"Dynamic sensitivity\"",
+ "symptom": "When enabling \"Dynamic sensitivity\" in SMB plugin after running with it disabled, an error \"Profile sensitivity value is out of hard limits\" appears on the next loop run. The error disappears after the next BG arrival. The issue is reproducible.",
+ "cause": "The error message is misleading and seems related to variable_sens as used in DynamicISF. If not yet calculated, variable_sens may get assigned 0.0 or 1.0 which triggers the message.",
+ "fix": "Fixed in commit 80fd9e4d8be5f72858954b491675bc92f14a07e7.",
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [
+  "dynamic sensitivity",
+  "smb",
+  "dynamicisf"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "However, my impression was that the message text is very misleading because it seems related to variable_sens as used in DynamicISF and has nothing to do with the pump profile sensitivity. If not yet calculated then variabale_sens may get assigned 0.0 or 1.0 which triggers the message."
+}

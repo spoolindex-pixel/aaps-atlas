@@ -1,0 +1,123 @@
+{
+ "id": 1113632568,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1221,
+ "title": "Nightscout crashes with AndroidAPS 3.0 RC3 ",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1221",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-01-25T09:23:05Z",
+ "closed_at": "2022-01-28T12:43:56Z",
+ "comment_count": 18,
+ "body": "We are using the version 3.0 RC3 (exact built Build: 617cdd681-2022.01.17-15:57) with Nightscout version: 14.2.5 and DanaRS. Whenever we are trying to make a profile change through NS Client, Nightscout Crashes and needs a Dyno restart in order to get started again. I am attaching the log files from AndroidAPS, NSClient and Nightscout as a screenshot with the error message we are getting in NS Client. There was no problem with the 2.8.2.1 version\r\n[AndroidAPS-nsclient.log](https://github.com/nightscout/AndroidAPS/files/7932202/AndroidAPS-nsclient.log)\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/7932204/AndroidAPS.log)\r\n[Heroku-logs-1643097339580.txt](https://github.com/nightscout/AndroidAPS/files/7932225/Heroku-logs-1643097339580.txt)\r\n![271817632_625149865436200_6672997397797207742_n](https://user-images.githubusercontent.com/42769910/150948795-0b32a737-4981-479c-90c8-45b42c90327d.jpeg)\r\n\r\n",
+ "comments": [
+  {
+   "id": 1021039992,
+   "user": "MilosKozak",
+   "created_at": "2022-01-25T10:32:00Z",
+   "body": "what do you see in NS heroku log?"
+  },
+  {
+   "id": 1021361161,
+   "user": "vagtil2005",
+   "created_at": "2022-01-25T16:20:12Z",
+   "body": "I have uploaded the file. I am not sure if this is the correct timing though. So when I see the same problem again I will export the log files to see them in more detail. "
+  },
+  {
+   "id": 1021407246,
+   "user": "MilosKozak",
+   "created_at": "2022-01-25T17:00:58Z",
+   "body": "you have to drag&drop the file here"
+  },
+  {
+   "id": 1021408144,
+   "user": "vagtil2005",
+   "created_at": "2022-01-25T17:01:48Z",
+   "body": "[Heroku-logs-1643097339580.txt](https://github.com/nightscout/AndroidAPS/files/7935618/Heroku-logs-1643097339580.txt)\r\n"
+  },
+  {
+   "id": 1022431213,
+   "user": "MilosKozak",
+   "created_at": "2022-01-26T17:35:53Z",
+   "body": "no crash in this part of log"
+  },
+  {
+   "id": 1022455615,
+   "user": "vagtil2005",
+   "created_at": "2022-01-26T18:05:21Z",
+   "body": "sorry about but I am not aware to extract the whole log file. can anyone give me some instructions? "
+  },
+  {
+   "id": 1022480302,
+   "user": "MilosKozak",
+   "created_at": "2022-01-26T18:35:01Z",
+   "body": "i'm afraid they are not stored. you must copy text when this happen"
+  },
+  {
+   "id": 1022481383,
+   "user": "vagtil2005",
+   "created_at": "2022-01-26T18:36:20Z",
+   "body": "[heroku-logs-1643222036334.txt](https://github.com/nightscout/AndroidAPS/files/7944295/heroku-logs-1643222036334.txt)\r\n\r\nI think that this is the correct one. happened right now"
+  },
+  {
+   "id": 1022484254,
+   "user": "vagtil2005",
+   "created_at": "2022-01-26T18:40:12Z",
+   "body": "[heroku-logs-1643222338526.txt](https://github.com/nightscout/AndroidAPS/files/7944326/heroku-logs-1643222338526.txt)\r\n\r\nanother one with the errors"
+  },
+  {
+   "id": 1022485908,
+   "user": "vagtil2005",
+   "created_at": "2022-01-26T18:42:30Z",
+   "body": "and the assorted screensho\r\n![viber_image_2022-01-26_20-36-53-724](https://user-images.githubusercontent.com/42769910/151226315-f96d6e38-ffe5-41e8-9c89-9abdcf6dffef.jpg)\r\nt"
+  },
+  {
+   "id": 1022509427,
+   "user": "MilosKozak",
+   "created_at": "2022-01-26T19:12:08Z",
+   "body": "i§m getting this one too time to time. there is a PR with fix but is not merged yet https://github.com/nightscout/cgm-remote-monitor/pull/7284\r\nthe only solution now is clear treatment collection"
+  },
+  {
+   "id": 1023346331,
+   "user": "mountrcg",
+   "created_at": "2022-01-27T15:39:26Z",
+   "body": "for me it happens on SGV transmits, as you can see on [discord](https://discord.com/channels/629952586895851530/629954570394533889/936282110950510732)\r\n<img width=\"1360\" alt=\"Bildschirmfoto 2022-01-27 um 16 36 47\" src=\"https://user-images.githubusercontent.com/539276/151391652-326060c0-d19f-4383-971a-75bb0759d1a6.png\">\r\nlooking at the NS-DB I see some BG's are duped\r\n"
+  },
+  {
+   "id": 1023355530,
+   "user": "mountrcg",
+   "created_at": "2022-01-27T15:47:48Z",
+   "body": "I deleted the duplicated entries in NS DB and restarted dyno - happened again - crash.log attached\r\n\r\n[crash.log](https://github.com/nightscout/AndroidAPS/files/7951764/crash.log)"
+  },
+  {
+   "id": 1023367560,
+   "user": "MilosKozak",
+   "created_at": "2022-01-27T15:59:56Z",
+   "body": "don't you have Dxcom bridge enabled?"
+  },
+  {
+   "id": 1024096725,
+   "user": "mountrcg",
+   "created_at": "2022-01-28T10:48:02Z",
+   "body": "bridge is disabled. Also the duplications still happen and I think they must come from AAPS - same identifier but strangely different structure\r\n<img width=\"1714\" alt=\"Bildschirmfoto 2022-01-28 um 11 51 33\" src=\"https://user-images.githubusercontent.com/539276/151534580-2387516c-cfd9-435a-9ac7-884d0d4cf1a4.png\">\r\n```\r\n{\r\n    \"_id\" : \"61f304969afd56000401f2c5\",\r\n    \"glucose\" : 239,\r\n    \"sgv\" : 239,\r\n    \"date\" : 1643316358000.0,\r\n    \"dateString\" : \"2022-01-27T20:45:58.000Z\",\r\n    \"type\" : \"sgv\",\r\n    \"direction\" : \"Flat\",\r\n    \"utcOffset\" : 0,\r\n    \"sysTime\" : \"2022-01-27T20:45:58.000Z\"\r\n}\r\n```\r\nand \r\n```\r\n{\r\n    \"_id\" : ObjectId(\"61f304969afd56000401f2c5\"),\r\n    \"device\" : \"AndroidAPS-DexcomG6\",\r\n    \"date\" : 1643316358000.0,\r\n    \"dateString\" : \"2022-01-27T20:45:58.000Z\",\r\n    \"isValid\" : true,\r\n    \"sgv\" : 239,\r\n    \"direction\" : \"Flat\",\r\n    \"type\" : \"sgv\",\r\n    \"created_at\" : \"2022-01-27T20:46:14.291Z\"\r\n}\r\n```\r\n"
+  },
+  {
+   "id": 1024105785,
+   "user": "mountrcg",
+   "created_at": "2022-01-28T11:01:15Z",
+   "body": "@MilosKozak  strangely since yesterday at no dups happened again, but I did not do anything\r\n<img width=\"965\" alt=\"Bildschirmfoto 2022-01-28 um 12 00 06\" src=\"https://user-images.githubusercontent.com/539276/151535738-36bd32bc-4c6b-4853-b7be-949aad93c173.png\">\r\n\r\n"
+  },
+  {
+   "id": 1024110016,
+   "user": "mountrcg",
+   "created_at": "2022-01-28T11:06:49Z",
+   "body": "btw if I let xdrip upload the G6 BYODA BG'S to NS instead of AAPS the dataset is more complete with noise information\r\n\r\n<img width=\"1594\" alt=\"Bildschirmfoto 2022-01-28 um 12 08 12\" src=\"https://user-images.githubusercontent.com/539276/151536727-093351f0-86e1-4c9e-89f7-03ab4685ae25.png\">\r\n\r\nbut looking at it, it seems of no value compared to not BYODA values:\r\n\r\n<img width=\"1611\" alt=\"Bildschirmfoto 2022-01-28 um 12 05 28\" src=\"https://user-images.githubusercontent.com/539276/151536884-232e02c0-9120-491d-8a0c-19a0bd27100e.png\">\r\n\r\n"
+  },
+  {
+   "id": 1024180169,
+   "user": "MilosKozak",
+   "created_at": "2022-01-28T12:43:56Z",
+   "body": "duplicated values were not comming from AAPS. AAPS always fill \"isValid\" field"
+  }
+ ]
+}

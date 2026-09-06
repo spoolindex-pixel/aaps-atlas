@@ -1,0 +1,27 @@
+{
+ "id": 980511882,
+ "repo": "nightscout/AndroidAPS",
+ "number": 651,
+ "title": "2.8.2.2 dev BUG : COB is zero if bolus canceled ",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/651",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-08-26T18:07:00Z",
+ "closed_at": "2021-09-20T07:59:46Z",
+ "comment_count": 2,
+ "body": "I use the wizard, enter 40g carbs, it proposes the bolus and I \"ok\" it.\r\n\r\nAfter 0.40 units, I cancel the bolus. Injection stops.\r\n\r\n![IMG-20210826-WA0000](https://user-images.githubusercontent.com/76626474/131013803-57ff7940-fd6a-47d2-bdb4-089503f7d1cb.jpg)\r\n\r\nI start again the wizard in order to recalculate the missing units. The wizards thinks that there are zero COB.\r\n\r\n![IMG-20210826-WA0001](https://user-images.githubusercontent.com/76626474/131013863-49501957-433a-4e89-83a9-1b44ce20903f.jpg)\r\n",
+ "comments": [
+  {
+   "id": 907212466,
+   "user": "swissalpine",
+   "created_at": "2021-08-27T13:41:37Z",
+   "body": "This also happened to me and then triggered a (wrong) double carbs input, which was countered with too high SMB.\r\nAs described: The Problem is that the COB value often updates minutes later after the carbohydrate input.\r\n1. 48 g Carbs+ 4 IU Insulin (Calculator): Bolus abort\r\n=> COB = 0, IOB = 0\r\n2. repetition: 48 g COB+ 4 IU insulin (calculator): bolus successful\r\n=> after a while: 96 g COB + 4 IOB => SMB reacts too strongly to any increase"
+  },
+  {
+   "id": 922706676,
+   "user": "MilosKozak",
+   "created_at": "2021-09-20T07:59:46Z",
+   "body": "hopeffuly resolved in https://github.com/nightscout/AndroidAPS/commit/b80e2a764894217c18b80c3b010760dcfabee2e0"
+  }
+ ]
+}

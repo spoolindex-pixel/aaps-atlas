@@ -1,0 +1,161 @@
+{
+ "id": 303699386,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 342,
+ "title": "Feature Request: New alarm type for make benefit of a peaceful night's sleep.",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/342",
+ "state": "closed",
+ "labels": [
+  "status-postponed"
+ ],
+ "created_at": "2018-03-09T02:10:23Z",
+ "closed_at": "2021-05-25T22:40:06Z",
+ "comment_count": 31,
+ "body": "Any person with a Dexcom (that has to pay for it) will, like me, be extremely sleep deprived - more so than most diabetics. This is because we have noisy starts and noisy endings as we try to squeeze the most out of our sensors.\r\n\r\nIn spite of a few awfully confusing settings which appear to allow for such occurrences, alarms still fire on a hair trigger when small amounts of noise creeps in.\r\n\r\nI'd like to propose a new High and Low alarm type, which can be used to catch slower rates of change in basal affected BG, but have more configurable tolerance for noise. This is the only thing I'm concerned about overnight, and when set at a tighter threshold than my actual High and Low alarms, I could safely be alerted with a softer beep when I drift off course, even with noise.\r\n\r\n**Proposal**\r\nAdditional universal, configurable High/Low Alarm - Outside x threshold, for n minutes. With the option to take the average  BG from n readings. Or if not average, then some algorithm like oref0 BG calculation used for DIYPS.\r\n\r\n**Uses**\r\n- Easier to understand and configure than other disparate, confusing options\r\n- Could also be used as a better sustained High alarm than the current one, which only looks at the system \"High\" setting. For example, I'd like to configure a lower high value, to be woken from, if it is maintained past a certain threshold. 8hrs overnight, a little bit high, has very poor long term health outcomes.\r\n\r\n![screenshot_20180310-015057](https://user-images.githubusercontent.com/25760491/37239256-2699cb6e-249d-11e8-862a-eae0463b9bd0.png)\r\n",
+ "comments": [
+  {
+   "id": 372605064,
+   "user": "tzachi-dar",
+   "created_at": "2018-03-13T09:42:47Z",
+   "body": "There are two things that can get you very near to what you want:\r\n\r\n1) for high, there is a persistent high alert.\r\n2) For both, alerts can start snoozed which means that if you put your default snooze for the alert on x minutes, it will only fire once you are low for x minutes.\r\n\r\nHope this helps."
+  },
+  {
+   "id": 372925472,
+   "user": "old-square-eyes",
+   "created_at": "2018-03-14T07:11:31Z",
+   "body": "@tzachi-dar I touched on these. Persistent high is not configurable and is tied to the system hyper setting.\r\n\r\nIt would be great if you could access something similar through the High/Low alerts screen. Then you could have multiple. I personally want to be alerted if I'm semi-high, for any extended length of time - like overnight. The high/low alerts already have the time/interval functionality, and multiple alerts functionality... why not re-use that for this proposed multipurpose alarm?\r\n\r\nAs for point 2, I'm not seeing that behaviour. My low alert is 3.5 with a default snooze of 30 minutes on start snoozed... in the picture above, it fired and woke me up.\r\n\r\nLastly, I'm still at a loss as to what the \"Snooze Alert Before It Fires\" button and sub options is supposed to achieve.\r\n\r\nThanks for the help though!"
+  },
+  {
+   "id": 374060659,
+   "user": "old-square-eyes",
+   "created_at": "2018-03-18T22:45:16Z",
+   "body": "More info. I really need to figure out how to resolve this as I'm loosing my mind with the sleep loss :(\r\n\r\n![untitled](https://user-images.githubusercontent.com/25760491/37572095-e91a0acc-2b6a-11e8-90e1-4e65dca69dfd.png)\r\n"
+  },
+  {
+   "id": 374156002,
+   "user": "tzachi-dar",
+   "created_at": "2018-03-19T09:50:36Z",
+   "body": "snooze alert before it starts is meant to solve the following issue:\r\nyour BG is 100, you eat something, you have an alert on 120.\r\nYou see that BG goes up, and you know it will cross the 120 bar, you already gave insulin, so there is not much you can do about it.\r\nSo, you hope this will be resolved in 45 minutes. You snooze the alert even before it starts for 45 minutes. after that if bg is still not below 120 the alert will fire.\r\n\r\nWhat is the sensor that you are using? if dexcom, are you using xDrip or xBridge? (I'm trying to understand if you have filtered data or only raw).\r\n\r\n"
+  },
+  {
+   "id": 374157779,
+   "user": "jamorham",
+   "created_at": "2018-03-19T09:56:52Z",
+   "body": "I get similar random dips like this but don't have this alarm problem occurring.\r\n\r\nSettings here are as follows:\r\n\r\nAlert Volume Profile = Ascending Volume\r\nSmart Snoozing = Yes\r\nSmart Alerting = Yes\r\nStart Snoozed = Yes\r\nNotification Channels = No"
+  },
+  {
+   "id": 374158423,
+   "user": "old-square-eyes",
+   "created_at": "2018-03-19T09:59:13Z",
+   "body": "Isn't what you just explained achieved through the hamburger menu \"Snooze alerts\" and simply disabling high alerts for x amount of time? Why dive deep into an alerts config just to avoid what you describe. Seems an odd little feature for one off use deep in the settings. Using the other method at least you get feedback in the form of a countdown of snoozed time remaining.\r\n\r\nIm on a G5. \r\n\r\nThanks for the help. I really appreciate it."
+  },
+  {
+   "id": 374159321,
+   "user": "old-square-eyes",
+   "created_at": "2018-03-19T10:02:35Z",
+   "body": "@jamorham I have the same settings as you except alarm medium volume profile. Ascending has been buggy for me historically."
+  },
+  {
+   "id": 374185795,
+   "user": "tzachi-dar",
+   "created_at": "2018-03-19T11:48:07Z",
+   "body": "The difference from snooze all high alers, is that if I have an alert on 120, and I only snooze this it, then I can still have an alert on 150, and if that will fire, I can add more insulin.\r\n\r\nDoes the g5 have both raw and filtered data?"
+  },
+  {
+   "id": 374369422,
+   "user": "old-square-eyes",
+   "created_at": "2018-03-19T20:46:15Z",
+   "body": "@tzachi-dar interesting you point this out (about dual high alarms for different purposes). I woke up in the middle of the night - to yet another alarm. And I wondered why it was my second (actual) low alarm, and why my warning sonar ping hadn't woken me since I sat in the semi low zone for quite a few minutes.\r\n\r\nNow I'd either slept through the softer alarm or perhaps having two alarms quite close together causes some inability for the lower one to adhere to the snoozing first.\r\n\r\nI guess I need to test that theory somehow. But I wasn't about to investigate size 6 font at 4 in the morning."
+  },
+  {
+   "id": 374370167,
+   "user": "old-square-eyes",
+   "created_at": "2018-03-19T20:48:28Z",
+   "body": "I'll add that this is still a feature request... I feel there would be much to be gained for the new universal alarm type proposed in the OP... especially the extended semi-high use case. You're asleep for a long time (at least I want to be), and I wouldn't mind a quiet reminder if I've been sitting up above 6 or 7 for quite some time."
+  },
+  {
+   "id": 374455808,
+   "user": "old-square-eyes",
+   "created_at": "2018-03-20T02:57:04Z",
+   "body": "I have just now gotten a semi low (my second tier) alert described above, that I believe adhered to my pre snooze rules. So I guess I need to figure out why my actual low alert fires on a single low noisy value.\r\n\r\n![screenshot_20180320-160639](https://user-images.githubusercontent.com/25760491/37633943-3fe69e34-2bec-11e8-806f-0a47b8429a56.png)\r\n"
+  },
+  {
+   "id": 374459195,
+   "user": "old-square-eyes",
+   "created_at": "2018-03-20T03:15:29Z",
+   "body": "Would the raise every x minutes setting affect this? It is set to 1 minute (the default for creating a new alarm)."
+  },
+  {
+   "id": 374502166,
+   "user": "old-square-eyes",
+   "created_at": "2018-03-20T07:35:20Z",
+   "body": "OK I did two things and my low alert just behaved correctly.\r\n\r\nI widened the threshold of my pre and main low alarms (4.0 and 3.6 respectively).\r\n\r\nSecondly I switched back to phone as collector, from my SW3 on OB1G5.\r\n\r\n![screenshot_20180320-203113](https://user-images.githubusercontent.com/25760491/37641548-07600152-2c7f-11e8-9478-1147410876c1.png)\r\n![screenshot_20180320-203619](https://user-images.githubusercontent.com/25760491/37641550-078c8c9a-2c7f-11e8-96af-0e0ac8976c08.png)\r\n"
+  },
+  {
+   "id": 379089083,
+   "user": "themotoden",
+   "created_at": "2018-04-05T21:56:31Z",
+   "body": "I don't have 24,12,6,3 hour buttons on the screen... How can I switch them on?"
+  },
+  {
+   "id": 379091604,
+   "user": "old-square-eyes",
+   "created_at": "2018-04-05T22:08:04Z",
+   "body": "@themotoden long press the xDrip logo on the home screen"
+  },
+  {
+   "id": 379094124,
+   "user": "themotoden",
+   "created_at": "2018-04-05T22:20:24Z",
+   "body": "Oh..) Thank you! What other Easter eggs do we have?)))"
+  },
+  {
+   "id": 379095074,
+   "user": "themotoden",
+   "created_at": "2018-04-05T22:25:27Z",
+   "body": "These buttons need to be added in history screen!"
+  },
+  {
+   "id": 379125181,
+   "user": "old-square-eyes",
+   "created_at": "2018-04-06T01:43:43Z",
+   "body": "Also another thing that doesn't make sense with the current \"start snoozed\" approach... is that I might want a 30 minute snooze if I have a legitimate daytime low. Say, if I have treated with glucose.\r\n\r\nBut at night, I might not want the alarm starting snoozed for 30 minutes, if the only reason to start snoozed is to avoid a few blips of noise. To me, both thresholds should be stored and accessed  independently and my proposal covers that."
+  },
+  {
+   "id": 379133804,
+   "user": "old-square-eyes",
+   "created_at": "2018-04-06T02:48:55Z",
+   "body": "@jamorham what are the chances of building a test API? I'd love to be able to spoof (automate) test BG data to simulate scenarios. Could it be added as an engineering data source? It would make testing and reproducing bugs more efficient."
+  },
+  {
+   "id": 379366994,
+   "user": "old-square-eyes",
+   "created_at": "2018-04-06T20:23:54Z",
+   "body": "@themotoden you might want to start a new thread for that request. This one is about alerts."
+  },
+  {
+   "id": 379368586,
+   "user": "themotoden",
+   "created_at": "2018-04-06T20:30:20Z",
+   "body": "As for me, I got answer) Another question is not mine)"
+  },
+  {
+   "id": 379396678,
+   "user": "ANDREAPIPPI",
+   "created_at": "2018-04-06T22:01:26Z",
+   "body": "Sorry, you are right. \r\nI'll open a new thread for this. \r\nI apologize for my mistake. \r\nPippo   :-("
+  },
+  {
+   "id": 799401820,
+   "user": "Navid200",
+   "created_at": "2021-03-15T13:02:54Z",
+   "body": "@old-square-eyes Did you ever try filtering options to reduce the impact of noise?  I'm not saying they work.  I'm just wondering if you tried them.\r\nThis is really a noise issue, that you are trying to resolve using a special alarm."
+  },
+  {
+   "id": 848315445,
+   "user": "Navid200",
+   "created_at": "2021-05-25T22:40:06Z",
+   "body": "@old-square-eyes \r\nI understand your request for an alarm that does not trigger because of a single spike.  But, creating such an alarm is going to be challenging.  But, more importantly, just because someone creates something, it doesn't mean that it will be merged.\r\nTo avoid that, we need to focus on absolute necessities first.\r\n\r\nI have labeled this issue as postponed so that we don't forget to come back to it when other issues have been addressed.  So, for now, I am going to close it.\r\n\r\nThanks for the suggestion.\r\nWe can also continue to talk about it here even with the issue closed."
+  }
+ ]
+}

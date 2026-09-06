@@ -1,0 +1,23 @@
+{
+ "issue_id": 1597,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/1597",
+ "title": "Overlapping Times in basal Tab leading to wrong iob? Dev-i",
+ "symptom": "Temporary basal rates are not cancelled and their times overlap in the basal tab, potentially leading to wrong IOB calculations. The issue is reported with the Omnipod DASH pump.",
+ "cause": "Testing in the thread indicates the overlapping TBRs occur when Nightscout sync is enabled: with NSClient paused, overlap did not reproduce for extended periods, and it returned after unpausing NSClient. MilosKozak observed that AAPS appears to be updating old records, pointing to Nightscout-sync-triggered updates of old temporary basal records as the likely cause.",
+ "fix": "The thread states the issue is hopefully fixed by PR #1715. During investigation, pausing NSClient / disabling Nightscout sync was used as the effective workaround.",
+ "settings_changed": [
+  "NSClient → Paused"
+ ],
+ "devices": [
+  "Omnipod DASH"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "dash",
+  "nightscout sync",
+  "nsclient"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "hopefully fixed by #1715 open new issue if the problem persists"
+}

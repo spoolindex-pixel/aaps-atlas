@@ -1,0 +1,72 @@
+{
+ "id": 1040470007,
+ "repo": "nightscout/AndroidAPS",
+ "number": 822,
+ "title": "[3.0-beta2] Graph render glitch when changing between 6/12/18/24 hr view",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/822",
+ "state": "closed",
+ "labels": [
+  "question - more info needed",
+  "minor"
+ ],
+ "created_at": "2021-10-31T13:26:13Z",
+ "closed_at": "2021-11-02T13:47:24Z",
+ "comment_count": 9,
+ "body": "-----------------------------------------------------\r\nAndroidAPS 3.0-beta2\r\nBuild: f49c93f22-2021.10.30-15:01\r\nRemote: https://github.com/nightscout/AndroidAPS\r\nFlavor: fullrelease\r\nNightscout version: 14.2.2\r\nEngineering mode enabled\r\n\r\n\r\nNoticed this on both NSClient and AAPS phone. When long pressing the graph area to change between views, the graph briefly displays the requested number of hours of history, before rendering predictions and shortening the history part of the view. When the history is shortened, all \"glucose dots\" seem to pile up in the left-most position causing a vertical line as high/low as glucose had been during the 2-3 hours before the first visible time. When next glucose value is received, the graph renders correctly again. \r\n\r\n![Screenshot_20211031-104840_NSClient](https://user-images.githubusercontent.com/71758682/139585722-9795c468-7065-4769-80d9-85ef39d3b1ea.jpg)\r\n\r\n![Screenshot_20211031-104823_NSClient](https://user-images.githubusercontent.com/71758682/139585715-d5e91c94-8577-4f1f-9b4d-e68f1bd0211a.jpg)\r\n\r\n",
+ "comments": [
+  {
+   "id": 956677985,
+   "user": "MilosKozak",
+   "created_at": "2021-11-01T21:48:57Z",
+   "body": "probably caused by DST change"
+  },
+  {
+   "id": 956718994,
+   "user": "kristinsmotz",
+   "created_at": "2021-11-01T22:08:38Z",
+   "body": "I don't think so, it has done that since beta 1 for me, and still does it today. "
+  },
+  {
+   "id": 956825215,
+   "user": "kristinsmotz",
+   "created_at": "2021-11-01T23:02:52Z",
+   "body": "From nsclient\r\nhttps://user-images.githubusercontent.com/71758682/139753255-effe3115-2213-456b-9aaf-af289674dd57.mp4\r\n\r\nFrom AAPS phone \r\nhttps://user-images.githubusercontent.com/71758682/139753272-f2d32bb4-95e2-4b1b-9ebf-64f7b42095a6.mp4\r\n\r\n"
+  },
+  {
+   "id": 957211380,
+   "user": "MilosKozak",
+   "created_at": "2021-11-02T08:31:12Z",
+   "body": "BG should be displayed immediately\r\nthe delay of displaying the rest of the data is expected because they must be calculated first\r\n\r\nor is there something else wrong?\r\n"
+  },
+  {
+   "id": 957305086,
+   "user": "kristinsmotz",
+   "created_at": "2021-11-02T10:21:18Z",
+   "body": "The glitch I am talking about is the bg's (dots) for the time period being removed from the left side of the graph when the prediction renders on the right side, the dots pile up in a vertical line on the left side. It's most visible when there's been a high variation of BG's in the time period just at the start of the display period window. (4-6 hours ago in 6hr view, 10-12 hours ago in 12hr view, etc). At first, the graph will display the past 6 or 12 hours for a second or two, then render predictions for the next 2-3 hours, at which time it removes the earliest part of \"history\" from the graph, so that you see 2 hours of future and 4 or 10 hours of past history. At that time, the historical BG's \"pile up\" in a vertical line. When BG syncs, OAPS runs, and new predictions are rendered, the vertical line disappears. In this image I have circled the vertical line/pile-up. \r\n\r\n![252540891_955775745011038_1675593277995368131_n](https://user-images.githubusercontent.com/71758682/139828697-329cfa94-af93-47bb-902c-8b4c7694b840.jpg)\r\n\r\nOf course this is a very minor glitch, not anything affecting functionality, just a minor annoyance that I hadn't seen in the previous version (2.8.2), so I thought I'd bring it to your attention in case there's also an easy fix. "
+  },
+  {
+   "id": 957432417,
+   "user": "MilosKozak",
+   "created_at": "2021-11-02T12:20:32Z",
+   "body": "i cannot replicate the issue. pm me your ns address"
+  },
+  {
+   "id": 957439358,
+   "user": "kristinsmotz",
+   "created_at": "2021-11-02T12:23:39Z",
+   "body": "Sure I'll do that. Just wanted to add that this glitch is only visible after long-pressing the graph area to switch views, and waiting for the predictions to render. Then when glucose is next refreshed, it disappears again. \r\n"
+  },
+  {
+   "id": 957587990,
+   "user": "Philoul",
+   "created_at": "2021-11-02T13:35:47Z",
+   "body": "@MilosKozak I confirm (this issue is similar to #801, you can see the vertical bar on my second screenshot).\r\nI tried to fix it a few months ago with always preparing data for max range of data for all curves (24h + prediction) and  return selected range.\r\nI made a PR (not merged) that fixed the temporary vertical bar on the left and displayed immediatly all curves on rescale, but I closed it because it was not compatible with History Browser 😞...\r\nMy other idea was to only calculate required data on new entry or each 5 min (most of time 99% of graph values are already calculated, and it's only when we enter insulin or carbs in the past that we have to calculate again a subset of values), keep in memory 24 or 48h of graph values and save older one in database to be able to show immediatly all curves in historybrowser (without calculation) and in overview..."
+  },
+  {
+   "id": 957591718,
+   "user": "MilosKozak",
+   "created_at": "2021-11-02T13:37:43Z",
+   "body": "resolved by https://github.com/nightscout/AndroidAPS/commit/2ad7d9f4d236ca6adb76b6afa9e51ecd3a354bb4"
+  }
+ ]
+}

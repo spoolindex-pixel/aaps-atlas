@@ -1,0 +1,39 @@
+{
+ "id": 1316014906,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1963,
+ "title": "Omnipod Eros / Profile Set catch 22",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1963",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-07-24T21:37:09Z",
+ "closed_at": "2022-08-06T11:44:17Z",
+ "comment_count": 4,
+ "body": "I upgraded to AndroidAPS 3.1.0 (ca3637f0f) just now during an Omnipod Eros pump switch.  When trying to activate the profile stored in the preferences, I got:\r\n\"Failed to update basal profile: the Pod is in a wrong state\"\r\n\r\nI figured that meant I needed to activate the new pump.  While at the cannula stage, the Omnipod Eros activation UI would not continue, because the basal rates were unset.\r\n\r\nI'm not sure which action should happen first between the pod activation and profile set, but it looks as if the profile set requires an Omnipod basal push update despite a null pod state and the pod cannula insertion requires a profile to be set.\r\n\r\nTo attempt a workaround, I set the pump driver to the virtual pump, which allowed the profile switch to activate, then switched pump drivers back to Omnipod Eros.  Happily, it didn't require a new pump and it was able to resume from before I switched\r\n\r\nAndroidAPS 3.1.0\r\nBuild: ca3637f0f-2022.07.23-16:12\r\nRemote: https://github.com/nightscout/AndroidAPS\r\nFlavor: fullrelease\r\nNightscout version: 14.2.4\r\n\r\nthe exception error - being unable to switch profiles, occurred at 13:29:21.033 (7/24/2022).  I'm attaching some logs; I was able to find the profile switch failure event but not anything representing the UI not allowing pump progress\r\n[export.log](https://github.com/nightscout/AndroidAPS/files/9176764/export.log)\r\n",
+ "comments": [
+  {
+   "id": 1194397270,
+   "user": "Chikibai",
+   "created_at": "2022-07-25T17:37:15Z",
+   "body": "Have you try latest master 3.1.0.2 and can verify that error still exits?"
+  },
+  {
+   "id": 1194527489,
+   "user": "vanelsberg",
+   "created_at": "2022-07-25T19:33:42Z",
+   "body": "Thanks for reporting:\r\nJust to see if I understand the problem you are describing:\r\n1. You updated to version 3.1.0 with _no active_ EROS pump.\r\n2. On upgrading you were getting the \"Failed to update basal profile: the Pod is in a wrong state\" error.\r\nCorrect?\r\n\r\n**Question**: from what version were you upgrading?\r\n\r\n(Btw: good work around!)\r\n"
+  },
+  {
+   "id": 1194542131,
+   "user": "vanelsberg",
+   "created_at": "2022-07-25T19:45:14Z",
+   "body": "Problem may be the result of fix https://github.com/nightscout/AndroidAPS/pull/1896 on handling Pod state in earlier AAPS 3.0 dev versions and should not be a problem for current release. \r\n\r\nValidation steps, using AAPS 3.01 or higher:\r\n1. Deactivate EROS pump.\r\n2. Upgrade to a newer version.\r\n\r\nResult:\r\n- You should not get the \"Failed to update basal profile: the Pod is in a wrong state\" error.\r\n- Pod activation should be successful\r\n\r\nIn case you do get the error use the work around as described by @thecubic:\r\nSet the pump driver to virtual pump to allow the profile switch to activate, then switch pump driver back to Omnipod Eros.\r\n\r\n"
+  },
+  {
+   "id": 1200257431,
+   "user": "thecubic",
+   "created_at": "2022-07-30T17:04:59Z",
+   "body": "I was upgrading from 3.0.0.1 I believe.  Yes, that's a correct description of the problem I'm having"
+  }
+ ]
+}

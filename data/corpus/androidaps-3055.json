@@ -1,0 +1,69 @@
+{
+ "id": 1989153948,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3055,
+ "title": "[Master]  Basal rate on AAPSClient doesn't update occasionally (V3+WS)",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3055",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-11-11T23:21:20Z",
+ "closed_at": "2023-12-04T13:35:56Z",
+ "comment_count": 9,
+ "body": "AAPS / AAPSClient 3.2.0.1 NSClientV3+WS on both\r\nNS 15.0.2\r\n\r\nI've seen a few times today that openAPS-log says that temp 0 basalrate should be set, but it doesn't get updated in AAPSClient, I've checked AAPS to verify that a 0-basalrate has been set, and every time I've checked it has sucessfully set 0 basal but not getting updated in AAPSClient. \r\n\r\nLogs:\r\nAAPSClient: [AndroidAPS_LOG_1699740714936.log.zip](https://github.com/nightscout/AndroidAPS/files/13326754/AndroidAPS_LOG_1699740714936.log.zip)\r\n\r\nAAPS:  [AndroidAPS_LOG_1699740741078.log.zip](https://github.com/nightscout/AndroidAPS/files/13326755/AndroidAPS_LOG_1699740741078.log.zip)\r\n\r\nScreens\r\nAAPSClient:\r\n![image](https://github.com/nightscout/AndroidAPS/assets/114103483/94ef9c39-622d-4d08-ba77-93a3e4986f9b)\r\n\r\nAAPS:\r\n![image](https://github.com/nightscout/AndroidAPS/assets/114103483/1cac8d48-592a-4990-94f4-256135e6eb4f)\r\n",
+ "comments": [
+  {
+   "id": 1806944468,
+   "user": "olorinmaia",
+   "created_at": "2023-11-11T23:37:24Z",
+   "body": "I havent' been able to reproduce in dev, alltho setup in my dev test-rig is random bg + virtual pump so not exactly the same, and I'm not monitoring it as much as my master-rig following my son :)"
+  },
+  {
+   "id": 1807153608,
+   "user": "olorinmaia",
+   "created_at": "2023-11-12T15:07:09Z",
+   "body": "I'll update to 3.2.0.2 master and see if it still happens :)"
+  },
+  {
+   "id": 1807211693,
+   "user": "olorinmaia",
+   "created_at": "2023-11-12T19:02:02Z",
+   "body": "Still happens in 3.2.0.2. On next BG basal gets updated and corrected in history.\r\n\r\nAAPSClient / AAPS 3.2.0.2\r\nBuild: c31617fd2c-2023.11.12\r\nNS: 15.0.2\r\n\r\nLogs AAPSClient:\r\n[AndroidAPS_LOG_1699812622823.log.zip](https://github.com/nightscout/AndroidAPS/files/13328891/AndroidAPS_LOG_1699812622823.log.zip)\r\n\r\nLogs AAPS: \r\n[AndroidAPS_LOG_1699812649988.log.zip](https://github.com/nightscout/AndroidAPS/files/13328892/AndroidAPS_LOG_1699812649988.log.zip)\r\n\r\nScreens\r\nAAPSClient:\r\n![image](https://github.com/nightscout/AndroidAPS/assets/114103483/e7488ad3-9d35-4aa1-8574-baec133f9f99)\r\n\r\nAAPS:\r\n![image](https://github.com/nightscout/AndroidAPS/assets/114103483/94380429-aa06-48b3-b598-8717e14d76c8)\r\n\r\n"
+  },
+  {
+   "id": 1821213113,
+   "user": "MilosKozak",
+   "created_at": "2023-11-21T16:04:41Z",
+   "body": "guessing time is not synced on both phones\r\ncode is ok"
+  },
+  {
+   "id": 1829398584,
+   "user": "MilosKozak",
+   "created_at": "2023-11-28T09:14:18Z",
+   "body": "@olorinmaia did you verify?"
+  },
+  {
+   "id": 1829644394,
+   "user": "olorinmaia",
+   "created_at": "2023-11-28T11:33:16Z",
+   "body": "Hi @MilosKozak  :) Sorry for late response. We got 3 phones following AAPS with NsclientV3+WS. All phones got standard android settings in regards of date and time. I can't really tell any time difference, if so it's milliseconds. I tried rebooting AAPS and my own phone also. \r\n\r\nWhat's odd is that it doesn't happen every time, and so far I've only noticed it when a temp 0 basal is issued or prolonged. I'm pretty sure it happens daily more than once but not so many times that this is something critical. It just make me worry some times that basal is still running when BG is falling alltho OAPS-log seem to suggest a temp 0 basal is set.\r\n\r\nI can't remember this happening in 3.1.0.3 when using NSClient. I've not tested with NSClientV1 since I'm unable to change the 3rd AAPSClient NSClient-version as it at school at all times. (Is it a problem if an idle AAPSCLient is on V3 for a few hours while others are on V1?)\r\n\r\nScreenshot of date/time settings:\r\n![image](https://github.com/nightscout/AndroidAPS/assets/114103483/611c3c08-8963-4ffd-833d-7834add1b28c)\r\n"
+  },
+  {
+   "id": 1830421973,
+   "user": "olorinmaia",
+   "created_at": "2023-11-28T18:15:14Z",
+   "body": "Since its abit sporadic and some times 0 basal updates two or three minutes after recieved update from OAPS also, im not sure if there is necessary to do anything about this if code or logs seem ok. I can monitor abit more the coming days and see if i can provide a good example, else ill close issue. "
+  },
+  {
+   "id": 1837240593,
+   "user": "olorinmaia",
+   "created_at": "2023-12-02T19:58:34Z",
+   "body": "Issue persists and happens a few times a day, it's not only temp 0 basal it's all basal updates. I'll bring another example if it can help improving this. If it matters we are using Omnipod Dash and xDrip / G6.\r\n\r\nNotice at 20:19 OpenAPS-log suggest a zero TBR should be set 4 min ago. Basal is still showing 0,3 in AAPSClient. It was a TBR 0 set for 30min before this. So when AAPS wants to set 120min TBR 0 it first reset to default basal rate 0,3 then set 120min TBR 0. AAPSClient updates the reset of basal rate, but not the new 120min TBR 0. \r\n\r\nNothing in NSCv3 log about temp basal update. Then at 20:20 temp basal is updated (back in time) for the temp basal being set by AAPS at 20:15.\r\n\r\nAAPSClient 3.2.0.2\r\nBuild: c31617fd2c-2023.11.12\r\nLogs:\r\nAAPS:\r\n[AndroidAPS._2023-12-02_01-00-01_.33.zip](https://github.com/nightscout/AndroidAPS/files/13537270/AndroidAPS._2023-12-02_01-00-01_.33.zip)\r\n\r\nAAPSCLient:\r\n[AndroidAPS_LOG_1701545151071.log.zip](https://github.com/nightscout/AndroidAPS/files/13537218/AndroidAPS_LOG_1701545151071.log.zip)\r\n\r\nScreenshots AAPSClient.\r\n\r\n### **20:19 (no temp basal enacted on AAPS 20:15 recieved in AAPClient yet)**\r\n\r\n![image](https://github.com/nightscout/AndroidAPS/assets/114103483/a47983a0-c257-45b5-87bc-3f36782bef42)\r\n![image](https://github.com/nightscout/AndroidAPS/assets/114103483/79e88e68-a8c1-40e1-998f-6a30829c4a35)\r\n![image](https://github.com/nightscout/AndroidAPS/assets/114103483/864ce7a0-c9df-49ce-9573-25a8a389703d)\r\n\r\n\r\n\r\n### **20:20 (temp 0 basal 120min enacted 20:15 finally recieved, just before new BG arrived).**\r\n\r\n![image](https://github.com/nightscout/AndroidAPS/assets/114103483/0a89a778-9484-4cf8-a541-adf92911659d)\r\n![image](https://github.com/nightscout/AndroidAPS/assets/114103483/870561d4-4107-44c8-8367-ad3e536d4ebb)\r\n\r\n"
+  },
+  {
+   "id": 1837599260,
+   "user": "olorinmaia",
+   "created_at": "2023-12-03T21:01:59Z",
+   "body": "Switched to NSClientV1 yesterday, partly due to this issue and basal history is rendered wrong at Nightscout. This issue has yet to occur, so it seems to be related to NSV3 some how. :)"
+  }
+ ]
+}

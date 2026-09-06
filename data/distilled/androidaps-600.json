@@ -1,0 +1,21 @@
+{
+ "issue_id": 600,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/600",
+ "title": "2.8.2 master / Arrow direction bug",
+ "symptom": "In AAPS 2.8.2, the arrow direction on the main screen is often horizontal even when glucose is rising or falling, while the AAPS watchface and xDrip+ show a correct sloped arrow. This discrepancy is confusing and potentially dangerous.",
+ "cause": "AAPS main screen uses the arrow direction provided by the BG source (e.g., xDrip+ or Dexcom app), which may be calculated differently (e.g., using a longer time interval or updated history values) than the arrow calculated by AAPS for the watchface, which uses a 5-minute delta. This can lead to different arrows between the phone and watchface.",
+ "fix": "The issue was addressed in a commit (d43393e2af7f6133b267e04967e8fc2b70149d16) that likely changed the arrow calculation logic, but the exact fix is not described in the thread.",
+ "settings_changed": [],
+ "devices": [
+  "Dexcom G6",
+  "xDrip+"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "xDrip+",
+  "G6"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "AAPS shows arrow sent by source (calculated with G6 method), watchfaxe and other apps show calculated arrows (calculated with 5min Delta) => With my example AAPS will show the flat arrow sent by G6 APP (even if calculated short delta is +8 mg/dl) while all other app will calculate a 45° up arrow"
+}

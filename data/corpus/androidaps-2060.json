@@ -1,0 +1,63 @@
+{
+ "id": 1361230048,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2060,
+ "title": "3.1.0.3 loop not executing ",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2060",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-09-04T19:13:35Z",
+ "closed_at": "2022-10-04T08:50:54Z",
+ "comment_count": 8,
+ "body": "BG is changing but loop is mot executing.  Problem occurred 19:30 to 19:44 when I have spotted the problem and refreshed manually. I had the same problem with 2.8 version but never with 3.0 . I have updated last week and unfortunately this stared to happen again. [https://linksharing.samsungcloud.com/x8JynKaOvqiE]() ",
+ "comments": [
+  {
+   "id": 1236652793,
+   "user": "MilosKozak",
+   "created_at": "2022-09-05T07:46:14Z",
+   "body": "log doesn't contain specified time"
+  },
+  {
+   "id": 1237378639,
+   "user": "margogoodfellow",
+   "created_at": "2022-09-05T18:31:25Z",
+   "body": "https://linksharing.samsungcloud.com/jjkRUzFK9vtq\r\n\r\nIt may be this one "
+  },
+  {
+   "id": 1237489968,
+   "user": "margogoodfellow",
+   "created_at": "2022-09-05T21:58:36Z",
+   "body": "https://drive.google.com/file/d/1aWCcFT-lvdEb5ggK8bOtSV1dUttCEp4t/view?usp=drivesdk\r\n\r\nTime 19:44 last executed. See attached picture\r\n\r\nThank you\r\n\r\nMargo\r\n\r\nOn Mon, 5 Sept 2022, 08:46 Milos Kozak, ***@***.***> wrote:\r\n\r\n> log doesn't contain specified time\r\n>\r\n> —\r\n> Reply to this email directly, view it on GitHub\r\n> <https://github.com/nightscout/AndroidAPS/issues/2060#issuecomment-1236652793>,\r\n> or unsubscribe\r\n> <https://github.com/notifications/unsubscribe-auth/AQMOIF2P644T4ABR6Q7YFPLV4WQNBANCNFSM6AAAAAAQEOGHFA>\r\n> .\r\n> You are receiving this because you authored the thread.Message ID:\r\n> ***@***.***>\r\n>\r\n"
+  },
+  {
+   "id": 1241201495,
+   "user": "margogoodfellow",
+   "created_at": "2022-09-08T20:29:32Z",
+   "body": "I have many more logs if you need. This is happening lots of times during the day. I will be downgrading to 3.0 tomorrow with the pod change this was the only version where I did not have this issue.. I also have problem with pod connection now and bolus is timing out a lot. When I upgraded to 3.1 it was amazing at first "
+  },
+  {
+   "id": 1248183741,
+   "user": "MilosKozak",
+   "created_at": "2022-09-15T14:29:12Z",
+   "body": "last log start 22:36 and pump was connecting"
+  },
+  {
+   "id": 1248438058,
+   "user": "margogoodfellow",
+   "created_at": "2022-09-15T18:11:25Z",
+   "body": "https://drive.google.com/file/d/1y9pBbvTRyl67WgIeYOfUtcRlkFqrcbEA/view?usp=drivesdk\r\n\r\nIt hasn't executed from 19:33 to 19:44. \r\nI have many more logs but I don't know why it always cut the time off when the loop stopped executing.  I have go back to version 3.0.0.1 now as I had this happening many times at day and night.  In particular one night it didn't execute fir 30 min . Basal was 1.0 u per hour and bg was dropping.  I'm.not sure why this is not happening in ver 3.0 but returned in ver 3.1"
+  },
+  {
+   "id": 1250130653,
+   "user": "MilosKozak",
+   "created_at": "2022-09-17T19:46:31Z",
+   "body": "```\r\n19:33:59.265 [androidx.work-1] D/APS: [DetermineBasalAdapterAMAJS.invoke():110]: Result: {\"temp\":\"absolute\",\"bg\":51,\"tick\":\"+0\",\"eventualBG\":39,\"snoozeBG\":2,\"predBGs\":{\"IOB\":[51,46,41,39,39,39,39,39,39,39,39,39,39],\"aCOB\":[51,55,59,62,65,68,71,73,75,77,79,80,80,80,80,80,79,77,76,74,73,71,70,69,68,67,66,66,65,64,64,63,63,62,62,62,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,62,62,62,62,62,62,62,62,62,62,62,62,63],\"COB\":[51,46,41,39,39,39,39,39,39,39,39,39,39]},\"COB\":12.366777777777783,\"IOB\":0.645,\"reason\":\"COB: 12.4, Dev: 2, BGI: -5.45, ISF: 6.0, Target: 6.0; BG 2.8<4.4, but 21m left and 0 ~ req 0U/hr: no action required\"}\r\n19:44:10.023 [androidx.work-2] D/APS: [DetermineBasalAdapterAMAJS.invoke():110]: Result: {\"temp\":\"absolute\",\"bg\":85,\"tick\":\"+14\",\"eventualBG\":39,\"snoozeBG\":176,\"predBGs\":{\"IOB\":[85,88,89,90,89,88,86,83,79,75,70,64,58,51,45,39],\"aCOB\":[85,89,92,93,94,94,92,90,86,82,77,71,65,59,53,47,41,39],\"COB\":[85,88,89,90,90,89,88,86,83,79,75,70,65,60,53,47,41,39]},\"COB\":8.119000000000005,\"IOB\":1.982,\"reason\":\"COB: 8.1, Dev: 50, BGI: -5.08, ISF: 6.0, Target: 5.6; Eventual BG 2.2 < 5.6, bolus snooze: eventual BG range 2.2-9.8; setting current basal of 0.35 as temp. Suggested rate is same as profile rate, a temp basal is active, canceling current temp\",\"duration\":0,\"rate\":0}\r\n```\r\nbetween this no BG value was received until 19:43:28.124"
+  },
+  {
+   "id": 1274380158,
+   "user": "margogoodfellow",
+   "created_at": "2022-10-11T09:17:20Z",
+   "body": "BG is changing I don't know why this is happening. Its the same problem I\nhad in all previous versions.  I will update tomorrow to 3.1 and I make\nsure I have pictures and logs have right times.\n\nOn Sat, 17 Sept 2022, 20:46 Milos Kozak, ***@***.***> wrote:\n\n> 19:33:59.265 [androidx.work-1] D/APS: [DetermineBasalAdapterAMAJS.invoke():110]: Result: {\"temp\":\"absolute\",\"bg\":51,\"tick\":\"+0\",\"eventualBG\":39,\"snoozeBG\":2,\"predBGs\":{\"IOB\":[51,46,41,39,39,39,39,39,39,39,39,39,39],\"aCOB\":[51,55,59,62,65,68,71,73,75,77,79,80,80,80,80,80,79,77,76,74,73,71,70,69,68,67,66,66,65,64,64,63,63,62,62,62,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,61,62,62,62,62,62,62,62,62,62,62,62,62,63],\"COB\":[51,46,41,39,39,39,39,39,39,39,39,39,39]},\"COB\":12.366777777777783,\"IOB\":0.645,\"reason\":\"COB: 12.4, Dev: 2, BGI: -5.45, ISF: 6.0, Target: 6.0; BG 2.8<4.4, but 21m left and 0 ~ req 0U/hr: no action required\"}\n> 19:44:10.023 [androidx.work-2] D/APS: [DetermineBasalAdapterAMAJS.invoke():110]: Result: {\"temp\":\"absolute\",\"bg\":85,\"tick\":\"+14\",\"eventualBG\":39,\"snoozeBG\":176,\"predBGs\":{\"IOB\":[85,88,89,90,89,88,86,83,79,75,70,64,58,51,45,39],\"aCOB\":[85,89,92,93,94,94,92,90,86,82,77,71,65,59,53,47,41,39],\"COB\":[85,88,89,90,90,89,88,86,83,79,75,70,65,60,53,47,41,39]},\"COB\":8.119000000000005,\"IOB\":1.982,\"reason\":\"COB: 8.1, Dev: 50, BGI: -5.08, ISF: 6.0, Target: 5.6; Eventual BG 2.2 < 5.6, bolus snooze: eventual BG range 2.2-9.8; setting current basal of 0.35 as temp. Suggested rate is same as profile rate, a temp basal is active, canceling current temp\",\"duration\":0,\"rate\":0}\n>\n> between this no BG value was received until 19:43:28.124\n>\n> —\n> Reply to this email directly, view it on GitHub\n> <https://github.com/nightscout/AndroidAPS/issues/2060#issuecomment-1250130653>,\n> or unsubscribe\n> <https://github.com/notifications/unsubscribe-auth/AQMOIFYIN7N6QRIXAPL7PUTV6YN2FANCNFSM6AAAAAAQEOGHFA>\n> .\n> You are receiving this because you authored the thread.Message ID:\n> ***@***.***>\n>\n"
+  }
+ ]
+}

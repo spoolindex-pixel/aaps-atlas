@@ -1,0 +1,72 @@
+{
+ "id": 516744557,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1077,
+ "title": "numberwall_background not loaded on app start/phone reboot",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1077",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "widget"
+ ],
+ "created_at": "2019-11-02T22:34:57Z",
+ "closed_at": "2021-11-17T15:41:58Z",
+ "comment_count": 9,
+ "body": "numberwall_background is not loaded on reboot and is not displayed in configuration page after reboot.\r\nI believe people using this feature are wanting to display medic alert information on their lock screen, therefore this is an important feature to fix. \r\nFound on Galaxy S9 running 9.0\r\n",
+ "comments": [
+  {
+   "id": 778420788,
+   "user": "Navid200",
+   "created_at": "2021-02-12T19:58:37Z",
+   "body": "@zjedr Would you please explain how this problem can be recreated?\r\nAssume you are talking to someone who has never used xDrip.  Don't expect them to know what any acronym means.  Explain every single step required to recreate this problem.\r\nYour post contains 3 lines.  You may need to create a post that contains 30.  Use as many lines as you need to help us recreate the problem.\r\n\r\nAlternatively, if the issue has been resolved already, would you please close this issue?\r\nThanks"
+  },
+  {
+   "id": 778693913,
+   "user": "zjedr",
+   "created_at": "2021-02-13T23:37:53Z",
+   "body": "Number wall on lock screen does not display image after reboot.\r\n\r\nNumber wall on lock screen allows a background image to be display under the BG reading. \r\nThe image is not loaded on the lock screen or in xdrip setting after your phone is rebooted and xdrip has started.\r\n\r\n- number wall and image are set in Settings/xDrip+ Display Settings/Number Wall on Lock Screen\r\n- set 'Use on Lock screen' on\r\n- select 'Configure Number Wall', then select the folder icon and choose an image to display \r\n\r\nLock screen now displays image and BG reading correctly until phone is rebooted.\r\n\r\nAfter reboot (and xdrip starting) the background image is not displayed on the lock screen and is not shown in the 'Number Wall on Lock Screen' settings area.\r\n\r\nThis occurs on multiple phones including Samsung S9, Unihertz Atom on both Android 9 and 10, stable and nightly release.\r\n\r\nExample image:-\r\n<img src=\"https://user-images.githubusercontent.com/13398921/107864441-3d7f8980-6eb0-11eb-8cd1-8a73519bcb6f.png\" width=\"300\" />\r\n"
+  },
+  {
+   "id": 851740210,
+   "user": "Navid200",
+   "created_at": "2021-06-01T01:17:06Z",
+   "body": "After I restart the phone, I can still see the image until xDrip starts.  As soon as xDrip starts, after a reboot, the image disappears.  \r\nIt is as if the image is stored in a cache that is cleared by xDrip upon a restart."
+  },
+  {
+   "id": 852279513,
+   "user": "jamorham",
+   "created_at": "2021-06-01T16:47:04Z",
+   "body": "The numberwall is done using lockscreen wallpaper so it is quite likely the system will store this and display the old/previous one on reboot. I believe the issue being reported is that a customized background image is no longer applied after reboot.\r\n\r\nInvestigating this issue so far, I'm thinking it is that xDrip no longer has permission to load this image after reboot, that apps are granted external storage permission per reboot session maybe or possibly external storage isn't available at boot time. That would explain it I think. If that is the problem then I think I would instead. I will try to reproduce this to get a more exact idea of the cause of the problem."
+  },
+  {
+   "id": 852975928,
+   "user": "Navid200",
+   "created_at": "2021-06-02T12:13:55Z",
+   "body": "@jamorham Could this be related?\r\nThere seems to be an issue with getInternalName.\r\n\r\n![Untitled](https://user-images.githubusercontent.com/51497406/120477954-57b77780-c37a-11eb-8a9d-28b1f8f725ad.png)\r\n"
+  },
+  {
+   "id": 955090179,
+   "user": "marciogranzotto",
+   "created_at": "2021-10-29T22:54:39Z",
+   "body": "@Navid200 nope, that's because you have to install the Lombok plugin on android studio\r\nhttps://projectlombok.org/setup/android"
+  },
+  {
+   "id": 955092294,
+   "user": "Navid200",
+   "created_at": "2021-10-29T23:02:25Z",
+   "body": "@marciogranzotto Right\r\n\r\nAny idea what is causing this bug?"
+  },
+  {
+   "id": 955092933,
+   "user": "marciogranzotto",
+   "created_at": "2021-10-29T23:04:23Z",
+   "body": "I'm taking a look at the code now. I think the issue is that xDrip holds the path for the original image and for some reason it becomes null. I'm trying to get the chosen image and copy it to the app's internal storage. That way the app will always have a valid image file.\r\n\r\n"
+  },
+  {
+   "id": 955110821,
+   "user": "marciogranzotto",
+   "created_at": "2021-10-30T00:18:06Z",
+   "body": "![image](https://user-images.githubusercontent.com/11080704/139513345-27cbbf8f-fb74-41a8-adff-cc401a6810a6.png)\r\nyeah! here's the issue"
+  }
+ ]
+}

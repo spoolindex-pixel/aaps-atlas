@@ -1,0 +1,51 @@
+{
+ "id": 3704094107,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4395,
+ "title": "SMBs not delivered for extended time",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4395",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-12-07T22:55:41Z",
+ "closed_at": "2025-12-11T13:34:32Z",
+ "comment_count": 6,
+ "body": "AAPS 3.3.2.1\n\nBuild: 937e2bc-2025.08.22 \nFlavor: fullrelease \nNightscout version: 15.0.4 \nEngineering mode enabled\n\n![Screenshot_20251208-061918.png](https://github.com/user-attachments/assets/4fd49d1a-bf5c-4257-a63d-16aee8d6853d)\n\n![Screenshot_20251208-062055.png](https://github.com/user-attachments/assets/d3787be7-7cdc-443f-9f2f-976da93f4156)\n\n![Screenshot_20251208-062029.png](https://github.com/user-attachments/assets/45f0f96d-5e21-4864-91b0-3ffd6d597b77)\n\nUsing Pixel 8 Pro with Android 16\n\nIt seems like there is some bug with SMB delivery. This is the second time I've had this happen. AAPS can connect to pump and I can bolus via the app, but for some reason SMBs completely stop. When I try to refresh the OpenAPS SMB data it takes around a minute or 2 to execute.\n ![Screenshot_20251208-065120.png](https://github.com/user-attachments/assets/955d8312-f417-4741-bf7f-0ed7d94118ff)\n\n![AndroidAPS._2025-12-08_00-00-01_.0.zip](https://github.com/user-attachments/files/24020471/AndroidAPS._2025-12-08_00-00-01_.0.zip)\n\n\n\n",
+ "comments": [
+  {
+   "id": 3623846835,
+   "user": "andyrozman",
+   "created_at": "2025-12-08T00:02:02Z",
+   "body": "What is your BG source (CGM system)? Not all CGMS are good enough to have SMB. \n\nThis was probably extended but in past for example you could only use SMB with G5 and G6.. I imagine that this has now been extended to some other CGMS, but I am sure that not for all of them. So what is you CGMS?\n\nYou also seem to be using Dynamic ISF, which could also factor it... "
+  },
+  {
+   "id": 3625892245,
+   "user": "twinning92",
+   "created_at": "2025-12-08T09:25:02Z",
+   "body": "> What is your BG source (CGM system)? Not all CGMS are good enough to have SMB. \n\nYep, understood. This has been working for some time with the same CGM source. I'm using FSL2, which I believe is now considered viable. Additionally, there is no indication in the SMB tab that SMBs have been disabled.\n\n> You also seem to be using Dynamic ISF, which could also factor it... \n\nPossibly, but again, nothing has changed in the settings since it stopped working which is what has led me to submit this issue. One day SMBs were being delivered, and the next they were not. "
+  },
+  {
+   "id": 3629113440,
+   "user": "MilosKozak",
+   "created_at": "2025-12-08T21:39:36Z",
+   "body": "post the same screenshots before you do manual bolus causing high IOB"
+  },
+  {
+   "id": 3634637551,
+   "user": "twinning92",
+   "created_at": "2025-12-09T22:58:27Z",
+   "body": "@MilosKozak \n\nThe graph shows a manual bolus, but the logs were generated prior: 10/12/2025 at 04:37, 2 hours prior to the screenshot being taken.\n\n![Screenshot_20251210-063555.png](https://github.com/user-attachments/assets/7e718458-dcb2-4591-90f9-ee3fd0c750cc)\n\n![Screenshot_20251210-063418.png](https://github.com/user-attachments/assets/dc05c45b-194d-42b0-b8c5-d617088979ff)\n\nThe app is quite slow and unresponsive at the moment. My NS queue currently has 280,000ish entries. I'm not expert but would it be possible this is related? Rerunning the SMB values has been \"executing\" for at least 10 minutes already and the battery use of my phone is huge currently, you can see that in my first series of screenshots. \n\n![Screenshot_20251210-065415.png](https://github.com/user-attachments/assets/a8d24186-4184-4271-9c18-fd33e6b34a4e)\n\n\nI noticed shortly after your reply that Juggluco was not broadcasting data. Even a manual scan in Juggluco wasn't displaying in AAPS, however I've resolved that and getting some SMBs as you can see but they're patchy. This SMB frequency is not how AAPS usually performs, normally they're delivered in significantly greater numbers.\n\nShould I try to clear the db in Maintenance settings? \n\nThank you for your time, I appreciate it. "
+  },
+  {
+   "id": 3636747966,
+   "user": "MilosKozak",
+   "created_at": "2025-12-10T12:00:02Z",
+   "body": "you can try to clean db"
+  },
+  {
+   "id": 3641963935,
+   "user": "twinning92",
+   "created_at": "2025-12-11T13:34:17Z",
+   "body": "> you can try to clean db\n\nThanks, no good. I got it sorted with a reinstall. Thanks for your time\n\n"
+  }
+ ]
+}

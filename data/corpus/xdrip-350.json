@@ -1,0 +1,33 @@
+{
+ "id": 304981020,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 350,
+ "title": "time base from time buttons gets lost",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/350",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2018-03-14T00:20:33Z",
+ "closed_at": "2018-03-18T22:13:21Z",
+ "comment_count": 3,
+ "body": "**hi @all!**\r\n\r\nI'm new to android developement and really love this app, although it was a bit compicated in the beginning.\r\ni recently found the \"contributing.md\" and therefore closed my first commit on jamorhams page:\r\n[https://github.com/jamorham/xDrip-plus/pull/49]()\r\n\r\nCan anybody tell me, if this project is synchronous to @jamorham 's?\r\n\r\nThe issue is, that the timebase of the main graph is often overwriten, maybe by\r\n`hours = DEFAULT_CHART_HOURS;` line 190\r\n\r\nI could resolve this, as mentioned in the pull above, but I dont think its a good way to do it with a one line change to the timebase, because the x-axis of the graph always changes on every circumstance, when the graph is updated. maybe by:\r\n`setViewport() in java/home`\r\n\r\na fixed timebase on the horizontal axis should be standard, and i don't know how to do this with minor changes in \"home\". Im sry i had to change so much, but it was really easier for me, to rewrite the chart functions to one function that DRAWS the chart, and an UPDATE function. i didnt even really understand the need for the update function, as its easier to redraw it every time, but i left this \"as it is\" in my pull and everything worked really fine afterwards.\r\n\r\nWhat i wanted to say is, that its easier to restructure the code, then to fix the bugs. For me it just happened that way, as i tried to understand how it works\r\n\r\n\r\nI also would like to have a fixed ratio between horizontal and vertical axis, but maybe I'll open another issue to discuss this\r\n\r\nPlease tell me what you think and also have a look on my comment on this calibration issue (-: \r\nhttps://github.com/NightscoutFoundation/xDrip/issues/241",
+ "comments": [
+  {
+   "id": 372954865,
+   "user": "jamorham",
+   "created_at": "2018-03-14T09:21:41Z",
+   "body": "Have you used the March 13th version? You can long press the time buttons to lock a particular time period for the graph."
+  },
+  {
+   "id": 373057090,
+   "user": "RaabenF",
+   "created_at": "2018-03-14T15:12:48Z",
+   "body": "no sry, but i'll give it a try thanks. \r\ni like to try anyway cause i'm excited about the android statusbar update\r\n\r\nwould it be ok, to try to delete some of the, better all `setViewport()` calls, or try to find out if they're necessary?\r\n\r\ni really would like to switch back to your versions, therefore i have to ask about is it somehow practicable to switch to _horizontal and vertical_ zoom. i really really need this\r\n\r\nhave a nice day"
+  },
+  {
+   "id": 374056222,
+   "user": "RaabenF",
+   "created_at": "2018-03-18T22:13:21Z",
+   "body": "ok don't know how you did this, but it seems to work. everything about the graph looks fine now"
+  }
+ ]
+}

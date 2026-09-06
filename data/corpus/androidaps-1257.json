@@ -1,0 +1,45 @@
+{
+ "id": 1120708347,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1257,
+ "title": "[3.0.0] CGM Eversense integration does not work",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1257",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-02-01T13:57:26Z",
+ "closed_at": "2022-02-07T14:55:17Z",
+ "comment_count": 5,
+ "body": "AAPS Version: 3.0.0\r\nBuild Version: a2411bb51-2022-02-01-08:40\r\nFlavour: fullrelease\r\nNS Version: 14.2.5\r\n\r\nHello,\r\nas already recognized for the RC3 version, the BG reading from Eversense does not work in AAPS 3.0.0. For older versions, it worked with patched ES apk -> ESEL -> MM640g in AAPS.\r\nBut this does not work with the new AAPS version. The BG values are simply not available. As workaround, it is possible to get them via xDrip+ (and 640g / Eversense as source in xDrip+), but the direct connection seems to be broken.\r\n\r\nRegards\r\nBernhard",
+ "comments": [
+  {
+   "id": 1027998022,
+   "user": "AdrianLxM",
+   "created_at": "2022-02-02T14:31:31Z",
+   "body": "@BernhardRo \nCould you please set a break point in line 93 of the `LocalBroadcaster` and check if you get the AAPS package name?\n \n```\n ​            ​if​ (packageName ​!=​ ​null​) {\n```"
+  },
+  {
+   "id": 1028140091,
+   "user": "BernhardRo",
+   "created_at": "2022-02-02T16:49:52Z",
+   "body": "Yes, I have it:\r\n![image](https://user-images.githubusercontent.com/35614076/152199054-cfd6d85c-2509-4250-8b2a-852ff232e2d8.png)\r\n\r\nthere are 3 receivers:\r\n![image](https://user-images.githubusercontent.com/35614076/152199431-48cd05dd-ad10-4919-b5f7-d7618d7d06ce.png)\r\n\r\nit is running in a virtual machine with AAPS and xDrip+ (and Esel) installed."
+  },
+  {
+   "id": 1028701787,
+   "user": "MilosKozak",
+   "created_at": "2022-02-03T08:02:56Z",
+   "body": "put here logs from AAPS (be sure there were some BGs sent)"
+  },
+  {
+   "id": 1029229853,
+   "user": "BernhardRo",
+   "created_at": "2022-02-03T17:31:49Z",
+   "body": "ADD TIME OF EVENT HERE:\r\nADD ISSUE DESCRIPTION OR GITHUB ISSUE REFERENCE NUMBER:\r\n-------------------------------------------------------\r\n(Please remember this will send only very recent logs.\r\nIf you want to provide logs for event older than a few hours,\r\nyou have to do it manually)\r\n-------------------------------------------------------\r\nAndroidAPS 3.0.0\r\nBuild: a2411bb51-2022.02.01-08:40\r\nRemote: https://github.com/BernhardRo/AndroidAPS.git\r\n\r\nFlavor: fullrelease\r\nNightscout-Version: 14.2.5\r\n\r\nLogfile:\r\n[AndroidAPS_LOG_1643909349641.log.zip](https://github.com/nightscout/AndroidAPS/files/7996892/AndroidAPS_LOG_1643909349641.log.zip)\r\n\r\n"
+  },
+  {
+   "id": 1029232397,
+   "user": "BernhardRo",
+   "created_at": "2022-02-03T17:34:42Z",
+   "body": "I have a debug session with @AdrianLxM on Saturday"
+  }
+ ]
+}

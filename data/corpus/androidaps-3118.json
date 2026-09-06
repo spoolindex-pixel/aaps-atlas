@@ -1,0 +1,63 @@
+{
+ "id": 2044770913,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3118,
+ "title": "Temporary target from AAPSClient",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3118",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-12-16T14:36:21Z",
+ "closed_at": "2024-11-30T21:28:34Z",
+ "comment_count": 8,
+ "body": "* AAPS Version: 3.2.0.2\r\n* Connection using NSClientV3 over websocket, temp target sync enabled\r\n* NS 15.0.3\r\n\r\nLet's assume aaps with SMB disabled with high temp target. We have active temp target of 8 and 10 minutes remaining.\r\nOn AAPS side I can just extend this temp target by entering new one without issues below.\r\n\r\nOn NSClient side I can also set new temp target but there is different behavior:\r\n\r\n1. during the sync on AAPS side there can be SMB issued in between those two high temp targets (looks like cancelling current TT, running the loop and maybe give some insulin, setting new TT that is coming).\r\n2. if there is active automation rule to set temp target for example to 5, this one wins and suppress the one coming from remote (such active rule effectively blocks manually set TT from remote).\r\n",
+ "comments": [
+  {
+   "id": 1859259577,
+   "user": "painbrain81",
+   "created_at": "2023-12-17T19:33:09Z",
+   "body": "it's solved with 3.2.0.3 i think"
+  },
+  {
+   "id": 1864920027,
+   "user": "MilosKozak",
+   "created_at": "2023-12-20T18:12:52Z",
+   "body": "@vmichalec can you re-test with 3.2.0.3 ?"
+  },
+  {
+   "id": 1868089279,
+   "user": "vmichalec",
+   "created_at": "2023-12-22T21:47:03Z",
+   "body": "I tested it shortly on 3.2.0.3:\r\nIssue 1) I didn't noticed this one again.\r\nIssue 2) Still there. I have an automation rule from 21:00 for TT of 5.0 and this rule mostly wins over TT from remote.\r\nI'm sending logs to email."
+  },
+  {
+   "id": 1878428000,
+   "user": "MilosKozak",
+   "created_at": "2024-01-05T10:12:25Z",
+   "body": "ad 2) i need screenshots what happened (overview, treatments - TT), exact automation rule, then logs with time of occurence"
+  },
+  {
+   "id": 1879245809,
+   "user": "vmichalec",
+   "created_at": "2024-01-05T20:54:44Z",
+   "body": "Ok, fresh case, started after 15:00\r\n- I have created a rule named `TT_DOWN_TO_5` (glucose >= 5.5 triggers TT 5.0 for 30 min)\r\n-  Here is the user activity log on the `AAPS` side\r\n   - 15:03 `TT_DOWN_TO_5` is executed\r\n   - 15:06 I have just set TT on the `AAPS` phone\r\n\r\n![Screenshot_20240105-151427](https://github.com/nightscout/AndroidAPS/assets/24793786/9fe8d05b-b2ce-4ee4-ab1d-35a049ea9358)\r\n\r\n- And the TT list on the `AAPS` phone\r\n\r\n![Screenshot_20240105-151504](https://github.com/nightscout/AndroidAPS/assets/24793786/1f6082ea-1811-4f0b-bbd5-8d120ac834c4)\r\n\r\n- On the `AAPSClient` side\r\n   - 15:10:16 I have set TT \r\n\r\n![Screenshot_20240105_151432_AAPSClient](https://github.com/nightscout/AndroidAPS/assets/24793786/f4bf4573-3508-42be-a12c-e7251967cb0e)\r\n\r\n- And the TT list on the `AAPSClient` phone\r\n\r\n![Screenshot_20240105_151511_AAPSClient](https://github.com/nightscout/AndroidAPS/assets/24793786/14583bbd-d67b-4539-8f34-dcfa54e3c658)\r\n\r\n- Finally we can return to the first/second screenshot of `AAPS` and see what happened after 15:10:16\r\n   - 15:10:22 `TT_DOWN_TO_5` is executed\r\n   - on the TT tab we can see two TT starting at 15:10 and this is the issue, simply said - automation rule TT wins over the TT from the `AAPSClient`\r\n\r\nI have also noticed few exceptions like this one in the log:\r\n```\r\n15:10:26.615 [RxCachedThreadScheduler-47] D/CORE: [UserEntryLoggerImpl$log$2.accept():61]: FAILED USER ENTRY: java.lang.NullPointerException: Parameter specified as non-null is null: method app.aaps.database.impl.Converters$ValueWithUnitWrapper.<init>, parameter wrapped [UserEntry(id=0, timestamp=1704386157814, utcOffset=3600000, action=TT, source=NSClient, note=, values=[TherapyEventTTReason(value=HYPOGLYCEMIA), Mgdl(value=144.0), null, Minute(value=60)])]\r\n```\r\nTo summarize my config:\r\n- aaps & client: 3.2.0.3\r\n- nightscout 15.0.3\r\n- there are two aaps-clients with full rights connected to this nightscout (subjects `vlado-full`, `betuta-full` )\r\n- I just wonder why there"
+  },
+  {
+   "id": 1937777718,
+   "user": "MilosKozak",
+   "created_at": "2024-02-11T14:57:51Z",
+   "body": "put the log here pls. I cannot find it in email"
+  },
+  {
+   "id": 1937864838,
+   "user": "vmichalec",
+   "created_at": "2024-02-11T20:45:22Z",
+   "body": "[Issue_3118.zip](https://github.com/nightscout/AndroidAPS/files/14234003/Issue_3118.zip)\r\n"
+  },
+  {
+   "id": 2509390900,
+   "user": "MilosKozak",
+   "created_at": "2024-11-30T21:28:34Z",
+   "body": "resolved in dev hopefuly"
+  }
+ ]
+}

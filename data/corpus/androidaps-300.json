@@ -1,0 +1,59 @@
+{
+ "id": 805536997,
+ "repo": "nightscout/AndroidAPS",
+ "number": 300,
+ "title": "Bolus percentage improvements in bolus wizard, and quickwizard",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/300",
+ "state": "closed",
+ "labels": [
+  "enhancement"
+ ],
+ "created_at": "2021-02-10T13:58:32Z",
+ "closed_at": "2026-02-26T09:51:40Z",
+ "comment_count": 7,
+ "body": "![Screenshot_20210210-135629_6](https://user-images.githubusercontent.com/64865503/107540360-43cae880-6bc6-11eb-8809-df4be91109d4.jpg)\r\n\r\n1) The units from \"Deliver this part of bolus wizard result\" should be considered before the Corr\r\n   (it would be easier to manage the correction)\r\n\r\n2) \"Deliver this part of bolus wizard result\" should have an own row within the details with the corresponding units on the right (maybe with a fine line above - meaning, that all above has been considered)\r\n\r\n3) optionally with a checkbox\r\n\r\n4) but more important with an input field for overriding the standard value\r\n   example use cases:\r\n   - if there is more active insulin on meal start, then you have to prebolus less\r\n   - if you know, you'll eat faster acting carbs, you have to prebolus more, maybe 100%\r\n\r\n5) in the row with the \"Result:\" 60% could be on the left, and Result: 1,30U on the right\r\n   (stating, that 60% has already been considered)\r\n\r\n6) Addition of Carb duration field under Carb\r\n\r\n7) Moving Corr input field to the very bottom, or under Carb time\r\n   (that the 3 Carb input fields are beside each other)\r\n\r\n8) Ability to consider custom bolus percentage for each quickwizard button (either before creating the button for the button itself, or after pressing the quickwizard button on the approval window)\r\n\r\n9) IMHO if a percentage is used Superbolus should not be available. %<100 means, you want less insulin now, but maybe some more later. Forcing more insulin now and setting a zerotemp for a fixed time goes against it and suspends the loop, too.\r\n\r\n10) Therefore Superbolus should be positioned under the row of Bolus %.\r\n\r\n11) Superbolus-fans would surely appreciate some customization with an input field (example: range 0-3h; increment 0,5h; default 2h).\r\n\r\nThanks & feel free to discuss :)\r\n\r\n-------------------------------\r\n\r\nThis is how we do it right now:\r\n- input all carbs to bolus wizard to get 100% bolus (with every checkbox except TT checked)\r\n- cancel\r\n- calculate (in the head) the exact pre-bolus considering a custom %\r\n- delivering pre-bolus with the \"Insulin\" button\r\n- waiting for delivery\r\n- entering extended Carbs with the \"Carbs\" button\r\n\r\nAll in all: you have to use 3 buttons (Bolus Wiz, Insulin, Carbs); calculate in head; wait for insulin delivery",
+ "comments": [
+  {
+   "id": 778166720,
+   "user": "MilosKozak",
+   "created_at": "2021-02-12T12:27:52Z",
+   "body": "wizard is the most used dialog and keeping it small and simple saves time to everyone. adding more controls for rare cases goes directly against it.\r\nSo sorry but no for now"
+  },
+  {
+   "id": 778169835,
+   "user": "szantos",
+   "created_at": "2021-02-12T12:34:36Z",
+   "body": "@MilosKozak \r\nThanks for considering.\r\n1,2,3,5,8,9,10 are not about adding anything new (ok, 2,3 adds a new line).\r\nThey all help the understanding, or put some things in the right place (considering corr after %; no superbolus if %)."
+  },
+  {
+   "id": 778404418,
+   "user": "Philoul",
+   "created_at": "2021-02-12T19:28:31Z",
+   "body": "@szantos FYI You can take a look on this proposal close to some of yours and associated comments... https://github.com/MilosKozak/AndroidAPS/issues/2462"
+  },
+  {
+   "id": 791950373,
+   "user": "Philoul",
+   "created_at": "2021-03-06T13:59:16Z",
+   "body": "@MilosKozak do you think we could have 2 \"level\" of layout for calculator (short click for a simple one, long click with more fields as proposed here)\r\n- I think we could simplify current layout for a short click if we hide BG field if bg value is available, and the row with profile and superbolus\r\n- For a long click (advanced settings) all requested fields here : carb duration, super bolus duration, override default % of bolus...\r\n\r\nSide question, how we calculate a bolus for extended carbs without safety risks if a long duration is selected ?"
+  },
+  {
+   "id": 795786601,
+   "user": "szantos",
+   "created_at": "2021-03-10T17:31:32Z",
+   "body": "@Philoul \r\nYour side question is actually a very good one, as extended carbs are not covered by the bolus calculator, and it is the right way.\r\nI'll try to figure out a new concept."
+  },
+  {
+   "id": 1061179877,
+   "user": "Andries-Smit",
+   "created_at": "2022-03-07T22:00:09Z",
+   "body": "@szantos point 8 was implemented in PR #1317 "
+  },
+  {
+   "id": 3965450986,
+   "user": "MilosKozak",
+   "created_at": "2026-02-26T09:51:40Z",
+   "body": "implemented in https://github.com/nightscout/AndroidAPS/commit/6616be42791eb8ced53ee6ec2d1f878c1629c897"
+  }
+ ]
+}

@@ -1,0 +1,131 @@
+{
+ "id": 483025694,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 985,
+ "title": "Libre 2 NFC scan ",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/985",
+ "state": "closed",
+ "labels": [
+  "device-libre"
+ ],
+ "created_at": "2019-08-20T18:53:03Z",
+ "closed_at": "2024-07-05T19:32:14Z",
+ "comment_count": 19,
+ "body": "Hi,\r\n\r\nCurrently xdrip can't scan libre 2 with Nfc and also not retrieve history from patched librelink app. Please add Nfc scan for libre 2 and possibility to retrieve missed reading.\r\n\r\nThank you.",
+ "comments": [
+  {
+   "id": 523154365,
+   "user": "MasterPlexus",
+   "created_at": "2019-08-20T19:09:25Z",
+   "body": "@adenis76, unfortunately there is at the moment no way to add this functionality to xdrip. In Libre 2 everything is encrypted, and the keys are not known. If nobody can get the keys, a direct scan will not work."
+  },
+  {
+   "id": 523411758,
+   "user": "nsghub",
+   "created_at": "2019-08-21T11:14:17Z",
+   "body": "There is a new Blucon Nightrider for the Libre 2. So somebody already found the keys. Maybe someone could talk to the guys from Ambrosia."
+  },
+  {
+   "id": 523856279,
+   "user": "chaosbiber",
+   "created_at": "2019-08-22T11:01:09Z",
+   "body": "Ambrosia wasn't the first. There was a group that found a first solution around April(?) this year and offered Ambrosia, MiaoMiao and alike the libraries if they make a donation to the Nightscout foundation. Don't know if any company uses that lib or if they did something on their own. But the problem is: those readings aren't as accurate as the data that comes from the patched libre app. They'll differ quite a bit and are much more noisy. So the question is: is it worth the effort of implementing that function in xDrip until the protocols of libre2 are fully reverse engineered?"
+  },
+  {
+   "id": 524194567,
+   "user": "adenis76",
+   "created_at": "2019-08-23T06:47:17Z",
+   "body": "My real \"problem\" here is gap on xdrip and nightscout graph when phone lose connection with sensor. With blucon and libre 1 sensor xdrip retrieve missed libre history. Can we add possibility to xdrip to retrieve missed readings from patched librelink app? "
+  },
+  {
+   "id": 533018669,
+   "user": "mysticprog",
+   "created_at": "2019-09-19T08:08:58Z",
+   "body": "So, Libre 2 over Bluecon is not supported ? Is MiaoMiao 2 supported i xdrip ?\r\nThanks."
+  },
+  {
+   "id": 533021985,
+   "user": "tzachi-dar",
+   "created_at": "2019-09-19T08:18:02Z",
+   "body": "We are working on this."
+  },
+  {
+   "id": 533022611,
+   "user": "mysticprog",
+   "created_at": "2019-09-19T08:19:49Z",
+   "body": "Ok. Thanks"
+  },
+  {
+   "id": 686513290,
+   "user": "dideldum",
+   "created_at": "2020-09-03T14:01:46Z",
+   "body": "The patched LibreLink sends also an Intent \"com.librelink.app.ThirdPartyIntegration.SENSOR_SCAN\" with all the scanned values (historic and realtime). I tried it in a small test app and all the scanned values seem to be there.\r\nIt's just xDrip+, which doesn't take this intent and fills the gap with the scanned values.\r\nCouldn't xDrip+ implement the reception of this patched LibreLink intent?"
+  },
+  {
+   "id": 686552549,
+   "user": "mysticprog",
+   "created_at": "2020-09-03T15:00:42Z",
+   "body": "> The patched LibreLink sends also an Intent \"com.librelink.app.ThirdPartyIntegration.SENSOR_SCAN\" with all the scanned values (historic and realtime). I tried it in a small test app and all the scanned values seem to be there.\r\n> It's just xDrip+, which doesn't take this intent and fills the gap with the scanned values.\r\n> Couldn't xDrip+ implement the reception of this patched LibreLink intent?\r\n\r\nI'm just interested. Why do you need it? Well you have readings in XDrip every 5 minutes so I don't see the point in the suggestion.\r\n"
+  },
+  {
+   "id": 686576625,
+   "user": "dideldum",
+   "created_at": "2020-09-03T15:37:23Z",
+   "body": "> I'm just interested. Why do you need it? Well you have readings in XDrip every 5 minutes so I don't see the point in the suggestion.\r\n\r\nWe even get readings from LibreLink in xDrip+ every minute (not just every 5), so this is great. But if you leave the device with the patched LibreLink/xDrip+ somewhere and miss values, you cannot fill the gap currently in xDrip+.\r\n\r\nWith transmitters like MiaoMiao this is done, the gap is filled. With the patched LibreLink this is also possible, xDrip+ just must receive the intent and handle the scanned data.\r\n\r\nIt's just the matter of filling gaps!\r\n"
+  },
+  {
+   "id": 792023381,
+   "user": "Navid200",
+   "created_at": "2021-03-06T18:56:13Z",
+   "body": "What is the update on this?"
+  },
+  {
+   "id": 803457833,
+   "user": "Navid200",
+   "created_at": "2021-03-20T20:20:36Z",
+   "body": "Please update if there is still no work-around for this and reopen."
+  },
+  {
+   "id": 1159303907,
+   "user": "tarlepp",
+   "created_at": "2022-06-17T23:36:48Z",
+   "body": "I'm having this issue ATM - I need to scan with libre so that I can provide that information to my health center. Is there some setting in xdrip that I need to change to allow also use libre reader + xdrip together?"
+  },
+  {
+   "id": 1159309826,
+   "user": "Navid200",
+   "created_at": "2022-06-17T23:58:08Z",
+   "body": "@psonnera @tzachi-dar \r\nIs this still an issue?"
+  },
+  {
+   "id": 1159654191,
+   "user": "psonnera",
+   "created_at": "2022-06-19T08:29:16Z",
+   "body": "@Navid200 this is not an issue with Libre 2 EU that is supported as well as Libre 1, 1 US and Pro with NFC scan in xDrip+ (might require OOP2) https://xdrip.readthedocs.io/en/latest/install/libreNFC/#supported-sensors"
+  },
+  {
+   "id": 1159679612,
+   "user": "tarlepp",
+   "created_at": "2022-06-19T10:16:38Z",
+   "body": "I have Libre 2 EU sensor and it's working just fine with xDrip+ but the problem is that IF I use xDrip+ with my miaomiao reader I cannot use Libre reader OR Libre reader app in my phone - those cannot find the sensor at all.\r\n\r\nWhen I first started to use xDrip+ Libre and phone app worked as expected, but after that two last sensors I'm seeing this behaviour - So I guess that \"something\" has changed on the sensor itself etc."
+  },
+  {
+   "id": 1159682306,
+   "user": "psonnera",
+   "created_at": "2022-06-19T10:27:23Z",
+   "body": "@tarlepp if you're using a Miaomiao2 that's a known issue. Try to disable xDrip+ and check the issue remains, this would confirm it's bridge relevant and not xDrip+. Next sensor check the angle at which you installed it and try different rotation to reduce the shielding effect on the sensor antenna."
+  },
+  {
+   "id": 1159721146,
+   "user": "tarlepp",
+   "created_at": "2022-06-19T13:04:17Z",
+   "body": "I'm using MiaoMiao3 and not MiaoMiao2, so most likely some another issue."
+  },
+  {
+   "id": 1666543473,
+   "user": "jain-shreyansh",
+   "created_at": "2023-08-05T16:10:31Z",
+   "body": "> We are working on this.\r\n\r\nany progress?"
+  }
+ ]
+}

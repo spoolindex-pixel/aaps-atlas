@@ -1,0 +1,41 @@
+{
+ "id": 3151120499,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 4052,
+ "title": "Missed reading alert does not trigger for xDrip Sync follower",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/4052",
+ "state": "closed",
+ "labels": [
+  "ux-alarm"
+ ],
+ "created_at": "2025-06-16T19:47:39Z",
+ "closed_at": "2025-06-17T10:35:03Z",
+ "comment_count": 4,
+ "body": "_Relevant discussion in https://github.com/NightscoutFoundation/xDrip/discussions/4049_",
+ "comments": [
+  {
+   "id": 2978526181,
+   "user": "Navid200",
+   "created_at": "2025-06-17T00:11:39Z",
+   "body": "@osery Thanks for reporting this.  I will see if I can fix it.  \n\nYou will get notifications for all posts made in this issue.  You can unsubscribe if you like.\nSome of the posts are just to have everything on the record.  Some will be to communicate with our lead developer and ask for his advice.  \n"
+  },
+  {
+   "id": 2978550718,
+   "user": "Navid200",
+   "created_at": "2025-06-17T00:28:28Z",
+   "body": "@jamorham @tzachi-dar \nI set up a test phone as an xDrip Sync follower running the latest Nightly release.\nI enabled Missed Reading alert and set it to trigger after 6 minutes of no readings.\nAfter a while having 6 or 7 readings, I disabled WiFi with no sim card in the phone.  \nNo missed reading alert is triggered.\n\nPerforming the exact same test as a Nightscout follower results in a missed reading alert.\n\nSo, I thought we must have made a change causing this while we made the major change to xDrip Sync in July 2024.\nI installed an older version of xDrip, 2024.07.17, before that change on the follower.\nI disabled \"Use xDrip Cloud\" on the master.  I got readings in the follower.  Waited for 5 readings.  Then, disabled WiFi again.  I was surprised that there still was no missed reading alert.  \n\nThis tells me that we have never had a working missed reading alert for xDrip Sync.  But, why has no one reported this for years until now?  \n\nI see that the missed reading alert is not active unless there is a local sensor.  I see that there is a line in the code that creates a local sensor for a Nightscout follower if one does not exist.  But, there isn't one for xDrip Sync.\nI am going to experiment with removing the requirement for a local sensor for xDrip Sync follower and if my tests succeed, open a PR."
+  },
+  {
+   "id": 2979173105,
+   "user": "osery",
+   "created_at": "2025-06-17T07:00:48Z",
+   "body": "Fwiw, this definitely used to work in the past. We are running in this settings for many years and we used to get the alerts every now and then. I am not sure how long ago that stopped working though. Could have been quite a few months."
+  },
+  {
+   "id": 2980099596,
+   "user": "Navid200",
+   "created_at": "2025-06-17T11:59:42Z",
+   "body": "This should be fixed now as of this release: https://github.com/NightscoutFoundation/xDrip/releases/tag/2025.06.17 "
+  }
+ ]
+}

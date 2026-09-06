@@ -1,0 +1,39 @@
+{
+ "id": 837199001,
+ "repo": "nightscout/AndroidAPS",
+ "number": 435,
+ "title": "AAPS stops running loop silently (no errors)",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/435",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-03-21T22:26:04Z",
+ "closed_at": "2021-06-23T20:37:18Z",
+ "comment_count": 4,
+ "body": "Occasionally AAPS stops running loop. Autosens also stops updating. AAPS log shows:\r\n\r\n```21:40:59.051 [Thread-659] D/AUTOSENS: [IobCobCalculatorPlugin.createBucketedData5min():456]: Adjusting bucketed data time. Current: 21/03/21 20:15:10 to: 21/03/21 20:13:54 by 76 sec\r\n21:40:59.051 [Thread-659] D/AUTOSENS: [IobCobCalculatorPlugin.createBucketedData5min():456]: Adjusting bucketed data time. Current: 21/03/21 20:20:38 to: 21/03/21 20:18:54 by 104 sec\r\n21:40:59.051 [Thread-659] D/AUTOSENS: [IobCobCalculatorPlugin.createBucketedData5min():459]: Fallback to non 5 min data\r\n21:40:59.052 [Thread-659] D/CORE: [IobCobCalculatorPlugin.createBucketedDataRecalculated():365]: Adjusted time 21/03/21 21:41:18\r\n21:40:59.052 [Thread-659] D/AUTOSENS: [IobCobOref1Thread.run():126]: Aborting calculation thread (No bucketed data available): onEventNewBG\r\n21:40:59.052 [Thread-659] D/AUTOSENS: [IobCobOref1Thread.run():396]: AUTOSENSDATA thread ended: onEventNewBG\r\n```\r\n\r\nIn this case it seems to be something to do with how eversense logs BG data but it may impact other sensors.\r\n\r\nIncreasing the fallback threshold slightly allows loop to continue working.",
+ "comments": [
+  {
+   "id": 805891985,
+   "user": "MilosKozak",
+   "created_at": "2021-03-24T14:58:18Z",
+   "body": "what version?"
+  },
+  {
+   "id": 806067295,
+   "user": "overfrenk",
+   "created_at": "2021-03-24T18:42:01Z",
+   "body": "2.7.x to 2.8.x all version"
+  },
+  {
+   "id": 841722539,
+   "user": "overfrenk",
+   "created_at": "2021-05-15T20:43:28Z",
+   "body": "Will there be something on the new versions that fixes this problem?"
+  },
+  {
+   "id": 867140482,
+   "user": "MilosKozak",
+   "created_at": "2021-06-23T20:37:18Z",
+   "body": "this is completely reworked in dev"
+  }
+ ]
+}

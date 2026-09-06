@@ -1,0 +1,39 @@
+{
+ "id": 4512236414,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4854,
+ "title": "Dana-i BLE pairing problem on Samsung S6 edge/G925F (zerolte) Android 12.1 (lineage 19.1)",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4854",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2026-05-24T16:28:35Z",
+ "closed_at": "2026-05-25T20:04:27Z",
+ "comment_count": 4,
+ "body": "After upgrading to Android 12.1, AndroidAPS cannot communicate or pair with DanaI any more.\n\n## Error messages: \n> ```\n> Couldn't pair with JZ-DanaI-FI because of an incorrect PIN or passkey\n> \n> ```\n(ID anonymized)\n\n#### Bottom of screen: \n> ```\n> Connecting for xx s\n> READSTATUS: Device changed\n> ```\nthen overlaid by\n> ```\n> Bluetooth Low Energy not supported or device not paired\n> ```\n\n## Setup and Genesis of problem:\n1. Previous setup AAPS 3.3.1.3 , Samsung S6 edge/G925F (zerolte) , [Android 11 (lineage 18.1)](https://xdaforums.com/t/rom-sm-g920-5f-11-0-unofficial-lineageos-18-1.4576015/), Magisk for root, but no Google/gapps.\n4. Changed to Medtrum Nano for two weeks of testing. During that time\n5. Updated the phone to  [Android 12.1 (lineage 19.1)](https://xdaforums.com/t/rom-unofficial-12-1-lineageos-19-1.4483531/page-31#post-90592092) (Procedure described below, in case it's of any help for others). Again, Magisk for root, but no Google/gapps. (This means that xDrip cannot communicate with TidePool, and Juggluco won't run either).\n6. Medtrum Nano continued to run smoothly (two hours of downtime during backup-flash-restore, backfill even filled the gaps in data)\n7. One week later... changed Pump back to Dana-i\n8. Communication fails since then. The correct MAC is discovered, the Pump shows some communication, but cannot (re)establish pairing. remedies tried: \n    - remove pairing by long-pressing BT symbol - cannot reestablish pairing, but the previous pairing key is gone from the config file.\n    - remove previous pump from config file (the pump had ben replaced)\n    - remove all information about pump from config file\n   -  deleted AAPS, reinstalled 3.3.1.3, no improvement\n8.  Built AAPS 3.4.2.2, tried with old database - fails.\n9. deleted and reinstalled from fresh database - fails. \n10. The Phone itself shows no pairing with the pump.\n11. xDrip/Dexcom G6 is running smoothly. \n\nAttached: Logfiles from AAPS 3.4.2.2 after fresh install  (failed to upload, I'll try to add them in a comment)\nIn the logfiles, the ID of the pump is anonymized to `ZJ-DanaI-FI`, the MAC to `FE:xx:xx:xx:xx:C2`.\nFor example:\n```\n16:00:51.731 [DefaultDispatcher-worker-2] D/PUMPQUEUE: [QueueWorker.doWorkAndLog():119]: connect\n16:00:51.735 [DefaultDispatcher-worker-2] D/EVENTS: [RxBusImpl.send():25]: Sending EventPumpStatusChanged[error=,performingAction=,secondsElapsed=1,status=CONNECTING]\n16:00:51.739 [DefaultDispatcher-worker-2] D/PUMP: [DanaRSPlugin.connect():181]: RS connect from: Connection needed\n16:00:51.743 [DefaultDispatcher-worker-2] D/PUMPBTCOMM: [BLEComm.connect():117]: Initializing BLEComm.\n16:00:53.076 [main] D/EVENTS: [RxBusImpl.send():25]: Sending EventBTChange[deviceAddress=FE:xx:xx:xx:xx:C2,deviceName=ZJ-DanaI-FI,state=CONNECT]\n16:00:53.080 [RxCachedThreadScheduler-68] D/AUTOMATION: [AutomationPlugin$onStart$12.accept():193]: Grabbed new BT event: EventBTChange[deviceAddress=FE:xx:xx:xx:xx:C2,deviceName=ZJ-DanaI-FI,state=CONNECT]\n- [some Autosens, automation related stuff, followed by:]\n16:00:53.571 [main] D/EVENTS: [RxBusImpl.send():25]: Sending EventBTChange[deviceAddress=FE:xx:xx:xx:xx:C2,deviceName=ZJ-DanaI-FI,state=DISCONNECT]`\\\n```\n\n\nThanks for looking into this..\n",
+ "comments": [
+  {
+   "id": 4529362829,
+   "user": "th122",
+   "created_at": "2026-05-24T16:38:10Z",
+   "body": "## Logfiles \n- [2026-05-24-AAPS-4.2.2-BlankInstall.log](https://github.com/user-attachments/files/28195693/2026-05-24-AAPS-4.2.2-BlankInstall.log)\n- [2026-05-24-AAPS-4.2.2-FirstStartWithRestoredDB+Config.log](https://github.com/user-attachments/files/28195699/2026-05-24-AAPS-4.2.2-FirstStartWithRestoredDB%2BConfig.log)"
+  },
+  {
+   "id": 4529364695,
+   "user": "th122",
+   "created_at": "2026-05-24T16:39:00Z",
+   "body": "## PS: Brief run through updating the phone (rooted, bootloader unlocked)\n### Backup of AAPS and xDrip\nBoth applications halted to fetch their databases while quiescent.\n```\ncomputer% adb shell\nzerolte% su\nzerolte# cd /data/data\nzerolte# pm disable com.eveningoutpost.dexdrip\nzerolte# pm disable info.nightscout.androidaps\nzerolte# tar czf /sdcard/Download/d-d-xdrip.tar.gz com.eveningoutpost.dexdrip\nzerolte# tar czf /sdcard/Download/d-d-aaps.tar.gz info.nightscout.androidaps\ncomputer% adb pull /sdcard/Download /export/Backup/Android/\n```\n### (flashed telephone with lineage and Magisk (for root))\nthen \n### re-enabled USB debugging, reinstalled xDrip and AAPS:\n```\ncomputer% adb install xDrip-plus-20260327-049ce18.apk AAPS-3.3.1.3-th.apk\ncomputer% adb shell\nzerolte% su\nzerolte# cd /data/data\nzerolte# pm disable com.eveningoutpost.dexdrip\nzerolte# pm disable info.nightscout.androidaps\n# remember uid and gid of newly installef xDrip  in  /sdcard/Download/xdrip.uid\n# needed, since restore also restores the old uid:gid from the previous installation.\nzerolte# ls -ld com.eveningoutpost.dexdrip > /sdcard/Download/xdrip.uid\nzerolte# ls -ld info.nightscout.androidaps > /sdcard/Download/aaps.uid\nzerolte# tar xzf /sdcard/Download/d-d-xdrip.tar.gz\n# look up uid and gid in /sdcard/Download/xdrip.uid and use it to repair permissions:\nzerolte# chown -R uid:gid com.eveningoutpost.dexdrip   \nzerolte# tar xzf /sdcard/Download/d-d-aaps.tar.gz\n# look up uid and gid in /sdcard/Download/aaps.uid and use it to repair permissions:\nzerolte# chown -R uid:gid info.nightscout.androidaps \n# (it's safe to remove the cache files. If you want to keep them remember that they \n# have a different uid and gid following the pattern uid_cache)\n```\n\nNow that data directories and permissions have been restored, \nre-enable xDrip and aaps\n```\nzerolte# pm enable com.eveningoutpost.dexdrip\nzerolte# pm enable info.nightscout.androidaps\n```\n\nStarted both for the first time, and they just ran on, no new pairing need"
+  },
+  {
+   "id": 4529790790,
+   "user": "MilosKozak",
+   "created_at": "2026-05-24T19:50:26Z",
+   "body": "https://www.gsmarena.com/samsung_galaxy_s6_edge-7079.php\nS6 is BLE 4.1\nDana-I is BLE 5\ntry in on some recent phone"
+  },
+  {
+   "id": 4529868649,
+   "user": "th122",
+   "created_at": "2026-05-24T20:24:17Z",
+   "body": "I may have to downgrade that Phone to Android 11 if that's the issue, and remain on 3.3 to get the loop back for now then. It was rock-solid in that configuration.\nThanks for looking into that."
+  }
+ ]
+}

@@ -1,0 +1,53 @@
+{
+ "id": 956724725,
+ "repo": "nightscout/AndroidAPS",
+ "number": 619,
+ "title": "[2.8.2.2-dev] NSClient Full Sync => \"Infinite duration\" (> 1 month) / and new BG values from G6 not updated in NS during sync",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/619",
+ "state": "closed",
+ "labels": [
+  "unknown_reason"
+ ],
+ "created_at": "2021-07-30T13:00:17Z",
+ "closed_at": "2021-10-17T11:07:31Z",
+ "comment_count": 6,
+ "body": "v 2.8.2.2-dev\r\n\r\nI think it's a real bug of full sync function : I decided about 40 hours ago to click on Full Sync in NSClient...\r\n\r\nAt the beginning it was quite fast (about 1 value/s but still remaining #67500 BG values, #1200 TempTarget, #1950 TherpyEvents, #11400 boluses, #1050 carbs, #24800 temp Basal, #3800 Extended bolus\r\n=> Raw estimation of 31 hours for the full synchronization... Quite a long duration!\r\n\r\nBut 40 hours later, it still remains 25400 BG values, but it takes now about 2 min per value (each value is sent and acked about 30 ot 40 times...)\r\n=> new estimated time :  1.5 or 2 months to finish the full sync !!!\r\n\r\nAnd during the sync no new BG value received from Dexcom patched app is updated in NS web site...\r\n\r\nI don't know how to stop the synchronization (when I stop and restart AAPS, synchronisation continue, I also tried Clear Log, Restart and Deliver now buttons but nothing works...)\r\n![fullsyncbug](https://user-images.githubusercontent.com/52934600/127656020-d3c6d648-69d5-453a-8ecb-b602220608eb.jpg)\r\n",
+ "comments": [
+  {
+   "id": 890027451,
+   "user": "Philoul",
+   "created_at": "2021-07-30T16:58:57Z",
+   "body": "After a new stop and restart of AAPS it started again to sync at a better rate...\r\n=> I restarted AAPS because it becames very very slow and didn't receive several new BG values from Dexcom patched app...\r\n=> Generally this version of AAPS restart \"alone\" about once a day, but if it doesn't it becomes very slow... So it's better to restart it manually...\r\n\r\n![Screenshot_20210730-172501_AndroidAPS](https://user-images.githubusercontent.com/52934600/127676743-9521b49f-358a-4f83-b99e-5545ef047ee4.jpg)\r\n\r\n\r\n"
+  },
+  {
+   "id": 890120784,
+   "user": "Philoul",
+   "created_at": "2021-07-30T19:55:45Z",
+   "body": "And every about 2 hours, the number of sent / acked seems to be multiplied by 2 for each record...\r\n![fullsyncbug2](https://user-images.githubusercontent.com/52934600/127704744-65186b26-dff0-47a7-85cd-b264bdddc138.jpg)\r\n\r\nTell me if you want log..."
+  },
+  {
+   "id": 892536525,
+   "user": "Philoul",
+   "created_at": "2021-08-04T10:10:53Z",
+   "body": "finally, the full sync duration was about 50 hours (during this time no BG values were uploaded to NS), and I had to restart AAPS 3-4 times. (without restart I think the duration would have been much longer ...)"
+  },
+  {
+   "id": 897028927,
+   "user": "MilosKozak",
+   "created_at": "2021-08-11T17:52:42Z",
+   "body": "I agree it's slowing down during time. Unfortunately I don't know what's wrong ..... Maybe memory management in Android or java\r\nad double sent entries:\r\nthis code should prevent it `        if (startId == lastGvId && dateUtil.now() - lastGvTime < 5000) return false`\r\nno idea why it don't work"
+  },
+  {
+   "id": 897031066,
+   "user": "MilosKozak",
+   "created_at": "2021-08-11T17:56:01Z",
+   "body": "i made sync variable `@Volatile` now"
+  },
+  {
+   "id": 945093271,
+   "user": "MilosKozak",
+   "created_at": "2021-10-17T11:07:31Z",
+   "body": "resolved by https://github.com/nightscout/AndroidAPS/commit/516630215c3adfb32577a27bea2d9a09be58b03b"
+  }
+ ]
+}

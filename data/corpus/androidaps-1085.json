@@ -1,0 +1,77 @@
+{
+ "id": 1083519529,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1085,
+ "title": "[3.0-beta9] NSClient - Incorrect vertical position of BG check on graph",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1085",
+ "state": "closed",
+ "labels": [
+  "bug"
+ ],
+ "created_at": "2021-12-17T18:28:21Z",
+ "closed_at": "2022-01-03T16:35:41Z",
+ "comment_count": 11,
+ "body": "Hi, this is probably only displaying issue on NS client side, details in screenshots.\r\n\r\nHere is bg check of 5.8 correctly displayed on aaps graph, also entry in treatments shows value corrrectly. (Sorry for non-english screenshots)\r\n![AndroidAPS_01](https://user-images.githubusercontent.com/24793786/146589177-c0fd3ae3-748a-48e7-a018-8bf68f999942.jpg)\r\n\r\n![AndroidAPS_02](https://user-images.githubusercontent.com/24793786/146589198-fcce9f8a-4730-4c32-8fa4-4519f94bd7e8.jpg)\r\n\r\nBut on NS Client side the value is positioned on the bottom of the graph, not on correct y-axis (vertical) position.\r\n\r\n![NSClient_01](https://user-images.githubusercontent.com/24793786/146589213-47b52058-c98c-431f-a939-35c916ea9500.jpg)\r\n\r\nAnd also in entries screen the value is not shown in the BG check entry.\r\n\r\n![NSClient_02](https://user-images.githubusercontent.com/24793786/146589220-b5b7c4cf-f29c-489c-950a-e1e001acd809.jpg)\r\n\r\n",
+ "comments": [
+  {
+   "id": 997165301,
+   "user": "vmichalec",
+   "created_at": "2021-12-18T07:51:56Z",
+   "body": "**[3.0-beta11]** I have checked it also on latest beta. NSClient side treatments entry now shows also the value - perfect. Now I can see also the real problem behind - in AAPS I entered blood glucose on action tab as value of 30.0 mmol/L but on NSClient side there is shown as 1.7 mmol/L so now it is obvious. Graph position of the entry on NSClient side is now lite bit higher so it looks like the graph is correct and shows the label on 1.7 y-axis position.\r\n\r\nMoreover I'm using also 1.9.0.5 BYODA. Calibrations made here are shown correctly in AAPS and also NSClient."
+  },
+  {
+   "id": 998236312,
+   "user": "Philoul",
+   "created_at": "2021-12-20T20:11:55Z",
+   "body": "30mmol for a BG value! Very high, but 1.7 is a wrong convertion mg/dl to mmol/l.\r\nDid you see 1.7mmol in user entry or in another place?\r\n@vmichalec Can you check (if both AAPS AND NSClient are in latest version) if you still have this issue (I added recently BG value in User Entry received from ns client and fixed several bugs in unit convertion...)"
+  },
+  {
+   "id": 998605678,
+   "user": "vmichalec",
+   "created_at": "2021-12-21T09:16:54Z",
+   "body": "3.0-beta11 for aaps and nsclient, 14.2.5 nightscout version.\r\n\r\nDoing again now: I entered BG Check in action tab of 30 mmol/L on aaps side, it becomes 1.7 mmol/L on nsclient side. Graph position of the entry on nsclient is slightly bellow 2 so I think it is only unit conversion problem."
+  },
+  {
+   "id": 998621699,
+   "user": "Philoul",
+   "created_at": "2021-12-21T09:38:16Z",
+   "body": "Can you please send me a screenshot of \"user entry\" icon (treatments) in both phones to help me understand where is the bug"
+  },
+  {
+   "id": 998636764,
+   "user": "vmichalec",
+   "created_at": "2021-12-21T09:58:55Z",
+   "body": "AAPS:\r\n![AndroidAPS_01](https://user-images.githubusercontent.com/24793786/146910142-4087939a-3aac-4a66-9b75-9f0998786ef4.jpg)\r\n![AndroidAPS_02](https://user-images.githubusercontent.com/24793786/146910156-1a42b539-df75-4782-b51d-f64a3b7da245.jpg)\r\n![AndroidAPS_03](https://user-images.githubusercontent.com/24793786/146910164-f1a415f4-3401-4406-8625-f3df7352a9fe.jpg)\r\n![AndroidAPS_04](https://user-images.githubusercontent.com/24793786/146910172-a342da7c-0a46-4f5d-b542-0a07e1a67ff6.jpg)\r\n![AndroidAPS_05](https://user-images.githubusercontent.com/24793786/146910188-007f6ff7-db69-489c-b1de-1835e5e61add.jpg)\r\n\r\nNSClient:\r\n![NSClient_01](https://user-images.githubusercontent.com/24793786/146910226-31564efd-7770-4c6a-8207-0d84e5755469.jpg)\r\n![NSClient_02](https://user-images.githubusercontent.com/24793786/146910239-6ce8cd39-9622-4eb6-b6f6-1c3ac0471705.jpg)\r\n![NSClient_03](https://user-images.githubusercontent.com/24793786/146910253-872162d0-c904-4e61-a257-27d347a7baed.jpg)\r\n\r\n"
+  },
+  {
+   "id": 998661046,
+   "user": "Philoul",
+   "created_at": "2021-12-21T10:28:13Z",
+   "body": "@MilosKozak I confirm the bug, there is a wrong unit change somewhere between source phone and destination phone (see below send and received values in log)\r\n\r\nValue sent by source phone is OK (Unit is MMOL recorded in database and sent in NSCLIENT)\r\n```\r\n10:53:43.752 [RxCachedThreadScheduler-95] D/DATABASE: [NSClientAddAckWorker.doWork$lambda-7():114]: Updated ns id of TherapyEvent TherapyEvent(id=4438, version=0, dateCreated=1640080403090, isValid=true, referenceId=null, interfaceIDs_backing=InterfaceIDs(nightscoutSystemId=null, nightscoutId=61c1a427cfbcaf0004001c7d, pumpType=null, pumpSerial=null, temporaryId=null, pumpId=null, startId=null, endId=null), timestamp=1640080392000, utcOffset=3600000, duration=0, type=ANNOUNCEMENT, note=test notif, enteredBy=AndroidAPS, glucose=6.0, glucoseType=SENSOR, glucoseUnit=MMOL)\r\n10:53:43.763 [pool-19-thread-2] I/NSCLIENT: [DataSyncSelectorImplementation.processChangedTherapyEventsCompat():536]: Loading TherapyEvents data Start: 4438 ID: 4438 HistoryID: TherapyEvent(id=4439, version=0, dateCreated=1640080403090, isValid=true, referenceId=4438, interfaceIDs_backing=null, timestamp=1640080392000, utcOffset=3600000, duration=0, type=ANNOUNCEMENT, note=test notif, enteredBy=AndroidAPS, glucose=6.0, glucoseType=SENSOR, glucoseUnit=MMOL) \r\n```\r\n\r\nBut value received on the other phone, unit is wrong (MMOL is replaced by MGDL)\r\n```\r\n10:53:48.987 [pool-18-thread-2] D/DATABASE: [NSClientAddUpdateWorker.doWork():291]: Inserted TherapyEvent TherapyEvent(id=1152, version=0, dateCreated=1640080428971, isValid=true, referenceId=null, interfaceIDs_backing=InterfaceIDs(nightscoutSystemId=null, nightscoutId=61c1a427cfbcaf0004001c7d, pumpType=null, pumpSerial=null, temporaryId=null, pumpId=null, startId=null, endId=null), timestamp=1640080392000, utcOffset=3600000, duration=0, type=ANNOUNCEMENT, note=test notif, enteredBy=AndroidAPS, glucose=6.0, glucoseType=SENSOR, glucoseUnit=MGDL)\r\n```\r\n"
+  },
+  {
+   "id": 998674132,
+   "user": "Philoul",
+   "created_at": "2021-12-21T10:47:27Z",
+   "body": "Additionnally record is correct in NS (units = mmol) (with API V3 query)\r\n```\r\n    {\r\n      \"eventType\": \"Announcement\",\r\n      \"isValid\": true,\r\n      \"created_at\": \"2021-12-21T09:53:12.000Z\",\r\n      \"enteredBy\": \"AndroidAPS\",\r\n      \"units\": \"mmol\",\r\n      \"notes\": \"test notif\",\r\n      \"glucose\": 6,\r\n      \"glucoseType\": \"Sensor\",\r\n      \"isAnnouncement\": true,\r\n      \"identifier\": \"61c1a427cfbcaf0004001c7d\",\r\n      \"srvModified\": 1640080392000,\r\n      \"srvCreated\": 1640080392000\r\n    },\r\n```\r\n"
+  },
+  {
+   "id": 999126428,
+   "user": "Philoul",
+   "created_at": "2021-12-21T22:08:42Z",
+   "body": "Very strange Breakpoint in `TherapyEventExtension.kt`line 72 (`therapyEventFromJson` function), and the json string looks like that:\r\n\"unit\" = \"md/dl\" and I have a \"mmol\" key with value ???\r\n```\r\n{\r\n    \"_id\":\"61c2407fcfbcaf0004001dc4\",\r\n    \"eventType\":\"Question\",\r\n    \"isValid\":true,\r\n    \"created_at\":\"2021-12-21T21:00:28.000Z\",\r\n    \"enteredBy\":\"AndroidAPS\",\r\n    \"units\":\"mg\\/dl\",\r\n    \"notes\":\"test\",\r\n    \"glucose\":6.5,\r\n    \"glucoseType\":\"Finger\",\r\n    \"mills\":1640120428000,\r\n    \"mmol\":6.5,\r\n    \"targetTop\":null,\r\n    \"targetBottom\":null\r\n}\r\n```\r\n\r\nIt's not the json string got from NS (see below json strings with API V1 queries)\r\n```\r\n{\r\n    \"_id\":\"61c2407fcfbcaf0004001dc4\",\r\n    \"eventType\":\"Question\",\r\n    \"isValid\":true,\r\n    \"created_at\":\"2021-12-21T21:00:28.000Z\",\r\n    \"enteredBy\":\"AndroidAPS\",\r\n    \"units\":\"mmol\",\r\n    \"notes\":\"test\",\r\n    \"glucose\":6.5,\r\n    \"glucoseType\":\"Finger\",\r\n    \"mills\":1640120428000,\r\n    \"carbs\":null,\r\n    \"insulin\":null\r\n},\r\n```\r\nUnfortunatly I can't find where json string is modified to make a clean fix..."
+  },
+  {
+   "id": 1000609141,
+   "user": "kristinsmotz",
+   "created_at": "2021-12-24T02:07:41Z",
+   "body": "Have the same issue in beta11. \r\n![Screenshot_20211224-030454_NSClient](https://user-images.githubusercontent.com/71758682/147306951-b32ec5b0-ec66-45e7-8959-0ca7991c8007.jpg)\r\n5.3 mmol/l in AAPS phone, 0.3 mmol in NSClient phone... "
+  },
+  {
+   "id": 1004212272,
+   "user": "MilosKozak",
+   "created_at": "2022-01-03T16:35:41Z",
+   "body": "it's NS bug. reported to NS team"
+  }
+ ]
+}

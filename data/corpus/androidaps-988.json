@@ -1,0 +1,63 @@
+{
+ "id": 1063748130,
+ "repo": "nightscout/AndroidAPS",
+ "number": 988,
+ "title": "Various possibly related alerting issues.",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/988",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-11-25T15:57:28Z",
+ "closed_at": "2023-08-17T14:52:07Z",
+ "comment_count": 8,
+ "body": "Multiple Occurrences at various times\r\n3.0b7 (32857eb77-2021.11.23-12:12)\r\nOneplus 6, Android 11\r\n\r\nSummary of Case 1:\r\nAlert volume is erratic, typically very quiet and can't seem to be adjusted.  Sometimes the alert will start playing loudly and a couple seconds later the volume drops.  Generally noticed with cases of \"pump unreachable\" or \"Unable to set basal\" alerts.  In 2.8.2 volume was loud consistently.\r\n\r\nSummary of Case 2:\r\nAlerts will fire and begin to play the appropriate sound, but app doesn't always display the banner to allow for dismissal of the alert.  In 2 cases the banner appeared after ~30 seconds of waiting and in all other cases the app required a restart to stop the alarm\r\n\r\nSummary of Case 3:\r\nOn medtronic 722 pump case, when a larger bolus is delivered, while the bolus is being delivered AAPS may try to modify basal rates and errors out trying to update basal rate while bolus is being delivered.",
+ "comments": [
+  {
+   "id": 979363535,
+   "user": "PedanticAvenger",
+   "created_at": "2021-11-25T17:04:24Z",
+   "body": "More details.\r\nLocal alerts are not configured to use system notifications (as that doesn't seem to work as a regular user of an android phone would expect).  \r\nThe \"increase volume\" function also doesn't seem to work. When I let the alert run for an extended period the volume remains the same."
+  },
+  {
+   "id": 979370349,
+   "user": "MilosKozak",
+   "created_at": "2021-11-25T17:17:36Z",
+   "body": "to be able help i need logs"
+  },
+  {
+   "id": 980490339,
+   "user": "PedanticAvenger",
+   "created_at": "2021-11-27T02:46:44Z",
+   "body": "Log 1, most recent.\r\nExample of Case 3:  Also Case 1\r\n![Screenshot_20211126-183629](https://user-images.githubusercontent.com/15637097/143665733-8230f11b-5cae-4db3-86bc-e166b67882cf.jpg)\r\n[AndroidAPS_LOG_1637977009742.log.zip](https://github.com/nightscout/AndroidAPS/files/7611088/AndroidAPS_LOG_1637977009742.log.zip)\r\n\r\n\r\n"
+  },
+  {
+   "id": 980490751,
+   "user": "PedanticAvenger",
+   "created_at": "2021-11-27T02:50:33Z",
+   "body": "Earlier example, between 3:20 and 3:25 local time\r\n[AndroidAPS_LOG_1637965259496.log.zip](https://github.com/nightscout/AndroidAPS/files/7611091/AndroidAPS_LOG_1637965259496.log.zip)\r\n."
+  },
+  {
+   "id": 980491283,
+   "user": "PedanticAvenger",
+   "created_at": "2021-11-27T02:55:28Z",
+   "body": "Another alert related oddity.  Carbs requested banner could not be dismissed until app was restarted.  Button shows a press but banner remains.\r\n![Screenshot_20211125-203220](https://user-images.githubusercontent.com/15637097/143665909-062893cc-3fcb-4f40-a29a-8b59ce9f72e7.jpg)\r\n\r\n"
+  },
+  {
+   "id": 980645789,
+   "user": "andyrozman",
+   "created_at": "2021-11-27T15:46:03Z",
+   "body": "Case 3 was previously handled with busy flag set on driver. I am not sure if AAPS is no longer considering that flag, when new commands are being queued? \r\nWhen bolus is placed, we calculate time how long bolus will need, and for that time isBusy is returning true. \r\n\r\n@MilosKozak is isBusy still evaluated when processing the pump queue?"
+  },
+  {
+   "id": 981997327,
+   "user": "MilosKozak",
+   "created_at": "2021-11-29T20:32:53Z",
+   "body": "pump status refresh is not requested when pump is busy"
+  },
+  {
+   "id": 1682426840,
+   "user": "MilosKozak",
+   "created_at": "2023-08-17T14:52:07Z",
+   "body": "Closed for inactivity. Create new issue is if you still see the problem on latest branch"
+  }
+ ]
+}

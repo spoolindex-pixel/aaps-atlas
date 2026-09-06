@@ -1,0 +1,48 @@
+{
+ "id": 445707910,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 878,
+ "title": "Is there documentation on how to import and build xDrip",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/878",
+ "state": "closed",
+ "labels": [
+  "question",
+  "code:quality"
+ ],
+ "created_at": "2019-05-18T11:44:18Z",
+ "closed_at": "2020-12-14T21:58:51Z",
+ "comment_count": 5,
+ "body": "I pulled the project from Github, opened it with the latest version from IntelliJ community (IntelliJ IDEA 2018.2.8).\r\nAfter build, I chose: Build Artifacts, but this keeps resulting in:\r\nError:java: invalid target release: x (where x is a version, e.g. 11)\r\nQuestions about import:\r\nIs there any documentation?\r\nShould I use the standard Gradle wrapper or custom?\r\n",
+ "comments": [
+  {
+   "id": 493708479,
+   "user": "tzachi-dar",
+   "created_at": "2019-05-18T21:28:21Z",
+   "body": "I think that most people use android studio to build xdrip.\r\nYou can also write gradlew assembledebug from command line to build it.\r\n"
+  },
+  {
+   "id": 495907031,
+   "user": "bert1973",
+   "created_at": "2019-05-25T10:44:39Z",
+   "body": "I decided to go with Android Studio, but even this one fails:\r\nerror: cannot find symbol class Models\r\nerror: package UtilityModels does not exist\r\nerror: package Models.ProcessInitialDataQuality does not exist\r\nerror: package UtilityModels does not exist\r\netc.\r\n\r\nDo I have to do clone more then master from https://github.com/NightscoutFoundation/xDrip.git?\r\n"
+  },
+  {
+   "id": 536307537,
+   "user": "k2s",
+   "created_at": "2019-09-29T14:35:49Z",
+   "body": "the problem you have is related to comment `// use specific version of data binding until google resolves the bugs with mixed case package names` in `app/build.gradle`\r\n\r\nwhen you open xDrip (after clean clone) in Android Studio it will ask you `Plugin Update Recommended: Android Gradle Plugin is ready to update.`. Ignore that otherwise you will get into troubles.\r\n\r\n@jamorham do you know what is the problem ? by quick try there is no reason to wait until `google resolves the bugs with mixed case package names`. Is it needed to rename something manually in xDrip code to get it fixed and to upgrade to latest Gradle plugin ?"
+  },
+  {
+   "id": 536309830,
+   "user": "k2s",
+   "created_at": "2019-09-29T14:55:51Z",
+   "body": "related ticket #1012"
+  },
+  {
+   "id": 744736531,
+   "user": "tolot27",
+   "created_at": "2020-12-14T21:58:51Z",
+   "body": "As mentioned already, use Android Studio. I'm on 4.1.1 and it works pretty well."
+  }
+ ]
+}

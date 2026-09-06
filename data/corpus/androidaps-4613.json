@@ -1,0 +1,35 @@
+{
+ "id": 4083292270,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4613,
+ "title": "[FEATURE REQUEST] NFC Commands similar to SMS Communicator",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4613",
+ "state": "closed",
+ "labels": [
+  "enhancement"
+ ],
+ "created_at": "2026-03-16T15:47:14Z",
+ "closed_at": "2026-06-22T06:51:13Z",
+ "comment_count": 3,
+ "body": "I would like to propose an NFC-based commands plugin as an alternative to SMS commands.\n\n I already have a working implementation, heavily inspired by the existing SMS communication plugin, but adapted for local command triggering via NFC tags. The goal is to allow selected commands to be issued by scanning a configured NFC tag instead of sending an SMS.\n\nIn the implementation, I already considered the main security aspects:\n- local, short-range interaction instead of remote SMS delivery\n- explicit opt-in through a dedicated plugin\n- restricted command handling based on a predefined command format (from SMS Communicator)\n- use only with slef-written known NFC tags (leveraging JWT)\n- keeping the same general command model and safeguards as close as practical to the SMS plugin\n\nBefore opening a PR, I want to confirm that this feature direction is acceptable for AndroidAPS.\n\nIf there are no major objections, I can open a PR for the `NfcCommunicator` plugin in the next few days.\n",
+ "comments": [
+  {
+   "id": 4157414755,
+   "user": "juehv",
+   "created_at": "2026-03-30T18:58:23Z",
+   "body": "I created a Pull-Request here:\nhttps://github.com/nightscout/AndroidAPS/pull/4655\n\nBesides the unit tests, I tested the feature two weeks and it works fine for me. Due to safety and security, only tags written with the same phone work and only if the phone is unlocked. "
+  },
+  {
+   "id": 4187201723,
+   "user": "juehv",
+   "created_at": "2026-04-04T14:32:42Z",
+   "body": "I added a branch for everybody to try the plugin based on AAPS 3.4.2.1 --> https://github.com/juehv/AndroidAPS/tree/patch-nfc"
+  },
+  {
+   "id": 4765648198,
+   "user": "juehv",
+   "created_at": "2026-06-22T06:51:13Z",
+   "body": "See Pull-Request."
+  }
+ ]
+}

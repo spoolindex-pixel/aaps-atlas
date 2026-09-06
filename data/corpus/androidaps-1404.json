@@ -1,0 +1,57 @@
+{
+ "id": 1157905580,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1404,
+ "title": "3.0.0.1-dev-d crash / closes automatically when sliding between tabs and reach Combo pump tab",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1404",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-03-03T02:45:55Z",
+ "closed_at": "2022-03-16T18:33:54Z",
+ "comment_count": 7,
+ "body": "Crash between 2:43 and 2:44AM\r\n\r\n[AndroidAPS_LOG_1646275450352.log.zip](https://github.com/nightscout/AndroidAPS/files/8174523/AndroidAPS_LOG_1646275450352.log.zip)\r\n",
+ "comments": [
+  {
+   "id": 1057615079,
+   "user": "parapenT1sta",
+   "created_at": "2022-03-03T02:55:17Z",
+   "body": "The video:\r\n\r\nhttps://user-images.githubusercontent.com/608650/156487458-ab4c8669-5be3-4f47-9893-5a8275879781.mp4\r\n\r\n\r\n"
+  },
+  {
+   "id": 1066090548,
+   "user": "parapenT1sta",
+   "created_at": "2022-03-13T12:23:47Z",
+   "body": "@MilosKozak Do you have any other report about this?"
+  },
+  {
+   "id": 1068502816,
+   "user": "Andries-Smit",
+   "created_at": "2022-03-15T21:46:55Z",
+   "body": "@parapenT1sta can you change in your preferences the `Show comm. error count` settings, and try again? Does it crash on all 3 values? And then when change it back to the original value? (it could be that there is still an old value in the settings string)\r\n\r\nCrash log, Support ENUMS are: NEVER, ON_ERROR, ALWAYS\r\n> java.lang.IllegalArgumentException: No enum constant info.nightscout.androidaps.plugins.pump.combo.data.ComboErrorUtil.DisplayType.When Error\r\n\tat java.lang.Enum.valueOf(Enum.java:257) ~[na:0.0]\r\n\tat info.nightscout.androidaps.plugins.pump.combo.data.ComboErrorUtil$DisplayType.valueOf(Unknown Source:2) ~[na:0.0]\r\n\tat info.nightscout.androidaps.plugins.pump.combo.data.ComboErrorUtil.getDisplayType(ComboErrorUtil.kt:48) ~[na:0.0]\r\n\tat info.nightscout.androidaps.plugins.pump.combo.ComboFragment.updateErrorDisplay(ComboFragment.java:269) ~[na:0.0]\r\n\tat info.nightscout.androidaps.plugins.pump.combo.ComboFragment.updateGui(ComboFragment.java:259) ~[na:0.0]"
+  },
+  {
+   "id": 1068965271,
+   "user": "parapenT1sta",
+   "created_at": "2022-03-16T10:25:27Z",
+   "body": "@Andries-Smit The fact is that none of the options was selected (was empty) now I choose \"Always\" and I have no crash... so far. Maybe a value must be set to avoid this crash? but to be honest I didn't see this option before and that's why I didn't select. \r\n\r\nIs it possible to make a default option to avoid this issue in the future... if in fact this was the issue."
+  },
+  {
+   "id": 1069150417,
+   "user": "MilosKozak",
+   "created_at": "2022-03-16T13:47:50Z",
+   "body": "turn off autosens logging until you have very good reason to do it. it makes logs unreadable"
+  },
+  {
+   "id": 1069166544,
+   "user": "Andries-Smit",
+   "created_at": "2022-03-16T14:04:23Z",
+   "body": "@parapenT1sta just set it to `on error`. \r\nThere is a default in the code, so normally you should not have any issue.  In your case, an incorrect value setting was stored. The question was, how did the setting get into the storage, will answer the question if others will be affected. It might be that only people on the dev branch will have this issue, though that should not happen, I expect the people the move from release to release will not be affected."
+  },
+  {
+   "id": 1069230919,
+   "user": "parapenT1sta",
+   "created_at": "2022-03-16T15:08:02Z",
+   "body": "@Andries-Smit I just want to thank you for the support. If wasn't you I would never find the issue! :-) Now it's solved for me and hopefully I'm the only one affected.\r\n\r\nI'm closing this issue."
+  }
+ ]
+}

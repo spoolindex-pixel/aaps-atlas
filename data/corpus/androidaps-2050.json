@@ -1,0 +1,45 @@
+{
+ "id": 1352297405,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2050,
+ "title": "Bolus requested through WearOS is not executed",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2050",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-08-26T13:49:31Z",
+ "closed_at": "2022-09-01T14:07:20Z",
+ "comment_count": 5,
+ "body": "After confirming the desired bolus on WearOS, I get a toast indicating 'treatment requested', but the treatment is never executed while I am close to my phone. I am using the Omnipod Dash, Galaxy Watch 4 and the S22 and run the most recent operating systems and the most recent versions of AndroidAPS for both my phone and watch.\r\n\r\nI was trying to explore this issue, but I am too illiterate in Kotlin to make sense of this. Yet, my idea is that it is going wrong at line 76 where EventWearToMobile is called: [link](https://github.com/nightscout/AndroidAPS/blob/f8acbad759ccdc4dcdc58a7d150103dfe757ff94/wear/src/main/java/info/nightscout/androidaps/interaction/actions/TreatmentActivity.kt)\r\n",
+ "comments": [
+  {
+   "id": 1228689127,
+   "user": "Andries-Smit",
+   "created_at": "2022-08-26T16:19:37Z",
+   "body": "@niwreg-coder just to share the happy flow after the \"treatment Requested\" toast, the bolus request is send to the phone, when allowed a confirmation message is send. The confirmation is shown ontgelden watch, swiping right to left to and click V to confirm.\r\nDo your receive the confirmation message?"
+  },
+  {
+   "id": 1228704785,
+   "user": "niwreg-coder",
+   "created_at": "2022-08-26T16:36:23Z",
+   "body": "@Andries-Smit Thank you for clarrifying on such a short notice. Really greatful for all the people dedicating their time to this project. What does 'allowed' mean in this context? Does this mean 'allowed within certain predefined boundaries' such as maximum bolus size, or does allowance involve an additional manual step?\r\n\r\nI do not receive a confirmation message on the watch nor see anything happening in the app on my phone. "
+  },
+  {
+   "id": 1228968125,
+   "user": "JimZam",
+   "created_at": "2022-08-26T21:36:27Z",
+   "body": "@niwreg-coder If you don't have an AAPS watchface it will not work, I have spent hours reseting and reinstalling until someone at Discord confirmed that behaviour..."
+  },
+  {
+   "id": 1229195224,
+   "user": "niwreg-coder",
+   "created_at": "2022-08-27T13:44:25Z",
+   "body": "It is working now. The only thing that I can think of that has changed is that I passed objective 3. Are these objectives in any way linked to the ability of the user to administer boluses through WearOS?"
+  },
+  {
+   "id": 1234333006,
+   "user": "MilosKozak",
+   "created_at": "2022-09-01T14:07:20Z",
+   "body": "it's indepedent thing"
+  }
+ ]
+}

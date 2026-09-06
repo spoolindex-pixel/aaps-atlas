@@ -1,0 +1,29 @@
+{
+ "id": 4145822577,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4637,
+ "title": "[BUG] Negative carb entry incorrectly limited by max carb setting, 3.4.1.0-dev",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4637",
+ "state": "closed",
+ "labels": [
+  "bug"
+ ],
+ "created_at": "2026-03-26T17:11:19Z",
+ "closed_at": "2026-08-02T20:07:06Z",
+ "comment_count": 2,
+ "body": "\n\nNegative carb entry incorrectly limited by max carb setting\n\n**Description**\nWhen attempting to reduce current COB (Carbs On Board) by entering a negative carb value, the input is incorrectly constrained by the configured maximum carb entry limit. This prevents valid negative adjustments even when COB would remain positive after the deduction.\n\n**Steps to Reproduce**\n\n1. Set maximum carb entry limit to 36g\n2. Accumulate COB of e.g. 45g (via multiple entries)\n3. Attempt to enter `-40g` carbs to reduce COB\n\n**Expected Behavior**\n\n* Negative carb entries should be allowed as long as resulting COB ≥ 0\n* The max carb limit should only apply to *positive* carb entries\n\n**Actual Behavior**\n\n* Entry of `-40g` is blocked because it exceeds the max carb limit (36g)\n* User cannot reduce COB in a single step even though resulting COB would remain positive\n\n**Impact**\n\n* Forces users to split corrections into multiple steps\n* Introduces unnecessary friction in manual COB adjustments\n\n**Suggested Fix**\n\n* Apply max carb limit only to positive carb entries\n* Allow negative carb inputs up to current COB value (i.e., prevent COB < 0, but not restrict by max carb setting)\n\n**Workaround**\n\n* Reduce COB in multiple steps (e.g., `-36g` then `-4g`)\n\n**Additional Context**\nThis scenario occurs when COB exceeds the configured max carb limit due to multiple prior entries.\n",
+ "comments": [
+  {
+   "id": 5136052979,
+   "user": "olorinmaia",
+   "created_at": "2026-07-30T20:41:34Z",
+   "body": "This has already been fixed on phone side. I have started looking at a similar solution for wear"
+  },
+  {
+   "id": 5160076769,
+   "user": "olorinmaia",
+   "created_at": "2026-08-02T19:56:33Z",
+   "body": "@gerison77 @MilosKozak this has now been fixed both on phone and wear app. Please close issue :)"
+  }
+ ]
+}

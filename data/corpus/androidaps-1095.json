@@ -1,0 +1,39 @@
+{
+ "id": 1088400851,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1095,
+ "title": "[3.0-beta11] Seemingly random BS alerts ",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1095",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-12-24T14:14:46Z",
+ "closed_at": "2021-12-27T18:29:33Z",
+ "comment_count": 4,
+ "body": "I am getting bs measurement alerts with the following configuration:\r\n\r\nPump: Dana-i\r\nCGM: Dexcom G6\r\nAAPS: 3.0-beta11\r\nPhone: Galaxy S10e, Android 11\r\n\r\nThe G6 sensor is connected to the latest BYODA app (G6 International v1.9.0.5) that is configured to send readings to AAPS. Everything is working fine most of the time, but both during the day and during the night, seemingly random alerts (\"Alarm BZ-Messung\", English: alert BS measurement) occur.\r\n\r\nIn the attached log this happend at\r\n01:22:57.958\r\n03:13:09.986\r\n04:47:59.457\r\n\r\n![AAPS_BG_alterts_screenshot_](https://user-images.githubusercontent.com/78617158/147358329-aa3e8bb0-e97d-4453-b475-d10b583cb540.jpg)\r\n\r\nBoth BYODA and AAPS have full permissions in the phone settings. Google Play Protect is deactivated. Energy Optimization is deactivated.\r\n\r\n[AndroidAPS_LOG_1640328854736.log.zip](https://github.com/nightscout/AndroidAPS/files/7774520/AndroidAPS_LOG_1640328854736.log.zip)\r\n",
+ "comments": [
+  {
+   "id": 1000895561,
+   "user": "1401Ger",
+   "created_at": "2021-12-24T16:44:35Z",
+   "body": "Update: This might be an issue solely related to BYODA, I'll try some changes and phone settings and will report back tomorrow."
+  },
+  {
+   "id": 1001150584,
+   "user": "MilosKozak",
+   "created_at": "2021-12-26T10:31:39Z",
+   "body": "this is message comming from pump\r\n"
+  },
+  {
+   "id": 1001157156,
+   "user": "1401Ger",
+   "created_at": "2021-12-26T11:04:52Z",
+   "body": "> this is message comming from pump\r\n\r\nIs there a way to figure out what caused this message or how to prevent it? So far I can't find any corresponding errors in the error log of the dana-i. If I can find out which alert or setting causes the message I can look for the appropriate setting.\r\nI am a bit confused since the alert in AAPS refers to a BS measurement yet the G6 sensor is only connected to BYODA, not to the dana-i."
+  },
+  {
+   "id": 1001451370,
+   "user": "1401Ger",
+   "created_at": "2021-12-27T09:09:02Z",
+   "body": "Update: The alert indeed seems to stem from a \"Check BG\" alert from the dana-i. According to the manual this alert is supposed to remind the user of checking the BG level after a bolus (for manual pump therapy). \r\nBy setting alert melody to \"0\" in the doctors menu, these alerts are disabled. I suspect the alerts were triggered by SMBs.\r\nYet, I still have no idea why the alerts seem to occur at seemingly random instances of administed boli - it doesn't seem to correlate with the insulin volume of the SMB right before. Sometimes many SMBs were administerd for hours without this alert occuring in AAPS, and sometimes it occured sevel times per hour. \r\n\r\nIf this is expected behavior, the issue can probably be closed. But maybe it is worth describing it in the documentation since I can't see any use in it for AAPS users."
+  }
+ ]
+}

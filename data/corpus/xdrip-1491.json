@@ -1,0 +1,91 @@
+{
+ "id": 733206590,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1491,
+ "title": "Bluetooth issue (serious?)",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1491",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "device-dexcom",
+  "bluetooth"
+ ],
+ "created_at": "2020-10-30T13:59:51Z",
+ "closed_at": "2021-03-14T05:12:56Z",
+ "comment_count": 12,
+ "body": "I'm having serious bluetooth breaks with hundreds of missed readings using a Dexcom G6, aHuawei P10 and the October-nightly of xdrip+.\r\n\r\nAfter running  for more than 10 mont my last 81-series transmitter had battery failure.  I had to switch to a firefly transmitter last week. Since then, after fast and \"normal\" connection the Bluetooth-connection breaks down after  a  minututes to hours and will not recover without deleting the Dexcom Transmiiter from the BT-device-list and restarting the phone.\r\nAfter that re-connection is established but the same problems occurs again after some time. \r\nThere is an OB1-error concerning bluetooth which I don't understand (see below)..\r\n\r\nAnyone with an idea how to solve this?\r\nIs this an issue with only \"my\" mobile phone (running on EMUI 9.10) or a general Problem?\r\n\r\nWith this situation now, I just start to Feel how \"easy\" everything went with always availablr readings for weeks...\r\n\r\nThanky for your support\r\n\r\nOliver \r\n\r\n![Screenshot_20201030_143213_com eveningoutpost dexdrip](https://user-images.githubusercontent.com/47924153/97713381-0a131d80-1ac0-11eb-89c0-feb040e7faf0.jpg)\r\n",
+ "comments": [
+  {
+   "id": 721299262,
+   "user": "Otter3eso57",
+   "created_at": "2020-11-03T18:22:44Z",
+   "body": "Just a guess: The log says something about authentication (auth challenge, AuthRequest...), have you tried to change the  \"Allow OB1 unbonding\" and \"Allow OB1 initiate bonding\" options?"
+  },
+  {
+   "id": 721427868,
+   "user": "oblanke",
+   "created_at": "2020-11-03T23:27:48Z",
+   "body": "Actually no, as I thought these are an absolute requirement when using Dexcom 6...   \r\nDoes anybody know if leaving these unckeck is an option..???\r\n\r\nWhat is strange, that the last 2 years I had no such issues with the old transmitters but now with the first firefly  model things are getting weird.."
+  },
+  {
+   "id": 721447070,
+   "user": "Otter3eso57",
+   "created_at": "2020-11-04T00:33:10Z",
+   "body": "I also use the newer Butterfly transmitter (8Jxxxx) with Samsung A40. My setting is \"Allow OB1 unbonding\"=true and \"Allow OB1 initiate bonding\"=true. My suggestion was just because the description of the option was \"...If you get problems with it unpairing then disable this option...\".\r\n\r\nI have no problem with the connection so far and I have the same errors for Ob1G5StateMachine in the logs. \r\n\r\nCan you show the difference in the logs between working and not working and the part where it breaks?\r\n\r\n\r\n\r\n"
+  },
+  {
+   "id": 723429108,
+   "user": "oblanke",
+   "created_at": "2020-11-07T10:37:18Z",
+   "body": "Thank you for your thoughts - unfortunately the problems seems to get more severe...\r\nI kooked through the log and couldn't find a \"real initial\" error or entry which breaks down the connection.\r\nThe only thing I found was the GATT related message from the OB1 machine.\r\nAnother sceenshot is attached which (I believe) represents the time point of failure...\r\n\r\nIt did so very well (sensor used for 20-30 days, transmitter use for 10 month) for more than a year now and the only thing changed is the switch to firelfly transmitters...\r\n![Screenshot_20201107_112945_com eveningoutpost dexdrip](https://user-images.githubusercontent.com/47924153/98438880-8c699600-20ed-11eb-815b-91bac7eee7a6.jpg)\r\n"
+  },
+  {
+   "id": 733671120,
+   "user": "Davud2020",
+   "created_at": "2020-11-25T12:14:37Z",
+   "body": "Hi\r\nI think I have the same issue. I installed the Samsung November update and then the cell phone keeps asking Bluetooth pairing requests every 5 or 10 minutes. I needed to accept those requests every time otherwise I don't get any BG. After the 15.11.2020 xDrip+ update now I have continuously no BG displayed and Aggressively restarting collector service due to lack differently sometimes 360 240 180 120.\r\nTransmitter: 8H20AH days 80\r\nSenser day 12\r\nSamsung Note 10+\r\nThe same transmitter and sensor working fine with an old Samsung cell phone but I need to use this phone for AAPS and Closed Loop.\r\nThanks."
+  },
+  {
+   "id": 733675144,
+   "user": "tolot27",
+   "created_at": "2020-11-25T12:23:11Z",
+   "body": "@whynot2018 Did you follow the discussion at https://github.com/NightscoutFoundation/xDrip/issues/1494#issuecomment-728824828 onwards?"
+  },
+  {
+   "id": 733754054,
+   "user": "Davud2020",
+   "created_at": "2020-11-25T14:52:23Z",
+   "body": "Ok now it works.\r\nI had to setup.\r\nSettings-->G5/G6 Debug Settings\r\nUse the OB1 Collector\r\nNative Algorithm\r\nMinimize Scanning\r\nAvoid Scanning\r\nG6 Support\r\nAllow OB1 initiate bonding\r\n\r\nLess common settings-->Bluetooth Settings\r\nTurn Bluetooth on\r\nBluetooth Watchdog\r\nTrust Auto-Connect"
+  },
+  {
+   "id": 733892745,
+   "user": "oblanke",
+   "created_at": "2020-11-25T18:56:02Z",
+   "body": "It’s good read that it‘s not only myself and that probably neither myself nor my phone is crazy…\n\n \n\nWhat’s strange is that in my case the new transmitter (Firmware 2.18.2.98 – what’s yours?) did make the difference between smoothly and faulty running…\n\n \n\nNo real improvement with the latest November-version of xdrip+ in my case…\n\n \n\nRegards\n\n \n\nOliver \n\n \n\nVon: whynot2018 [mailto:notifications@github.com] \nGesendet: Mittwoch, 25. November 2020 13:15\nAn: NightscoutFoundation/xDrip <xDrip@noreply.github.com>\nCc: oblanke <oblanke@gmx.de>; Author <author@noreply.github.com>\nBetreff: Re: [NightscoutFoundation/xDrip] Bluetooth issue (serious?) (#1491)\n\n \n\nHi\nI think I have the same issue. I installed the Samsung November update and then the cell phone keeps asking Bluetooth pairing requests every 5 or 10 minutes. I needed to accept those requests every time otherwise I don't get any BG. After the 15.11.2020 xDrip+ update now I have continuously no BG displayed and Aggressively restarting collector service due to lack differently sometimes 360 240 180 120.\nTransmitter: 8H20AH days 80\nSenser day 12\nSamsung Note 10+\nThe same transmitter and sensor working fine with an old Samsung cell phone but I need to use this phone for AAPS and Closed Loop.\nThanks.\n\n—\nYou are receiving this because you authored the thread.\nReply to this email directly,  <https://github.com/NightscoutFoundation/xDrip/issues/1491#issuecomment-733671120> view it on GitHub, or  <https://github.com/notifications/unsubscribe-auth/ALNUHOJYQV5N5NTDBBO2GBTSRTYL3ANCNFSM4TFAFNCQ> unsubscribe.  <https://github.com/notifications/beacon/ALNUHOMCB3J34B4DMRQXD3TSRTYL3A5CNFSM4TFAFNC2YY3PNVWWK3TUL52HS4DFVREXG43VMVBW63LNMVXHJKTDN5WW2ZLOORPWSZGOFO5O5UA.gif> \n\n"
+  },
+  {
+   "id": 733917895,
+   "user": "Davud2020",
+   "created_at": "2020-11-25T19:55:20Z",
+   "body": "I have as well 2.18.2.98 Firmware Version.\r\nIt's working and I guess It's not bad. Only I have red \r\nTime scanning:5 hours\r\nand as before It's still red\r\nResistance:8794\r\nDid you try with another android phone? I don't have any experiences with Huawei phones. Do you have any other app active such as the Corona app? I had before I also removed it and deactivated Glucose Meters (Use Bluetooth Meter). I don't know but it apparently works."
+  },
+  {
+   "id": 735387566,
+   "user": "oblanke",
+   "created_at": "2020-11-29T12:39:44Z",
+   "body": "I've changed my settings exactly to those reported  by whynot2018 - we'll see if that changes anything... (I'll report back)\r\n\r\nYes, I do have other apps running using bluetooth but those were in place eith the old transmitter as well and ever caused any problems (That's why I still believe the firefly transmitters are acting different when it comes to bluetooth handling):\r\n - Corona app (Germany)\r\n - ILockIt-App (this is a bluetooth bicycle lock which automatically opens and close the lock dependning on the distance to my bike"
+  },
+  {
+   "id": 774150396,
+   "user": "Navid200",
+   "created_at": "2021-02-05T16:47:40Z",
+   "body": "@oblanke Hi,\r\nDo you have consistent connection now?\r\nIf yes, would you please close this issue?"
+  },
+  {
+   "id": 798834429,
+   "user": "Navid200",
+   "created_at": "2021-03-14T05:12:56Z",
+   "body": "Closing due to inactivity"
+  }
+ ]
+}

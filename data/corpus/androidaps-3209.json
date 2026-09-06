@@ -1,0 +1,63 @@
+{
+ "id": 2112318719,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3209,
+ "title": "[EOPATCH2] Problem when pairing patches [3.2.0.3-bb1a276078][MASTER]",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3209",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-02-01T11:49:22Z",
+ "closed_at": "2024-02-11T10:37:35Z",
+ "comment_count": 8,
+ "body": "AAPS Version: 3.2.0.3-bb1a276078 (last master)\r\n\r\nWhen switching from virtual pump to EOPATCH2, it was not possible to link to EOPATCH2 patches. We lost several patches and the only option was to link an Omnipod patch. After this, a couple of EOPATCH2 patches, it linked correctly, and then failed again. With Omnipod Dash patches, this never happens. When this problem occurs, it is not possible to link any EOPATCH2 patch, they all fail.\r\n\r\nWhen the insulin is loaded into the patch and the beep sounds, the pairing message appears twice, and when you press them, you are stuck without advancing to step 3. \r\n\r\nWe have tried a multitude of options, but none of them have been able to recover the patch (restarting the phone, disabling and enabling bluetooth, etc).\r\n\r\nI attach several files from various times when the problem has occurred.\r\n\r\n08:53:05.237 [main] I/PUMP: [EopatchViewModel.moveStep():496]: moveStep: WAKE_UP -> CANCEL\r\n08:53:07.603 [main] D/CONSTRAINTS: [ConstraintObject.setIfSmaller():47]: Setting because of smaller value 1.7976931348623157E308 -> 2.0 (Limitando IOB a 2,0 U debido a valor máximo en preferencias)[OpenAPSAMA]\r\n08:53:08.394 [main] D/CORE: [AlarmSoundServiceHelper.stopAlarm():68]: Stopping alarm from Removed Bomba no alcanzable\r\n08:53:08.399 [main] D/NOTIFICATION: [NotificationStore.remove():82]: Notification removed: Bomba no alcanzable\r\n08:53:08.405 [main] D/CORE: [AlarmSoundService.onDestroy():103]: onDestroy\r\n08:53:08.458 [main] D/CORE: [AlarmSoundService.onDestroy():107]: onDestroy End\r\n08:53:33.546 [main] D/CORE: [ChargingStateReceiver.onReceive():24]: EventChargingState[batterLevel=100,isCharging=false]\r\n08:53:33.547 [RxCachedThreadScheduler-38] D/AUTOMATION: [AutomationPlugin.processActions$automation_fullRelease():252]: processActions\r\n08:53:33.549 [RxCachedThreadScheduler-38] D/AUTOMATION: [TriggerBg.shouldRun():62]: NOT ready for execution: Glucosa es menor que 4,0 MMOL\r\n08:53:33.551 [RxCachedThreadScheduler-38] D/AUTOMATION: [TriggerDelta.shouldRun():80]: Ready for execution: delta is -6.0 Delta es menor que -0.1\r\n08:53:40.372 [main] I/PUMP: [EopatchViewModel.moveStep():496]: moveStep: WAKE_UP -> CONNECT_NEW\r\n08:53:40.419 [main] I/PUMP: [EopatchViewModel.updateSetupStep():630]: curSetupStep: WAKE_UP_READY, newSetupStep: SCAN_STARTED\r\n08:53:45.426 [RxComputationThreadPool-1] I/PUMP: [EopatchViewModel.startBond():697]: startBond: EA:71:7D:94:1F:F1\r\n08:53:45.445 [RxComputationThreadPool-1] I/PUMP: [EopatchViewModel.updateSetupStep():630]: curSetupStep: SCAN_STARTED, newSetupStep: BONDING_STARTED\r\n08:53:45.447 [RxComputationThreadPool-1] D/PUMPCOMM: [TaskQueue.publishTicket():53]: publishTicket() Task #:1607 is assigned func:START_BOND\r\n08:53:45.448 [RxComputationThreadPool-1] D/PUMPCOMM: [TaskQueue.lambda$isReady$4$info-nightscout-androidaps-plugins-pump-eopatch-ble-task-TaskQueue():40]: Task #:1607 started     func:START_BOND\r\n08:53:46.861 [RxCachedThreadScheduler-40] D/AUTOMATION: [AutomationPlugin$onStart$11.accept():177]: Grabbed new BT event: EventBTChange[deviceAddress=EA:71:7D:94:1F:F1,deviceName=EO30-1FF1#0.2.41,state=CONNECT]\r\n08:53:46.864 [RxCachedThreadScheduler-40] D/AUTOMATION: [AutomationPlugin.processActions$automation_fullRelease():252]: processActions\r\n08:53:46.866 [RxCachedThreadScheduler-40] D/AUTOMATION: [TriggerBg.shouldRun():62]: NOT ready for execution: Glucosa es menor que 4,0 MMOL\r\n08:53:46.868 [RxCachedThreadScheduler-40] D/AUTOMATION: [TriggerDelta.shouldRun():80]: Ready for execution: delta is -6.0 Delta es menor que -0.1\r\n08:53:47.927 [RxBleThread-1] D/PUMP: [PatchManagerImpl.lambda$onInit$4$info-nightscout-androidaps-plugins-pump-eopatch-ble-PatchManagerImpl():169]: Has the date or time changed? false\r\n08:53:48.003 [main] D/CORE: [DummyService.onStartCommand():69]: Starting DummyService with ID 4711 notification Notification(channel=AndroidAPS-Ongoing shortcut=null contentView=null vibrate=null sound=null defaults=0x0 flags=0xa color=0x00000000 category=status vis=PRIVATE semFlags=0x0 semPriority=0 semMissedCount=0)\r\n08:53:48.272 [RxSingleScheduler-1] D/PUMPCOMM: [TaskQueue.done():73]: done() Task #:1607 completed   func:START_BOND  task remaining:0\r\n08:53:48.273 [RxSingleScheduler-1] I/PUMP: [EopatchViewModel.updateSetupStep():630]: curSetupStep: BONDING_STARTED, newSetupStep: BONDING_FAILED\r\n08:53:48.276 [main] D/PUMP: [PatchManagerImpl.lambda$onInit$4$info-nightscout-androidaps-plugins-pump-eopatch-ble-PatchManagerImpl():169]: Has the date or time changed? false\r\n08:53:48.281 [RxSingleScheduler-1] E/PUMP: [SingleExtensionKt$subscribeDefault$1.accept():12]: onError\r\njava.lang.Exception: null\r\n\tat info.nightscout.androidaps.plugins.pump.eopatch.ble.task.StartBondTask.lambda$start$2(StartBondTask.java:34)\r\n\tat info.nightscout.androidaps.plugins.pump.eopatch.ble.task.StartBondTask$$ExternalSyntheticLambda3.accept(Unknown Source:2)\r\n\tat io.reactivex.rxjava3.internal.operators.observable.ObservableDoOnEach$DoOnEachObserver.onNext(ObservableDoOnEach.java:93)\r\n\tat io.reactivex.rxjava3.observers.SerializedObserver.onNext(SerializedObserver.java:114)\r\n\tat io.reactivex.rxjava3.internal.operators.observable.ObservableConcatMap$SourceObserver$InnerObserver.onNext(ObservableConcatMap.java:252)\r\n\tat io.reactivex.rxjava3.internal.util.NotificationLite.accept(NotificationLite.java:247)\r\n\tat io.reactivex.rxjava3.subjects.BehaviorSubject$BehaviorDisposable.test(BehaviorSubject.java:507)\r\n\tat io.reactivex.rxjava3.subjects.BehaviorSubject$BehaviorDisposable.emitFirst(BehaviorSubject.java:468)\r\n\tat io.reactivex.rxjava3.subjects.BehaviorSubject.subscribeActual(BehaviorSubject.java:224)\r\n\tat io.reactivex.rxjava3.core.Observable.subscribe(Observable.java:13262)\r\n\tat io.reactivex.rxjava3.internal.operators.observable.ObservableConcatMap$SourceObserver.drain(ObservableConcatMap.java:223)\r\n\tat io.reactivex.rxjava3.internal.operators.observable.ObservableConcatMap$SourceObserver.onNext(ObservableConcatMap.java:132)\r\n\tat io.reactivex.rxjava3.internal.operators.observable.ObservableDoOnEach$DoOnEachObserver.onNext(ObservableDoOnEach.java:101)\r\n\tat io.reactivex.rxjava3.internal.operators.mixed.ObservableConcatMapSingle$ConcatMapSingleMainObserver.drain(ObservableConcatMapSingle.java:201)\r\n\tat io.reactivex.rxjava3.internal.operators.mixed.ObservableConcatMapSingle$ConcatMapSingleMainObserver.innerSuccess(ObservableConcatMapSingle.java:96)\r\n\tat io.reactivex.rxjava3.internal.operators.mixed.ObservableConcatMapSingle$ConcatMapSingleMainObserver$ConcatMapSingleObserver.onSuccess(ObservableConcatMapSingle.java:235)\r\n\tat io.reactivex.rxjava3.internal.operators.single.SingleDoOnSuccess$DoOnSuccess.onSuccess(SingleDoOnSuccess.java:60)\r\n\tat io.reactivex.rxjava3.internal.operators.single.SingleObserveOn$ObserveOnSingleObserver.run(SingleObserveOn.java:81)\r\n\tat io.reactivex.rxjava3.internal.schedulers.ScheduledDirectTask.call(ScheduledDirectTask.java:38)\r\n\tat io.reactivex.rxjava3.internal.schedulers.ScheduledDirectTask.call(ScheduledDirectTask.java:25)\r\n\tat java.util.concurrent.FutureTask.run(FutureTask.java:264)\r\n\tat java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:307)\r\n\tat java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)\r\n\tat java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)\r\n\tat java.lang.Thread.run(Thread.java:1012)\r\n08:53:48.318 [binder:32160_D] W/CORE: [MainApp$setRxErrorHandler$1.accept():193]: Undeliverable exception received, not sure what to do\r\n08:53:48.323 [binder:32160_D] W/CORE: [MainApp$setRxErrorHandler$1.accept():193]: Undeliverable exception received, not sure what to do\r\n08:53:48.384 [main] D/CORE: [DummyService.onStartCommand():69]: Starting DummyService with ID 4711 notification Notification(channel=AndroidAPS-Ongoing shortcut=null contentView=null vibrate=null sound=null defaults=0x0 flags=0xa color=0x00000000 category=status vis=PRIVATE semFlags=0x0 semPriority=0 semMissedCount=0)\r\n08:54:03.4",
+ "comments": [
+  {
+   "id": 1922165110,
+   "user": "MilosKozak",
+   "created_at": "2024-02-01T20:19:49Z",
+   "body": "there is a pairing error. try another phone"
+  },
+  {
+   "id": 1922191089,
+   "user": "fjpezuela",
+   "created_at": "2024-02-01T20:31:49Z",
+   "body": "It is a new phone, a Samsung A22 (SM-A226B). He bought that phone because other people who use this pump use it without any problem.\r\n\r\nIt only happens with the EOPATCH2, with the Accu-Chek Insight or Omnipod Dash, it links without any problem.\r\n\r\nI think there is some situation, where a previous patch doesn't unlink properly or stays in a state, which causes you can't pair the new one afterwards. The funny thing is that the two links come up and the beep sounds, but it stays there and doesn't move forward."
+  },
+  {
+   "id": 1922209222,
+   "user": "parapenT1sta",
+   "created_at": "2024-02-01T20:41:37Z",
+   "body": "Did you try the dev version?"
+  },
+  {
+   "id": 1922215106,
+   "user": "fjpezuela",
+   "created_at": "2024-02-01T20:46:13Z",
+   "body": "> Did you try the dev version?\r\n\r\nNo, only the last master. He is still in the process of completing the objectives. He is on target 10. It's being carried by a little girl, so I didn't want to help her use the dev. I use that same pump with no problems, and I'm on the dev, although I know other people with the latest master version with that pump and they have no problems."
+  },
+  {
+   "id": 1922221977,
+   "user": "parapenT1sta",
+   "created_at": "2024-02-01T20:51:15Z",
+   "body": "I was suggesting dev to check the pairing issue persist.\r\n\r\nAre other people using the same Android version? "
+  },
+  {
+   "id": 1922233661,
+   "user": "fjpezuela",
+   "created_at": "2024-02-01T20:59:15Z",
+   "body": "> I was suggesting dev to check the pairing issue persist.\r\n> \r\n> Are other people using the same Android version?\r\n\r\nYes, same phone with the same Android version (13). That's why he bought that phone.\r\n\r\nThey left the hospital without being able to match any patches. I tried to pair another one with them and there was no way. I left them a Dash patch and it paired fine. The next two EOPATCH2 patches worked fine, but the third and fourth failed. We put another Dash on and it matched the first time. On Saturday it's time for a change."
+  },
+  {
+   "id": 1925356577,
+   "user": "fjpezuela",
+   "created_at": "2024-02-03T15:17:43Z",
+   "body": "Good afternoon,\r\n\r\nI have been with them today, looking at the patch change and the linking has failed again. We have gone from a Dash patch to an EOPATCH2 patch. \r\n\r\nI get the feeling that there is some variable or something being initialised that is not taking a proper value. I don't know if it could be related to having the EoFlow virtual pump selected in the virtual pump. \r\n\r\nI have been using the EOPATCH2 pump for almost a year without any problems. I've used your patches and given you some of my own, in case it was a bad batch, but it doesn't fix the problem. \r\n\r\nWith the Dash pump, there is no problem at all with pairing.\r\n\r\nHe only has one Dash patch left, so if he can't find a solution, he's going to have to buy another phone.\r\n\r\nI leave you the new file of loj, which has been restarted with the change to the EOPATCH2 pump.\r\n[AndroidAPS-20240203.log](https://github.com/nightscout/AndroidAPS/files/14151957/AndroidAPS-20240203.log)\r\n"
+  },
+  {
+   "id": 1937543997,
+   "user": "MilosKozak",
+   "created_at": "2024-02-11T10:37:35Z",
+   "body": "The patch didn't pair with android. It's phone or patch related. There is nothing we can do here"
+  }
+ ]
+}

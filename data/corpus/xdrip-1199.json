@@ -1,0 +1,111 @@
+{
+ "id": 554392853,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1199,
+ "title": "G6 sensor restarts on 81XXXX transmitter",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1199",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2020-01-23T20:36:35Z",
+ "closed_at": "2021-02-27T16:33:04Z",
+ "comment_count": 16,
+ "body": "Early december last year xdrip was doing the restarts/preemtive rrstarts nicely where sensor was up and running again in 5 min. Mow it fails to rrstart the sensor. It goes to sensor failed then try restart again and ends up at 2 hour warmup. One hour in it says sensor failed and starts the 2 hour warmup again. Restarts for dex g6 seems now broken. Anyway to fix this?\r\n",
+ "comments": [
+  {
+   "id": 578018035,
+   "user": "nsghub",
+   "created_at": "2020-01-24T07:11:51Z",
+   "body": "Restarting a sensor with 8G transmitter is the same. Restarting with the official dexcom receiver works fine."
+  },
+  {
+   "id": 578029919,
+   "user": "Kaivish",
+   "created_at": "2020-01-24T07:59:53Z",
+   "body": "How do you restart with official receiver?\r\nWhat I am hoping for is that the preemtive restart works again with the time travel option to skip the 2 hour warmup. "
+  },
+  {
+   "id": 578030955,
+   "user": "Kaivish",
+   "created_at": "2020-01-24T08:03:58Z",
+   "body": "Rralosed when its trying the restart, it stops the sensor and starts it again and it says ready in abt 5 min, but on system status it is queued a request to stop the sensor! And it marks it as failed after that! ?? "
+  },
+  {
+   "id": 578143491,
+   "user": "nsghub",
+   "created_at": "2020-01-24T14:05:54Z",
+   "body": "I stopped the sensor on the official receiver and started it again. I think that's how xDrip does it as well. But apperently there is something different. The preemptive feature does not work with my 8G version. But your 81 should be fine."
+  },
+  {
+   "id": 578260318,
+   "user": "Kaivish",
+   "created_at": "2020-01-24T19:08:14Z",
+   "body": "It was fine before. But now its not working anymore. Thats the issue here. Installed the aug 2019 version. That worked fine as far as i can remember. Will try and see. "
+  },
+  {
+   "id": 578549966,
+   "user": "adanvdo",
+   "created_at": "2020-01-26T22:28:39Z",
+   "body": "Just started an 8H transmitter today. should I turn the restarts off? there is a definite hardware difference between this one and the old one. contacts are bigger and shell is different. might need some looking into"
+  },
+  {
+   "id": 581049285,
+   "user": "tripmaker-j",
+   "created_at": "2020-02-01T17:07:59Z",
+   "body": "I'm using 8H now too. Preemptive restart became disabled. Regular restart is there but I've heard it won't work. Any hope on restoring that function?"
+  },
+  {
+   "id": 583378321,
+   "user": "adanvdo",
+   "created_at": "2020-02-07T12:56:47Z",
+   "body": "@jamorham will this last nightly with firmware updates affect this at all? or is there still work in progress?"
+  },
+  {
+   "id": 589928180,
+   "user": "adanvdo",
+   "created_at": "2020-02-22T07:25:43Z",
+   "body": "I can confirm auto-restarts do not work on the 8H transmitter, if the transmitter has anything to do with it. \r\n![Screenshot_20200222-020633](https://user-images.githubusercontent.com/26498008/75088393-9d03bd00-551a-11ea-93ad-5eb8ea0538a3.png)\r\nit gets stuck in a loop as described in the OP.\r\n\r\nxdrip restarts the sensor, warms up about 30-45 minutes, then logs another restart with a failed start notification. however, the status screen never displays failed, and the warmup countdown isn't reset.\r\n\r\nafter 2 failed restarts the warm-up countdown continued down to about 1.2 hours before I manually stopped the sensor. \r\n"
+  },
+  {
+   "id": 592006342,
+   "user": "lazlow442",
+   "created_at": "2020-02-27T14:56:50Z",
+   "body": "Have had the same issue the last 3 times my 8H sensor ended. I downloaded the nightly build yesterday because I knew my sensor would be restarting today, but unfortunately it is stuck in the warm up loop. \r\nHas anyone been able to restart their sensor with the 8H transmitter?"
+  },
+  {
+   "id": 619409834,
+   "user": "ThoR294",
+   "created_at": "2020-04-25T16:59:07Z",
+   "body": "Bump? Lol this sucks.  Current work around is remove transmitter, stop sensor, wait 30 min, reinsert transmitter and restart sensor."
+  },
+  {
+   "id": 619909031,
+   "user": "TheDonDan",
+   "created_at": "2020-04-27T11:03:52Z",
+   "body": "You're right, I am also hopping somebody finds an hack to enable preemptive\r\nrestarts again but in the meanwhile the the work around is as you\r\ndescribed, but if you short the sensors pins you can skip the 30 min\r\nwaiting procedure:\r\n\r\n1.  stop transmitter in the xdrip app, wait that the transmitter is really\r\nstopped (see status in xdrip).\r\n2.  carefully remove transmitter (with something very slim, like a guitar\r\npick).\r\n3.  short the two pins from the sensor with something conductive, (electric\r\nwire or something else, it seams to discharge any capacitive charge on the\r\nsensor, transmitter seams to use this info to know if the sensor was\r\nalready inserted for longer time)  this way no waiting necessary!\r\n4.  reinsert transmitter.\r\n5.  start it again with the original calibration code in xdrip.\r\n\r\n\r\nAfter two hours you get values again, but in my experience at least the\r\nfirst 12h are offset but it calms after that.\r\n\r\nAm Sa., 25. Apr. 2020 um 18:59 Uhr schrieb ThoR294 <notifications@github.com\r\n>:\r\n\r\n> Bump? Lol this sucks. Current work around is remove transmitter, stop\r\n> sensor, wait 30 min, reinsert transmitter and restart sensor.\r\n>\r\n> —\r\n> You are receiving this because you are subscribed to this thread.\r\n> Reply to this email directly, view it on GitHub\r\n> <https://github.com/NightscoutFoundation/xDrip/issues/1199#issuecomment-619409834>,\r\n> or unsubscribe\r\n> <https://github.com/notifications/unsubscribe-auth/AEEKVQ5X7DA7J2LIRZUR6HTROMJGXANCNFSM4KK4U44Q>\r\n> .\r\n>\r\n"
+  },
+  {
+   "id": 778502753,
+   "user": "Navid200",
+   "created_at": "2021-02-12T23:01:57Z",
+   "body": "Please don't follow the restart instructions provided here.  \r\nPlease access restart instructions on facebook:\r\nhttps://www.facebook.com/groups/xDripG5/permalink/4521043737969086\r\n\r\n@Kaivish Can you confirm that pre-emptive restart does not work for your 81XXXX G6?\r\nCan you identify the first release that stops functioning properly with respect to pre-emptive restart?"
+  },
+  {
+   "id": 778517590,
+   "user": "adanvdo",
+   "created_at": "2021-02-12T23:51:10Z",
+   "body": "> Can you identify the first release that stops functioning properly with respect to pre-emptive restart? \r\n\r\nI do not believe you will find a specific release where it stopped working since the problem is with the firmware on the firefly transmitters. When Dexcom started using these new transmitters restarts no longer worked on them\r\n\r\n"
+  },
+  {
+   "id": 778526354,
+   "user": "Navid200",
+   "created_at": "2021-02-13T00:23:31Z",
+   "body": "@adanvdo That question was for Kaivish who started this issue.  \r\nHe has an 81XXXX transmitter.  He said that he could successfully use pre-emptive restarts.  But, later, he couldn't.  \r\nSo, to clarify:\r\n\r\n@Kaivish If you have an 81XXXX, as you said you did in the first post, and if its firmware is 1.6.5.25, you can use pre-emptive restart.\r\nIf you cannot, please let me know which version of the code fails."
+  },
+  {
+   "id": 787098961,
+   "user": "Navid200",
+   "created_at": "2021-02-27T16:33:04Z",
+   "body": "This is a summary of what can or cannot be done with respect to G6 restart today.\r\n\r\nYou can only perform preemptive restart if the firmware version (shown on system status page) is 1.6.5.25.  That include all 81XXXX and some of 81XXXX.\r\n\r\nIf the serial number does not start with 80 or 81, the only way to restart requires temporary removal of the transmitter from the sensor.\r\nOne place you can see detail instructions is here:\r\nhttps://www.facebook.com/groups/xDripG5/permalink/4521043737969086\r\nIf you don't have a facebook account, please ask in the Gitter room."
+  }
+ ]
+}

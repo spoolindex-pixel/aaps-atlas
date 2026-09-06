@@ -1,0 +1,45 @@
+{
+ "id": 1030796685,
+ "repo": "nightscout/AndroidAPS",
+ "number": 765,
+ "title": "[suggestion] Implement a sort of \"command buffer\" for omnipod Eros pumps in the app",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/765",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-10-19T22:31:18Z",
+ "closed_at": "2021-10-20T07:17:46Z",
+ "comment_count": 5,
+ "body": "This might be a bit confusing to explain but let me try. Currently, if there is one active task, say an active bolus is being administered, every other interaction with the pump is disabled. I understand that this is probably a hard coded limitation in the pump firmware and cannot be overwritten by AAPS.\nHowever, I propose a command buffer in AAPS which stores commands that currently cannot be executed but sends them as soon as the prior command is successfully executed.\n\nKeep in mind that this issue is most notable in open loop mode when a new suggestion is made while a bolus is still being administered. In that situation, the temp basal suggestion cannot be applied due to the active bolus blocking any commands that come along.\n\nHope I made myself clear",
+ "comments": [
+  {
+   "id": 947395032,
+   "user": "MilosKozak",
+   "created_at": "2021-10-20T07:17:45Z",
+   "body": "This already exists. It's called `CommandQueue` and it does work for background commands (setting of profile, TBR, SMB etc). Having a dialog for bolus progress is our decision because most pumps support displaying progress and during bolus you cannot issue another command to the pump anyway. It's better for the user to see there is a bolus in progress and be able verify that bolus was delivered successfuly "
+  },
+  {
+   "id": 947827484,
+   "user": "m-scha1337",
+   "created_at": "2021-10-20T16:20:25Z",
+   "body": "Ah well okay. Then i may have a different suggestion vaguely related to this.\r\nYou see, my initial suggestion came about because i bolused due to a meal, but pretty much seconds after my bolus was sent, AAPS sent a notification for a new basal suggestion. (keep in mind, this was all in open loop mode)\r\n\r\nRight after confirming the bolus however, i closed the app (swiped to homescreen). In my case (i don't know if this is intentional or a bug), the \"dialog for bolus progress\" you mentioned, no longer appeared. Instead the normal AAPS home screen was shown. \r\nThat's why i was able to access the basal suggestion in the first place. \r\n\r\nI will try to upload a video showing what i mean, just in case there is a bug present. Otherwise i apologize for the redundant ticket and wish you a pleasant day!"
+  },
+  {
+   "id": 947965034,
+   "user": "m-scha1337",
+   "created_at": "2021-10-20T19:19:23Z",
+   "body": "okay so.. i might have gotten a bit too invested in making this, frankly useless video.. But here it is:\r\nhttps://youtu.be/l5j6JW80Zx8\r\n\r\nIt's unfortunately too large to be uploaded directly. \r\nHowever, after spending some time editing this video, i came to the realization that this is so minor, it probably doesn't even deserve this much attention.\r\nRegardless i chose to upload this just in case this is indeed something in need of fixing. You decide.\r\n\r\nThanks anyways for your time!\r\n\r\n"
+  },
+  {
+   "id": 948068480,
+   "user": "MilosKozak",
+   "created_at": "2021-10-20T21:57:23Z",
+   "body": "it depneds on what you do. if you switch to another app and return, bolus progress re-appear\r\nif you close the activity, dialog is gone"
+  },
+  {
+   "id": 948070023,
+   "user": "m-scha1337",
+   "created_at": "2021-10-20T22:00:26Z",
+   "body": "Ah, i understand. Well in this case, consider it done. \r\nIt wasn't as big of an issue to begin with, so yeah. \r\nThanks for the quick response!"
+  }
+ ]
+}

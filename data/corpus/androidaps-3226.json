@@ -1,0 +1,99 @@
+{
+ "id": 2141042412,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3226,
+ "title": "[DEV] Error \"Profile sensitivity value\" is out of hard limits when enabling \"Dynamic sensitivity\"",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3226",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-02-18T15:28:38Z",
+ "closed_at": "2024-11-27T13:27:05Z",
+ "comment_count": 14,
+ "body": "AAPS 3.3.0-dev-a\r\nBuild: 9c327b4e4c-2024.02.17\r\nLogs: [AndroidAPS_LOG_1708209853078.log.zip](https://github.com/nightscout/AndroidAPS/files/14323055/AndroidAPS_LOG_1708209853078.log.zip)\r\n\r\nStep-by-step to reproduce:\r\n1. Start with \"Dynamic sensitivity\" disabled in SMB plugin. Run a loop or two.\r\n2. Enable \"Dynamic sensitivity\". Execute loop, either on next loop run or manually via Loop plugin. Error should pop up.\r\n3. After error, when next BG arrive then automatic looprun returns no error.\r\n\r\nCan't see any issues with profile values.\r\n\r\nScreenshots:\r\n![image](https://github.com/nightscout/AndroidAPS/assets/114103483/31cb6b52-15dc-4a5d-ba86-1361f8017cef)\r\n![image](https://github.com/nightscout/AndroidAPS/assets/114103483/a9bf3600-ef1b-492e-9bf5-8f894c87cdc3)\r\n![image](https://github.com/nightscout/AndroidAPS/assets/114103483/ceda0955-5287-4a8f-a7e0-acfcae751dd5)\r\n![image](https://github.com/nightscout/AndroidAPS/assets/114103483/ec1a2cf5-c3a4-44d2-96ca-be8ac426eef5)\r\n\r\n\r\n\r\n\r\n",
+ "comments": [
+  {
+   "id": 1951367372,
+   "user": "Heiner1",
+   "created_at": "2024-02-18T15:49:35Z",
+   "body": "Same to me. Did you also switch from another AAPS-development-idea to the original dev-version? \r\nNSv3 Full Sync doesn't help if you want to get all data  e.g. older than 10 days. "
+  },
+  {
+   "id": 1951368432,
+   "user": "olorinmaia",
+   "created_at": "2024-02-18T15:54:03Z",
+   "body": "No, this is a long running test-rig which I regularly update to latest dev. I've noticed the error many times before, but now I found a way to reproduce it, and it will be easier to find out what's causing it :)"
+  },
+  {
+   "id": 1951369319,
+   "user": "Heiner1",
+   "created_at": "2024-02-18T15:57:50Z",
+   "body": "I'll try to reproduce it the same way. "
+  },
+  {
+   "id": 1951384392,
+   "user": "Heiner1",
+   "created_at": "2024-02-18T16:55:50Z",
+   "body": "You're right, error message is reproducable, exactly the same behaviour. For me the difference is now: DynISF Loop is running again. Bevor I got more error messages and no falling back to normal SMB mode - loop had been deactivated. So I think it has something to do with database? \r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/14323536/AndroidAPS.log)\r\n"
+  },
+  {
+   "id": 1951387422,
+   "user": "ga-zelle",
+   "created_at": "2024-02-18T17:06:36Z",
+   "body": "I came across that message a lot in the recent days. I was focused on some other topic and did not drill down to base reason. However, my impression was that the message text is very misleading because it seems related to variable_sens as used in DynamicISF and has nothing to do with the pump profile sensitivity. If not yet calculated then variabale_sens may get assigned 0.0 or 1.0 which triggers the message. If assigning 100.0 when not used or not yet calculated then there was no message."
+  },
+  {
+   "id": 1953920336,
+   "user": "vanelsberg",
+   "created_at": "2024-02-20T10:33:43Z",
+   "body": "> Step-by-step to reproduce:\r\n\r\nConfirming,\r\nSeeing the same on current dev#9c327b4e"
+  },
+  {
+   "id": 1954665829,
+   "user": "lostboy86",
+   "created_at": "2024-02-20T17:08:32Z",
+   "body": "it's the same issue of mine : \r\n\r\nhttps://github.com/nightscout/AndroidAPS/issues/3192"
+  },
+  {
+   "id": 2174274216,
+   "user": "robinsondan87",
+   "created_at": "2024-06-17T19:36:24Z",
+   "body": "Is there a way to work around this or stop the error from happening? "
+  },
+  {
+   "id": 2176111854,
+   "user": "vanelsberg",
+   "created_at": "2024-06-18T13:31:19Z",
+   "body": "> Step-by-step to reproduce\r\n\r\nConfirming. Have also been seeing this some time ago. Looks like your repro..."
+  },
+  {
+   "id": 2473586268,
+   "user": "MilosKozak",
+   "created_at": "2024-11-13T13:13:06Z",
+   "body": "still there?"
+  },
+  {
+   "id": 2474119970,
+   "user": "olorinmaia",
+   "created_at": "2024-11-13T16:30:24Z",
+   "body": "Yes. Do you need fresh logs? "
+  },
+  {
+   "id": 2476046319,
+   "user": "MilosKozak",
+   "created_at": "2024-11-14T11:02:10Z",
+   "body": "yes pls\r\n"
+  },
+  {
+   "id": 2480699744,
+   "user": "olorinmaia",
+   "created_at": "2024-11-16T18:14:20Z",
+   "body": "Sharing logs and a screenshot. Same steps to reproduce as in original description of issue.\r\n\r\n[AndroidAPS_LOG_1731769511492.log.zip](https://github.com/user-attachments/files/17787544/AndroidAPS_LOG_1731769511492.log.zip)\r\n![image](https://github.com/user-attachments/assets/6cf317bf-f052-4903-b5f0-0aa6d78fafe6)\r\n\r\n"
+  },
+  {
+   "id": 2503878104,
+   "user": "MilosKozak",
+   "created_at": "2024-11-27T13:27:05Z",
+   "body": "fixed in https://github.com/nightscout/AndroidAPS/commit/80fd9e4d8be5f72858954b491675bc92f14a07e7"
+  }
+ ]
+}

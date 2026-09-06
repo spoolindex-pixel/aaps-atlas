@@ -1,0 +1,57 @@
+{
+ "id": 2331730236,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3361,
+ "title": "Equil: TBR consistent fail, possible connection issue.",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3361",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-06-03T17:55:31Z",
+ "closed_at": "2024-07-17T14:18:57Z",
+ "comment_count": 7,
+ "body": "\r\n```\r\nEquil FW 5.3\r\nAAPS 3.3.0-dev-b\r\n```\r\n\r\nAs the clip below shows, Temp Basal Rate fails to be set, with the pump falling back to default basal rates. \r\nThe issue can persist even by retrying form the Loop plugin. \r\nSame bug presents itself even on earlier objectives when having to confirm the suggested temp basal rates manually. \r\n\r\nhttps://github.com/nightscout/AndroidAPS/assets/98546700/055139e7-0f8e-4359-b352-cb49b3fdfda5\r\n\r\nFrequency of this happening is often more than 50% of the times. Even cancelling TBR might fail. \r\n\r\n![WhatsApp Image 2024-05-29 at 13 42 06_01a92ae4](https://github.com/nightscout/AndroidAPS/assets/98546700/813d3d78-70c2-48d1-8380-4bbcf5485f23)\r\n\r\nNot sure if this could be a driver / BT connection error, even bolusing gave me twice this error in the last 2 days \r\n\r\n![WhatsApp Image 2024-06-03 at 19 45 26_5cf06eb8](https://github.com/nightscout/AndroidAPS/assets/98546700/38c71098-22bf-4326-913b-ce7930df6116)\r\n\r\nLogs show \r\n```\r\n12:43:22.041 [binder:6277_B] D/PUMPCOMM: [EquilBLE.writeData():302]: indexData error \r\n```\r\n\r\n[AndroidAPS.log](https://github.com/user-attachments/files/15537710/AndroidAPS.log)\r\n\r\nIssue was confirmed by other people from my same hospital using Equil. \r\n",
+ "comments": [
+  {
+   "id": 2155900827,
+   "user": "EquilHack",
+   "created_at": "2024-06-08T09:42:27Z",
+   "body": "Your log is not complete. I need all the logs for May 27th"
+  },
+  {
+   "id": 2156004951,
+   "user": "TheDevilsKnock",
+   "created_at": "2024-06-08T11:56:30Z",
+   "body": "> Your log is not complete. I need all the logs for May 27th\r\n\r\nLuckily I still have it. \r\n[AAPSLogs.zip](https://github.com/user-attachments/files/15747754/AAPSLogs.zip)\r\nAnd here's today's one showing it's a persistent bug. \r\n[files.zip](https://github.com/user-attachments/files/15747757/files.zip)\r\n\r\nAs an update on the matter, it's an hypo risk (cos happened to me with zero temp not applying)"
+  },
+  {
+   "id": 2165238227,
+   "user": "TheDevilsKnock",
+   "created_at": "2024-06-13T10:20:46Z",
+   "body": "06/13\r\n```\r\n11:50:43.564 [DefaultDispatcher-worker-6] D/WORKER: [LoggingWorker$doWork$2.invokeSuspend():27]: Worker result FAILURE for class app.aaps.workflow.PrepareBasalDataWorker Data {Error : stopped, }\r\n```\r\n[AndroidAPS_LOG_1718272485966.log.zip](https://github.com/user-attachments/files/15817756/AndroidAPS_LOG_1718272485966.log.zip)\r\n"
+  },
+  {
+   "id": 2209327168,
+   "user": "nuke3",
+   "created_at": "2024-07-04T16:34:59Z",
+   "body": "Hi @EquilHack Does Equil already work with AAPS?\r\nOr maybe for now the status is \"maybe it works a little\"?"
+  },
+  {
+   "id": 2210400164,
+   "user": "EquilHack",
+   "created_at": "2024-07-05T08:05:55Z",
+   "body": "I have submitted a fix, you can try it\r\nhttps://github.com/nightscout/AndroidAPS/pull/3376"
+  },
+  {
+   "id": 2210563250,
+   "user": "nuke3",
+   "created_at": "2024-07-05T09:48:03Z",
+   "body": "@EquilHack I'm going to borrow Equil for 10 days. The consultant said there are two versions of the pump software and the version he can borrow is without open BT. Will this work?"
+  },
+  {
+   "id": 2212738895,
+   "user": "EquilHack",
+   "created_at": "2024-07-08T01:20:06Z",
+   "body": "> @EquilHack I'm going to borrow Equil for 10 days. The consultant said there are two versions of the pump software and the version he can borrow is without open BT. Will this work?\r\n\r\nPls keep in mind , only FW 5.3 can work with this code"
+  }
+ ]
+}

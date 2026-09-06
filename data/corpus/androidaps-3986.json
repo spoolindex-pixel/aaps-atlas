@@ -1,0 +1,51 @@
+{
+ "id": 3070579230,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3986,
+ "title": "Insulin peak time. \"Activity\" or \"concentration\"?",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3986",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-05-17T09:02:01Z",
+ "closed_at": "2025-11-23T22:32:49Z",
+ "comment_count": 6,
+ "body": "Hi, I am trying to understand the role of the insulin model. What I struggle with is that the description of the variables indicate that, for example Fiasp's peak activity is 55 minutes. However, if we define activity as the glucose decreasing process, this is not true. This time is supposedly the peak concentration of insulin in serum. It is AFTER that time that the insulin works the best. There are clinical studies that report some figures regarding this (I read 115 min is an average peak activity for Fiasp).\n\nI know the model is (primarily?) used to compute IOB. Can someone explain to me the benefit of assuming peak time = peak concentration time for this computation?\n\nThank you!",
+ "comments": [
+  {
+   "id": 2898613539,
+   "user": "Philoul",
+   "created_at": "2025-05-21T16:49:36Z",
+   "body": "Everything is within these 2 curves\n![Screenshot_20250521-182749_AAPS.jpg](https://github.com/user-attachments/assets/17c5f5ba-a82a-41f7-8476-fe2d60a53039)\n\n\nWhen you inject 1 unit of insulin within your body at t0, the remaining insulin will follow the pink curve from 1U at t0 to 0U at t0+DIA hours.\nThe derivative of the pink curve as a function of time is the blue curve, and this blue curve is called \"Insulin Activity\"\n\nIn a nutshell, if your ISF value is constant (to simplify explains), with a value of 50 mg/dl /U, then if you deliver 1U of insulin, your BG value should be 50 mg/dl lower DIA hours later, and the variation of your BG value will follow the same \"pink curve\" from t0 to t0+DIA.\n\nThe Activity curve is the slope of the pink curve, and peak time is when the variation of BG value between 2 received value will be the most important.\nInsulin activity units are U / min (or U / 5min if your sensor send values every 5 min), and the expected variation of your BG value between now and now+5min is calculated that way:\nDeltaBG = InsulinActivity * ISF\nSo the highest expected variation of your BG value will be peak min after the bolus, when the blue curve is at the highest level.\n"
+  },
+  {
+   "id": 2900090051,
+   "user": "kbountro",
+   "created_at": "2025-05-22T06:40:48Z",
+   "body": "Hi Philoul, thanks for your answer. To be honest, I don't think this is 100% correct, and it also does not answer my question. Let me be more precise.\n\n- If the blue curve is the \"Concentration\" (let me use this term for now), then the \"IOB\" at time t is 1 minus the integral of \"Concentration\" from 0 to t. This is close to what you wrote, but it is like flipped on the y-axis and normalized.\n\n- Above, I referred to the blue curve as the \"Concentration\". This is because the default peak settings follow the officially reported values of the peak concentration time. \"Activity\" of the insulin is smth else (ref. my original post). Of course, the above definition of IOB is correct: it computes the remaining insulin to be absorbed. What I was thinking is that maybe a more helpful definition would follow the peak \"Activity\" time, which is quite larger than the peak \"Concentration\" time. I would call this \"Effective IOB\", and would represent the \"remaining insulin effect\". A way to estimate the \"peak activity time\" is to assume it is the steepest point of the concentration -> at this point, the insulin is more rapidly used by the body. From my calculations, this produces values near those I have seen reported in research papers.\n\nFood for thought."
+  },
+  {
+   "id": 3436979123,
+   "user": "MilosKozak",
+   "created_at": "2025-10-23T13:25:46Z",
+   "body": "@scottleibrand "
+  },
+  {
+   "id": 3440090449,
+   "user": "scottleibrand",
+   "created_at": "2025-10-24T00:33:18Z",
+   "body": "The blue curve is activity: BG-decreasing effect. We have empirically tested that using autotune (with enough data, it can estimate insulinPeakTime) and find it to be close to the default values in oref0. Certainly closer to 1 hour than 2. There is a long tail, though. "
+  },
+  {
+   "id": 3441132111,
+   "user": "Philoul",
+   "created_at": "2025-10-24T05:37:06Z",
+   "body": "@kbountro, the word \"Concentration\" should be avoided here, as it has a completely different meaning!\nInsulin concentration corresponds to the number of International Units (IU) present in 1 ml of liquid.\n- The most common insulin concentration is U100 (and most pumps are designed to use only U100).\n- A few pens with U200 are available (e.g., Lyumjev is available in U100 and U200).\n- In rare cases of extreme insulin resistance, U300 and U500 insulins can be found in hospitals in vials.\n- Historically, more diluted U40 insulins have also been used in vials, with specific syringes."
+  },
+  {
+   "id": 3441328967,
+   "user": "kbountro",
+   "created_at": "2025-10-24T06:39:32Z",
+   "body": "@Philoul, I refer to the concentration of insulin in the serum. The default peak times seem to match those, at least as reported in the literature.\n\n@scottleibrand Understood. My only concern is that peak time should be estimated in the absence of other external factors, namely COB. That is, without considering postprandial times.\n"
+  }
+ ]
+}

@@ -1,0 +1,151 @@
+{
+ "id": 818270886,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1661,
+ "title": "FR: upload and download xdrip config from / to central server",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1661",
+ "state": "closed",
+ "labels": [
+  "question",
+  "ui",
+  "type-discussion"
+ ],
+ "created_at": "2021-02-28T18:17:21Z",
+ "closed_at": "2023-05-31T17:22:57Z",
+ "comment_count": 22,
+ "body": "after outage of my mobile i needed to restore the whole xdrip config (data collector, uploads, alarms....) and that was really a lot of work. So i want to store (and restore if needed) the whole xdrip config (and maybe the whole database) on a central config server.\r\n\r\nWhenever a preferences change occurs an upload should be triggered to send the actual config after x minutes without preference-changes - that's also easy to implement as all preference changes are sent throu static Pref class and their setters....\r\n\r\nAs far as i can see there seems to be two options i want to discuss:\r\n\r\n1. a WebDAV client (based on sardine-android - https://github.com/thegrizzlylabs/sardine-android) to up- and download config (and even the whole database) via webdav\r\n2. extend nightscout server to get a place where one can upload and download the config (database is already uploaded there). Last month i wrote an extension to nightscout server; thats quite easy - its more complicated to merge it into master branch\r\n\r\nBoth options doesn't seems much complicated but which one would be more \"useful\" for others?\r\n",
+ "comments": [
+  {
+   "id": 787516220,
+   "user": "Navid200",
+   "created_at": "2021-02-28T20:20:50Z",
+   "body": "The best way to keep my blood glucose readings safe is Nightscout.   For example, if I lose my phone, all my glucose history, that is on the phone, will not be lost.\r\n\r\nIf I backup my database, I will not be able to import it.  If I do, it will overwrite what I have.  So, unless I import it into a phone that I have never used, it's useless.  And if I import a database I saved 2 days ago, obviously, it will only recover all my readings up to 2 days ago.  Nightscout, however, will have all my readings that I have uploaded.\r\n\r\nThere are xDrip settings that are device-specific.  There are settings one has to set if one has a Samsung and unset if one doesn't.  So, it would be pointless to import such settings saved from one phone into another phone.\r\n\r\nThe only time I can think of when I may benefit from having a backup of my settings is if I do significant customizations to alarms, display coloring, etc. or for creating a backup of long not-easy to copy settings perhaps like Nightscout login and password etc.\r\nBut, those are not things I would change on a daily basis.  I would change and change and change until I have what I like.  Of course, then, it makes sense to make a backup.  And I can easily do that already using the existing Import/Export features.\r\n\r\nI don't see a reason to change anything.\r\nCan you explain a reason you need to backup your settings every time you make a single change?"
+  },
+  {
+   "id": 787521133,
+   "user": "gruoner",
+   "created_at": "2021-02-28T20:53:03Z",
+   "body": "backing up database is just for users not using any cloud-upload-option - for all the others its useless; i agree\r\nbut i see your point with device-specific config; as i'm always using samsung i couldn't see any differences while copying a really old backup to the new phone (newer version of xdrip...).\r\nThe use case a had last weeks was quite simple: my phone broke up and i didn't have an actual backup (as this is a xdrip companion and not a daily working smartphone i've never done a backup; complete diab diary -the real important thing- is on nightscout server). But in the last months i adjusted several configs (esp. G6 transmitter number, sensor codes, alarm settings, graph setting, prediction setting and some more i can't remember...). As i'm running a special feature branch for a bit more sophisticated alarm setting (i will develop it in direction of dexcom's alarm plans) i also had to redefine all the alarming config.\r\n-- it took me a week to recap all config and i'm not really sure if i got all of them.\r\n\r\nConfig will change over weeks and months and we are getting more and more config in xdrip (nearly every feature needs a switch to switch it off or to configure the feature). So i want an easy way to backup the config whenever some config changes and also restore it when i have to move to another mobile. i can install a slim config just for restore together with my xdrip installation (i'm running my own xdrip stream); but thats just a thought.....\r\n\r\nAs i will implement this feature (because i need it) the question is just about interests of other xdrip users and whether i will rise a PR at the end or not. I experienced hard bricks to get a feature into xdrip master and i want to know if someone else is also interested in such a feature....."
+  },
+  {
+   "id": 787525794,
+   "user": "Navid200",
+   "created_at": "2021-02-28T21:25:12Z",
+   "body": "I wish we could simplify the xDrip code instead of making it even more complicated than it already is.\r\nYou are right, there are too many settings.\r\nIf we keep approving feature requests, it is only going to get worse.\r\n\r\nYour solution is to make it easier to backup the settings so that having too many settings is not a problem any longer.\r\nI have to disagree.  I don't disagree that it will make backing it up easier.\r\nBut, the main problem with having so many settings is not backing it up.  The problem is that a user doesn't know how to use xDrip.\r\n\r\nI spend most of my time on facebook walking users through setting up G5 or G6.  Everyday, there is a user showing a G6 with stopped sensor and they don't know what to do.\r\nI am helping someone right now as I am typing this.\r\n\r\nPLEASE stop adding settings to xDrip.  Please only approve new features that are absolutely necessary.  Please reject any feature request that has a work-around.\r\n\r\nYou can already backup your settings.  From the top right menu button, tap on Impost/Export features.  Then, tap on Load / Save Settings on sdcard.  Then, tap on Save all settings to sdcard.\r\nNow, go to your file manager in Android and go to the Downloads folder and find the backup.  You can save it in a safe place on your server.  It takes less than 2 minutes to do all of that.\r\n\r\nI am not suggesting that your proposal has no value.  All I am saying is that there are pros and cons with approving new features.  \r\n\r\nAlso, we already have so many open issues.\r\nSomeone asked for the missed reading alert to have an override silent mode option added to it.  The request was made 3.5 years ago.\r\nhttps://github.com/NightscoutFoundation/xDrip/issues/193\r\nThis is a legitimate request.  I see the request on facebook too.  Someone wakes up in the morning having a hypo.  Later, realizes that there was no alarm because there were no readings but the missed reading alarm did not go off because of DND.  We need to address that request.\r\nAs long as we "
+  },
+  {
+   "id": 787532933,
+   "user": "gruoner",
+   "created_at": "2021-02-28T22:14:10Z",
+   "body": "i see your point but have to totally disagree - after rising my PR for multi insulin i had have a discussion with jamorham whether we want to start a new release train with a dedicated feature set for \"more sophisticated users\". his vote was really clear - no new train.\r\nThis flood of feature switches is a direct consequence and we are getting lots of more features and switches - at least i'm running 4 feature branches (and have 2 new in mind for features i'm missing) and i added nearly a dozen new config prefs. I agree: its is getting worse.\r\n**BUT** do u really want to ignore the demand of new features and do u really want to upset all the developers evolving xdrip? When #193 is such a big issue, such an important feature why isn't it still implemented? Community developers are implementing things **they** need; if it matches demands of other users i'm willing to address them whenever they doesn't collide with mine - maybe #193 can be a FR i can address with my ideas concerning alarm plans like dexcom has recently implemented.....\r\n\r\nI'm in a very luxury position: i can run my own train, i can implement and include new features and branches on my needs and demands. BUT also a dedicated train just on my own has limits - every change in the master branch might result in huge efforts merging them to my feature branches. I run dedicated feature branches because (sometimes in near or wider future) someone else is also needing such a feature and so i easily can provide a PR and get the stuff into master....\r\n\r\nOur problem is quite the same as linus torwalds' was in the late 90's - we need a flexible system architecture with subsystems and APIs tieing them together with the \"kernel\" to allow decentralized (and decentralized approved) subsystem-changes and subsystem-config without effecting other subsystems or even the \"kernel\". Our software base isn't really architectured; maybe it was but it has been \"destroyed\" by too much features and no \"architecture cleanup\". Maybe "
+  },
+  {
+   "id": 787540800,
+   "user": "Navid200",
+   "created_at": "2021-02-28T23:01:47Z",
+   "body": "I am hoping that I can fix 193 myself.  But, I have to learn a little bit first.  That's not a problem.  But, it may take me a while.\r\nThat was just an example I was using to point out that we have open issues and I would like to close them even if I myself am not affected.\r\njamorham could have just compiled the code and used it for himself.  But, he chose to offer it to everyone.\r\nxDrip serves a large portion of Diabetics on the planet.  My hat's off to jamorham and anyone else who sees value in service.\r\n\r\nAt the same time, I value talent.  Anyone who is talented and likes to contribute, I don't see why they couldn't.  If you like to add a sophisticated feature to xDrip, I don't see why not.  But, whether it is forced on everyone or not should not affect the outcome for you, should it?\r\nCan you not have an executable that you can run after every new release to add your feature to it?\r\n\r\nIf you want to have a sports car that can also be a sports utility vehicle and also a minivan and also a chopper and also a boat, you will end up with a contraption that will not be as good as any of those alone.  xDrip is the same.  The more features we add to it, the harder it becomes to just use it as a good CGM.  We have to be careful what we do with xDrip.  I would like it to survive, and I would like the regular people to be able to use it, not just technical people."
+  },
+  {
+   "id": 788170025,
+   "user": "gruoner",
+   "created_at": "2021-03-01T18:28:58Z",
+   "body": "i agree with u: we got a (in germany we call it) \"eierlegende wollmichsau\" - it does everything and it does it because someone needed / demanded those features and there wasn't any \"better\" container to let your features base on.\r\nBUT who will decide which feature is \"good\" or \"valueable\" enough to get merged and which one isn't?? Exactly thats the point where my 4 feature branches are starting - no one decided; i does. And whenever someone else is also demanding a feature like mine i will try to address it and bring it to the master branch - BUT then decision has also be taken; who decides if two guy's demanding the feature is enough? Do we need 100 users or a 1000 or even 10'000 users? Here my thoughts concerning a dedicated feature train are starting.....\r\n\r\nBUT all those word will not bring me to an answer of my question - xdrip will not change the way u want neither developers does and \"others\" might also run into this issue and might demand a feature like this....?"
+  },
+  {
+   "id": 788225929,
+   "user": "tolot27",
+   "created_at": "2021-03-01T19:53:59Z",
+   "body": "@gruoner Maybe, it's time for you to join us at gitter. Navid and I are screening and tagging all open issues. Afterwards, we will categorize them and assign a severity and priority and maybe create some milestones. Our goal is to get a good overview and restructure the code to fix bugs efficiently and in a timely manner."
+  },
+  {
+   "id": 788233365,
+   "user": "gruoner",
+   "created_at": "2021-03-01T20:04:51Z",
+   "body": "gitter? how do u organize your \"work\" to get bugs fixed? u can contact me directly at gruoner-github@gmx.net"
+  },
+  {
+   "id": 788270422,
+   "user": "tolot27",
+   "created_at": "2021-03-01T20:53:22Z",
+   "body": "> gitter? how do u organize your \"work\" to get bugs fixed? u can contact me directly at ...\r\n\r\nhttps://gitter.im/jamorham/xDrip-plus\r\n\r\nWe try to be as transparent as possible and discuss most of the topics at Gitter or Facebook, currently."
+  },
+  {
+   "id": 788901783,
+   "user": "Navid200",
+   "created_at": "2021-03-02T13:17:30Z",
+   "body": "> BUT who will decide which feature is \"good\" or \"valueable\" enough to get merged and which one isn't?? \r\n\r\nIn this case, it would be jamorham because this is his repository.  \r\n<p>&nbsp;</p>  \r\n\r\n> who decides if two guy's demanding the feature is enough? Do we need 100 users or a 1000 or even 10'000 users? Here >my thoughts concerning a dedicated feature train are starting.....\r\n\r\nA governing body (in this case, the developers, headed by jamorham) makes such decisions.  It is a thankless job because no matter what you choose to do, someone is going to complain.  Sometimes, there isn't a right and wrong decision; but, you have to make a choice regardless of knowing that a portion of the user community is going to whine.    \r\n<p>&nbsp;</p>\r\n\r\n> BUT all those word will not bring me to an answer of my question - xdrip will not change the way u want neither developers does and \"others\" might also run into this issue and might demand a feature like this....?\r\n\r\nI know that.\r\nI hate it that when I drive my car, I have to push a button to lower the window.  I wish I could just rotate a lever like before for that.  But, I cannot because all car manufacturers have chosen to go that route.  So, I put up with it.  I am not going to build my own car just because I don't like how the windows operate!\r\n\r\nLikewise, there are things I don't like in xDrip.  I communicate my wishes.  But, if I don't get my way, life goes on.  \r\nIf there is ever a better alternative, I will switch.  I have no obligation to use xDrip.\r\nxDrip has served me well for years and I hope that it will continue to evolve and I can continue to use it and hopefully even contribute."
+  },
+  {
+   "id": 789149132,
+   "user": "gruoner",
+   "created_at": "2021-03-02T19:17:17Z",
+   "body": "yeah - what else...? i want to know which way to go - u'r right (esp. the metaphor with u'r car and lever) but my issue is real and i need (and have) an optimal solution for that. The only question i have is the way to achieve the goal. \r\nU'r \"wish\" is to resign the optimization; which collides with my \"wish\". So it will become realized - at least in my train.\r\nThe question is: is there any other benefit someone might leverage from or can i merge it into my own branch and will never merge it to master (there are some feature i decided never to merge to master)?"
+  },
+  {
+   "id": 789152038,
+   "user": "Navid200",
+   "created_at": "2021-03-02T19:21:45Z",
+   "body": "Everything I have posted has been my opinion.  \r\nAnd thank you for the discussion.  I have learned from you.\r\n\r\nI think jamorham is the right person to answer you.  Because I neither have the authority nor the experience to advise you in that sense.  "
+  },
+  {
+   "id": 803700939,
+   "user": "k2s",
+   "created_at": "2021-03-22T01:14:24Z",
+   "body": "First of all, @gruoner, thank you for you great contribution with multiple insulin. Your ideas and skills are great contribution to xDrip.\r\n\r\nxDrip is nice base. The code quality is solid. xDrip is very open to extension. Functionality is overwhelming. New activities in ticket and translation management are visible and were needed. @jamorham is a rigorous, but open minded keeper of the code and I am happy to read that he doesn't want to split xDrip development into multiple streams.\r\n\r\nThere is huge variability of users and xDrip is currently best suited for \"adult, technically skilled, english speaking, using pump and Dexcom\". I am on different boat \"parent, with relatively young child, non-english, using pen and Libre2\". The multiple insulin functionality was a must for me. I would welcome easier treatment entry, easier configuration and Libre2 whole house coverage. I am so thankful xDrip for what it gives me and there is so much I would like to see improved and added. Can't imagine that xDrip should be closed from further improvements and new features. \r\n\r\nThere can't be anything wrong to listen to user requests, bug reports, to discuss priorities and ways how to move forward (which I understand this ticket is also about). Users should not be bent out that they demand is not important and skilled contributors should be handled with respect - they are the only source of solutions. Developer community around xDrip is driven by own needs. Contribution to xDrip is not a passion, it is a must for each of us to do the best for our health or health of our most loved. Developers invest time and skills and share the results with others. If somebody really needs fix or feature and has no skills, he can hire any programmer in the world and donate the result to xDrip. \r\nRefusal of contribution will not redirect resource to other tickets.\r\n\r\n**Back to ticket:**\r\n\r\n* before I read this ticket I was trying to find a solution how to use auto config QR code to share partial confi"
+  },
+  {
+   "id": 804342205,
+   "user": "gruoner",
+   "created_at": "2021-03-22T19:39:27Z",
+   "body": "@k2s: glad to see that i'm not alone in this boat - same on my side: young child, non-native english speaker, 3 pens (with a more complicated therapy schema) and dexcom; but with a wife with very high demands on data gouvernance and thus a local nightscout server, VPNs and a local sophisticated reporting engine together with a self-learning neural net for BG-prediction and insulin profile adoption....\r\nI need to have ALL information influencing the BG in nightscout server to feed my neural algorithms - thus a fully functional diabetic diary was a must and i'm already working on the multicarbs feature (it is much more complicated i ever would expect)\r\n\r\nThis feature is just for convenience - last month by child crashed the mobile (display was spidered and i can't see anything but it was already running) AND to switch to the replacement device i need to know the actual config of the dexcom transmitter and some other config. i can't even do a export via sd-card or QR-code (because display was spidered); i want to have it \"downloadable\" from some kind of repo.\r\nI had have seen two options - extend nightscout server or \"simple\" up/download via webdav.\r\nAs far as i can interpret u'r vote u suggest extending the nightscout server AND implement an even more simple webserver-upload.\r\nExtending nightscout server isn't that much thing but both patches have to be merged and this costs time.\r\nI don't know any more simple web upload protocol than webdav but we might use smtp/email - this might result in lots of emails but emailing is really simple. We can collect all changes to preferences within a hour or so and send it to a mailbox configured by the user. This isn't a downloadable config but will also fit my biggest issue and i can use the import function to get it online on the replacement device....."
+  },
+  {
+   "id": 895310426,
+   "user": "Navid200",
+   "created_at": "2021-08-09T15:15:21Z",
+   "body": "I'm looking at this from a different angle now.\r\nThere is a post on facebook describing the child's phone having broken beyond repair.\r\nThey now have a new phone and want to know the easiest way to set it up.\r\nIf uploading the settings, to Nightscout, was possible, and if they had Nightscout, they could transfer the settings to the new phone and everything, the alerts, the glucose levels, the sharing settings, etc. would be all set.\r\n\r\nMy problem is I still don't understand how storage space on Nightscout is used.\r\nI have been told that no matter how often you upload something to Nightscout, it is going to be replicated once every 5 minutes.  So, I don't understand how that can be sustainable if we keep adding more and more data to Nightscout.\r\nIf that is not an issue, I would like this for the purpose I have described.  Now, if someone else likes to use the same capability for constantly changing the settings, I don't care.\r\nBut, will this occupy space on Nightscout that otherwise could have been used to store BG readings for a longer period of time?\r\n\r\nI have several questions:\r\n\r\nExactly how storage space on Nightscout is allocated to different things?\r\n\r\nWhat will be the impact on bandwidth and data usage considering it's not just a single pair of blood glucose and time we are uploading; it's many many settings.\r\n\r\nIf the phone is broken and we are setting up a new phone, what's the easiest way to transfer the settings to the new phone?\r\n\r\nIs there an easier way to accomplish what I need rather than this new feature for xDrip? \r\n\r\n<br/>\r\n<br/>\r\n\r\n@sulkaharo would you be kind again to help me understand how Nightscout allocates space?\r\nDoes such capability already exist in Nightscout for any other app?  I mean can a user just establish connectivity to Nightscout from their app and easily transfer all the app settings, already saved on Nightscout, to their app?\r\n\r\nThis is what my Nightscout looks today:\r\n![Screenshot 2021-08-09 105618](https://user-images.githubus"
+  },
+  {
+   "id": 1105457667,
+   "user": "gruoner",
+   "created_at": "2022-04-21T16:44:15Z",
+   "body": "@Navid200 lots of questions and i don't have valuable answers for u:\r\n**Storage**: as we just store all current config info there isn't that much consumption. Keep in mind: BG and treatment data are already stored. I assume, it will take just a few hundred kilobytes\r\n**bandwith**: that's a really more complicated thing as these config information must either be transferred  incrementally or monolithic as one block; maybe (depends on the nightscout API) we can split it up in more than just one block\r\n**restore-procedure**: \"someone\" has to configure the access parameters to the nightscout server - whenever u have done configuring nightscout-upload, u know what i mean. We have to find a way to restore all from scratch just by presenting a blank config file and some kind of 2D barcode (QR-code) holding the nightscout-link...."
+  },
+  {
+   "id": 1161930908,
+   "user": "Navid200",
+   "created_at": "2022-06-21T15:41:08Z",
+   "body": "@gruoner The following issue has been coming up repeatedly on facebook over the past 2 weeks:\r\nhttps://github.com/NightscoutFoundation/xDrip/issues/1280\r\nI can imagine it would be extremely annoying.\r\n\r\nCan you come up with a scheme that wouldn't be complicated to merge?\r\n\r\nI'm thinking if the user has already set up Nightscout, they will never lose their readings.  They will in xDrip.  But, at least, the data itself remains in Nightscout.\r\nBut, the alerts and everything else that may be complicated to recreate from scratch will be lost.  So, with your proposal, the user can be protected against that as well.\r\nBut, it's pointless if it is never merged, which will be likely the case if it's not a simple addition.\r\n\r\nWhat do you think?"
+  },
+  {
+   "id": 1166332623,
+   "user": "gruoner",
+   "created_at": "2022-06-25T17:44:14Z",
+   "body": "i'm afraid that's the wrong answer for the correct question - one has to find the cause why complete databases are repeatedly droped.... for sure, this feature will lower the pain when a db drop occurs but that can't be the solution.....\r\n\r\ni'm currently working on a webdav backup/restore feature (it's useless to upload all of xdrip's db entities (tables) to dedicated nightscout mongo-collections, so i will use the existing backup/restore functions and add just a webdav protocol handling).\r\nBut this might take some weeks to accomplish (its vacation time)....."
+  },
+  {
+   "id": 1166349597,
+   "user": "Navid200",
+   "created_at": "2022-06-25T19:35:39Z",
+   "body": "I don't think I ever said that was the solution."
+  },
+  {
+   "id": 1213163191,
+   "user": "gruoner",
+   "created_at": "2022-08-12T14:19:56Z",
+   "body": "opened a PR #2269 "
+  },
+  {
+   "id": 1568823221,
+   "user": "Navid200",
+   "created_at": "2023-05-30T17:40:30Z",
+   "body": "xDrip can now create a backup on Google Drive.  And it can restore from it.\r\nDoes that address the need?\r\nhttps://navid200.github.io/xDrip/docs/GoogleDriveBackup.html"
+  },
+  {
+   "id": 1570620527,
+   "user": "gruoner",
+   "created_at": "2023-05-31T17:22:50Z",
+   "body": "no it doesn't because i use an android mobile without any google apps\r\nBUT this isn't any problem because i implemented a webdav upload/restore feature"
+  }
+ ]
+}

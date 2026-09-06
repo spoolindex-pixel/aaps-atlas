@@ -1,0 +1,51 @@
+{
+ "id": 1040369757,
+ "repo": "nightscout/AndroidAPS",
+ "number": 819,
+ "title": "Profile Activation may fail due to profile error handling issues",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/819",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-10-31T03:59:36Z",
+ "closed_at": "2021-11-02T08:23:27Z",
+ "comment_count": 6,
+ "body": "When importing settings from 2.8.x or creating a new profile from scratch there appear to be some issues regarding how missing/out-of-range values are handled:\r\n\r\n1) Imported (or newly created) profiles that appear to be valid, and can be activated in the 'Profile' tab, appear to get activated, but are shown as inactive on the Overview screen. \r\n\r\nTo replicate:\r\n1 import settings (or delete all existing profiles and create a new profile) containing a local profile with a target of 5.4 to 5.7 mmol/l\r\n2 on the Profile tab, edit an ISF value from 4.5 to 4.6 and save the profile\r\n--> No errors result\r\n3 Activate the profile\r\n--> The activation confirmation dialog appears and it appears to activate\r\n4 Go to the Overview tab\r\n--> It indicates in red 'NO PROFILE SET'!\r\n5 on the Profile tab, change the lower end target from 5.4 to 5.5 and save it\r\n6 Activate the profile\r\n--> This time it correctly activates\r\n\r\nSo there are two aspects this issue:\r\na) a target below 5.5 is invalid, but upon saving the profile no error is generated so the user thinks that the profile is valid\r\nb) Upon attempting to activate the invalid profile, no error is generated so the user thinks that it activates successfully\r\n\r\nnote: I haven't tested other variables besides 'Target' to see if this issue occurs with them\r\n\r\n\r\n2) When creating a new profile, out-of-range errors often appear confusingly or incorrectly:\r\na) Confusingly for items other than the value that was just configured. e.g. if the user configures DIA, then an error appears for IC. The design rationale was presumably to let the user know that IC isn't yet configured, but the implementation is confusing because the error has nothing to do with the just-completed action.\r\nb) Incorrectly for items that were previously configured correctly. e.g. if a user configures ISF, an error regarding incorrectly configured IC will often display even when IC was configured correctly.\r\n\r\nTo replicate:\r\n1 Delete all profiles and create a new one\r\n2 Set DIA to 5.5\r\n--> '! Error in IC values'. This is unexpected because the user hasn't yet configured an IC value.\r\n3 Set IC for 12am to 5.5\r\n--> '! Error in IC values' displays! This is unexpected because a valid IC value has been entered\r\n--> After about a minute, the error changes to '! Error in ISF values' (confusing because the user hasn't entered ISF values)\r\n4 Set ISF to 5.0\r\n--> Similar issues as at step 3 (except this time ISF and Basal errors)\r\n5 Set Basal to .70\r\n--> 'Error in IC values!!' Why is there an error in IC values now?!\r\n--> This error then disappears (and doesn't indicate anything about missing 'Target values')\r\n...\r\n\r\nA possible solution would be to get rid of these error messages entirely, and just highlight in red any heading containing missing/invalid settings (DIA / IC / ISF / BAS / TARG). And the only time that an error message should appear is to clarify on the active tab why that particular header is in red. e.g. if the user clicks the red Target tab 'Error: target BG must be at least 5.5'. That way users would know _all_ of the items that remain to be correctly configured, and the problems of errors appearing confusingly/at the wrong time will go away.\r\n\r\n-----------------------------\r\nTested on 3.0 beta 2",
+ "comments": [
+  {
+   "id": 955780599,
+   "user": "rustymonkey",
+   "created_at": "2021-10-31T19:45:28Z",
+   "body": "Issue 1) is similar/related to: #630 #771 #808\r\n\r\nOne more piece of information: issue 1) seems to have stopped occurring now that I've managed to correctly set up a profile. Even more strangely, the profile has a lower Target of 5.3 and AAPS is no longer rejecting it! So I'm no longer certain that the target setting below 5.5 is the sole root cause. \r\n\r\nThe only thing that I do know is that the issue can be replicated via uninstall/re-install AAPS and re-import 2.8.2 settings. I now suspect that another aspect to the issue might be that 'Activate profile' may, in that specific situation (import after clean install ?with out of range target?), fail to trigger pump communication on profile change. In my case, I've found that clicking 'Activate profile' (even after changing a profile setting) didn't trigger any communication with the pump nor generate an error message about failure to communicate with the pump. Clicking 'Refresh' on the 'Medtronic' tab initiated a pump wakeup and profile update.\r\n\r\nI've submitted logs of this.\r\n\r\n---------------------------\r\nNote: tested with 3.0 beta 2 wl MDT 554 / RileyLink / PixelExperience(Android 11)\r\n\r\n\r\n"
+  },
+  {
+   "id": 957197264,
+   "user": "MilosKozak",
+   "created_at": "2021-11-02T08:23:27Z",
+   "body": "1) resolved by https://github.com/nightscout/AndroidAPS/commit/760261e258e51e0d8f290e1ae9322df7bc1e0ff1\r\n2) this is expected behavior. The goal is tell to the user where is a mistake in profile if background is red\r\n\r\nopen new issue if you find something new"
+  },
+  {
+   "id": 957686978,
+   "user": "rustymonkey",
+   "created_at": "2021-11-02T14:23:01Z",
+   "body": "1. Thanks! I'll retest the next build.\r\n2. Although this doesn't prevent AAPS from working, the current behavior isn't expected **by the user** because:\r\na) Errors are unrelated to the activity that triggers them. Users will eventually figure it out, but it would be preferable to show the status of unconfigured items in advance rather than in response to configuring an unrelated UI element.\r\nb) Errors persist (e.g. for a minute) even after a valid profile has been configured and enabled. This is more serious because it temporarily gives the impression that a valid profile is faulty.\r\n\r\nA simpler solution than the original suggestion might be to display the live (i.e. no timer) error status for **all** configuration values associated with the current profile on all tabs of the profile screen. e.g.\r\n! Invalid profile: <ProfileName>\r\n! Unconfigured: Basal\r\n! Out of range: ISF, Target"
+  },
+  {
+   "id": 957937300,
+   "user": "MilosKozak",
+   "created_at": "2021-11-02T16:48:53Z",
+   "body": "2b is fixed in beta3. it's related to android toast duration"
+  },
+  {
+   "id": 957938697,
+   "user": "MilosKozak",
+   "created_at": "2021-11-02T16:50:27Z",
+   "body": "ad 2a) messages are in order of tabs on screen ie. if you fix DIA, error message for IC is displayed (if wrong) etc"
+  },
+  {
+   "id": 961168972,
+   "user": "rustymonkey",
+   "created_at": "2021-11-04T15:43:22Z",
+   "body": "Tested Beta 3 and verified the fixes to the functional problems. A couple of minor usability issues remain:\r\n\r\n1b) If the user tries to 'Activate Profile', but AAPS fails to do so, there's still no feedback to the user on the profile page. An example of this is when issue #843 occurs (though I expect that there are other cases when this can occur as well). The user can see on the Overview tab that the profile failed to activate, but there's no error/feedback on the Profile tab about what the problem might be.\r\n\r\n2a) Though I understand what the app is doing, it's still confusing to a new user when they click to adjust e.g. the IC value, an error about the ISF appears. "
+  }
+ ]
+}

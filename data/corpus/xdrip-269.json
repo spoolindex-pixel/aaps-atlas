@@ -1,0 +1,57 @@
+{
+ "id": 288409875,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 269,
+ "title": "Blukon collector restart race condition",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/269",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2018-01-14T13:50:52Z",
+ "closed_at": "2018-11-02T08:01:18Z",
+ "comment_count": 7,
+ "body": "Hi,\r\n\r\nin some circonstance, it could be possible that xdrip restarts collector altough xdrip is communication with blukon. It could happen when option \"Agressiv service restarts\" is enabled but also if user force restart manually. It can be quiet annoying as it may lead to long time until xdrip and blukon reconnects, as xdrip still needs to wait 5min each time.\r\n\r\nAs more and more user complains about difficulties to reconnect, I think we should fix this issue.\r\n\r\nIn the init function, I add a guard `m_communicationStarted` to avoid resetting variables, which doesn't help totally as BT link is closed.\r\n\r\nI could think about these possibilities to solve issue:\r\n- Blukon Class provide a method `isCommunicating()` and DexCollection Class should check for it before restarting Collection\r\n- We change timer for collection restart to something in between 2 communication slots (7min, 13min, ....) but at at least not 10min. Could be also great to give a dropdown list with different good times\r\n\r\nThere are certainly better solutions...\r\n\r\nWhat do you think?\r\n\r\nGregory\r\n",
+ "comments": [
+  {
+   "id": 357514809,
+   "user": "jamorham",
+   "created_at": "2018-01-14T14:16:58Z",
+   "body": "I think storing a timestamp of the last time blukon class received any data from the remote device and then we can use that (or a boolean method like `isCommunicating()` based on that timestamp to decide whether to restart the service instead of `BgReading.last_within_millis()` would make it more reliable. \r\n\r\nAs far as I know, if any data is being received from the blukon device then there is no need to restart the service?"
+  },
+  {
+   "id": 357526216,
+   "user": "gregorybel",
+   "created_at": "2018-01-14T17:08:36Z",
+   "body": "yes when something received to needs to restart. We can do with such a timestamp but this would mean we need to set this timestamp on each received command, maybe too much overhead?\r\n\r\nHow to interface both classes? Using PersitantStore?"
+  },
+  {
+   "id": 358781933,
+   "user": "gregorybel",
+   "created_at": "2018-01-18T21:07:57Z",
+   "body": "@jamorham how do we continue here?\r\nI can provide a timestamp but how?\r\nA getter?\r\nUsing persitentStore?\r\nBetter idea?\r\n\r\nI looked at code when restart is done and it seems we cant access blukon class.\r\n\r\nAny change to change timout for restart? Or even better can we let user decide? For blukon 6min would be fine, as we should get latest after 5min a new value.\r\n\r\nI have concerns about overhead to set timestamp on each value, is it valid or doesnt matter?\r\n\r\nThanks."
+  },
+  {
+   "id": 359085970,
+   "user": "jamorham",
+   "created_at": "2018-01-19T20:53:21Z",
+   "body": "I would say if you are concerned about performance just store the last timestamp in a `static long` field and then make your comparisons against that. The class is unlikely to be unloaded that often while it is in use so the data would likely be 99% correct when tested.\r\n\r\nI've created an interface and directed it towards a static method in `Blukon` like so:\r\n\r\n```\r\n   public static boolean isCollecting() {\r\n        return false; // stub\r\n        // use internal logic to decide if we are collecting something, if we return true here\r\n        // then we will never get reset due to missed reading service restarts\r\n    }\r\n```"
+  },
+  {
+   "id": 359093319,
+   "user": "jamorham",
+   "created_at": "2018-01-19T21:25:24Z",
+   "body": "@gregorybel Build your logic in to this new method in `Blukon` and I will get the rest of it wired up shortly. https://github.com/NightscoutFoundation/xDrip/commit/677e57b7755bb0d4c65c6f982f6129207e0fab22"
+  },
+  {
+   "id": 359567786,
+   "user": "gregorybel",
+   "created_at": "2018-01-22T21:17:40Z",
+   "body": "create PR: https://github.com/jamorham/xDrip-plus/pull/46\r\n"
+  },
+  {
+   "id": 435300533,
+   "user": "gregorybel",
+   "created_at": "2018-11-02T08:01:18Z",
+   "body": "done"
+  }
+ ]
+}

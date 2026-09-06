@@ -1,0 +1,45 @@
+{
+ "id": 2329855815,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3360,
+ "title": "Impossible to activate a lowest profil percentage if basal is set to the lowest value (0,05)",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3360",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-06-02T20:44:04Z",
+ "closed_at": "2024-06-03T11:07:13Z",
+ "comment_count": 5,
+ "body": "Reporting bugs\r\n\r\nBuild Version : AAPS 3.2.0.4 / 5d3e33ce8a-2024.04.24\r\n\r\nFor my kid, we have a very low basal need in the morning (set to 0,05 from 8 to 13a.m).\r\nWhile swithing to a lower profil (let say 90% of the actual profil), we have a popup warning us (in french sory) : \"Valeur de basal remplacée par la valeur minimale autorisée : changement de profil\". Then we press ok and nothing happend, we still are in the 100% profil.\r\n\r\nIf we change the basal manualy to 0,07, we can change the profil to 90% by exemple.\r\n\r\nIn the log file I don't see any error. It happend each time. in the log file, we tried to do it at 17:27.\r\n\r\nDon't hesitate if you need further information\r\n[AndroidAPS._2024-06-01_02-00-03_.3.log](https://github.com/user-attachments/files/15526838/AndroidAPS._2024-06-01_02-00-03_.3.log)\r\n\r\n\r\n--------------\r\n- **Note the precise time the problem occurred** and describe the circumstances and steps that caused\r\n  the problem\r\n- Note the Build version (found in the About dialog in the app, when pressing the three dots in the\r\n  upper-right corner).\r\n- Obtain the app's log files, which can be found on the phone in\r\n  _/storage/emulated/0/Android/data/info.nightscout.androidaps/_\r\n  See https://wiki.aaps.app/en/latest/Usage/Accessing-logfiles.html\r\n- Open an issue at https://github.com/nightscout/AndroidAPS/issues/new\r\n",
+ "comments": [
+  {
+   "id": 2144799118,
+   "user": "Philoul",
+   "created_at": "2024-06-03T10:05:57Z",
+   "body": "I'm afraid it's not an AAPS issue but a pump issue due to hardware/software constraints within pumps (using an APS system or not).\n\nSome parents use diluted insulin to workaround this problem (I don't know if we can still find U40 insulin in france).\n=> You should be very very carefull if you decide to go in this direction because it can be dangerous: if you tune your profile for U40 insulin (2.5 times higher) and put by mistake U100 within pump you will get important overdosing of insulin."
+  },
+  {
+   "id": 2144865550,
+   "user": "Philoul",
+   "created_at": "2024-06-03T10:39:18Z",
+   "body": "@MilosKozak , I know we already had this discussion a few years ago (it was about U200 insulin) and you were against adding Insulin Concentration within AAPS for safety reason...\n\nBut now more and more users are using U200 with an adapted profile, especially with Lyumjev insulin, and here we have another use-case that may requires this kind of feature for U40 or other diluted concentration of insulin for young children.\n\nOn my side I am using since about 2 years an adapted version of Insight Driver that have an Insulin concentration parameter for my own usage (U100 by default, but I can set U40, U200...), and this version was never shared with community because of your decision (I prefer on my side managing real values of Insulin Units within AAPS, than \"fake values divided by 2\"), so convertion is directly managed within pump driver for everything.\n\nWe now also have more and more patch pumps that don't have any external UI other than AAPS (so less risk due to direct bolus managed directly from pump).\n\nDo you think we could reopen this topic today? (With for example a feature limited to engineering mode only, safety warnings?)."
+  },
+  {
+   "id": 2144897457,
+   "user": "MilosKozak",
+   "created_at": "2024-06-03T10:56:35Z",
+   "body": "I agree that diluted insulin is the only solution for that"
+  },
+  {
+   "id": 2144917030,
+   "user": "MilosKozak",
+   "created_at": "2024-06-03T11:07:12Z",
+   "body": "@Philoul I didn't change my mind regarding implementation. There would be still places where you have think how is it implemented. Manual injections, refills ....\r\nThe only safe way i see is to change the the mind of the patient ie. for U200 insulin behave like half weighted. after some time you start thinking in half/doubled numbers in all cases. I'm a good example"
+  },
+  {
+   "id": 2145956497,
+   "user": "francoisqueru35",
+   "created_at": "2024-06-03T19:25:49Z",
+   "body": "I'm not sure to understand.\r\nHere is what I do and what I get :\r\nstep 1 : set profil de 90%\r\nstep 2 : press ok\r\nstep 3 : we have a warning saying the basal will be replaced with the minimum allowed value\r\nstep 4 : nothing, profil has not been changed...\r\n\r\nWhat I would expect is either \"impossible to change the profil due to minimum basal value...\" ok \"Profil really changed with the minimum basal value.\"\r\nDo you see what I mean?"
+  }
+ ]
+}

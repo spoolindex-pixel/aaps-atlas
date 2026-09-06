@@ -1,0 +1,29 @@
+{
+ "id": 479737025,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 978,
+ "title": "Bug: No Date/Time picker for Libre sensor when \"Not today\" is selected and start time is reported 24 hours in the past",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/978",
+ "state": "closed",
+ "labels": [
+  "question"
+ ],
+ "created_at": "2019-08-12T16:25:08Z",
+ "closed_at": "2024-07-05T19:29:55Z",
+ "comment_count": 2,
+ "body": "Hello,\r\n\r\nI have noticed that when I start new Libre sensor and select \"Not today\" there is no Date/Time picker to select exact date and time when sensor was started. Also the sensor start time in logs is reported 1 day in the past.\r\nE.g. I have changed sensor today 2019-08-12 but in xDrip+ logs there is:\r\n\r\nNEW SENSOR\r\n14:24 Sensor started at 2019-08-11 14:24:35\r\n\r\nThis also affects Nightscout upload as it is also uploaded incorrectly - see entry from MongoDB:\r\n\r\n{ \"_id\" : ObjectId(\"0e84a2f5dc2d405ebb7a3cbc\"),\r\n\"timestamp\" : 1565529875527,\r\n\"eventType\" : \"Sensor Start\",\r\n\"enteredBy\" : \"xdrip\",\r\n\"uuid\" : \"\",\r\n\"created_at\" : \"2019-08-11T13:24:35.000Z\",  <-----\r\n\"sysTime\" : \"2019-08-11T15:24:35.527+0200\",  <-----\r\n\"utcOffset\" : 0 }\r\n\r\nHence it affects SAGE plugin as sensor age is reported incorrectly.\r\n\r\n![nightscout_sage](https://user-images.githubusercontent.com/51976401/62871339-9ef2f500-bd1b-11e9-8d85-441d1ee954f7.png)\r\n\r\nI have briefly checked xDrip+ source code and found possible source of the issue. In StartNewSensor.java there is:\r\n\r\nif (DexCollectionType.hasLibre()) {\r\n                    ucalendar.add(Calendar.DAY_OF_MONTH, -1);\r\n                    realStartSensor();\r\n                } else { \r\n\r\nNot sure why it is there and date is shifted 1 day back.\r\nI think there should be code to display Date/Time picker as user can select exact date and time when sensor was started.\r\n\r\nAlso I'm a little bit confused why sensor start time is adjusted by -1 hour when option \"Yes, today\" is selected and Time has been picked up in dialog:\r\n\r\nucalendar.add(Calendar.HOUR_OF_DAY, -1); // hack for warmup time \r\n\r\nIt is questionable whether is it OK because the dialog says \"What time was it inserted?\" So I would expect that I should enter time when sensor was inserted and started by Libre reader/LibreLink app. If so the code above actually makes sensor start time 1 hour earlier than it was actually.\r\nIn my opinion this is confusing and it should be removed.\r\nThanks.",
+ "comments": [
+  {
+   "id": 1568713544,
+   "user": "Navid200",
+   "created_at": "2023-05-30T16:15:18Z",
+   "body": "@psonnera  Would you please provide your view of this?"
+  },
+  {
+   "id": 1569001128,
+   "user": "psonnera",
+   "created_at": "2023-05-30T19:52:51Z",
+   "body": "@Navid200 I nearly never restart the sensor (logically I mean) and also never checked in Nightscout as the actual SAGE I was convinced was picked from the real sensor lifetime...\r\nThe rest of the discussion is indeed vocabulary accuracy and historical reasons. You can insert a Libre sensor and start it, at this point the logic is sane. But you can insert a sensor and not start it immediately. So I'd agree that the question should be \"What time was it started?\" since starting a Libre means you need to wait for an hour before you can get consistent readings (and you can get inconsistent readings during warmup if you like crazy numbers).\r\nI would remove the dialog and rely on sensor information from FRAM. Start sensor should only be a way to say there's a new sensor, no time necessary as long as the information can be grabbed from the sensor FRAM (but don't rely on me to remember if this is always feasible, but I'd guess yes)."
+  }
+ ]
+}

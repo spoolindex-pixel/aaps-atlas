@@ -1,0 +1,114 @@
+{
+ "id": 787782249,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1612,
+ "title": "G6 reading times are incorrect/out of sync",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1612",
+ "state": "closed",
+ "labels": [
+  "help",
+  "sync"
+ ],
+ "created_at": "2021-01-17T19:57:58Z",
+ "closed_at": "2021-02-26T05:08:06Z",
+ "comment_count": 16,
+ "body": "Nightly build- 1/15/21 (and also the previous nightly)\r\nGlucose Reading times are off. When xdrip gets a reading it is being added with a time in the past instead of the current time. I'm not sure when this started happening.\r\nI added a finger prick with the current time and 2 readings came in and were added with a time before the finger prick.\r\nLook at the screenshots below. You can see the time that xdrip got the reading, and the time associated with the reading.\r\n![image000000_20210117_144631](https://user-images.githubusercontent.com/26498008/104854356-2ca11f80-58d4-11eb-913d-b763331d0eb3.png)",
+ "comments": [
+  {
+   "id": 761915407,
+   "user": "Navid200",
+   "created_at": "2021-01-18T00:52:56Z",
+   "body": "You are suggesting that all readings have incorrect times.  But, your proof is tapping on a calibration.\r\nWhy don't you tap on a reading (not a calibration) and see if the reported time is right or not?\r\nYou will see that it is correct.\r\n\r\nThe calibration is a different story and there are other open discussions about it."
+  },
+  {
+   "id": 761917129,
+   "user": "adanvdo",
+   "created_at": "2021-01-18T00:58:18Z",
+   "body": "The proof is not tapping on calibration. You can see the reading I tapped on is blue, meaning it's selected"
+  },
+  {
+   "id": 761922452,
+   "user": "Navid200",
+   "created_at": "2021-01-18T01:22:29Z",
+   "body": "Sorry if I have misunderstood your post.\r\n\r\nI am looking at my readings where one is before 7:00 and the one after is right after 7:00.  When I tap on those, I get 6:57 and 7:02 respectively.\r\nMind you, I am on November 27, 2020.  But, I doubt there has been a change to timing.\r\n\r\nWould you mind doing the same?\r\nYou have one reading just before 2PM and the next one right after 2PM.  Would you please tap on those two and see what times they report?"
+  },
+  {
+   "id": 761922679,
+   "user": "Navid200",
+   "created_at": "2021-01-18T01:23:22Z",
+   "body": "The color Blue means it is in range (between your low and high levels) not that it is selected."
+  },
+  {
+   "id": 761924208,
+   "user": "adanvdo",
+   "created_at": "2021-01-18T01:29:17Z",
+   "body": "My mistake about the color.  Let me try to explain a little better. \r\nIn my screenshot the actual time was 2:45pm the moment it connected to get a reading.\r\nThe reading it retrieved at that time was added as 2:42pm. You can see at the top it says last reading: 0 minutes ago.\r\nSo either we are getting old readings added as a current reading, or the time of the reading retrieved is incorrect"
+  },
+  {
+   "id": 761925854,
+   "user": "Navid200",
+   "created_at": "2021-01-18T01:36:13Z",
+   "body": "Now I follow.\r\nI see something similar on my phone.  A 2-minute delta.\r\n\r\nI suggest you edit your first post and change the image to something more recent after the calibration.  I suggest you say nothing about the calibration.  This will avoid possible confusions for others.  \r\nJust a suggestion.\r\n\r\nI am curious what the answer is.  Thanks for reporting.  I will follow."
+  },
+  {
+   "id": 761950677,
+   "user": "Navid200",
+   "created_at": "2021-01-18T03:09:54Z",
+   "body": "This is my case:\r\nG6 8Q****\r\nxDrip: b978bec-2020.11.27\r\n\r\nLast reading (performed a few seconds ago) is timed at 9:57 and on the graph is before 10:00.  So, makes sense.  But, check out the phone time.  It's 9:59.\r\nWhat is causing the 2-minute delta?\r\n\r\nIs the time coming from the transmitter?  How does the transmitter sync its clock? Is xDrip responsible for syncing the transmitter clock?\r\n![1](https://user-images.githubusercontent.com/51497406/104868195-b838a180-5910-11eb-9dbb-f784120cd730.png)"
+  },
+  {
+   "id": 761971234,
+   "user": "nickb24",
+   "created_at": "2021-01-18T04:26:16Z",
+   "body": "Maybe other developers can chime in, but I believe this is by design. Code line is here: https://github.com/NightscoutFoundation/xDrip/blob/master/app/src/main/java/com/eveningoutpost/dexdrip/UtilityModels/BgGraphBuilder.java#L2300\r\n\r\nThe 'FUZZER' value is defined as 2.5 minutes here: https://github.com/NightscoutFoundation/xDrip/blob/master/app/src/main/java/com/eveningoutpost/dexdrip/UtilityModels/BgGraphBuilder.java#L84\r\n\r\nI believe it's done this way to keep an even grid size on the X axis of the graph. Or else when readings are displayed on top of blood glucose, insulin, carbs or notes, the spacing will get off. \r\n\r\nTo get an exact timestamp for your readings you can view it here:\r\nSettings -> Other Settings -> Less common settings -> Show Datatables"
+  },
+  {
+   "id": 761977047,
+   "user": "Navid200",
+   "created_at": "2021-01-18T04:47:27Z",
+   "body": "@nickb24 \r\nWow!  I had no clue.  \r\nThanks a lot for explaining."
+  },
+  {
+   "id": 761977312,
+   "user": "nickb24",
+   "created_at": "2021-01-18T04:48:30Z",
+   "body": "I looked at the code history and it's been this way since 2015..."
+  },
+  {
+   "id": 761978216,
+   "user": "Navid200",
+   "created_at": "2021-01-18T04:51:43Z",
+   "body": "Is the transmitter timebase synchronized by xDrip?  Or, is the transmitter clock by design perfectly accurate over its lifetime?  The latter would be hard to believe specially for the transmitters with their batteries getting replaced.  \r\nIt must be synchronized, right?"
+  },
+  {
+   "id": 761978611,
+   "user": "Navid200",
+   "created_at": "2021-01-18T04:53:02Z",
+   "body": "But, when you travel, to a different time zone, the time is adjusted.  So, it must be synched by xDrip."
+  },
+  {
+   "id": 761979245,
+   "user": "Navid200",
+   "created_at": "2021-01-18T04:55:28Z",
+   "body": "What happens for someone who has xDrip and also a Dexcom receiver?  Do they show different times for the same reading?"
+  },
+  {
+   "id": 761981682,
+   "user": "nickb24",
+   "created_at": "2021-01-18T05:03:56Z",
+   "body": "There is no sync of time to the transmitter for timezones. There are a few different mechanisms at play, but for the graph specifically the time that is stored is when the phone actually connects to the transmitter to get data. Backfilled data is then calculated backwards from there. \r\n\r\nGlucose readings are stored in Unix time (https://en.wikipedia.org/wiki/Unix_time), therefore when you change timezones it won't effected the stored readings. Nothing is sent to the transmitter when timezones are changed. \r\n\r\nIn the backend, like you can see in the 'Bg Datatable' menu, the right time is stored down to the second. It's only the display graph that is off. \r\n\r\nI don't have an official Dexcom receiver so I can't tell what the number difference would be, but my assumption is that it would be by 2 mins when comparing graph to graph. But if you look at xDrip Bg table vs Dexcom graph it should be the same. "
+  },
+  {
+   "id": 774021632,
+   "user": "Navid200",
+   "created_at": "2021-02-05T13:06:00Z",
+   "body": "@adanvdo Hi,\r\nAre you satisfied with the explanations provided by nickb24?\r\n\r\nDo you believe there is still an issue?\r\nIf not, would it be OK to close the issue?  Thanks"
+  },
+  {
+   "id": 786414442,
+   "user": "Navid200",
+   "created_at": "2021-02-26T05:08:06Z",
+   "body": "Closing due to inactivity"
+  }
+ ]
+}

@@ -1,0 +1,27 @@
+{
+ "issue_id": 2626,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/2626",
+ "title": "[dev-j AND 3.2RC1] AAPS or AAPSClient pushing multiple profile database records to NS",
+ "symptom": "After updating to dev-j or 3.2RC1, AAPS or AAPSClient (or both) send new profile database records to Nightscout with every loop run or more frequently, creating multiple records with new Created and StartDate values. This fills the MongoDB database and can be stopped by pausing NSClient on both apps.",
+ "cause": "The issue appears to be caused by AAPSClient: when a profile edited on AAPS is received on AAPSClient, AAPSClient responds by pushing a new profile record to the database (with the oldest profile as defaultProfile), which is then pushed back to the database from AAPS after being received there from Nightscout/NSClient. This creates an update loop.",
+ "fix": "The issue was resolved in commit 919c79ebf9cf77b0e0ec486858092764bf8aad62. As a workaround, users can keep 'receive profile store' off on AAPS, or use NSClientV3 instead of V1.",
+ "settings_changed": [
+  "Receive profile store → off"
+ ],
+ "devices": [
+  "FSL3",
+  "Juggluco",
+  "AAPS",
+  "AAPSClient",
+  "Fitbit Versa"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "NSClientV1",
+  "NSClientV3",
+  "profile store"
+ ],
+ "confidence": "high",
+ "evidence_quote": "It seems to me the issue is AAPSClient. If profile is edited on AAPS phone, and that profile record (newest profile as defaultProfile) is received on AAPSClient phone, AAPSClient responds by pushing a new profile record to db (with the oldest profile in that record as defaultProfile), which is then pushed back to db from AAPS after being received there from nightscout/NSClient."
+}

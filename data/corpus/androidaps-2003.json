@@ -1,0 +1,33 @@
+{
+ "id": 1334862898,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2003,
+ "title": "[3.1.0.3] \"Closed loop\" button disappears after being on Open loop",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2003",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-08-10T16:11:28Z",
+ "closed_at": "2022-08-18T11:45:05Z",
+ "comment_count": 3,
+ "body": "When trying to close loop (Omnipod) after being on open loop temporarily, the \"closed loop\" button disappears from the menu. I need to switch to \"low BG suspend\" first and only after that does \"closed loop' button show up. \r\nSequential screenshots as well as log attached. It occured multiple times, the last @ 19:09 in the logs.\r\n\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/9302061/AndroidAPS.log)\r\n\r\n![Screenshot_2022-08-10-17-14-17-84](https://user-images.githubusercontent.com/70835405/183960763-879a77da-4bd8-43d8-935e-f829bed4e305.jpg)\r\n![Screenshot_2022-08-10-17-14-31-62](https://user-images.githubusercontent.com/70835405/183960772-f6be305f-8a86-4d4a-9736-67d078ff0d2b.jpg)\r\n",
+ "comments": [
+  {
+   "id": 1217800592,
+   "user": "happygirlnyc70",
+   "created_at": "2022-08-17T10:03:52Z",
+   "body": "I can confirm this behavior for both dev and master version. I can attach logs the next time it happens."
+  },
+  {
+   "id": 1218109870,
+   "user": "Andries-Smit",
+   "created_at": "2022-08-17T14:45:43Z",
+   "body": "Its a bug, \r\nYou can only close the loop if objective 6 is completed.\r\nhttps://github.com/nightscout/AndroidAPS/blob/master/app/src/main/java/info/nightscout/androidaps/dialogs/LoopDialog.kt#L156\r\nTo complete objective 6 you have to close it...\r\nhttps://github.com/nightscout/AndroidAPS/blob/master/app/src/main/java/info/nightscout/androidaps/plugins/constraints/objectives/objectives/Objective6.kt#L21\r\nCaused by commit https://github.com/nightscout/AndroidAPS/commit/c211c2e4c3abf1b71557751e58b02088cbe062e1\r\n@MilosKozak what is there alternative, to prevent deadlock and keep the function?\r\n\r\n"
+  },
+  {
+   "id": 1218151564,
+   "user": "happygirlnyc70",
+   "created_at": "2022-08-17T15:18:11Z",
+   "body": "To be clear, you are saying this is a bug. I have completed all of the objectives. Also it requires switch to LGS which then gived the closed loop option "
+  }
+ ]
+}

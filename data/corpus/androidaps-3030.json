@@ -1,0 +1,33 @@
+{
+ "id": 1977477820,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3030,
+ "title": "CI error in bolus calculations ",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3030",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-11-04T19:28:40Z",
+ "closed_at": "2023-11-05T16:41:38Z",
+ "comment_count": 3,
+ "body": "I've never had this bug before. I started dinner, used the wizard to bolus and validated (not really checking the numbers). Then, when it started injecting, I saw over 7U to be given... My dinner is often less than 5U. I stopped immediately the injection. \n\nMy Dev version\n\n![Screenshot_20231104_164457_AAPS.jpg](https://github.com/nightscout/AndroidAPS/assets/76626474/c1007c9b-9bc2-420b-8ace-dea7b6f36881)\n\nI had my COVID injection and BG numbers were stuck a bit high. I set several times profile at 160% for 15-20 minutes to lower the BGs before dinner.\n\n![Screenshot_20231104_200311_AAPS.jpg](https://github.com/nightscout/AndroidAPS/assets/76626474/668b809b-d0b7-4502-aedc-e8fc51e5d1fd)\n\nBut the last one was long before dinner.\n\n![Screenshot_20231104_195803_AAPS.jpg](https://github.com/nightscout/AndroidAPS/assets/76626474/f9dff99e-66fc-4e42-9982-5db5c8385f07)\n\nThis is my profile\n\n![Screenshot_20231104_195415_AAPS.jpg](https://github.com/nightscout/AndroidAPS/assets/76626474/03833362-316b-4d32-afe9-1bdb1d04cd28)\n\nAnd this is the calc results... The CI doesn't correspond to anything (not even 160% of my profile CI).\n\n![Screenshot_20231104_195338_AAPS.jpg](https://github.com/nightscout/AndroidAPS/assets/76626474/87a99ee6-2748-4b8c-ae27-e4697c7272fd)\n\nWhen I used the wizard a second time, all worked ok as usual.\n\nAnd the logs. Look around 19:52\n\n![AndroidAPS_LOG_1699124288583.log.zip](https://github.com/nightscout/AndroidAPS/files/13257554/AndroidAPS_LOG_1699124288583.log.zip)\n\n",
+ "comments": [
+  {
+   "id": 1793780780,
+   "user": "MilosKozak",
+   "created_at": "2023-11-05T16:18:13Z",
+   "body": "I didn't see any bug in logs. Always was calculated with correct IC, except result of Wizard.\r\nThe only possible reason I see is you selected another profile for calculation in dialog. Don't you have one with IC 4,3?"
+  },
+  {
+   "id": 1793781002,
+   "user": "MilosKozak",
+   "created_at": "2023-11-05T16:19:14Z",
+   "body": "BolusWizard dialog is not covered by detailed logging to be able say what did you select"
+  },
+  {
+   "id": 1793786598,
+   "user": "robertrub",
+   "created_at": "2023-11-05T16:41:13Z",
+   "body": "I just checked and none of my profiles use a CI of 4.3 🤔\n\nIf there is no info in the logs, nothing we can do. Those repetitive actions we do without really putting in our full attention, I can't see how but maybe I did something strange... \n\nI'll close this issue and keep an eye open when using the wizard."
+  }
+ ]
+}

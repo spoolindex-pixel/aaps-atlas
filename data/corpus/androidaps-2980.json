@@ -1,0 +1,93 @@
+{
+ "id": 1962613182,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2980,
+ "title": "Exponential smoothing shows raw value",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2980",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-10-26T03:02:40Z",
+ "closed_at": "2023-10-27T20:00:13Z",
+ "comment_count": 13,
+ "body": "Using master version 3.2.0.1 and using exponential smoothing plugin, the graph is smoothed and dynISF plugin uses smoothed values to make calculations, but the value that AAPS shows is the raw value received either by juggluco or xdrip, using libre 2.\r\nDon't know if it is an issue (because it works as intended) or meant to be like that, but in previous versions using the exponential smoothing, the bg value shown by AAPS was the smoothed one.",
+ "comments": [
+  {
+   "id": 1780692454,
+   "user": "blaqone",
+   "created_at": "2023-10-26T08:54:56Z",
+   "body": "I found the same error. Really confusing!"
+  },
+  {
+   "id": 1781551738,
+   "user": "swissalpine",
+   "created_at": "2023-10-26T17:35:46Z",
+   "body": "Same here using G6 and xDrip: The last BG value shown (overview tab) is different to the used smoothed value (SMB tab).\r\nBug or feature?"
+  },
+  {
+   "id": 1782817952,
+   "user": "MilosKozak",
+   "created_at": "2023-10-27T12:17:24Z",
+   "body": "this is how it's currently designed. because of recalculation of dirty data last recalculated(smoothed) value may shift in time too from last received one. I decided to show real value because it represent better overview of what was last value from sensor\r\nrecalculated and smoothed values are only in memory and are passed to the alg only"
+  },
+  {
+   "id": 1782890439,
+   "user": "blaqone",
+   "created_at": "2023-10-27T13:09:18Z",
+   "body": "I really don’t understand why you would want to show a value that is not being used by the algorithm. We glance at the number to make insulin decisions so I think it should represent the number that is actually used in the calculation process. The graph + numbers should be the same!\r\n\r\nAs a compromise, maybe a switch could be added so the user can choose what he wants to see. "
+  },
+  {
+   "id": 1782911878,
+   "user": "MilosKozak",
+   "created_at": "2023-10-27T13:24:15Z",
+   "body": "because it can show value as 3 mins old but can be just fresh"
+  },
+  {
+   "id": 1782939927,
+   "user": "blaqone",
+   "created_at": "2023-10-27T13:40:23Z",
+   "body": "Sorry i don’t understand your sentence. \r\n\r\nAre you saying it can take up to three minutes to calculate the value and that’s why you show the raw value instead?\r\n\r\n\r\nAs you have the raw values in the graph already it makes no sense to show the actual raw bg value, too. \r\n"
+  },
+  {
+   "id": 1783019832,
+   "user": "blaqone",
+   "created_at": "2023-10-27T14:32:03Z",
+   "body": "Together with this problem: https://github.com/nightscout/AndroidAPS/issues/2883 (which was closed without any change) exponential smoothing really is dangerous and showing non consistency.\r\nShowing raw value and filling with non existing values. \r\n\r\n"
+  },
+  {
+   "id": 1783111440,
+   "user": "med06053",
+   "created_at": "2023-10-27T15:29:27Z",
+   "body": "Maybe a smaller displayed smoothed value could be added to the display, next to the raw value.\r\nMight be less confusing, but I don't disagree with Milos in this question. The raw value might be helpfull in rapid variations."
+  },
+  {
+   "id": 1783118882,
+   "user": "blaqone",
+   "created_at": "2023-10-27T15:34:03Z",
+   "body": "Two different values ne t to each other?!\r\nThis is NOT a good idea - the regular user will be really confused. \r\nThose values should be changeable via toggle - just as you can with a smoothed and raw graph. \r\n\r\nMixing both makes no sense. "
+  },
+  {
+   "id": 1783304568,
+   "user": "piecycle",
+   "created_at": "2023-10-27T18:01:16Z",
+   "body": "I'm the author of the exponential smoothing algorithm (\"Tsunami smoothing\"). The smoothing algorithm itself does just that: provide a smoothed glucose curve to filter out sensor noise which could lead to dangerous loop responses. I also disagree with the showing the raw sensor value to the user. There's a good reason why the smoothed value and not the raw value is passed on to the loop script, and the same reason applies to the user. If a user opens the app and just sees a very high or very low value caused by a noisy sensor, they might be inclined to react even though it's not necessary. Mistakes happen to the best of us, and I think displaying raw values does more harm than good, especially as switching on the smoothing plugin suggest that the displayed value is also smoothed. I don't think this is how it should be and strongly recommend going back to displaying the smoothed value. So far this has never resulted in any problems among the users of my Tsunami mod."
+  },
+  {
+   "id": 1783412192,
+   "user": "MilosKozak",
+   "created_at": "2023-10-27T19:35:35Z",
+   "body": "Checking the actual 3.2 code and smoothed value is displayed\r\nRaw value is used only when bucketed data is not generated (less than 4 recent values available)"
+  },
+  {
+   "id": 1783413348,
+   "user": "MilosKozak",
+   "created_at": "2023-10-27T19:36:43Z",
+   "body": "```\r\n    override fun lastBg(autosensDataStore: AutosensDataStore): InMemoryGlucoseValue? =\r\n        autosensDataStore.bucketedData?.firstOrNull()\r\n            ?: repository.getLastGlucoseValueWrapped().blockingGet().let { gvWrapped ->\r\n                if (gvWrapped is ValueWrapper.Existing) InMemoryGlucoseValue(gvWrapped.value)\r\n                else null\r\n            }\r\n```"
+  },
+  {
+   "id": 1783438659,
+   "user": "MilosKozak",
+   "created_at": "2023-10-27T20:00:13Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/90251178a9a3aa0650ac0717f9008c6784b0fa26\r\nthat was it"
+  }
+ ]
+}

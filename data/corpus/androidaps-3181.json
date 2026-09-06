@@ -1,0 +1,240 @@
+{
+ "id": 2093999568,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3181,
+ "title": "UAM SMBs with Libre 2",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3181",
+ "state": "closed",
+ "labels": [
+  "enhancement",
+  "for_discussion"
+ ],
+ "created_at": "2024-01-22T14:06:50Z",
+ "closed_at": "2024-12-02T22:39:26Z",
+ "comment_count": 43,
+ "body": "This is a feature/enhancement request regarding the usage of SMBs with the Libre 2 (and potentially 3).\r\n\r\nWe started objective 9 and it seems that many of the SMB options (Enable SMB Always, Enable SMB After Carbs, and, most importantly for us, Enable UAM) are unavailable to users of the Libre 2 CGM. The listed reason in the docs is a need for data smoothing as the sensors themselves do not smooth output, but we enabled a smoothing algorithm through xDrip and still cannot use these options.\r\n\r\nWe asked about the SMB options in AAPS in the WANW Discord and were informed that the L1 had a bug that might report a flat high BG during an error event instead of reporting the error, and this was the actual reason that these SMB options were disabled for the Libre 2 and 3. A discussion ensued with various people agreeing that a flat high BG is not an issue, us included- we have only ever seen a flat low BG, and even that only once in the last year.\r\n\r\nWith both of these problems (BG noise and high BG instead of error events) not being an issue for the Libre 2 and 3, and given that the Libre sensors are approved by various agencies for use in loops, we're requesting that these limitations on SMBs be lifted, potentially with enforcement of smoothing algorithm usage. At the very least, we would like AAPS to have a way for the user to acknowledge the risks and then manually enable the SMB features through the AAPS menus.",
+ "comments": [
+  {
+   "id": 1937059142,
+   "user": "painbrain81",
+   "created_at": "2024-02-10T16:40:54Z",
+   "body": "I agree. I would add that with BOTH xdrip smoothing and aps smoothing the leveling of the blood sugar data is almost perfect (i use FSL2)"
+  },
+  {
+   "id": 1937565606,
+   "user": "MilosKozak",
+   "created_at": "2024-02-11T10:55:40Z",
+   "body": "> I agree. I would add that with BOTH xdrip smoothing and aps smoothing the leveling of the blood sugar data is almost perfect (i use FSL2)\r\n\r\nEvery smoothing makes the data \"nicer\" but add to data inaccuracy and delays. And you doubled it"
+  },
+  {
+   "id": 1937569704,
+   "user": "painbrain81",
+   "created_at": "2024-02-11T10:58:57Z",
+   "body": "It can be, but in my experience smooth data is always real respect \"real\" bg blood (after 15 mins between fsl2 and finger).\r\nIt depends between person and person? It could be"
+  },
+  {
+   "id": 1943357300,
+   "user": "Svagtlys",
+   "created_at": "2024-02-14T09:17:00Z",
+   "body": "> > I agree. I would add that with BOTH xdrip smoothing and aps smoothing the leveling of the blood sugar data is almost perfect (i use FSL2)\r\n> \r\n> Every smoothing makes the data \"nicer\" but add to data inaccuracy and delays. And you doubled it\r\n\r\nSorry, I don't entirely understand how the AAPS and xDrip smoothing work, but doesn't the Dexcom do smoothing all the time? So if accuracy is a concern preventing this feature for our CGM, the Freestyle 2 should have the leg up for always reporting exactly what it's reading?\r\n\r\nAt the moment, we've just been setting a temp target all the time to get this to work somewhat like we're wanting. It's not perfect, we'd really love to use autosens to adjust the target on the fly and to not have to remember to reset the target after activity or hypo, but it's been amazing for helping us out when we inevitably forget to indicate carbs for a meal or snack."
+  },
+  {
+   "id": 1989477646,
+   "user": "Svagtlys",
+   "created_at": "2024-03-11T21:28:42Z",
+   "body": "I just wanted to follow up on this a month later. \r\n\r\nWe've continued setting a temp target to get something close to UAMs, and we have been *much* more lax in putting in carbs (I'd say about 50% of the time we put them in before we start to eat, 30% we put them in within 20 minutes of eating, and the rest we forget for more than 20 minutes or don't remember at all). I ran a CGP report before we started doing this, and ran one just now for the duration we've been doing this, and the numbers are a bit worse now but still surprisingly close to \"We're completely on top of T1D every day because we're focusing\". We're happy to share the reports if it would provide any useful information on the effectiveness of the Libre Freestyle 2 as a UAM compatible CGM."
+  },
+  {
+   "id": 2047189393,
+   "user": "cO5Mo2",
+   "created_at": "2024-04-10T10:43:58Z",
+   "body": "In light of the now well-documented good performance of the freestyle Libre 3 I would love to be able to use features like autosens, UAM etc. \r\nI had absolutely zero issues with wrong or jumpy data. \r\nFL3 seems to now have a similar error correction as the dexcom sensors. Suspicious values are not sent to the phone. In such cases the sensor takes a few minutes time out. \r\n\r\nHere are two studies. One comparing dexcom G7 and Freestyle Libre 3. \r\n\r\nhttps://pubmed.ncbi.nlm.nih.gov/38189290/\r\n\r\nhttps://www.ncbi.nlm.nih.gov/pmc/articles/PMC10064376/"
+  },
+  {
+   "id": 2068137874,
+   "user": "tyrex1975",
+   "created_at": "2024-04-21T17:11:50Z",
+   "body": "Agreed with the comments regarding SMB-always for the Libre above. AAPS is renowned for its openness of operation and fine customisable options by the user.\r\n\r\nUser acceptance of the risks involved is an obligatory feature of building your own app, yet disabling a particular feature flies in the face of this ethos.\r\n\r\nI don't even want to use SMB-always because I quite like the 'relaxed' operation of AAPS overnight when SMBs are off.\r\n\r\nBut to tell me I can't enable a feature stinks a bit, in my opinion."
+  },
+  {
+   "id": 2071813529,
+   "user": "Oscar218704",
+   "created_at": "2024-04-23T09:15:09Z",
+   "body": "Agree with smb always for fsl2. Already using it with a workaround with temp tarheta. Would love to use it normally"
+  },
+  {
+   "id": 2083691526,
+   "user": "koelewij",
+   "created_at": "2024-04-29T21:19:39Z",
+   "body": "The Libre 1 bug that was reported a very long time ago, wasn’t probably even a Libre issue, but caused by the the Bluetooth interface placed on top of it. \r\nThe issue is long gone with Libre 2. "
+  },
+  {
+   "id": 2107287185,
+   "user": "InvaderStef",
+   "created_at": "2024-05-13T11:07:18Z",
+   "body": "I'm in the same boat. AAPS denies \"SMB always\" and \"after carbs\".\r\nUsing Libre 3 with Juggluco and xdrip+ my personal libre data seems to be pretty stable so i would vote for a removal of these constraints for current Libre sensors, too.\r\n\r\nThe constraints even seem to make little sense as you can easily overrule them by setting temp targets... (not tested, only read here and on discord)"
+  },
+  {
+   "id": 2107413553,
+   "user": "PythonFZ",
+   "created_at": "2024-05-13T12:12:55Z",
+   "body": "> I'm in the same boat. AAPS denies \"SMB always\" and \"after carbs\". Using Libre 3 with Juggluco and xdrip+ my personal libre data seems to be pretty stable so i would vote for a removal of these constraints for current Libre sensors, too.\r\n> \r\n> The constraints even seem to make little sense as you can easily overrule them by setting temp targets... (not tested, only read here and on discord)\r\n\r\nI fully agree with this and have a similar setup.\r\n\r\nCould we add a `allow arbitrary BG source` in an `advanced setting` menu, similar to the one in the OpenAPS SMB with a warning message on top? This would keep this disabled by default but would allow for those certain their BG source is smooth enough to enable it on their own risk?"
+  },
+  {
+   "id": 2108889845,
+   "user": "koelewij",
+   "created_at": "2024-05-13T22:11:11Z",
+   "body": "The restriction is not there because the BG’s aren’t smooth. It is there because the MiaoMiao (or other brand Bluetooth) interface for the Libre1 was giving out flat BG values when signal was lost. This was ages ago. If it was for un-smooth BG data, the G7 seems to be the worst in that sense. Nevertheless there seems to be a perception (especially under the non Libre community) that the Libre2 and 3 are not valid for looping. \r\nAdditionally AAPS has a very solid check on flat BG’s for 45 minutes, so a second reason to drop the restriction. \r\n@MilosKozak, please remove this restriction! I don’t see what more discussion would be required. "
+  },
+  {
+   "id": 2109014030,
+   "user": "caspervk",
+   "created_at": "2024-05-13T23:50:40Z",
+   "body": "+1. I'm running with all SMB features enabled on Libre 2 and it's been pretty smooth.\r\n\r\nSpeaking of smooth, does anyone have any experiences with the smoothing algorithms in AAPS and XDrip w.r.t. Libre 2? I'm currently using `Exponential Smoothing` in AAPS and `Smooth Libre data` ON in XDrip, plus  `Show unsmoothed` OFF  together with `Send Display Glucose (use noise smoothing for broadcasted values)`. Basically I have every smoothing option enabled, which is probably a bad idea. I would like it to be able to react faster to changes, but at the same time I observed that it would aggressively micro-bolus or halt basal based on a single spurious data point when I didn't smooth."
+  },
+  {
+   "id": 2181420316,
+   "user": "thomas-1703",
+   "created_at": "2024-06-20T19:53:14Z",
+   "body": "+1! \r\n\r\nStrangely enough I always had Libre 2 and I always was able to have SMB's. But now it's off... And yes I\"m sure it's not only during temporary target etc. "
+  },
+  {
+   "id": 2186084491,
+   "user": "MilosKozak",
+   "created_at": "2024-06-24T09:50:57Z",
+   "body": "What indentifier is used for L2, L3 comming from xdrip?\r\n"
+  },
+  {
+   "id": 2186430452,
+   "user": "thomas-1703",
+   "created_at": "2024-06-24T12:10:23Z",
+   "body": "Uhm I have to admit that I have no clue what you are asking... :')\r\n\r\nOp ma 24 jun. 2024 11:51 schreef Milos Kozak ***@***.***>:\r\n\r\n> What indentifier is used for L2, L3 comming from xdrip?\r\n>\r\n> —\r\n> Reply to this email directly, view it on GitHub\r\n> <https://github.com/nightscout/AndroidAPS/issues/3181#issuecomment-2186084491>,\r\n> or unsubscribe\r\n> <https://github.com/notifications/unsubscribe-auth/AV7TFZLJR2HIOIPPV7NWKWDZI7TZTAVCNFSM6AAAAABCFISGQSVHI2DSMVQWIX3LMV43OSLTON2WKQ3PNVWWK3TUHMZDCOBWGA4DINBZGE>\r\n> .\r\n> You are receiving this because you commented.Message ID:\r\n> ***@***.***>\r\n>\r\n"
+  },
+  {
+   "id": 2186456045,
+   "user": "Navid200",
+   "created_at": "2024-06-24T12:23:30Z",
+   "body": "@MilosKozak The following is what I see.  \r\n  \r\n![Screenshot 2024-06-24 081512](https://github.com/nightscout/AndroidAPS/assets/51497406/4e3f368d-28e8-41ce-b1a9-0cc893bd66a8)\r\n\r\n"
+  },
+  {
+   "id": 2186511910,
+   "user": "ga-zelle",
+   "created_at": "2024-06-24T12:53:11Z",
+   "body": "During my testing jointly with @koelewij  we found these settings in various Libre usage modes.\r\n\r\nLibre 3 --> Juggluco --> APS  says CGM=UNKNOWN, Libre=true\r\nLibre 2 --> Juggluco --> APS  says CGM=UNKNOWN, Libre=true\r\nLibre 2 --> Juggluco --> xDrip --> APS says CGM=LIBRE_1_OTHER, Libre=true\r\n\r\n@Milos Hope that helps. See also my PM from today"
+  },
+  {
+   "id": 2186726837,
+   "user": "caspervk",
+   "created_at": "2024-06-24T14:32:40Z",
+   "body": "I remember having issues enabling SMB on Libre 2 because it was identified as UNKNOWN in AAPS coming from xdrip direct (oop2).\r\n\r\nIs there any logcat/grep command you would like the output of?"
+  },
+  {
+   "id": 2188337196,
+   "user": "MilosKozak",
+   "created_at": "2024-06-25T08:49:29Z",
+   "body": "Hmmm without proper indentification we cannot enable it. Does it exist on sender side? If yes we can adapt AAPS at least for L2,L3"
+  },
+  {
+   "id": 2189212785,
+   "user": "ga-zelle",
+   "created_at": "2024-06-25T15:07:28Z",
+   "body": "What more do you need compared to my list above? I can easily add it to the DEBUG statement."
+  },
+  {
+   "id": 2189395745,
+   "user": "koelewij",
+   "created_at": "2024-06-25T16:21:41Z",
+   "body": "> What more do you need compared to my list above? I can easily add it to the DEBUG statement.\r\n\r\nIf I understand it correctly, Milos wants to distinguish Libre 1 from Libre 2 and 3, because the Libre 1 is not valid for SMB’s. \r\n\r\n@MilosKozak correct me if I am wrong. "
+  },
+  {
+   "id": 2209536626,
+   "user": "anko184",
+   "created_at": "2024-07-04T20:29:59Z",
+   "body": "> +1. I'm running with all SMB features enabled on Libre 2 and it's been pretty smooth.\r\n> \r\n> Speaking of smooth, does anyone have any experiences with the smoothing algorithms in AAPS and XDrip w.r.t. Libre 2? I'm currently using `Exponential Smoothing` in AAPS and `Smooth Libre data` ON in XDrip, plus `Show unsmoothed` OFF together with `Send Display Glucose (use noise smoothing for broadcasted values)`. Basically I have every smoothing option enabled, which is probably a bad idea. I would like it to be able to react faster to changes, but at the same time I observed that it would aggressively micro-bolus or halt basal based on a single spurious data point when I didn't smooth.\r\n\r\nHow did you manage to enable smb with libre 2?"
+  },
+  {
+   "id": 2310075876,
+   "user": "koelewij",
+   "created_at": "2024-08-26T12:21:05Z",
+   "body": "@MilosKozak \r\n\r\nWhen using: Libre 2 => Juggluco =>xDrip => AAPS.\r\nI get the following in my Logfile:\r\n\r\nD/BGSOURCE: [XdripSourcePlugin$XdripSourceWorker.doWorkAndLog():102]: Received xDrip data: Bundle[{com.eveningoutpost.dexdrip.Extras.NoiseBlockLevel=100000, com.eveningoutpost.dexdrip.Extras.BgSlope=2.6433260972281423E-5, com.eveningoutpost.dexdrip.Extras.VersionInfo=2124041914 645e8b4-2024.04.19, com.eveningoutpost.dexdrip.Extras.Raw=152.0, com.eveningoutpost.dexdrip.Extras.Display.Units=mmol, com.eveningoutpost.dexdrip.Extras.Time=1724672559574, com.eveningoutpost.dexdrip.Extras.CalibrationInfo=1724422706254, com.eveningoutpost.dexdrip.Extras.NsNoiseLevel=null, com.eveningoutpost.dexdrip.Extras.SensorStartedAt=1723702035000, com.eveningoutpost.dexdrip.Extras.Noise=-9999.0, com.eveningoutpost.dexdrip.Extras.SensorBattery=-1, com.eveningoutpost.dexdrip.Extras.BgSlopeName=FortyFiveUp, com.eveningoutpost.dexdrip.Extras.BgEstimate=152.0, com.eveningoutpost.dexdrip.Extras.SourceDesc=Other App, com.eveningoutpost.dexdrip.Extras.SourceInfo=Libre2 Native, com.eveningoutpost.dexdrip.Extras.Collector.NanoStatus=}]\r\n\r\nWhere this identifies the Libre 2: \r\ncom.eveningoutpost.dexdrip.Extras.SourceInfo=Libre2 Native \r\n\r\nWhen using Libre 2 => Juggluco => AAPS.\r\nI am not able to get this information. and do I get only:\r\n\r\nI/XDRIP: [DataSyncSelectorXdripImpl.processChangedGlucoseValues():156]: Loading GlucoseValue data Start: 8710 GV(id=8711, version=0, dateCreated=1724672559692, isValid=true, referenceId=null, ids=IDs(nightscoutSystemId=null, nightscoutId=null, pumpType=null, pumpSerial=null, temporaryId=null, pumpId=null, startId=null, endId=null), timestamp=1724672559574, utcOffset=7200000, raw=152.0, value=152.0, trendArrow=FORTY_FIVE_UP, noise=null, sourceSensor=LIBRE_1_OTHER) forID: 8711\r\n\r\nWhere the Libre 2 is identified as: sourceSensor=LIBRE_1_OTHER\r\n\r\nThis last one (without xDrip) is therefore not able to identify the Libre 2.\r\n\r\nCan this be used to identify the Libre 2?"
+  },
+  {
+   "id": 2353760884,
+   "user": "Svagtlys",
+   "created_at": "2024-09-16T19:37:28Z",
+   "body": "I'm so glad to see all the support for this change request <3 \r\n\r\nWe're happy to contribute our log data as well, of course. In our case, we just use Libre 2 -> xDrip -> AAPS\r\n\r\n```\r\n14:25:01.068 [DefaultDispatcher-worker-5] D/BGSOURCE: [XdripSourcePlugin$XdripSourceWorker.doWorkAndLog():102]:\r\nReceived xDrip data: Bundle[{com.eveningoutpost.dexdrip.Extras.NoiseBlockLevel=200, \r\ncom.eveningoutpost.dexdrip.Extras.BgSlope=3.2913900527609827E-6, \r\ncom.eveningoutpost.dexdrip.Extras.VersionInfo=2123071614 23ccbd1-2023.07.16, \r\ncom.eveningoutpost.dexdrip.Extras.Raw=0.0, com.eveningoutpost.dexdrip.Extras.Time=1726514700806, \r\ncom.eveningoutpost.dexdrip.Extras.CalibrationInfo=-1, com.eveningoutpost.dexdrip.Extras.NsNoiseLevel=null, \r\ncom.eveningoutpost.dexdrip.Extras.Noise=-9999.0, com.eveningoutpost.dexdrip.Extras.SensorBattery=0, \r\ncom.eveningoutpost.dexdrip.Extras.CalibrationPluginInfo=OOP , com.eveningoutpost.dexdrip.Extras.NoiseWarning=0, \r\ncom.eveningoutpost.dexdrip.Extras.BgSlopeName=Flat, com.eveningoutpost.dexdrip.Extras.BgEstimate=169.0, \r\ncom.eveningoutpost.dexdrip.Extras.SourceDesc=LimiTTer}]\r\n```\r\n\r\nThe SourceDesc at the very end seems to be the identifier in our case, as the D/DATABASE line that follows this entry in the log says `sourceSensor=LIBRE_1_LIMITTER`\r\n\r\nI will try to follow this thread more closely, so please let me know if there is any info or troubleshooting we can do to assist."
+  },
+  {
+   "id": 2423225136,
+   "user": "zyt",
+   "created_at": "2024-10-18T20:59:44Z",
+   "body": "Is there anything that I could help with to move this issue forward? @MilosKozak It would be greatly appreciated if we could use L2/L3/L3plus with SMB/UMB."
+  },
+  {
+   "id": 2439812254,
+   "user": "Hansi132",
+   "created_at": "2024-10-27T02:40:42Z",
+   "body": "I am currently running L3 + Omnipod if i can help out with anything to move the issue forward let med know. Waiting for this functionality."
+  },
+  {
+   "id": 2461449633,
+   "user": "PeterTornroos",
+   "created_at": "2024-11-07T06:47:48Z",
+   "body": "+1 for removing this limitation. I have been using L3 + Omnipod Dash with temp target as a workaround for two months and can confirm that it is working well for me."
+  },
+  {
+   "id": 2461858387,
+   "user": "CezaryKlose",
+   "created_at": "2024-11-07T10:24:50Z",
+   "body": "> +1 for removing this limitation. I have been using L3 + Omnipod Dash with temp target as a workaround for two months and can confirm that it is working well for me.\r\n\r\nAs I can see in latest dev it is still limited. Can you please confirm from SMB tab with screenshot that is has been removed?\r\nThanks"
+  },
+  {
+   "id": 2461866739,
+   "user": "Hansi132",
+   "created_at": "2024-11-07T10:28:48Z",
+   "body": "CezaryKlose if you toggle a temp target with SMBs on temp target it\r\noverrides the security measures\r\n\r\ntor. 7. nov. 2024, 11:25 skrev CezaryKlose ***@***.***>:\r\n\r\n> +1 for removing this limitation. I have been using L3 + Omnipod Dash with\r\n> temp target as a workaround for two months and can confirm that it is\r\n> working well for me.\r\n>\r\n> As I can see in latest dev it is still limited. Can you please confirm\r\n> from SMB tab with screenshot that is has been removed?\r\n> Thanks\r\n>\r\n> —\r\n> Reply to this email directly, view it on GitHub\r\n> <https://github.com/nightscout/AndroidAPS/issues/3181#issuecomment-2461858387>,\r\n> or unsubscribe\r\n> <https://github.com/notifications/unsubscribe-auth/ADRC53JV3Z6MQR3OR62MTATZ7M5YRAVCNFSM6AAAAABCFISGQSVHI2DSMVQWIX3LMV43OSLTON2WKQ3PNVWWK3TUHMZDINRRHA2TQMZYG4>\r\n> .\r\n> You are receiving this because you are subscribed to this thread.Message\r\n> ID: ***@***.***>\r\n>\r\n"
+  },
+  {
+   "id": 2461881461,
+   "user": "CezaryKlose",
+   "created_at": "2024-11-07T10:35:16Z",
+   "body": "> CezaryKlose if you toggle a temp target with SMBs on temp target it overrides the security measures tor. 7. nov. 2024, 11:25 skrev CezaryKlose ***@***.***>:\r\n> […](#)\r\n> +1 for removing this limitation. I have been using L3 + Omnipod Dash with temp target as a workaround for two months and can confirm that it is working well for me. As I can see in latest dev it is still limited. Can you please confirm from SMB tab with screenshot that is has been removed? Thanks — Reply to this email directly, view it on GitHub <[#3181 (comment)](https://github.com/nightscout/AndroidAPS/issues/3181#issuecomment-2461858387)>, or unsubscribe <https://github.com/notifications/unsubscribe-auth/ADRC53JV3Z6MQR3OR62MTATZ7M5YRAVCNFSM6AAAAABCFISGQSVHI2DSMVQWIX3LMV43OSLTON2WKQ3PNVWWK3TUHMZDINRRHA2TQMZYG4> . You are receiving this because you are subscribed to this thread.Message ID: ***@***.***>\r\n\r\nUnderstand you. But it is still not working as expected, unfortunately."
+  },
+  {
+   "id": 2462033267,
+   "user": "koelewij",
+   "created_at": "2024-11-07T11:48:41Z",
+   "body": "As far as I understand, the limitation is still not removed, even though the Libre 2->Juggluco->xDrip->AndroidAPS is clearly identified. Taking xDrip out of the loop, gives an issue because the sensor is not known then. \r\nUnfortunately this limitation is resulting in a lot of users bypassing it in the code instead."
+  },
+  {
+   "id": 2493483868,
+   "user": "duncanbarnes",
+   "created_at": "2024-11-22T10:59:47Z",
+   "body": "> > What more do you need compared to my list above? I can easily add it to the DEBUG statement.\r\n> \r\n> If I understand it correctly, Milos wants to distinguish Libre 1 from Libre 2 and 3, because the Libre 1 is not valid for SMB’s.\r\n> \r\n> @MilosKozak correct me if I am wrong.\r\n\r\nIf the only blocker is wanting to distinguish Libre 1 from the others and the others are ok then I don't understand what the problem is. The Libre 1 is officially discontinued, so we have a limitation in place because of issues in a CGM that isn't available anymore, it was discontinued in December 2022 in most markets, almost two years ago. Even the Libre 2 is meant to be discontinued next year."
+  },
+  {
+   "id": 2494962940,
+   "user": "zyt",
+   "created_at": "2024-11-22T22:17:24Z",
+   "body": "Another problem is what @ga-zelle reported.  That is to say, if you don't use xDrip and instead source data directly from Juggluco to AndroidAPS sensor will not be identified at all.\r\nHonestly, this restriction should be lifted, maybe as a checkbox in the settings with appropriate warning. It's becoming really annoying to fork the repo and modify one line of code to bypass this."
+  },
+  {
+   "id": 2494971456,
+   "user": "duncanbarnes",
+   "created_at": "2024-11-22T22:23:46Z",
+   "body": "> Another problem is what @ga-zelle reported. That is to say, if you don't use xDrip and instead source data directly from Juggluco to AndroidAPS sensor will not be identified at all. Honestly, this restriction should be lifted, maybe as a checkbox in the settings with appropriate warning. It's becoming really annoying to fork the repo and modify one line of code to bypass this.\r\n\r\nWhy does that matter? We know that it is either a Libre 2 or Libre 3! And in [this comment](https://github.com/nightscout/AndroidAPS/issues/3181#issuecomment-2188337196), Milos says there's no problem with Libre 2 or 3"
+  },
+  {
+   "id": 2494982517,
+   "user": "zyt",
+   "created_at": "2024-11-22T22:33:31Z",
+   "body": "Personally, I agree with you that it should not matter. Besides, as you pointed out Libre 1 is phased out, Libre 2 is getting slowly phased out and Libre 3 is getting superseded with Libre 3 Plus (at least in Germany).  At this point, there should be no need to gate keep SMBs for Dexcom CGMs."
+  },
+  {
+   "id": 2513120867,
+   "user": "MilosKozak",
+   "created_at": "2024-12-02T22:39:26Z",
+   "body": "this https://github.com/nightscout/AndroidAPS/commit/0771b6d8fa1acda6c15a46fa675718db29c12dc6 makes libre 2&3 working with SMB always once BG source provide proper identification"
+  }
+ ]
+}

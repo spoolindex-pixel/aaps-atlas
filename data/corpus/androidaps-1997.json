@@ -1,0 +1,27 @@
+{
+ "id": 1332080558,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1997,
+ "title": "Enable the nsclient local broadcast even when uploads are disabled",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1997",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-08-08T16:02:13Z",
+ "closed_at": "2022-08-08T16:19:16Z",
+ "comment_count": 2,
+ "body": "Time: always\r\nBuild: 3.1.0.2\r\nSteps to reproduce:\r\n1. setup nsclient to only upload on wifi when charging or disable all nsclient uploads manually via the sync settings\r\n2. set xdrip+ to recieve treatments from local broadcast, disable treatments download from ns\r\n3. enable aaps nsclient local broadcast to xdrip+\r\n4. enter any treatment (bolus, profile change, sensor change, etc)\r\n5. see the treatment in aaps treatments logs\r\n6. see no treatment in xdrip+\r\n7. re-enable nsclient uploads\r\n8. wait for upload queue to be cleared\r\n9. see treatment in xdrip+ now\r\n\r\nApparently the local broadcast of nsclient seems to be tied to the upload queue, specifically getting send after the queue is cleared. if no uploads happen, so if the queue doesnt get cleared, no local broadcast is sent either.\r\nthat kinda contradicts the term \"local\" f it only gets sent when im \"online\".\r\n\r\nproposed solution: separate the queue uploads and the local broadcast. local broadcasts shouldnt be tied to a \"be online\" condition.\r\n\r\nReporting bugs\r\n--------------\r\n- **Note the precise time the problem occurred** and describe the circumstances and steps that caused\r\n  the problem\r\n- Note the Build version (found in the About dialog in the app, when pressing the three dots in the\r\n  upper-right corner).\r\n- Obtain the app's log files, which can be found on the phone in\r\n  _/storage/emulated/0/Android/data/info.nightscout.androidaps/_\r\n  See https://androidaps.readthedocs.io/en/latest/Usage/Accessing-logfiles.html\r\n- Open an issue at https://github.com/nightscout/AndroidAPS/issues/new\r\n",
+ "comments": [
+  {
+   "id": 1208333299,
+   "user": "MilosKozak",
+   "created_at": "2022-08-08T16:19:16Z",
+   "body": "I already explained it elsewhere\r\nThis function is not xDrip - AAPS synchronization but broadcast of data coming from NS to avoid multiple downloads.\r\nSo it's working like expected"
+  },
+  {
+   "id": 1229834677,
+   "user": "nlof",
+   "created_at": "2022-08-29T06:27:52Z",
+   "body": "@MilosKozak  With the looming shutdown of Heroku's Nightscout service, there should be a way for Xdrip to receive treatments from AAPS directly, without involving NS at all...\r\n\r\nEven before that, I don't think It makes sense to force people to use NS and the internet in order for the local Xdrip on the same phone to receive AAPS treatments... or am I missing something?"
+  }
+ ]
+}

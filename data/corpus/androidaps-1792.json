@@ -1,0 +1,77 @@
+{
+ "id": 1253352270,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1792,
+ "title": "Can't stop \"pump unreachable\" alarm",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1792",
+ "state": "closed",
+ "labels": [
+  "question - more info needed"
+ ],
+ "created_at": "2022-05-31T05:31:36Z",
+ "closed_at": "2023-08-17T14:58:47Z",
+ "comment_count": 10,
+ "body": "This had happened before several weeks ago. I get a \"pump unreachable\" alarm beeps in the middle of the night. Half awake, I hit \"Ok\" and do a manual refresh.\n\nThen the alarms starts again. I don't see any window with buttons to stop it. I swipe all the AAPS messages in Android (still half awake and without glasses)... But the alarm goes on. Refresh pod status does not change anything.\n\n3 dots menu, quit AAPS. Alarm stops but AAPS restarts by itself and the alarm too, except that the sound is different.\n\nI had to force stop AAPS and empty cache memory to stop the alarm.\n\nLogs at around 02:13\n\n![AndroidAPS_LOG_1653956051074.log.zip](https://github.com/nightscout/AndroidAPS/files/8802253/AndroidAPS_LOG_1653956051074.log.zip)\n\n![Screenshot_20220529-183119_AndroidAPS.jpg](https://user-images.githubusercontent.com/76626474/171099718-6326e26a-5ced-49a5-93f2-fd5d0e7278e6.jpg)\n",
+ "comments": [
+  {
+   "id": 1149806983,
+   "user": "MilosKozak",
+   "created_at": "2022-06-08T11:41:30Z",
+   "body": "i improved logging in this area https://github.com/nightscout/AndroidAPS/commit/024a90231641c108e4aa82776ed2f501e8e7a50a\r\nprovide new logs when this happen again"
+  },
+  {
+   "id": 1154249539,
+   "user": "vanelsberg",
+   "created_at": "2022-06-13T18:35:25Z",
+   "body": "Confirming, happened to me some build ago. One time only, was unable to repro.\r\nWill provide logs when this happens ...\r\n"
+  },
+  {
+   "id": 1169483783,
+   "user": "robertrub",
+   "created_at": "2022-06-29T03:05:32Z",
+   "body": "@MilosKozak Happened again with last dev n.\n\n![Screenshot_20220628-104025_AndroidAPS.jpg](https://user-images.githubusercontent.com/76626474/176341577-811af584-a902-4951-9998-f659b91baa8a.jpg)\n\nPhone near me, I'm probably sleeping on my arm on the pod. Pod unreachable alarm. I mute or OK (not sure as I don't have my glasses and just woke up). I actualized Dash pod and it worked ok. Then, it looked as if AAPS had just restarted : no more predictions and the progression bar at work. The unreachable alert sound was there again but no message and no way to turn it off.\n\nI quit AAPS via the 3 dots menu. As usual AAPS starts again by itself. This time, the alarm sound is still there but the sound has changed (a kind of blip) but there still is no message to turn off the alarm.\n\nI had to kill AAPS and clear cache in order to stop the alert.\n\nLogs attached. Look a bit before 5AM.\n\n![AndroidAPS_LOG_1656471269096.log.zip](https://github.com/nightscout/AndroidAPS/files/9006915/AndroidAPS_LOG_1656471269096.log.zip)\n\n"
+  },
+  {
+   "id": 1186940526,
+   "user": "robertrub",
+   "created_at": "2022-07-18T08:56:23Z",
+   "body": "It happened again last night around 0h20. Had to restart phone. I hope the logs did not dispapear with the reboot...\r\n\r\nAndroidAPS 3.0.0.2-dev-o\r\nBuild: e3339d8a5-2022.07.17-16:37\r\nRemote: https://github.com/nightscout/AndroidAPS.git\r\nFlavor: fullrelease\r\nVersion Nightscout : 14.2.5\r\nMode ingénierie actif\r\n\r\n[AndroidAPS_LOG_1658096638492.log-1.zip](https://github.com/nightscout/AndroidAPS/files/9130655/AndroidAPS_LOG_1658096638492.log-1.zip)\r\n\r\n"
+  },
+  {
+   "id": 1187169378,
+   "user": "MilosKozak",
+   "created_at": "2022-07-18T11:40:16Z",
+   "body": "thanks.\r\nit seems to be only concurrecy issue...\r\nI made some improvements to dev. Report new logs if the issue re-appear"
+  },
+  {
+   "id": 1300452998,
+   "user": "robertrub",
+   "created_at": "2022-11-02T13:56:27Z",
+   "body": "Hi\n\nIt happened again. G6 change. About 10 min after the BGs start to come in, AAPS rings the alert but no button to turn it off. Actualize pod does not cut the alarm.\n\nI had to quit using the 3 dots menu and the alert stopped immediately.\n\n![Screenshot_20221030_104639.jpg](https://user-images.githubusercontent.com/76626474/199507915-12fd0542-9d47-49f4-8052-b8f406ec045c.jpg)\n\nLook at around 14:08 in the logs.\n\n![AndroidAPS_LOG_1667397065085.log.zip](https://github.com/nightscout/AndroidAPS/files/9920978/AndroidAPS_LOG_1667397065085.log.zip)"
+  },
+  {
+   "id": 1323490203,
+   "user": "robertrub",
+   "created_at": "2022-11-22T10:59:58Z",
+   "body": "Happened once more. Resync pod did not clear the alert. Had to quit AAPS. Logs attached. See around 11h50\r\n\r\nAAPS 3.1.0.3-dev-c-nscv3\r\nBuild: 72505b6093-2022.11.21\r\nRemote: https://github.com/nightscout/AndroidAPS.git\r\nFlavor: fullrelease\r\nVersion Nightscout : 14.2.6\r\nMode ingénierie actif\r\n\r\n[AndroidAPS_LOG_1669114271564.log.zip](https://github.com/nightscout/AndroidAPS/files/10066683/AndroidAPS_LOG_1669114271564.log.zip)\r\n"
+  },
+  {
+   "id": 1368186467,
+   "user": "robertrub",
+   "created_at": "2022-12-31T08:49:31Z",
+   "body": "Happened again in dev-f at 9AM. I was near the phone and doing nothing on the phone. The alarm started, no messages, beep pod worked ok but didn't stop the alarm. Actualize did not stop it either. I had to stop AAPS to the alarm.\n\n![AndroidAPS_LOG_1672473662797.log.zip](https://github.com/nightscout/AndroidAPS/files/10327085/AndroidAPS_LOG_1672473662797.log.zip)"
+  },
+  {
+   "id": 1412799278,
+   "user": "Harrypatz",
+   "created_at": "2023-02-01T22:05:06Z",
+   "body": "It's been happening since 2.7, I've reported it before, and not alone. Have had 4 different smartphones since then and it keeps coming back. Mostly when you can't use it, in meetings or at work or at night. I'm already thinking about getting an old smartphone and working with 2.6 again"
+  },
+  {
+   "id": 1682438190,
+   "user": "MilosKozak",
+   "created_at": "2023-08-17T14:58:47Z",
+   "body": "Closed for inactivity. Create new issue is if you still see the problem on latest branch"
+  }
+ ]
+}

@@ -1,0 +1,57 @@
+{
+ "id": 372541737,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 634,
+ "title": "Use Bluetooth Meter always OFF",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/634",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2018-10-22T14:21:03Z",
+ "closed_at": "2018-10-23T22:11:20Z",
+ "comment_count": 7,
+ "body": "I use a Contour Next One glucose meter.\r\nIn Settings Glucose Meters,  Use Bluetooth Meter shows OFF\r\nand I have been unable to change this.  Why?\r\nI have successfully Scan'ed for Bluetooth Meter, and it sees my Contour Next.\r\n\r\nthanks for your help.\r\n\r\nI had this problem with the standard release (Sept 18, if I recall), so I picked up the most recent\r\nOct. 15 release, and have exactly the same issue.\r\n",
+ "comments": [
+  {
+   "id": 431894438,
+   "user": "komp",
+   "created_at": "2018-10-22T16:50:36Z",
+   "body": "I should have included a few more details about my environment.\r\nI am using a nexus 5X (google) phone, running Android 8.1.0 \r\nI am currently using xdrip+ to display results from a Dexcom G5 transmitter.\r\n"
+  },
+  {
+   "id": 431952020,
+   "user": "jamorham",
+   "created_at": "2018-10-22T19:36:21Z",
+   "body": "Does your glucose meter currently have values? It must already have values when scanned by xDrip or it wont allow you to use it."
+  },
+  {
+   "id": 431975235,
+   "user": "komp",
+   "created_at": "2018-10-22T20:37:07Z",
+   "body": "Thanks for the quick response:\n\n> Does your glucose meter currently have values? It must already have values when scanned by xDrip or it wont allow you to use it.\n> \n\n\nI just re-tried.\n\nSo, I took a reading with the Contour Next, and the value is displayed on the screen.\nSo, I went to Xdrip Settings -> Glucose Meters.\nI still cannot et “Use Bluetooth Meter” to switch to On.\nI did scan for Bluetooth Meter, and it immediately responded with Contour Next One and an Id.\n\nStill, I cannot change “Use Bluetooth Meter” \n(or “Automatic Calibration”, which is what I really want).\n\nEd Komp\n\n"
+  },
+  {
+   "id": 432425913,
+   "user": "jamorham",
+   "created_at": "2018-10-23T21:25:32Z",
+   "body": "After you scan for the meter are you clicking on it? It should then report on the screen about connecting to the meter and retrieving the records. Only after that succeeds does it let you enable it as a meter."
+  },
+  {
+   "id": 432429613,
+   "user": "komp",
+   "created_at": "2018-10-23T21:36:57Z",
+   "body": "\n> After you scan for the meter are you clicking on it? It should then report on the screen about connecting to the meter and retrieving the records. Only after that succeeds does it let you enable it as a meter.\n\nAfter scanning, I select the meter “Contour783…”. and it asks if I want it paired.\nI say “yes”, of course.\nBut, I don’t see anything about it retrieving records, and when I go back one level,\n“Use Bluetooth Meter” still only shows “OFF”.\nIf I press or press-and-hold this option, nothing happens.\nAlso, I cannot select any of the other options on the “Glucose Meters” page.\n\nIf I go back to Scan, I still see a device id (?) listed for the meter (though it no longer identifies it as a Contour GM).\nThere is also a second id that I believe is for the Dexcom G5 device.\n\nI have also tried selecting the Contour device and holding, to get an option to unpair the device — which works.\nThen, I retried the pairing operation …\n\nthanks for your help,\n\n\n"
+  },
+  {
+   "id": 432437501,
+   "user": "komp",
+   "created_at": "2018-10-23T22:00:54Z",
+   "body": "Just after the trials listed above, I went to check out the Error and Event List.\r\nAfter I clicked, Low, to see everything, I may have found the problem (?)\r\nI just uploaded the list, since it is difficult to read the entire thing on the phone.\r\nBut, I did see the exception need BLUETOOTH_PRIVILEGED permissions.\r\nA quick search online:\r\nfrom: https://developer.android.com/reference/android/Manifest.permission#BLUETOOTH_PRIVILEGED\r\n\r\nBLUETOOTH_PRIVILEGED\r\nadded in API level 19\r\npublic static final String BLUETOOTH_PRIVILEGED\r\nAllows applications to pair bluetooth devices without user interaction, and to allow or disallow phonebook access or message access. This is not available to third party applications.\r\n\r\nConstant Value: \"android.permission.BLUETOOTH_PRIVILEGED\"\r\n\r\nSo, how does xDrip get the ability to do this, even though it is a third party app?\r\nWhen I check my xDrip app Permissions\r\nLocation, SMS, Storage\r\n\r\n"
+  },
+  {
+   "id": 432440529,
+   "user": "komp",
+   "created_at": "2018-10-23T22:11:20Z",
+   "body": "I can close this myself, finally.\r\nI checked to see what other privileges I could provide to xDrip.\r\nThe only ones I had not were photo and contacts.\r\nI just tried allowing \"contacts\",  and now when I scan for the Contour GM \r\nit does download all the current info from the device (as jamorham said it should in an earlier message).\r\nAnd, I can turn on \"Use Bluetooth Monitor\".\r\n"
+  }
+ ]
+}

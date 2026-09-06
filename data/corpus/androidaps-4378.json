@@ -1,0 +1,45 @@
+{
+ "id": 3689835155,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4378,
+ "title": "[Bug][ComboV2] Failed bolus error when bolus actually succeded",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4378",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-12-03T11:30:36Z",
+ "closed_at": "2025-12-03T18:07:56Z",
+ "comment_count": 5,
+ "body": "Note: I'm referring to AndroidAPS_02.log first!\n\nWhat happened:\nI used the insulin dialog to enter a 3U bolus.\nThe pump vibrates, bolus is started and finishes. Then the bolus failed dialog pops up.\nI acknowledged the error dialog, took the two screenshots and directly after that exported the log.\n\nWhat I think is the course of events in the background:\nWhile the bolus was issued, the driver lost its connection.\nAfter I acknowledged the error dialog, the AAPS main page was still showing \"connecting for XXs\" (see first screenshot). In the meantime, the driver already reconnected and found the issued bolus (see AndroidAPS_02.log at 23:03:54.697). Note: Error dialog is shown at 23:03:55.730.\nA few seconds later the pump driver page already shows \"last bolus 3.0U, (Less than 1 minute ago)\" (see second screenshot).\n\nAndroidAPS_01.log was also a failed bolus earlier that day.\n\n![Image](https://github.com/user-attachments/assets/ae471eae-1721-47a7-a58f-2263408d63c6)\n![Image](https://github.com/user-attachments/assets/29bc4cd6-2d7d-4e4a-873a-e8f0fed657a5)\n[AndroidAPS_02.log](https://github.com/user-attachments/files/23904832/AndroidAPS_02.log)\n[AndroidAPS_01.log](https://github.com/user-attachments/files/23904833/AndroidAPS_01.log)\n\nRelated: #4240 ",
+ "comments": [
+  {
+   "id": 3608033919,
+   "user": "MilosKozak",
+   "created_at": "2025-12-03T17:41:07Z",
+   "body": "ok, is it a latest dev?"
+  },
+  {
+   "id": 3608044079,
+   "user": "Der-Schubi",
+   "created_at": "2025-12-03T17:43:30Z",
+   "body": "I'm at 26th of November."
+  },
+  {
+   "id": 3608144013,
+   "user": "MilosKozak",
+   "created_at": "2025-12-03T18:07:56Z",
+   "body": "I see, it's related con BT connectivity. Unfortunately there is nothing we can do more.\nAAPS behave correctly: recovered from failed connection and read history\n\nthe issue is between phone and pump"
+  },
+  {
+   "id": 3608796094,
+   "user": "Der-Schubi",
+   "created_at": "2025-12-03T20:52:31Z",
+   "body": "Please let me point out a few things, why I think its not really only a connectivity issue.\nFailed connections will happen and they will definitely happen with the hodgepodge Bluetooth stack from the Combo. They always have been happening!\nI think the problems began after your changes in dev related to \"RunningMode\" somewhere in April this year. \nSince somewhere then, there was that weir issue, that the message on the main screen (\"Connecting for XX seconds\") and the driver were not on the same page. The driver would connect to the pump and start a bolus, but after that (bolus failed or not) as the driver writes \"Last connected less than a minute ago\" the main page still reports \"Connecting for XX seconds\" (sometimes 90s and more, see https://github.com/nightscout/AndroidAPS/issues/4240#issuecomment-3420666102) and finally runs into timeout (and throws the error). Mind you, that timeout is *after* the driver lost connection to the pump when starting the bolus and did a reconnect to read back that same last issued bolus.\nSo the driver knows there was something weird going on and instantly reconnects to see what the pump actually did. But why is the failed bolus alarm triggered even though, and especially after the pump has reconnected and read back that the bolus actually succeeded? Why don't we wait?\nThe consequence of this is not only a \"wrong\" failed bolus alarm but also the deletion of the possibly entered carbs in the calculator.\n"
+  },
+  {
+   "id": 3702686035,
+   "user": "tulhaum",
+   "created_at": "2025-12-31T18:38:38Z",
+   "body": "Same error happens here. Noted it started after version 3.3."
+  }
+ ]
+}

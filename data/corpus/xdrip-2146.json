@@ -1,0 +1,81 @@
+{
+ "id": 1248940033,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 2146,
+ "title": "xDrip updater only works for the Nightly channel",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/2146",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-05-26T00:22:13Z",
+ "closed_at": "2022-06-13T20:22:41Z",
+ "comment_count": 11,
+ "body": "I'm currently running the build from **Oct 4, 2021** and I can't get xDrip to detect any new releases from the Stable/Beta/Alpha channels.\r\nIn theory, it _should_ detect the build from Jan 31st, but it currently only can detect builds from the nightly channel.\r\n\r\nLink to discussion thread: https://github.com/NightscoutFoundation/xDrip/discussions/2145\r\n\r\n---\r\n\r\n### My Environment:\r\nSamsung Galaxy S21 phone running xDrip version:\r\n**49817a5-2021.10.04**\r\nCode: 2110041402\r\n\r\n\r\n\r\n\r\n### Expected behavior\r\nWhen I check for an update, either by switching channels (which triggers a check), or pressing the explicit \"check for updated version\" menu item, I'd expect to see the usual pop-up offering an update to the Jan 31st build.\r\n\r\n### Actual behavior\r\nWhen I've selected the Stable, Beta, or Alpha channels, I don't get a pop-up. This is also true if I explicitly press the \"check for updated version\" button in the Home screen dropdown menu.\r\nIt _will_ detect the nightly builds, if I select that channel, but that's it.\r\n\r\n",
+ "comments": [
+  {
+   "id": 1138012135,
+   "user": "Navid200",
+   "created_at": "2022-05-26T00:27:59Z",
+   "body": "I would change the title to \"xDrip updater only works for the Nightly channel\".\r\nBut, that's just a suggestion.  Keep it if you like."
+  },
+  {
+   "id": 1138025743,
+   "user": "Navid200",
+   "created_at": "2022-05-26T00:54:34Z",
+   "body": "@jamorham \r\n1- I remember people getting updates from the beta channel from posts in facebook in 2021.\r\n2- I installed versions all the way back to September 2020 and they all have this problem.\r\n\r\nPutting 1 and 2 together, the problem cannot be in the code.  It must be with the links.  But, I don't understand what.  I'm not sure what to look for."
+  },
+  {
+   "id": 1138035344,
+   "user": "Lupum1001",
+   "created_at": "2022-05-26T01:12:35Z",
+   "body": "Looking at the code, My first instinct is an integer overflow.\r\n\r\nIn ascending order:\r\n2110041402 - My installed version\r\n2122051908 - latest from nightly channel (not sure why this doesn't start with a 22, tbh)\r\n2147483647 - **maximum value of signed 32-bit integer**\r\n2201310800 - latest from Stable/Beta/Alpha channels\r\n\r\n![image](https://user-images.githubusercontent.com/52087143/170394595-ca2b8873-d854-4850-9d82-d1a12e7d1137.png)\r\n"
+  },
+  {
+   "id": 1138085686,
+   "user": "Lupum1001",
+   "created_at": "2022-05-26T02:43:39Z",
+   "body": "Looks like @jamorham patched the version numbers issue on January 3rd: https://github.com/NightscoutFoundation/xDrip/commit/666f5788d96997d0b30bf1a960a4a9f049066c2c\r\n\r\nIt seems to be working for the nightly build urls, and the actual contents of the January release are fine (if you install the apk, it correctly self-identifies as 2122013118); it's just **labeled** wrong, so xdrip rejects it.\r\n\r\nI'm not sure why xdrip-plus-updates.appspot.com and the actual apk would disagree on the version number. I assume there's just a patch on the website that was applied to the nightly channel, but not the others."
+  },
+  {
+   "id": 1138340069,
+   "user": "jamorham",
+   "created_at": "2022-05-26T09:26:23Z",
+   "body": "Thanks for noticing this. Please can anyone who is interested check if the alpha channel is now working correctly? Thanks."
+  },
+  {
+   "id": 1138343155,
+   "user": "Lupum1001",
+   "created_at": "2022-05-26T09:30:30Z",
+   "body": "👍 Yes, Alpha is now working for me. It shows version 2122051908 (May 19th build)"
+  },
+  {
+   "id": 1138455891,
+   "user": "Navid200",
+   "created_at": "2022-05-26T11:51:57Z",
+   "body": "Yes, alpha is working pointing to a very very recent Nightly, the current one."
+  },
+  {
+   "id": 1138476633,
+   "user": "jamorham",
+   "created_at": "2022-05-26T12:01:21Z",
+   "body": "I've promoted the currently nightly to alpha which is why it shows as the May 19th one."
+  },
+  {
+   "id": 1140547315,
+   "user": "Lupum1001",
+   "created_at": "2022-05-29T23:38:14Z",
+   "body": "> https://xdrip-plus-updates.appspot.com/update-check/stable\r\n> \r\n> ```\r\n> 2201310800\r\n> https://github.com/NightscoutFoundation/xDrip/releases/download/2022.01.31/xDrip-plus-20220131-33be05a.apk?\r\n> 12779931\r\n> \r\n> c28cc7f8786c7147876caf0cd869af33e0a8e09a4f4bfc8ffe7e2c1456bd36db\r\n> ```\r\n> \r\n> https://xdrip-plus-updates.appspot.com/update-check/nightly\r\n> \r\n> ```\r\n> 2122051908\r\n> https://github.com/NightscoutFoundation/xDrip/releases/download/2022.05.19/xDrip-plus-20220519-e557cba.apk?\r\n> 13050888\r\n> \r\n> 44b24ed125a1425b9497af9136e31355e1ec9ec8dc477110ec8c2572685bce19\r\n> ```\r\n\r\nIs it possible to update the version # of the January release on appspot?\r\nAs I mentioned earlier, the _file_ already thinks it's 2122013118, so it's just appspot's metadata for that file causing issues.\r\n\r\n(P.S. feel free to close this issue if you feel it's resolved)"
+  },
+  {
+   "id": 1153319693,
+   "user": "Navid200",
+   "created_at": "2022-06-12T23:18:17Z",
+   "body": "On Monday, June 13 2022, the Beta and Stable channels will change from January 31, 2022, to May 19, 2022.  \r\n\r\n  \r\nIf you are on the Beta or Stable channels, you may get a notification that a new update is available for you.\r\nYou can go ahead and download and update.  \r\n  \r\nDo you have to update?\r\nYou never _have to_ update. But, you can.\r\n  \r\n\r\nYou can read about how update channels work here: [https://navid200.github.io/xDrip/docs/Updates.html](https://navid200.github.io/xDrip/docs/Updates.html)  "
+  },
+  {
+   "id": 1154391446,
+   "user": "Navid200",
+   "created_at": "2022-06-13T20:22:41Z",
+   "body": "All update channels are working fine now.\r\n\r\nWe can reopen if you are still experiencing the problem."
+  }
+ ]
+}

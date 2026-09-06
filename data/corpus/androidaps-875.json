@@ -1,0 +1,21 @@
+{
+ "id": 1047237681,
+ "repo": "nightscout/AndroidAPS",
+ "number": 875,
+ "title": "[Insight] Wrong Extended TBR",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/875",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-11-08T09:54:54Z",
+ "closed_at": "2021-11-08T12:44:29Z",
+ "comment_count": 1,
+ "body": "I started to analyse log file, Real amount injected in pump was 0.08U and not 2.2U\r\nIt's seems that I recieved from pump a wrong \"updated amount\" (Very rare but probably an old bug I already noticed sometimes very high TBR in the past) (Amount sent 0.38U 30 min, Amount updated after 5 min 2.2U ????)\r\n\r\n![image](https://user-images.githubusercontent.com/52934600/140718658-e4507da0-4b21-452a-9799-9cccfe641dc4.png)\r\n\r\n```\r\n06:13:39.146 [NSClientServiceHandler] I/DATABASE: [DataSyncSelectorImplementation.processChangedExtendedBolusesCompat():714]: Loading ExtendedBolus data Start: 2782 ID: 2783 HistoryID: ExtendedBolus(id=2783, version=0, dateCreated=1636348413139, isValid=true, referenceId=null, interfaceIDs_backing=InterfaceIDs(nightscoutSystemId=null, nightscoutId=null, pumpType=ACCU_CHEK_INSIGHT_BLUETOOTH, pumpSerial=33013206, temporaryId=null, pumpId=11901, startId=null, endId=null), timestamp=1636348411770, utcOffset=3600000, duration=1800000, amount=0.38, isEmulatingTempBasal=true) \r\n\r\n06:18:43.702 [Thread-8908] D/DATABASE: [PumpSyncImplementation.syncExtendedBolusWithPumpId():381]: Updated ExtendedBolus ExtendedBolus(id=2783, version=2, dateCreated=1636348723678, isValid=true, referenceId=null, interfaceIDs_backing=InterfaceIDs(nightscoutSystemId=null, nightscoutId=6188b203272eef00047368a5, pumpType=ACCU_CHEK_INSIGHT_BLUETOOTH, pumpSerial=33013206, temporaryId=null, pumpId=11901, startId=null, endId=11903), timestamp=1636348411770, utcOffset=3600000, duration=310654, amount=2.2018065114242855, isEmulatingTempBasal=true)\r\n```\r\n[AndroidAPS._2021-11-08_00-00-00_.40.zip](https://github.com/nightscout/AndroidAPS/files/7495867/AndroidAPS._2021-11-08_00-00-00_.40.zip)\r\n[AndroidAPS._2021-11-08_00-00-00_.39.zip](https://github.com/nightscout/AndroidAPS/files/7495868/AndroidAPS._2021-11-08_00-00-00_.39.zip)\r\n\r\n",
+ "comments": [
+  {
+   "id": 963114394,
+   "user": "MilosKozak",
+   "created_at": "2021-11-08T12:44:29Z",
+   "body": "it's a bug already  fixed in dev. but db record is broken.\r\nuse latest dev for aaps and nsclient"
+  }
+ ]
+}

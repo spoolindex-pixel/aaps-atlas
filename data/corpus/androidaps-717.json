@@ -1,0 +1,75 @@
+{
+ "id": 1020445071,
+ "repo": "nightscout/AndroidAPS",
+ "number": 717,
+ "title": "[Dev 2.8.2.5-dev] NSClient Full Sync Kills Nightscout?",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/717",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-10-07T20:45:24Z",
+ "closed_at": "2021-10-07T21:19:20Z",
+ "comment_count": 11,
+ "body": "AndroidAPS 2.8.2.5-dev\r\nBuild: c0f911ad1-2021.10.06-13:16\r\nRemote: https://github.com/nightscout/AndroidAPS.git\r\nFlavor: fullrelease\r\nNightscout version: 14.2.3\r\nEngineering mode enabled \r\n\r\nI've been using master since it was released and Nightscout always have been working perfectly fine even after the migration to mongoDB Atlas database but with 2.8.2.5-dev, my Nightscout site is crashed (Heroku), I only can it making working with NS Client paused and with Restart Dynos on Heroku. \r\n\r\nAlso using xDrip but even with Cloud Upload disabled in the app, the same issue is happening.\r\n\r\nAm I the only one facing this issue?\r\nAny ideas how to fix it?\r\n\r\nMaster settings:\r\n![Master_Settings](https://user-images.githubusercontent.com/608650/136458909-9adeb9f1-4836-41ec-865a-9a086a62b9b3.png)\r\n\r\nDev settings:\r\n![Dev_Settings](https://user-images.githubusercontent.com/608650/136458978-75bf106f-ce59-4c0d-82b1-17cdb0d23bd8.png)\r\n\r\nNSClient:\r\n![NS_Client](https://user-images.githubusercontent.com/608650/136459048-d5d7baff-f1de-4459-be98-a1eb3693b26e.png)\r\n\r\n",
+ "comments": [
+  {
+   "id": 938155623,
+   "user": "MilosKozak",
+   "created_at": "2021-10-07T21:06:02Z",
+   "body": "i'm running latest dev with latest NS master 14.2.2 without any problem\r\nOpen heroku console to see what's going on ..."
+  },
+  {
+   "id": 939232913,
+   "user": "parapenT1sta",
+   "created_at": "2021-10-09T05:45:19Z",
+   "body": "I found the \"problem\". AndroidAPS was sending a \"lot\" of information and making my Nightscout crash, I cleared storage from AndroidAPS, and import my settings after the first app start and now the issue is solved.\r\nI tried Clear Database from Maintenance menu but didn't help, only clearing storage and start a \"clean\" AndroidAPS installation helped."
+  },
+  {
+   "id": 944817059,
+   "user": "parapenT1sta",
+   "created_at": "2021-10-16T00:02:57Z",
+   "body": "Just an update: everything was working fine until I had pressed \"Full Sync\" button in NSClient. (running the latest dev version released: 16.10.2021 https://github.com/nightscout/AndroidAPS/commit/fd2dff6b52207ef1eb81dbf1cd0e12c98a427bcd)\r\nHad to perform a clean installation again as I mentioned before and now everything is up and running."
+  },
+  {
+   "id": 945161697,
+   "user": "parapenT1sta",
+   "created_at": "2021-10-17T17:16:06Z",
+   "body": "Issue solved with AndroidAPS 3.0-beta1 version."
+  },
+  {
+   "id": 1002851975,
+   "user": "ColebyPearson",
+   "created_at": "2021-12-30T03:02:50Z",
+   "body": "@parapenT1sta I am having this issue in 3.0-beta11. Have you run into this issue again or is it completely solved for you? I may try a fresh install of some other versions to see what is going on. Screenshot of lo\r\n\r\n![Heroku](https://user-images.githubusercontent.com/73077567/147718300-7766c133-8388-449d-877d-ad00a7511978.PNG)\r\ng"
+  },
+  {
+   "id": 1002859781,
+   "user": "parapenT1sta",
+   "created_at": "2021-12-30T03:43:24Z",
+   "body": "@cygrahampearson What Nightscout version do you have? Does your NS work after Restart Dynos?\r\n\r\nWhich number do you get on queue in NS Client after pressing Full Sync?"
+  },
+  {
+   "id": 1003656799,
+   "user": "Katekatekatie",
+   "created_at": "2022-01-02T03:13:47Z",
+   "body": "@parapenT1sta Thanks for getting back to me. I'm truly perplex by the situation. \r\n\r\nI've tried Version 3 beta 11 and 2.8 on three devices (unihertz atom, S9 and G7). They are all crashing nightscout.\r\n\r\nI decided to rebuild nightscout from scratch with the latest version. I even used brand new mongo, heroku and github accounts. It is crashing all versions of AAPS.\r\n\r\nI've even paid for a few T1pal accounts and they are all crashing now.\r\n\r\nIt works momentarily if I rebuild and restart dynos but crashes shortly after. \r\n\r\nThe error in nightscout is ERROR io.socket.engineio.client.EngineIOException: xhr poll error\r\n\r\nAny ideas? \r\n\r\nI've been running nightscout for almost two years with Loop without ever having any issues."
+  },
+  {
+   "id": 1003657344,
+   "user": "Katekatekatie",
+   "created_at": "2022-01-02T03:21:08Z",
+   "body": "@parapenT1sta queue number is 341"
+  },
+  {
+   "id": 1003669570,
+   "user": "parapenT1sta",
+   "created_at": "2022-01-02T06:10:34Z",
+   "body": "@Katekatekatie At the time when I was troubleshooting, I did all kind of tests. I remember I had made a fresh AndroidAPS  installation, just importing the settings, I didn't create a new MongoDB but I cleared all databases to 0 days.\r\n\r\nIn MongDB I even tried to change Node.js version to 3.7 that at the time it appeared to fix the issue but I would come back with the same issue after many tests.You can try to change it to see the result, select Project, then on Cluster > Connect > Connect your application > Change from 4.0 or later to 3.7 or later.\r\n"
+  },
+  {
+   "id": 1670266151,
+   "user": "CharlotteNightscout",
+   "created_at": "2023-08-08T20:31:24Z",
+   "body": "HI @parapenT1sta i think i have the same problem... my queue in NS client is about 311,764 and my Nightscout and my closed loop only works when the NSclient is paused. Also my smartphone runs out of battery really quickly since i tried a full synchronisation. I am currently using Andorid APS 3.1.0.3. The restart of the dynos didn't change anything. Do i delete and install Android APs again or what did you mean with by \"clear storage\" and \"clean installation\"? "
+  }
+ ]
+}

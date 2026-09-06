@@ -1,0 +1,75 @@
+{
+ "id": 2762400927,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3662,
+ "title": "RC 3.3.0 Bugs that I found, ",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3662",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-12-29T20:49:48Z",
+ "closed_at": "2025-01-03T15:21:07Z",
+ "comment_count": 11,
+ "body": "Using AAPS DynISF, DanaRS,  Pixel 5, was on RC 3.3.0 since it goes online and come from Master.\r\n\r\nI'm realy upset about RC 3.3.0, in all cases worse compared to Master.\r\n\r\nAlarm after one Missing CGM value, not Sure that is a Bug or intend.\r\nThe sound comes from AAPS, with a associated message.\r\nI have the complete message as a screenshot and I had to be really fast for that, because the next value comes after seconds and cleared this Message.\r\n\r\n![Screenshot_20241229-125126~2](https://github.com/user-attachments/assets/ce7b1f4c-4fd4-4af9-a318-9abec10ab6e1)\r\n\r\nScreenshot_20241229-125126~21048×340 25.4 KB\r\n\r\nA new bug has also appeared since yesterday.\r\n\r\nThe warning that the canula has been Not changed for too long, the color turns red. This remains after the canula is changed. Restarting and simulating another canula change doesn't Help. This Bug comes yesterday after 7-8 days using RC.\r\n\r\n![Screenshot_20241229-102801](https://github.com/user-attachments/assets/e3f087e4-3aa0-471c-9c18-14956d369d0c)\r\n\r\n\r\nScreenshot_20241229-1028011080×276 20.1 KB\r\n\r\nBut these are small bugs, we don't need to talk about them any further.\r\n\r\nThe more important thing is that the algorithms no longer work for me.\r\n\r\n - TIR of around 88%, up from around 95% previously\r\n\r\n- TDD/7D of 49, up from 42 previously\r\n\r\n- far more inconsistent blood sugar trend\r\n\r\n- the new \"optional\"  sensitivity comes out of hell. It leads to horrible algorithmen settings. Deactivated after one day using. Should that sensitivity not be used with DynISF ?\r\n\r\nI'm now back to Master, and must again wait 7 days for enough data for DynISF, because the Database IS again inkompatibel.\r\n\r\nFor me, it's all a step backwards compared to the master.\r\nAnd I specifically carried out a new installation, not an update, so that the RC would run smoothly.\r\n\r\nLog will be send in a few minutes, because I'm back to Master. I hope I send the one with RC running (hopefully).\r\n[AndroidAPS._2024-12-13_15-34-22_.0.zip](https://github.com/user-attachments/files/18270850/AndroidAPS._2024-12-13_15-34-22_.0.zip)\r\n\r\nEDIT 30.12.2024:\r\nFirst day after going back to Master, can sleep again. 😅\r\n![Screenshot_20241230-103931](https://github.com/user-attachments/assets/9a68befe-0c8b-4ad2-8dab-78f1a577385b)\r\n",
+ "comments": [
+  {
+   "id": 2566684879,
+   "user": "olorinmaia",
+   "created_at": "2024-12-31T19:55:43Z",
+   "body": "@MilosKozak \r\nI agree that the notification about fallback to profile sensitivity because of 1 missing bg is abit to much and will annoy most users especially because of the nature of all alerts and stuff that comes with diabetes from before. Sensor error will cause missed readings and I think we should try to find a way not to notify about this until many more bgs are missed. If a few are missed we should still be able to calculate a 24h average ISF.\r\n\r\nI tested upgrading to 3.3 then downgrade to 3.2 and you are right database get issues with BG. I solved this by doing a full sync with NSClienv3. I think it's unlikely that people will do this but there is a workaround to the problem if data is backed up at nightscout.\r\n\r\nFor colors regarding cannula you need to check settings in overview and status lights. It could be reset or copied wrong from ns. It happend to me as well. I copied from NS and all is good. Else you need to set them manually. "
+  },
+  {
+   "id": 2566689242,
+   "user": "blaqone",
+   "created_at": "2024-12-31T20:06:19Z",
+   "body": "@MilosKozak  I second everything said above. This is ridiculous. "
+  },
+  {
+   "id": 2566807612,
+   "user": "Alamo04",
+   "created_at": "2025-01-01T02:15:59Z",
+   "body": "@olorinmaia \r\nThe missing value from CGM isn't based on sensor error, it's more a bluetooth problem, also a minor issue.\r\n\r\nMy AAPS is not allowed to load anything from NightScout.\r\n\r\nAs I say . You can deleted the last canula change, you can tell AAPS you make a new one with the date and time in the past, or you can do a normal new one. The color remains red. But this happened for me first with a canula change after 7-8 days of using RC, short before the new Master came out. You can fix it only with a clean new installation. Settings are OK, as they are the 7-8 days ago on RC.\r\n\r\nBut this is only an minor optical thing, mutch more importand are my Issues with the new algorithmen.\r\n\r\nSorry for my horrible english."
+  },
+  {
+   "id": 2567175200,
+   "user": "Alamo04",
+   "created_at": "2025-01-01T23:05:21Z",
+   "body": "Installed Master 3.3\r\nSame Bug with Canula age, as in RC\r\n\r\n![Screenshot_20250102-000213](https://github.com/user-attachments/assets/b968f55e-9f04-439e-a3de-8fcc59b45a8d)\r\n"
+  },
+  {
+   "id": 2567176270,
+   "user": "olorinmaia",
+   "created_at": "2025-01-01T23:10:11Z",
+   "body": "Go to settings > overview > status lights. I guess some of them are set to 0. Can you confirm this? "
+  },
+  {
+   "id": 2567182110,
+   "user": "Alamo04",
+   "created_at": "2025-01-01T23:32:10Z",
+   "body": "Thats it, was Set to 0.\r\nBut how did that happen, must I Set it back now with every canula change ?\r\nNot realy, because IT happened today and Not Yesterday with the change. 🤔"
+  },
+  {
+   "id": 2567184368,
+   "user": "olorinmaia",
+   "created_at": "2025-01-01T23:40:19Z",
+   "body": "Set it manually. If it happens again after next cannula change provide screenshots and logs."
+  },
+  {
+   "id": 2567634064,
+   "user": "Alamo04",
+   "created_at": "2025-01-02T11:30:19Z",
+   "body": "`Set it manually. If it happens again after next cannula change provide screenshots and logs.`\r\n\r\nThat was already done in my first post."
+  },
+  {
+   "id": 2567693806,
+   "user": "olorinmaia",
+   "created_at": "2025-01-02T12:21:13Z",
+   "body": "I think it happens when upgrading from 3.2 to 3.3, same happend here. But after I stayed on 3.3 and adjusted number back to original setting and did a new cannula change the status light number wasn't reset to 0 on my test-rig at least. "
+  },
+  {
+   "id": 2567869831,
+   "user": "Alamo04",
+   "created_at": "2025-01-02T14:35:45Z",
+   "body": "@olorinmaia \r\nI always did a clean, fresh installation of a new Master, or RC.\r\nNever did updates in that case.\r\nAAPS must change this setting and it does it after a different time it is running.\r\nFirst time I see that Issue was after 7+ days using RC1, now after 1+ day using Master. \r\n\r\nFor me, this Issue didn't come up immediately after installing and starting your new AAPS."
+  }
+ ]
+}

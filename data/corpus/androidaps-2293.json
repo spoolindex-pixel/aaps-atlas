@@ -1,0 +1,33 @@
+{
+ "id": 1501187855,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2293,
+ "title": "NSClient is not syncing to database whilst xdrip is",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2293",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-12-17T05:17:15Z",
+ "closed_at": "2022-12-17T20:13:47Z",
+ "comment_count": 3,
+ "body": "After pulling up the \"stunt\" of (\"almost\") having my database inside my own premises (inside a docker container managed within portainer), there seems to be something preventing AAPS NSClient from syncing into that Docker container instance.\r\n\r\n(Meanwhile) xDrip is able to sync without issues.\r\n\r\n",
+ "comments": [
+  {
+   "id": 1356324016,
+   "user": "MilosKozak",
+   "created_at": "2022-12-17T16:23:27Z",
+   "body": "based on the info you provided what kind of help are you expect?"
+  },
+  {
+   "id": 1356351322,
+   "user": "mcurly",
+   "created_at": "2022-12-17T17:42:03Z",
+   "body": "None deserved right? None will be provided I guess.\r\n\r\nSorry for the inconvenience @MilosKozak . That's \"fatigue\" all over myself.\r\n\r\nWell, I will try to replicate the steps of deploying docker images again. (Inside portainer and with an adjusted docker compose file for Nginx Proxy Manager, without the original traefik load balancer that you provide here in the repos).\r\n\r\nSince I removed the containers, by now, I only have the logs from xDrip and AAPS, which aren't 'anonymized'.  Do you 'expect' me to share them with you? What shoud be the channel for that disclosure? I can use of means to anonymize them to an extent. Can you please show some sympathy and enlighten myself/point to procedures to how should I share that info?\r\n\r\nBest regards dear @MilosKozak and I apologize to not having shared all the convenient information so far. Blame myself and my tired frustration sprung out of a late night marathon to make this setup of mine work.\r\n\r\nP.s.: I hope I can somehow write a roadmap/document of the situation, after having a minimum set up accomplished (meaning: working as expected).\r\n\r\nThank you."
+  },
+  {
+   "id": 1356452169,
+   "user": "mcurly",
+   "created_at": "2022-12-17T20:13:40Z",
+   "body": "Hi again @MilosKozak ,\r\n\r\nI hope you will be somehow pleased to know that my case can be closed. It is working now as expected.\r\n\r\nI apologize for being a nuisance of a fellow.\r\n\r\nAgain, I hope I can write out a guide somewhere (perhaps in the documentation) to how did I adapt your default traefik setup to my Nginx Proxy Manager one.\r\n\r\nTwo major steps that I am positive I did diferently this time:\r\n\r\n1. In the first attempt I only dumped nightscout database from the mongodb cluster laying inside the googlecloud infrastructure. I don't know if this would be relevant to this, but since I did this step differently this time, because I exported all of the databases from googlecloud and restored them to my docker container one.\r\nPerhaps the fact that the 'spelling' of the main datase name is different ( '**N**ighscout' in google cloud VS '**n**ightscout' inside docker compose yaml file), had something to do with this (and this is only a speculation), the other one being that in this second attempt I 'dumped' (from gcloud) and 'restored' (into docker), **all** the databases from gcloud VPS instance.\r\n\r\n2. The second different thing that I suspect was the responsible for this more welcoming status of my docker deployment stack, was the fact that _I triggered the 'web-sockets' switch to 'on'_ inside the configuration panel for this 'proxied' docker container.\r\n\r\nNow I am going to close this topic.\r\n\r\nAnd again, thank you @MilosKozak  and everyone that contributes to this 'flabbergasting' project!!!\r\n\r\nCheers!"
+  }
+ ]
+}

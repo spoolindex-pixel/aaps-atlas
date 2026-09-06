@@ -1,0 +1,47 @@
+{
+ "id": 3819831335,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4493,
+ "title": "App crashes when trying to login to tidepool",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4493",
+ "state": "closed",
+ "labels": [
+  "unknown_reason"
+ ],
+ "created_at": "2026-01-16T01:10:16Z",
+ "closed_at": "2026-02-24T04:42:16Z",
+ "comment_count": 5,
+ "body": "AAPS is crashing when Im trying to setup the tidepool upload. In the previous AAPS Version 3.3.2.1 it works (on this phone). Then I updated AAPS to 3.4.0.0 (and reimported the settings because of changing the build key). And AAPS starts some days after to crash when trying to login or upload to tidepool. But I can confirm that in the beginning some data gets uploaded to tidepool.\n\nIm running Graphene OS which has the Android 16 Kernel.\n\nI tried to clear the credentials by pressing logout in the tidepool menu. This creates the \"credentials cleared\" text on screen. If I then press login the text says \"opening login screen\", the app hangs and then restart without showing any login window.\n\nIve done this several times and then saved the logs seconds after. Logs attached.\n\nEDIT: Logs removed due to security issues.",
+ "comments": [
+  {
+   "id": 3898428964,
+   "user": "MilosKozak",
+   "created_at": "2026-02-13T17:33:03Z",
+   "body": "Issue is not visible and I cannot replicate the issue"
+  },
+  {
+   "id": 3898997735,
+   "user": "CeDoMain",
+   "created_at": "2026-02-13T19:29:02Z",
+   "body": "Hi Milos, thats very unfortunate. I produced the app crash again and searched through my system and kernel logs. There I see \"FATAL EXCEPTIONS\" two in each. Maybe this does more help?\n\n[AAPS log d6e967b8fcee.txt](https://github.com/user-attachments/files/25299597/AAPS.log.d6e967b8fcee.txt)\n[AndroidAPS._2026-02-13_19-48-51_.29.log](https://github.com/user-attachments/files/25299599/AndroidAPS._2026-02-13_19-48-51_.29.log)\n[AndroidAPS.log](https://github.com/user-attachments/files/25299600/AndroidAPS.log)\n[System log 3c7af9f6aaa8.txt](https://github.com/user-attachments/files/25299598/System.log.3c7af9f6aaa8.txt)"
+  },
+  {
+   "id": 3899412075,
+   "user": "MilosKozak",
+   "created_at": "2026-02-13T20:55:40Z",
+   "body": "it's related to android. you may try to change your default browser to chrome"
+  },
+  {
+   "id": 3899421995,
+   "user": "MilosKozak",
+   "created_at": "2026-02-13T20:58:04Z",
+   "body": "or try to add this to  app\\src\\main\\AndroidManifest.xml    \n```\n  1  <?xml version=\"1.0\" encoding=\"utf-8\"?>\n  2  <manifest xmlns:android=\"http://schemas.android.com/apk/res/android\">                                                                                                                                                                                                                                                                \n  3                                                                                                                                                                                                                                                                                                                                       \n  4 +    <queries>                                                                                                                                                                                                                                                                                                                        \n  5 +        <!-- Required for AppAuth to discover browsers with Custom Tabs support for OAuth authentication -->                                                                                                                                                                                                                         \n  6 +        <intent>                                                                                                                                                                                                                                                                                                                     \n  7 +            <action android:name=\"android.support.customtabs.action.CustomTabsService\" />                                                                                                                                               "
+  },
+  {
+   "id": 3948959217,
+   "user": "CeDoMain",
+   "created_at": "2026-02-24T04:42:16Z",
+   "body": "Thanks for this hint! Using Chrome worked. I tried also the change in the manifest file, but that does not help. My default browser was vanadium (GrapheneOS). Can you tell me some keywords so that i can research what the problem with vanadium is?"
+  }
+ ]
+}

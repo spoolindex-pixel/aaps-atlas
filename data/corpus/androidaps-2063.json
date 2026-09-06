@@ -1,0 +1,75 @@
+{
+ "id": 1364288436,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2063,
+ "title": "XHR poll error ",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2063",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-09-07T08:26:12Z",
+ "closed_at": "2022-09-10T16:13:12Z",
+ "comment_count": 11,
+ "body": "I'm testing a personal data storage on a NAS for NS. All is setup, xDrip can send BGs to it, several navigators can see the NS page. The NAS side is working.\n\nThe problem is with the AAPS side. When I setup AAPS NS settings with **https://mynasdns:4443** I systematically get _xhr poll error_ \n\nOn the NAS side, I see that the connection is on and the data seems to arrive (at least the numbers are identical).\n\nI don't want to attach logs as I don't know what connection information will be included...\n\n![unknown.png](https://user-images.githubusercontent.com/76626474/188828962-7b0ca6b6-a990-49b6-b722-8f1f0f077f17.png)\n\n![Screenshot_20220907_095638.jpg](https://user-images.githubusercontent.com/76626474/188829014-6e1f3092-7ba8-4831-8151-f5055e5174b4.jpg)\n\nSeveral people talk about this problem on Discord but no solution seems found for the moment.",
+ "comments": [
+  {
+   "id": 1239246722,
+   "user": "CaptainBalou",
+   "created_at": "2022-09-07T11:08:26Z",
+   "body": "Hello @robertrub,\r\n\r\nI had the same behaviour on my initial Nightscout setup (docker). AndroidAPS tried to load all entries in the database to Nightscout and threw those errors. The Nightscout process crashed in the same time. After restarting it was running again for a while until the error came again. After some hundreds of `xhr poll error` and the corresponding re-start of the docker container the old data was uploaded finally. Since this I have never had a crash with this error again. So I haven't investigated further.\r\n\r\nRegards\r\nMarco"
+  },
+  {
+   "id": 1239253013,
+   "user": "robertrub",
+   "created_at": "2022-09-07T11:15:03Z",
+   "body": "@CaptainBalou \n\nThanks for the info. Strangely, I do not have much data on the phone (new phone, has 13 days data only) and the container is working like a charm (xDrip can upload and navigators can see the NS page while AAPS is stuck on the error)...\n\nI read (rapidly) that it might be a delay problem but, as said, xDrip is uploading fine (uploaded 3 months of past BGs smoothly)."
+  },
+  {
+   "id": 1239473815,
+   "user": "parapenT1sta",
+   "created_at": "2022-09-07T14:33:37Z",
+   "body": "Are you using master or dev branch from Nightscout?\r\n"
+  },
+  {
+   "id": 1239532947,
+   "user": "robertrub",
+   "created_at": "2022-09-07T15:20:57Z",
+   "body": "@parapenT1sta  I use Dev-A last version."
+  },
+  {
+   "id": 1239793193,
+   "user": "swissalpine",
+   "created_at": "2022-09-07T19:34:00Z",
+   "body": "Maybe this issue will help?\r\nhttps://github.com/nightscout/AndroidAPS/issues/75"
+  },
+  {
+   "id": 1242646587,
+   "user": "robertrub",
+   "created_at": "2022-09-10T06:36:37Z",
+   "body": "Nope, couldn't find any help for my situation there. I tried many things but the :port part seems to jinx AAPS (when it works in xDrip and navigators)"
+  },
+  {
+   "id": 1242748530,
+   "user": "robertrub",
+   "created_at": "2022-09-10T15:06:26Z",
+   "body": "Testing different address in AAPS.\n\nMy .fly.dev address is working fine. If I add :443 to the end, it still works.\n\nThe .myqnapcloud.com:4443 address starts the connection, goes ok till the _LAST_ line, stops for several seconds than gives the xhr poll error\n\n![Screenshot_20220910_170252.jpg](https://user-images.githubusercontent.com/76626474/189489398-b002fef3-234c-4447-bcf9-3e1b0c91d9e9.jpg)\n\nI have another DNS to my NAS. The dans.net address does NOT have a letsencrypt certificate. If I use the .ddns.net:4443 adress in AAPS, the first part doesn't even happen. It goes directly to the xhr error.\n\n![Screenshot_20220910-165759_AndroidAPS.jpg](https://user-images.githubusercontent.com/76626474/189489180-1f666594-6d9a-4d16-884a-da660c8dbc2c.jpg)\n"
+  },
+  {
+   "id": 1242748532,
+   "user": "robertrub",
+   "created_at": "2022-09-10T15:06:27Z",
+   "body": "Testing different address in AAPS.\n\nMy .fly.dev address is working fine. If I add :443 to the end, it still works.\n\nThe .myqnapcloud.com:4443 address starts the connection, goes ok till the _LAST_ line, stops for several seconds than gives the xhr poll error\n\n![Screenshot_20220910_170252.jpg](https://user-images.githubusercontent.com/76626474/189489398-b002fef3-234c-4447-bcf9-3e1b0c91d9e9.jpg)\n\nI have another DNS to my NAS. The ddns.net address does NOT have a letsencrypt certificate. If I use the .ddns.net:4443 adress in AAPS, the first part doesn't even happen. It goes directly to the xhr error.\n\n![Screenshot_20220910-165759_AndroidAPS.jpg](https://user-images.githubusercontent.com/76626474/189489180-1f666594-6d9a-4d16-884a-da660c8dbc2c.jpg)\n\nI can't isolate 443 port on my NAS, too many things use it in TCP and UDP."
+  },
+  {
+   "id": 1242760982,
+   "user": "robertrub",
+   "created_at": "2022-09-10T16:12:24Z",
+   "body": "Yes, yes AND yes :) I did it. Now, I have a working AAPS connection to my QNAP NAS. The only thing to do was to select WebSocket instead of HTTP on the reverse proxy of the NAS. \r\n\r\n![image](https://user-images.githubusercontent.com/76626474/189492014-3c74cd60-5922-49e6-b49b-db96465510d2.png)\r\n"
+  },
+  {
+   "id": 1752119446,
+   "user": "LoopLuke100",
+   "created_at": "2023-10-08T18:05:19Z",
+   "body": "@robertrub Hello! Can I reopen this topic? \r\nI have AAPS created with fly.dev, Atlas Mongo DB. The sugar levels get transferred to NS without problems but the data from AAPS to NS got the same error as yours. Unfortunately, I don't understand the Web Socket thing. Can you help me a little bit where to look for that? "
+  }
+ ]
+}

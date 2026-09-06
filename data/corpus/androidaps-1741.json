@@ -1,0 +1,75 @@
+{
+ "id": 1238126787,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1741,
+ "title": "[3.0.0.2-dev-k] \"Error CGM data unchanged for the past ~45m...\"",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1741",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-05-17T06:17:39Z",
+ "closed_at": "2022-05-17T21:29:24Z",
+ "comment_count": 10,
+ "body": "[3.0.0.2-dev-k]  Got \"Error CGM data unchanged for the past ~45m...\" but data had changed over the 4.7 to 5.1mmol range, see attached.\r\nNB using Tim2000 dISF latest.\r\nError cleared after about 30min.\r\n\r\n![Screenshot_20220517-064101_AndroidAPS](https://user-images.githubusercontent.com/43484095/168740208-bc889efc-3613-4291-bec3-41f376926136.jpg)\r\n![Screenshot_20220517-064123_AndroidAPS](https://user-images.githubusercontent.com/43484095/168740209-26a3cc2e-4eb6-497d-9038-4c346fbf9270.jpg)\r\n![Screenshot_20220517-064239_AndroidAPS](https://user-images.githubusercontent.com/43484095/168740213-dfe7ddd1-46a3-4d12-81cd-51474ecea5b7.jpg)\r\n![Screenshot_20220517-071342_AndroidAPS](https://user-images.githubusercontent.com/43484095/168741570-995a186f-8491-43dd-9c51-eb4416d2b62c.jpg)\r\n\r\n\r\n\r\nReporting bugs\r\n--------------\r\n- **Note the precise time the problem occurred** and describe the circumstances and steps that caused\r\n  the problem\r\n- Note the Build version (found in the About dialog in the app, when pressing the three dots in the\r\n  upper-right corner).\r\n- Obtain the app's log files, which can be found on the phone in\r\n  _/storage/emulated/0/Android/data/info.nightscout.androidaps/_\r\n  See https://androidaps.readthedocs.io/en/latest/EN/Usage/Accessing-logfiles.html\r\n- Open an issue at https://github.com/nightscout/AndroidAPS/issues/new\r\n",
+ "comments": [
+  {
+   "id": 1129267207,
+   "user": "MilosKozak",
+   "created_at": "2022-05-17T20:03:51Z",
+   "body": "what CGM?"
+  },
+  {
+   "id": 1129305728,
+   "user": "chrisbev",
+   "created_at": "2022-05-17T20:51:32Z",
+   "body": "FSL2 with patched LibreLink.  (NB Continuos yellow triangle)."
+  },
+  {
+   "id": 1129334703,
+   "user": "MilosKozak",
+   "created_at": "2022-05-17T21:29:24Z",
+   "body": "then it's by OAPS design. it's protection from state when FSL report constant (wrong) value for a longer time\r\nThis restriction is not while using Dexcom"
+  },
+  {
+   "id": 1129400956,
+   "user": "chrisbev",
+   "created_at": "2022-05-17T23:01:50Z",
+   "body": "But it was reporting correct values AND they were changing? Please see the xDrip tab values for the 45mins?"
+  },
+  {
+   "id": 1129425484,
+   "user": "chrisbev",
+   "created_at": "2022-05-17T23:49:33Z",
+   "body": "[AndroidAPS._2022-05-17_00-00-05_.1.zip](https://github.com/nightscout/AndroidAPS/files/8712185/AndroidAPS._2022-05-17_00-00-05_.1.zip)\r\n"
+  },
+  {
+   "id": 1129425747,
+   "user": "chrisbev",
+   "created_at": "2022-05-17T23:50:11Z",
+   "body": "Log attached"
+  },
+  {
+   "id": 1129725302,
+   "user": "MilosKozak",
+   "created_at": "2022-05-18T08:30:46Z",
+   "body": "OAPS is checking delta and avg delta for that period which was close to zero in this case"
+  },
+  {
+   "id": 1129849107,
+   "user": "chrisbev",
+   "created_at": "2022-05-18T10:37:49Z",
+   "body": "OK thanks for answer and time...."
+  },
+  {
+   "id": 1295771666,
+   "user": "justmara",
+   "created_at": "2022-10-29T08:29:41Z",
+   "body": "AAPS check is wrong here. Because it checks long_delta. But the long delta would be zero for any period between two points of identical value. Thats how math works :) It you have two points of same value on graph - that means that sum of all changes between these points is zero. And this is exactly what average delta counts - it summarizes all the deltas and divides by count of elelements. It only shows the total change for period of time - difference between first and last point. But shows nothing about deviations. Bg could go +100..-100 for that period and total long_delta would still be `0`.\r\nSo this protection triggers when current BG is identical with 45min ago value, no matter what happened in between.\r\nIt must be checking for every BG point's variation and trigger only if all the points for last 45 (btw, why 45?) minutes and range of +-1 from current bg. This behaviour _could_ be considered suspicious.\r\n\r\nIf this check is really crusial - it must be moved out of determine-basal, because it simply does not have all the required data. And it can be applied, for example, on LoopPlugin level. Before (instead of?) even triggering loop."
+  },
+  {
+   "id": 1304828689,
+   "user": "ga-zelle",
+   "created_at": "2022-11-06T15:39:56Z",
+   "body": "Hi @justmara I agree that the check on long_avgdelta is not sufficient to detect changes in bg. However, it is one necessary requirement if bg was really flat."
+  }
+ ]
+}

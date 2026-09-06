@@ -1,0 +1,75 @@
+{
+ "id": 1933564997,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2890,
+ "title": "Dev M and RC2 AAPS Client missing BG's and regular updates",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2890",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-10-09T18:12:59Z",
+ "closed_at": "2023-10-11T19:10:15Z",
+ "comment_count": 14,
+ "body": "Tested with Dev M and RC2 and both aaps clients will miss BG updates. All power savings are turned off.. nothing is killing the app. \r\nCan get updates if i pause websockets for a moment then restart and the data will refresh. \r\nRegular updates are occurring in NSClient though\r\n\r\n[AndroidAPS_LOG_1696874984171.log.zip](https://github.com/nightscout/AndroidAPS/files/12849197/AndroidAPS_LOG_1696874984171.log.zip)\r\n[AndroidAPS_LOG_1696874984171.log.zip](https://github.com/nightscout/AndroidAPS/files/12849201/AndroidAPS_LOG_1696874984171.log.zip)\r\n",
+ "comments": [
+  {
+   "id": 1753449668,
+   "user": "ohjay73",
+   "created_at": "2023-10-09T18:15:53Z",
+   "body": "![Screenshot_20231009_120902_AAPSClient](https://github.com/nightscout/AndroidAPS/assets/51689492/87f78306-a442-44c2-a384-93e127b799fe)\r\n![Screenshot_20231009_120930_AAPSClient](https://github.com/nightscout/AndroidAPS/assets/51689492/02ca919b-1995-45e1-8380-f8efbb97e0ed)\r\n![Screenshot_20231009_120909_AAPSClient](https://github.com/nightscout/AndroidAPS/assets/51689492/5a407439-630a-4153-bc9d-b726c6d1c02a)\r\n\r\n![Screenshot_20231009_120918_AAPSClient](https://github.com/nightscout/AndroidAPS/assets/51689492/ab8601b7-569d-46d9-9746-9ecca201cd60)\r\n"
+  },
+  {
+   "id": 1754475613,
+   "user": "szantos",
+   "created_at": "2023-10-10T06:18:17Z",
+   "body": "Similar issue here, but I have a slightly older build:\r\nSGV are present in NS, AAPSClient misses to download and/or backfill some of them\r\n\r\nAAPSClient 3.2.0-dev-m 81548b7d65-2023.09.29 with NSClientV3 + websockets\r\nNS dev v15: 5f8c734\r\n[Log Export.txt](https://github.com/nightscout/AndroidAPS/files/12853392/Log.Export.txt)\r\n\r\n![Screenshot_20231010-061912_Chrome~2](https://github.com/nightscout/AndroidAPS/assets/64865503/bdd99698-b940-4e60-b431-d7edacdcf646)\r\n\r\n![Screenshot_20231010-061918_AAPSClient~2](https://github.com/nightscout/AndroidAPS/assets/64865503/b4606db5-2dea-4570-aad0-fe736579e49c)"
+  },
+  {
+   "id": 1758353935,
+   "user": "MilosKozak",
+   "created_at": "2023-10-11T19:10:15Z",
+   "body": "improved in https://github.com/nightscout/AndroidAPS/commit/b870de1e078696a842b934287edf09c7754b313d"
+  },
+  {
+   "id": 1758780704,
+   "user": "ohjay73",
+   "created_at": "2023-10-12T01:39:37Z",
+   "body": "@MilosKozak improvements yes.. I can see everything except for BG update now "
+  },
+  {
+   "id": 1758781306,
+   "user": "ohjay73",
+   "created_at": "2023-10-12T01:40:30Z",
+   "body": "![Screenshot_20231011_193626_AAPSClient](https://github.com/nightscout/AndroidAPS/assets/51689492/7fe56518-ce09-4197-b17b-bb7e2cf822c5)\r\n"
+  },
+  {
+   "id": 1759274435,
+   "user": "olorinmaia",
+   "created_at": "2023-10-12T09:38:37Z",
+   "body": "Is NS updated to latest dev? AAPSClient and AAPS? Im feeding AAPS with bg from xdrip and i dont have issues after update yet in AAPS, AAPSClient or NS with sync. "
+  },
+  {
+   "id": 1759659994,
+   "user": "ohjay73",
+   "created_at": "2023-10-12T13:54:44Z",
+   "body": "Yes both with latest dev.. I'm using BYOD for BG.. aaps syncs perfectly.. aapsclient will sync then lose bg but gets basal and carbs and smb etc. It'll also send from aapsclient for carbs temp targets etc. Just the BG won't show up unless you pause and restart the connection "
+  },
+  {
+   "id": 1759663494,
+   "user": "ohjay73",
+   "created_at": "2023-10-12T13:56:44Z",
+   "body": "![Screenshot_20231012_074924_AAPSClient](https://github.com/nightscout/AndroidAPS/assets/51689492/93aa9155-30fb-46bb-8058-51d42d0e64ad)\r\n\r\n![Screenshot_20231012-074741_AAPS](https://github.com/nightscout/AndroidAPS/assets/51689492/7eb895bb-7ff4-46c5-b689-7676032be302)\r\n\r\n"
+  },
+  {
+   "id": 1759683874,
+   "user": "olorinmaia",
+   "created_at": "2023-10-12T14:08:53Z",
+   "body": "Strange. I know what Milos would say;  Create new issue and attach logs :) Just make sure that Nightscout is latest dev also and that AAPSclient and AAPS use same API version (stating the obvious) ;)"
+  },
+  {
+   "id": 1759761158,
+   "user": "ohjay73",
+   "created_at": "2023-10-12T14:48:28Z",
+   "body": "yup.. added https://github.com/nightscout/AndroidAPS/issues/2905"
+  }
+ ]
+}

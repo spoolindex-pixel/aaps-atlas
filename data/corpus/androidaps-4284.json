@@ -1,0 +1,33 @@
+{
+ "id": 3588428252,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4284,
+ "title": "Site Management Sync issue on NS",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4284",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-11-04T23:23:12Z",
+ "closed_at": "2025-12-08T16:45:40Z",
+ "comment_count": 3,
+ "body": "Site is managed as an update of Therapy Event\n- NS Sync works immediatly for the first event (without site location) but not later when site has been updated\n- if Phone is offline during the site change, and then internet connection is enabled, then evenrything is correctly uploaded to NS\n\nWill see if I can fix this issue with an event sent to NS plugin on location or note update of the TE to force NS upload...\n",
+ "comments": [
+  {
+   "id": 3568407917,
+   "user": "MilosKozak",
+   "created_at": "2025-11-23T22:28:04Z",
+   "body": "reloading NS web page helps?"
+  },
+  {
+   "id": 3568484429,
+   "user": "Philoul",
+   "created_at": "2025-11-24T00:00:20Z",
+   "body": "When I add within submit() this line:\n``` `te.ids = IDs()`  \nit forces a new upload of the updated event (with location) in NS from my loop phone (with the same NS id).\nI see on emulator the updated therapy event dowloaded in NSClient3 with location and arrow, but internal database of the emu is not updated."
+  },
+  {
+   "id": 3627974672,
+   "user": "Philoul",
+   "created_at": "2025-12-08T16:45:23Z",
+   "body": "Fixed with https://github.com/nightscout/AndroidAPS/pull/4392"
+  }
+ ]
+}

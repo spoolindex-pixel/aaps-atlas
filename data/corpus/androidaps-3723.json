@@ -1,0 +1,159 @@
+{
+ "id": 2777706242,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3723,
+ "title": "Persistent problem. V3+ with enabled websockets / no synchronization with client.",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3723",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-01-09T12:31:25Z",
+ "closed_at": "2025-01-13T16:48:51Z",
+ "comment_count": 24,
+ "body": "I have already mentioned the problem several times. 3.3.1.0 does not fix the error either. As soon as you use several AAPS clients and all have activated websockets, only 1 device runs properly for a maximum of 12 hours, after which it behaves exactly like the other follower devices, which cannot synchronize the BG values ​​with active websockets from the start. All other data arrives. Even a new, clean installation did not help. The solution is - master (websockets activated), follower (websockets deactivated).\r\n\r\n[AndroidAPS.log](https://github.com/user-attachments/files/18361575/AndroidAPS.log)\r\n\r\n\r\n",
+ "comments": [
+  {
+   "id": 2581077263,
+   "user": "olorinmaia",
+   "created_at": "2025-01-09T19:19:35Z",
+   "body": "Strange. I remember this in dev. We are using 3 phones with AAPSClient. All websockets, no issues so far. 10be.de master NS branch.\r\n\r\nWhat happens if you pause / unpause in NSClientv3 plugin? "
+  },
+  {
+   "id": 2582072948,
+   "user": "elgrupo123",
+   "created_at": "2025-01-10T08:43:57Z",
+   "body": "> What happens if you pause / unpause in NSClientv3 plugin?\r\n\r\nNothing. I've already tried everything. And as I said, there are no problems with 3.2.0.4.\r\n\r\n"
+  },
+  {
+   "id": 2582797920,
+   "user": "kristinsmotz",
+   "created_at": "2025-01-10T14:11:02Z",
+   "body": "Similar problem here, so adding my information here instead of creating separate issue. I have 2 kids using AAPS, I follow them continuously via AAPSClient and AAPSClient2 on my phone, and both client apps are also set up on their dad's phone and my mother's, so they can both have info when they're taking care of the kids. \r\n\r\nI posted on facebook first on 3.3.0:\r\nI have a weird problem after updating to 3.3. The problem is in AAPSclient, but not AAPSClient2, and only on my phone, not my mother's phone. Apparently BG values only download occasionally, even though they are present in nightscout so i can get them continuously on my watch, on kid's watch and everywhere else that downloads from nightscout. I've tried reinstalling the app, clearing cache, clearing data, multiple restarts on both phones, running a full sync from NS (backfilling previous data, but will not fix the ongoing problem). Before update, and after update for the other kid (AAPSClient2), data is synced continuously. \r\nBoth nightscout sites are on heroku using the same account, db on MongoDB. All settings are the same in juggluco and AAPS on both kids' phones, heroku version is the same, both aapsclients on my phone are set up identically (except of course which nightscout site to pull from). But for one kid I get these gaps in data, which backfill pretty close when the signal eventually gets there, leaving the \"muted dots\" in the graph instead of the primary color ones. While the BG signal is lost, I still get pump and openaps info. \r\n\r\nUpdate today from a few days on 3.3.1\r\nAfter updating to 3.3.1.0, I initially had good signal stability for both kids for a day or so, but now both AAPSClients on my phone have significant delay in retrieving glucose entries. The fun part is that OAPS and Device status are both retrieved every minute or so, so I can frequently see predictions in the graph area from the newest glucose value, while the value itself is not showing up either in the top section of Overve"
+  },
+  {
+   "id": 2583380098,
+   "user": "MilosKozak",
+   "created_at": "2025-01-10T17:56:07Z",
+   "body": "if you did test everything pm me your NS and access token"
+  },
+  {
+   "id": 2583785012,
+   "user": "kristinsmotz",
+   "created_at": "2025-01-10T19:36:49Z",
+   "body": "@MilosKozak I sent you a PM with nightscout link and token for one of my sites. Here are also a couple screenshots from the other kid illustrating that AAPSClient gets some info, enough to display SMB's and predictions in graph, but no BG values:\r\n![Screenshot_20250110_203016_EDVIN AAPSClient2](https://github.com/user-attachments/assets/ffcf6934-63be-47f8-b483-d143a7a941ba)\r\n![Screenshot_20250110_202959_EDVIN AAPSClient2](https://github.com/user-attachments/assets/b9dfb7f6-a5ec-410f-bb8f-7f6b6e169d63)\r\n\r\nlogs from AAPSClient: \r\n[AndroidAPS_LOG_1736537594947.log.zip](https://github.com/user-attachments/files/18381511/AndroidAPS_LOG_1736537594947.log.zip)\r\nI'll pm you the site + token for this site as well\r\n\r\n"
+  },
+  {
+   "id": 2583865453,
+   "user": "kristinsmotz",
+   "created_at": "2025-01-10T19:53:50Z",
+   "body": "Since I am very nerdy today, i dug into the log and found some clues. \r\n\r\nThe last glucose value was visible in AAPSClient at 19:58:32, first reference in log is here, where it collects entries, does a bunch of tricks, I highlighted inserting BG value.\r\n\r\n19:58:32.921 [EventThread] D/NSCLIENT: [NSClientV3Service.onDataCreateUpdate$lambda$14():216]: onDataCreateUpdate: {\"colName\":\"entries\",\"doc\":{\"app\":\"AAPS\",\"date\":1736535512757,\"device\":\"Libre3\",\"direction\":\"Flat\",\"filtered\":0,\"isReadOnly\":false,\"isValid\":true,\"sgv\":163,\"type\":\"sgv\",\"unfiltered\":0,\"units\":\"mg\\/dl\",\"utcOffset\":60,\"created_at\":\"2025-01-10T18:58:32.757Z\",\"identifier\":\"a3818769-f5e8-5b2d-a1cc-d48532ae35a1\",\"srvModified\":1736535513257,\"srvCreated\":1736535513257,\"subject\":\"Kristin\"}}\r\n19:58:32.924 [RxCachedThreadScheduler-47] D/NSCLIENT: [NSClientV3Plugin$onStart$10.accept():262]: ◄ WS CREATE/UPDATE entries <i>{\"app\":\"AAPS\",\"date\":1736535512757,\"device\":\"Libre3\",\"direction\":\"Flat\",\"filtered\":0,\"isReadOnly\":false,\"isValid\":true,\"sgv\":163,\"type\":\"sgv\",\"unfiltered\":0,\"units\":\"mg\\/dl\",\"utcOffset\":60,\"created_at\":\"2025-01-10T18:58:32.757Z\",\"identifier\":\"a3818769-f5e8-5b2d-a1cc-d48532ae35a1\",\"srvModified\":1736535513257,\"srvCreated\":1736535513257,\"subject\":\"Kristin\"}</i>\r\n19:58:32.927 [EventThread] D/NSCLIENT: [NsIncomingDataProcessor.processSgvs():102]: Received NS Data: [NSSgvV3(date=1736535512757, device=Libre3, identifier=a3818769-f5e8-5b2d-a1cc-d48532ae35a1, srvModified=1736535513257, srvCreated=1736535513257, utcOffset=60, subject=Kristin, isReadOnly=false, isValid=true, sgv=163.0, units=MG_DL, direction=FLAT, noise=null, filtered=0.0, unfiltered=0.0)]\r\n19:58:32.946 [RxCachedThreadScheduler-63] D/DATABASE: [CompatDBHelper$dbChangeDisposable$2.accept():62]: Firing EventNewBG GlucoseValue(id=284815, version=0, dateCreated=1736535512930, isValid=true, referenceId=null, interfaceIDs_backing=InterfaceIDs(nightscoutSystemId=null, nightscoutId=a3818769-f5e8-5b2d-a1cc-d48532ae35a1, pumpType=null, pumpSerial=null,"
+  },
+  {
+   "id": 2584035488,
+   "user": "MilosKozak",
+   "created_at": "2025-01-10T20:30:12Z",
+   "body": "I see Pump status update but not BG. Can you confirm you upload BGs using v3 protocol?"
+  },
+  {
+   "id": 2584054236,
+   "user": "kristinsmotz",
+   "created_at": "2025-01-10T20:34:23Z",
+   "body": "I've enabled upload BG to NS in kid's phones AAPS. All phones using NSClientv3, both in AAPS and AAPSClient/2. Can't verify with screenshots right now, as kids and phones are with my ex until next Thursday. "
+  },
+  {
+   "id": 2584143285,
+   "user": "elgrupo123",
+   "created_at": "2025-01-10T20:55:04Z",
+   "body": "It's very similar for us. Two M5 stacks and several Garmin watches get the BG values ​​from NS, and there are no dropouts. I now switch the websockets OFF on the followers (it is active on the master), otherwise the NS client cannot be used properly. I can also send our NS page + password. PM to Facebook??"
+  },
+  {
+   "id": 2584930532,
+   "user": "MilosKozak",
+   "created_at": "2025-01-10T23:55:07Z",
+   "body": "@kristinsmotz you don't have synchronized time on all phones. Set Android for automatic time synchronization"
+  },
+  {
+   "id": 2585140033,
+   "user": "elgrupo123",
+   "created_at": "2025-01-11T08:05:10Z",
+   "body": "I activated websockets on my phone overnight and as expected there was no BG sync after a few hours. The last BG value came through at 2:08AM. Devices with deactivated websockets ran without problems.\r\n[AndroidAPS._2025-01-11_00-00-16_.0.zip](https://github.com/user-attachments/files/18384927/AndroidAPS._2025-01-11_00-00-16_.0.zip)\r\n![Screenshot_20250111-071145](https://github.com/user-attachments/assets/cdbf4f0c-997e-4739-910d-a1d2da6674ef)\r\n![Screenshot_20250111-072215](https://github.com/user-attachments/assets/408ccbbc-34a3-4329-b9a5-f75a2257a64e)\r\n"
+  },
+  {
+   "id": 2585169286,
+   "user": "MilosKozak",
+   "created_at": "2025-01-11T09:18:14Z",
+   "body": "expecting you'll have the same issue"
+  },
+  {
+   "id": 2585173091,
+   "user": "elgrupo123",
+   "created_at": "2025-01-11T09:33:43Z",
+   "body": "> expecting you'll have the same issue\r\n\r\nAll phones have automatic time synchronization. That really can't be the problem. And as I said, if I downgrade to 3.2.0.4, it works perfectly with activated websockets. Just tried it again."
+  },
+  {
+   "id": 2585188381,
+   "user": "MilosKozak",
+   "created_at": "2025-01-11T09:55:30Z",
+   "body": "pm me ns address and token"
+  },
+  {
+   "id": 2585190356,
+   "user": "elgrupo123",
+   "created_at": "2025-01-11T10:03:52Z",
+   "body": "> pm me ns address and token\r\n\r\nis out via Facebook"
+  },
+  {
+   "id": 2585197229,
+   "user": "MilosKozak",
+   "created_at": "2025-01-11T10:32:10Z",
+   "body": "it's the same issue. BGs are comming 0,5sec in the future, which doesn't pass validation"
+  },
+  {
+   "id": 2585197799,
+   "user": "elgrupo123",
+   "created_at": "2025-01-11T10:34:45Z",
+   "body": "> it's the same issue. BGs are comming 0,5sec in the future, which doesn't pass validation\r\n\r\nand how can the problem be solved?"
+  },
+  {
+   "id": 2585200737,
+   "user": "MilosKozak",
+   "created_at": "2025-01-11T10:47:20Z",
+   "body": "Did you check time synchronization again?\r\nhow do you get BGs to AAPS?"
+  },
+  {
+   "id": 2585202058,
+   "user": "elgrupo123",
+   "created_at": "2025-01-11T10:53:11Z",
+   "body": "> Did you check time synchronization again? how do you get BGs to AAPS?\r\n\r\nTime Synchronisation Automatic.\r\nJuggluco-xdrip-aaps-NS."
+  },
+  {
+   "id": 2585202710,
+   "user": "ricoin1",
+   "created_at": "2025-01-11T10:56:11Z",
+   "body": "Facing the same isssue, but using Byoda-AAPS-NS. "
+  },
+  {
+   "id": 2585202947,
+   "user": "MilosKozak",
+   "created_at": "2025-01-11T10:57:22Z",
+   "body": "then it's necesssary to check in juggluco and xdrip where is the source of timestamp in the future"
+  },
+  {
+   "id": 2585265334,
+   "user": "kristinsmotz",
+   "created_at": "2025-01-11T13:11:29Z",
+   "body": "All phones have used automatically time and time zone here. I've tried turning this one off now on my phone to test.\r\n![Screenshot_20250111_141027_Settings](https://github.com/user-attachments/assets/fbac60ef-6ea3-4486-8f93-a65d3a7f82f4)\r\n"
+  },
+  {
+   "id": 2585386515,
+   "user": "elgrupo123",
+   "created_at": "2025-01-11T19:39:21Z",
+   "body": "> then it's necesssary to check in juggluco and xdrip where is the source of timestamp in the future\r\n\r\n@MilosKozak  the dev [f751b76] seems to have fixed the bug. I just installed the client and all 3 phones are running with websockets enabled. I'm still watching, but it looks good;)"
+  },
+  {
+   "id": 2585621711,
+   "user": "elgrupo123",
+   "created_at": "2025-01-12T07:29:00Z",
+   "body": "Thank you @MilosKozak  Everything is working perfectly with the development Version!"
+  }
+ ]
+}

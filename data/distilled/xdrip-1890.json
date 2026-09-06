@@ -1,0 +1,24 @@
+{
+ "issue_id": 1890,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/1890",
+ "title": "G6 On new sensor start, data with timestamp before new sensor was started is sent to NS and AAPS",
+ "symptom": "When a new G6 sensor is started, xDrip sends old data (data accumulated before the new sensor was started) to Nightscout and over the local broadcast. AAPS receives these duplicate Bg values and stops the loop.",
+ "cause": "After starting a new G6 sensor, xDrip requests a backfill on the first reading; because de-duplication is filtered by sensor session, backfilled readings from the old sensor with slightly different timestamps are accepted and then broadcast/uploaded to NS/AAPS.",
+ "fix": "Cap the backfill window start to the current sensor session start (commit 6f7c3660d6e140d914f24a155a0bcffa810ab4d8) so no data from before the current sensor session is backfilled; released in the January 14, 2022 nightly. The same change still needs to be applied to the wear collector before the issue can be fully closed.",
+ "settings_changed": [],
+ "devices": [
+  "G6"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "broadcast",
+  "backfill",
+  "g5 native",
+  "aaps",
+  "ns",
+  "wear collector"
+ ],
+ "confidence": "high",
+ "evidence_quote": "What I have done is capped the backfill window start to the current sensor session start which I'm thinking will have a similar effect."
+}

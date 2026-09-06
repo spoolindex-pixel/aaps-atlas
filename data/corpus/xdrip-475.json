@@ -1,0 +1,43 @@
+{
+ "id": 331413289,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 475,
+ "title": "Rewrite History - Delete and reupload to Nightscout",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/475",
+ "state": "closed",
+ "labels": [
+  "duplicate",
+  "enhancement",
+  "sync-nightscout"
+ ],
+ "created_at": "2018-06-12T02:19:30Z",
+ "closed_at": "2021-07-14T04:01:15Z",
+ "comment_count": 4,
+ "body": "The Re-write history option is awesome, it would be cool if this could extend to the Nightscout Uploader.\r\n\r\nSo upon calibration, xdrip will delete all the re-calibrated records in the Nightscout Database and reupload the new re-calibrated values (so the graph will be smooth upon calibration).\r\n\r\nThat way it would prevent the Nightscout graphs from jumping when a CGM Calibration as been applied and it gives better data back to closed loopers for Autotune.",
+ "comments": [
+  {
+   "id": 850733272,
+   "user": "Navid200",
+   "created_at": "2021-05-29T00:17:32Z",
+   "body": "@sulkaharo Is it technically possible to delete something from Nightscout?"
+  },
+  {
+   "id": 850774431,
+   "user": "sulkaharo",
+   "created_at": "2021-05-29T05:36:21Z",
+   "body": "Good question! No simple answer here:\r\n\r\n1) A Nightscout instance can have any number of data sources uploading data into the database and apps loading the data, so any data sync implementations need to consider the semantics of how the other applications see the data changes and in case of data deletion, any app deleting the data would have to be careful to not delete data uploaded by other apps. Note there are even users who are uploading CGM data from multiple sources.\r\n\r\n2) Nightscout REST API uses upserts by default (if an object being inserted matches an existing record, it's updated instead), so if xDrip wants to update a CGM value that's already been sent to Nightscout, it should be enough to just re-insert the CGM values with the same values as before, with the exception of the SGV value updated.\r\n\r\n3) The V1 API xDrip uses currently doesn't clearly define the semantics of how updating / deleting data should be handled by apps, where for example data deletion will cause the deleted data to just disappear from the database and it's up to clients to notice the data is gone and in case of having local cached copy of the data, deleting the local data has to be handled by the app. We're solving this in the new V3 REST API, which keeps record of data that's been updated or deleted and clients can get well defined updates on data deletion / updates, thus making it easier for the clients to keep local data in sync. If xDrip is extended to data updates / deletion, it'd be great if the team would look at porting the app over to V3 in the process and at the same time work with the AAPS team to address the data duplication issues we're seeing with both AAPS and xDrip uploading the same data (but xDrip rewriting the records in the process), causing issues."
+  },
+  {
+   "id": 866345850,
+   "user": "tolot27",
+   "created_at": "2021-06-22T21:26:46Z",
+   "body": "@sulkaharo Thanks for pointing me to the v3 API. That could also solve some of the remaining tasks in #1403."
+  },
+  {
+   "id": 879567038,
+   "user": "Navid200",
+   "created_at": "2021-07-14T04:01:15Z",
+   "body": "@Tornado-Tim Rewrite history is a graphics setting.  None of the graphics settings affect Nightscout.  Neither should this one.\r\nPlease let me know if you disagree.\r\nThere is a previous open issue requesting similar behavior as you are asking.  https://github.com/NightscoutFoundation/xDrip/issues/366\r\n\r\nI am closing this issue and ask you to add your request to the existing issue.\r\nHowever, I am going to close that one as well for the same reason I have already described here."
+  }
+ ]
+}

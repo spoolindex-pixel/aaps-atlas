@@ -1,0 +1,51 @@
+{
+ "id": 1433294576,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2154,
+ "title": "Stats in AAPS and Pump are not the same  -  Dev AIMI",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2154",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-11-02T14:56:33Z",
+ "closed_at": "2022-11-30T14:59:30Z",
+ "comment_count": 6,
+ "body": "Reporting bugs\r\n--------------\r\n- Time noted is: \r\n-  Build version 3.1.0.3 -dev-b-AIMI\r\nthe following screens are shown under pump stats:  \r\n![Screenshot_20221102-144242_AndroidAPS](https://user-images.githubusercontent.com/30231246/199522429-0fc67d82-a51c-482e-bed9-da568014dd60.jpg)\r\nand AAPS stats.\r\n![Screenshot_20221102-145957_AndroidAPS](https://user-images.githubusercontent.com/30231246/199524459-60f4ae2e-8002-408b-9165-6388b949f930.jpg)\r\n\r\n\r\nThe AAPS stats are showing 2 lines for 30/11 and many of the values from the pump stats do not agree with the AAPS stats. There been 3 cannula changes during this time, each one using a 0.4 unit prime that is done from the pump while the pump is disconnected.",
+ "comments": [
+  {
+   "id": 1301884084,
+   "user": "Els3401",
+   "created_at": "2022-11-03T10:13:31Z",
+   "body": "I have the same problem. But I have a combo, and dev c aimi. Bolus in statistics is 0. 30/10 is double.\r\n![Screenshot_20221102-184241_AAPS](https://user-images.githubusercontent.com/59743630/199695231-2a370fc7-d537-43ef-955b-8695602a52ce.jpg)\r\n![20221102_184531](https://user-images.githubusercontent.com/59743630/199695244-03017c68-8208-4385-84ad-5252b6cd25ba.jpg)\r\n![Screenshot_20221103-110538_AAPS](https://user-images.githubusercontent.com/59743630/199695272-b74b5793-a3da-4299-9b64-a575b02f7471.jpg)\r\n![Screenshot_20221103-110636_AAPS](https://user-images.githubusercontent.com/59743630/199695277-97cd8050-9690-49fc-94c1-ae7b8e378735.jpg)\r\n"
+  },
+  {
+   "id": 1304480143,
+   "user": "treebearded",
+   "created_at": "2022-11-05T10:19:27Z",
+   "body": "Same issue here. Rebuilt on c80e29f626cbfe40d2a980b84e2f47bc0d520423\r\nAlso, statistics are different on aaps client(follower phone) and in aaps. (none are correct) So, might there be some caching thats not updated?\r\nAnd afaik, Dyn-ISF uses these stats, which now will not get the correct TDD"
+  },
+  {
+   "id": 1304567261,
+   "user": "thebarefootboy",
+   "created_at": "2022-11-05T15:25:10Z",
+   "body": "\r\nDefinitely something very strange happening with my stats too. Noticed this has happened since the UK summertime ended last weekend (since the double entries for 30 Oct).\r\n\r\nNone of the stats for bolus or carbs are accurate.\r\n\r\nVery little bolus is recorded - showing only 0-2iu instead of ~20iu per day , same for carbs only recording 15-30g instead of 150-180g per day. Basal appears to be ok.\r\n\r\nThe correct amounts of insulin and carbs are uploaded to Nightscout.\r\n\r\nI did a database reset and thought the issue was fixed, as while the data is in the \"Today\" section the data remains accurate but as soon as the next day starts the accurate data is lost.\r\n\r\nUsing version 3.1.0.3-dev-c (rebuilt after the summertime change). Also using Dynamic-ISF so am concerned that it is not getting accurate TDD, so have disabled it for now."
+  },
+  {
+   "id": 1305255114,
+   "user": "treebearded",
+   "created_at": "2022-11-07T08:30:44Z",
+   "body": "Its now been over a week since the double entry 30/10, so its out of scope for the TDD calulation. Numbers are now correct, both in AAPS and client. "
+  },
+  {
+   "id": 1305575466,
+   "user": "thebarefootboy",
+   "created_at": "2022-11-07T12:56:00Z",
+   "body": "I can confirm in my case as soon as the TDD Statistics section stopped showing '8 days' (ie: the 2 entries for end of BST on 30 Oct rolled over) all the days since then that were showing incomplete/incorrect data are now showing the correct data.\r\n\r\nSo, all the daily  insulin/carb entries stored in the database are correct but there is definitely an issue that caused the display of new daily (bolus and carbs) data to be shown incorrectly on the Statistics page during the week where the 'extra' day appeared in the stats and the data was summarising 8 days."
+  },
+  {
+   "id": 1332300866,
+   "user": "MilosKozak",
+   "created_at": "2022-11-30T14:59:30Z",
+   "body": "improved by https://github.com/nightscout/AndroidAPS/commit/0ff8161cda29477d2c179332702d6d28948febf0"
+  }
+ ]
+}

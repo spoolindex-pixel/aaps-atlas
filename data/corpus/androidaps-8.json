@@ -1,0 +1,21 @@
+{
+ "id": 709589169,
+ "repo": "nightscout/AndroidAPS",
+ "number": 8,
+ "title": "[2.7.0] SMBInterval uses always the default 3 minute value",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/8",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2020-09-26T18:39:53Z",
+ "closed_at": "2020-09-29T09:11:28Z",
+ "comment_count": 1,
+ "body": "The setting could be set from 3 min to 10 min but determine-basal uses always the default value of 3 min.\r\n\r\nIn DetermineBasalAdapterSMBJS.java\r\n` mProfile.put(\"SMBInterval\", sp.getInt(\"key_smbinterval\", SMBDefaults.SMBInterval));`\r\nshould be\r\n`mProfile.put(\"SMBInterval\", sp.getInt(R.string.key_smbinterval, SMBDefaults.SMBInterval));`\r\n\r\nThe dialog limits the value to 3 to 10 but the SMBDefaults.java mention the value could be 1 to 10 and determine-basal.js limits it also only to 1 to 10.",
+ "comments": [
+  {
+   "id": 700574307,
+   "user": "MilosKozak",
+   "created_at": "2020-09-29T09:11:28Z",
+   "body": "good catch !\r\nfixed by https://github.com/nightscout/AndroidAPS/commit/c2c1fc15e63d69fdd2da35eb3e915b3c4cfcc721\r\nthanks"
+  }
+ ]
+}

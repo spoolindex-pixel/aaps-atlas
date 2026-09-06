@@ -1,0 +1,180 @@
+{
+ "id": 747863469,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1518,
+ "title": "xdrip+ not synchronising all glucose data points from Nightscout when the measurement insert rate is > 1/5 minutes (libre)",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1518",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "sync-nightscout"
+ ],
+ "created_at": "2020-11-20T23:36:52Z",
+ "closed_at": "2023-05-30T17:19:20Z",
+ "comment_count": 27,
+ "body": "Two setups:\r\n1) Using glimp as an NFC scanner and uploader from a Libre 1 sensor, inserting to Nightscout (14.0.6)\r\n2) Using glimp + Miao Miao as an uploader from a Libre 1 sensor, inserting to Nightscout.\r\n\r\nXdrip+ (current master branch, as of 13/11/2020) was set to act as a Nightscout follower for a primary data source.\r\n\r\nThe issue that I saw was that I had missing data points in the BG graph - so in case 1) I would scan after a couple of hours, and I would have good recent data, but also a big gap since I had last scanned.\r\n\r\nIn case 1), looking at what happened more closely, I noted that glimp would upload all of the readings from the Libre.  This meant ~ 15 readings one minute apart, followed by readings every 15 minutes from the older data.\r\n\r\nIn case 2), I noted that glimp was doing readings 1/minute - I would assume from the behaviour that it is reading every 5 minutes, and getting data by the minute.  This tallies with what I see on the Nightscout website.\r\n\r\nLooking through the code, I noted the following in app/src/main/java/com/eveningoutpost/dexdrip/cgm/nsfollow/NightscoutFollow.java:\r\n\r\nIn function 'work', it uses the MissedReadingsEstimator to estimate a count of missed readings, which it then passes as count parameter on the REST query to limit the number of results returned.\r\n\r\nThe line is:\r\nint count = Math.min(MissedReadingsEstimator.estimate() + 1, (int) (Constants.DAY_IN_MS / DEXCOM_PERIOD));\r\n\r\nThis is then followed by another line that ensures that you get at least 10 readings:\r\ncount = Math.max(10, count);\r\n\r\nIn app/src/main/java/com/eveningoutpost/dexdrip/evaluators/MissedReadingsEstimator.java it appears to estimate missed readings as being the number of 5 minutely readings that would fit within the time period since the last BG reading.\r\n\r\n(I am not particularly familiar with javascript BTW - so this is the best I could make of it).\r\n\r\nSo - it looks to me like this method of estimating missed readings and using this count to limit the web query is probably the source of the behaviour.\r\n\r\nI tried an experiment, and modified the value to 23 (This is roughly where 15 x 1 minute updates + 1 update / 15 minutes crosses over with a flat 1 update / 5 minutes).\r\ncount = Math.max(23, count);\r\n\r\nI noted that the synchronisation didn't have gaps in case 1), under the specific conditions that xdrip was syncing more often than the Libra was being scanned.\r\n\r\nIn case 2) however, I still see gaps if I sync after a while (say, an hour) - which would be consistent with the behaviour above, as I can see on the Nightscount website that the data is being inserted once per minute (Increasing the minimum count is really just band-aiding the issue for some specific usage patterns).\r\n\r\nOne thing I haven't tried yet is to modify the query to be date-based - for example, something like:\r\nhttps://your.nightscout.site/api/v1/entries?find[date][$gte]=1605904430000@count=<pick a large value for count>\r\n\r\nThere are also a couple of potential implications I was wondering about though:\r\n* This will increase the number of results returned, at least under this scenario.  How does this affect Heroku resource limits?  Any potential issues with increased handset data?\r\n* How does this affect local DB storage on the handset?\r\n* Is there any variation in the Nightscout API, where this might not work with older versions?\r\n* Would it potentially run into server-imposed limits on counts in the future?  (Requiring multiple requests if not enough data is returned).",
+ "comments": [
+  {
+   "id": 731638171,
+   "user": "tolot27",
+   "created_at": "2020-11-21T21:19:08Z",
+   "body": "The problem is caused by the `MissedReadingsEstimator` which assumes one reading every five minutes (`DEXCOM_PERIOD`)."
+  },
+  {
+   "id": 733557174,
+   "user": "jeremystringer",
+   "created_at": "2020-11-25T08:44:06Z",
+   "body": "Had a go at modifying the query.  \r\n\r\nThe original query had a rr=<timestamp> on the end, but I couldn't find this parameter in the nightscout source code, and didn't see it do too much when trying the queries directly with a web browser.\r\n\r\nModified the query to use the find parameter, based on the timestamp from the last BG reading.\r\n        Call<List<Entry>> getEntries(@Header(\"api-secret\") String secret, @Query(\"count\") int count, @Query(\"find[date][$gte]\") String rr);\r\n\r\nNote that this changes the behaviour from querying the current time and retrieving a fixed number of samples to querying the most recent <count> samples since the given start time.  (A better change might be to take the most recent of (-24 hours, last BG reading timestamp).\r\n\r\nPatched in this to adjust:\r\nBgReading bgReading = BgReading.last(); \r\nlong searchDate = bgReading != null ? bgReading.timestamp : (JoH.tsl() - (1000 * 60 * 60 * 24));\r\n\t\t\r\ngetService().getEntries(session.url.getHashedSecret(), count, searchDate + \"\").enqueue(session.entriesCallback);\r\n\r\n(Basing this off MissedReadingEstimator - there will be a tidier way to do it)\r\n\r\nAlso, increased the count to a static count of (60*24), given that the date now bounds the search.\r\n\r\nNet result of these changes was that I could see all of the data in the range being downloaded at startup (Checked with adb logcat), but only a reduced amount of data being displayed on the graph.\r\n\r\nHad a quick look at app/src/main/java/com/eveningoutpost/dexdrip/UtilityModels/BgGraphBuilder.java, and tried changing this line:\r\n\r\n    private static final int NUM_VALUES = (60 / 5) * 24;\r\n\r\nto:\r\n\r\n    private static final int NUM_VALUES = (60) * 24;\r\n\r\nAfter this, the full graph showed up.\r\n\r\nWill give these changes a try for a few days, see if anything else shows up."
+  },
+  {
+   "id": 894663960,
+   "user": "Navid200",
+   "created_at": "2021-08-07T14:47:57Z",
+   "body": "@jeremystringer Thanks for sharing.\r\nWhat is the status of this?"
+  },
+  {
+   "id": 894763949,
+   "user": "jeremystringer",
+   "created_at": "2021-08-08T08:41:38Z",
+   "body": "Hey @Navid200, I trialed the change above and it worked well for me.  The only caveat I found is that after a number of months, it did get less responsive (At which point I cleared data for the app, and this issue went away).  That said, I don't know if it would have become less responsive anyway.\r\n\r\nI've attached some diffs of my changes - I can't regression test though (with the original scenario), as we've since moved from libre to dexcom to get pump integration.\r\n\r\n[diffs.zip](https://github.com/NightscoutFoundation/xDrip/files/6950427/diffs.zip)\r\n\r\nThe changes aren't completely clean (Comments need a little cleanup), nor do they consider all scenarios - I've attached the files as-is, rather than editing, as they have at least been tested as-is.  Note that the EntryProcessor.java change is purely for debug.\r\n\r\nMy tree was based on hash a91b660ec68809418a7904fa8f710beb3c8ab937 (Tag 2020.10.01).\r\n\r\nHappy to put them somewhere if it helps - with the caveat, as mentioned above, that I'm not particularly familiar with the language, or the xdrip code.\r\n"
+  },
+  {
+   "id": 925758321,
+   "user": "Navid200",
+   "created_at": "2021-09-23T12:20:15Z",
+   "body": "@jeremystringer Is this not related to the following?\r\nhttps://github.com/NightscoutFoundation/xDrip/issues/929"
+  },
+  {
+   "id": 927199586,
+   "user": "jeremystringer",
+   "created_at": "2021-09-25T23:52:20Z",
+   "body": "> @jeremystringer Is this not related to the following?\r\n> #929\r\n\r\nI don't believe so, at least looking at the behaviour and the proposed fix for #929.  #929 appears to be about delays getting data from system to system accumulating, causing data not to be available for a while on a follower handset (Complicated, perhaps, by lack of time synchronisation).\r\n\r\nThis is different - this is essentially that with a libre + glimp as an uploader, more data than expected (> 1 point / 5 minutes) gets inserted into nightscout from the master handset, and the follower handset (with xdrip+) doesn't query enough data to build a full graph, as it bases how much data to query on an estimate of 1 point / 5 minutes.\r\n\r\nOne big difference with libre + glimp as an uploader is that with the libre you get 15 minutes worth of 1 minute values each time you read (1 point / 1 minute) + historical data (15 minutely, from memory).  Glimp just uploads it all (or did when I raised the bug, at least)"
+  },
+  {
+   "id": 1189005166,
+   "user": "AidasK",
+   "created_at": "2022-07-19T12:41:47Z",
+   "body": "Seeing similar results. My setup:\r\n1. Libre v3 Uploads glocose every minute to Nightscout\r\n2. XDrip uses nighscout follower source.\r\n\r\nMy setup is correct and all data is seen in history. [Image attached] Though on the main screen same data is not available, only some of it. I can see only last 6 hours, which is 1/4 of all data.\r\n\r\nI can confirm that this is xdrip only issue with these images:\r\nHistory (full day is available)\r\n![history](https://user-images.githubusercontent.com/2088484/179752137-765b7a12-e9af-40d8-8eae-eae2328b506b.png)\r\nCurrent main view (not all data is shown as in history):\r\n![current](https://user-images.githubusercontent.com/2088484/179752262-e34bc8e0-8b44-4dff-bddb-1a05db0e3a00.png)\r\n\r\nOne additional issue, which I don't see here, that on my garmin watch venu 2s, also only part of the graph is available (picture was taken a bit later, so graph does not match). Watch uses xdrip as data source.\r\n![image](https://user-images.githubusercontent.com/2088484/179752641-4f9af845-51dc-4e5a-ae23-87bb3f8afdef.png)\r\n\r\nCan we also raise priority of this issue as 1 minute tracking is becoming more and more popular, especially with increased popularity of libre3? Also fix might not be so hard to implement as all other features works as before."
+  },
+  {
+   "id": 1189514833,
+   "user": "jakobheyman",
+   "created_at": "2022-07-19T20:21:57Z",
+   "body": "This issue can perhaps be fixed by changing NUM_VALUES (not dividing by 5) here:\r\nhttps://github.com/NightscoutFoundation/xDrip/blob/9fcaafeb729c0eb0e0988fbd96322d292649efd4/app/src/main/java/com/eveningoutpost/dexdrip/UtilityModels/BgGraphBuilder.java#L114"
+  },
+  {
+   "id": 1189886984,
+   "user": "AidasK",
+   "created_at": "2022-07-20T06:37:40Z",
+   "body": "The better change probably would be to calculate num values dynamically based on how many data points we have in the past 24 hours. \r\nOr just a setting under display settings would be fine too where we could manually enter how many num_values we want."
+  },
+  {
+   "id": 1189947485,
+   "user": "jamorham",
+   "created_at": "2022-07-20T07:52:05Z",
+   "body": "@jakobheyman yes this is correct, I have been testing this."
+  },
+  {
+   "id": 1191886858,
+   "user": "Navid200",
+   "created_at": "2022-07-21T20:09:00Z",
+   "body": "Can everyone try the following release and provide feedback if the problem has been resolved or not?\r\nhttps://github.com/NightscoutFoundation/xDrip/releases/tag/2022.07.21"
+  },
+  {
+   "id": 1192239714,
+   "user": "AidasK",
+   "created_at": "2022-07-22T06:43:02Z",
+   "body": "On the phone, looks great! Thank you a lot! On the watch, not so great. Same issue :/\r\n\r\nWatchface I am using is(not sure who is responsible for displaying all data points here):\r\nhttps://apps.garmin.com/en-US/apps/8fab3746-f56f-4b41-b3c7-5f4aaeaed6c9\r\n\r\n![watch](https://user-images.githubusercontent.com/2088484/180379278-63963bc0-42d7-4f79-9d05-183230470a5f.jpeg)\r\n![phone](https://user-images.githubusercontent.com/2088484/180379282-a694ba1d-fee4-4ed6-b38d-94bf5ea0388c.png)\r\n\r\n"
+  },
+  {
+   "id": 1195179786,
+   "user": "swissalpine",
+   "created_at": "2022-07-26T08:36:31Z",
+   "body": "The problem does not only affect the output in xDrip+, but, as the images of the clocks show, also the display on end devices that rely on the web service.\r\nEspecially with Garmin watches, the problem is that the amount of the query is very limited to 8 kb, but also the background process itself by which the data is processed is not much larger. Therefore, no more than 24 values should be queried (count=24) to be on the safe side.\r\nTherefore, it is not a solution to query more data and evaluate only every 5th value.\r\nThe web service should therefore provide a way to output only one value every 5 minutes.\r\nMy watchfaces uses the following query:\r\nhttp://127.0.0.1:17580/sgv.json?brief_mode=Y&count=24&all_data=Y\r\nThanks a lot!"
+  },
+  {
+   "id": 1195403614,
+   "user": "Navid200",
+   "created_at": "2022-07-26T12:12:47Z",
+   "body": "@AidasK Would you please try the version that was just released and let us know how it works?\r\nhttps://github.com/NightscoutFoundation/xDrip/releases/tag/2022.07.26"
+  },
+  {
+   "id": 1195534858,
+   "user": "swissalpine",
+   "created_at": "2022-07-26T14:09:07Z",
+   "body": "Thank you for your efforts. I hope I'm not completely off the mark. But after looking at the PR, I suspect that can't be the solution. @AidasK is not using an Android Wear device, but a Garmin watch with a non Android firmware. This can only query bg values via the web service. Here, in the json response of the web service, the output would have to be reduced (and not extended).\r\nFor example, by changing line 164 in WebServiceSgv.java so that for minutely readings (Libre3) only every 5th a json record is produced:\r\n```\r\n                // for each reading produce a json record\r\n                for (BgReading reading : readings) {\r\n```"
+  },
+  {
+   "id": 1195816381,
+   "user": "AidasK",
+   "created_at": "2022-07-26T18:09:16Z",
+   "body": "![image](https://user-images.githubusercontent.com/2088484/181079845-b486b19b-0aa7-4a43-a73e-6023e8abb972.png)\r\nRight on spot @swissalpine. I have tried given release and that's what I've got, data points are still missing."
+  },
+  {
+   "id": 1195835457,
+   "user": "Navid200",
+   "created_at": "2022-07-26T18:28:03Z",
+   "body": "@swissalpine Can you compile what you are suggesting and test it?"
+  },
+  {
+   "id": 1195865324,
+   "user": "jamorham",
+   "created_at": "2022-07-26T18:58:12Z",
+   "body": "The issue is mostly because of the bug in the nightscout follower code which allows records to be stored at a higher frequency than the collector would typically allow. \r\n\r\nI think the best way to address this is a de-duplicator in BgReading which I will work on."
+  },
+  {
+   "id": 1197847474,
+   "user": "swissalpine",
+   "created_at": "2022-07-28T08:44:46Z",
+   "body": "> @swissalpine Can you compile what you are suggesting and test it?\r\n\r\n@Navid200 Thanks for coming back! I can compile it, but since I don't use a Libre sensor myself, a test is relatively useless.\r\n\r\nAlso many thanks to @jamorham, a filtering or a data reduction during import would also be a possibility."
+  },
+  {
+   "id": 1201258411,
+   "user": "jamorham",
+   "created_at": "2022-08-01T14:10:25Z",
+   "body": "Regarding the watchfaces which use the xDrip web service and are experiencing this problem, please try the Aug 1st nightly which includes de-duplication to the expected 5 minute window when the `brief_mode` parameter is set. Please let me know if this resolves that problem."
+  },
+  {
+   "id": 1201372274,
+   "user": "swissalpine",
+   "created_at": "2022-08-01T15:43:13Z",
+   "body": "@jamorham Thanks a lot! Unfortunately I can't test this fix (as written above, I'm not a Libre 3 user)."
+  },
+  {
+   "id": 1201374493,
+   "user": "jamorham",
+   "created_at": "2022-08-01T15:45:01Z",
+   "body": "@swissalpine you can check this change doesn't break the collector you are using ;)"
+  },
+  {
+   "id": 1201381921,
+   "user": "swissalpine",
+   "created_at": "2022-08-01T15:50:52Z",
+   "body": "No, it doesn't. My Garmin Watchface, Datafield und Widget show values at 5 minute intervals. 👍 "
+  },
+  {
+   "id": 1201490792,
+   "user": "AidasK",
+   "created_at": "2022-08-01T17:19:18Z",
+   "body": "Unfortunately libre 3 patch has dropped of my arm since it's using less adhesive than libre2 so I can not test it out at the moment. I will be using libre 2 for a month or more before retrying this test again. Hope to test it out once more as its' form factor is really appealing. "
+  },
+  {
+   "id": 1568770097,
+   "user": "Navid200",
+   "created_at": "2023-05-30T16:58:25Z",
+   "body": "@AidasK Have you been able to test?"
+  },
+  {
+   "id": 1568789561,
+   "user": "AidasK",
+   "created_at": "2023-05-30T17:13:52Z",
+   "body": "Unfortunately no, I have moved to dexcom g6 sensor for now since it is covered by insurance. No plans to get back for now."
+  },
+  {
+   "id": 1568795686,
+   "user": "Navid200",
+   "created_at": "2023-05-30T17:19:20Z",
+   "body": "Of course.\r\n\r\nWe can reopen if needed."
+  }
+ ]
+}

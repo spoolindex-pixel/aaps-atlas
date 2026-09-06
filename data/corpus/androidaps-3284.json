@@ -1,0 +1,111 @@
+{
+ "id": 2210447060,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3284,
+ "title": "MEDTRUM Nano disconnecting",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3284",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-03-27T10:40:50Z",
+ "closed_at": "2024-07-31T10:06:19Z",
+ "comment_count": 16,
+ "body": "After updating with https://github.com/nightscout/AndroidAPS/pull/3270, \r\nis the pump unreachable after an accidental disconnection (long phone distance) and no longer available.\r\n--------------\r\nBefore the update, the phone (watch with full android) worked normally with the pump. \r\nI have been using it in this combination since 20.09.2023.\r\n- 3.3.0-dev-b-app-full-release\r\n- pump model - MD8201, FW 1.80.83\r\n- phone model - KOSPET Optimus2, Android 10.7- non-standard, but fully functional until the last update.\r\n\r\nTo reconnect the pump, you must exit and restart the application. Then the pump will connect correctly. \r\n\r\n![image](https://github.com/nightscout/AndroidAPS/assets/54218454/97571057-c904-447d-be75-52606c4f158a)\r\n[Log Export (1).txt](https://github.com/nightscout/AndroidAPS/files/14771939/Log.Export.1.txt)\r\n",
+ "comments": [
+  {
+   "id": 2023458910,
+   "user": "jbr7rr",
+   "created_at": "2024-03-27T18:07:31Z",
+   "body": "Interesting device..\r\nHow are other Bluetooth devices working? Other pumps, dash etc?\r\n\r\nBefore I make any modifications to the code, can you double check the following:\r\n- Location permission set to \"always allow\"\r\n- ANY powersaving measures for app, Bluetooth app. and general ?\r\n\r\nAlso can you send me logs which also contains successful connection ?"
+  },
+  {
+   "id": 2024567017,
+   "user": "Korostensky",
+   "created_at": "2024-03-28T07:24:09Z",
+   "body": "I've been using different types of watches, customized with Nova Launcher, since 2020, the problem still remains battery life. So far I have only used it in combination with the DANA R and MEDTRUM Nano and the connection works quite correctly. Sometimes it happens that the signal from the Dexcom drops out, but it comes back on after a few minutes. The devices connected via Bluetooth are only the Dexcom G6 transmitter and pump, nothing else.  \r\n\r\nAll settings are correct, I have enabled constant location access, Bluetooth enabled in the app. I don't have the battery saver activated. Before the modification it worked correctly and when I install the older version, the pump disconnection does not happen.\r\n\r\nLog attached. \r\n[Log Export-succesful.txt](https://github.com/nightscout/AndroidAPS/files/14785475/Log.Export-succesful.txt)\r\n\r\nI reinstalled with an older version and the fact that the connection works properly can be seen from the editing of the basals and smb, see picture. \r\n![image](https://github.com/nightscout/AndroidAPS/assets/54218454/ab66b08c-ad6b-4292-ab81-911332b2220f)\r\n"
+  },
+  {
+   "id": 2067584653,
+   "user": "jbr7rr",
+   "created_at": "2024-04-20T07:06:05Z",
+   "body": "It looks your device needs to scan to properly wake up or reset the Bleutooth when a connection attempt fails.\r\nHowever other devices don't handle scanning on every connection error too well. (see: https://github.com/nightscout/AndroidAPS/issues/3268)\r\n\r\nI see few options\r\n\r\n1. Add a retry mechanism and after 3 retries we start scanning anyway\r\n2. Add a setting, for those phones who need it can enable scanning.\r\n3. Add a check if android version is < 11 and do scanning for those devices. (This is a bit tricky as we only have 1 complaint so far with the new code)\r\n\r\n@MilosKozak any thoughts ?\r\n"
+  },
+  {
+   "id": 2082467843,
+   "user": "MilosKozak",
+   "created_at": "2024-04-29T11:24:38Z",
+   "body": "@jbr7rr it's up to you\r\nif there is only one device affected i'd add option available in eng mode only"
+  },
+  {
+   "id": 2104173208,
+   "user": "jbr7rr",
+   "created_at": "2024-05-10T08:25:41Z",
+   "body": "I found the probable cause for this issue, so no need for workarounds hopefully,\r\n\r\n@Korostensky  Can you test with https://github.com/nightscout/AndroidAPS/pull/3331 ?\r\n"
+  },
+  {
+   "id": 2105717391,
+   "user": "Korostensky",
+   "created_at": "2024-05-11T12:07:00Z",
+   "body": "@jbr7rr  Hi, unfortunately I sent the watch in for warranty, I'm currently using a Galaxy S23 phone. When it comes back I'll definitely try it out. Thank you very much."
+  },
+  {
+   "id": 2132782837,
+   "user": "Korostensky",
+   "created_at": "2024-05-27T07:03:35Z",
+   "body": "@jbr7rr  Hello, so unfortunately the pump does not connect after installing the current version and the problem persists. After accidental disconnection (long distance) the device in automatic mode no longer manages to connect to the pump.  I attach the current log.\r\n![20240527_085659](https://github.com/nightscout/AndroidAPS/assets/54218454/47f2da8d-9916-45fe-b499-cf6878cadbb6)\r\n\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/15452014/AndroidAPS.log)\r\n"
+  },
+  {
+   "id": 2132798137,
+   "user": "jbr7rr",
+   "created_at": "2024-05-27T07:13:28Z",
+   "body": "> @jbr7rr Hello, so unfortunately the pump does not connect after installing the current version and the problem persists. After accidental disconnection (long distance) the device in automatic mode no longer manages to connect to the pump. I attach the current log.\r\n\r\nDid you test with https://github.com/nightscout/AndroidAPS/pull/3331 ? This is not in dev yet, waiting for test results"
+  },
+  {
+   "id": 2134433780,
+   "user": "Korostensky",
+   "created_at": "2024-05-28T06:25:12Z",
+   "body": "@jbr7rr thank you for the information. I didn't notice that 3331 is not yet part of the dev. I will wait. "
+  },
+  {
+   "id": 2134821797,
+   "user": "jbr7rr",
+   "created_at": "2024-05-28T10:00:22Z",
+   "body": "> @jbr7rr thank you for the information. I didn't notice that 3331 is not yet part of the dev. I will wait.\r\n\r\nCan you test the PR? I want to sure that it works, or that we need another solution, you are the only device that has this problem"
+  },
+  {
+   "id": 2134921412,
+   "user": "Korostensky",
+   "created_at": "2024-05-28T10:52:40Z",
+   "body": "@jbr7rr I have a problem, the warranty repair failed and the device went to the dealer again for a warranty claim. It is a mechanical fault on the button. Perhaps not related to the quality of the product, but rather to the application of Murphy's Laws :).\r\n\r\nWhen I receive the watch back, I will try to install the app with the code changes I see in the two files in 3331. \r\n\r\nI am not a programmer and do not know the mechanism of code changes in Android Studio, I can only change branches and merge changes across. But I simply change the lines of code as per the template in 3331 in my two files manually. "
+  },
+  {
+   "id": 2139311677,
+   "user": "jbr7rr",
+   "created_at": "2024-05-30T11:04:44Z",
+   "body": "> @jbr7rr I have a problem, the warranty repair failed and the device went to the dealer again for a warranty claim. It is a mechanical fault on the button. Perhaps not related to the quality of the product, but rather to the application of Murphy's Laws :).\r\n> \r\n> When I receive the watch back, I will try to install the app with the code changes I see in the two files in 3331.\r\n> \r\n> I am not a programmer and do not know the mechanism of code changes in Android Studio, I can only change branches and merge changes across. But I simply change the lines of code as per the template in 3331 in my two files manually.\r\n\r\nHmm, I'll open the PR for merge, it has been tested enough so far on other devices\r\n\r\nWorst case we might need a new setting after all for some specific cases, but we can see later."
+  },
+  {
+   "id": 2208876859,
+   "user": "Korostensky",
+   "created_at": "2024-07-04T12:38:34Z",
+   "body": "Hello, I got my watch back. I have installed the app built from the latest DEV and still getting the connection problem.\r\n<img src=\"https://github.com/nightscout/AndroidAPS/assets/54218454/d0d7b8a4-5031-43ad-9b45-6f7f0f633be8\" width=\"50%\" height=\"50%\">\r\n\r\n[AndroidAPS_LOG_1720095570457.log.zip](https://github.com/user-attachments/files/16098837/AndroidAPS_LOG_1720095570457.log.zip)\r\n"
+  },
+  {
+   "id": 2226932908,
+   "user": "jbr7rr",
+   "created_at": "2024-07-13T14:37:20Z",
+   "body": "> Hello, I got my watch back. I have installed the app built from the latest DEV and still getting the connection problem. \r\n\r\nSeems we do need a setting to handle it properly for some devices.. bummer but ok :)\r\n\r\nCan you test with:\r\nhttps://github.com/nightscout/AndroidAPS/pull/3381\r\nAnd enabling the new option that is present in the medtrum settings ? \r\n\r\n"
+  },
+  {
+   "id": 2227807556,
+   "user": "Korostensky",
+   "created_at": "2024-07-15T06:51:45Z",
+   "body": "Thank you very much for this setup option. Unfortunately it's holiday time and it will take me a few weeks. I will give feedback when I can."
+  },
+  {
+   "id": 2258490112,
+   "user": "Korostensky",
+   "created_at": "2024-07-30T14:26:23Z",
+   "body": "Hi, I want to share my feedback. I have installed the application with your customized connection preset option.\r\n\r\n![image](https://github.com/user-attachments/assets/7bc33a47-edf0-47fb-8ff9-69db8597f198)\r\n![image](https://github.com/user-attachments/assets/70bd7a03-c8e2-420e-988a-54c1227753a5)\r\n\r\nI then deliberately lost the connection to the watch, and upon re-approaching, the Medtrum pump connected fine.\r\n\r\n![image](https://github.com/user-attachments/assets/0bf7d602-bf58-417f-bbd7-a0308bcf228a)\r\n\r\nThank you for this modification!"
+  }
+ ]
+}

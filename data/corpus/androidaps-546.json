@@ -1,0 +1,54 @@
+{
+ "id": 906664828,
+ "repo": "nightscout/AndroidAPS",
+ "number": 546,
+ "title": "Pump not reachable. Watchdog sleeping",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/546",
+ "state": "closed",
+ "labels": [
+  "wontfix",
+  "rileylink"
+ ],
+ "created_at": "2021-05-30T07:29:51Z",
+ "closed_at": "2024-03-28T08:00:48Z",
+ "comment_count": 6,
+ "body": "### The Setup for our child is:\r\n* AAPS 2.8.2\r\n* Dexcom g6 (patched app)\r\n* Omnipod Eros\r\n* Emalink (nano&micro)  ble_rfspy3.13 / subg_rfspy 2.2.21\r\n* Galaxy s7 with lineageos 17.1\r\n\r\n### The Problem:\r\nAAPS looses connection to the pump and Watchdog can not fix it. Propably because it is shown as connected in the Omnipod tab.\r\n\r\n### Questions:\r\n1. Is Watchdog intended to be used with omnipod/riley?\r\n2. Is there any Option to extend the Watchdog to toggle bluetooth on the Pump not reachable event even if is shown connected (this fixes the issue in far most of the cases)?\r\n3. Would it be possible to add SMS command like 'toggle bluetooth' in case 2. is not an option?\r\n",
+ "comments": [
+  {
+   "id": 854636814,
+   "user": "andyrozman",
+   "created_at": "2021-06-04T11:35:11Z",
+   "body": "Answers:\r\n1. Definetly not.\r\n2. No. Watchdog actually does toggle, only problem is that toggle needs to be longer that < 1s... But maybe we could extend that... or make it configurable... \r\nSince you are using Lineage \"toggle BT\" should work correctly on your system... "
+  },
+  {
+   "id": 854654259,
+   "user": "egrehm",
+   "created_at": "2021-06-04T12:04:53Z",
+   "body": "From the manual bt toggle i would say that 1 sek is enough but did not stop the time. \r\n\r\n> Since you are using Lineage \"toggle BT\" should work correctly on your system...\r\n\r\neven if it is not intended for my rig?\r\n\r\n> 1. Definetly not.\r\n\r\nIs watchdog for omnipod/riley planned? If not maybe the config text should show the supported setups?\r\n"
+  },
+  {
+   "id": 863838313,
+   "user": "egrehm",
+   "created_at": "2021-06-18T07:54:20Z",
+   "body": "We have to toggle bluetooth multiple times a day (and night :-(  ). It would be so valuable to have a self healing function. In best case not waiting the 30 min until reacting. \r\nIs there an option for official aaps  watchdog support for emalink/onmipod?\r\nIs there a usable workaround?  I have no good enough and simple idea yet."
+  },
+  {
+   "id": 1937848463,
+   "user": "Foxy7",
+   "created_at": "2024-02-11T19:38:17Z",
+   "body": "Bumping this one, as my wife's phone has repeatedly had the same issue for both Samsung S22 and now S23.\r\n\r\nI mentioned this back in Aug23 on discord but no one else commented on it.\r\n\r\n![image001](https://github.com/nightscout/AndroidAPS/assets/37312469/95c3af47-7dc0-4652-8f40-a344541df95c)\r\n\r\n\r\nThe last day it happened was the 10th Jan, where my wife lost connection all night.\r\n\r\n![image](https://github.com/nightscout/AndroidAPS/assets/37312469/4e7a0c1a-8199-4601-a678-b172c465482e)\r\n\r\n\r\nI had a look in the code and realised that 1 second is too short a time frame for the watchdog bark. so increased this to 10s for all three steps.\r\n\r\nin this file:\r\n<kotlin/app/aaps/implementation/queue/QueueThread.kt>\r\n\r\n```ruby\r\n                        pump.disconnect(\"watchdog\")\r\n                        SystemClock.sleep(10000)\r\n                        (context.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager?)?.adapter?.let { bluetoothAdapter ->\r\n                            bluetoothAdapter.safeDisable(10000)\r\n                            bluetoothAdapter.safeEnable(10000)\r\n```\r\n\r\nI changed lines 81, 83 and 84 to have 10000 instead of 1000 and the issue appears to be solved.\r\n\r\nI also noticed that a quick manual bluetooth toggle failed to fix the issue, whereas a longer one did, which is why i choose 10s."
+  },
+  {
+   "id": 1938143039,
+   "user": "MilosKozak",
+   "created_at": "2024-02-12T06:59:51Z",
+   "body": "It looks your phone specific.\r\nBut anyway .... once we  increase target API one more time, BT will not be accessible from app and this code will be removed at all\r\nMy recommendation is change your phone"
+  },
+  {
+   "id": 2024611321,
+   "user": "Foxy7",
+   "created_at": "2024-03-28T07:55:21Z",
+   "body": "understood, thanks.\r\n\r\nwe can close this one."
+  }
+ ]
+}

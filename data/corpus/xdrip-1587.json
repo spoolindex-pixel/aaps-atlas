@@ -1,0 +1,221 @@
+{
+ "id": 778273817,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1587,
+ "title": "Xdrip stops receiving data from G6 after Bluetooth failed to register error and requires reboot.",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1587",
+ "state": "closed",
+ "labels": [
+  "help"
+ ],
+ "created_at": "2021-01-04T18:22:40Z",
+ "closed_at": "2021-03-24T19:32:43Z",
+ "comment_count": 38,
+ "body": "### Subject of the issue\r\nThe latest nightly (and the previous few) stop receiving data from my Dexcom G6 after 6-24 hours and the G5/G6 Status Bluetooth Link: shows \"Failed to register application for bluetooth scan\" in red.\r\n\r\n### Your environment\r\n- What version of xDrip.\r\nc6c289d-2021.01.03 \r\n- What type of hardware data source and how do you get your data there\r\nDexcom G6 8Mxxxxx transmitter\r\n- Is your issue specific to a device like and Android phone or a smartwatch?\r\nGoogle Pixel 4A running Android 11 December 5 and now January 5 security patch\r\n- All settings related to the issue, e.g. activated auto calibration.\r\nG5/G6 Debug Settings (all others not listed are disabled)\r\n[x] Use the OB1 Collector\r\n[x] Native Algorithm\r\n[x] Minimize Scanning\r\n[x] G6 Support\r\n[x] Allow OB1 unbonding\r\n[x] Allow OB1 to initiate bonding\r\nBluetooth Settings (all others not listed are disabled)\r\n[x] Turn Bluetooth on\r\n[x] Bluetooth Watchdog\r\n[x] G5 Bluetooth Watchdog\r\n[x] Trust Auto-Connect\r\n[x] Use Background Scans\r\n[x] Allow blucon unbonding\r\n\r\n### Expected behavior\r\nXDrip should keep receiving data from G6 device.\r\n\r\n### Actual behavior\r\nXDrip fails to receive data from G6 device after 6-24 hours with the \"Failed to register application for bluetooth scan\" and requires a phone reboot to begin receiving data again.\r\n\r\n### Steps to reproduce the behavior:\r\nLet XDrip run.\r\nIt seems like going out of range, so that a reading is missed can trigger it sometimes, but not always.  Also, pairing bluetooth headphones or a heart-rate monitor can also trigger it sometimes.  Seems like anything that changes bluetooth on the phone in some way can be the trigger.\r\n\r\nNOTE: I uploaded LOGs showing this happening over multiple reboots.\r\n",
+ "comments": [
+  {
+   "id": 755398749,
+   "user": "nickb24",
+   "created_at": "2021-01-06T16:18:45Z",
+   "body": "I am running a Pixel 2 with the following settings that are different from yours if you want to try:\r\n\r\nMinimize Scanning (unchecked)\r\nBluetooth Watchdog (unchecked)\r\nG5 Bluetooth Watchdog (unchecked)\r\nClose GATT on BLE disconnect (checked)"
+  },
+  {
+   "id": 755455780,
+   "user": "jredders",
+   "created_at": "2021-01-06T17:49:51Z",
+   "body": "I'll try those settings and see what happens.  It would be really nice if there was a Wiki page somewhere that people could submit their working Phone + CGM maker/rev + settings. "
+  },
+  {
+   "id": 755457164,
+   "user": "Navid200",
+   "created_at": "2021-01-06T17:52:43Z",
+   "body": "@jredders \r\nThese settings are working for almost all phones.\r\nhttps://www.facebook.com/groups/xDripG5/permalink/4603084736431652"
+  },
+  {
+   "id": 755465995,
+   "user": "jredders",
+   "created_at": "2021-01-06T18:09:13Z",
+   "body": "@Navid200 Thanks!\r\nFor the Default Bluetooth Settings for Dexcom G5 and G6 https://www.facebook.com/groups/xDripG5/permalink/4539569289449864,\r\nDoes the G5 Bluetooth Watchdog still need to be on when using a G6?\r\n\r\nFor the G5/G6 Debug Settings page for Dexcom G6 https://www.facebook.com/groups/xDripG5/permalink/4651137871626338, you should tell people to click into the Preemptive restarts and make sure it's disabled, since it's not obvious at all and if you had a G5 running native mode before, you might have had it on."
+  },
+  {
+   "id": 755469518,
+   "user": "Navid200",
+   "created_at": "2021-01-06T18:16:09Z",
+   "body": "G5 Bluetooth Watchdog is set even for G6.\r\n\r\nYes, it is unfortunate that the preemptive restart setting is not visible.  That is why I opened this bug:\r\nhttps://github.com/NightscoutFoundation/xDrip/issues/1528\r\n\r\nThere is a lot of information that we can give people.\r\nFor example:\r\nhttps://www.facebook.com/groups/xDripG5/permalink/4612029002203892\r\n\r\nBut, I often get people who are really in a panic.  One of my objectives, on facebook, is to support individuals who need help but are not very tech savvy.  Think of a diabetic single mother who is trying to feed the kid and also prepare for tomorrows work etc. and have their sensor stop working.\r\n\r\nWhen I write something, I need to avoid driving people away by making it too complicated or too long.\r\nSo, I agree with you that is a very important piece of information.  But, there is a lot more and I have to draw the line somewhere."
+  },
+  {
+   "id": 755503323,
+   "user": "jredders",
+   "created_at": "2021-01-06T18:45:50Z",
+   "body": "Oh I completely understand.  I'm a computer engineer and I still have problems keeping this all working. :)"
+  },
+  {
+   "id": 756403677,
+   "user": "Navid200",
+   "created_at": "2021-01-07T21:43:23Z",
+   "body": "Are there still any problems?"
+  },
+  {
+   "id": 756434986,
+   "user": "jredders",
+   "created_at": "2021-01-07T22:51:07Z",
+   "body": "I have not seen any \"Failed to register application for bluetooth scan\" errors since I disabled Minimize Scanning yesterday.\r\n\r\nHowever, I also realized I had enabled WearOS integration when I was playing around with an old WearOS watch to see if they had made enough improvements lately to look at it again (they haven't), so I also disabled that and unistalled WearOS.  So, it could have been related to having WearOS and Garmin connected or WearOS enabled but no watch connected (battery is dead after a day+ of non-use).\r\n\r\nFinally, the sensor has been in it's death throws of tons of sensor errors and I just haven't gotten around to changing it yet.  I'll let you know if I see any issues once I start the new sensor later today."
+  },
+  {
+   "id": 756895605,
+   "user": "jredders",
+   "created_at": "2021-01-08T17:30:22Z",
+   "body": "Well, my sensor came back from the dead last night, so I didn't change it and this morning I just lost G6 readings 30 minutes ago and the status is the dreaded \"Failed to register application for bluetooth scan\".  So, it seems that the turning off Minimize Scanning reduces the occurrence, but does not fix the problem."
+  },
+  {
+   "id": 756904539,
+   "user": "Navid200",
+   "created_at": "2021-01-08T17:49:23Z",
+   "body": "Does a phone restart always brings it back?\r\n\r\nDid you follow all the steps on facebook?\r\nhttps://www.facebook.com/groups/xDripG5/permalink/4603084736431652\r\n\r\nWhat do event logs show?"
+  },
+  {
+   "id": 756915360,
+   "user": "jredders",
+   "created_at": "2021-01-08T18:11:37Z",
+   "body": "So, I realized this happened because my Garmin 645 watch vibrates when it loses Bluetooth connection.  While XDrip was showing the error, my Garmin Connect software was also unable to talk to my watch.  I manually turned off Bluetooth and turned it back on.  After a little while, the Garmin reconnected, but XDrip was still still showing the error.  I manually force-stopped XDrip and then restarted the collector and it eventually started working again.\r\n\r\nLooking through the logs it's been dorked since 1 AM last night and has been attempting to stop/re-start bluetooth a whole bunch of times since then.  It basically got no data from 1-9 AM (then backfilled to 6 AM), which happens to coincide with when I was sleeping.  I wonder if this is a phone deep-sleeping problem?  I have XDrip set to not-optimized, but it's rather a strange coincidence that it all started when I set the phone down and went to sleep and was able to get things working again when I woke up and picked up the phone.  The death at 10AM also coincides with the phone having been set down for a while."
+  },
+  {
+   "id": 756919448,
+   "user": "Navid200",
+   "created_at": "2021-01-08T18:19:53Z",
+   "body": "There is a lot we can talk about on facebook.  There are existing posts I can refer you to.\r\nDepending on the phone, there are additional settings that need to be set other than disabling battery optimization.\r\n\r\nIf you establish there is a problem with the code, then you can come here and open an issue."
+  },
+  {
+   "id": 757140982,
+   "user": "leonbohmann",
+   "created_at": "2021-01-09T12:15:41Z",
+   "body": "Could any one of you post the steps described in your facebook? I dont have facebook so I cant view the pages you supplied.."
+  },
+  {
+   "id": 757356957,
+   "user": "Navid200",
+   "created_at": "2021-01-09T19:40:02Z",
+   "body": "@leonbohmann Hi,\r\nI can.  But, ...\r\n\r\nThere is a place and purpose for the facebook group.  And there is one for Github.\r\nMay I ask why you cannot create a facebook account?  You don't have to install it on a mobile.  You can have it only on your desktop or laptop or ipad.\r\nYou don't have to live on facebook.  Only use it to access this page about xDrip.  I know many people hate facebook.  I have issues with facebook myself.  But, I don't understand why it has to be so black and white.\r\n\r\nIf you ask why not explain everything here, my answer is that , at least the way I understand it, this here is meant to be a place where we open issues for the developers to fix the code.  \r\nIt is not meant to be used as a forum to share experiences and ask for help.  That's what facebook is meant for.  I don't want to encourage the practice of opening an issue here as soon as someone has a problem using xDrip."
+  },
+  {
+   "id": 757435029,
+   "user": "jredders",
+   "created_at": "2021-01-10T07:59:42Z",
+   "body": "Note: This could possibly be related to this recent memory leak fix in RxAndroidBle https://github.com/Polidea/RxAndroidBle/commit/75b854fa028380d0d6cb44ec9c4c2f27ac5533bf\r\nSee this note here: https://github.com/Polidea/RxAndroidBle/issues/607#issuecomment-575131202\r\nThey have not released a new version since the commit of the fix though."
+  },
+  {
+   "id": 760040165,
+   "user": "leonbohmann",
+   "created_at": "2021-01-14T08:56:12Z",
+   "body": "> It is not meant to be used as a forum to share experiences and ask for help. That's what facebook is meant for. I don't want to encourage the practice of opening an issue here as soon as someone has a problem using xDrip.\r\n\r\nAs long as your answer helps to provide a solution to the initial (actual) programming-related issue posted by @jredders it is perfectly valid to discuss the solution in here, without having to use facebook. In this case its not even about facebook, why not just post the solution here so everybody on github can access it?\r\n"
+  },
+  {
+   "id": 760242728,
+   "user": "jredders",
+   "created_at": "2021-01-14T14:47:19Z",
+   "body": "Well, I can tell you that the \"solution\" provided on Facebook does not help.  I still have to reboot my Pixel 4A every ~24 hours to fix the issue once it starts."
+  },
+  {
+   "id": 760244308,
+   "user": "nickb24",
+   "created_at": "2021-01-14T14:49:52Z",
+   "body": "Do you have the option \"Close GATT on BLE disconnect\" checked or not? I suggest having it checked. "
+  },
+  {
+   "id": 760499690,
+   "user": "jamorham",
+   "created_at": "2021-01-14T21:52:43Z",
+   "body": "When you get the message saying `failure to register` and need to reboot the phone I am pretty sure this happens when the actual Bluetooth stack in the android operating system fails. This is why you need to reboot to fix it and toggling Bluetooth off/on isn't sufficient to reset it. I have seen this before on Android 7-8.1 of various platforms but particularly with broadcom chipsets and definitely traced it to the stack itself, but I thought it was fixed in Android 9+ so if the Pixel 4a is up to date then I'm surprised to hear of that issue being reported there. "
+  },
+  {
+   "id": 760625608,
+   "user": "Navid200",
+   "created_at": "2021-01-15T03:43:12Z",
+   "body": "@jamorham This is on Moto G7 Android 10.\r\nHe says restarting the phone fixes it.\r\nIs this what you mean.  Or, is this a different error?\r\n\r\n![2](https://user-images.githubusercontent.com/51497406/104678578-be811080-56b9-11eb-9733-7af61e92e0b3.jpg)\r\n\r\n"
+  },
+  {
+   "id": 760678651,
+   "user": "tolot27",
+   "created_at": "2021-01-15T06:18:05Z",
+   "body": "> When you get the message saying `failure to register` and need to reboot the phone I am pretty sure this happens when the actual Bluetooth stack in the android operating system fails.\n\nI cannot really belive this because other apps running fine at the same time. Even if some devices getting disconnected, the apps reconnect them automatically, whereas xDrip does not. I suspect that the additional RxAndroidBle stack is responsible for it.\n\nMaybe, sometimes I can get access to such a device and can debug it, too."
+  },
+  {
+   "id": 761019499,
+   "user": "jamorham",
+   "created_at": "2021-01-15T15:47:28Z",
+   "body": "@Navid200 thats the same error\r\n\r\n@tolot27 When I saw this issue previously the whole bluetooth stack was down, no bluetooth functions would work at all in any app."
+  },
+  {
+   "id": 761020402,
+   "user": "jamorham",
+   "created_at": "2021-01-15T15:48:47Z",
+   "body": "For anyone who is experiencing this issue, what happens if you go to Android Settings -> Apps -> xDrip and then force stop xDrip and wait a minute or so and re-open it. Does that resolve the problem?"
+  },
+  {
+   "id": 761038856,
+   "user": "Navid200",
+   "created_at": "2021-01-15T16:20:35Z",
+   "body": "@jamorham \r\nI will communicate that test on facebook.  I should have results soon."
+  },
+  {
+   "id": 761120735,
+   "user": "Navid200",
+   "created_at": "2021-01-15T18:52:52Z",
+   "body": "Case 1: Samsung S10 Android 10, G6 8L****, Nov. 27, 2020 release; uses AAPS as well\r\nForce stop did not resolve the problem."
+  },
+  {
+   "id": 761174953,
+   "user": "jredders",
+   "created_at": "2021-01-15T20:15:07Z",
+   "body": "I just started getting the \"Failed to register\" messages again since my last reboot and XDrip has tried to resolve it by turning off and turning on Bluetooth twice so far this time.  The second time it seems like it wasn't able to turn Bluetooth back on, or it leaves it off for longer than I thought before re-enabling.  I noticed that my Garmin watch had disconnected.  I turned it on manually and restarted XDrip's collector.  The Garmin watch reconnected as soon as Bluetooth was enabled and I was able to sync it with Garmin Connect, so Bluetooth wasn't totally dead.  XDrip was also able to connect after a few minutes.  So, at least when it first starts seeing the \"Failed to register\" errors occur, it can recover simply by turning off and turning back on Bluetooth."
+  },
+  {
+   "id": 761301923,
+   "user": "Navid200",
+   "created_at": "2021-01-16T03:08:51Z",
+   "body": "@jamorham \r\n\r\nCase 1: Samsung S10 Android 10, G6 8L****, Nov. 27, 2020 release; uses AAPS as well\r\nForce stop did not resolve the problem.\r\n\r\nCase 2: Pixel 4 XL, Android 11, G5 42****, Jan. 15, 2021 release; uses AAPS\r\nForce stop did not resolve the problem."
+  },
+  {
+   "id": 761587684,
+   "user": "tolot27",
+   "created_at": "2021-01-16T16:03:14Z",
+   "body": "I don't know whether it is important to remove the xDrip widget as well. I also recommend to turn off Bluetooth and switch it on after a while and before xDrip is started again.\r\n@Navid200 Please can you ask the users if the have other Bluetooth devices connected at the same time and if they continue to work or reconnect automatically?"
+  },
+  {
+   "id": 761594481,
+   "user": "jredders",
+   "created_at": "2021-01-16T16:43:55Z",
+   "body": "I tried restarting the collector, force stopping XDrip, removing the widget, force stopping, toggling Bluetooth manually, then restarting and nothing worked. My Garmin 645 kept syncing just fine through it all. Rebooting the phone fixed it as always.\r\nAny chance it's related to the message about switching to scan always mode due to errors?\r\n![Screenshot_20210116-103818](https://user-images.githubusercontent.com/9410439/104817531-6b0ce080-57e7-11eb-8fec-021414ea2f9d.png)\r\n"
+  },
+  {
+   "id": 761726941,
+   "user": "dspnikder",
+   "created_at": "2021-01-17T03:51:01Z",
+   "body": "There are two known existing bugs that hasn't been adressed, there is a PR for them which fixes both. One is there is a new format for one of the info messages, the other that there is a mismatch in the current understanding of what the characteristics services offer which means there are attempts to READ instead of INDICATE in three places. That this causes intermittent problems and issues that manifest in different ways depends on\r\n1: your Android version\r\n2: the vendor of the BT software stack and in most cases hardware\r\n3: Possibly some other unknown factor like phone vendor modifications in the layer between application and hardware.\r\n\r\nConsidering this was first reported in March last year and the PR has existed since November I can only hope that someone notices."
+  },
+  {
+   "id": 763737150,
+   "user": "Navid200",
+   "created_at": "2021-01-20T16:05:44Z",
+   "body": "Case 1: Samsung S10 Android 10, G6 8L****, Nov. 27, 2020 release; uses AAPS as well\r\nForce stop did not resolve the problem.\r\n\r\nCase 2: Pixel 4 XL, Android 11, G5 42****, Jan. 15, 2021 release; uses AAPS\r\nForce stop did not resolve the problem.\r\nAfter a recent Android security patch, the issue seems to have been resolved.\r\n\r\nCase 3: OnePlus 6 Android 10, G5 42****, Jan. 15, 2021 release; uses BlueJay as well"
+  },
+  {
+   "id": 804133043,
+   "user": "Navid200",
+   "created_at": "2021-03-22T15:03:26Z",
+   "body": "@jredders Any updates on this?\r\nAre you still experiencing this issue?"
+  },
+  {
+   "id": 806090524,
+   "user": "jredders",
+   "created_at": "2021-03-24T19:21:40Z",
+   "body": "No I am not. Unfortunately, I have no idea why it stopped happening."
+  },
+  {
+   "id": 806092202,
+   "user": "Navid200",
+   "created_at": "2021-03-24T19:24:31Z",
+   "body": "Thanks for the response.\r\nI suggest you close this issue.  It can always be reopened if it is experienced again.  \r\nAnd, it can be found in searches.  Closing it does not wipe everything off."
+  }
+ ]
+}

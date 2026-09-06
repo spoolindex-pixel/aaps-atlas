@@ -1,0 +1,173 @@
+{
+ "id": 749730505,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1522,
+ "title": "Code Review: refactor code",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1522",
+ "state": "closed",
+ "labels": [
+  "code:quality"
+ ],
+ "created_at": "2020-11-24T14:00:00Z",
+ "closed_at": "2024-02-10T02:04:56Z",
+ "comment_count": 26,
+ "body": "Over the last couple of days I spent some time to understand the xDrip code. After some reviewing I found the following issues which I like to address soon:\r\n\r\n- [x] cleanup Gradle files (#1538)\r\n- [ ] remove local Android Archive (AAR) files and use the libraries from public repositories like maven, instead\r\n  - [ ] update ColorPicker\r\n  - [ ] remove hellocharts\r\n  - [ ] search-preference.aar v1.0.4 requires casts to AppCompatActivity\r\n  - [ ] remove usb-serial-for-android-v010 (implementation 'org.clojars.nakkaya:usb-serial-for-android-v010:010') because it is imported into ImportedLibraries\\usbserial; it looks like it is a much older version 0.2.0-pre\r\n- [ ] ImportedLibraries.dexcom is imported from https://github.com/nightscout/android-uploader and requires ImportedLibraries\\usbserial. Remove unused code.\r\n- [ ] upgrade all dependencies to the newest one which still supports the minSdkVersion we require\r\n  - [ ] setup [Dependabot](https://github.blog/2020-06-01-keep-all-your-packages-up-to-date-with-dependabot) at the main repository; did this on my [fork](https://github.com/tolot27/xDrip/pulls) and it works so far\r\n- [ ] avoid calling new methods on older versions: minSdkVersion is set to 18/19 but methods from level 21 or 26 are called\r\n- [ ] migrate to AndroidX (mandatory as of Android SDK 28.0), previous versions support `com.android.support:support-annotations` which is currently in use\r\n- [ ] migrate rxjava (1.3.3) to rxjava2 \r\n- [x] enable incremental compilation (#1598)\r\n- [x] enable parallel and incremental annotation (`android.enableSeparateAnnotationProcessing=true`)\r\n- [x] upgrade Android Gradle Plugin from 3.4.1 to at least 3.5.x (https://developer.android.com/jetpack/androidx/releases/databinding) (#1539)\r\n  - [x] requires package names written in all lowercase (see [Naming a Package](https://docs.oracle.com/javase/tutorial/java/package/namingpkgs.html)) because old data binding (`android.databinding.enableV2=true`) is removed) (#1539)\r\n- [ ] upgrade Android Gradle Plugin to 3.6.x or higher requires migration to AndroidX or `android.useAndroidX=true` and `android.enableJetifier=true` in `gradle.properties`\r\n- [ ] ~~migrate from Fabric Crashlytics (io.fabric) to Firebase Crashlytics~~ it was replaced by New Relic\r\n- [ ] TargetSdkVersion < 26 are no longer supported. As of the second half of 2018, Google Play requires that new apps and app updates target API level 26 or higher. Only required if we want to deploy the app using Google Play Store.\r\n- [ ] refactor common code of phone and wear app into a library module to avoid code duplication (e.g. classes `Constants` and `Dex_Constants`) and improve maintenance (see #1733). Good example is provided at https://stackoverflow.com/a/62966117/10373188.\r\n  - [ ] document library code\r\n- [ ] address warnings/errors reported by Android Studio Code Inspection\r\n- [ ] consistent code formatting and lint checks\r\n  - [ ] GitHub bot which formats PRs automatically or warn at least\r\n- [ ] provide a pull request template\r\n- [ ] configure continuous integration (CI)\r\n- [ ] Code Coverage\r\n- [ ] review ProGuard usage and rules: https://developer.android.com/studio/build/shrink-code\r\n\r\nSome new security-related tasks arose during the code review:\r\n\r\n- [x] remove Google Maps key from repository (#1596 adds fundamental support)\r\n- [ ] protect `google-services.json` either by using [Travis Encrypting Files](https://docs.travis-ci.com/user/encrypting-files) or creating a new build type containing a dummy `google-services.json` file.",
+ "comments": [
+  {
+   "id": 733100240,
+   "user": "tzachi-dar",
+   "created_at": "2020-11-24T16:43:58Z",
+   "body": "+1000 to  enable incremental compilation\r\n\r\nAs for:\r\nTargetSdkVersion < 26 are no longer supported. As of the second half of 2018, Google Play requires that new apps and app updates target API level 26 or higher.\r\nI'm not sure it is possible. I think that there are things that we are doing and are not allowed by new code. (IIRC this has to do with broadcasting, but probably @jamorham remembers more)."
+  },
+  {
+   "id": 733111771,
+   "user": "nickb24",
+   "created_at": "2020-11-24T17:03:35Z",
+   "body": "Regarding \"migrate rxjava (1.3.3) to rxjava2\", I've already done that in my fork if you want to check out that code. I've also changed the targetSdk to version 26. \r\n\r\nI'm testing on a Pixel 2 running Android 11 and everything seems to be working fine so far. "
+  },
+  {
+   "id": 733276132,
+   "user": "tolot27",
+   "created_at": "2020-11-24T22:43:37Z",
+   "body": "@nickb24 \r\n> Regarding \"migrate rxjava (1.3.3) to rxjava2\", I've already done that in my fork if you want to check out that code. I've also changed the targetSdk to version 26.\r\n\r\nThx for the offer, but we need clean commits/PRs which addresses certain problems \"atomically\". I took a look at your fork and found that commit 1a6d6a3 mixes rxJava and Bt related stuff. If would be great I you can provide a clean PR."
+  },
+  {
+   "id": 733277844,
+   "user": "tolot27",
+   "created_at": "2020-11-24T22:48:34Z",
+   "body": "> +1000 to enable incremental compilation\r\n\r\nIt already works for me if I go straight to Android Gradle Plugin 4.1.1 and use the jetifier (`android.useAndroidX=true` and `android.enableJetifier=true` in `gradle.properties`). That was just to test it. We should go step by step.\r\n\r\n> As for:\r\n> TargetSdkVersion < 26 are no longer supported. As of the second half of 2018, Google Play requires that new apps and app updates target API level 26 or higher.\r\n> I'm not sure it is possible. I think that there are things that we are doing and are not allowed by new code. (IIRC this has to do with broadcasting, but probably @jamorham remembers more).\r\n\r\nYea, that's a problem that it is not documented. Anyway, API level 26+ is only required if we like to provide an app in the Google Play Store."
+  },
+  {
+   "id": 733279202,
+   "user": "nickb24",
+   "created_at": "2020-11-24T22:52:28Z",
+   "body": "> @nickb24\r\n> \r\n> > Regarding \"migrate rxjava (1.3.3) to rxjava2\", I've already done that in my fork if you want to check out that code. I've also changed the targetSdk to version 26.\r\n> \r\n> Thx for the offer, but we need clean commits/PRs which addresses certain problems \"atomically\". I took a look at your fork and found that commit [1a6d6a3](https://github.com/NightscoutFoundation/xDrip/commit/1a6d6a395d0055fe132681a7e761cd4fffe5dca9) mixes rxJava and Bt related stuff. If would be great I you can provide a clean PR.\r\n\r\nNo problem I understand. However only the following files are needed for rxjava2 migration:\r\napp/src/main/java/com/eveningoutpost/dexdrip/ShareTest.java\r\napp/src/main/java/com/eveningoutpost/dexdrip/Services/DexShareCollectionService.java\r\napp/src/main/java/com/eveningoutpost/dexdrip/ImportedLibraries/dexcom/ReadDataShare.java\r\n\r\nThose files have no bluetooth code modified, only rxjava. "
+  },
+  {
+   "id": 733280157,
+   "user": "tolot27",
+   "created_at": "2020-11-24T22:55:09Z",
+   "body": "@nickb24 Okay, thanks. I just scammed the commits. Will continue tomorrow."
+  },
+  {
+   "id": 735224043,
+   "user": "emp-00",
+   "created_at": "2020-11-28T12:15:13Z",
+   "body": "Improving the code allowing xDrip+ to be provided by the official PlayStore would be a great benefit to all ppl with **company phones**. These are blocking sideloading of unknown apps (\"blocked by our IT admin\") -> only PlayStore apps are allowed for \"security reasons\". With the latest Android security updates (Samsung company phone) all workarounds to enable sideloading xDrip+ are now being blocked as well, so it's a rather urgent issue."
+  },
+  {
+   "id": 735373660,
+   "user": "tim162",
+   "created_at": "2020-11-29T10:45:09Z",
+   "body": "@tolot27 Migrating to AndroidX (probably done by an experienced xDrip dev) also gives the opportunity for new features. I implemented Android Auto compatibility where your car can read your alarms loud for you but the car connectivity required migrating to AndroidX. I've done it in my branch but as many many files have automatically been changed while migrating and I'm quite new to xDrip developing, I have no idea if all of the other features are still working after Android Studios auto-migration.\r\n\r\nAs soon as the migration to AndroidX is done, I can implement the Android Auto connectivity with ease."
+  },
+  {
+   "id": 736090385,
+   "user": "tolot27",
+   "created_at": "2020-11-30T22:19:11Z",
+   "body": "@tim162 Please can you create a new branch in your repro based on master and just set `android.useAndroidX=true` and `android.enableJetifier=true` in `gradle.properties` and test your Android Auto related code? With that options enabled you can also upgrade the Android Studio Gradle Plugin. There is no need to change lots of classes if the jetifier is enabled."
+  },
+  {
+   "id": 736695866,
+   "user": "tim162",
+   "created_at": "2020-12-01T17:17:52Z",
+   "body": "@tolot27 you can check https://github.com/NightscoutFoundation/xDrip/pull/1533#issue-530453200\r\nI implemented the feature in another way (imo way better) and explained everything in the PR description. I can do the migration to AndroidX in a seperate PR but I wanted to seperate it as there are many many small file changes."
+  },
+  {
+   "id": 742640583,
+   "user": "jamorham",
+   "created_at": "2020-12-10T16:43:06Z",
+   "body": "This is a perfectly reasonable set of tasks but there are also reasons why many of these things have not been done before. The most significant is that it is very hard to test the subtle interaction changes that can occur with library and other changes. \r\n\r\nI'll just comment on the things I think are significant or disagree with:\r\n\r\nI don't believe the assumption that newer versions of google libraries are always better is correct. I've been bitten by minor changes to even the build tool revision numbers causing behavior changes before so it needs to be handled with lots of care. Older libraries get tested on newer devices but rarely does that happen in reverse. For example some LG Android 5 phones don't support vector drawables which is why xDrip works around that.\r\n\r\nRemote repositories can stop hosting the libraries we might be using which might cause problems in the future. I don't agree with moving locally hosted ones to reference the remote repository without a good reason. Google famously removed one of the wear libraries we were using.\r\n\r\nI very much doubt that xDrip will get listed on the play store. Just one example we would have to remove SMS functionality. Their policies are very developer unfriendly and unfriendly to apps which want to do things like always maintaining bluetooth connections etc. \r\n\r\nTargeting newer SDK versions is probably worth avoiding unless we have to. I think we'd lose access to some of the mechanisms we're using to keep the app always running smoothly and also the hidden api calls that we use to work around bugs in the framework.\r\n\r\nQuestion regarding incremental compilation, does this still work while maintaining the minsdkversion at 18? don't you exceed the 65k public method limit and therefore need to use the proguard shrinking which is incompatible with it?\r\n"
+  },
+  {
+   "id": 756464980,
+   "user": "tolot27",
+   "created_at": "2021-01-08T00:13:04Z",
+   "body": "Some new security-related tasks arose during the code review:\r\n\r\n```\r\n- [ ] remove Google Maps key from repository (#1596 adds fundamental support)\r\n- [ ] protect `google-services.json` either by using [Travis Encrypting Files](https://docs.travis-ci.com/user/encrypting-files) or creating a new build type containing a dummy `google-services.json` file.\r\n```\r\nI had to add it to the initial comment to get the tasks recognized."
+  },
+  {
+   "id": 756480186,
+   "user": "tolot27",
+   "created_at": "2021-01-08T01:00:22Z",
+   "body": "> This is a perfectly reasonable set of tasks but there are also reasons why many of these things have not been done before. The most significant is that it is very hard to test the subtle interaction changes that can occur with library and other changes.\r\n\r\nI agree with you that we need comprehensive tests. Most of the bugs reported here are related to the devices xDrip supports (mostly related to Bluetooth). If we would use the different build channels better, we could get better feedback from the users willing to test newer builds. Up to now, most of the users have to install the nightly build. That is the biggest risk I can see so far.\r\n\r\n> I don't believe the assumption that newer versions of google libraries are always better is correct. I've been bitten by minor changes to even the build tool revision numbers causing behavior changes before so it needs to be handled with lots of care. Older libraries get tested on newer devices but rarely does that happen in reverse.\r\n\r\nI totally agree with you that newer libraries are not always better. But often, they are better and much safer. The AndroidX libraries for instance are increasing the compatibility - not in every case, that is not possible, but for most of the apps.\r\n\r\n> For example some LG Android 5 phones don't support vector drawables which is why xDrip works around that.\r\n\r\nHow many users are still using LG Android 5 phones?\r\n\r\n> Remote repositories can stop hosting the libraries we might be using which might cause problems in the future. I don't agree with moving locally hosted ones to reference the remote repository without a good reason. Google famously removed one of the wear libraries we were using.\r\n\r\nIndeed that happened and can happen in the future. But when it happens, we can integrate the latest available/most suitable library into xDrip at that time. Currently, I do not see any reason why we should keep unused libraries in the xDrip repository and integrating them into the apk.\r\n\r\n> Targeting ne"
+  },
+  {
+   "id": 757057730,
+   "user": "tolot27",
+   "created_at": "2021-01-09T00:14:06Z",
+   "body": "I did a rework of the incremental compilation and pushed a new PR #1598."
+  },
+  {
+   "id": 757058609,
+   "user": "tolot27",
+   "created_at": "2021-01-09T00:17:35Z",
+   "body": "One more advantage of upgrading AGP to 4.x is the availability of the Build Analyzer. But once again, this needs the fix of the package names."
+  },
+  {
+   "id": 773848761,
+   "user": "androckz",
+   "created_at": "2021-02-05T07:23:58Z",
+   "body": "Hi all. \r\nI'd like to build the project, but I can't find build instructions anywhere. I noticed that issue #1012 has been closed, so I try to ask here.\r\nIn a windows 10 (and/or Linux if possible) environment, what are the requirements to build the project (main branch) with no errors and no need to modify sources or other (hidden) options? I mean... installed Android SDKs, JDK version, gradle version, android studio version and so on. And also...is Android Studio always necessary or can we build from command line?\r\n\r\nIf someone will briefly explain me how to build, I'm available to write some documentation about it.\r\n\r\nThanks a lot"
+  },
+  {
+   "id": 774090424,
+   "user": "nickb24",
+   "created_at": "2021-02-05T15:09:02Z",
+   "body": "> Hi all.\r\n> I'd like to build the project, but I can't find build instructions anywhere. I noticed that issue #1012 has been closed, so I try to ask here.\r\n> In a windows 10 (and/or Linux if possible) environment, what are the requirements to build the project (main branch) with no errors and no need to modify sources or other (hidden) options? I mean... installed Android SDKs, JDK version, gradle version, android studio version and so on. And also...is Android Studio always necessary or can we build from command line?\r\n> \r\n> If someone will briefly explain me how to build, I'm available to write some documentation about it.\r\n> \r\n> Thanks a lot\r\n\r\nI don't think there are any special build instructions. I installed latest Android Studio in Ubuntu. Open Android studio and follow the prompts to import a project from Github. The project should build just fine. \r\n\r\nIf you can post where you are stuck in this process maybe I can take a look and see if I can help."
+  },
+  {
+   "id": 774318976,
+   "user": "tolot27",
+   "created_at": "2021-02-05T22:19:23Z",
+   "body": "> And also...is Android Studio always necessary or can we build from command line?\r\n\r\nIndeed, you can build from command line using gradle. @afcady provided a makefile with #903.\r\n\r\n> If someone will briefly explain me how to build, I'm available to write some documentation about it.\r\n\r\nThat would be great. Maybe you can extend https://xdrip.github.io?"
+  },
+  {
+   "id": 853237211,
+   "user": "nightscout-ricsi",
+   "created_at": "2021-06-02T17:22:01Z",
+   "body": "This is a very straightforward work. Is there any work going on on this project?\r\nI suppose the regrouping of the settings would be a very handy change, too. And I think alerts should be inside Settings, but on the same level. And reminders should be in the same panel as alerts (Alert and reminders). "
+  },
+  {
+   "id": 1005239272,
+   "user": "tolot27",
+   "created_at": "2022-01-04T23:10:30Z",
+   "body": "> > Thx for the offer, but we need clean commits/PRs which addresses certain problems \"atomically\". I took a look at your fork and found that commit [1a6d6a3](https://github.com/NightscoutFoundation/xDrip/commit/1a6d6a395d0055fe132681a7e761cd4fffe5dca9) mixes rxJava and Bt related stuff. If would be great I you can provide a clean PR.\r\n> \r\n> No problem I understand. However only the following files are needed for rxjava2 migration: app/src/main/java/com/eveningoutpost/dexdrip/ShareTest.java app/src/main/java/com/eveningoutpost/dexdrip/Services/DexShareCollectionService.java app/src/main/java/com/eveningoutpost/dexdrip/ImportedLibraries/dexcom/ReadDataShare.java\r\n\r\n@nickb24 Why did you add the `throws Exception` to every `accept(Long s)` method definition? It is already defined at the `Consumer` interface. Did you see any side effect not declaring the exception in the overridden functions?"
+  },
+  {
+   "id": 1005316174,
+   "user": "nickb24",
+   "created_at": "2022-01-05T01:58:25Z",
+   "body": "> > > Thx for the offer, but we need clean commits/PRs which addresses certain problems \"atomically\". I took a look at your fork and found that commit [1a6d6a3](https://github.com/NightscoutFoundation/xDrip/commit/1a6d6a395d0055fe132681a7e761cd4fffe5dca9) mixes rxJava and Bt related stuff. If would be great I you can provide a clean PR.\r\n> > \r\n> > \r\n> > No problem I understand. However only the following files are needed for rxjava2 migration: app/src/main/java/com/eveningoutpost/dexdrip/ShareTest.java app/src/main/java/com/eveningoutpost/dexdrip/Services/DexShareCollectionService.java app/src/main/java/com/eveningoutpost/dexdrip/ImportedLibraries/dexcom/ReadDataShare.java\r\n> \r\n> @nickb24 Why did you add the `throws Exception` to every `accept(Long s)` method definition? It is already defined at the `Consumer` interface. Did you see any side effect not declaring the exception in the overridden functions?\r\n\r\nThat's a good question. I'm honestly unsure at this point, it's been over 1 year that I touched that code. Looking at it now I think you are right, it can be removed. I believe at the time I was following a guide from Github on how to migrate to RxJava2 and it might have come from there. I believe I was trying to catch null values, since RxJava2 doesn't accept null values [Docs](https://github.com/ReactiveX/RxJava/wiki/What%27s-different-in-2.0#nulls)."
+  },
+  {
+   "id": 1030207664,
+   "user": "tolot27",
+   "created_at": "2022-02-04T17:41:05Z",
+   "body": "Regarding code formatting @jwoglom suggested the Github Action [Checkstyle for Java](https://github.com/marketplace/actions/checkstyle-for-java) and @suside suggested [spotless](https://github.com/diffplug/spotless).\r\n\r\nAccording to @suside spotless has the following advantages over actions/checkstyle-for-java:\r\n1. can be run on dev machine with `./gradlew spotlessCheck`\r\n2. can format code with ` ./gradlew spotlessApply`\r\n3. can be extended to pretty much all file types\r\n4. it can lint only differences between PR and master branch (perhaps actions/checkstyle-for-java has that too?)\r\n\r\nIt could be something [like this](https://github.com/suside/xDrip/commit/58d3cbddbda0082a295a7a1684e67044639b46e9)\r\n\r\nGitHub Actions can be tested on developer machines as well using [act](https://github.com/nektos/act).\r\n\r\nA feature what I really like to have is partial code formatting. For the moment, just the code a commit provides/touches should be reformatted to not distract the review process too much. Is this possible with one of these tools?"
+  },
+  {
+   "id": 1030208908,
+   "user": "tolot27",
+   "created_at": "2022-02-04T17:42:42Z",
+   "body": "It looks like checkstyle-for-java supports partial reformatting using [filter-mode](https://github.com/reviewdog/reviewdogreviewdog#filter-mode-support-table). Since it uses [reviewdog](https://github.com/reviewdog), many other languages are supported as well. Here, Kotlin, JSON and XML are of interest.\r\n\r\nSpotless seem to support [gradual formatting](https://github.com/diffplug/spotless/tree/main/plugin-gradle#how-can-i-enforce-formatting-gradually-aka-ratchet) but the setup looks trickier."
+  },
+  {
+   "id": 1030615284,
+   "user": "suside",
+   "created_at": "2022-02-05T12:35:43Z",
+   "body": "I did some testing and checkstyle+reviewdog wins when it comes to checking only changed lines.\r\nSpotless gradual formatting works per file, so even if I change only one line the whole commited file is reformatted :disappointed: \r\nCheckstyle for Java works per added line or diff_context, but the output is distracting given I changed only two lines [example](https://github.com/suside/xDrip/pull/5).\r\n\r\nIMO linter should fail during build while suggestions should be in the log output and not as review comments. Such scenario is possible with CLI run like so `checkstyle -f xml -c /usr/share/checkstyle/google_checks.xml $(git diff --name-only origin/master) | reviewdog -f=checkstyle -diff=\"git diff origin/master\" -fail-on-error`"
+  },
+  {
+   "id": 1031910366,
+   "user": "tolot27",
+   "created_at": "2022-02-07T20:54:04Z",
+   "body": "Thanks for testing this. It looks like sometimes an incorrect line is reported (i. e. https://github.com/suside/xDrip/pull/5#discussion_r800043888). \r\nIs it possible to stripe the package name from the classes (`com.puppycrawl.tools.checkstyle.checks.sizes.LineLengthCheck` -> `LineLengthCheck`)"
+  },
+  {
+   "id": 1032778126,
+   "user": "suside",
+   "created_at": "2022-02-08T16:04:52Z",
+   "body": "> Is it possible to stripe the package name from the classes...\r\n\r\nI don't think it's possible without external tools to format checkstyle output before it is fed to reviewdog."
+  }
+ ]
+}

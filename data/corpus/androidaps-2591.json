@@ -1,0 +1,33 @@
+{
+ "id": 1760375633,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2591,
+ "title": "[Dev-i/j] improvement suggestion",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2591",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-06-16T10:47:21Z",
+ "closed_at": "2023-08-03T11:35:41Z",
+ "comment_count": 3,
+ "body": "During a recent change, a new fallback option was implemented. If a user has changed the preference \"deliver this part of bolus wizard result [%]\", and tries to do a bolus when CGM signal is missing, the Correction % defaults back to 100%. \r\n\r\nIt's a popular option for users with kids or otherwise varying insulin needs, to reduce this preference below 100%, in order to bolus only for some of the likely insulin need, and leave the rest to SMB's to be delivered when/if BG rises after the meal. In kids, physical activity can be unpredictable, and this practice allows for some variance in both insulin need and activity level. For my 11yo, some days are spent on the couch, others in the back yard bouncing a ball around. If there is high activity after meal, it will take longer for BG to rise, maybe as much as an hour. Then SMB's will kick in and catch the rise even if carbs have been autodecayed by the algorithm. Kids are also not the best at noticing details like whether or not they have a CGM signal just before the meal bolus, OR whether the Corr field displays the usual number. So for a situation where kid leaves their phone to go wash hands before a meal, causing just one missed CGM signal, then tries to bolus like usual by entering carbs and pressing OK without looking at any calculation, and then goes to play after the meal, the 100% default bolus may inadvertently cause a low, even though CGM signal comes back soon after the bolus is started. From a parent perspective, this causes more concern than a potential high IF correction was left at our preferred 65% and signal did not come back soon. \r\n\r\nAfter discussion on discord, I think a config/preference option would be good, preferably placed with the option to \"deliver this part of bolus wizard result [%]\". Suggested wording \"reset correction to 100% if no CGM signal\". Or wording could be updated so the first preference refers back to the field name in the wizard, since that uses \"Corr %\" which may be confusing. Like \"Default to this % correction of bolus wizard result\". \r\n\r\nTLDR: suggest two changes: \r\n- update wording of preference \"deliver this part of bolus wizard result [%]\" to \"Default to this % correction of bolus wizard result\"\r\n- add a preference after this one with \"Reset correction to 100% if no CGM signal\", and default to 100% correction only if this is set to true. ",
+ "comments": [
+  {
+   "id": 1595082211,
+   "user": "koelewij",
+   "created_at": "2023-06-16T18:10:25Z",
+   "body": "I strongly believe that placing this “reset to 100% in bolus wizard when there is missing CGM data” under a preference will help a larger audience than just bluntly fix this to 100% without an alternative. "
+  },
+  {
+   "id": 1595411766,
+   "user": "bobhome007",
+   "created_at": "2023-06-16T22:45:18Z",
+   "body": "The recent change to bolus wizard, that prevents changing the bolus %, when no CGM data is available, is removing existing functionality used by some AAPS users. It would be preferable to allow this change to be switched off/on in preferences so all users can benefit in which ever way they use the wizard.  I think this will benefit all users."
+  },
+  {
+   "id": 1663823218,
+   "user": "MilosKozak",
+   "created_at": "2023-08-03T11:35:41Z",
+   "body": "improved in https://github.com/nightscout/AndroidAPS/commit/cb9935d88014b4b022f7bcddc0f216b18d5105d9"
+  }
+ ]
+}

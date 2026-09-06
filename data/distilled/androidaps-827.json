@@ -1,0 +1,21 @@
+{
+ "issue_id": 827,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/827",
+ "title": "2.8.2.9_dev EROS and DASH / Basal settings sent twice to pump",
+ "symptom": "When changing a temporary basal profile (e.g., to 120% or back to 100%), the basal settings are sometimes sent twice to the Omnipod EROS or DASH pump, resulting in duplicate 'Basal profile set in the pump' notifications and duplicate entries in the pump history. This occurs with both manual and automation profile changes, and is not systematic.",
+ "cause": "The issue is related to Nightscout (NS) synchronization. When NSClient is enabled (not paused), the basal profile change is sent twice to the pump. When NSClient is paused, the duplicate send does not occur.",
+ "fix": "The issue was fixed by a commit referenced in the thread: https://github.com/nightscout/AndroidAPS/commit/f48dcc77e23d499ab0c1af8499ce9ce8ed574ba1. No specific user action is given as a workaround.",
+ "settings_changed": [],
+ "devices": [
+  "EROS",
+  "DASH"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "NSClient",
+  "Nightscout"
+ ],
+ "confidence": "high",
+ "evidence_quote": "It is related to NS. In AAPS, I pause NS, I change back and forth a couple of times the profile between 100% and 120%. There are no double sends to the pod. As soon as I unpause NS in AAPS, basal is sent once more to the pod."
+}

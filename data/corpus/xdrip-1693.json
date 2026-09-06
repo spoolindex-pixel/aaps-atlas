@@ -1,0 +1,21 @@
+{
+ "id": 851497441,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1693,
+ "title": "Unable to upload data to mongo Attempt to invoke virtual method 'int.java.lang.Object.hashCode()' on a null object reference",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1693",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-04-06T14:40:48Z",
+ "closed_at": "2021-04-06T14:54:10Z",
+ "comment_count": 1,
+ "body": "### Your environment\r\n- Nightly 38fee03-2021.03.31\r\n- Mongodb v4.4.4 running on debian 10\r\n\r\n### Expected behavior\r\nI expect being able to sync insulin and bg data to mongo. I'd guess there's some erroneous reading that makes the uploader queue fail. \r\n\r\n### Actual behavior\r\n1. Uploader successfully connects and auths\r\n1. Data is not sent.\r\n1. Log shows\r\n    ```\r\n    NightscoutUploader\r\n    Unable to upload data to mongo Attempt to invoke virtual method 'int.java.lang.Object.hashCode()' on a null object reference\r\n    ```\r\n\r\n### Steps to reproduce the behavior:\r\n1. View logs\r\n2. See above error\r\n3. Wait 5 minutes\r\n4. Loop to 1.\r\n\r\n\r\nmongod.log\r\n```\r\n{\"t\":{\"$date\":\"2021-04-06T14:11:23.811+00:00\"},\"s\":\"I\",  \"c\":\"NETWORK\",  \"id\":22943,   \"ctx\":\"listener\",\"msg\":\"Connection accepted\",\"attr\":{\"remote\":\"127.0.0.1:43006\",\"connectionId\":164395,\"connectionCount\":5}}\r\n{\"t\":{\"$date\":\"2021-04-06T14:11:24.270+00:00\"},\"s\":\"I\",  \"c\":\"ACCESS\",   \"id\":20250,   \"ctx\":\"conn164395\",\"msg\":\"Successful authentication\",\"attr\":{\"mechanism\":\"SCRAM-SHA-1\",\"principalName\":\"xdrip\",\"authenticationDatabase\":\"admin\",\"client\":\"127.0.0.1:43006\"}}\r\n{\"t\":{\"$date\":\"2021-04-06T14:16:18.151+00:00\"},\"s\":\"I\",  \"c\":\"NETWORK\",  \"id\":22943,   \"ctx\":\"listener\",\"msg\":\"Connection accepted\",\"attr\":{\"remote\":\"127.0.0.1:43102\",\"connectionId\":164396,\"connectionCount\":6}}\r\n{\"t\":{\"$date\":\"2021-04-06T14:16:18.590+00:00\"},\"s\":\"I\",  \"c\":\"ACCESS\",   \"id\":20250,   \"ctx\":\"conn164396\",\"msg\":\"Successful authentication\",\"attr\":{\"mechanism\":\"SCRAM-SHA-1\",\"principalName\":\"xdrip\",\"authenticationDatabase\":\"admin\",\"client\":\"127.0.0.1:43102\"}}\r\n```\r\n\r\nI downgraded to e14bae1-2020.07.13 with same issue, but couldn't get uploader queue to clear. Same issue.\r\n\r\nThanks in advance\r\n",
+ "comments": [
+  {
+   "id": 814186771,
+   "user": "tolot27",
+   "created_at": "2021-04-06T14:54:10Z",
+   "body": "Upload to mongodb is not supported, anymore (see #1502)."
+  }
+ ]
+}

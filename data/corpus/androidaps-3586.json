@@ -1,0 +1,51 @@
+{
+ "id": 2724516197,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3586,
+ "title": "[3.3 beta1] Change settings orer in SMB section",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3586",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-12-07T10:00:51Z",
+ "closed_at": "2024-12-07T20:27:43Z",
+ "comment_count": 6,
+ "body": "Screenshot attached shows in red the settings visible only when SMB enabled. UAM is not part of them (always visible) and shows in the middle. Settings should be reordered so that all settings related to SMB are next to each other.\r\n![Screenshot_20241207_105744_AAPS](https://github.com/user-attachments/assets/86210bda-b923-4ea4-85e9-dbea9278bb63)\r\n",
+ "comments": [
+  {
+   "id": 2525064051,
+   "user": "olorinmaia",
+   "created_at": "2024-12-07T10:30:03Z",
+   "body": "I personally don't mind the way it is ordered now. But is it better if Enable UAM is to be moved so it is above Minimum carbs required?\r\n\r\nAs far as I know UAM predictions work altho SMB is disabled, that's why it's left out of the dynamic view when smb is disabled/enabled.\r\n\r\nIf no other suggestions I can make a PR to adjust this. "
+  },
+  {
+   "id": 2525070436,
+   "user": "emilisev",
+   "created_at": "2024-12-07T10:54:33Z",
+   "body": "What bugs me is that when you check/uncheck \"SMB enabled\", these settings show/hide. I find it confusing for new users that the settings that show when enabling another are not just below it.\r\nBut there is the issue of \"max minutes of basal for smb + uam\" that only shows when both are activated, so it should go below UAM as well ? Then it gets separated from \"max minutes of basal for smb\", which doesn't make sense...\r\nFor my brain, the best logical order is this one : \r\n![image](https://github.com/user-attachments/assets/d4f8cc16-15cb-43d3-ac92-71cde1f67d9d)\r\n"
+  },
+  {
+   "id": 2525077231,
+   "user": "WesSec",
+   "created_at": "2024-12-07T11:22:17Z",
+   "body": "I agree about the confusing UI behavior with SMB settings. While exploring this further, I noticed a similar UX issue: the \"Use Autosens feature\" disappears when \"Enable dynamic sensitivity\" is toggled. This made me wonder whether Autosens was disabled or just hidden from the UI. (This information can be found in docs, but from UI it's very unclear whats happening)\r\n\r\nThis pattern of settings appearing/disappearing based on other toggles can be disorienting, especially for new users. While your suggested logical order makes sense, we might want to consider broader UI improvements like:\r\n- Using indentation or visual hierarchy to show relationships between settings\r\n- Implementing a submenu structure for related controls\r\n- Don't hide but grey out settings when not applicable.\r\n\r\nThe \"max minutes of basal\" setting is a perfect example of this challenge - it needs to be visually connected to the SMB Enabled setting while maintaining a logical flow. "
+  },
+  {
+   "id": 2525103382,
+   "user": "emilisev",
+   "created_at": "2024-12-07T12:50:23Z",
+   "body": "Agreed. I feel like settings' visibility depending on another setting is new, or at least getting more widely used, in AAPS (same behavior used in the new \"Simple mode\"). I think this is a good way to make more clear which settings are actually used, and simplify usage for new users who don't have much enabled, but also agree that this could be improved visually.\r\nI think the grayed out option + explanation on why this setting is currently disabled / how to make it available provides the most information, but probably doesn't go in the way of simplification..."
+  },
+  {
+   "id": 2525198865,
+   "user": "olorinmaia",
+   "created_at": "2024-12-07T15:05:13Z",
+   "body": "I agree the settings everywhere in AAPS could be improved. I also think it's useful to hide settings that have no effect when certain other settings are enabled, good example is Enable SMB Always (hide settings that are forced on when this is enabled) or Autosens when DynISF is enabled because it simply has no effect.. Question if this is best by hiding or greying out settings I'm not sure what is the best approach. \r\n\r\nI like the idea by grouping up the settings more, so one could see who belongs to eachother. Problem is there are so many settings, and if all are showing all the time that may not be working at all that will be even more confusing for a not experienced user.\r\n\r\nI made a small PR to address main feedback and fix another issue. :) And for sure this could be further improved now that all settings are moved to kotlin."
+  },
+  {
+   "id": 2525301515,
+   "user": "MilosKozak",
+   "created_at": "2024-12-07T20:27:43Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/cf9af90f7a5bf4c54870444d8f18d362f2cf6263"
+  }
+ ]
+}

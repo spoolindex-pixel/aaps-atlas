@@ -1,0 +1,258 @@
+{
+ "id": 327887341,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 460,
+ "title": "Document best way to use xDrip+ with Tizen",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/460",
+ "state": "closed",
+ "labels": [
+  "help",
+  "device-watch"
+ ],
+ "created_at": "2018-05-30T20:29:56Z",
+ "closed_at": "2021-08-07T01:59:28Z",
+ "comment_count": 382,
+ "body": "I don't know anything about this. What is the best way to get xDrip+ data displayed on Tizen watches?\r\n\r\nFeel free to add to this issue with any documentation and I will incorporate it to the `WatchGuide.md` file.",
+ "comments": [
+  {
+   "id": 393446771,
+   "user": "ralf-ms",
+   "created_at": "2018-05-31T08:05:24Z",
+   "body": "There is one solution for tizen watches, which lets you mirror any application widget on your phone to your watch as again a widget or as a watchface.\r\nFor this you have to install the app “Wearable Widgets” on your phone (google play store) and on your watch (samsung gear app store).\r\nThere are 2 versions for the watch: wearable widgets as widgets and wearable widgets as wachtfaces.\r\nWhen you start wearable widgets on your phone you can select the widget you want to mirror to your watch. Choose the xdrip widget.\r\nOn your watch you will find wearable widgets (widget version) under “additional widgets”, select this and you will get the xdrip widget on your tizen watch.\r\nIf you’ve installed the wearable widget watchface you will find this under the watchfaces menu on you watch.\r\nThere are some hiccups with both version though.\r\nIt may happen, that after a lost bluetooth connection the widget or watchface will never get updated again (which is not obvious and sometimes hard to notice) until you delete the widget and set it up again. For the watchface you have first to choose another watchface and then switch back again. In most cases you will have no problems, but it can occur, so keep that in mind.\r\nIt is therefore advisable to add the time to your widget (you do this in xdrip) to see if the bgl displayed on your watch is the actual level and not a value from hours ago (the time of the widget gets updated by the phones widget together with the bgl). If you want to use the watchface mind that the time of the widget may lag behind the actual time a few minutes.\r\n\r\n![watchwidget](https://user-images.githubusercontent.com/35162235/40770121-165e6978-64ba-11e8-9ef9-3373a2c69fe9.jpg)\r\n"
+  },
+  {
+   "id": 407185904,
+   "user": "Tesummerill",
+   "created_at": "2018-07-23T20:13:47Z",
+   "body": "Great watch app when xdrip works. Someone's gotta work out the new bugs on xdrip"
+  },
+  {
+   "id": 412282789,
+   "user": "Houbanny",
+   "created_at": "2018-08-11T15:37:08Z",
+   "body": "Hello I loved my gear S3, but because Samsung no longer supports updates for Wearable Widgets app. I use it no longer. I switched to Android Wear. Too many lost connection problems.... Can somebody with a bit of Tizen programming skills make a good app with connection to the Xdrip+ app on the phone?\r\nI know for sure many gear owners are waiting for that!!!!"
+  },
+  {
+   "id": 429366367,
+   "user": "arty-name",
+   "created_at": "2018-10-12T15:32:18Z",
+   "body": "Here is my current solution to get at least the current glucose level and the trend to my Samsung Gear Sport. \r\n\r\n1) I have installed [WatchMaker](http://www.getwatchmaker.com/) to be able to put stuff on the watch face.\r\n2) xDrip shows the persistent notification with the current glucose level and the trend.\r\n3) I have installed the [AutoNotification](https://play.google.com/store/apps/details?id=com.joaomgcd.autonotification) to get this value from the xDrip notification.\r\n4) I have installed [Tasker](https://play.google.com/store/apps/details?id=net.dinglisch.android.taskerm) and configured it to respond to the event from AutoNotification by a) copying the notification title from the `%antitle` variable to the `%GLUCOSE` variable; and b) sending the latter to the WatchMaker\r\n5) In the WatchMaker I have added an expression `{tglucose}` to my watch face.\r\n\r\nSo when xDrip updates the glucose info in the notification, AutoNotification catches that, grabs the text and gives it to Tasker, who sends it to WatchMaker, who renders it on my watch. \r\n\r\nI don’t like this solution and this should be simpler but I worked with what I have. At least the AutoNotification should not be needed and the xDrip should provide this data in the event to the Tasker. [This is already suggested in #122](https://github.com/NightscoutFoundation/xDrip/issues/122#issuecomment-312128933) but the issue seems to be abandoned. "
+  },
+  {
+   "id": 429775512,
+   "user": "arty-name",
+   "created_at": "2018-10-15T09:37:06Z",
+   "body": "I’ve figured out that actually the AutoNotification is not needed in the setup because Tasker can extract the title of the xDrip notification by itself. It puts it into the `%NTITLE` variable."
+  },
+  {
+   "id": 433092297,
+   "user": "Ecco5",
+   "created_at": "2018-10-25T15:17:34Z",
+   "body": "Can you please  give us a step by step procedure how to setup everything. I installed all the apps, but don't know how to proceed. Thanks in advance."
+  },
+  {
+   "id": 433189661,
+   "user": "arty-name",
+   "created_at": "2018-10-25T20:13:36Z",
+   "body": "Here you go: [xDrip+ values on Tizen](https://imgur.com/a/5WUrTt4)"
+  },
+  {
+   "id": 433343043,
+   "user": "Ecco5",
+   "created_at": "2018-10-26T09:14:34Z",
+   "body": "That's awesome, I'm speechless. Thanks so much.\r\nAlthough I have a problem. The variable %NTITLE displays as 'AppPermissionMonitor:APMapplist' in Watchmaker while %TIME displays ok."
+  },
+  {
+   "id": 433348098,
+   "user": "Ecco5",
+   "created_at": "2018-10-26T09:32:08Z",
+   "body": "I saw that my NFC was switched off. I restarted smartphone and smartwatch and for the moment Gear S3 and Samsung S8+ are displaying the values as should. I will report if problems occur again."
+  },
+  {
+   "id": 433663720,
+   "user": "dave1812",
+   "created_at": "2018-10-27T23:31:01Z",
+   "body": "You don't even need an app to view Xdrip on a Tizen watch IF you use no newer version of xDrip than the 7/15/18 version.  My wife and I both have Gear 2 watches and they work fine if we use the 7/15 version.  Newer versions won't work and the developers haven't seen fit to fix the problem which I've complained about repeatedly, to no avail.   Very frustrating!!"
+  },
+  {
+   "id": 433681864,
+   "user": "Ecco5",
+   "created_at": "2018-10-28T07:07:34Z",
+   "body": "Dave1812, can you point out how you managed to get Xdrip version 7/15 on the Tizen watches. The method of arty-name anyhow is superb."
+  },
+  {
+   "id": 433702896,
+   "user": "dave1812",
+   "created_at": "2018-10-28T12:55:16Z",
+   "body": "No app needed. A uses the Android notifications to present the data on the\nscreen every 5 minutes.\n\nOn Sun, Oct 28, 2018, 12:07 AM Ecco5 <notifications@github.com> wrote:\n\n> Dave1812, can you point out how you managed to get Xdrip version 7/15 on\n> the Tizen watches. The method of arty-name anyhow is superb.\n>\n> —\n> You are receiving this because you commented.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/460#issuecomment-433681864>,\n> or mute the thread\n> <https://github.com/notifications/unsubscribe-auth/AjpQS-g2Q3axDs8CtLSGmvwuQYcC17dNks5upVe5gaJpZM4UT9b5>\n> .\n>\n"
+  },
+  {
+   "id": 433706295,
+   "user": "Ecco5",
+   "created_at": "2018-10-28T13:41:38Z",
+   "body": "On a Gear S3 most notifications are indeed displayed but not all. \r\nNotifications of category 'no category' from Xdrip are only diplayed on the smartphone S8+ but are not forwarded to the Gear S3. The Xdrip glucose results within range get a notification in this category.\r\nMaybe this is different for the Gear S2 or for some nightly build versions of Xdrip.\r\nOn the Samsung S8+ in Settings  'Other - No Category' notification settings looks a bit different than all other categories and have less options than the other categories.\r\nYou can see all this if you click and hold the notification of xdrip on your phone. Than choose details. There you can inspect and change the settings of all the Xdrip notifications.\r\n\r\n"
+  },
+  {
+   "id": 433707722,
+   "user": "dave1812",
+   "created_at": "2018-10-28T13:59:29Z",
+   "body": "Have you tried using the 7/15 version of xDrip?  They broke the\r\nfunctionality shortly afterwards\r\n\r\nOn Sun, Oct 28, 2018, 6:41 AM Ecco5 <notifications@github.com> wrote:\r\n\r\n> On a Gear S3 most notifications are indeed displayed but not all.\r\n> Notifications of category 'no category' from Xdrip are only diplayed on\r\n> the smartphone S8+ but are not forwarded to the Gear S3. The Xdrip glucose\r\n> results within range get a notification in this category.\r\n> Maybe this is different for the Gear S2 or for some nightly build versions\r\n> of Xdrip.\r\n> On the Samsung S8+ in Settings 'Other - No Category' notification settings\r\n> looks a bit different than all other categories and have less options than\r\n> the other categories.\r\n> You can see all this if you click and hold the notification of xdrip on\r\n> your phone. Than choose details. There you can inspect and change the\r\n> settings of all the Xdrip notifications.\r\n>\r\n> —\r\n> You are receiving this because you commented.\r\n> Reply to this email directly, view it on GitHub\r\n> <https://github.com/NightscoutFoundation/xDrip/issues/460#issuecomment-433706295>,\r\n> or mute the thread\r\n> <https://github.com/notifications/unsubscribe-auth/AjpQSzj3TvqTC31utg_C7b77pdJDtB-sks5upbQUgaJpZM4UT9b5>\r\n> .\r\n>\r\n"
+  },
+  {
+   "id": 433753898,
+   "user": "Ecco5",
+   "created_at": "2018-10-28T23:48:02Z",
+   "body": "They probably changed the notification category of the measurements within range, but there was no need to.\r\nOf course with the procedure of arty-name you don't need them. Besides the continuous display of values you still get notifications of values that are out of range and that's alright.\r\nI use MiaoMiao instead of Blucon since recently and version 7/15 probably doesn't have Miao.\r\nHere my watchface. The values below are the accu levels of smartwatch en smartphone, on the right side the time the value was sent by Xdrip.\r\n![20181027_011016](https://user-images.githubusercontent.com/35703723/47623440-e18f6c00-db11-11e8-8da8-e24882221f6f.jpg)\r\n"
+  },
+  {
+   "id": 604526971,
+   "user": "FreDiabetics",
+   "created_at": "2020-03-26T16:21:39Z",
+   "body": "@trupici \r\n\r\nGreetz\r\n\r\nI was trying to get your G-watch running. But it won't connect. I wrote in the release notes of v1.2 that you have added a broadcast listener and I added that to the broadcast Reciever list in xDrip but it won't work.....\r\n\r\nDid everything what's needed but nothing happens. \r\nxDrip is always up on the latest version, like everything else.\r\n![Screenshot_20200326-171616_G-Watch Service](https://user-images.githubusercontent.com/45721291/77670519-9ab3d900-6f86-11ea-93a7-13ca0919c82b.jpg)\r\n![Screenshot_20200326-171636_xDrip+](https://user-images.githubusercontent.com/45721291/77670572-adc6a900-6f86-11ea-8ff7-8830d270d9c1.jpg)\r\n![Screenshot_20200326-171640_xDrip+](https://user-images.githubusercontent.com/45721291/77670621-c20aa600-6f86-11ea-96ba-e270229dcaf4.jpg)\r\n![20200326_172638](https://user-images.githubusercontent.com/45721291/77670806-fd0cd980-6f86-11ea-9740-94143fc2a15c.jpg)\r\n\r\n\r\n\r\n\r\n\r\n"
+  },
+  {
+   "id": 604586233,
+   "user": "trupici",
+   "created_at": "2020-03-26T18:02:08Z",
+   "body": "@wagnefrede the watch is connected :) \r\nThe problem is no data is received from xDrip. But your xDrip config looks good. \r\n\r\nI just tried it with the xDrip build from yesterdy. It works here. \r\nPlease, could you try to restart xDrip app?  \r\n"
+  },
+  {
+   "id": 607782297,
+   "user": "viskose",
+   "created_at": "2020-04-02T11:14:44Z",
+   "body": "@wagnefrede, ich habe genau das gleiche Problem.\r\nHast du eine Lösung gefunden?"
+  },
+  {
+   "id": 608293574,
+   "user": "FreDiabetics",
+   "created_at": "2020-04-03T08:08:36Z",
+   "body": "@viskose \r\n\r\nNee ist immer noch dasselbe Problem. Naja bleib ich halt bei meinen Watchfaces 😂"
+  },
+  {
+   "id": 608312119,
+   "user": "viskose",
+   "created_at": "2020-04-03T08:43:47Z",
+   "body": "Ich hab's jetzt zum laufen bekommen. Hatte den Fehler gemacht, dass ich bei dem Eintrag in Indentifiziere Empfänger, den neuen Eintrag \"SK.trupci.g_watch\" mit Return anstatt mit Leerzeichen abgetrennt habe.\r\nVielleicht hast du das gleiche Problem.\r\n--\r\nGesendet über Outlook Email App für Android Freitag, 03 April 2020, 10:08vorm. +02:00 von Frederik Wagner  notifications@github.com :\r\n\r\n>@viskose\r\n>Nee ist immer noch dasselbe Problem. Naja bleib ich halt bei meinen Watchfaces 😂\r\n>—\r\n>You are receiving this because you were mentioned.\r\n>Reply to this email directly,  view it on GitHub , or  unsubscribe ."
+  },
+  {
+   "id": 608523354,
+   "user": "FreDiabetics",
+   "created_at": "2020-04-03T16:01:10Z",
+   "body": "@viskose \r\n\r\nHammer das war's. Ich glaub's ja nicht 😂😂\r\n\r\n@trupici \r\n\r\nIt's wooooorking 😉👍🏻 as Viskose mentioned above we both done a major issue 😂 \r\nWe used the return button instead of the space button when we add sk.trupici.g_watch to the local broadcast reciever in xDrip.\r\n\r\nBy the way I recently updated to Android 10 maybe 3 hours ago and everything is working really stable ;) \r\n\r\nThumbs up buddy come on coding 😉👍🏻\r\n\r\nStay healthy - Bleibt Gesund \r\n\r\n![Screenshot_20200403-175948_G-Watch Service](https://user-images.githubusercontent.com/45721291/78381003-0294a000-75d5-11ea-8b6d-6cfd6a0d699c.jpg)\r\n![20200403_182734](https://user-images.githubusercontent.com/45721291/78383561-e85cc100-75d8-11ea-9704-06d6a9fed54f.jpg)\r\n\r\n"
+  },
+  {
+   "id": 608542558,
+   "user": "trupici",
+   "created_at": "2020-04-03T16:39:50Z",
+   "body": "Thanks for the info guys. I've spent a lot of time looking for the bug in my code :)\r\n\r\nThe end of month will bring more :) "
+  },
+  {
+   "id": 619358536,
+   "user": "systemcure",
+   "created_at": "2020-04-25T10:38:37Z",
+   "body": "I still can't connect my AndroidAPS 2.6.1 to the G-Watchface. Any suggestions where I should look, or is this also on your buglist? Xdrip connection is working great over BT."
+  },
+  {
+   "id": 619362113,
+   "user": "trupici",
+   "created_at": "2020-04-25T11:06:21Z",
+   "body": "@systemcure this feature will be available in AAPS 2.7 or now on daggers development branch. It is mentioned in user guide, main G-Watch mobile screen and also in release notes. \r\nIt does not depends on me now, it was just released sooner than AAPS 2.7."
+  },
+  {
+   "id": 619372358,
+   "user": "systemcure",
+   "created_at": "2020-04-25T12:30:03Z",
+   "body": "> \r\n> \r\n> @systemcure this feature will be available in AAPS 2.7 or now on daggers development branch. It is mentioned in user guide, main G-Watch mobile screen and also in release notes.\r\n> It does not depends on me now, it was just released sooner than AAPS 2.7.\r\n\r\nThx for quick reply. Fantastic Job for Samsung Smartwatches! I was already testing alternatives but now I can skip that and have my Gear S3 show me my current BG data without nasty lagging (I had used my Nightscout Website with Gear Browser before.). "
+  },
+  {
+   "id": 619406555,
+   "user": "fivepointfiveish",
+   "created_at": "2020-04-25T16:38:14Z",
+   "body": "Hi @trupici, I have a question about the always on display. The brightness is very low, so much that outside I can't see it if's sunny. I think it wasn't like that before but I couldn't run for some time so I'm not sure. I read it's a Samsung limitation to protect screen and battery, do you know anything about it? Is it possible to make it brighter? Not a big problem, just a pity"
+  },
+  {
+   "id": 619409025,
+   "user": "trupici",
+   "created_at": "2020-04-25T16:52:56Z",
+   "body": "@fivepointfiveish I doubt the brightness is not under my control. Especially in AOD mode.\r\nI haven't read anything about this limitation. But, today I had a similar problem - my Galaxy Watch was not readable on the direct sun (not AOD) for a while. But when I moved away from direct sun and back the brightness was ok again. May be it was not related to your problem, but I'll try to focus on it and if I find something I'll let you know...\r\n"
+  },
+  {
+   "id": 624699988,
+   "user": "trupici",
+   "created_at": "2020-05-06T14:57:50Z",
+   "body": "Hi guys, I think I need your help. \r\nFor 3 weeks I am not able to publish new version, Galaxy Store is rejecting watch face with error I cannot test on my HW. I need someone with Active 2 watch. And with some skills how to download logs from device (best with Tizen Studio). May be the issue is already present in 1.2 version. \r\nActive 2 watch is not available on samsung test bench yet and I cannot reproduce it on emulators. \r\nThanks."
+  },
+  {
+   "id": 629276757,
+   "user": "eurenda",
+   "created_at": "2020-05-15T14:48:40Z",
+   "body": "> Hi guys, I think I need your help.\r\n> For 3 weeks I am not able to publish new version, Galaxy Store is rejecting watch face with error I cannot test on my HW. I need someone with Active 2 watch. And with some skills how to download logs from device (best with Tizen Studio). May be the issue is already present in 1.2 version.\r\n> Active 2 watch is not available on samsung test bench yet and I cannot reproduce it on emulators.\r\n> Thanks.\r\n\r\nApologies @trupici I just noticed this, I just received my Active 2 watch and I'm running your 1.2 version.  Send me a message and I'll do with I can (I already have Tizen Studio)."
+  },
+  {
+   "id": 629377823,
+   "user": "eurenda",
+   "created_at": "2020-05-15T17:13:49Z",
+   "body": "> > Apologies @trupici I just noticed this, I just received my Active 2 watch and I'm running your 1.2 version. Send me a message and I'll do with I can (I already have Tizen Studio).\r\n> > @eurenda I don't see your email, could you please ping on [trupici.sk@gmail.com](mailto:trupici.sk@gmail.com)? Thanks\r\n\r\nJust sent it to you @trupici "
+  },
+  {
+   "id": 631056525,
+   "user": "trupici",
+   "created_at": "2020-05-19T20:12:53Z",
+   "body": "Hi guys! GWatch App 1.3 is out!\r\n\r\nMany thanks to @Lunzi and @eurenda for their help!\r\n\r\nThe most important changes:\r\n1. graph is larger and got dynamic range\r\n2. two sensor areas were added to watch face, you can choose from HRM, pedometer or secondary battery indicator.\r\n\r\n![desc_graph_1](https://user-images.githubusercontent.com/58828838/82373165-740d9e00-9a1d-11ea-8dea-75da30f1edb2.png)\r\n![desc_graph_2](https://user-images.githubusercontent.com/58828838/82373290-aae3b400-9a1d-11ea-8880-907639e456fc.png)\r\n![desc_sensors_1](https://user-images.githubusercontent.com/58828838/82413151-29b80b80-9a75-11ea-9f4b-e4cac8dd1f84.png)\r\n\r\nRead the user guide for more details:  https://drive.google.com/file/d/19qrvRgDRD0m4bvzLd072iVmgO7Oj3UlS/view\r\n\r\nenjoy it :)"
+  },
+  {
+   "id": 648101557,
+   "user": "trupici",
+   "created_at": "2020-06-23T12:03:26Z",
+   "body": "Hi guys, new version 1.4 is out. See https://facebook.com/gwatchapp for details.\r\nThe main topic of this release: Watch vibration bg alarms \r\nenjoy it :)"
+  },
+  {
+   "id": 663765908,
+   "user": "R3AL1ST1C1",
+   "created_at": "2020-07-24T22:59:06Z",
+   "body": "How can I get the different watch faces off of watchmaker to read blood glucose readings through xdrip, Tasker, AutoNotificatins etc... I'm trying to get other watch faces other than just G watch"
+  },
+  {
+   "id": 702385382,
+   "user": "gapolv",
+   "created_at": "2020-10-01T20:40:52Z",
+   "body": "> > Hi guys, I think I need your help.\r\n> > For 3 weeks I am not able to publish new version, Galaxy Store is rejecting watch face with error I cannot test on my HW. I need someone with Active 2 watch. And with some skills how to download logs from device (best with Tizen Studio). May be the issue is already present in 1.2 version.\r\n> > Active 2 watch is not available on samsung test bench yet and I cannot reproduce it on emulators.\r\n> > Thanks.\r\n> \r\n> Apologies @trupici I just noticed this, I just received my Active 2 watch and I'm running your 1.2 version. Send me a message and I'll do with I can (I already have Tizen Studio).\r\n\r\nHello. Please, were you able to have xDrip working with Samsung Active 2? Thank you. "
+  },
+  {
+   "id": 702397164,
+   "user": "tolot27",
+   "created_at": "2020-10-01T21:05:00Z",
+   "body": "@gapolv Did you try the [G-Watch App](https://facebook.com/gwatchapp)?"
+  },
+  {
+   "id": 702400232,
+   "user": "gapolv",
+   "created_at": "2020-10-01T21:11:29Z",
+   "body": "> @gapolv Did you try the [G-Watch App](https://facebook.com/gwatchapp)?\r\n\r\nHello, thanks for your reply. Not yet, I'm still evaluating which smartwatch to buy. I was thinking on TicWatch Pro 2020 or Samsung Active 2, seems like the Samsung is better, but I would like to assure it will work with xDrip+Libre. As far as I could understand, this app will do the trick. If you have other ideas or comments, please let me know, thanks!"
+  },
+  {
+   "id": 740730655,
+   "user": "pulsar1230",
+   "created_at": "2020-12-08T16:20:00Z",
+   "body": "hi all  first post. i would like to get my blood sugars on a smartwatch cellular and not have to carry a phone around as well i was thinking of a ticwatch pro 3 from what i have read that will work but would prefer the samsung active 2 lte which is run on tizen would that work after it has been setup with a phone and the phone turned off, does anyone really know? how to do this thanks "
+  },
+  {
+   "id": 740765651,
+   "user": "gapolv",
+   "created_at": "2020-12-08T17:03:54Z",
+   "body": "> hi all first post. i would like to get my blood sugars on a smartwatch cellular and not have to carry a phone around as well i was thinking of a ticwatch pro 3 from what i have read that will work but would prefer the samsung active 2 lte which is run on tizen would that work after it has been setup with a phone and the phone turned off, does anyone really know? how to do this thanks\r\n\r\nIt won't work wihtout a phone nearby."
+  },
+  {
+   "id": 740809773,
+   "user": "pulsar1230",
+   "created_at": "2020-12-08T18:09:13Z",
+   "body": "strange i had it working on an apple watch with spike set up on iphone 8 and macbook air, but apple stopped it and i had to pay apple £100 a year for a certificate to allow it to work it was beyond me so i got a friend programer to do it,he took over my macbook air remotely and did it and i was able to turn off my iphone 8 ,and got my readings on the apple watch ,the certificate has expired now and don't really feel like giving apple £100 for what, every year plus i hate pestering him to redo it he said it took him some time. "
+  },
+  {
+   "id": 894589285,
+   "user": "Navid200",
+   "created_at": "2021-08-07T01:59:28Z",
+   "body": "@jamorham I hope you don't mind me closing this.\r\nIt can still serve its purpose as the means to communicate with users and ask for documentation even when closed."
+  }
+ ]
+}

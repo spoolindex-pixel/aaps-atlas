@@ -1,0 +1,75 @@
+{
+ "id": 774792822,
+ "repo": "nightscout/AndroidAPS",
+ "number": 143,
+ "title": "[2.7] All delta get set to 0 after 30s (Dexcom patched app and xDrip)",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/143",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2020-12-25T22:38:22Z",
+ "closed_at": "2021-01-03T16:38:55Z",
+ "comment_count": 10,
+ "body": "When using xDrip as source (with G6) the delta in homescreen is (almost always) 0 for all three deltas.\r\n~~When using the patched dexcom app as source this problem does not occur.~~\r\n\r\nOpenAPS sees the real delta. Screenthots and partial log (for the affected tme +/- 5min) attached as zip.\r\nDexcom patched app shows the same behaviour (see data2.zip). Sometimes a delta is show, most of the time its 0 on the homescreen.\r\n\r\nAndroidAPS 2.7.0 Build bc43a926f-2020.09.25-20:46, Flavor: fullrelease, Nightscout version: 14.0.7\r\n\r\n[data.zip](https://github.com/nightscout/AndroidAPS/files/5742468/data.zip)\r\n[data2.zip](https://github.com/nightscout/AndroidAPS/files/5742472/data2.zip)",
+ "comments": [
+  {
+   "id": 751337917,
+   "user": "guydavies",
+   "created_at": "2020-12-26T09:21:14Z",
+   "body": "It sounds like you're getting the value from Xdrip, which is sent to AAPS\nand to NS. Then you're getting the same value back from NS. Turn off all\nreading from NS (NS uploads only). That should fix the problem.\n\nOn Fri, 25 Dec 2020, 23:38 nshtg, <notifications@github.com> wrote:\n\n> When using xDrip as source (with G6) the delta in homescreen is (almost\n> always) 0 for all three deltas.\n> When using the patched dexcom app as source this problem does not occur.\n>\n> OpenAPS sees the real delta. Screenthots and partial log (for the affected\n> tme +/- 5min) attached as zip.\n>\n> data.zip <https://github.com/nightscout/AndroidAPS/files/5742468/data.zip>\n>\n> —\n> You are receiving this because you are subscribed to this thread.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/nightscout/AndroidAPS/issues/143>, or unsubscribe\n> <https://github.com/notifications/unsubscribe-auth/AAS7B3THOGLKS35JEGPI2NDSWUH6VANCNFSM4VJNJ5IA>\n> .\n>\n"
+  },
+  {
+   "id": 751352998,
+   "user": "nshtg",
+   "created_at": "2020-12-26T12:51:19Z",
+   "body": "@guydavies \r\nDid not fix the bug. Right after the reading comes in the homescreen shows the correct delta. Roughly after 10-15s it suddenly switches all deltas to 0. If I go to the OAPS tab **after** the delta on the homescreen shows 0 and \"RUN NOW\", OAPS will see all deltas as 0 aswell.\r\n\r\nRight now using the patched dexcom app => AAPS => xDrip broadcast => xDrip uploads to NS"
+  },
+  {
+   "id": 751354984,
+   "user": "nshtg",
+   "created_at": "2020-12-26T13:18:32Z",
+   "body": "The bug is still existing in the dev branch (build from 3c32583d8c21b5726000a0a454c04b3c0a31c36d)."
+  },
+  {
+   "id": 751355377,
+   "user": "nshtg",
+   "created_at": "2020-12-26T13:24:18Z",
+   "body": "I made a recording to show what happens. BG gets updated at 00:13/00:14.\r\n\r\nDeltas get set to 0 at 00:43/00:44 (exactly 30s later).\r\n\r\nhttps://user-images.githubusercontent.com/5219415/103152211-ff0a0000-4785-11eb-878e-8ac0cfa4ce12.mp4\r\n\r\nLog:\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/5743115/AndroidAPS.log)\r\n"
+  },
+  {
+   "id": 751358793,
+   "user": "guydavies",
+   "created_at": "2020-12-26T14:07:01Z",
+   "body": "AAPS is likely uploading what it gets from Dexcom patched app as well as\nXdrip doing it. Stop Xdrip from uploading. It should only be there to\nperform the alarms and presentation of data if you're using the Dexcom\npatched app.\n\n\nOn Sat, 26 Dec 2020, 13:51 nshtg, <notifications@github.com> wrote:\n\n> @guydavies <https://github.com/guydavies>\n> Did not fix the bug. Right after the reading comes in the homescreen shows\n> the correct delta. But when I switch to a different app and come back its\n> all on 0 again.\n> Right now using the patched dexcom app => AAPS => xDrip broadcast => xDrip\n> uploads to NS\n>\n> —\n> You are receiving this because you were mentioned.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/nightscout/AndroidAPS/issues/143#issuecomment-751352998>,\n> or unsubscribe\n> <https://github.com/notifications/unsubscribe-auth/AAS7B3UDQE5AR3HYIDMP2F3SWXL5FANCNFSM4VJNJ5IA>\n> .\n>\n"
+  },
+  {
+   "id": 751370472,
+   "user": "nshtg",
+   "created_at": "2020-12-26T16:13:14Z",
+   "body": "Disabling all inter-app communication + upload settings in xdrip and then **re-enabling BG upload in AAPS** did the trick.\r\nI still think this qualifies as a bug, workaround or not!"
+  },
+  {
+   "id": 751371345,
+   "user": "guydavies",
+   "created_at": "2020-12-26T16:23:09Z",
+   "body": "I disagree. It works exactly as described in the documentation. Xdrip and\nthe patched Dexcom app are mostly redundant with each other. You're using\ntwo apps to upload to NS and so as soon as the second uploads, it's a 0\ndifference from the first. Just stop Xdrip from uploading anything. If you\ndon't use it specifically for alarms or its presentation then you don't\nneed Xdrip at all.\n\nOn Sat, 26 Dec 2020, 17:13 nshtg, <notifications@github.com> wrote:\n\n> Disabling all inter-app communication + upload settings in xdrip and then *re-enabling\n> BG upload in AAPS* did the trick.\n> I still think this qualifies as a bug, workaround or not!\n>\n> —\n> You are receiving this because you were mentioned.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/nightscout/AndroidAPS/issues/143#issuecomment-751370472>,\n> or unsubscribe\n> <https://github.com/notifications/unsubscribe-auth/AAS7B3TH5XAFPGEXITY6CTTSWYDSNANCNFSM4VJNJ5IA>\n> .\n>\n"
+  },
+  {
+   "id": 751380760,
+   "user": "nshtg",
+   "created_at": "2020-12-26T18:02:49Z",
+   "body": "You could argue like that for the direct delta. But what about the 15m and 45m delta? Those should not be set to 0 in any case."
+  },
+  {
+   "id": 751387443,
+   "user": "guydavies",
+   "created_at": "2020-12-26T19:18:56Z",
+   "body": "I agree. If that happens it's a bug (or at least poor input checking) but\nthe incorrect duplicate input data would likely make the results wrong\nanyway. If you send twice the data in the same time period, it'll skew the\nresults. I've never had an issue since I fixed the duplicate inputs when I\ndid the same as you. Fix the inputs and the outputs will be valid. If you\nkeep the inputs invalid then the output will be garbage irrespective of\nwhether or not it looks reasonable.\n\nOn Sat, 26 Dec 2020, 19:03 nshtg, <notifications@github.com> wrote:\n\n> You could argue like that for the direct delta. But what about the 15m and\n> 45m delta? Those should not be set to 0 in any case.\n>\n> —\n> You are receiving this because you were mentioned.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/nightscout/AndroidAPS/issues/143#issuecomment-751380760>,\n> or unsubscribe\n> <https://github.com/notifications/unsubscribe-auth/AAS7B3TQXKOJ2SO2PB7GDNDSWYQNJANCNFSM4VJNJ5IA>\n> .\n>\n"
+  },
+  {
+   "id": 753643382,
+   "user": "MilosKozak",
+   "created_at": "2021-01-03T16:38:55Z",
+   "body": "you setup DEX -> AAPS -> XDRIP - > NS -> APPS\r\nso the system do exactly what you did setup. in the middle of chain data is changed by xdrip thus it's not deduplicated on AAPS side => deltas on 2 the same values are zero\r\nit's not a bug on AAPS side, you did wrong setup outside (and/or inside) AAPS"
+  }
+ ]
+}

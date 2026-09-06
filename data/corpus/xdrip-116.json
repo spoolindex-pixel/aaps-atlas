@@ -1,0 +1,153 @@
+{
+ "id": 227008152,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 116,
+ "title": "Regular database backups to Google Drive",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/116",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2017-05-08T10:48:55Z",
+ "closed_at": "2020-06-11T22:27:14Z",
+ "comment_count": 27,
+ "body": "",
+ "comments": [
+  {
+   "id": 308168367,
+   "user": "kskandispersonal",
+   "created_at": "2017-06-13T16:11:37Z",
+   "body": "I'd like to see this feature as well."
+  },
+  {
+   "id": 308582813,
+   "user": "roycesimpson",
+   "created_at": "2017-06-14T23:06:01Z",
+   "body": "+1"
+  },
+  {
+   "id": 310040055,
+   "user": "TecMunky",
+   "created_at": "2017-06-21T10:41:37Z",
+   "body": "I have my build saving the database when the daily intent runs, which ends up saving every 17 to 24 hours. I then have DropSync auto-syncing that folder to DropBox, which then is auto-synced to my PC. \r\n\r\nIt would not be much harder to auto sync to Google Drive.  The syncing is not done by xDrip+, but I think this is a better solution.\r\n\r\nShould I push this code for everyone to use?\r\nI would have to add an option switch first, but that shouldn't take too long."
+  },
+  {
+   "id": 310040460,
+   "user": "TecMunky",
+   "created_at": "2017-06-21T10:43:30Z",
+   "body": "Also, my saved databases remain unless they are deleted manually. I get around this by moving them to another folder on my PC. Auto Sync takes care of deleting them on the phone."
+  },
+  {
+   "id": 310046615,
+   "user": "kskandispersonal",
+   "created_at": "2017-06-21T11:13:44Z",
+   "body": "+1"
+  },
+  {
+   "id": 310054544,
+   "user": "kskandispersonal",
+   "created_at": "2017-06-21T11:50:35Z",
+   "body": "Also, would like Google Drive instead of DropBox:)"
+  },
+  {
+   "id": 310069143,
+   "user": "TecMunky",
+   "created_at": "2017-06-21T12:54:03Z",
+   "body": "I used DropBox as an example.  There are many cloud sync apps available for Android.  DriveSync works for Google Drive.  FolderSync works for multiple cloud platforms - so this is probably the one I would advise users to install.  I don't think adding a cloud syncing option to the app is appropriate, as that would lock users into the chosen cloud service.  Adding the option to save databases, and requiring users to then do their own syncing is the best choice, in my opinion.\r\n\r\nIf this is acceptable, I will proceed to push the code.  To proceed with this, I will need a little help myself.  I have everything working (except it is not yet optional).  When I am ready, I need to understand how to push this change without including other changes I have made to my code.\r\n\r\nKimberlie - you have done this, so maybe you could give me some pointers.\r\n\r\nthanks\r\nJim (TecMunky)\r\n"
+  },
+  {
+   "id": 310085172,
+   "user": "kskandispersonal",
+   "created_at": "2017-06-21T13:52:34Z",
+   "body": "Just let me know when you want some help.  I try to sync my code with the master branch (git pull master) before I make any new changes so that my local code is identical to master. Then once I am finished coding and testing, I check my code (or specific files if you do not want to check everything in as in your case) into my branch on GitHub and subsequently request a PR.  I can help you with the individual commands when you are ready.  Just PM me.  \r\n\r\nBasically it is just adding your files, committing them, then push.  For example,\r\n\r\ngit add  <changed file, such as app/src/main/res/xml/xdrip_plus_prefs.xml>\r\ngit commit -m \"Description of change\"\r\ngit push origin <your git hub tree, such as, kskandis-update1>\r\n\r\nThen request a PR on GitHub for these changes in your branch.\r\n"
+  },
+  {
+   "id": 310102270,
+   "user": "TecMunky",
+   "created_at": "2017-06-21T14:47:09Z",
+   "body": "so basically, i could create a branch off of master, clone that branch to my pc, sync all the relevant changes from my build to the cloned branch, sync those changes with my branch on github, then create a pull request from there - would that work?\r\n"
+  },
+  {
+   "id": 310122400,
+   "user": "TebbeUbben",
+   "created_at": "2017-06-21T15:49:53Z",
+   "body": "Oops...\r\n\r\nI'll try to implement this today if I can get it working."
+  },
+  {
+   "id": 310194055,
+   "user": "TecMunky",
+   "created_at": "2017-06-21T20:22:41Z",
+   "body": "I already have mine working - just waiting to see if the Daily Intent saves the database correctly.  I have the preference set in settings so the user can decide whether to save databases on Daily Intent.  \r\n\r\nMy method still requires an external folder syncing app to sync to the cloud.  FolderSync syncs to many different cloud services - I have it set to save to Amazon Drive, Google Drive, and Dropbox - I am using all three just for testing.\r\n\r\nAgain, I don't think embedding the cloud for syncing into xDrip is appropriate.  The user should be able to decide where to sync, which is why I think the external sync app is required.\r\n\r\nDo you think you have a better solution?\r\nPlease describe it if you do?\r\n\r\nMy implementation modifies the following files:\r\nDatabaseUtil.java\r\nDailyIntentService.java\r\nprefs_advanced_settings.xml\r\nstrings.xml\r\n\r\nDo you want me to send you the changes to test?\r\n"
+  },
+  {
+   "id": 310194515,
+   "user": "TecMunky",
+   "created_at": "2017-06-21T20:24:30Z",
+   "body": "I had previously had it working - just added the switch option, which is what I am testing now."
+  },
+  {
+   "id": 310195601,
+   "user": "TebbeUbben",
+   "created_at": "2017-06-21T20:28:47Z",
+   "body": "I think it would be better to not depend on third party apps. And everybody who has xDrip installed has an Google account with drive, so there is no need to support other online storage services."
+  },
+  {
+   "id": 310208303,
+   "user": "TecMunky",
+   "created_at": "2017-06-21T21:18:53Z",
+   "body": "In my opinion, forcing everyone to use a specific cloud service is not appropriate.\r\nAlso, I think you are assuming a bit when you say \"everybody ... has a google account with drive ... \"\r\n\r\nHowever, if you want to see my changes, and possibly integrate google drive saving into that, I could do that.\r\n\r\nWe seem to have conflicting opinions - who is responsible for resolving this?\r\n"
+  },
+  {
+   "id": 310210031,
+   "user": "TecMunky",
+   "created_at": "2017-06-21T21:26:16Z",
+   "body": "Oh, and using my method means support does not need to be built in to xDrip for online cloud services, the third party app method is independent of xDrip."
+  },
+  {
+   "id": 310878973,
+   "user": "TecMunky",
+   "created_at": "2017-06-25T03:02:59Z",
+   "body": "Pull Request #135 covers the Saving Database portion of this issue, if anyone wants to review the code changes and comments."
+  },
+  {
+   "id": 311840402,
+   "user": "gregtcm",
+   "created_at": "2017-06-29T01:55:04Z",
+   "body": "@TecMunky I think this is a great idea!  Thanks for working on this.  I think both of your ideas are great.  For many folks, I can see a more automated, built-in approach much more usable and user friendly.  Then there are others like us (I use DropSync) that would enjoy more control and options.  I'm not sure what UI you've developed for this, but I don't see why there couldn't be two options (e.g. checkboxes) one for the more automated Google Drive approach and yours.  I know I would us both!! :)"
+  },
+  {
+   "id": 361083108,
+   "user": "akacase",
+   "created_at": "2018-01-28T18:12:59Z",
+   "body": "any updates on this? I see no commits tied to this particular issue. "
+  },
+  {
+   "id": 362145683,
+   "user": "TecMunky",
+   "created_at": "2018-02-01T03:15:40Z",
+   "body": "Which particular issue?\r\nThe Daily Intent Database Save feature was implemented quite a while back.\r\nYou can install dropsync or foldersync to send the database files to any online storage you want.\r\n"
+  },
+  {
+   "id": 362148099,
+   "user": "amargherio",
+   "created_at": "2018-02-01T03:32:46Z",
+   "body": "*EDIT:* TecMunky beat me to the update.\r\n\r\nAfter looking up #135 it looks like it was merged in to master on June 27th. This issue just needs to be marked as closed if there's no further action needed."
+  },
+  {
+   "id": 568088122,
+   "user": "Navid200",
+   "created_at": "2019-12-20T21:07:35Z",
+   "body": "Has this (regular backup) been implemented?\r\nIf yes, how can I set it up?  Looking under the 3 dot menu or settings, I cannot find anything.  Where exactly is it?\r\n\r\nAll I need is to have a regular backup so that if I lose my phone, I won't lose the entire history.\r\nIdeally, I will be able to decide the frequency of the backup."
+  },
+  {
+   "id": 642849130,
+   "user": "UberQueiroz",
+   "created_at": "2020-06-11T18:13:47Z",
+   "body": "I also want to know... Please, anybody knows if this feature has been implemented?"
+  },
+  {
+   "id": 642940267,
+   "user": "TecMunky",
+   "created_at": "2020-06-11T21:37:48Z",
+   "body": "This feature has been implemented.  when enabled, the backup occurs just before the \"daily\" purge of the database.  In this manner, by merging backups, all data is saved.  The exact time is indeterminate, because it depends on when the database gets purged.\r\n\r\nTo enable, left hamburger -> Settings, Less Common Settings, Save Database Daily.\r\n\r\nI don't remember, but you may need to enable engineering mode first.\r\n\r\nThe database is stored locally, in the xDrip folder.  (in my local build, it is also stored in a folder structure xDrip/db/yyyy/mm/dd.  I don't remember the exact folder structure in the official build, but it is somewhere under xDrip folder.  \r\n\r\nTo save to the cloud, you need to use a cloud sync app.  FolderSync is my choice for this."
+  }
+ ]
+}

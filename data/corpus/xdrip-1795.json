@@ -1,0 +1,149 @@
+{
+ "id": 957691278,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1795,
+ "title": "Request for fingerstick data entry",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1795",
+ "state": "closed",
+ "labels": [
+  "type-discussion"
+ ],
+ "created_at": "2021-08-02T03:00:52Z",
+ "closed_at": "2022-01-06T17:21:54Z",
+ "comment_count": 22,
+ "body": "FEATURE REQUEST FOR FINGERSTICK DATA ENTRY:\r\n\r\nBackground: Xdrip has fingerstick data entry in the treatment input. This is useful for calibrating CGMs, but it has a more important use. Occasionally xdrip users cannot use a CGM due to warm-up, dead batteries, etc. Entering fingerstick data can maintain diabetic control (old school) until a CGM is brought back online. Bg prediction, IOB, and carb recommendations are available for 24 hours. However, subsequently all telemetry ceases to display.\r\n\r\nMy feature request proposes that xdrip developers use fingerstick data for additional applications.\r\n\r\n1. Continue xdrip telemetry past 24 hours for fingerstick data input to:\r\nA. Allow insulin treatment input and display, both as telemetry data and the green insulin dosage curve.\r\nB. Allow carb treatment and IOB to continue forecasting trends based on the fingerstick data point and predictive settings (purple curve).\r\n\r\n2. Curvefit fingerstick connected data points versus time:\r\nA. Curve fit a polynomial to the fingerstick data up to 6th order, but let the user decide how many orders to fit.\r\nB. Use this curve fitted fingerstick data to estimate trends and other telemetry, such as statistics and HgbA1c.\r\n\r\nSuccessful implementation of this feature would probably be the single most important advancement for Xdrip users who find themselves occasionally offline from a CGM or cannot afford a CGM. The data would not be as smooth as that of a CGM, but implementing available fingerstick data would be extremely beneficial to users.\r\n<img width=\"350\" src=\"https://user-images.githubusercontent.com/88299819/127798820-98b0e0d7-d04e-4d8d-bf39-9b416401ce58.jpg\" /> <img width=\"350\" src=\"https://user-images.githubusercontent.com/88299819/127798825-ea16f1f4-6a98-4b59-b265-4b06e59d92ea.jpg\" />\r\n<img width=\"350\" src=\"https://user-images.githubusercontent.com/88299819/127798826-2459af90-1635-4564-b9d8-ba827212e676.jpg\" />\r\n![Screenshot_20210730-135928](https://user-images.githubusercontent.com/88299819/127798827-2351601f-98a3-4706-87fe-6764b92d59b0.jpg)\r\n<img width=\"350\" src=\"https://user-images.githubusercontent.com/88299819/127798831-54804c86-c2da-43c3-8a76-b9291bd8cb3e.jpg\"/>\r\n![Screenshot_20210730-172855](https://user-images.githubusercontent.com/88299819/127798833-9db38dd7-10b3-4b9f-b608-38a60af350a4.jpg)\r\n",
+ "comments": [
+  {
+   "id": 892736857,
+   "user": "Navid200",
+   "created_at": "2021-08-04T15:06:32Z",
+   "body": "**Sample Rate**\r\n\r\nThis all falls under the category of xDrip+ Predictive Simulation.\r\nThe accuracy of a simulator depends on the sample rate.\r\nWe need to first come up with a minimum acceptable sample rate.  If we have a value and have agreement, amongst the developers, that that rate or higher provides adequate accuracy, we can allow the user to enter blood glucose readings and have the simulator active as long as the sample rate is higher than that limit.  But, as soon as the sample rate drops below that limit, the simulator will be disabled.\r\n\r\nIf the request is to enable the simulator, with no requirements, and leave it to the user to worry about accuracy, I assure you the request will never pass.  We have to worry about how someone may incorrectly use xDrip and hurt themselves.  \r\n\r\nI doubt we can have adequate accuracy with only two readings (blood glucose measurements) a day.\r\nDo you think anyone would be willing to perform one blood glucose reading every half hour in order to have the simulator kept active?  Please don't get me wrong.  I am not suggesting that one reading every half hour is enough.  \r\n\r\nThe devil is in the detail.\r\nIf we figure out what an acceptable limit is, and go ahead and implement the required changes, and convince the developers to merge it, which is going to take a while, and then, no one uses it because the required number of blood glucose readings a day is not convenient or practical (too high), what's the point?\r\n\r\nxDrip is not a medical app.  Officially, it's not supposed to be used for making dosage decisions.  The user has to agree to that before they can use xDrip.\r\nBut, we still feel responsible for how xDrip may be used incorrectly and resulting in someone harming themselves or someone they love."
+  },
+  {
+   "id": 911754798,
+   "user": "Navid200",
+   "created_at": "2021-09-02T14:35:32Z",
+   "body": "**Delay**\r\n\r\nThere is another possible complication.\r\nA CGM shows interstitial fluid glucose, not blood glucose.\r\nThe vertical axis is calibrated to convert the values to correspond to the blood glucose domain.  However, there is nothing that can be done to the horizontal axis.  That's why when you calibrate, xDrip shows the calibration with a 15-minute delay.  But, that's just an approximation.\r\n\r\nThe problem is that the delay varies from person to person.  But, the delay even varies, for the same person, depending on if the glucose is rising or falling.\r\n\r\nNow, if the simulation was supposed to accept samples from both domains, the unknown delay, and its impact on the simulation accuracy, is another complication the developers should keep in mind."
+  },
+  {
+   "id": 939227102,
+   "user": "wjdthree",
+   "created_at": "2021-10-09T04:55:44Z",
+   "body": "I am ask for the same thing, enhanced fingerstick data prediction when offline from a CGM. I believe many others would greatly benefit; basically every single person who uses xdrip would benefit. I knew someone would worry about minimum resolution and someone \"hurting themselves\", as I saw in the developer comments. Anyone can hurt themselves at anytime, and xdrip already has a disclaimer that it is a research tool. Uneducated diabetics hurt themselves everyday without xdrip. Hence, minimum resolution should not be an issue and there should be no drop out limits. I will fingerstick myself as many times as necessary; but it does not necessarily have to mimic a CGM during level periods. Let the smart diabetics benefit from this enhanced feature. We are out here, and we do not want to wait."
+  },
+  {
+   "id": 947025624,
+   "user": "MowgliChild",
+   "created_at": "2021-10-19T19:07:31Z",
+   "body": "Hi, \r\n\r\nCan we get a large  improvement here with no risk and little work???\r\n\r\nWe **NEED** more support when finger sticking. Please. Finger sticking is our back up when the CGM goes down. Diabetics always need a back up. This would benefit ALL users. I think a basic improvement can be made with \r\n\r\nAt the moment when I have CGM issues I have to change both SW and HW and lose a lot of functionality. \r\n\r\nMy alternative, Mysugar, no longer tracks IOB. I dont know of another app that tracks IOB other than XDrip (and propitiatory pump SW)? If Mysugr can do this (but now has a different model) withouth CGM, and XDrip doesnt need CGM for this, why does it not work?\r\n\r\nI fully appreciate it maybe dangerous to do full predictive BG modelling from a stick single data point only (rather than a constantly updating CGM). You cant fit a complicated mathematical curve from one data point. I understand. I also agree (as above) that we already signed away the rights on the install.\r\n\r\nHowever, IOB and COB are only entered at an instant in time and any update in this part of the model is only influenced by time. Since they are only time dependent, XDrip can still model these even without CGM and without giving predictive BG.\r\n\r\nIOB stacking is encouraged to achieve good diabetic control, impossible to calculate in your head and very difficult to do with a pen and paper. It is however purely mathematical time function defined by the DIA (which the user already inputs).  A calculation of total IOB (and COB) is invaluable and can be presented even without the CGM and still be accurate.  \r\n \r\n The tracking of IOB by Xdrip is excellent. It even shows the peak of stacked insulins graphically, not just the numerical IOB which is slightly different but more widely used / understood. The question is better phrased \"WHY IS THERE NO IOB / COB WITH STICKING?\"\r\n \r\nThis already is written into the code. What we are discussing here is changing the switch which enables it to happen with stick test"
+  },
+  {
+   "id": 947339487,
+   "user": "tolot27",
+   "created_at": "2021-10-20T05:25:06Z",
+   "body": "The simplest answer why we'll likely not implement this, is confidence of the prediction, hence reliability. With a CGM you get a new data point every five minutes and the prediction is updated accordingly. Hence, you will have a constant confidence score of the prediction over time. It is only influenced by other factors like not are lately entered carbs, treatment, unknown activities (typically not taking into account) but at constant unknown factor. \r\nIf there are only very few data points from fingerstick measurements at random time and with different/large time span in between, the confidence of the prediction is getting worse over time until it reaches zero or a new fingerstick measurement is done. And as Navid mentioned already, blood glucose can be and is often different from interstitial fluid glucose and hence can be used the same way in the prediction formula.\r\n\r\nThe curve fitting @t1derful mentioned does not work for very few or single fingerstick data points, especially with higher orders. The higher the polynomial order, the more data points you need."
+  },
+  {
+   "id": 950026465,
+   "user": "MowgliChild",
+   "created_at": "2021-10-23T00:29:10Z",
+   "body": "Hi,\r\nI agree with why no predictive modelling.\r\n\r\nBut why does Xdrip stop tracking IOB when there is no CGM? This IS possible and safe.\r\n\r\nThis would give a great help to ALL users"
+  },
+  {
+   "id": 955097945,
+   "user": "simonpickering",
+   "created_at": "2021-10-29T23:21:28Z",
+   "body": "Would it be possible in this case to either have a banner saying loud and proud that the accuracy is undetermined and don't trust it (and/or a setting to enable this once suitable warnings are accepted each time it's needed).\r\n\r\nAnd/or add error bound lines to the prediction curve, which would be a useful thing in any case imo."
+  },
+  {
+   "id": 955099743,
+   "user": "tolot27",
+   "created_at": "2021-10-29T23:29:23Z",
+   "body": "> Would it be possible in this case to either have a banner saying loud and proud that the accuracy is undetermined and don't trust it (and/or a setting to enable this once suitable warnings are accepted each time it's needed).\r\n\r\nPossible less, but not valuable. You should never trust a prediction. It is just and indication. I see no value of showing predictions with a heavy decrease in confidence and in an addition to warn about it. For simplicity, it should simply not shown - as is. And personally, I'm against another setting.\r\n\r\n> And/or add error bound lines to the prediction curve, which would be a useful thing in any case imo.\r\n\r\nIMHO, \"error bounds\" or specifically \"confidence intervals\" would be useful for scientists but for most of the users, the would distract the graph and are likely not understandable. And obviously, the would diverge heavily for every data point in the future. This is expected intrinsically and hence useless to show, IMHO. ;-)"
+  },
+  {
+   "id": 955100053,
+   "user": "tolot27",
+   "created_at": "2021-10-29T23:30:38Z",
+   "body": "> But why does Xdrip stop tracking IOB when there is no CGM? This IS possible and safe.\r\n\r\nIOB tracking is a good point. Maybe, we should open a separate issue for it after the discussion is finished."
+  },
+  {
+   "id": 955103503,
+   "user": "simonpickering",
+   "created_at": "2021-10-29T23:45:54Z",
+   "body": "> Possible less, but not valuable. You should never trust a prediction. It is just and indication. I see no value of showing predictions with a heavy decrease in confidence and in an addition to warn about it. For simplicity, it should simply not shown - as is. And personally, I'm against another setting.\r\n\r\nTricky one because the prediction curves are all predictions, sometimes they work, sometimes they don't. Quite how one would calculate and display the confidence interval is indeed an issue though. \r\n\r\nIt would be nice to have a choice of prediction algorithms (if people want to offer others) with some able to adapt themselves, and therefore some sort of tracking of how well they have predicted would be useful (a skill rating if you will - https://en.wikipedia.org/wiki/Forecast_skill). \r\n\r\nThis should probably be broken out into a different issue though re multiple algorithms, though a skill rating for the current one wouldn't go astray as I know mine is terrible shortly after consuming carbs - I could doubtless tune the parameters , but it changes depending on what I've been doing/eating, and I imagine that knowing what to adapt is not immediately clear to most users.\r\n"
+  },
+  {
+   "id": 955121531,
+   "user": "Navid200",
+   "created_at": "2021-10-30T01:22:20Z",
+   "body": " \r\n> This should probably be broken out into a different issue though re multiple algorithms, ...\r\n\r\nPlease don't open too many issues.\r\nWhen a user experiences a problem and comes to the issues platform and sees 170 open issues, they may not feel like searching through them all to make sure.  They may just go ahead and open an issue to inform the developers that there is a bug or there is a need for something new.  Then, we have to spend time closing the duplicate issues.  The time that can be spent on fixing issues.\r\n\r\nThe problem with having too many open issues is that the developers are human beings too.  They also stop looking at all the issues when there are too many of them.\r\n\r\nThere are bugs that need to be fixed.  If the developers stop looking at the issues, those bugs will never be fixed.  A fancy feature doesn't have priority over a bug that stops people from effectively using the app.\r\n\r\nPlease open a thread in the discussions or post in the Gitter room and give us a chance to have a look before opening an issue."
+  },
+  {
+   "id": 955175586,
+   "user": "simonpickering",
+   "created_at": "2021-10-30T08:52:19Z",
+   "body": "Noted and my apologies"
+  },
+  {
+   "id": 956116944,
+   "user": "wjdthree",
+   "created_at": "2021-11-01T10:30:37Z",
+   "body": "Matthias, you are being extremely close minded about this issue. Give\ndiabetics every option available to fill on their own holes. Do not assume\nwe are incapable of discerning what is accurate or not. Polynomials can be\nfit to any number of data points as well as straight lines. Nobody cares if\nit is not a perfect fit. We just want more from fingerstick data points and\nwhat we are asking for is easy to implement and mostly already there. CGMs\nfail constantly for many reasons. Fingersticks do not fail and are far more\naccurate. I fingerstick at every treatment even if I am on a cgm.\n\nOn Fri, Oct 29, 2021, 18:29 Mathias Walter ***@***.***> wrote:\n\n> Would it be possible in this case to either have a banner saying loud and\n> proud that the accuracy is undetermined and don't trust it (and/or a\n> setting to enable this once suitable warnings are accepted each time it's\n> needed).\n>\n> Possible less, but not valuable. You should never trust a prediction. It\n> is just and indication. I see no value of showing predictions with a heavy\n> decrease in confidence and in an addition to warn about it. For simplicity,\n> it should simply not shown - as is. And personally, I'm against another\n> setting.\n>\n> And/or add error bound lines to the prediction curve, which would be a\n> useful thing in any case imo.\n>\n> IMHO, \"error bounds\" or specifically \"confidence intervals\" would be\n> useful for scientists but for most of the users, the would distract the\n> graph and are likely not understandable. And obviously, the would diverge\n> heavily for every data point in the future. This is expected intrinsically\n> and hence useless to show, IMHO. ;-)\n>\n> —\n> You are receiving this because you commented.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/1795#issuecomment-955099743>,\n> or unsubscribe\n> <https://github.com/notifications/unsubscribe-auth/AKB4V54AGGO23NCUFPNAOXTUJM363ANCNFSM5BL2P73Q>\n> .\n> Triage notifications on the go with G"
+  },
+  {
+   "id": 956244185,
+   "user": "Navid200",
+   "created_at": "2021-11-01T13:41:22Z",
+   "body": ">... you are being extremely close minded ...\r\n\r\n@wjdthree \r\nIf you become one of the volunteers and contribute as much as he has, you should still not make a personal attack.   \r\nWe are all here to talk about xDrip.  We should be able to do that, and state our opinion, without having to worry about who may attack us because they don't like our opinion.    \r\nEven if you are right, allowing your words to focus on the person instead of the subject reduces the impact of your words.\r\n\r\nPlease edit your post and remove that line.  \r\nThe last thing we need is the users driving developers away. We don't have enough volunteers.  We need more not less.  Please thank developers for contributing their time instead of criticizing them."
+  },
+  {
+   "id": 956274067,
+   "user": "t1derful",
+   "created_at": "2021-11-01T14:18:15Z",
+   "body": "-->I will volunteer. Send me the code, and I will program it myself. I  owe noone any apologies. He is being closed minded and that is not a personal attack. Xdrip needs a refocus onto important advancements. It has been stale for too long."
+  },
+  {
+   "id": 956283535,
+   "user": "Navid200",
+   "created_at": "2021-11-01T14:29:53Z",
+   "body": "xDrip is open source.  That means the code is out there for everyone to see.\r\n\r\nI suggested this proposal to be brought here, from the facebook group, because it sounded like a few individuals were interested in it.  I didn't mean that the abusive behavior that is allowed in the facebook group should also be brought here.\r\nI now feel sorry for having suggested that.  \r\nWhat a shame!"
+  },
+  {
+   "id": 956440222,
+   "user": "tolot27",
+   "created_at": "2021-11-01T17:38:41Z",
+   "body": "> -->I will volunteer. Send me the code, and I will program it myself. I  owe noone any apologies.\r\n\r\nThe code is available to everyone. Please submit a PR of your modification along with a user documentation. I've assigned this issue to you. Thanks for volunteering!\r\n\r\n> He is being closed minded and that is not a personal attack.\r\n\r\nIf you think so, I can live with that. I'm strongly focused on improving xDrip and improve user experience while reducing the complexity.\r\n\r\n> Xdrip needs a refocus onto important advancements. It has been stale for too long.\r\n\r\nYou are welcome to contribute and if you feel this issue is an important advancement - more important than the other issues, please take the development lead for it."
+  },
+  {
+   "id": 957585809,
+   "user": "wjdthree",
+   "created_at": "2021-11-02T13:34:40Z",
+   "body": "Nobody is abusing anyone here, and it is just silly to assume that.\nEveryone appreciates the developers' work, but we cannot say\ncongratulations forever. Otherwise, xdrip will keep getting complicated\nwith little add ons like making every new watch work with it or something\ntrivial. What we are asking for is a monumental improvement in xdrip for\ntechnology that is already inside of it. I am a PhD engineer and have been\nplotting my blood sugars and applying mathematics to prediction and\nextrapolation for 43 years. When I mastered the predictive feature of\nxdrip, I dropped my HgbA1c to below diabetic threshold (<5.6%) almost 4\nyears ago and have been below that threshold since. This halted my diabetic\nretinopathy and brought back 20/20 vision to me when I was legally blind.\nNobody appreciates the developers' work more than me, so it pisses me off\nto read that someone does not think I appreciate it. Navid, sto it. I\nrespect you highly for your dedication and patience. However, stop with the\n\"don't hurt the developers feelings\" crap. It's tiring and probably\ninsulting to the developers.\n\nIf the developers do not want to tackle this concept of extending more\nfunctionality to fingerstick data, then I will attempt it. However, I am\nnot trained in app development, so it would take a while for me to get up\nto speed. I would need some help from you guys (gals). It needs to happen.\nThe holes and gaps are too big in the bg timeline. The most dangerous time\nfor my vision is when my CGM goes down. My retina starts bleeding at 200\nmg/dl. Assuming you are T1s, you all will be here someday if you think\nthings are fine the way they are.\n\nOn Mon, Nov 1, 2021 at 5:30 AM W Donnelly ***@***.***>\nwrote:\n\n> Matthias, you are being extremely close minded about this issue. Give\n> diabetics every option available to fill on their own holes. Do not assume\n> we are incapable of discerning what is accurate or not. Polynomials can be\n> fit to any number of data points as well as straight lines. N"
+  },
+  {
+   "id": 957798340,
+   "user": "Navid200",
+   "created_at": "2021-11-02T15:16:25Z",
+   "body": "When you make a comment at someone else's expense, you are the one who is wrong.  \r\nIf someone comes to facebook and says I need help for restarting my sensor, and someone responds with \"anyone who restarts a sensor is a fool\", that's an inappropriate response.  \r\nThey could say it's not a good idea to restart because ....  But, when they say \"you are a fool\", it is unnecessary.\r\n\r\nImagine if a member of the parliament/congress proposes to raise taxes.  Another member may disagree with that proposal.  Saying \"I disagree because ...\" is an appropriate response.  \r\nSaying \"you are closed-minded\" is very inappropriate.   The speaker of the house will warn the second member in this case.\r\n\r\nNo two people think exactly the same way.    The concept of governance by committee requires hearing all the ideas openly without prejudice.  Sometimes when you hear the opposing argument, you may change your opinion because they explain something that helps you see the matter from a different angle you hadn't considered before.  But, if the opposing side uses personal comments, you may never even consider the opposing side's proposal openly, which defeats the whole concept of governance by committee.\r\n\r\nThe developers disagree all the time.  There would be no xDrip if we called each other closed-minded every time we disagreed about something."
+  },
+  {
+   "id": 958088150,
+   "user": "wjdthree",
+   "created_at": "2021-11-02T19:08:20Z",
+   "body": "I should be receiving these messages because extending\nfingerstick functionality was my idea, not because I am being accused of\nhurting someone's feelings which is ridiculous. I have made zero\npersonal attacks on anyone, not on facebook and not here. Honestly, the\nonly one being personally attacked is me, and I am tiring of it but not\ncrying about it. Stop going on about this nonsense and get back to focusing\non the issue of increased fingerstick function!\n\nOn Tue, Nov 2, 2021 at 10:16 AM Navid ***@***.***> wrote:\n\n> When you make a comment at someone else's expense, you are the one who is\n> wrong.\n> If someone comes to facebook and says I need help for restarting my\n> sensor, and someone responds with \"anyone who restarts a sensor is a fool\",\n> that's an inappropriate response.\n> They could say it's not a good idea to restart because .... But, when they\n> say \"you are a fool\", it is unnecessary.\n>\n> Imagine if a member of the parliament/congress proposes to raise taxes.\n> Another member may disagree with that proposal. Saying \"I disagree because\n> ...\" is an appropriate response.\n> Saying \"you are closed-minded\" is very inappropriate. The speaker of the\n> house will warn the second member in the second case.\n>\n> No two people think exactly the same way. The concept of governance by\n> committee requires hearing all the ideas openly without prejudice.\n> Sometimes when you hear the opposing argument, you may change your opinion\n> because they explain something that helps you see the matter from a\n> different angle you hadn't considered before. But, if the opposing side\n> uses personal comments, you may never even consider the opposing side's\n> proposal openly, which defeats the whole concept of governance by committee.\n>\n> The developers disagree all the time. There would be no xDrip if we called\n> each other closed-minded every time we disagreed about something.\n>\n> —\n> You are receiving this because you were mentioned.\n> Reply to this email directly, view it on GitH"
+  },
+  {
+   "id": 958134201,
+   "user": "simonpickering",
+   "created_at": "2021-11-02T20:16:31Z",
+   "body": "Leaving aside what has gone before, there is what seems to me to be a reasonable idea here, it's worth discussion even if it won't necessarily make it into the \"mainline\" of the code. I would hope there are options to try ideas out that suit subsets of people with certain requirements and to make that code available (assuming there are enough devs to implement it of course).\r\n\r\nCould we move the discussion to, and summarise on, @Navid200's Discussions page which afaiu was setup to reduce long discussion threads on the Issues page (which I am guilty of!) To let people discuss how things could be made to work, and indeed to offer reasons why they wouldn't that aren't directly associated with the concern of affecting what people currently expect from XDrip+? \r\n\r\nDiscussion site is here: https://github.com/Navid200/xDrip/discussions/categories/ideas\r\n"
+  },
+  {
+   "id": 958602770,
+   "user": "Navid200",
+   "created_at": "2021-11-03T02:19:33Z",
+   "body": ">Stop going on about this nonsense and get back to focusing\r\non the issue of increased fingerstick function\r\n\r\nBut, you are the one who called someone closed-minded.  That sentence, not about the issue and instead about a participant/volunteer, was written by you, not me.\r\nIf someone calls you closed-minded, I will warn them and ask them to stop also.  I'm not picking on you.  \r\n\r\nI have not used a single negative adjective (like closed-minded) to describe you.  Yet, you are saying that I have personally attacked you.  What would you say if I called you closed-minded?\r\n \r\nMy request from you is to delete that sentence.   And I will stop mentioning it and will delete all my comments about it.\r\n\r\nI'm not going to be very active in this thread because you have stated I made you uncomfortable.  So, I respect that and will keep my distance.\r\nBut, if you quote me again, I'll have to reply."
+  }
+ ]
+}

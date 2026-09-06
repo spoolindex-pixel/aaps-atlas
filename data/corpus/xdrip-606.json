@@ -1,0 +1,39 @@
+{
+ "id": 365745684,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 606,
+ "title": "Non-indentical BG values for identical settings on watch and phone",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/606",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2018-10-02T05:24:46Z",
+ "closed_at": "2019-03-15T20:44:22Z",
+ "comment_count": 4,
+ "body": "My daughter uses the smartwatch (Finow Q1 Pro, Android 6.0) and the mobile phone (Sony Xperia Z5 Compact, Android 7.1.1) as collector for one and the same transmitter Dexcom G5, i.e for one and the same ID. The smartwatch is more comfortable at the school while the mobile phone at home. I transfered all setting from the phone to the smartwatch (the phone setting file was saved and loaded on the smartwatch), including callibration settings (I changed slope and intercept manually through engineering mode). The phone and the smartwatch have the same build of xDrip+. BT of the smartwatch was disabled and BG values on the phone were stable. I switched off the phone before start up the smartwatch (BT is on ). After that I saw on the smartwatch significant differences in BG values in contrast with the phone. What's wrong in my actions on replacing the phone with the smarwatch for one and the same transmitter? Is it correct way to change devices for one and the same transmitter?",
+ "comments": [
+  {
+   "id": 426343718,
+   "user": "tzachi-dar",
+   "created_at": "2018-10-02T16:38:16Z",
+   "body": "Can you post a picture of calibration graph and of bt reading table of both phone and clock?\r\n(to see the bt reading table, enable settings -> less common settings -> show databases."
+  },
+  {
+   "id": 426353111,
+   "user": "svirito4ka",
+   "created_at": "2018-10-02T17:05:34Z",
+   "body": "Unfortunately I re-installed xDrip+ both on the phone and the smartwatch. But I'm able to try it again at the weekend when my child and I will be at home all day. Do you think readings depend on hardware (e.g. BT modules or BT frequencies) of phone and smartwatch?"
+  },
+  {
+   "id": 426441623,
+   "user": "tzachi-dar",
+   "created_at": "2018-10-02T21:46:16Z",
+   "body": "reading should not depend on different hardware.\r\nOnly sensor data and calibration data as far as I can tell."
+  },
+  {
+   "id": 431040051,
+   "user": "lmiekus",
+   "created_at": "2018-10-18T14:52:37Z",
+   "body": "Whenever I am changing the phone which acts as master and is responsible for the communication with transmitter I do the following:\r\nPhone 1 - this one is initial setup as master and communicates with transmitter.\r\nPhone 2 (can be treated as Finow Q1 Pro)   - this one is setup as follower.\r\nTo do the switch between phones you have to setup phone 1 as the follower (xdrip+ Sync Follower) and uncheck option \" Be master for followers\", additional remove you G5 transmitter from Bluetooth devices connected to the phone as it can cause problems during phone 2 connections attempts to G5 . On phone 2 select G5 under hardware data source and check the option \" Be master for followers\". Phone 2 will attempt to connect to G5 and after successful connection you should receive readings.\r\n\r\nBefore doing actual switch make sure that the settings for G5 are tested for phone 1 and phone 2. Different hardware platforms and different version of Android require different settings.       "
+  }
+ ]
+}

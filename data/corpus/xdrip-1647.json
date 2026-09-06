@@ -1,0 +1,260 @@
+{
+ "id": 810175687,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1647,
+ "title": "xDrip confuses G5 with a G6 and performs a preemptive restart on day 9 as well as on day 6",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1647",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "device-dexcom",
+  "calibration",
+  "device-dexcom-transmitter"
+ ],
+ "created_at": "2021-02-17T13:16:55Z",
+ "closed_at": "2021-03-28T14:43:00Z",
+ "comment_count": 52,
+ "body": "### Expected behavior\r\nDexcom G5 can be used in Native mode.  But, since G5 sends raw data, you can still access the calibration graph.  And xDrip removes \"Initial calibration\" from the menu after initial calibrations have been submitted and replaces it with \"Add calibration\".\r\n\r\n### Your environment\r\nThe problem was observed with the February 11, 2021 release, and February 3, 2021.\r\n\r\n\r\n### Actual behavior\r\nCalibrations are sent to the transmitter and are accepted by the G5 transmitter.  However, xDrip logs show they are rejected by xDrip.\r\n![tempFileForShare_20210216-234941](https://user-images.githubusercontent.com/51497406/108206590-96d7fa80-70f4-11eb-93a3-64454447f949.jpg)\r\n\r\nLogs show calibrations have been rejected.\r\nNo access to adding calibration in the top left menu as only initial calibration is shown there.\r\nNo access to calibration graph.\r\nEmpty calibration data table.\r\n\r\nThe symptoms match the behavior of xDrip with a device that does not send raw data like a Firefly G6,\r\n\r\nAfter installing the January 29, 2021 version, the problem was resolved. \r\n\r\n\r\n### Steps to reproduce the behavior:\r\nInstall xDrip release February 11, 2021\r\nStart a G5 sensor in native mode\r\nApply initial calibrations\r\nCheck calibration data table, or check the logs.\r\n\r\n@viq:hackerspace.pl reported this in the Gitter room.\r\nAnother individual reported it on facebook where the calibration graph being missing and the calibration data table being empty were reported.\r\nThe calibration rejection logs were reported by both users.",
+ "comments": [
+  {
+   "id": 780778770,
+   "user": "jamorham",
+   "created_at": "2021-02-17T19:01:46Z",
+   "body": "The screenshot implies that a bloodtest was delivered from a bluetooth connected glucose meter which it believes was ~9000 seconds old. If the finger stick test was just done recently then we need to determine if the clock on the meter is correct or if there is an issue with the user's local timezone vs the clock on the meter and if that is the source of the >1 hour rejection message. It may also be (more likely?) that there were multiple tests synced from the meter and that only one of those was used and the other rejected which is why there is a report of success and also rejection in the screenshot.\r\n\r\nWe also want to know the transmitter firmware version to determine the issue regarding raw."
+  },
+  {
+   "id": 780780350,
+   "user": "Navid200",
+   "created_at": "2021-02-17T19:04:12Z",
+   "body": "You are talking to him in the Gitter room.\r\nThe firmware version is 1.0.4.15."
+  },
+  {
+   "id": 780803102,
+   "user": "jamorham",
+   "created_at": "2021-02-17T19:40:29Z",
+   "body": "Please try the 17th Feb nightly to see if it resolves the issue."
+  },
+  {
+   "id": 780955391,
+   "user": "viq",
+   "created_at": "2021-02-18T00:56:03Z",
+   "body": "Sorry for screenshot, attaching what happened when I calibrated using the `2021.02.17` version. I don't know where this \"calibration beyond 4 days\" is coming from. The dot from syncing with glucometer appears right there, and clicking on it is how initiate calibration \r\n\r\n![xdrip_logs](https://user-images.githubusercontent.com/639461/108288118-575ced00-718c-11eb-9767-834b8a594d56.png)\r\n"
+  },
+  {
+   "id": 780956780,
+   "user": "Navid200",
+   "created_at": "2021-02-18T00:59:43Z",
+   "body": "If you tap on the top left menu button, and on calibration graph, what does it show?  Is it empty, or does it show your initial calibrations?"
+  },
+  {
+   "id": 780958260,
+   "user": "viq",
+   "created_at": "2021-02-18T01:03:10Z",
+   "body": "It does show some calibrations. Currently it shows three from today, and one from 5 days ago."
+  },
+  {
+   "id": 780961198,
+   "user": "Navid200",
+   "created_at": "2021-02-18T01:06:23Z",
+   "body": "Did you just update to the new version and calibrated?\r\nOr, did you start the sensor after updating and then, calibrated?"
+  },
+  {
+   "id": 781033369,
+   "user": "viq",
+   "created_at": "2021-02-18T04:03:55Z",
+   "body": "Update and (single) calibrate.\n"
+  },
+  {
+   "id": 781034916,
+   "user": "Navid200",
+   "created_at": "2021-02-18T04:08:45Z",
+   "body": "OK\r\nPlease let us know the next time you start the sensor.  Only then, will you have to provide initial calibrations again.  Only then, will you know if the issue has ben resolved or not."
+  },
+  {
+   "id": 781076047,
+   "user": "viq",
+   "created_at": "2021-02-18T05:53:57Z",
+   "body": "Sensor session should be restarted in a few hours, so we should know soon."
+  },
+  {
+   "id": 781354907,
+   "user": "viq",
+   "created_at": "2021-02-18T13:47:02Z",
+   "body": "It seems to be working. What should I show to verify it?"
+  },
+  {
+   "id": 781375884,
+   "user": "Navid200",
+   "created_at": "2021-02-18T14:19:31Z",
+   "body": "Would you please show the log showing that you started a sensor followed by initial calibration that xDrip did not complain about?  You may need to post multiple screens if they don't all fit.\r\nYou can also show the calibration graph."
+  },
+  {
+   "id": 781388049,
+   "user": "viq",
+   "created_at": "2021-02-18T14:38:00Z",
+   "body": "Attaching screenshots:\r\n![Screenshot_20210218-152053_xDrip+](https://user-images.githubusercontent.com/639461/108372547-3aadcd00-71ff-11eb-901b-b98937b31693.png)\r\n![Screenshot_20210218-152445_xDrip+](https://user-images.githubusercontent.com/639461/108372558-3da8bd80-71ff-11eb-9f13-953c8882a169.png)\r\n![20210218_152906](https://user-images.githubusercontent.com/639461/108372574-40a3ae00-71ff-11eb-8fd0-af0e2e023b81.png)\r\n"
+  },
+  {
+   "id": 781389998,
+   "user": "Navid200",
+   "created_at": "2021-02-18T14:41:04Z",
+   "body": "@jamorham Are those \"calibration appears to have been deleted\" logs expected?"
+  },
+  {
+   "id": 781650163,
+   "user": "Navid200",
+   "created_at": "2021-02-18T21:35:36Z",
+   "body": "@jamorham Would the following advice to the user community be valid in your opinion?\r\n\r\nIf you use G5 in native mode, avoid the following releases of xDrip: February 3, 2021 to February 11, 2021 inclusive."
+  },
+  {
+   "id": 786957707,
+   "user": "viq",
+   "created_at": "2021-02-27T00:02:25Z",
+   "body": "Yes."
+  },
+  {
+   "id": 786961004,
+   "user": "Navid200",
+   "created_at": "2021-02-27T00:13:46Z",
+   "body": "Great.\r\nIf it ever performs a restart on day 9, please post here and we will reopen.  I don't think that will happen.\r\n\r\nFor now, I close this."
+  },
+  {
+   "id": 791353096,
+   "user": "viq",
+   "created_at": "2021-03-05T11:13:23Z",
+   "body": "That sensor just got restarted on day 9."
+  },
+  {
+   "id": 791363742,
+   "user": "viq",
+   "created_at": "2021-03-05T11:35:33Z",
+   "body": "The logs look very confusing.\r\n![xdrip-2021-03-05-123203](https://user-images.githubusercontent.com/639461/110110536-44166800-7daf-11eb-9087-0fe3972157cc.png)\r\n"
+  },
+  {
+   "id": 791422330,
+   "user": "Navid200",
+   "created_at": "2021-03-05T13:34:20Z",
+   "body": "The only solution I am aware of, until a developer addresses this, is to go back to the release of January 29, 2021."
+  },
+  {
+   "id": 791514849,
+   "user": "viq",
+   "created_at": "2021-03-05T16:05:04Z",
+   "body": "I'm not necessarily looking for a solution right now, just reporting that this is something that someone may want to look at."
+  },
+  {
+   "id": 791520086,
+   "user": "Navid200",
+   "created_at": "2021-03-05T16:13:30Z",
+   "body": "So, you are OK with a restart on day 9 as well as on day 6 every time?"
+  },
+  {
+   "id": 791523724,
+   "user": "viq",
+   "created_at": "2021-03-05T16:19:00Z",
+   "body": "Every time, for ever to come? No. But I can probably live with it for some weeks more, if it's useful to someone working on this."
+  },
+  {
+   "id": 791863962,
+   "user": "Navid200",
+   "created_at": "2021-03-06T04:08:25Z",
+   "body": ">I'm not necessarily looking for a solution right now,\r\n\r\nI am not even using G5.  I use G6.  \r\nI opened this issue for people like you who still use G5.  I have no problem with helping.  \r\nBut, when you make a statement like that, I wonder what am I missing.  If he is not looking for a solution, why am I bothering?\r\nI have no idea why you had to make that statement.  Do you?"
+  },
+  {
+   "id": 791995618,
+   "user": "viq",
+   "created_at": "2021-03-06T17:33:48Z",
+   "body": "Sorry for my poor wording. What I meant is that I'm not necessarily looking for a quick workaround like downgrading the app, and I'm fine living with the issue for a while and using the version with the bug if it allows someone to get useful information to fix this."
+  },
+  {
+   "id": 802879107,
+   "user": "Chris2001",
+   "created_at": "2021-03-19T14:36:02Z",
+   "body": "Thanks to @Navid200 I switched to the 20210129 version to tackle a problem with the original dex reader (signal lost for hours) with the current 20210308 version. OTOH I now sometimes don't have any values for 15 minutes. Using a 1.6.5.25 fw with old 80xxxx transmitter ... thanks all ..."
+  },
+  {
+   "id": 803050003,
+   "user": "Navid200",
+   "created_at": "2021-03-19T19:07:01Z",
+   "body": "@Chris2001 Would you mind showing/sharing your current settings from the following page?\r\nSettings -> G5/G6 Debug Settings"
+  },
+  {
+   "id": 803152635,
+   "user": "Chris2001",
+   "created_at": "2021-03-19T21:47:40Z",
+   "body": "> \r\n> \r\n> @Chris2001 Would you mind showing/sharing your current settings from the following page?\r\n> Settings -> G5/G6 Debug Settings\r\n\r\nThanks, but I think that was just a temporary glitch, everything seems to work fine now with the 20210129-version."
+  },
+  {
+   "id": 805265684,
+   "user": "viq",
+   "created_at": "2021-03-23T21:14:44Z",
+   "body": "With recent nightlies G5 sensor was restarted only on day 6. No restart happened on day 9."
+  },
+  {
+   "id": 805271597,
+   "user": "Navid200",
+   "created_at": "2021-03-23T21:23:12Z",
+   "body": "@Chris2001 Would you please explain the problem you experienced with the March 8, 2021 release?\r\nPlease don't use Acronyms (dex reader) as everyone may not know what you mean.  I suppose you meant Dexcom receiver?  "
+  },
+  {
+   "id": 805273461,
+   "user": "Chris2001",
+   "created_at": "2021-03-23T21:26:04Z",
+   "body": "> \r\n> \r\n> @Chris2001 Would you please explain the problem you experienced with the March 8, 2021 release?\r\n> Please don't use Acronyms (dex reader) as everyone may not know what you mean. I suppose you meant Dexcom receiver?\r\n\r\nYes, sorry, I meant the original Dexcom Reader. It was blocked for hours not receiving any values when I was using the current nightly. After switching back to the older version (29.01.2021) everything went to normal again (both devices, the original reader as well as my phone with Xdrip+ receiving values every 5 minutes now)."
+  },
+  {
+   "id": 808726128,
+   "user": "Chris2001",
+   "created_at": "2021-03-27T12:34:25Z",
+   "body": "Ok, today I had a preemptive restart for the G6 (still using the 20210129 version) and again the G6 is now treated as a G5 from now on (as it seems). Also there were sensor errors for about 30 mins ... I guess I will revert to 20201115 next week ...."
+  },
+  {
+   "id": 808735236,
+   "user": "Navid200",
+   "created_at": "2021-03-27T13:44:29Z",
+   "body": "@Chris2001 Are you saying it restarted your G6 on day 6?  Or, what do you mean by G6 being treated as a G5?\r\n\r\nAnd why would you use November 15, 2020?  There is a note under that release telling you \"connectivity issues have been reported ...\"."
+  },
+  {
+   "id": 808756720,
+   "user": "Chris2001",
+   "created_at": "2021-03-27T16:18:19Z",
+   "body": "No, I used preemptive restart (automatic) on day 9. Now the system will aks for calibration every 24 hours (not a big problem of course). November 15 did not show \"conectivity issues\" with my Pixel 4a"
+  },
+  {
+   "id": 808757181,
+   "user": "Navid200",
+   "created_at": "2021-03-27T16:21:57Z",
+   "body": "@Chris2001 If you don't enter the sensor code correctly, or if you enter 0000 as the code, you will be operating G6 in \"no-code\" mode.  In that mode, you will be asked to calibrate once a day.\r\nNone of this is related to this particular issue."
+  },
+  {
+   "id": 808757564,
+   "user": "Chris2001",
+   "created_at": "2021-03-27T16:24:52Z",
+   "body": "I didn't enter 0000, I started the sensor like always with a proper code that was acceptet. But after the preemptive restart (day 9) it now seems to be running in \"no-code\" mode. Sorry for the fuss, it really isn't a big problem. Everything else works just fine, also the precision is still very high.\r\n"
+  },
+  {
+   "id": 808798641,
+   "user": "Navid200",
+   "created_at": "2021-03-27T20:32:31Z",
+   "body": "I didn't know that was the case.  Thanks for reporting it.  \r\nHow did it behave before after a preemptive restart?  I have never had a G6 that could perform a preemptive restart.\r\n\r\nG6 uses factory calibration, which only covers 10 days.\r\nAfter restarting a G6, factory calibration cannot continue because there is no characteristic programmed for day 11 or 12 or 13 etc.\r\nSo, what you describe makes perfect sense to me.  After a restart, it automatically switches to no-code mode as factory calibration is not valid any longer."
+  },
+  {
+   "id": 808852903,
+   "user": "Chris2001",
+   "created_at": "2021-03-28T06:04:40Z",
+   "body": "> How did it behave before after a preemptive restart? I have never had a G6 that could perform a preemptive restart.\r\n\r\nSorry again for the confusion, I have an old 80... transmitter (cf. above) with replaced battery (firmware 1.6.5.25) ... with the preemptive restart you can do 'time travel' back to day 3, so it normally works flawlessly (it did before). So the transmitter really theoretically will work in *factory calibraton mode* until it fails. Normally sensors work for me between 15 and 25 days like that (after that the values get unreliable especially when there is sudden change, up or down)."
+  },
+  {
+   "id": 808891655,
+   "user": "Navid200",
+   "created_at": "2021-03-28T12:40:29Z",
+   "body": "The time travel capability may have been removed.  Although, I am not 100% sure."
+  },
+  {
+   "id": 808906348,
+   "user": "Navid200",
+   "created_at": "2021-03-28T14:43:00Z",
+   "body": "I am closing this issue because I believe the original issue has been resolved.\r\n\r\nI will be learning more about the time travel.  We can talk more about it here if needed in the closed issue, or somewhere else."
+  }
+ ]
+}

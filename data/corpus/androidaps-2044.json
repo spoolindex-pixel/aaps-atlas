@@ -1,0 +1,63 @@
+{
+ "id": 1350106720,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2044,
+ "title": "Autosens / Weighted Average - Sensitivity stuck / not resetting to 100% with COB",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2044",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-08-24T22:55:53Z",
+ "closed_at": "2022-08-28T13:20:14Z",
+ "comment_count": 8,
+ "body": "Hi,\r\n\r\nToday, I noticed something odd about Autosens / Weighted Average and I think it might be due to a bug.\r\n\r\nThis afternoon, my son’s insulin sensitivity went up from 100% to 120% (see screenshot below) and Autosens adjusted its multiplier to 1.2 accordingly, as seen under “Script debug.” I could also see other altered values like ISF, which had been lowered to 120 from 144.\r\n\r\nA bit later, my son started playing outside and became much more sensitive to insulin, but Autosens remained at 120%. Again, I noticed the Autosens multiplier was still at 1.2 and other values were still altered.\r\n\r\nWe were having a bit of a hard time getting him out of hypo, and I suspect Autosens might’ve been partly to blame since it was stuck at 120% even while his sensitivity was clearly much lower.\r\n\r\nI then decided to test Sensitivity Oref1 to see if the behaviour was the same or different. As I thought, Sensitivity Oref1 reverted back to 100% when there were COB, which confirms there's most likely a bug in the Sensitivity Weighted Average plugin.\r\n\r\n![300060707_1591471957913386_7685569438247279754_n](https://user-images.githubusercontent.com/10037804/186537110-886f0b4d-3fdc-4ad9-892d-20f478bc1794.jpg)",
+ "comments": [
+  {
+   "id": 1226808951,
+   "user": "justmara",
+   "created_at": "2022-08-25T05:54:56Z",
+   "body": "Read the docs: \r\n\r\n> If continuously eating carbs over an extended period, autosens will be less effective during that period as carbs are excluded from BG delta calculations."
+  },
+  {
+   "id": 1227121240,
+   "user": "janvitos",
+   "created_at": "2022-08-25T11:15:53Z",
+   "body": "> Read the docs\r\n\r\nI did read, and re-read the docs. But thanks for suggesting that.\r\n\r\nThe problem is Autosens should reset to 100% when there are COB, but it doesn't. It's quite dangerous that it can get stuck at 120% while there are COB using the Weighted Average plugin. This does NOT happen with the Oref1 plugin."
+  },
+  {
+   "id": 1227133650,
+   "user": "justmara",
+   "created_at": "2022-08-25T11:27:41Z",
+   "body": "It always were acting like this - sticking with latest calculated value until new one CAN be calculated. While COB>0 it has no new data, so new calculations cannot be done -> no sensitivity update."
+  },
+  {
+   "id": 1227143735,
+   "user": "janvitos",
+   "created_at": "2022-08-25T11:38:58Z",
+   "body": "> It always were acting like this - sticking with latest calculated value until new one CAN be calculated\r\n\r\nSo why is Oref1 resetting to 100% when COB kick in? Shouldn't Weighted Average and Oref1 have the same behaviour regarding COB?"
+  },
+  {
+   "id": 1229436700,
+   "user": "nlof",
+   "created_at": "2022-08-28T11:23:51Z",
+   "body": "Weird, I didn't pay attention to such an issue.\r\nI just checked in the recent graph and if you look at the red marked area, despite having COB, the white autosens (sensitivity) line is decreasing... \r\nI've been running the weighted average option with a timeframe of 4 hours for a year now....\r\nYes, sometimes Autosens is somewhat slow to catch up with the decrease, but it's the nature of the beast...\r\n\r\n![Screenshot_2022-08-28-14-15-39-04~2](https://user-images.githubusercontent.com/70835405/187071573-2e1f1d6b-9cc3-45eb-9c9b-d24719df9e1d.jpg)"
+  },
+  {
+   "id": 1229455939,
+   "user": "janvitos",
+   "created_at": "2022-08-28T13:20:14Z",
+   "body": "I'm going to close this as different people seem to have different results."
+  },
+  {
+   "id": 1229816752,
+   "user": "nlof",
+   "created_at": "2022-08-29T06:05:03Z",
+   "body": "Unsure whether you should rush and close it, I just don't remember seeing this for sure. It's worth continuing to monitor it as it is possible that sensitivity doesn't decrease in real time but maybe it's recalculated later? I don't know for sure, I'll try to watch it in real time if I remember 🙂"
+  },
+  {
+   "id": 1229820529,
+   "user": "nlof",
+   "created_at": "2022-08-29T06:10:05Z",
+   "body": "Yesterday again sensitivity changed with COB (both down and up, see screenshot), but again, I don'tremember if it happened in real time. Probably yes, but unsure.\r\n\r\nSensitivity however always trails real time because it uses values from the last 4 hours in my case (the default is even longer, 8 hours I think).\r\n\r\n![IMG_20220829_090738](https://user-images.githubusercontent.com/70835405/187134215-d372c7a7-1b9f-430a-afd4-bc9887868ad0.jpg)\r\n"
+  }
+ ]
+}

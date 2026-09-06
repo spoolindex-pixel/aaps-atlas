@@ -1,0 +1,195 @@
+{
+ "id": 1227186686,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 2101,
+ "title": "Awkward Alert behavior when phone is in Do Not Disturb mode",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/2101",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-05-05T21:19:50Z",
+ "closed_at": "2022-05-10T12:08:02Z",
+ "comment_count": 33,
+ "body": "**Summary:**\r\n\r\nWhen the phone is in do-not-disturb mode and an alert is raised, although the override silent mode allows the alert to sound, the actual notification is not visible.\r\n\r\nThis makes it very awkward to dismiss the alert as it requires opening xDrip and selecting the snooze item from the burger menu. This can be especially painful at 3am and also if the phone also requires key guard unlocking.\r\n\r\n**How to reproduce:**\r\n\r\nGo in to the Alerts list with your phone on DND mode, long press to edit an alert which has override silent mode enabled and click to test the alert. Make sure to have alert volume profile set to something like high before this.\r\n\r\nWhat I expect you will see is the the alert noisily sounding but no visible notification to swipe off. \r\n\r\nTested on Android 11.\r\n\r\nI'm working on a fix for this but will appreciate testing as behavior could be different on different android versions and also depending on whether the notification channel feature is enabled or not (is off by default)\r\n",
+ "comments": [
+  {
+   "id": 1119064662,
+   "user": "Navid200",
+   "created_at": "2022-05-05T21:29:56Z",
+   "body": "I have been using xDrip for several years.\r\nMy phone automatically goes to DND after 11:30 PM.\r\nI get alarms when I am sleep and they always show the notification, which I use to snooze.\r\n\r\nI don't have the notification channels enabled.\r\n\r\nI just did the test you described.  I got the notification and swiped it away to quiet the alert.\r\n\r\nI have experienced the same thing on multiple phones over the years from Android 5 up to Android 11 now."
+  },
+  {
+   "id": 1119069956,
+   "user": "Navid200",
+   "created_at": "2022-05-05T21:36:55Z",
+   "body": "Would you please in Android go to the following page and see what you have?\r\n\r\nSettings &#8722;> Apps & notifications &#8722;> Notifications &#8722;> xDrip+"
+  },
+  {
+   "id": 1119071892,
+   "user": "Navid200",
+   "created_at": "2022-05-05T21:40:05Z",
+   "body": "Is it possible that you have accidentally disabled the following?\r\n![Screenshot_20220505-173742](https://user-images.githubusercontent.com/51497406/167030070-ef5d5fb5-0817-4766-8040-63acf7f005a0.png)\r\n"
+  },
+  {
+   "id": 1119077262,
+   "user": "Navid200",
+   "created_at": "2022-05-05T21:48:53Z",
+   "body": "In my opinion, the highest priority issue with the alerts right now is the following:\r\n\r\nMissed reading alert, Forecast low and persistent high alert can be missed when asleep because those particular alerts cannot use the ascending volume profile.\r\n\r\nIn other words, their volume is not dictated by xDrip.   It is controlled by the phone volume, which the user may have lowered for any reason and forgotten about it.\r\n\r\nImagine if you wake up in the morning and find out that you have had no readings (connectivity) for the past 8 hours."
+  },
+  {
+   "id": 1119400943,
+   "user": "jamorham",
+   "created_at": "2022-05-06T08:56:21Z",
+   "body": "I believe that overriding dnd defaults to off on phone versions that support it and on Android 12  (Tested google pixel) there is no option available to do that at all and the problem exists there also as I have seen on Android 11 - Additionally we want the user to be able to control this which is why there is the \"override silent mode\" feature on a per alarm basis. This gives the user flexibility to do things like have alerts not embarrass them when they want to be on dnd during the day but to override that at night regardless.\r\n\r\nI'm also thinking about adding a button to the notification `Snooze Alarm` to make it easier to snooze.\r\n\r\nRegarding problems with other alerts being missed with low system volume, please raise another issue for it."
+  },
+  {
+   "id": 1119431308,
+   "user": "jamorham",
+   "created_at": "2022-05-06T09:33:13Z",
+   "body": "I tested this on an Android 9 device and the issue doesn't seem present there.\r\nOn MIUI 12.5.5 (Android 11) and 12.0.5 (Android 10) the issue is basically the same but slightly different that the notification doesn't appear in heads-up mode but does still appear on the swipe down notification list.\r\n"
+  },
+  {
+   "id": 1119534559,
+   "user": "Navid200",
+   "created_at": "2022-05-06T11:51:01Z",
+   "body": "I have this:  https://github.com/NightscoutFoundation/xDrip/issues/1762\r\nI can break it up into many different issues representing the consequences of the main issue I have explained, which is the inconsistency.  \r\nSome already exist."
+  },
+  {
+   "id": 1119538940,
+   "user": "Navid200",
+   "created_at": "2022-05-06T11:57:09Z",
+   "body": ">Additionally we want the user to be able to control this which is why there is the \"override silent mode\" feature on a per alarm basis. This gives the user flexibility to do things like have alerts not embarrass them when they want to be on dnd during the day but to override that at night regardless.\r\n\r\nJust to be clear, the setting I have shown in the attached image only has to do with notifications, so that the notification is shown on screen so that the user can swipe it to snooze it.  It has nothing to do with the sound of the alert.\r\nI can still control hearing or not hearing the alerts on a per alert basis for the alerts that offer a DND setting.  Some alerts inherit it from others.\r\n\r\n> I'm also thinking about adding a button to the notification `Snooze Alarm` to make it easier to snooze.\r\n\r\nHow can it be easier than swiping right?\r\nOn a second thought, that's a very good idea.  Currently, many are unaware they can snooze the alert by swiping the corresponding notification."
+  },
+  {
+   "id": 1119550306,
+   "user": "Navid200",
+   "created_at": "2022-05-06T12:11:49Z",
+   "body": "The ascending volume profile is the best solution for not being embarrassed in public.  The alert starts at extremely low (30%) volume.  So, no one else can hear it.  One can even delay the sound by 3 minutes, during which there will only be vibrations.\r\n\r\nOf course, again, not all alerts can use the ascending volume profile currently.  Again, if we make all alerts consistent, we will allow all alerts to use it.\r\n\r\nI hope the following does not offend anyone.  Because that's not my intent:\r\nA diabetic who intends to completely disable alerts when in public needs to acknowledge they have diabetes.  They need to take it seriously.  They need to realize they can hurt themselves and possibly even others when driving if they don't.\r\n"
+  },
+  {
+   "id": 1120174997,
+   "user": "jamorham",
+   "created_at": "2022-05-07T09:31:48Z",
+   "body": "I've added support here: a7bdf97ddea8118401ef38d6c48e401807a8387b \r\n\r\nThe alert buttons are controlled by an option. For now I have defaulted this to off to mimic existing behavior. If we think this is good then in future it can be changed to default to on. It depends perhaps on whether users might find it too easy to cancel an alert and whether that could happen accidentally. The button does make it more obvious how to silence the alert though.\r\n\r\nI've tested this on Android 8,9,10,11 and 12 but there might still be issues with various manufacturers who interpret how notifications are handled differently so we should be mindful of this change. \r\n\r\nI will focus on the single shot alert volumes next, eg low prediction and friends."
+  },
+  {
+   "id": 1120191839,
+   "user": "Navid200",
+   "created_at": "2022-05-07T11:25:52Z",
+   "body": "I'm testing it with the new option enabled."
+  },
+  {
+   "id": 1120194111,
+   "user": "Navid200",
+   "created_at": "2022-05-07T11:39:28Z",
+   "body": "I can see the button is quite large.  I wonder how easy it is for someone to swipe it back up to just collapse the notification without snoozing.  I will test it the next time I get an alert.\r\nThis will help many for easy snoozing who don't know swiping right will snooze also.  Thanks for adding it."
+  },
+  {
+   "id": 1120198277,
+   "user": "Navid200",
+   "created_at": "2022-05-07T12:06:00Z",
+   "body": "I got an alert when the screen was locked.  After I unlocked the phone, it was on the alert snooze page.  This is a new behavior.  Is this change intentional?  I prefer to be on the main screen when I unlock the phone even if there is an alert."
+  },
+  {
+   "id": 1120262342,
+   "user": "Navid200",
+   "created_at": "2022-05-07T18:42:37Z",
+   "body": "And I cannot hear any alarm when this happens.  This is bad.  I have disabled the setting.  Something is really wrong."
+  },
+  {
+   "id": 1120281534,
+   "user": "jamorham",
+   "created_at": "2022-05-07T20:16:11Z",
+   "body": "Do you mean the snooze button setting?"
+  },
+  {
+   "id": 1120282725,
+   "user": "Navid200",
+   "created_at": "2022-05-07T20:20:58Z",
+   "body": "With the release May 7, 2022, regardless of having the new setting (Alert buttons) enabled or disabled, if an alert triggers when the screen is locked, unlocking the screen brings up xDrip on the snooze page shown below.\r\n![Screenshot_20220507-105244](https://user-images.githubusercontent.com/51497406/167270522-ce5073c0-7887-4f8f-a2bd-316e0733dbb9.png)"
+  },
+  {
+   "id": 1120282851,
+   "user": "jamorham",
+   "created_at": "2022-05-07T20:21:51Z",
+   "body": "Ok yes, but I was referring to you saying that you didn't get any sound."
+  },
+  {
+   "id": 1120283077,
+   "user": "Navid200",
+   "created_at": "2022-05-07T20:23:20Z",
+   "body": "It happened once when I was getting an alert on BlueJay but not from the phone.  When I unlocked, I was on the snooze page and I couldn't hear an alert.  At that time, I had the new setting enabled.\r\n\r\nRegardless, I don't think the phone should unlock on the snooze page."
+  },
+  {
+   "id": 1120283466,
+   "user": "Navid200",
+   "created_at": "2022-05-07T20:25:24Z",
+   "body": "It's like we are encouraging the user to snooze the alert.  \r\nWe should be encouraging the user to act on the alert rather than to silence it.\r\nI'm sorry if this sounds angry or confrontational.   \r\nThis is very unusual to me.  You usually don't change the behvior so drastically without giving the users a chance to experience it first."
+  },
+  {
+   "id": 1120284233,
+   "user": "jamorham",
+   "created_at": "2022-05-07T20:29:51Z",
+   "body": "The type of notification that it is using to bypass DND maybe can trigger the content action to be triggered on unlock, the same destination as if you tap an alert notification from the notification area. Its not really an intended change of behavior just a side effect of how these notifications work. I can alter the destination for that but I'm not sure why it would be so much of a problem.\r\n\r\nThe user should be snoozing an alert as soon as they are aware of it. There is very little point their phone continuing to make noise once they are aware of the alert. Please explain to me why you think otherwise."
+  },
+  {
+   "id": 1120284333,
+   "user": "jamorham",
+   "created_at": "2022-05-07T20:30:24Z",
+   "body": "I've been unable to reproduce any problem with the sound not playing so please let me know if you get that again as I would rate it as a serious problem."
+  },
+  {
+   "id": 1120285276,
+   "user": "Navid200",
+   "created_at": "2022-05-07T20:36:03Z",
+   "body": "Imagine a parent goes to their child's room to see why their phone is generating an alert.\r\nThe child has gone to the bathroom next door.\r\nThe parent unlocks the phone to see what the level is and how bad it is.  Instead of seeing the blood glucose level, they see a snooze option with no reading.  They now have to tap on the top left button and tap on home page to go to the main screen in order to see the value.\r\n\r\nScenario 2:\r\nA user is woken up by a low alert.  They are really low.  Instead of seeing their blood glucose, they see a snooze button.\r\nInstead of seeing the reading, dropping the phone and going to the kitchen to eat, they first need to snooze the alert.\r\nWhat if they don't make it to the kitchen and the partner assumes that everything is fine because the alert has been snoozed?"
+  },
+  {
+   "id": 1120285531,
+   "user": "jamorham",
+   "created_at": "2022-05-07T20:37:27Z",
+   "body": "Okay. I can make it go to the home screen but on mine it shows the glucose value on the lock screen as part of the notification before unlock."
+  },
+  {
+   "id": 1120286182,
+   "user": "Navid200",
+   "created_at": "2022-05-07T20:40:54Z",
+   "body": "Thanks.  Please change it back.  I don't see my blood glucose on the lock screen.  I'm sure I can figure out how to do it if I want to.  But, I don't think it is like that for everyone  by default.  Hence, my request to change it back to unlock to the main screen.\r\nThanks."
+  },
+  {
+   "id": 1120311803,
+   "user": "Navid200",
+   "created_at": "2022-05-07T22:47:10Z",
+   "body": "The issue of not hearing the alert happened again.  \r\nMay be it only happens if you use the ascending volume profile.\r\nI let BlueJay vibrate on and on and did not snooze.  When the volume reached 100% on the next read cycle, on then, the sound could be heard.  "
+  },
+  {
+   "id": 1120417090,
+   "user": "jamorham",
+   "created_at": "2022-05-08T13:14:23Z",
+   "body": "Isn't that how ascending profile would normally work?"
+  },
+  {
+   "id": 1120431167,
+   "user": "jamorham",
+   "created_at": "2022-05-08T14:42:49Z",
+   "body": "May 8th nightly has the change for the lock screen notification to open to the home screen of xDrip instead of the snooze page. \r\n\r\nI also made another change which should revert any possible change to when vibrations occurred when Samsung phones were on DND and the alert wasn't set to override DND. \r\n\r\nI'm thinking to keep the SNOOZE ALERT button inside the notifications disabled by default as its probably too easy to cancel alerts. For example on mine its possible to press the button even when the phone is locked. I'm not sure what that would do if it were in a pocket. But I will leave the option there for anyone who wants to enable it."
+  },
+  {
+   "id": 1120456220,
+   "user": "Navid200",
+   "created_at": "2022-05-08T17:21:47Z",
+   "body": "One who uses the ascending volume profile, has two options as explained here:\r\nhttps://navid200.github.io/xDrip/docs/Ascending-volume-profile.html\r\n\r\nI choose not to delay the sound.  So, my alerts start right away making sound.\r\n\r\nI will be testing the new release now.  Thanks"
+  },
+  {
+   "id": 1121416327,
+   "user": "jamorham",
+   "created_at": "2022-05-09T18:08:31Z",
+   "body": "I think this issue is resolved now. I plan to close the issue soon. Please advise if seeing any problems with the latest."
+  },
+  {
+   "id": 1121419068,
+   "user": "Navid200",
+   "created_at": "2022-05-09T18:11:19Z",
+   "body": "Unlocking the phone unlocks on the main xDrip page now.  Thanks a lot.\r\nI see no issues.  \r\n\r\nI cannot be sure.  But, I had to disable notifications making sound and vibrate again.  I could be wrong.  But, it's possible installing the latest release may have triggered that. "
+  }
+ ]
+}

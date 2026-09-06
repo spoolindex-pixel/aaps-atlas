@@ -1,0 +1,27 @@
+{
+ "id": 4459603889,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4833,
+ "title": "Feature Request: Decoupling Bolus from Basal adjustment to ensure safety / Option for \"Superbolus by default\"",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4833",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2026-05-16T10:43:03Z",
+ "closed_at": "2026-05-16T20:22:19Z",
+ "comment_count": 2,
+ "body": "Hi everyone,\nI would like to raise a safety concern regarding how AAPS integrates meal boluses with basal rates, particularly how this affects users when the system is not in a Closed Loop state.\nIn AAPS, it is \"normal operation\" that after a meal bolus, the system often suspends the basal rate for 1–2 hours. Because of this consistent behavior, we have tuned our IC (Insulin-to-Carb) ratios specifically for this \"no-basal\" environment.\nThe risk exists at the very moment of calculation: When calculating a bolus, AAPS assumes it will be able to suspend the basal rate later. However, if the system cannot operate in a closed loop after the bolus is delivered (due to sensor failure, connection issues, or simply being in Open Loop), the pump continues to deliver the scheduled basal. Since our IC ratio was calibrated assuming this basal suspension, the combination of the bolus and the continuous basal results in an increased insulin dose from the very start, which often causes hypoglycemia.\nProposed Solution / Idea: The goal is to ensure that the total amount of insulin (Bolus + Basal) remains safe and consistent whether the Loop is active or not.\n1.\tBolus Snooze for SMB: As I understand it, this function addresses this by decoupling the bolus from basal adjustments, but it is currently only available in AMA mode. Bringing this logic to SMB would be a great help.\n2.\tPersistent Superbolus Option: The \"Superbolus\" function in the Calculator is a perfect fail-safe: it front-loads the next ~2 hours of basal into the bolus and sets a temporary zero basal.\n\tIf the Loop is active, the total dose is correct.\n\tIf the Loop is inactive/fails, the total dose is still correct because the basal was already included in the bolus and the pump isn't adding more on top.\n\nCurrently, the Superbolus checkbox must be manually checked every time. My child often forgets this. I am requesting an option to make the Superbolus checkbox \"checked by default\" in the Bolus Calculator settings. This would ensure that the calculated dose is safe even in a non-looping state. The user would only uncheck it if they are intentionally in Open Loop and want to rely on the standard, scheduled basal profile.\nI'm not a developer in this direction, but I believe this \"fail-safe\" approach would make the system much more robust for everyday use, for example in the event of sensor failures.\nThank you for your hard work and for considering this request!\n",
+ "comments": [
+  {
+   "id": 4467843600,
+   "user": "MilosKozak",
+   "created_at": "2026-05-16T19:08:09Z",
+   "body": "This is how SMB is designed. And ... it's not possible to mix priciples between AMA and SMB. The idea behind is different.\nZero temping after bolus is because you deliver 100% bolus. SMB best practice and design is not to do full bolus but let say 80%, then you will not experince zero temping after bolus"
+  },
+  {
+   "id": 4468004942,
+   "user": "cp2113",
+   "created_at": "2026-05-16T20:21:55Z",
+   "body": "Thanks! So, for example, the \"Deliver this part of bolus wizard result [%]\" setting is for this. I understand."
+  }
+ ]
+}

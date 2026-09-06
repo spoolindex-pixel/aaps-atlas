@@ -1,0 +1,83 @@
+{
+ "id": 3920741646,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4539,
+ "title": "AAPS 3.4.0.0 - Gaps in network coverage when I leave the Wi-Fi network",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4539",
+ "state": "closed",
+ "labels": [
+  "question - more info needed"
+ ],
+ "created_at": "2026-02-10T10:42:39Z",
+ "closed_at": "2026-03-30T17:55:33Z",
+ "comment_count": 11,
+ "body": "AAPS 3.4.0.0\nBuild: 796d36e-2026.01.20\nFlavor: fullrelease\nNightScout-Version: 15.0.3\nNSClientV3\nAndroid 16\nDexcom G7\noriginal Dexcom APP -> Xdrip+ -> AAPS\n\nI have the following settings in NSClientV3:\n\nConnection settings:\n\n- Use cellular connection: off\n- Use Wi-Fi connection: on\n- When on battery power: on\n- While charging: on\n\nWhen I return from shopping/a walk, the missing CGM data is not uploaded to NS, and the recording gaps are not filled. Previously, this was automatically \"filled in\" when I reconnected to Wi-Fi. Since AAPS 3.4.0.0, this no longer happens.\n\nThe screenshots show that the gaps only occur with NS; neither the AAPS nor the Dexcom app shows any gaps for the period 9:30 - 11:00.\n\n[AndroidAPS.log](https://github.com/user-attachments/files/25207463/AndroidAPS.log)\n![Image](https://github.com/user-attachments/assets/a416deea-685c-43d0-82e7-e9f0ce2e4798)\n![Image](https://github.com/user-attachments/assets/cb217258-c846-4e85-b284-4ee9dd9ed41d)\n![Image](https://github.com/user-attachments/assets/0e8b45f1-fc49-436c-8e1d-294ce265943c)",
+ "comments": [
+  {
+   "id": 3897656554,
+   "user": "MilosKozak",
+   "created_at": "2026-02-13T14:56:39Z",
+   "body": "you must provide logs from whole time range"
+  },
+  {
+   "id": 3919484823,
+   "user": "TeufelHH",
+   "created_at": "2026-02-18T08:49:23Z",
+   "body": "Which logs do you mean exactly? The entire zip files?\n\nYesterday between 8:45 and 11:15 I had the same problem, but I don't have any logs for that period... In the log directory, I have AndroidAPS._2026-02-17_00-00-00_.9.zip (created at 7:41) and the next file is AndroidAPS._2026-02-17_00-00-00_.28.zip (created at 18:32). Everything in between is missing.\n\nThis afternoon I will leave the Wi-Fi network and then post the relevant logs from that period.\n"
+  },
+  {
+   "id": 3920786015,
+   "user": "TeufelHH",
+   "created_at": "2026-02-18T13:17:21Z",
+   "body": "Same problem between 12:41 and 13:41. Here the logs\n\n[AndroidAPS._2026-02-18_00-00-01_.17.zip](https://github.com/user-attachments/files/25391396/AndroidAPS._2026-02-18_00-00-01_.17.zip)\n[AndroidAPS._2026-02-18_00-00-01_.18.zip](https://github.com/user-attachments/files/25391395/AndroidAPS._2026-02-18_00-00-01_.18.zip)\n[AndroidAPS._2026-02-18_00-00-01_.19.zip](https://github.com/user-attachments/files/25391397/AndroidAPS._2026-02-18_00-00-01_.19.zip)\n[AndroidAPS.log](https://github.com/user-attachments/files/25391398/AndroidAPS.log)"
+  },
+  {
+   "id": 3945252260,
+   "user": "TeufelHH",
+   "created_at": "2026-02-23T14:57:02Z",
+   "body": "> you must provide logs from whole time range\n\nI hope the logs on my previous replay are ok"
+  },
+  {
+   "id": 3975476176,
+   "user": "vanelsberg",
+   "created_at": "2026-02-27T22:25:23Z",
+   "body": "Can not confirm the problem (G6->xDip->AAPS)\n> original Dexcom APP -> Xdrip+ -> AAPS\n\nAssume you have G7 configured in xDrip+ as BG source?\nAfaik you cannot also have the \"original Dexcom App\" installed as it will compete with xDrip for the G7 connection.\nI expect uninstalling the original Dexcom app will solve your problem?\n"
+  },
+  {
+   "id": 3977289975,
+   "user": "MilosKozak",
+   "created_at": "2026-02-28T15:10:57Z",
+   "body": "> Same problem between 12:41 and 13:41. Here the logs\n> \n> [AndroidAPS._2026-02-18_00-00-01_.17.zip](https://github.com/user-attachments/files/25391396/AndroidAPS._2026-02-18_00-00-01_.17.zip) [AndroidAPS._2026-02-18_00-00-01_.18.zip](https://github.com/user-attachments/files/25391395/AndroidAPS._2026-02-18_00-00-01_.18.zip) [AndroidAPS._2026-02-18_00-00-01_.19.zip](https://github.com/user-attachments/files/25391397/AndroidAPS._2026-02-18_00-00-01_.19.zip) [AndroidAPS.log](https://github.com/user-attachments/files/25391398/AndroidAPS.log)\n\nthis log shows, data was backfilled properly. isn't it just NS rendering issue? can you look to reposts on this period?"
+  },
+  {
+   "id": 4003868489,
+   "user": "TeufelHH",
+   "created_at": "2026-03-05T10:01:27Z",
+   "body": "> Can not confirm the problem (G6->xDip->AAPS)\n> \n> > original Dexcom APP -> Xdrip+ -> AAPS\n> \n> Assume you have G7 configured in xDrip+ as BG source? Afaik you cannot also have the \"original Dexcom App\" installed as it will compete with xDrip for the G7 connection. I expect uninstalling the original Dexcom app will solve your problem?\n\nNo, I didn't specify the G7 as the blood glucose source in XDrip+, but rather the \"Companion App\" because I also use the official Dexcom G7 app. This ensures that in case of sensor failure, data is also stored with Clarity, as Dexcom otherwise causes problems when replacing the sensor. I've been using the combination of Dexcom G7 app -> XDrip+ -> AAPS for over 1.5 years, and it works perfectly together. The problem only started after the AAPS update to version 3.4.0.0; it didn't exist before."
+  },
+  {
+   "id": 4003892667,
+   "user": "TeufelHH",
+   "created_at": "2026-03-05T10:05:17Z",
+   "body": "> > Dasselbe Problem besteht zwischen 12:41 und 13:41 Uhr. Hier die Protokolle.\n> > [AndroidAPS. _2026-02-18_00-00-01_ .17.zip ](https://github.com/user-attachments/files/25391396/AndroidAPS._2026-02-18_00-00-01_.17.zip) [AndroidAPS. _2026-02-18_00-00-01_ .18.zip ](https://github.com/user-attachments/files/25391395/AndroidAPS._2026-02-18_00-00-01_.18.zip) [AndroidAPS. _2026-02-18_00-00-01_ .19.zip ](https://github.com/user-attachments/files/25391397/AndroidAPS._2026-02-18_00-00-01_.19.zip) [AndroidAPS.log](https://github.com/user-attachments/files/25391398/AndroidAPS.log)\n> \n> Dieses Protokoll zeigt, dass die Daten korrekt nachgeladen wurden. Liegt es nicht einfach an einem NS-Rendering-Problem? Könnten Sie sich die Reposts aus diesem Zeitraum ansehen?\n\nHi,\nUnfortunately, I'm not very familiar with Network Server. I'm using a pre-built instance from ns10be.de so I don't have to deal with the maintenance of Network Server itself. Where can I see what you mentioned, or what can I post here so you can see if the problem lies there?"
+  },
+  {
+   "id": 4036954606,
+   "user": "TeufelHH",
+   "created_at": "2026-03-11T07:01:01Z",
+   "body": "Because I'm now using a new phone (Samsung Galaxy S26 Ultra) and it's not enabled in the official Dexcom app, I've switched to the XDrip+ -> AAPS combination. The Dexcom app is uninstalled and the sensor is started via XDrip+. However, the same error occurs: when I leave and reconnect to Wi-Fi, there's no backfill to NS for the missing data."
+  },
+  {
+   "id": 4037582359,
+   "user": "MilosKozak",
+   "created_at": "2026-03-11T09:00:33Z",
+   "body": "There is a bug in NS rendering (NS must be restarted to see backfilled data) but AAPSClient recognize everything correctly\nIsn't it your case?"
+  },
+  {
+   "id": 4041955671,
+   "user": "TeufelHH",
+   "created_at": "2026-03-11T20:19:55Z",
+   "body": "> There is a bug in NS rendering (NS must be restarted to see backfilled data) but AAPSClient recognize everything correctly Isn't it your case?\n\nJust the phone change and switching from Dexcom -> XDrip+ -> AAPS to XDrip+ -> AAPS required me to restart AAPS several times (including restarting my phone), and yet I still have the gaps in NS, just like 2 hours ago.\n\nI have now also restarted the NS server, the missing values ​​are now also displayed.\n\nIs the bug on NS's side or AAPS's side? I hope the bug gets fixed soon.\n\nthx [MilosKozak](https://github.com/MilosKozak)"
+  }
+ ]
+}

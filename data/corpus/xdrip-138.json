@@ -1,0 +1,42 @@
+{
+ "id": 239358501,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 138,
+ "title": "Contour Next One meter uploads duplicate BG readings",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/138",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "device-glucometer"
+ ],
+ "created_at": "2017-06-29T03:47:02Z",
+ "closed_at": "2021-07-14T03:11:34Z",
+ "comment_count": 4,
+ "body": "First, I want to say I've been using the Contour Next One for the past month and I absolutely love it and the automatic upload to xDrip+ and automatic calibration.  What an amazing feature.\r\n\r\nI didn't notice an issue for this yet, but I've been getting duplicate glucose readings in my Calibration Data Table.  Not all the time, and when it happens, it may happen anywhere between 1 and 5 or 6 times.  The entries can be minutes or hours apart.  I've been removing the duplicates manually from the data table with the \"disable\" functionality.\r\n\r\nMy setup:  DexcomG5 > SW3 > Samsung S7 (6.0.1) > both Mongo Upload and REST to my OpenAPS rig.\r\nI had been running a nightly from early June, but have since updated to the nightly from 6/20.  I have recently started a new sensor (2 days ago) and have had the issue happen once since then (with only one duplication).",
+ "comments": [
+  {
+   "id": 466201309,
+   "user": "diagnoe4",
+   "created_at": "2019-02-21T22:53:35Z",
+   "body": "I have the same observation with an Accu-Check Aviva Connect. It doesn't seem to be only Contour related but maybe all bluetooth glucose meters?\r\n\r\nI have observed a bug with the Accu-Check Aviva Connect sync: sometimes historic glucose levels are suddenly populated on the graph at a wrong time. E.g. I would measure 5.3 at 8 in the morning. That same 5.3 would sometimes suddenly appear at 14:30 again after taking a measurement at say 16:00 but with no measurement happening at 14:30 and other measurements having happened between 8:00 and 14:30. Often these measurements would appear multiple times. This doesn't happen very often but does from time to time and did sometimes mess with the Libre calibration."
+  },
+  {
+   "id": 729911750,
+   "user": "muthijammy",
+   "created_at": "2020-11-18T19:43:59Z",
+   "body": "I have more data on issue of duplicate calibration triggering at random time. These seem to be triggerring conditions:\r\n\r\nMeter connected to xdrip on mobile\r\nKeep automatic calibration enabled in config\r\nDo BG test and Dont calibrate using it (4:22 pm)\r\nOpen xdrip after 30 minutes\r\nEarlier BG value randomly applied as calibration now(4:50 pm)\r\n\r\nI had noticed this issue in past but didnt realise last step in trigger. It has been discussed in past in FB and I see below open issues raised without above triggers mentioned and open. \r\n\r\nWorkaround seems to be disabling automatic calibration or click on BG in graph and calibrate every BG or delete BG. Can there be quick fix as time-is-money and delayed BG used for calibration is quite dangerous. Should I raise new issue or will get priority based on new comment?\r\n<img width=\"400\" src=\"https://user-images.githubusercontent.com/37772619/99580048-25c07280-2a33-11eb-81e4-25c44f9cfa0a.jpg\" /><img width=\"400\" src=\"https://user-images.githubusercontent.com/37772619/99580067-2bb65380-2a33-11eb-9505-4a3cf5f8ecda.jpg\" />\r\n\r\nhttps://github.com/NightscoutFoundation/xDrip/issues/790"
+  },
+  {
+   "id": 846583724,
+   "user": "Navid200",
+   "created_at": "2021-05-23T15:48:33Z",
+   "body": "@gregtcm \r\nIs this still happening on the latest version of xDrip?\r\nMay 21, 2021"
+  },
+  {
+   "id": 879551263,
+   "user": "Navid200",
+   "created_at": "2021-07-14T03:11:34Z",
+   "body": "This issue is not about double calibration.  It is rather about blood glucose readings being uploaded to xDrip more than once.\r\n\r\nWe can reopen if anyone is experiencing this issue.  Please post here if you do."
+  }
+ ]
+}

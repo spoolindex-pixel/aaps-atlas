@@ -1,0 +1,87 @@
+{
+ "id": 778814920,
+ "repo": "nightscout/AndroidAPS",
+ "number": 186,
+ "title": "[2.8] TDD in Statistics is misscalculated",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/186",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-01-05T09:42:27Z",
+ "closed_at": "2021-01-11T06:53:22Z",
+ "comment_count": 12,
+ "body": "Build version: 2.8\r\n\r\n![image](https://user-images.githubusercontent.com/25306225/103630698-ba7f2100-4f4a-11eb-81eb-8f85b14e5b08.png)\r\n\r\nThe TDD for today is zero, which is incorrect. This results in the Average 8 days results being corrupted.\r\nI believe the Average results should exclude current day.",
+ "comments": [
+  {
+   "id": 754534408,
+   "user": "rICTx-T1D",
+   "created_at": "2021-01-05T09:59:35Z",
+   "body": "In my 2.8.0 version, the stat-entries of TDD are ending yesterday and the average is about 7 days.\r\n\r\nDo you have change time/date or timezone last 7 days?"
+  },
+  {
+   "id": 754537801,
+   "user": "cristinav74",
+   "created_at": "2021-01-05T10:04:52Z",
+   "body": "No, but my phone had a security update last night.\r\n\r\nNew problem: after restarting my phone, I have completely different results in Statistics (obviously corrupted)\r\nI checked the NS reports and they are correct (in terms of TDD, total bolus and total basals)\r\n![image](https://user-images.githubusercontent.com/25306225/103633289-33cc4300-4f4e-11eb-89a1-efb801a6f3a9.png)\r\n"
+  },
+  {
+   "id": 754540567,
+   "user": "rICTx-T1D",
+   "created_at": "2021-01-05T10:09:42Z",
+   "body": "This don't look nice. :-)\r\n* Store all settings by export  on maintenance menu. \r\n* Sync all values with nightscout. \r\n* reset the stat's\r\n* reset the database in maintenance menu\r\n* check if is solved, otherwise reinstall AAPS\r\n\r\nSorry, but I don't have a better idea."
+  },
+  {
+   "id": 754549516,
+   "user": "cristinav74",
+   "created_at": "2021-01-05T10:28:08Z",
+   "body": "Tried all the options, problem still not fixed but thank you for your suggestions.\r\nAs a side detail, I migrated to 2.8.0 from 2.7.0 on Janury 3rd, which is the last day when the numbers are correct.\r\nThis is the current version of corrupted statistics.\r\nThat 25.62 that keeps repeating is my base basal insulin.\r\n![image](https://user-images.githubusercontent.com/25306225/103635484-4005cf80-4f51-11eb-8222-626c5c696693.png)\r\n"
+  },
+  {
+   "id": 754625578,
+   "user": "rICTx-T1D",
+   "created_at": "2021-01-05T13:08:54Z",
+   "body": "Has anyone other user the same problem? I can't reproduce it."
+  },
+  {
+   "id": 754748294,
+   "user": "cristinav74",
+   "created_at": "2021-01-05T16:33:54Z",
+   "body": "![Screenshot_20210105-183145](https://user-images.githubusercontent.com/25306225/103672018-5d07c600-4f84-11eb-99f5-ce21844f6667.png)\r\n\r\nIt looks like the pre-migration data cannot be loaded. No TIR and average for the days before installing 2.8.\r\n"
+  },
+  {
+   "id": 754786905,
+   "user": "rICTx-T1D",
+   "created_at": "2021-01-05T17:39:22Z",
+   "body": "The the problem will be solved when time is gone.... Wait some days."
+  },
+  {
+   "id": 754802677,
+   "user": "cristinav74",
+   "created_at": "2021-01-05T18:05:15Z",
+   "body": "Definitely, it is a minor problem and should not affect future data (I hope so, I'll monitor my Stats)."
+  },
+  {
+   "id": 754903929,
+   "user": "rICTx-T1D",
+   "created_at": "2021-01-05T21:16:03Z",
+   "body": "Can you check your stats in 7 or more days (calculated from update-date) again? When all is fine, you can close this issue, otherwise we will try a new run to solve it."
+  },
+  {
+   "id": 754906939,
+   "user": "cristinav74",
+   "created_at": "2021-01-05T21:22:17Z",
+   "body": "Sure, I'll keep this issue updated"
+  },
+  {
+   "id": 755172048,
+   "user": "CaroGo",
+   "created_at": "2021-01-06T08:55:40Z",
+   "body": "I can't reproduce it either... just 7 days shown as it should be. Dana RS, "
+  },
+  {
+   "id": 757660838,
+   "user": "cristinav74",
+   "created_at": "2021-01-11T06:53:22Z",
+   "body": "The Statistics are correctly calculated now that all of them have been logged under 2.8 version."
+  }
+ ]
+}

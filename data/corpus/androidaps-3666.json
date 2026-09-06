@@ -1,0 +1,33 @@
+{
+ "id": 2764347615,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3666,
+ "title": "New Insight driver fails to deliver boluses",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3666",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-12-31T12:52:55Z",
+ "closed_at": "2025-01-04T10:27:15Z",
+ "comment_count": 3,
+ "body": "Boluses are recorded in AAPS on the phone  as delivered, but the pump bolus history is empty, see the screenshots below.\r\n\r\nMore details: AAPS 3.3.0.0 was installed on kid's phone shortly after noon (30.12.) and everything seemed to be working fine. \r\nBut later in the afternoon kid's GL started raising, so in the evening we finally decided to issue a bolus correction manually (at 19:28). The animation in AAPS app was suspiciously fast (zero connection time, no sounds from the pump), so we checked the pump bolus history: the last bolus was delivered at 11:54, i.e. before we switched to 3.3.0.0. We tried again with the same result:  bolus delivery recorded by AAPS ( 0,50U at 19:33, see below), but no bolus delivered by the pump. \r\n\r\nI reinstalled the old version (3.2.0.4) and everything went back to normal. The next two items in the pump history (at 19.51 and 19.58, see below) are boluses delivered by the old driver.\r\n\r\nCubot KK Mini 3 (phone), AC Insight (pump).\r\n\r\n![NewInsightDriverProblem](https://github.com/user-attachments/assets/975b2b06-36d2-42e2-a35b-0d24bc3f1adb)\r\n",
+ "comments": [
+  {
+   "id": 2566656304,
+   "user": "MilosKozak",
+   "created_at": "2024-12-31T18:46:52Z",
+   "body": "I see logged crashes on Kingkong Mini 3 related to memory and android system (not aaps fault)\r\nIdentification is not provided so I cannot tell it's you"
+  },
+  {
+   "id": 2567149799,
+   "user": "Philoul",
+   "created_at": "2025-01-01T21:19:58Z",
+   "body": "Can you please provide screenshot of Insight plugin ? (of course with 3.3.0.0 version)"
+  },
+  {
+   "id": 2569942621,
+   "user": "tomdvorak",
+   "created_at": "2025-01-03T23:50:49Z",
+   "body": "So I reinstalled AAPS 3.3.0.0  and this time it seems to be OK. Sorry for the false alarm.\r\n\r\nMore details: I reinstalled AAPS 3.3.0.0  and tried again to issue a manual bolus. This time AAPS tried to connect and failed, but the bolus was (correctly) not recorded in AAPS treatments. Retry & phone reboot did not help, but restarting bluetooth  did, so the bolus was finally delivered and recorded in AAPS. I  compared the pump bolus history & AAPS treatments and there is still one microbolus at 11:34 recorded in AAPS which is missing in the pump history. This, however, coincides with the time when I reinstalled the app, so it does not seem to be critical. I'll be comparing AAPS & pump records for a few more days, but now it seems to be working fine. So once again, sorry for the false alarm. \r\n   \r\n![InsightProblem](https://github.com/user-attachments/assets/304864a1-9c55-4ac3-907e-b4710b7f3680)\r\n"
+  }
+ ]
+}

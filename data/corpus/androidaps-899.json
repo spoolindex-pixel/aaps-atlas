@@ -1,0 +1,65 @@
+{
+ "id": 1050033831,
+ "repo": "nightscout/AndroidAPS",
+ "number": 899,
+ "title": "Crash on changing Overview graph granularity",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/899",
+ "state": "closed",
+ "labels": [
+  "question - more info needed"
+ ],
+ "created_at": "2021-11-10T16:16:05Z",
+ "closed_at": "2021-11-12T08:03:21Z",
+ "comment_count": 8,
+ "body": "When changing the granularity of the graph on the Overview tab, AAPS crashes.\r\n\r\n0 AAPS is looping / graph is set to display 'basals' and 'activity' with no other graphs (graph1, graph2,...) enabled\r\n1 Tap-hold on the graph to change granularity\r\n--> after performing step 1 two or three times, AAPS crashes \r\n\r\nNote that the issue can be consistently replicated.\r\n--------------\r\nTested on AAPS 3.0 B5, running on an S7/Android 11 (Pixel Experience) connected to MDT 554 via RileyLink\r\nLogs shared directly with Milos. Logs were generated after restarting AAPS immediately after the crash occurred.\r\n",
+ "comments": [
+  {
+   "id": 965755260,
+   "user": "MilosKozak",
+   "created_at": "2021-11-10T21:21:16Z",
+   "body": "i improved UI much after beta5 and now i cannot replicate. but it can have another reason.\r\nupdate this issue after you test it with beta6 (when released) or current dev"
+  },
+  {
+   "id": 966532045,
+   "user": "rustymonkey",
+   "created_at": "2021-11-11T18:33:16Z",
+   "body": "Tested on 2.8.2.10-dev build 2021-11-11 11:40 and the issues are partially resolved (it no longer crashes). Tap-hold once always works as expected. But tap-hold 2 or 3 times results in:\r\n1) the UI doesn't respond immediately to the 2nd/3rd tap-hold (always)\r\n2) the Android dialog 'AndroidAPS isn't responding' appears (often)\r\n\r\nFrom an end user perspective, it seems as if AAPS is doing something CPU-intensive after switching granularity once, and attempting to switch again while that background activity is going on doesn't put a stop to that activity, resulting in the the UI being non-responsive.\r\n\r\nI've shared new logs illustrating this with the above build."
+  },
+  {
+   "id": 966901260,
+   "user": "MilosKozak",
+   "created_at": "2021-11-12T08:03:21Z",
+   "body": "well if you change scale data in the past must be calcalculated\r\non fast phone it's under 10s of 100% utilization\r\non slow it's tens of seconds\r\n\r\nif you press it more times recalculation is restarted which takes even more time\r\ni optimized the calculations many times and i don't see any space for futher speedup\r\nso. if if you are not happy with current state just buy faster phone"
+  },
+  {
+   "id": 966902604,
+   "user": "Philoul",
+   "created_at": "2021-11-12T08:05:45Z",
+   "body": "This issue is similar to #801 (I never had crash but very often App not responding)\r\nIt's a bit better on latest dev, but I still have App Not responding popup and the same behaviour explained by @rustymonkey in his last comment"
+  },
+  {
+   "id": 966909286,
+   "user": "Philoul",
+   "created_at": "2021-11-12T08:17:24Z",
+   "body": "> well if you change scale data in the past must be calcalculated\r\non fast phone it's under 10s of 100% utilization\r\non slow it's tens of seconds\r\n> \r\n> if you press it more times recalculation is restarted which takes even more time\r\ni optimized the calculations many times and i don't see any space for futher speedup\r\nso. if if you are not happy with current state just buy faster phone\r\n\r\nI could improved it with doing during prepare data all scaling possibilities for the last 24hours (6h scaling, 12h scaling, 18hour scaling, 24 hour scaling, with and without prediction)\r\n\r\n It worked fine in overview because no additional calculation was required during any change of scaling done in overview (I saw immediatly all curves). I closed my PR because not ok with HistoryBrowser 😞.\r\nI can update and propose again this PR as starting point."
+  },
+  {
+   "id": 967007677,
+   "user": "Philoul",
+   "created_at": "2021-11-12T10:53:09Z",
+   "body": "@rustymonkey can you test #911 and tell me if it works better ?"
+  },
+  {
+   "id": 968340951,
+   "user": "rustymonkey",
+   "created_at": "2021-11-14T18:26:06Z",
+   "body": "Tested this PR ( #911 ) on 2.8.2.10dev 2021-11-14-12:49, and it resolves the performance issues. i.e.\r\n- the UI now responds consistently to Tap-hold actions\r\n- tap-hold actions no longer trigger the 'AndroidAPS isn't responding' dialog"
+  },
+  {
+   "id": 1014110605,
+   "user": "rustymonkey",
+   "created_at": "2022-01-17T03:38:49Z",
+   "body": "Note: My previous comment might be misleading--PR #911 isn't yet included with AAPS 3.0. It's a work in progress, tracked at #801."
+  }
+ ]
+}

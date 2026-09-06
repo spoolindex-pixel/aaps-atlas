@@ -1,0 +1,67 @@
+{
+ "id": 727165979,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1480,
+ "title": "Ability to start libre 1 sensors (xDrip+bubbleDevice)",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1480",
+ "state": "closed",
+ "labels": [
+  "enhancement",
+  "device-libre",
+  "device-bubble"
+ ],
+ "created_at": "2020-10-22T08:25:56Z",
+ "closed_at": "2021-03-14T09:03:47Z",
+ "comment_count": 8,
+ "body": "To start libre 1 sensor i need to launch another application and start sensor from there. ",
+ "comments": [
+  {
+   "id": 715966060,
+   "user": "tolot27",
+   "created_at": "2020-10-24T16:16:01Z",
+   "body": "You have to ask the bubble developers to integrate this feature. As long as it is not supported by the bubble device, it cannot be supported by xDrip."
+  },
+  {
+   "id": 715976046,
+   "user": "ArchibaldovRPtech",
+   "created_at": "2020-10-24T16:30:42Z",
+   "body": "But they have own app with this possibility. And i was hoping they get read my question."
+  },
+  {
+   "id": 715982004,
+   "user": "tolot27",
+   "created_at": "2020-10-24T16:38:59Z",
+   "body": "Please provide a link to the app. Why not contact them directly?"
+  },
+  {
+   "id": 716012667,
+   "user": "ArchibaldovRPtech",
+   "created_at": "2020-10-24T17:15:26Z",
+   "body": "https://play.google.com/store/apps/details?id=com.outshineiot.diabox&hl=en_US&gl=US\r\nI do not know how i can do that."
+  },
+  {
+   "id": 716161434,
+   "user": "tolot27",
+   "created_at": "2020-10-25T14:57:00Z",
+   "body": "@Archibald-rgb \r\n> I do not know how i can do that.\r\n\r\nJust send them an e-mail. The address is listed at the Google Play page you have linked."
+  },
+  {
+   "id": 717076147,
+   "user": "bubbledevteam",
+   "created_at": "2020-10-27T08:31:10Z",
+   "body": "    public static BridgeResponse getBubbleStart() {\r\n        final BridgeResponse reply = new BridgeResponse();\r\n        ByteBuffer ackMessage = ByteBuffer.allocate(3);\r\n        ackMessage.put(0, (byte) 0x05);\r\n        ackMessage.put(1, (byte) 0x01);\r\n        ackMessage.put(2, patchInfoByte[0]);//patchInfo first byte support 0xDF(libre1) and 0x70 (libre pro/h)\r\n        reply.add(ackMessage);\r\n        return reply;\r\n    }\r\n    //response buffer   850101a538e400\r\n           int first = 0xff & buffer[0];\r\n            if (first == 0x85) {\r\n                int status = 0xff & buffer[3];\r\n                    --A3=not running,\r\n                    --A4=starting,\r\n                    --A5=running,\r\n                    --A6=expiring,\r\n                    --A7=expired,\r\n                    --A8=broken(permanent error)\r\n                }"
+  },
+  {
+   "id": 717882422,
+   "user": "tolot27",
+   "created_at": "2020-10-28T11:50:52Z",
+   "body": "@bubbledevteam Please can you provide a PR or describe the source code briefly? It doesn't look like compilable."
+  },
+  {
+   "id": 798835222,
+   "user": "Navid200",
+   "created_at": "2021-03-14T05:20:25Z",
+   "body": "@Archibald-rgb Looks like your issue is with an app other than xDrip.\r\nCan we close this issue please?\r\nThanks"
+  }
+ ]
+}

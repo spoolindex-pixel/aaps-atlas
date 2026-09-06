@@ -1,0 +1,75 @@
+{
+ "id": 2275123192,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3318,
+ "title": "Failed bolus error message when bolus was delivered",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3318",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-05-02T10:12:47Z",
+ "closed_at": "2024-11-13T13:00:01Z",
+ "comment_count": 13,
+ "body": "At 16:54 yesterday, I gave my daughter 2.1u of insulin directly using AAPS and got the \"Bolus reported an error\" message (please see screenshot), but I know that the bolus was definitely delivered by the Combo pump because it delivers insulin in 0.1u increments and I count the little noises the pump makes with each one.\r\n\r\nI have included a screenshot of the treatments showing 2.1u was delivered at 16:54 and the main screen of AAPS showing bolus delivery failed in orange on the graph.\r\n\r\nI think this is what happened when I received a \"bolus failed\" text when sending an SMS command recently. I created issue Failed bolus by SMS was actually delivered #3309 for that.\r\n\r\nUsing AAPS 3.2.0.2 Build c31617f 2023.12.13, Combo, G6, xDrip and Xiaomi A2 Lite. No longer using Ruffy.\r\n\r\n@dv1 \r\n\r\n[Log Export.txt](https://github.com/nightscout/AndroidAPS/files/15186441/Log.Export.txt)\r\n\r\n![bolus reported an error](https://github.com/nightscout/AndroidAPS/assets/68807070/d9308af6-08d2-4461-9683-76276407fa7a)\r\n![bolus delivery failed](https://github.com/nightscout/AndroidAPS/assets/68807070/8728bdc0-b93d-4413-90cf-a1d7a6d5e2b7)\r\n![2 1u delivered in treatments](https://github.com/nightscout/AndroidAPS/assets/68807070/b17838e2-22db-4e1d-a750-a1daa46d75ce)\r\n",
+ "comments": [
+  {
+   "id": 2090099981,
+   "user": "dv1",
+   "created_at": "2024-05-02T10:17:02Z",
+   "body": "As I said [here](https://github.com/nightscout/AndroidAPS/issues/3309#issuecomment-2090023154), try newest dev."
+  },
+  {
+   "id": 2589519708,
+   "user": "pontomedon",
+   "created_at": "2025-01-14T10:15:27Z",
+   "body": "@MilosKozak as mentioned [here](https://github.com/nightscout/AndroidAPS/issues/3309#issuecomment-2587085926), this issue is unfortunately not fixed. It started occurring with the new Combo driver (which otherwise works great!), and is still present on `3.3.1.0`.\r\n\r\nPretty sure #3318 and #3309 are duplicates, but one of them should be re-opened, I think."
+  },
+  {
+   "id": 2589616261,
+   "user": "Der-Schubi",
+   "created_at": "2025-01-14T11:00:29Z",
+   "body": "Can confirm, I have this problem every few days.\r\nWhen using the bolus wizard the entered carbs are deleted while the delivered insulin gets logged."
+  },
+  {
+   "id": 2592010643,
+   "user": "dv1",
+   "created_at": "2025-01-15T09:03:27Z",
+   "body": "@Der-Schubi If you can, do the following:\r\n\r\nOpen the file `pump/combov2/comboctl/src/commonMain/kotlin/info/nightscout/comboctl/base/PumpIO.kt`.\r\n\r\nIn lines 1662, 1694, 1728, 1733, 1742, 1774, 1807, 1812 change `VERBOSE` to `DEBUG`, like this:\r\n\r\nfrom:\r\n\r\n    logger(LogLevel.VERBOSE) { \"Starting background CMD ping heartbeat\" }\r\n\r\nto:\r\n\r\n    logger(LogLevel.DEBUG) { \"Starting background CMD ping heartbeat\" }\r\n\r\nThen, when the issue happens again, immediately post logs here."
+  },
+  {
+   "id": 2634276939,
+   "user": "MilosKozak",
+   "created_at": "2025-02-04T15:14:29Z",
+   "body": "Any news here?"
+  },
+  {
+   "id": 2634570218,
+   "user": "Der-Schubi",
+   "created_at": "2025-02-04T17:06:11Z",
+   "body": "> Any news here?\n\nNot yet . Got no errors since. May be a timing issue, resolved by the debug logging?"
+  },
+  {
+   "id": 2637680864,
+   "user": "pontomedon",
+   "created_at": "2025-02-05T18:15:20Z",
+   "body": "Had it like 3 or 4 times, but was never fast enough to connect ADB. My wife's the patient, so I have limited opportunities where she injects while being near my computer. I think I'll set up wireless ADB and just connect whenever she's in the apartment :P"
+  },
+  {
+   "id": 2637689148,
+   "user": "Der-Schubi",
+   "created_at": "2025-02-05T18:19:07Z",
+   "body": "> Had it like 3 or 4 times, but was never fast enough to connect ADB.\n\nYou can export the logs without ADB, directly in AAPS. In the menu under maintenance is an option to send logs by email."
+  },
+  {
+   "id": 2637696502,
+   "user": "pontomedon",
+   "created_at": "2025-02-05T18:22:42Z",
+   "body": "> You can export the logs without ADB, directly in AAPS\n\ndamn, didn't know that. will do when it happens the next time!"
+  },
+  {
+   "id": 2661626415,
+   "user": "dv1",
+   "created_at": "2025-02-16T21:29:33Z",
+   "body": "I already posted this in Discord, but for higher visibility, I also mention it here:\n\nI added a `comboctl-dev` branch to my https://github.com/dv1/AndroidAPS fork. If you can, try that out and let me know if this fixes the issue for you. Due to the nature of the issue, reproducing it can be very difficult, hence my request."
+  }
+ ]
+}

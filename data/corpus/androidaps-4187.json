@@ -1,0 +1,45 @@
+{
+ "id": 3472310640,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4187,
+ "title": "Open some stable feature in Master + Engineering_mode instead of Dev + engineering_mode ",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4187",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-10-01T07:02:17Z",
+ "closed_at": "2025-10-13T09:11:34Z",
+ "comment_count": 5,
+ "body": "Topic for discussion:\n\nI have in mind here Autotune or AutoISF, but it can be any other one.\n- these features should be stable (of course)\n- they can be hidden in master branch for several reason (too complicated/tricky for end users, too many settings, not working  for all etc.)\n\nBut in parallel I regularly received requests to use Autotune in discord, and trying to find workarounds (AutotuneWeb, docker, ...) because afraid with the dev branch (really not for end users).\n- currently these features are only available in dev branch + engineering_mode \n- workaround for these users is to create a dev build from master branch (don't like these kind of solution)\n- engineering_mode with master could be a better option 🤔\n\nNote that we can adjust precisely what is available or not.\ni.e. Autotune Plugin could be available, but not the Autotune Automations still limited to dev branch...",
+ "comments": [
+  {
+   "id": 3359324836,
+   "user": "robertrub",
+   "created_at": "2025-10-02T06:20:43Z",
+   "body": "Yes, I agree with @Philoul 's logic. AutoTune is in dev for some time and no bad malfunction has come forward. The results work or not for the user, this should be stated clearly in the plugin. But, the program is working ok.\n\nSame for AutoISF, many use it with very good results. It is complicated to setup (many settings, difficult to tweak because older decisions are not easily available...) but give good results.\n\nHaving those plugin active via engineering_mode is a very good idea."
+  },
+  {
+   "id": 3361323702,
+   "user": "houthacker",
+   "created_at": "2025-10-02T13:52:58Z",
+   "body": "My 2c:\n\nI think it would be very helpful to have Autotune in the master branch behind engineering mode for safety.\nMy use case for this is that I'm managing / monitoring the t1d of my kid and I used to use AutotuneWeb a lot, which is broken at the moment. \nAlthough a new version of it is on the way, I'd love to be able to run Autotune on my kids' phone without the risks involved when running the dev version (i.e. come home early from work to debug AAPS when she's in school).\n\nI'd also like Autotune Automations, so I could run it on a schedule. If that's behind the engineering mode as well, would that be considered too unsafe? Personally I'd like to be able to schedule autotune, but then manually inspect the result before applying it, if that's at all possible."
+  },
+  {
+   "id": 3363488000,
+   "user": "Philoul",
+   "created_at": "2025-10-02T22:46:46Z",
+   "body": "> I'd also like Autotune Automations, so I could run it on a schedule. If that's behind the engineering mode as well, would that be considered too unsafe? Personally I'd like to be able to schedule autotune, but then manually inspect the result before applying it, if that's at all possible.\n\nAutomation is not \"unsafe\" if it's just a daily run without applying automatically the tuned profile.\nThe setting available to update automatically current profile should be disabled. \n\nWhen Autotune has been developed and later included within AAPS, most insulins was novorapid or equivalent, so with much longer peak duration compared to now, and there were no variable ISF algo (DynISF or AutoISF) available. \n- During all my tests 4 or 5 years ago, after having a profile tuned and stable, I was able to use this automation with very tiny updates from one day to another one.\n- it's no more the same situation today with Lyumjev and AutoISF. After each run, a check of the tuned profile remains mandatory and most of the time it requires manual adjustments (and I'm a very skilled user knowing perfectly how algo works and all potential side effects...).\n\nSo I would never propose to open the \"Auto Update / ProfileSwitch\" feature within the master branch (even with engineering_mode enabled)."
+  },
+  {
+   "id": 3364499346,
+   "user": "houthacker",
+   "created_at": "2025-10-03T06:56:46Z",
+   "body": "Agree. Just having the option to run it would be a great help."
+  },
+  {
+   "id": 3396560123,
+   "user": "MilosKozak",
+   "created_at": "2025-10-13T09:11:34Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/659d14b267a242ec18e82526c31f230ba4284cae"
+  }
+ ]
+}

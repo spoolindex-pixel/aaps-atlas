@@ -1,0 +1,257 @@
+{
+ "id": 2424692524,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 3582,
+ "title": "xDrip followers sync feature dead after Google FCM API removed on 22.07.2024",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/3582",
+ "state": "closed",
+ "labels": [
+  "sync"
+ ],
+ "created_at": "2024-07-23T09:18:04Z",
+ "closed_at": "2024-09-30T11:48:50Z",
+ "comment_count": 48,
+ "body": "I know, I didn't consult the developers first, but that's not a \"bug\", just a major f*ck up... so I'm just trying to get @jamorham attention :)\r\n\r\n### Subject of the issue\r\nGoogle FCM old API was removed yesterday causing major issue for all xdrip followers. It seems it was announced a year ago, but nothing was done in this time.\r\nhttps://firebase.google.com/support/faq#deprecated-api-shutdown\r\n\r\nNot an mobile expert but I really hope that Firebase SDK upgrade (15.0.0 -> 24.0.0) in xDrip should be enough to fix the problem.\r\n\r\n### Your environment\r\nDoesn't matter - all apps using the FCM messaging API are affected.\r\n\r\n### Expected behavior\r\nFollowers working like two days ago\r\n\r\n### Actual behavior\r\nCommunication between master and followers broken using default sync.\r\n",
+ "comments": [
+  {
+   "id": 2244906498,
+   "user": "jamorham",
+   "created_at": "2024-07-23T10:58:45Z",
+   "body": "This is being worked on right now."
+  },
+  {
+   "id": 2244915213,
+   "user": "ireneusz-ptak",
+   "created_at": "2024-07-23T11:01:08Z",
+   "body": "Thanks, can you provide any estimates? Because this time #aLotOfPeopleAreWaiting ;)"
+  },
+  {
+   "id": 2244940450,
+   "user": "Navid200",
+   "created_at": "2024-07-23T11:08:13Z",
+   "body": "@ireneusz-ptak jamorham stated already in the discussion that he was working on it.\r\nYet, you went ahead and opened this issue.\r\nHe then stated here that he was working on it.  \r\n\r\nThanks for reporting the underlying root cause.  You have helped us a lot by doing that.\r\nThank you so much.\r\n\r\nCan I ask you to please do us a favor?\r\nWould you please not ask for a schedule?\r\n\r\nYou don't know how grateful I am to you for having reported the root cause.  But, please remember that jamorham is a volunteer as well.   \r\n\r\nIf he needs help, I am available to give him a hand.   \r\nI know that this is critical.  I am not denying that.  What we need now is patience on the user part so that we can focus on the problem and fix it.\r\nThanks"
+  },
+  {
+   "id": 2244967817,
+   "user": "ireneusz-ptak",
+   "created_at": "2024-07-23T11:20:29Z",
+   "body": "> @ireneusz-ptak jamorham stated already in the discussion that he was working on it. Yet, you went ahead and opened this issue.\r\n\r\nNo, I didn't - the issue was opened before. And I did it because you said the issue was on Google side and we just need to wait for it to work.\r\n\r\n> Can I ask you to please do us a favor? Would you please not ask for a schedule?\r\n\r\nI'm not asking for a schedule, I know how such investigations work, I did at lot of them.\r\n \r\n> But, please remember that jamorham is a volunteer as well.\r\n\r\nYep, me too.\r\n\r\n> If he needs help, I am available to give him a hand. I know that this is critical. I am not denying that. What we need now is patience on the user part so that we can focus on the problem and fix it. Thanks\r\n\r\nI know it's an open source project that relies on volunteer work, but there's responsibility with that. A lot of people are using this feature to monitor their kids remotely (especially during vacation time). I think there's nothing wrong to ask if we may expect the release today or next week because this determines which workarounds might be suggested to users.\r\n\r\n"
+  },
+  {
+   "id": 2244972891,
+   "user": "jamorham",
+   "created_at": "2024-07-23T11:23:29Z",
+   "body": "I would like to have something out today but that is a very tight time schedule and needs plenty of things to go right but it is my number 1 priority and I recognise how important the follower feature is."
+  },
+  {
+   "id": 2244977740,
+   "user": "ireneusz-ptak",
+   "created_at": "2024-07-23T11:26:20Z",
+   "body": "> I would like to have something out today but that is a very tight time schedule and needs plenty of things to go right but it is my number 1 priority and I recognise how important the follower feature is.\r\n\r\nThanks, fingers crossed."
+  },
+  {
+   "id": 2245069671,
+   "user": "tloczekt",
+   "created_at": "2024-07-23T12:08:34Z",
+   "body": "maybe this is a temporary (not elegant) solution ?\r\n![obraz](https://github.com/user-attachments/assets/2de212ff-9bdf-4874-a0fc-ec5830dbb566)\r\n\r\n![obraz](https://github.com/user-attachments/assets/dd457c3d-70c0-465b-bf58-ca42c8d61c53)\r\n\r\n\r\nFCM deprecation extension request\r\n\r\nFirebase can be individually extended for a specific time.\r\nI hope this way we can buy some time for modification."
+  },
+  {
+   "id": 2245171658,
+   "user": "jamorham",
+   "created_at": "2024-07-23T12:53:42Z",
+   "body": "Yes I have already requested an extension but they may not be inclined to help us."
+  },
+  {
+   "id": 2245271250,
+   "user": "jamorham",
+   "created_at": "2024-07-23T13:32:45Z",
+   "body": "I am making good progress and the chance of an update today is increasing."
+  },
+  {
+   "id": 2245720673,
+   "user": "jamorham",
+   "created_at": "2024-07-23T16:36:40Z",
+   "body": "There is a new nightly available which is intended to resolve this issue. Please test. thanks"
+  },
+  {
+   "id": 2245734939,
+   "user": "ireneusz-ptak",
+   "created_at": "2024-07-23T16:44:07Z",
+   "body": "Awesome, on it! Could you release the \"variants\" as well?"
+  },
+  {
+   "id": 2245741264,
+   "user": "olorinmaia",
+   "created_at": "2024-07-23T16:47:38Z",
+   "body": "> Awesome, on it! Could you release the \"variants\" as well?\r\n\r\nAlso need variants to assist with testing. Let me know when they are out 👍"
+  },
+  {
+   "id": 2245751245,
+   "user": "elgrupo123",
+   "created_at": "2024-07-23T16:52:32Z",
+   "body": "Bei mir synct die neue nighty leider nicht. Oder muss auch Master die neue Version haben?"
+  },
+  {
+   "id": 2245756326,
+   "user": "ireneusz-ptak",
+   "created_at": "2024-07-23T16:54:45Z",
+   "body": "@jamorham Works for me :)\r\n\r\nCould you drop a link for donations as well? A lot of people found out how xdrip is helpful on daily basis."
+  },
+  {
+   "id": 2245758537,
+   "user": "ireneusz-ptak",
+   "created_at": "2024-07-23T16:55:24Z",
+   "body": "> Bei mir synct die neue nighty leider nicht. Oder muss auf Master die neue Version haben?\r\n\r\nYes, you need to update both the master and followers."
+  },
+  {
+   "id": 2245951053,
+   "user": "wirbel-at-vdr-portal",
+   "created_at": "2024-07-23T18:24:31Z",
+   "body": "Same here, one follower started working after the master was updated."
+  },
+  {
+   "id": 2245963030,
+   "user": "ireneusz-ptak",
+   "created_at": "2024-07-23T18:32:00Z",
+   "body": "> Same here, one follower started working after the master was updated.\r\n\r\nIn that case I think I don't want to know how it works :)"
+  },
+  {
+   "id": 2245966678,
+   "user": "Limitose",
+   "created_at": "2024-07-23T18:34:25Z",
+   "body": "I was happy to not have to update the followers because I have made a special version based on the code from an older xDrip+ version that I use on an Android tablet as an \"alarm clock\" in the bedroom where I have enlarged the fonts and the dots on the curve on the Widget so I can follow the blood sugar through the night. :-)"
+  },
+  {
+   "id": 2245969440,
+   "user": "jonprogers",
+   "created_at": "2024-07-23T18:36:11Z",
+   "body": "> Same here, one follower started working after the master was updated.\r\n\r\nAll working again here for me too - I have one old phone setup as a follower which is held back on the version from 27th March 2024 as it is an Android 6 device and that has come back to life too.\r\n\r\nMany thanks"
+  },
+  {
+   "id": 2245979798,
+   "user": "jamorham",
+   "created_at": "2024-07-23T18:42:03Z",
+   "body": "If you don't update the followers then things like remote snoozes from follower back to master or backfill requests wont work."
+  },
+  {
+   "id": 2246839666,
+   "user": "deival1980",
+   "created_at": "2024-07-24T04:25:08Z",
+   "body": "Hello @jamorham,\r\nThere are 2 points regarding the Desert sync I do not understand, I'll ask them here because it is in relation with that:\r\n\r\n1. I thought Desert sync is directly working through IP addresses. Why was the Desert sync also not working any more when the Google API was shut down? \r\n2. Having Desert sync active is working again now, but over night I was getting a notification that the Desert Sync was not working any more. It was telling me that the IP address of master was maybe changed... I got only a vibrating notification, while tone was on at the phone. Why? And how can I configure such notifications? Values were not synchronized any more, why doesn't it fall back to use Google API when this is configured?"
+  },
+  {
+   "id": 2247570923,
+   "user": "ireneusz-ptak",
+   "created_at": "2024-07-24T10:42:30Z",
+   "body": "@jamorham Not sure if it's temporary, but it seems the new infra might be struggling with the traffic - I'm getting a lot of missing readings today (also saw some other people noticing that too). I'm worried it might be worse with more people switching to the latest version.\r\n\r\nEDIT: might be related to not getting updates while the phone is locked/stand by"
+  },
+  {
+   "id": 2248310646,
+   "user": "richardstock1",
+   "created_at": "2024-07-24T15:30:13Z",
+   "body": "> @jamorham Not sure if it's temporary, but it seems the new infra might be struggling with the traffic - I'm getting a lot of missing readings today (also saw some other people noticing that too). I'm worried it might be worse with more people switching to the latest version.\r\n> \r\n> EDIT: might be related to not getting updates while the phone is locked/stand by\r\n\r\nYes, this may be it.. I have kept my daughters phone (master) from going on lock/stand by and I am now getting consistent readings on the follow phones again.\r\n\r\nNot sure if that is just chance or not though.. time will tell."
+  },
+  {
+   "id": 2248492510,
+   "user": "njguerra1975",
+   "created_at": "2024-07-24T16:56:52Z",
+   "body": "Thank you to everyone who participates in this solution.\r\nYou saved my day and today I'm going to sleep peacefully."
+  },
+  {
+   "id": 2248546515,
+   "user": "wirbel-at-vdr-portal",
+   "created_at": "2024-07-24T17:27:49Z",
+   "body": "Just as a comment, this version of xdrip+ runs perfect on three xiaomi phones, better than previous versions.\r\n\r\nmaster = Redmi Note 7\r\nfollowers = 11T/11T Pro"
+  },
+  {
+   "id": 2250008058,
+   "user": "chrisGIT-ING",
+   "created_at": "2024-07-25T10:33:05Z",
+   "body": "Great work. Thank you! (When) Is it planned to bring this working nightly to the stable branch? "
+  },
+  {
+   "id": 2250098460,
+   "user": "direninceoren",
+   "created_at": "2024-07-25T11:26:48Z",
+   "body": "Hello \r\nWe installed this version, but when the master phone is not connected to wifi, the followers do not receive data. I wonder what is the reason for this and how can I solve it?"
+  },
+  {
+   "id": 2250137045,
+   "user": "Navid200",
+   "created_at": "2024-07-25T11:49:19Z",
+   "body": "@chrisGIT-ING On average, we have 2 stable releases a year.  \r\nYou can see the details here: https://navid200.github.io/xDrip/docs/Updates.html"
+  },
+  {
+   "id": 2251400714,
+   "user": "marcinkrawczykzg",
+   "created_at": "2024-07-25T21:09:26Z",
+   "body": "For me, the only solution that worked was installing the April 2023 version on my main phone. My phone and my wife's phone, which are followers, have the latest version of XDRIP. Everything has been working for several hours, and everything is still working as expected. We can see the readings and easily enter values for carbohydrates and insulin. All phones are synchronizing correctly."
+  },
+  {
+   "id": 2259107609,
+   "user": "bordeb",
+   "created_at": "2024-07-30T19:58:55Z",
+   "body": "Just to let know that it seams that sync over Google works again! At this moment it all works for me: testing using latest stable version 2024.04.19 (same version on master as well as followers). I don't know why it works again, but just to inform here so gurus can maybe use this info."
+  },
+  {
+   "id": 2259145697,
+   "user": "Navid200",
+   "created_at": "2024-07-30T20:23:11Z",
+   "body": "@bordeb As explained in this discussion (https://github.com/NightscoutFoundation/xDrip/discussions/3595), the old setup you are using works only for a while and will eventually go away permanently.  \r\n\r\nNo one should use that unless they have confirmed the new setup does not work for them.  But, in that case, please tell us what the problem is."
+  },
+  {
+   "id": 2259167404,
+   "user": "bordeb",
+   "created_at": "2024-07-30T20:38:12Z",
+   "body": "> @bordeb As explained in this discussion (#3595), the old setup you are using works only for a while and will eventually go away permanently.\r\n> \r\n> No one should use that unless they have confirmed the new setup does not work for them. But, in that case, please tell us what the problem is.\r\n\r\nThank you! Haven't noticed this part of the discussion that I am aware of. Apologies for bringing out what was already clear and known! Thank you for being so fast.\r\n\r\nEdit: sorry, forgot to reply: I don't have problems with the latest version. "
+  },
+  {
+   "id": 2287122959,
+   "user": "richardstock1",
+   "created_at": "2024-08-13T20:55:56Z",
+   "body": "Using the current updated version of xdrip but it looks like there are some issues again with sync between master phone and followers. Just thought I'd mention it as a few have reported issues over the last few hours. "
+  },
+  {
+   "id": 2288374416,
+   "user": "Lomax007",
+   "created_at": "2024-08-14T10:16:02Z",
+   "body": "> Using the current updated version of xdrip but it looks like there are some issues again with sync between master phone and followers. Just thought I'd mention it as a few have reported issues over the last few hours.\r\n\r\nCan someone please confirm this is being investigated? It's a widespread issue, affecting many Sync users as can be seen on the Facebook group"
+  },
+  {
+   "id": 2288490229,
+   "user": "Navid200",
+   "created_at": "2024-08-14T11:24:02Z",
+   "body": "Yes, it is known.  You can use Nightscout until this is resolved.  "
+  },
+  {
+   "id": 2348589553,
+   "user": "cp2113",
+   "created_at": "2024-09-13T10:20:50Z",
+   "body": "Dear Developers! For me, since the development on 07/23/2024, the Companion app setting does not read data from the Guardian (G4) application. I don't think there is a problem with the phone's settings, since the 19.04.2024. version can read in Companion app mode, but xDrip Sync Follower does not work in this mode. this has been fixed in the new version. Thank you in advance for your help!"
+  },
+  {
+   "id": 2351563510,
+   "user": "Navid200",
+   "created_at": "2024-09-15T12:06:27Z",
+   "body": "Update to the release of 2024.09.15b or any after that.\r\n\r\nMake sure to enable the setting `Use xDrip Cloud` on the xDrip Sync Settings page on the master and followers.\r\n![Screenshot_20240915-080324](https://github.com/user-attachments/assets/f1cfa503-4215-4ac4-887c-8960aaa69911)  \r\n"
+  },
+  {
+   "id": 2351569362,
+   "user": "Navid200",
+   "created_at": "2024-09-15T12:23:18Z",
+   "body": "If everything worked fine for you before and enabling the new setting causes problems, disable the setting on the master and followers and inform us.\r\nhttps://github.com/NightscoutFoundation/xDrip/discussions/3664"
+  },
+  {
+   "id": 2351808115,
+   "user": "olorinmaia",
+   "created_at": "2024-09-15T22:07:56Z",
+   "body": "Used this on our sync grp with 3 phone since release and no issues so far. Excellent work @jamorham 👏\r\nIts super fast, it sync bg, sensor age and sensor statuses, remote snooze, treatments etc. "
+  },
+  {
+   "id": 2382967343,
+   "user": "Navid200",
+   "created_at": "2024-09-30T11:48:50Z",
+   "body": "Well, it's not dead any more.\r\nAll the details are here: https://github.com/NightscoutFoundation/xDrip/discussions/3664  \r\n\r\nIn summary, you need to use the current stable release or any other after that and enable the new setting `Settings` > `xDrip Sync Settings` > `Use xDrip Cloud` on the master and all followers.\r\nIf you experience any issue, please let us know by opening a discussion.\r\n\r\nWe can reopen this if needed.  "
+  }
+ ]
+}

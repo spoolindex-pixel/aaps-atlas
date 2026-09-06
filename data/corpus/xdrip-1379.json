@@ -1,0 +1,48 @@
+{
+ "id": 654384281,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1379,
+ "title": "Remove Google Play Services dependency",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1379",
+ "state": "closed",
+ "labels": [
+  "enhancement",
+  "code:quality"
+ ],
+ "created_at": "2020-07-09T22:23:47Z",
+ "closed_at": "2021-02-27T21:22:38Z",
+ "comment_count": 5,
+ "body": "It is possible to get this dependency removed? I don't want Google to steal all my data, i don't even know why this is required to run xDrip+.\r\n\r\nWhy it is needed? Is there any reason?\r\n\r\nI don't use Wear OS, and the notification is already persistent so why need Google Messaging Services?",
+ "comments": [
+  {
+   "id": 656730457,
+   "user": "jamorham",
+   "created_at": "2020-07-10T15:18:50Z",
+   "body": "xDrip+ follower mode, when enabled, uses Google Messaging. All payload data is encrypted with symmetric encryption and the key is exchanged out-of-band.\r\n\r\nxDrip should run without Google Play Services installed if you want. This has been done successfully before but hasn't been that widely tested. It should pop up initially saying that play services isn't installed but then go quiet after that. \r\n\r\nThere is also the option `Disable all sync features` in `xDrip+ sync settings` which should permanently disable this subsystem from being initialized, which might also help if you are getting issues. "
+  },
+  {
+   "id": 656733180,
+   "user": "felixsanz",
+   "created_at": "2020-07-10T15:23:57Z",
+   "body": "@jamorham  Disabling all sync features only affects followers?\r\n\r\nThat popup made me think that xDrip+ wasn't going to work if i don't have Google Play Services. I didn't want to start a sensor to try and waste it"
+  },
+  {
+   "id": 758918070,
+   "user": "tolot27",
+   "created_at": "2021-01-12T20:20:37Z",
+   "body": "It looks like it is working well without Google Play Services as reported in #519."
+  },
+  {
+   "id": 758973497,
+   "user": "edpomfret",
+   "created_at": "2021-01-12T20:53:48Z",
+   "body": "Looks like it's stopped the pop ups while still allowing both dex share follower and nightscout upload to work fine. So I do think this works as a fix. "
+  },
+  {
+   "id": 787149744,
+   "user": "Navid200",
+   "created_at": "2021-02-27T21:22:38Z",
+   "body": "If you have no Sync followers, you don't need the sync feature.\r\nYou can also use Nightscout follower scheme with no need to Google.\r\n\r\nYou can reopen the issue if you like.  But, I don't think we are going to remove the Google dependency right now as one of the available synch mechanisms (xDrip+ Sync Follower) depends on it.  The user doesn't have to use that mechanism.\r\nIt may eventually be removed.  But, right now, it is an option, which requires Google."
+  }
+ ]
+}

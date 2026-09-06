@@ -1,0 +1,33 @@
+{
+ "id": 1677905046,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2513,
+ "title": "Commit for \"Close gatt when BLE is disconnected\" deteriorates connection reliability",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2513",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-04-21T06:24:09Z",
+ "closed_at": "2023-04-27T19:42:59Z",
+ "comment_count": 3,
+ "body": "**AndroidAPS 3.2.0-dev-i**\r\n**Build**: 5e2614f9f6\r\n**Flavor**: fullrelease / Engineering mode\r\nPump: DASH\r\nPhone: Samsung S22 Ultra\r\n\r\n**Problem description:**\r\n\r\nAs a result of this change APPS connects faster to the Pod but connection reliability has become a problem.\r\nGetting timeouts on connecting a few time a day.\r\n\r\n**Connection connection time has no relevance, connection reliability does!** On most supported phones there is no problem with connecting to the DASH Pod. Current BLE implementation was field-tested for a long time on many phones and with many DASH versions.\r\n\r\nNote that this is not about connecting to some BLE bluetooth device but to Omnipod proprietary hardware that is not supported by the manufacturer and where DASH driver implementation was tweaked and tested by many to get this working reliably. \r\n\r\n_I do not see any reason for change. Please do not fix what is working for most phones!? \r\nSo I suggest reconsidering necessity, implementation and on how this can be tested for a large range of Phone hardware._\r\n\r\n![Screenshot_20230421_080338_AAPS](https://user-images.githubusercontent.com/45144129/233556948-d7dc2796-58d7-4b1e-b6c0-c9ef5f3d0676.jpg)\r\n![Screenshot_20230421_080356_AAPS](https://user-images.githubusercontent.com/45144129/233556959-5095eb57-43c5-4c5a-b2fe-acc649043602.jpg)\r\n\r\n[AndroidAPS_LOG_1682057146032.log.zip](https://github.com/nightscout/AndroidAPS/files/11292807/AndroidAPS_LOG_1682057146032.log.zip)\r\n\r\n\r\n\r\n",
+ "comments": [
+  {
+   "id": 1517532581,
+   "user": "jbr7rr",
+   "created_at": "2023-04-21T09:17:50Z",
+   "body": "This fixes the issue mentioned:\r\nhttps://github.com/nightscout/AndroidAPS/pull/2514\r\n\r\nAnd I would argue that the reliability was not always there, on most pixel phones and some samsungs, one had to enable the bluetooth watchdog otherwise you would get the popup you show here daily, and always had a sub optimal success rate on connection attempt success (90-98%)"
+  },
+  {
+   "id": 1518146546,
+   "user": "vanelsberg",
+   "created_at": "2023-04-21T17:42:13Z",
+   "body": "@jbr7rr  Thanks. Quite busy atm, but will test this a.s.a.p.\r\nPixel has been problematic from the start and was concluded it was \"problematic\" when it comes to \"DASH compatibility\".\r\n\r\nLet see if you can improve DASH's BLE implementation and discuss how to test your final code on as many hardware hardware as possible. I'll DM you!?"
+  },
+  {
+   "id": 1526278912,
+   "user": "vanelsberg",
+   "created_at": "2023-04-27T19:42:59Z",
+   "body": "Problem solved with https://github.com/nightscout/AndroidAPS/commit/9c902fb141b8c784e1ac245fc35d3577113827d7\r\n\r\n@MilosKozak I assuming you agree on closing?\r\n"
+  }
+ ]
+}

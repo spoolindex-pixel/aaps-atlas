@@ -1,0 +1,81 @@
+{
+ "id": 2569228597,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3457,
+ "title": "Frequent restarting",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3457",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-10-07T03:54:21Z",
+ "closed_at": "2024-11-01T10:29:23Z",
+ "comment_count": 17,
+ "body": "Recently Android APS has been frequently restarting, and I assume crashing.  The time interval seems random but not more than 30 minutes.  This is occurring on my daughters phone, Oneplus 6T.  Nothing related to the restarts is being logged.  I have the same settings on my phone and have not had any issues for several years.  The version is 3.2.0.4 build b52015d35c-2024.05.30 compiled locally by myself.  I am also using the same version with the same configuration with no issues.  All permissions possible have been granted, it is not the Android kernel forcing the restarts.  The setup is using juggluco to connect to a Libre 3 sensor that pushes data to XDrip, which pushes to AAPS.  Seemingly related, the Nightscout server synchronization also seems to fail as well.  However after forcing the application to stop, clearing cache and restarting it then synchronizes.  This needs to be done multiple times per day.  \r\n\r\nThanks in advance for your help, I can provide any other information required.  \r\n\r\n\r\nReporting bugs\r\n--------------\r\n- **Note the precise time the problem occurred** and describe the circumstances and steps that caused\r\n  the problem\r\n- Note the Build version (found in the About dialog in the app, when pressing the three dots in the\r\n  upper-right corner).\r\n- Obtain the app's log files, which can be found on the phone in\r\n  _/storage/emulated/0/Android/data/info.nightscout.androidaps/_\r\n  See https://wiki.aaps.app/en/latest/Usage/Accessing-logfiles.html\r\n- Open an issue at https://github.com/nightscout/AndroidAPS/issues/new\r\n",
+ "comments": [
+  {
+   "id": 2402663067,
+   "user": "Josch24",
+   "created_at": "2024-10-09T15:30:52Z",
+   "body": "Try \"Clean Database\" . I had similiar Behaviour some Time ago and it solved my Problem with crashing and Restarts."
+  },
+  {
+   "id": 2402801951,
+   "user": "rpm5099",
+   "created_at": "2024-10-09T16:35:53Z",
+   "body": "Thanks, I'll give that a shot although I think I did already.  I installed the debug version of the app but I still don't see anything related to these restarts in the logs at all.  It is really limiting to not be able to access the logs via SSH/USB, I can't ever check them remotely on my daughter's phone."
+  },
+  {
+   "id": 2402930475,
+   "user": "rpm5099",
+   "created_at": "2024-10-09T17:47:10Z",
+   "body": "Yeah, it didn't work, still lots of restart notifications.  I actually cleared the entire database and reinstalled the app from scratch a few days ago, although I restored the settings from a backup.  That does not seem to have helped either.  I've also verified the device is not running out of memory and I'm pretty certain the Android kernel is not killing the app as it has every permission it is possible to grant it."
+  },
+  {
+   "id": 2409340247,
+   "user": "rpm5099",
+   "created_at": "2024-10-13T23:35:19Z",
+   "body": "If anyone knows of any settings that can cause crashing/restarting, or any way to gather logs about what is happening I would appreciate any suggestions.  I've tried everything that I believe could reasonably be responsible.  Thanks."
+  },
+  {
+   "id": 2440127992,
+   "user": "Kaapeli64",
+   "created_at": "2024-10-27T18:28:22Z",
+   "body": "I think I'm having this same issue, symptoms at least match exactly. I set up logcat to follow AAPS PID and let it run until I get a restart. The last thing I saw in the logs was this:\r\n\r\n10-27 19:45:16.068 24860  5289 W DynamiteLoaderV2Impl: Module config changed, forcing restart due to module measurement.dynamite\r\n10-27 19:45:16.068 24860  5289 I Process : Sending signal. PID: 24860 SIG: 9\r\n\r\nAnything before that appears to be normal operations. Any idea what that could be? Can we somehow avoid this forced restart? Do we know why it happens? Anything I can do to capture more verbose logs?\r\n\r\nedit: Forgot to say, I'm also on latest master, 3.2.0.4 tag. I'm using OnePlus Nord 2T 5G phone."
+  },
+  {
+   "id": 2440157926,
+   "user": "vanelsberg",
+   "created_at": "2024-10-27T20:06:24Z",
+   "body": "> 10-27 19:45:16.068 24860 5289 W DynamiteLoaderV2Impl: Module config changed, forcing restart due to module measurement.dynamite\r\n\r\nI think this is what you see un the phone's logcat? It's not related of AAPS as far as I know.\r\nThat said, Google Play Services is known to kill apps for several reasons. So try disabling the \"Google Services\" system app it on this phone to see if this stops the restarting?\r\n\r\n"
+  },
+  {
+   "id": 2440609113,
+   "user": "rpm5099",
+   "created_at": "2024-10-28T05:50:39Z",
+   "body": "It is important to know if this is a forced restart or a crash where there isn't a chance for a log entry.  I've been through a lot of the code, but I am not a java dev...yet.  If a project dev in this area could point us in the right direction it would be much appreciated.  @vanelsberg elsberg - I don't think it's GS killing it, but I don't know for sure.  I am pretty sure that at least with later versions of Android disabling that GS service doesn't always prevents the kernel from killing apps.  I'm going to check on that to verify.  I can't imagine that they would have it kill apps at random 5-15 minute intervals, although I guess nothing should surprise me at this point."
+  },
+  {
+   "id": 2441635927,
+   "user": "Kaapeli64",
+   "created_at": "2024-10-28T13:45:53Z",
+   "body": "> > 10-27 19:45:16.068 24860 5289 W DynamiteLoaderV2Impl: Module config changed, forcing restart due to module measurement.dynamite\r\n> \r\n> I think this is what you see un the phone's logcat? It's not related of AAPS as far as I know. That said, Google Play Services is known to kill apps for several reasons. So try disabling the \"Google Services\" system app it on this phone to see if this stops the restarting?\r\n\r\nHow do I disable Google Services? Is it under Google Play Services in the App settings? I see there are several services under it and many of those are things that I actually need I'm afraid. I could possibly try disabling them just to see how it helps, but it can't be a long term solution.\r\n\r\nReading here https://blogs.fsfe.org/larma/2017/signal-backdoors/ suggests this might be because AAPS is using some Google Services and then Google decides to force some updates to them and forces thus a restart. If that the case, it would be helpful if we were able to figure out what service is causing this to happen and maybe see if it is needed and could be removed. Or at least help us understand better why this is happening.\r\n\r\nBut one thing I've noticed is that if I leave my phone on the table and don't touch it, restarting doesn't happen. It never happens during night. But if I open it to do something and leave it on the desk for a while, then open it again just to check something a little more, and keep on doing that, I might end up into this restart storm where it happens very often. At least this is how I feel it happens. I'll keep on watching it...\r\n\r\nAnd sorry @rpm5099 if this is something different you are experiencing, I'm still not sure whether I should have opened a new issue instead. But it sounds like this is the same what you were suffering from."
+  },
+  {
+   "id": 2443746739,
+   "user": "vanelsberg",
+   "created_at": "2024-10-29T09:54:17Z",
+   "body": "> How do I disable Google Services?\r\n\r\nSettings->Apps (+select \"show system apps)\" -> \"Google Play Services\" -> \"Disable\""
+  },
+  {
+   "id": 2443755857,
+   "user": "vanelsberg",
+   "created_at": "2024-10-29T09:58:24Z",
+   "body": "> Reading here https://blogs.fsfe.org/larma/2017/signal-backdoors/ suggests this might be because AAPS is using some Google Services\r\n\r\nAfaikt the issue is in the phone's OS. Not due to anything AAPS is doing. Some phones/brands just need the Google Play services to be disabled for AAPS working properly.\r\n"
+  },
+  {
+   "id": 2444916796,
+   "user": "Kaapeli64",
+   "created_at": "2024-10-29T17:27:06Z",
+   "body": "I'm still wondering why is AAPS being restarted continuously, and for example xDrip and OOP2 are not?\r\n\r\nWell, I stumbled into this \"Allow background activity\" setting, enabled it for AAPS, and now I don't see restarts any more. Again, this setting was not enabled for xDrip either, still only AAPS was restarted.\r\n\r\nAnyway, it's been now some 10 hours since I enabled the option, no restarts yet. On previous days I had something like 20 - 40 restarts a day, so it looks like to be gone now for me. I will let you know if it comes back. Thanks for all the help and suggestions so far."
+  }
+ ]
+}

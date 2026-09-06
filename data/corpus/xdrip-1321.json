@@ -1,0 +1,51 @@
+{
+ "id": 607619698,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1321,
+ "title": "New Sensor - G6 State isn't currently known. Next Connection will update this",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1321",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2020-04-27T14:59:26Z",
+ "closed_at": "2020-05-22T18:23:21Z",
+ "comment_count": 6,
+ "body": "My info\r\nPhone: Pixel 2 (Android 10)\r\nCGM: Dexcom G6 - transmitter starting with 8H (also paired with t:slim pump)\r\nIssue: Xdrip or pump is not connecting after 2 hour warm-up\r\n\r\nI have been trying to find a way to get the restart after 10 days. \r\nTried to do this method:\r\n- start with fake code (I used 0000)\r\n- warm-up for about 15 minutes\r\n- after 15 minutes stop the sensor\r\n- start sensor with the real code \r\n\r\nThis ended up not working most likely because I have one starting with 8H (the great session-restart block). So I started a new one but it was acting up a lot so I decided that it wasn't worth it (as well as xdrip and the pump kind of fighting one another it seemed). I did a fresh install of the program as well as started a new sensor but it doesn't seem to still want to work. \r\n\r\nI am getting an error: G6 State isn't currently known. Next Connection will update this\r\n\r\nI took the pump out of the scenario to just have the phone connect but I'm not sure what's going on at this point. I have also tried forgetting the connection with the Bluetooth and restarting the phone. \r\n\r\n\r\nEdit: It's obviously not the main problem going on right now but if there is also anyone that knows a fix for the session-restart block I would greatly appreciate it. That's kind of where all the problems started for this.",
+ "comments": [
+  {
+   "id": 620169835,
+   "user": "emp-00",
+   "created_at": "2020-04-27T18:56:08Z",
+   "body": "A) For optimal xDrip+ / G6 settings please follow this guideline: https://androidaps.readthedocs.io/en/latest/EN/Configuration/xdrip.html\r\nB) For restarting 8G, 8H+ sensors: 1) Stop Sensor 2) pop the transmitter out(*) 3) wait 20 mins (!) and clean contacts 4) pop transmitter back in 5) wait 5 mins 6) Start Sensor, use calibration code, do not backdate 7) wait for the 2hr warmup to complete 8) BG values should come in, usually significantly too high, need to calibrate down 9) take care not calibrating more than 15-25% otherwise transmitter might get confused and stop working requiring \"go back to step 1)\"\r\n(*)see https://www.youtube.com/watch?v=4atiEHf6wZo "
+  },
+  {
+   "id": 620616652,
+   "user": "jbelow",
+   "created_at": "2020-04-28T13:43:19Z",
+   "body": "@emp-00 \r\nThank you for sharing the links (definitely something that I should have been able to find by myself but wasn't able to). \r\n\r\nIt seems like I'm not getting anything inside of the system status right now. I'm guessing it's due to the fact how I reinstalled the app or that was the original problem. I went through the instructions from [AndroidAPS - Connect G6 transmitter for the first time](https://androidaps.readthedocs.io/en/latest/EN/Configuration/xdrip.html#connect-g6-transmitter-for-the-first-time) with the sensor that I already have in place for the \"first startup\". Currently, it's not really getting any status would you have any recommendations for getting that back online? \r\n\r\nI should also mention that the G6 isn't inside of my Bluetooth connected devices list. When I go to \"pair new device\" it is there but when I tried to connect all it does is just say pairing but then just goes back to just sitting in the pair new device section.\r\n![Screenshot_20200428-084039](https://user-images.githubusercontent.com/33503583/80494453-48baf600-892c-11ea-938c-c5e4cf7f23b2.png)\r\n![Screenshot_20200428-082537](https://user-images.githubusercontent.com/33503583/80494455-49538c80-892c-11ea-80ff-a9bd161633ea.png)\r\n\r\nthings I've tried:\r\n- Restart Collector\r\n- Forget Device\r\n- refresh button (the one below the other two buttons) \r\n- restart phone "
+  },
+  {
+   "id": 620629829,
+   "user": "doc77",
+   "created_at": "2020-04-28T14:06:47Z",
+   "body": "Do you have location enabled on your phone and watch? This is a common problem. It's necessary to have it on in Android 7+.\r\n\r\nAs far as the transmitter connecting to Bluetooth, that only happens once every 5 minutes for a second or two. The transmitter will not just pair like other Bluetooth devices."
+  },
+  {
+   "id": 620756047,
+   "user": "jbelow",
+   "created_at": "2020-04-28T17:44:07Z",
+   "body": "@doc77 \nI have already enabled xDrip to access my phone's location. \n\nAs for the Bluetooth connection that makes sense. I think I'm remembering back when I had to do something along those lines with the g5 (I might be mistaken though). Regardless it's good to know!"
+  },
+  {
+   "id": 620781520,
+   "user": "doc77",
+   "created_at": "2020-04-28T18:32:02Z",
+   "body": "@jbelow   But make sure your phone's location is set to on in settings, not in xDrip+. Also, location should be enabled in your watch settings."
+  },
+  {
+   "id": 620784134,
+   "user": "jbelow",
+   "created_at": "2020-04-28T18:37:08Z",
+   "body": "@doc77 \nI see what you meant about the phone location now and it has been on. When it comes to the watch settings I don't see why that's important. I do use a polar m600 watch, but the CGM is not sending any data directly to my watch. \n\nEdit: regardless my watch should have that setting on anyways because I use it for tracking my runs."
+  }
+ ]
+}

@@ -1,0 +1,79 @@
+{
+ "id": 262749263,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 193,
+ "title": "Missed Readings override silent",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/193",
+ "state": "closed",
+ "labels": [
+  "enhancement",
+  "android10+",
+  "ux-alarm"
+ ],
+ "created_at": "2017-10-04T11:11:25Z",
+ "closed_at": "2021-08-23T12:58:41Z",
+ "comment_count": 11,
+ "body": "Hello, I have missed the missed readings alert a few times recently. I have discovered that if notification volume is on then missed reading alarm sounds but if my phone is on silent it automatically switchs off notification volume so missed reading alert just vibrates.   Is there a setting to make missed reading alert override silent mode? It seems to get its sound from whatever alert sound I have 'Other Alerts' set as but doesn't seem to recognised the override silent mode being ticked in the 'Other Alerts' settings page.  I can't see anything in the missed readings settings for choosing the sound or overriding silent.  It's a good sign that the system has worked well for so long that I haven't needed the missed readings alert! Many thanks, Esther ",
+ "comments": [
+  {
+   "id": 787953541,
+   "user": "Navid200",
+   "created_at": "2021-03-01T13:36:12Z",
+   "body": "The missed readings alarm uses the same sound file as the fast rising and fast falling alerts.\r\n\r\nThere is a claim that on Android 9 and below, the override silent mode also followed the setting of fast  rising and fast falling alerts.\r\nCan anyone confirm that?"
+  },
+  {
+   "id": 787956787,
+   "user": "Navid200",
+   "created_at": "2021-03-01T13:41:15Z",
+   "body": "@raduiliescu Do you still experience this issue?\r\nWhat is the version of Android on your phone?"
+  },
+  {
+   "id": 794268799,
+   "user": "kasapis",
+   "created_at": "2021-03-09T18:24:46Z",
+   "body": "A friend is having the same issue, she has android 10. "
+  },
+  {
+   "id": 814382875,
+   "user": "Navid200",
+   "created_at": "2021-04-06T19:28:11Z",
+   "body": "Edit:  I made this post a long time ago while I was looking for workarounds.  Since then, I discovered there was no need for a workaround and explained the solution in my post in this same thread dated August 23, 2021.\r\nI would like to delete this post to avoid any confusions.  However, it may not be a good idea to do that.  So, I am adding this note.  Android Notifications does not work for all Android levels and even when it does, it does not behave the same way on all phones.\r\nPlease ignore this post.  It is maintained just for archive purposes.\r\n------------------------------------------------------------\r\n\r\nIf your Android is level 8 or higher, you can use notification channels to accomplish this.\r\n\r\nEnable:\r\nSettings -> Alarms and Alerts -> Glucose Alerts Settings -> Notification Channels\r\n\r\nNow, you need to trigger the missed readings alert.  To artificially cause that, just change the hardware data source to something non-existent.\r\n\r\nAfter the alert is triggered, use Android settings to go to Settings -> Apps & Notifications -> xDrip+ -> Notifications \r\nYou should see a channel titled: bgMissedAlertChannel.\r\nTap on the following line (Missed reading Alert).\r\nNow, you can customize your preferences.  You can choose the sound clip, if it should vibrate or not, and if it should override do not disturb or not.\r\n\r\nThe following may vary by phone.\r\nIf you are overriding do not disturb, carefully read the description:\r\n![Screenshot_20210406-151801](https://user-images.githubusercontent.com/51497406/113767033-2ad54400-96ec-11eb-90db-3ff34a8ce64a.png)\r\n\r\nSo, in the case of the phone shown, \"... when Do not disturb is set to Priority only, you need to ensure Android do not disturb is set to Priority only."
+  },
+  {
+   "id": 903731657,
+   "user": "Navid200",
+   "created_at": "2021-08-23T12:45:39Z",
+   "body": "I don't believe this is an issue.\r\n\r\nIn the phone Android settings, please go to:\r\nSettings Apps & notifications -> Notifications -> xDrip+\r\n\r\nMake sure \"Override Do Not Disturb\" is enabled.\r\n![Screenshot_20210823-083843](https://user-images.githubusercontent.com/51497406/130448898-487342cf-2af4-40ee-8593-4aab48ea51d4.png)\r\n\r\nIf you enable that for an app, in this case, for xDrip, Android will allow the app to handle override silent mode.\r\nThen, enabling override silent mode for the missing signa alert will override silent mode even on Android 11 as I just tested it."
+  },
+  {
+   "id": 903741348,
+   "user": "Navid200",
+   "created_at": "2021-08-23T12:58:41Z",
+   "body": "If you experience this issue, please see the post above and follow the instructions.  If it still doesn't work, please post here and we can go over the details.  Please don't open another issue."
+  },
+  {
+   "id": 1097909955,
+   "user": "adamecker",
+   "created_at": "2022-04-13T10:54:10Z",
+   "body": "@Navid200 I'm pretty confident this issue still exists. I've configured xDrip to override do not disturb mode as you showed above but if the phone's \"ring & notification\" volume is set to silent or vibrate only then there is still no audible alert (the notification still pops up and is visible without any volume). I believe the intent of this issue was to add a \"override phone silent mode\" option to the \"missed reading alert\" configuration page as there's no setting for that alert like there is for some others. I'm using Android 12 on pixel 4 with the notification channels option turned on and a custom sound picked for the missed reading channel. "
+  },
+  {
+   "id": 1097992818,
+   "user": "Navid200",
+   "created_at": "2022-04-13T12:29:08Z",
+   "body": "@adamecker \r\nxDrip uses two different methods for making sound from alerts.  I have summarized xDrip alerts here: https://github.com/NightscoutFoundation/xDrip/issues/1762\r\n\r\nIt is a fact that only some alerts use a volume profile.  Hence, they don't care what the volume setting is.  The others don't use a volume profile and they depend on the volume setting.\r\nI am not happy about that.  I wish to change this.\r\n\r\nHowever, that is not the same as missed readings alert not having a override silent mode.  You are making an observation that there is more than one reason for an alert not to make a sound.  I have summarized that here:  https://navid200.github.io/xDrip/docs/Silent-alert.html\r\n\r\nThere are several alerts that make no sound if the volume is low.  Forecast Low, and persistent high are some examples.\r\n\r\nI agree with you that xDrip has more to be fixed/improved.  I disagree to say that this specific issue should still be kept open.\r\n\r\nThanks for your post.  Please let me know what you think about my response."
+  },
+  {
+   "id": 1098135276,
+   "user": "adamecker",
+   "created_at": "2022-04-13T14:40:54Z",
+   "body": "@Navid200 thanks for the quick, detailed response and write up about notifications! I do have the \"override silent mode\" option checked in the \"other alerts\" section but the missed reading alarm is still not making a sound if my ring and notification volume is 0. I think that is the same problem being described in this issue? "
+  },
+  {
+   "id": 1098157954,
+   "user": "Navid200",
+   "created_at": "2022-04-13T14:59:01Z",
+   "body": "@adamecker Please read the title of this issue.  It states override silent mode, not the volume.\r\nThe missed reading alert has a functioning override silent mode.  Therefore, I disagree with opening this issue because if we do, it suggests something is wrong with override silent mode.\r\nPlease do a test:  raise your ring volume to something like 75%.  Then, follow the instructions I have provided to allow override silent mode to work for missed readings alert.  Then, temporarily disable collection and set the missed reading alert to alert when the readings are missed for only 7 minutes.  Now, put your phone in \"Do Not Disturb\" mode.  \r\nIf the alert works, it means that override silent mode is working. \r\n\r\nI agree that the missed reading alert will make no sound if the volume is set to 0.  It's not just that alert suffering from this problem, as I explained already.\r\nWe already have an open issue, as I stated already.\r\n\r\nIf we reopen this issue, should we then open another issue about the Forecast Low alert not making a sound when the ring volume is set to 0?  And should we open another issue for the Persistent High alert not making a sound when the ring volume is set to 0?  And should we open another issue for fast rising alert not making a sound when the ring volume is set to 0?\r\n\r\nWhy don't you raise the volume on your phone until we fix the volume issue?"
+  }
+ ]
+}

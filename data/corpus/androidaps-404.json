@@ -1,0 +1,21 @@
+{
+ "id": 824435065,
+ "repo": "nightscout/AndroidAPS",
+ "number": 404,
+ "title": "2.8.2.1-dev-c Automation of Temp Targets not working",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/404",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-03-08T10:46:29Z",
+ "closed_at": "2021-03-08T19:42:11Z",
+ "comment_count": 1,
+ "body": "I have an automation configured to run every weekday at 11AM when I'm at home to set a TT equivalent to Eating Soon.  It has a check that my BG is greater than or equal to 90mg/dL and all that appears to be running correctly.  However, there is a default setting that checks for any other running TT and even when none exists, it appears from the logs that this is being marked as true so no TT settings are ever being set.  Since this is a hard coded pre-condition, I cannot do anything to try to prove that it's this but it also seems to impact an automation I have at 05:45 to set a TT to add a bit of insulin to counter the dawn effect/foot-on-floor effect.  That isn't triggering either.\r\n\r\nThe logs are attached.  There's an event at 11:00:20.xxx\r\n\r\n11:00:20.611 [RxCachedThreadScheduler-6] D/AUTOMATION: [TriggerLocation.shouldRun():50]: Ready for execution: When you are inside the area  Home\r\n11:00:20.614 [RxCachedThreadScheduler-6] D/AUTOMATION: [TriggerBg.shouldRun():59]: Ready for execution: Glucose is equal or greater than 90 mg/dl\r\n11:00:20.615 [RxCachedThreadScheduler-6] D/AUTOMATION: [TriggerRecurringTime.shouldRun():42]: Ready for execution: Every Mon,Tue,Wed,Thu,Fri 11:00\r\n11:00:20.616 [RxCachedThreadScheduler-6] D/AUTOMATION: [TriggerConnector.shouldRun():78]: Ready for execution: When you are inside the area  Home And Glucose is equal or greater than 90 mg/dl And Every Mon,Tue,Wed,Thu,Fri 11:00\r\n11:00:20.621 [RxCachedThreadScheduler-6] D/AUTOMATION: [TriggerTempTarget.shouldRun():47]: NOT ready for execution: Temp target not exists\r\n\r\nYou can see that everything else is Ready for execution and it's the TT pre-requisite that stops it despite there being no active TT.\r\n\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/6100777/AndroidAPS.log)\r\n",
+ "comments": [
+  {
+   "id": 793022539,
+   "user": "MilosKozak",
+   "created_at": "2021-03-08T19:42:11Z",
+   "body": "fixed in careportal branch"
+  }
+ ]
+}

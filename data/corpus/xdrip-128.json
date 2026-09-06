@@ -1,0 +1,108 @@
+{
+ "id": 233350643,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 128,
+ "title": "Push CGM data to Diabetes:M app",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/128",
+ "state": "closed",
+ "labels": [
+  "enhancement",
+  "sync"
+ ],
+ "created_at": "2017-06-03T06:38:41Z",
+ "closed_at": "2021-02-24T23:34:28Z",
+ "comment_count": 20,
+ "body": "Diabetes:M for Android now exposes API which allows third party apps to communicate with Diabetes:M app directly. The third party apps can open Log Entry form and also push data to Diabetes:M for Android after explicit permission from the user. Developers, who are interested to integrate their apps with Diabetes:M for Android app, can get more information at https://github.com/sirmamedical/diabetes-m-addon-example.\r\n\r\nI am willing to try my hand at this effort.  If I do this I will need some help.  This will be the first time I would contribute directly to any project.  \r\n\r\nMy specific concerns for contributing:\r\nWould I be stepping on an existing maintainer, or parallel activity?\r\nWhat would I need to know before contributing a patch?  \r\nWould this patch fit with the current project roadmap without issues or concerns?\r\n\r\nOnce I get working code into my current build, how do I create a pull request that only includes the code changes for this patch without including other changes I have made to my build that are unrelated to this patch?  Do I create a fork and/or branch explicitly for this patch?  Right now I have not forked the app - I sync changes from the master branch to my local build (VCS Update) - I never sync up (VCS Commit).  \r\n\r\nA brief summary of how to create, test, and commit changes to a fork, and how to create a patch and pull request to the project, would be helpful.  \r\n\r\n-- I think I should create a fork, then a branch of that fork, then make code changes to test on a test bed (separate phone/cgm) to test my changes.  Once I have working code successfully executing the patched code, then I am not sure how to proceed to get the patch tested by others, and finally integrated into the master branch of the original project.  I suspect I should create a branch in the original code, apply and commit the changes there, get that branch tested by others, then create a pull request - is this correct?\r\n\r\nPlease direct me to where to find any documents, procedures, or other information sources I need to read/review.  \r\n\r\nThanks\r\n\r\n",
+ "comments": [
+  {
+   "id": 305992063,
+   "user": "doc77",
+   "created_at": "2017-06-03T18:12:38Z",
+   "body": "That would be awesome. A couple years ago I asked the developer of Diabetes:M if Dexcom direct upload was in his list of project updates. He replied that he could not afford the FDA hurdle. An open source solution would be great!"
+  },
+  {
+   "id": 306065403,
+   "user": "TecMunky",
+   "created_at": "2017-06-04T20:39:40Z",
+   "body": "I have decided I will begin the preliminary work - a proof of concept - that CGM data can be successfully pushed to diabetes:m - if successful, we can discuss further the plan for integration.\r\n"
+  },
+  {
+   "id": 317296428,
+   "user": "TecMunky",
+   "created_at": "2017-07-24T01:10:34Z",
+   "body": "I am ready to start trying to push data to diabetes:m app.  \r\n\r\nI need a suggestion about where to put the call to the new code to push Sensor Data as it comes in.  For this first implementation, and for proof of concept, I only intend to push current data as it comes in from the sensor.  "
+  },
+  {
+   "id": 317313544,
+   "user": "kskandispersonal",
+   "created_at": "2017-07-24T03:57:00Z",
+   "body": "You could have a look at UtilityModels/UploaderQueue and add a new route for diabetes:m.  The data actually gets sent by MongoSendTask.doInBackground(), so you'll need to add a circuit for diabetes:m, and then perform your new send method."
+  },
+  {
+   "id": 338501596,
+   "user": "dideldum",
+   "created_at": "2017-10-22T19:13:41Z",
+   "body": "Is there any action undertaken regarding this?\r\nAs a user of Diabetes:M and XDrip+ I would apreciate the data connection from XDrip+ to Diabetes:M."
+  },
+  {
+   "id": 338505751,
+   "user": "TecMunky",
+   "created_at": "2017-10-22T20:16:05Z",
+   "body": "I started work on this a while back, but then got really busy at my real\njob. Been out of town a lot. I think I'm close, but don't know when I'll be\nable to get back to it. I'm hoping to have it finished by the end of the\nyear, maybe sooner\n\nOn Oct 22, 2017 14:13, \"dideldum\" <notifications@github.com> wrote:\n\n> Is there any action undertaken regarding this?\n> As a user of Diabetes:M and XDrip+ I would apreciate the data connection\n> from XDrip+ to Diabetes:M.\n>\n> —\n> You are receiving this because you authored the thread.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/128#issuecomment-338501596>,\n> or mute the thread\n> <https://github.com/notifications/unsubscribe-auth/ACLc7a_zHyWYlqKF1FHN0IrQl9UBfTfmks5su5PngaJpZM4NvAAG>\n> .\n>\n"
+  },
+  {
+   "id": 370135702,
+   "user": "jpsfs",
+   "created_at": "2018-03-03T10:02:22Z",
+   "body": "Hi!\r\n\r\n@TecMunky do you have any news on this feature?\r\n\r\nBest,"
+  },
+  {
+   "id": 374886109,
+   "user": "filipedanunes",
+   "created_at": "2018-03-21T10:03:53Z",
+   "body": "Any development? Thanks!"
+  },
+  {
+   "id": 695868024,
+   "user": "chuckgit99",
+   "created_at": "2020-09-21T01:40:35Z",
+   "body": "Any updates on this?  Xdrip + diabetes:m = awesome."
+  },
+  {
+   "id": 696138711,
+   "user": "TecMunky",
+   "created_at": "2020-09-21T14:09:01Z",
+   "body": "I'm sorry - I thought I had updated this thread.\r\n\r\nI abandoned this project for the simple reason that the diabetes:m crew/app won't allow data closer than 15 minutes to be used or displayed.  That makes the diabetes:m app useless for CGM data.\r\n"
+  },
+  {
+   "id": 696412276,
+   "user": "tolot27",
+   "created_at": "2020-09-21T22:27:56Z",
+   "body": "@TecMunky Please can you give a reference to \"the diabetes:m crew/app won't allow data closer than 15 minutes to be used or displayed\"?"
+  },
+  {
+   "id": 701637041,
+   "user": "TecMunky",
+   "created_at": "2020-09-30T20:48:43Z",
+   "body": "> @TecMunky Please can you give a reference to \"the diabetes:m crew/app won't allow data closer than 15 minutes to be used or displayed\"?\r\n\r\nI searched through my old emails, and nothing is there anymore.  I probably deleted the relevant emails at some point while cleaning up old stuff.\r\n\r\nYou can go to their example code and contact them from there:\r\nhttps://github.com/sirmamedical/diabetes-m-addon-example\r\n\r\nI think I even tried to manually enter data that was close together, and the app would not display any data that was closer than 15 minutes to a prior data point.\r\n\r\nI abandoned the project when I was told by the diabetes:m team that they had no intention of displaying data closer than 15 minutes.  They were somewhat adamant about that, as I recall.\r\n\r\nPerhaps someone else can get them to move on this.  I have lost all interest in dealing with them, or pursuing this any further.\r\n\r\nI closed this issue once.  I won't close it again.\r\n"
+  },
+  {
+   "id": 785275671,
+   "user": "Navid200",
+   "created_at": "2021-02-24T18:19:11Z",
+   "body": "@tolot27 What are the required actions we have to take in order to close this issue?\r\nThanks"
+  },
+  {
+   "id": 785424907,
+   "user": "tolot27",
+   "created_at": "2021-02-24T22:24:34Z",
+   "body": "@Navid200 Either an implementation of this feature or a decision against it."
+  },
+  {
+   "id": 785464174,
+   "user": "TecMunky",
+   "created_at": "2021-02-24T23:34:28Z",
+   "body": "I am closing this issue (as the author).\r\n\r\nI had some difficulty with the authors of the Diabetes:M app.  Their app will not display any data points closer than 15 minutes apart.  I asked them to fix this issue, as it is unacceptable for CGM data.  They basically told me to shove off.  This is why I abandoned efforts to implement the issue.\r\n"
+  }
+ ]
+}

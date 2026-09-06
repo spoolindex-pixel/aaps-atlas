@@ -1,0 +1,63 @@
+{
+ "id": 797563177,
+ "repo": "nightscout/AndroidAPS",
+ "number": 277,
+ "title": "Building in Azure Pipeline (Android resource linking failed)",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/277",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-01-30T23:03:11Z",
+ "closed_at": "2021-01-31T13:30:42Z",
+ "comment_count": 8,
+ "body": "Hi,\r\n\r\nI'm trying to help out my brother in law with building an APK because he was having troubles building it himself.\r\n3 months ago we managed to build one on his PC but now he can't get it to work.\r\n\r\nToday I've tried solving his problems by configuring an build pipeline in Azure Devops.\r\nI'm a .Net programmer so I am used to work with Microsoft's products so this would be an easy way to automate this build.\r\nI also have some experience building native Android apps using Xamarin.\r\n\r\nCan someone please help me with any of the following?\r\nWhen I get this working I would gladly share my build pipeline yaml script and instructions so others can also setup a pipeline for themselves.\r\n\r\nThanks!\r\n\r\n(I'm trying to build the latest version 2.8.2)\r\n\r\n1. In order to get a build working I needed to upgrade ndkVersion from 21.1.6352462 to 21.3.6528147 because the build agent was based on an image that did not have this specific version. Can this cause problems?\r\n**UPDATE:** It seems that i can use `sdkmanager --install \"21.1.6352462\"` as a build step to install other ndks. After I have a successful release build I will look into this next. My endgoal is to have a single yaml script to build the app without needing to modify anything in the code.\r\n\r\n2. I can successfully build (and sign) debug APKs but when I build a release version it fails during the linking process:\r\n```\r\n     com.android.builder.internal.aapt.v2.Aapt2Exception: Android resource linking failed\r\n     /Users/runner/work/1/s/core/src/main/res/layout/maintenance_import_list_item.xml:24: AAPT: error: resource color/importListFileName (aka info.nightscout.androidaps.core:color/importListFileName) not found.\r\n         \r\n     /Users/runner/work/1/s/core/src/main/res/layout/maintenance_import_list_item.xml:34: AAPT: error: resource color/importListFileName (aka info.nightscout.androidaps.core:color/importListFileName) not found.\r\n         \r\n     /Users/runner/work/1/s/core/src/main/res/layout/maintenance_import_list_item.xml:57: AAPT: error: resource color/importListFileName (aka info.nightscout.androidaps.core:color/importListFileName) not found.\r\n         \r\n     /Users/runner/work/1/s/core/src/main/res/layout/maintenance_import_list_item.xml:84: AAPT: error: resource color/importListAdditionalInfo (aka info.nightscout.androidaps.core:color/importListAdditionalInfo) not found.\r\n         \r\n     /Users/runner/work/1/s/core/src/main/res/layout/maintenance_import_list_item.xml:95: AAPT: error: resource color/importListAdditionalInfo (aka info.nightscout.androidaps.core:color/importListAdditionalInfo) not found.\r\n         \r\n     /Users/runner/work/1/s/core/src/main/res/layout/maintenance_import_list_item.xml:116: AAPT: error: resource color/importListAdditionalInfo (aka info.nightscout.androidaps.core:color/importListAdditionalInfo) not found.\r\n         \r\n     /Users/runner/work/1/s/core/src/main/res/layout/maintenance_import_list_item.xml:127: AAPT: error: resource color/importListAdditionalInfo (aka info.nightscout.androidaps.core:color/importListAdditionalInfo) not found.\r\n```\r\nI've checked and found two colors.xml files:\r\n- app\\src\\main\\res\\values\\colors.xml (seems ok)\r\n- core\\src\\main\\res\\values\\colors.xml (not containing importListFileName/importListAdditionalInfo)\r\n\r\nI've tried to add the seemingly missing colors to the core colors.xml and this results in other build errors:\r\n```\r\ncom.android.builder.internal.aapt.v2.Aapt2Exception: Android resource linking failed\r\n     /Users/runner/work/1/s/medtronic/src/main/res/layout/medtronic_fragment.xml:500: AAPT: error: resource string/combo_refresh (aka info.nightscout.androidaps.plugins.pump.medtronic:string/combo_refresh) not found.\r\n         \r\n     /Users/runner/work/1/s/rileylink/build/intermediates/packaged_res/release/layout/rileylink_status.xml:11: AAPT: error: resource style/AppTheme.AppBarOverlay (aka info.nightscout.androidaps.plugins.pump.medtronic:style/AppTheme.AppBarOverlay) not found.\r\n         \r\n     /Users/runner/work/1/s/rileylink/build/intermediates/packaged_res/release/layout/rileylink_status.xml:34: AAPT: error: resource drawable/ic_refresh (aka info.nightscout.androidaps.plugins.pump.medtronic:drawable/ic_refresh) not found.\r\n         \r\n     /Users/runner/work/1/s/medtronic/src/main/res/xml/pref_medtronic.xml:10: AAPT: error: resource string/sixdigitnumber (aka info.nightscout.androidaps.plugins.pump.medtronic:string/sixdigitnumber) not found.\r\n         \r\n     /Users/runner/work/1/s/medtronic/src/main/res/xml/pref_medtronic.xml:21: AAPT: error: resource array/medtronicPumpTypeArray (aka info.nightscout.androidaps.plugins.pump.medtronic:array/medtronicPumpTypeArray) not found.\r\n         \r\n     /Users/runner/work/1/s/medtronic/src/main/res/xml/pref_medtronic.xml:29: AAPT: error: resource array/medtronicPumpFreqArray (aka info.nightscout.androidaps.plugins.pump.medtronic:array/medtronicPumpFreqArray) not found.\r\n         \r\n     /Users/runner/work/1/s/medtronic/src/main/res/xml/pref_medtronic.xml:29: AAPT: error: resource array/medtronicPumpFreqValues (aka info.nightscout.androidaps.plugins.pump.medtronic:array/medtronicPumpFreqValues) not found.\r\n         \r\n     /Users/runner/work/1/s/medtronic/src/main/res/xml/pref_medtronic.xml:61: AAPT: error: resource array/medtronicBolusDelay (aka info.nightscout.androidaps.plugins.pump.medtronic:array/medtronicBolusDelay) not found.\r\n         \r\n     /Users/runner/work/1/s/medtronic/src/main/res/xml/pref_medtronic.xml:69: AAPT: error: resource array/medtronicEncoding (aka info.nightscout.androidaps.plugins.pump.medtronic:array/medtronicEncoding) not found.\r\n         \r\n     /Users/runner/work/1/s/medtronic/src/main/res/xml/pref_medtronic.xml:69: AAPT: error: resource array/medtronicEncodingValues (aka info.nightscout.androidaps.plugins.pump.medtronic:array/medtronicEncodingValues) not found.\r\n         \r\n     /Users/runner/work/1/s/medtronic/src/main/res/xml/pref_medtronic.xml:77: AAPT: error: resource array/medtronicBatteryType (aka info.nightscout.androidaps.plugins.pump.medtronic:array/medtronicBatteryType) not found.\r\n         \r\n     /Users/runner/work/1/s/medtronic/src/main/res/xml/pref_medtronic.xml:77: AAPT: error: resource array/medtronicBatteryTypeValues (aka info.nightscout.androidaps.plugins.pump.medtronic:array/medtronicBatteryTypeValues) not found.\r\n         \r\n     /Users/runner/work/1/s/medtronic/src/main/res/xml/pref_medtronic.xml:85: AAPT: error: resource array/onOff (aka info.nightscout.androidaps.plugins.pump.medtronic:array/onOff) not found.\r\n```\r\n3. Also when running a debug version it looks weird and doesn't seem to work correctly\r\n**UPDATE: solved! I was installing the wear apk on my device.**\r\n\r\n",
+ "comments": [
+  {
+   "id": 770303968,
+   "user": "rICTx-T1D",
+   "created_at": "2021-01-31T00:33:42Z",
+   "body": "Maybe you build and deploy the WearOS-image on smartphone... "
+  },
+  {
+   "id": 770335876,
+   "user": "pieteckhart",
+   "created_at": "2021-01-31T06:38:42Z",
+   "body": "> Maybe you build and deploy the WearOS-image on smartphone...\r\n\r\nI just woke up and realized that it indeed must be the android wear interface :)\r\nGlad to see someone already came to the same conclusion, only six hours before me. I should have gone to bed earlier ;)\r\n\r\nI will ty to build the correct apk and will report back if this solves my other problem.\r\n\r\nThanks!"
+  },
+  {
+   "id": 770340278,
+   "user": "pieteckhart",
+   "created_at": "2021-01-31T07:28:57Z",
+   "body": "Ok. I just tried and found out I was building everything correctly (debug mode still) but was copying over the resulting apk when publishing. The following yaml script now builds a debug version:\r\n\r\n```\r\ntrigger:\r\n- main\r\n\r\npool:\r\n  vmImage: 'macos-latest'\r\n\r\nsteps:\r\n- task: Gradle@2\r\n  inputs:\r\n    gradleWrapperFile: 'gradlew'\r\n    gradleOptions: '-Xmx3072m'\r\n    publishJUnitResults: false\r\n    testResultsFiles: '**/TEST-*.xml'\r\n    tasks: 'assembleDebug'\r\n    \r\n- task: AndroidSigning@3\r\n  inputs:\r\n    apkFiles: '**/*.apk'\r\n    apksign: true\r\n    apksignerKeystoreFile: 'keystore.jks'\r\n    apksignerKeystorePassword: '********'\r\n    apksignerKeystoreAlias: 'key0'\r\n    apksignerKeyPassword: '*********'\r\n    zipalign: false\r\n\r\n- task: CopyFiles@2\r\n  inputs:\r\n    SourceFolder: $(Build.SourcesDirectory)\r\n    contents: '**/*.apk'\r\n    targetFolder: '$(build.artifactStagingDirectory)'\r\n    overWrite: true\r\n\r\n- task: PublishBuildArtifacts@1\r\n  inputs:\r\n    pathtoPublish: '$(Build.ArtifactStagingDirectory)/app/build/outputs/apk/full/debug/'\r\n    artifactName: 'apks'\r\n    publishLocation: 'container'\r\n```"
+  },
+  {
+   "id": 770359634,
+   "user": "pieteckhart",
+   "created_at": "2021-01-31T10:24:33Z",
+   "body": "Update: Seems that i needed to specify app:assembleFullRelease instead of 'assembleRelease'. This solved the linking problem. I have now successfully build a release APK :)\r\n\r\nI'll ask my brother in law if the resulting APK seems correct. He will test it out on his backup device.\r\nIf everything works I will close this issue.\r\n\r\nI'm planning to open source this pipeline yaml so others can benefit from it.\r\nShould I fork this repo and add the yaml file? Would @MilosKozak be open to accept a pull request?"
+  },
+  {
+   "id": 770364684,
+   "user": "guydavies",
+   "created_at": "2021-01-31T11:08:42Z",
+   "body": "@MilosKozak is generally open to PRs. This particular doesn't seem to interfere with any other aspects. As long as it is demonstrably robust, it should be good. It sometimes takes a while if he's busy with upcoming release issues. \n\nYou should fork and open a PR from there into dev branch of this repo. I'd be tempted to create a contrib folder since this isn't related directly to the code itself but provides an additional optional approach to deployment. "
+  },
+  {
+   "id": 770370019,
+   "user": "pieteckhart",
+   "created_at": "2021-01-31T11:50:37Z",
+   "body": "@guydavies Thanks for the reply. I'm fairly new to contributing to opensource projects.\r\nI'm reading: https://drewdevault.com/2020/06/06/Add-a-contrib-directory.html\r\n\r\nThis is what you mean right?"
+  },
+  {
+   "id": 770373075,
+   "user": "guydavies",
+   "created_at": "2021-01-31T12:15:44Z",
+   "body": "Exactly.\n\nOn Sun, 31 Jan 2021, 12:50 pieteckhart, <notifications@github.com> wrote:\n\n> @guydavies <https://github.com/guydavies> Thanks for the reply. I'm\n> fairly new to contributing to opensource projects.\n> I'm reading:\n> https://drewdevault.com/2020/06/06/Add-a-contrib-directory.html\n>\n> This is what you mean right?\n>\n> —\n> You are receiving this because you were mentioned.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/nightscout/AndroidAPS/issues/277#issuecomment-770370019>,\n> or unsubscribe\n> <https://github.com/notifications/unsubscribe-auth/AAS7B3UMPE5TTG5TTTWY5LDS4U7ZTANCNFSM4W2X2C4Q>\n> .\n>\n"
+  },
+  {
+   "id": 770382992,
+   "user": "pieteckhart",
+   "created_at": "2021-01-31T13:30:42Z",
+   "body": "Done: https://github.com/pieteckhart/AndroidAPS/tree/master/contrib/azure-pipelines\r\nI'll make a PR when it's polished enough for my taste ;) "
+  }
+ ]
+}

@@ -1,0 +1,33 @@
+{
+ "id": 1519068199,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2327,
+ "title": "[dev versions since october 2022] Editing profile caused multiple profile database records to be created - database too full for reporting",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2327",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-01-04T14:24:16Z",
+ "closed_at": "2023-01-05T00:50:37Z",
+ "comment_count": 3,
+ "body": "I've been getting some unexpected issues lately and seeing a lot of profile records when checking log files. Tried to create a report with nightscout reporter (https://nightscout-reporter.zreptil.de/) and got an error message with \"too many profile records\".  (An error occurred while reading out the profiles. There may be too much data in the profile table (e.g. caused by iOS Loop). You can try to reduce the number of profile data records to be read in the settings. An error occurred while creating the PDF.) \r\n\r\nAt the same time, nightscout crashes completely and is only restored by \"restart all dynos\" in Heroku Dashboard. When I use the reporting section in nightscout (https://heddamamonitor.herokuapp.com/report/#), all reports show \"Result is empty\" instead of the actual data. \r\n\r\nI went into my MongoDB today and found that I have over 12.000 database records in the 'profile' collection. When I exported to csv and used Excel to remove duplicates based on \"validFrom\"/Start date, I only had 177 records. I did a manual review of records, and it appears the duplicates started accumulating in October 2022, and the newest duplicates are as recent as December, from when I did a profile edit in AAPS or AAPSClient. As I have manually deleted several database records from the nightscout profile editor page, I'm not sure exactly when this stopped happening, so possibly this has already been corrected. \r\n\r\nIn that case I would like some advice on how to clean out my profile collection to reduce amount of unneccessary data while keeping the unique records if possible, or at least keeping everything else in the database (glucose entries, treatments, food etc). I can see the option to delete the entire 'profile' collection, but I'm not sure of the consequences, if that will render my nightscout useless, or if it will simply be recreated by editing a profile to create a new database record. Would appreciate any advice, since we have a hospital appointment on Friday and would like to bring reports to show how much our numbers improved after switching to Lyumjev before Christmas. ",
+ "comments": [
+  {
+   "id": 1371015083,
+   "user": "jbr7rr",
+   "created_at": "2023-01-04T14:42:08Z",
+   "body": "Might be that you are expierencing the same as reported here:\r\nhttps://github.com/nightscout/AndroidAPS/issues/2300\r\n\r\nNote I also posted a python script in the comments that can clean up your mongo DB and delete the duplicate profile entries"
+  },
+  {
+   "id": 1371022501,
+   "user": "kristinsmotz",
+   "created_at": "2023-01-04T14:48:15Z",
+   "body": "> Might be that you are expierencing the same as reported here: #2300\r\n> \r\n> Note I also posted a python script in the comments that can clean up your mongo DB\r\n\r\nLooks like the same issue. I don't know where or how to run python script to clean up. I downloaded and installed MongoDB Compass, do you know if the script can be run from there? \r\n"
+  },
+  {
+   "id": 1371602584,
+   "user": "kristinsmotz",
+   "created_at": "2023-01-05T00:50:37Z",
+   "body": "Thank you so much for helping me with the python script to fix this, since root cause is also fixed I will close this issue"
+  }
+ ]
+}

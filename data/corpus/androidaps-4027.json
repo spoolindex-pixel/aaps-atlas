@@ -1,0 +1,255 @@
+{
+ "id": 3137232676,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4027,
+ "title": "No Pod activation possible since Android 16 Update",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4027",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-06-11T15:18:31Z",
+ "closed_at": "2025-09-25T20:03:04Z",
+ "comment_count": 56,
+ "body": "Did the Pixel Android 16 Update Yesterday. \nConnection to Dash wored fine so far.\nToday i tried a Pod change. \nDeactivating old Dash worked fine.\nBut there is no Activation for New Pod possibe\n\nBonding Mode didn't work too\n\nWhat are possibilitiea to check?",
+ "comments": [
+  {
+   "id": 2964469638,
+   "user": "nickb24",
+   "created_at": "2025-06-11T22:42:07Z",
+   "body": "Adding my findings. \n\nMy phone is a Pixel 7 Pro. Running Android 15 until today with no issues on the Dash pods. I was never using the Dash bond setting.\n\nToday I updated to Android 16, and the current pod continued to work with no settings change in AAPS.\n\nThen I deactivated the current pod and tried to activate a new pod. The pod fails to activate with the following error:  \"Failed to connect to pod\"\n\n![Image](https://github.com/user-attachments/assets/466797e2-4f4a-4020-9fee-8da4acd12a51)\n\nThe logcat shows the following:\n\n![Image](https://github.com/user-attachments/assets/000be122-a991-45a1-8f80-37a69b8d3c91)\n\nIt fails waiting for the connection here:\n\n![Image](https://github.com/user-attachments/assets/6ec5eba5-c57d-4754-915b-22e2647f1e0d)\n\nThis is so weird, because the same function call is used for active pods, so why was it working earlier in the day for me, but now is failing with a new pod? I also tried bonding the pod manually in the android settings and it still fails to connect.\n\nI tried with nrf app to bond. It connects and bonds. Then tried to activate the pod in AAPS and it fails the same way. nRF log here:\n[Log 2025-06-11 17_12_35.txt](https://github.com/user-attachments/files/20698794/Log.2025-06-11.17_12_35.txt)\n\nFinally, I activated my pod on my backup device. It's a pixel 2, but that doesn't matter. I then saved the settings file from the backup phone and imported into my main phone. Now the main phone is able to connect to the pod and issue commands no problems. It's been running fine for the last 2 hours this way.\n\n"
+  },
+  {
+   "id": 2964548076,
+   "user": "andyrozman",
+   "created_at": "2025-06-11T23:36:29Z",
+   "body": "Trying to experiment with your main diabetes phone is foolish thing... And upgrading to unsupported system is very foolish thing... There have been a lot of reports of different drivers/pumps not working with Android 15, and you go and upgrade to system (Android 16), that is even less supported... "
+  },
+  {
+   "id": 2965127046,
+   "user": "m4nnihuber",
+   "created_at": "2025-06-12T05:06:47Z",
+   "body": "Thanks @nickb24 workarount also works for me.\nnice find.\n\nSorry @andyrozman that was not a brilliant idea to switch to android 16 \nshort night so this will not happen again\n\nthanks to the team for finding a solution that quick\nhopefully there will be a dev version or a release soon\n\n"
+  },
+  {
+   "id": 2968294731,
+   "user": "borijess",
+   "created_at": "2025-06-12T22:10:30Z",
+   "body": "I think I got it. I did Fetch and Pull and did pull hotfix-a16-dash, then a rebase and it updated. Is this correct? Then build the signed APK.\n\nThis is for this hotfix. \n\nhttps://github.com/nightscout/AndroidAPS/pull/4028"
+  },
+  {
+   "id": 2968324285,
+   "user": "olorinmaia",
+   "created_at": "2025-06-12T22:27:57Z",
+   "body": "Edit:\n**Please checkout branch dev332 and build apk instead, this branch is based on master with these fixes included. Will soon be updated to master**"
+  },
+  {
+   "id": 2968401317,
+   "user": "borijess",
+   "created_at": "2025-06-12T23:09:29Z",
+   "body": "I did it and did a right click and merge and got this. \n\n![Image](https://github.com/user-attachments/assets/0f6d422c-bef9-4205-a44c-d6e4935f1ab4)\n![Image](https://github.com/user-attachments/assets/1ba1dc58-2bb5-47da-a058-eeae6f8a4c08)\n![Image](https://github.com/user-attachments/assets/e63d784b-5ecc-412a-bcc4-bb8c717f91b9)"
+  },
+  {
+   "id": 2968408850,
+   "user": "olorinmaia",
+   "created_at": "2025-06-12T23:14:43Z",
+   "body": "You shouldn't get any conflicts if you checkout origin/master - then right click on it and create new branch from it - then go to origin/hotfix-a16-dash and select the two mentioned commits and right click and cherry pick"
+  },
+  {
+   "id": 2968433099,
+   "user": "borijess",
+   "created_at": "2025-06-12T23:28:23Z",
+   "body": "> You shouldn't get any conflicts if you checkout origin/master - then right click on it and create new branch from it - then go to origin/hotfix-a16-dash and select the two mentioned commits and right click and cherry pick\n\nI get this. \n\n![Image](https://github.com/user-attachments/assets/bebfe8b6-2084-4491-afb5-6075e49cbf66)"
+  },
+  {
+   "id": 2970387040,
+   "user": "Philoul",
+   "created_at": "2025-06-13T13:24:09Z",
+   "body": "@borijess To answer your question (right place is more here than in PR 😉), when you click in 3 dots menu > about, the build information gives the reference of latest commit, so you can check within github history.\n![Screenshot_20250613-152114_AAPS.jpg](https://github.com/user-attachments/assets/c5b3c056-3080-428b-bae4-41ba45755ce7)\n\n"
+  },
+  {
+   "id": 2970394437,
+   "user": "Philoul",
+   "created_at": "2025-06-13T13:27:00Z",
+   "body": "@borijess your conflicts are due to local modifications done in youŕ computer.\nSo your current code within your computer is not 100% the same than github code."
+  },
+  {
+   "id": 2970850492,
+   "user": "borijess",
+   "created_at": "2025-06-13T16:06:49Z",
+   "body": "> [@borijess](https://github.com/borijess) your conflicts are due to local modifications done in youŕ computer. So your current code within your computer is not 100% the same than github code.\n\nIs there something I need to do on my end?"
+  },
+  {
+   "id": 2970852057,
+   "user": "borijess",
+   "created_at": "2025-06-13T16:07:30Z",
+   "body": "> [@borijess](https://github.com/borijess) To answer your question (right place is more here than in PR 😉), when you click in 3 dots menu > about, the build information gives the reference of latest commit, so you can check within github history. ![Screenshot_20250613-152114_AAPS.jpg](https://github.com/user-attachments/assets/c5b3c056-3080-428b-bae4-41ba45755ce7)\n\nThank you sir. Love the PR reference 😁"
+  },
+  {
+   "id": 2976513768,
+   "user": "Loax28",
+   "created_at": "2025-06-16T12:42:35Z",
+   "body": "@Philoul @olorinmaia \nEdit: I am dumb lol"
+  },
+  {
+   "id": 2976523001,
+   "user": "Loax28",
+   "created_at": "2025-06-16T12:45:40Z",
+   "body": "Or can i accept \"theirs\"?\nOr can I just checkout \"hotfix-a16-dash\"? and build this?"
+  },
+  {
+   "id": 2976556312,
+   "user": "nickb24",
+   "created_at": "2025-06-16T12:56:50Z",
+   "body": "Accept theirs. "
+  },
+  {
+   "id": 2997345594,
+   "user": "Loax28",
+   "created_at": "2025-06-23T17:46:40Z",
+   "body": "Hey together, unfortunetly this did not work for me as expected.\nThis only was after connecting to ANDROID AUTO. Since I am in contact with google due to missing data, I cannot reset my mobilephone, what was the only way it worked before. I really appreciate if you may could take a look. I have a log from the working phone and one where it didnt work:\n\nEDIT: Okay fuck it, I just accidently deactivated my pod, WITHOUT EVEN HAVING BLUETOOTH ON.....\n\nThe one which didnt worked:\n<details><summary>Details</summary>\n<p>\n\nConnecting to 40:EE:BE:C2:5B:D9...\nD\t19:14:17.784\tgatt = device.connectGatt(autoConnect = false, TRANSPORT_LE, preferred PHY = LE 1M)\nD\t19:14:18.709\t[Callback] Connection state changed with status: 0 and new state: CONNECTED (2)\nI\t19:14:18.709\tConnected to 40:EE:BE:C2:5B:D9\nV\t19:14:18.727\tDiscovering services...\nD\t19:14:18.727\tgatt.discoverServices()\nD\t19:14:18.728\t[Broadcast] Action received: android.bluetooth.device.action.ACL_CONNECTED\nI\t19:14:18.862\tConnection parameters updated (interval: 7.5ms, latency: 0, timeout: 5000ms)\nD\t19:14:19.182\t[Callback] Services discovered with status: 0\nI\t19:14:19.182\tServices discovered\nV\t19:14:19.186\tGeneric Access (0x1800)\n- Device Name [R W] (0x2A00)\n- Appearance [R W] (0x2A01)\n- Peripheral Preferred Connection Parameters [R] (0x2A04)\nGeneric Attribute (0x1801)\n- Service Changed [I R] (0x2A05)\n   Client Characteristic Configuration (0x2902)\nUnknown Service (1a7e4024-e3ed-4464-8b7e-751e03d0dc5f)\n- Unknown Characteristic [I R W WNR] (1a7e2441-e3ed-4464-8b7e-751e03d0dc5f)\n   Client Characteristic Configuration (0x2902)\n- Unknown Characteristic [I R W WNR] (1a7e2442-e3ed-4464-8b7e-751e03d0dc5f)\n   Client Characteristic Configuration (0x2902)\n- Unknown Characteristic [N R WNR] (1a7e2443-e3ed-4464-8b7e-751e03d0dc5f)\n   Client Characteristic Configuration (0x2902)\nD\t19:14:19.186\tgatt.setCharacteristicNotification(00002a05-0000-1000-8000-00805f9b34fb, true)\nD\t19:14:19.188\tgatt.setCharacteristicNotification(1a7e2441-e3ed-446"
+  },
+  {
+   "id": 3006707468,
+   "user": "andrejpodzimek",
+   "created_at": "2025-06-26T01:20:44Z",
+   "body": "@olorinmaia Thanks a lot for the instructions. The cherry-pick worked for me. But only after I’d navigated the state space into a whole new level of confusion: `java.lang.IllegalStateException: Trying to set Bluetooth Address to 40:EE:BE:64:C5:67, but it is already set to 40:EE:BE:68:34:29`. Oddly enough, this happened both _with_ and _without_ the fix during connection attempts. The root cause was rather dumb:\n\n0. I filled a pod after an Android 16 upgrade. The connection failed, alternating between _“Could not find an available pod for activation”_ and _“Failed to connect to pod”_.\n0. I had recently had a couple of pod failures (2 out of 30 were faulty — no beeps when filled, no activation).  They only ever produced the first error, **not** the second one. Despite knowing that, I jumped to a wrong conclusion: a faulty pod.\n0. Then I filled another pod, paid close attention whether it beeped as expected, etc. Then the error messages started to alternate between 3 variations, including the one (far) above.\n0. I found and applied this fix, which reduced the number of random error messages down to the `java.lang.IllegalStateException` one. Some progress there, but I still didn’t have a working pod.\n0. Ultimately I ended up tossing a coin and killing one of the two filled pods. Not sure if it mattered which one it was. In any case, it worked and initialized a pod after that.\n\nJust mentioning this for the record, in case someone encounters the same kind of confusing situation."
+  },
+  {
+   "id": 3008247005,
+   "user": "nickb24",
+   "created_at": "2025-06-26T12:03:20Z",
+   "body": "> [@olorinmaia](https://github.com/olorinmaia) Thanks a lot for the instructions. The cherry-pick worked for me. But only after I’d navigated the state space into a whole new level of confusion: `java.lang.IllegalStateException: Trying to set Bluetooth Address to 40:EE:BE:64:C5:67, but it is already set to 40:EE:BE:68:34:29`. Oddly enough, this happened both _with_ and _without_ the fix during connection attempts. The root cause was rather dumb:\n> \n> 0. I filled a pod after an Android 16 upgrade. The connection failed, alternating between _“Could not find an available pod for activation”_ and _“Failed to connect to pod”_.\n> 1. I had recently had a couple of pod failures (2 out of 30 were faulty — no beeps when filled, no activation).  They only ever produced the first error, **not** the second one. Despite knowing that, I jumped to a wrong conclusion: a faulty pod.\n> 2. Then I filled another pod, paid close attention whether it beeped as expected, etc. Then the error messages started to alternate between 3 variations, including the one (far) above.\n> 3. I found and applied this fix, which reduced the number of random error messages down to the `java.lang.IllegalStateException` one. Some progress there, but I still didn’t have a working pod.\n> 4. Ultimately I ended up tossing a coin and killing one of the two filled pods. Not sure if it mattered which one it was. In any case, it worked and initialized a pod after that.\n> \n> Just mentioning this for the record, in case someone encounters the same kind of confusing situation.\n\n@andrejpodzimek This new error is already captured in this issue #4030 "
+  },
+  {
+   "id": 3009761918,
+   "user": "manfred-h",
+   "created_at": "2025-06-26T19:51:45Z",
+   "body": "> Be aware! The branch hotfix-a16-dash is based on latest dev. Don't checkout and build it unless you know how dev version works. Check wiki!\n> \n> If you currently are on master 3.3.2.0 and you want to apply hotfix onto master you can do it like this:\n> \n>     1. Checkout origin/master -> Right click and Update to make sure it's latest.\n> \n>     2. Create a new branch from master branch (right click on it -> New branch from ..) -> Call it master-dashfix for example.\n> \n>     3. Make sure to rollback any code adjustments to Connection.kt file, CTRL+ALT+Z (Git -> Uncommitted changes -> Rollback). If there isn't anything to rollback proceed to next step.\n> \n>     4. Go to origin/hotfix-a16-dash branch and mark the two commits [39dd2e6](https://github.com/nightscout/AndroidAPS/commit/39dd2e6151daafa3c98634eec77361b124779aad) and [6153bc4](https://github.com/nightscout/AndroidAPS/commit/6153bc4b257222a1d29a2871d6fa4223ce4e4ac7) and right click and cherry pick.\n> \n>     5. Build AAPS full-release apk\n> \n> \n> ![image](https://github.com/user-attachments/assets/36bce086-0088-497c-88dd-8be2d6d6ab8f)\n\nIt should be noted that the order in which the patches must be applied is wrong! It ought to be the other way round, i.e.\n\n  git cherry-pick 6153bc4\n  git cherry-pick 39dd2e6\n\nOtherwise they won't apply!"
+  },
+  {
+   "id": 3009779307,
+   "user": "olorinmaia",
+   "created_at": "2025-06-26T19:56:51Z",
+   "body": "If you use android studios it doesn't really matter which order you select them in GUI as long as you select both in same go, but I'll change it. Thanks. "
+  },
+  {
+   "id": 3016420126,
+   "user": "andrejpodzimek",
+   "created_at": "2025-06-29T08:38:58Z",
+   "body": "> The cherry-pick worked for me. \n\nI spoke too soon. No, the fix doesn’t work. I get _Failed to connect to pod_. The pod I activated last time was a one-off random success after tens of trial-and-error attempts.\n\nThis is not a great situation to be in; ~~Omnipod DASH is completely unusable at the moment. Not sure if 100 attempts will work or not, not sure if the filled pod will expire before that.~~\n\nEDIT: Eventually I did manage to activate a pod, but it was quite nerve-wracking:\n\n0. Noticed that both _Activate_ and _Deactivate_ buttons were enabled.\n0. Went outside Bluetooth range, pressed _Deactivate_, waited until Bluetooth connection expired, then pressed the button that forgets the pod. (The goal was to not _actually_ deactivate the pod.)\n0. Walked back to the pod, tried to activate it. Got _Could not find an available pod for activation_ this time instead of _Failed to connect to pod_.\n   * At that point I almost thought the pod was already one state machine step too far, never to be reconciled with AndroidAPS…\n0. Yet after 5+ more attempts, the pod has been successfully activated.\n\nIs [this change in Android](https://developer.android.com/about/versions/16/behavior-changes-16#bond-removal-api) (or its unintended fallout) causing this? With Android 15 I never experienced connection errors."
+  },
+  {
+   "id": 3018010007,
+   "user": "nickb24",
+   "created_at": "2025-06-30T06:53:39Z",
+   "body": "I've activated about 8 pods since applying the fix. 0 issues so far with perfect connection quality in the Dash status page. Running a Pixel 7 Pro on A16. "
+  },
+  {
+   "id": 3018490289,
+   "user": "jimbaxter",
+   "created_at": "2025-06-30T09:43:33Z",
+   "body": "I have successfully been using the fix on a Google Pixel 8 Pro with Android 16 and it has worked on all 6 pods.\n\n\nI created a build by cherry picking the PR onto the master branch.\n"
+  },
+  {
+   "id": 3018514755,
+   "user": "spanosp",
+   "created_at": "2025-06-30T09:51:35Z",
+   "body": "Same setup as above, Pixel 8 Pro on Android 16, now on my 3rd pod and all working fine.\n\nRef:\nhttps://github.com/nightscout/AndroidAPS/issues/4027#issuecomment-2994479952"
+  },
+  {
+   "id": 3021503078,
+   "user": "falconfusion",
+   "created_at": "2025-07-01T02:23:37Z",
+   "body": "Much respect to @olorinmaia , I'm certain that this is the fix I need,  But for those of us who are not Git-literate, (I built my AAPS using only the integrated git tools in Android Studio), Is there a way to cherry pick using the android studio?  I assume so, based on your comment from 4 days ago.  But can someone please help me with which A.S. options to select from? (apparently I'm stupid enough that I can't even find the big tree of commits) \n\n![Image](https://github.com/user-attachments/assets/41965191-2c76-4c45-b1fd-8a2e148f8539)\nAm I even close?\n\nEdit, I was close. What I was looking for was at the bottom left of Android Studio. Still don't have it all the way working, But this is where the git and cherry pick interface exists in AS\n\n![Image](https://github.com/user-attachments/assets/a22a7852-a112-4e59-b3d7-60b456c83db9)"
+  },
+  {
+   "id": 3131418974,
+   "user": "Guccis",
+   "created_at": "2025-07-29T09:06:15Z",
+   "body": "Thanks @olorinmaia Works wonderfully :)"
+  },
+  {
+   "id": 3139428745,
+   "user": "mtomlinson",
+   "created_at": "2025-07-31T10:41:21Z",
+   "body": "Fantastic, works for me as well, running Pixel 6 with Android 16, hotfix-a16-dash branch, and cherry picked commits.  Thank you!"
+  },
+  {
+   "id": 3140336655,
+   "user": "jaredwhittle",
+   "created_at": "2025-07-31T15:06:58Z",
+   "body": "Any ETA when the hotfix will be rolled into stable?"
+  },
+  {
+   "id": 3140382076,
+   "user": "olorinmaia",
+   "created_at": "2025-07-31T15:20:07Z",
+   "body": "> Any ETA when the hotfix will be rolled into stable?\n\nVery soon. The next release is in branch dev332\nhttps://github.com/nightscout/AndroidAPS/pull/4072\n\nI'm testing it right now. No issues so far. @MilosKozak "
+  },
+  {
+   "id": 3142850147,
+   "user": "congruidavidli",
+   "created_at": "2025-08-01T06:38:53Z",
+   "body": "For those who might see this before the hotfix lands in dev, note that as of this comment, the cherry picks are no longer necessary. The changes are already in the hotfix-a16-dash branch.\n\n"
+  },
+  {
+   "id": 3144502406,
+   "user": "Philoul",
+   "created_at": "2025-08-01T12:58:36Z",
+   "body": "@congruidavidli You shouldn't use hotfix-a16-dash branch, it's based on a previous version of dev branch so it will require engineering mode enabled and can have pending development not 100% finished for a future 3.3.3 version.\nPrefer dev332 branch which is based on current master and should be released soon as a minor release of the 3.3.2.0."
+  },
+  {
+   "id": 3150258485,
+   "user": "ADClayton",
+   "created_at": "2025-08-04T11:39:55Z",
+   "body": "I have built the lastest dev332 branch and have been testing on my Pixel 7a (Android 16) I can start the pods and give insulin but have to manually bond the pods with the phone. Is that expected behaviour?\n\nEDIT: I have just found the config setting to enable this. It is in the config builder under the dash section if anyone else is looking for it."
+  },
+  {
+   "id": 3150266709,
+   "user": "olorinmaia",
+   "created_at": "2025-08-04T11:42:45Z",
+   "body": "Have you tried turning the bond option off in dash settings? "
+  },
+  {
+   "id": 3153768205,
+   "user": "ADClayton",
+   "created_at": "2025-08-05T07:05:49Z",
+   "body": "With the bond option turned off a new pod will start but looses connection quickly and a phone restart is required (same behaviour as Android 15) to connect again."
+  },
+  {
+   "id": 3154037205,
+   "user": "willemjanvv",
+   "created_at": "2025-08-05T08:11:51Z",
+   "body": "> Be aware! The branch hotfix-a16-dash is based on latest dev. Don't checkout and build it unless you know how dev version works. Check wiki!\n> \n> If you currently are on master 3.3.2.0 and you want to apply hotfix onto master you can do it like this:\n> \n> 1. Checkout origin/master -> Right click and Update to make sure it's latest.\n> 2. Create a new branch from master branch (right click on it -> New branch from ..) -> Call it master-dashfix for example.\n> 3. Make sure to rollback any code adjustments to Connection.kt file, CTRL+ALT+Z (Git -> Uncommitted changes -> Rollback). If there isn't anything to rollback proceed to next step.\n> 4. Go to origin/hotfix-a16-dash branch and mark the two commits  [6153bc4](https://github.com/nightscout/AndroidAPS/commit/6153bc4b257222a1d29a2871d6fa4223ce4e4ac7) and [39dd2e6](https://github.com/nightscout/AndroidAPS/commit/39dd2e6151daafa3c98634eec77361b124779aad) then right click and cherry pick.\n> 5. Build AAPS full-release apk\n> \n> ![image](https://github.com/user-attachments/assets/36bce086-0088-497c-88dd-8be2d6d6ab8f)\n\nHi! I'm sorry but I have trouble following this step-by-step guide. When I cherry-pick those 2 things, I recieve error message:\n\n<img width=\"372\" height=\"143\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/e5a83fb4-1150-4c67-bbcc-afa96117f97f\" />\n\nIf I then try to build, I get this error:\n\n<img width=\"882\" height=\"299\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/a5a95975-230a-4f69-bfef-806529fc38ee\" />\n\n\nI'm very sorry to have to ask for this, but would anyone be able to provide a step-by-step guide for people that have no real clue what they are doing? Sadly I have a new phone which has Android 16, meaning I can't activate my Dash pumps any longer, and I think this is the only place I can find a solution. "
+  },
+  {
+   "id": 3154183138,
+   "user": "ADClayton",
+   "created_at": "2025-08-05T08:57:22Z",
+   "body": "> > Be aware! The branch hotfix-a16-dash is based on latest dev. Don't checkout and build it unless you know how dev version works. Check wiki!\n> > If you currently are on master 3.3.2.0 and you want to apply hotfix onto master you can do it like this:\n> > \n> > 1. Checkout origin/master -> Right click and Update to make sure it's latest.\n> > 2. Create a new branch from master branch (right click on it -> New branch from ..) -> Call it master-dashfix for example.\n> > 3. Make sure to rollback any code adjustments to Connection.kt file, CTRL+ALT+Z (Git -> Uncommitted changes -> Rollback). If there isn't anything to rollback proceed to next step.\n> > 4. Go to origin/hotfix-a16-dash branch and mark the two commits  [6153bc4](https://github.com/nightscout/AndroidAPS/commit/6153bc4b257222a1d29a2871d6fa4223ce4e4ac7) and [39dd2e6](https://github.com/nightscout/AndroidAPS/commit/39dd2e6151daafa3c98634eec77361b124779aad) then right click and cherry pick.\n> > 5. Build AAPS full-release apk\n> > \n> > ![image](https://github.com/user-attachments/assets/36bce086-0088-497c-88dd-8be2d6d6ab8f)\n> \n> Hi! I'm sorry but I have trouble following this step-by-step guide. When I cherry-pick those 2 things, I recieve error message:\n> \n> <img alt=\"Image\" width=\"372\" height=\"143\" src=\"https://private-user-images.githubusercontent.com/224744466/474387615-e5a83fb4-1150-4c67-bbcc-afa96117f97f.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTQzODQzNTksIm5iZiI6MTc1NDM4NDA1OSwicGF0aCI6Ii8yMjQ3NDQ0NjYvNDc0Mzg3NjE1LWU1YTgzZmI0LTExNTAtNGM2Ny1iYmNjLWFmYTk2MTE3Zjk3Zi5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwODA1JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDgwNVQwODU0MTlaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT03ZTgyZjczNjUxNjk0NGQ4ODkwNTlmMWM0MWUzY2NiMDE5MmFmOTBhZTFiNjc5MTYxMGJhY2ZmNzA2ZjkwYTE3JlgtQW16LVNpZ25lZEhlYWR"
+  },
+  {
+   "id": 3154253852,
+   "user": "Philoul",
+   "created_at": "2025-08-05T09:18:42Z",
+   "body": "@willemjanvv \nFirst apply this:\nhttps://androidaps.readthedocs.io/en/latest/GettingHelp/TroubleshootingAndroidStudio.html#uncommitted-changes\n\nThen checkout dev332 branch (search google if you don't know how to checkout a specific remote branch) and build your apk the same way you built master."
+  },
+  {
+   "id": 3154480999,
+   "user": "willemjanvv",
+   "created_at": "2025-08-05T09:59:19Z",
+   "body": "> [@willemjanvv](https://github.com/willemjanvv) First apply this: https://androidaps.readthedocs.io/en/latest/GettingHelp/TroubleshootingAndroidStudio.html#uncommitted-changes\n> \n> Then checkout dev332 branch (search google if you don't know how to checkout a specific remote branch) and build your apk the same way you built master.\n\nThank you! After rollbacking the uncommited changes, I fetched again, and I ran the command \"git checkout dev332\", and am currently rebuilding the signed APK. Hope it works!\n\n<img width=\"1594\" height=\"375\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/ecc86784-156c-4f6b-96a1-23e92e1098c2\" />\n\nBuild and install was succesful. Will update tomorrow if this dev332 version fixed the issue. Thanks for the help so far!\n\nEdit 2: indeed this fixed the issue of pod activation on Android 16. Thanks <3"
+  },
+  {
+   "id": 3229874047,
+   "user": "olorinmaia",
+   "created_at": "2025-08-27T22:01:43Z",
+   "body": "Fix for android 16 is merged to master in 3.3.2.1 - based on multiple reports from A16 users I believe this issue can be closed @MilosKozak "
+  },
+  {
+   "id": 3325239715,
+   "user": "AdaladD",
+   "created_at": "2025-09-23T19:15:53Z",
+   "body": "I can't activate the Pod.\nPixel 8 Pro (Android 16)\nAAPS 3.3.2.1\n\nI've tried various things:\n- turning the bound function on/off.\n- turning off Bluetooth.\n- stopping/clearing the AAPS cache.\n- restarting/powering off the phone.\n\nAAPS returns the following error when attempting to activate:\n\n<img width=\"338\" height=\"112\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/83e4d596-ae89-4ce1-8db1-9fee04b57ea9\" />"
+  }
+ ]
+}

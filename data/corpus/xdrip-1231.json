@@ -1,0 +1,67 @@
+{
+ "id": 561101592,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1231,
+ "title": "Nightscout treatments are not downloaded",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1231",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "duplicate",
+  "sync-nightscout"
+ ],
+ "created_at": "2020-02-06T15:50:57Z",
+ "closed_at": "2021-03-27T19:02:10Z",
+ "comment_count": 8,
+ "body": "Treatments entered in XDrip are shown on the master and in the Webinterface, but not on the Noghtscout Follower. \"Download Treatments\" is turned on.\r\nBut when a treatment is entered in the Webinterface is shows up on the follower, as can be seen in the attached image.\r\n![nightscout](https://user-images.githubusercontent.com/41596803/73953484-c1e41780-4900-11ea-94ea-27947cb99670.png)\r\n![xdrip follower](https://user-images.githubusercontent.com/41596803/73953488-c27cae00-4900-11ea-9b1a-f78256f35363.png)\r\n\r\n",
+ "comments": [
+  {
+   "id": 602189462,
+   "user": "GPLExpert",
+   "created_at": "2020-03-22T12:08:13Z",
+   "body": "Same for me here\r\n\r\n> Treatments entered in XDrip are shown on the master and in the Webinterface, but not on the Noghtscout Follower\r\n\r\n"
+  },
+  {
+   "id": 636389654,
+   "user": "malloy139",
+   "created_at": "2020-05-30T21:49:40Z",
+   "body": "It is still not working. Is this a xdrip issue or a nightscout issue?\r\nThis seems to be the only way (if it would work) to distribute treatments for people with phones that have no play services installed and can't use the sync featue."
+  },
+  {
+   "id": 636441514,
+   "user": "GPLExpert",
+   "created_at": "2020-05-31T08:48:07Z",
+   "body": "Hello,\r\nYes if someone can help debugging ?\r\nI can give all informations if needed\r\nThanks"
+  },
+  {
+   "id": 637761220,
+   "user": "rocketman10404",
+   "created_at": "2020-06-02T19:32:54Z",
+   "body": "Having the same issue on several phones running XDrip\r\n\r\nEdit: Interesting note.  When looking at the treatment history/database in Nightscout, I see that all the treatments entered from the xdrip app have \"xdrip\" in the \"Entered By\" field.  In Nightscout, I can manually edit the treatment data, so I tried changing \"xdrip\" to something else, and afterwards, my XDrip app downloaded that specific treatment.\r\n\r\nSo, it seems like the issue here is the \"Entered By\" field used to upload the treatment data.  If all phones' XDrip apps are using \"xdrip\", perhaps they're intentionally ignoring those treatment records, with each app assuming it was the uploader?\r\n\r\nIs there anyway to customize or configure XDrip as far the treatment's \"Entered By\" record?"
+  },
+  {
+   "id": 637807176,
+   "user": "rocketman10404",
+   "created_at": "2020-06-02T21:07:53Z",
+   "body": "From my brief and uneducated quick scan of Treatments.java, it does indeed appear as though the \"Entered By\" record is taken from a hard-coded constant (XDRIP_TAG) that currently cannot be changed in the app.\r\n\r\nAlso, looking at NightscoutTreatments.java (and this is my best interpretation as a hobbyist's first look) - at line 133, it looks like a check on new treatments to only process non-existing (i.e. new) treatments not coming from xdrip (i.e. \"Entered By\" is not \"xdrip\").  There's a else condition block to catch changes for pre-existing treatments whether or not they come from xdrip, but there does NOT look to be any code to process new treatments that come from xdrip.  Seems to me like this is the root cause of the issue we're describing.\r\n\r\nI'd suggest possibly adding a configurable setting to allow user control over the XDRIP_TAG contents, but have no idea what other negative effects this may have elsewhere.  It may be easier to avoid downloading/uploading duplicates if all XDrip users syncing to a Nightscout instance could have treatments uniquely identified via the XDRIP_TAG.\r\n\r\nAlternatively, perhaps non-existing treatments could be process whether or not they came from xdrip?\r\n\r\nLastly - this may be a duplicate of #1196.  Possibly related to #735, but maybe not."
+  },
+  {
+   "id": 674284259,
+   "user": "tolot27",
+   "created_at": "2020-08-14T21:42:20Z",
+   "body": "This is a duplicate of #1196. The problem reported with #735 is that treatments entered by followers are not uploaded to nightscout.\r\n\r\n@jamorham Please can you close this issue?"
+  },
+  {
+   "id": 808787300,
+   "user": "Navid200",
+   "created_at": "2021-03-27T19:02:10Z",
+   "body": "Please add your comments to the existing issue: https://github.com/NightscoutFoundation/xDrip/issues/1196"
+  },
+  {
+   "id": 1962368502,
+   "user": "Navid200",
+   "created_at": "2024-02-24T13:49:16Z",
+   "body": "As of the release on February 24, 2024, there is a new switch in the \"Upload Treatments\" submenu titled \"Skip items from xDrip\" enabled by default.\r\nIf you disable this switch, treatments uploaded by another xDrip will also be downloaded.\r\n\r\nPlease tell us if you experience any issues or have any questions."
+  }
+ ]
+}

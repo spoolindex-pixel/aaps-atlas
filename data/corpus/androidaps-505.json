@@ -1,0 +1,39 @@
+{
+ "id": 879865721,
+ "repo": "nightscout/AndroidAPS",
+ "number": 505,
+ "title": "Profile upload to Medtronic error when having too many rows in basals",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/505",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-05-07T22:37:57Z",
+ "closed_at": "2021-09-21T20:42:09Z",
+ "comment_count": 4,
+ "body": "AAPS 2.8.2, Orangelink, MDT722 - after profile change it was not getting uploaded to the pump with noisy alarm.\r\nI found out that I have made the profile too big (added few rows to basals) and managed to recover by reducing number of rows in basals to 8.\r\nIt might be limitation of the pump or OrangeLink.\r\n\r\nhere is extract from the log:\r\n```\r\n23:15:04.914 [Binder:8095_3] D/PUMPBTCOMM: [RileyLinkBLE$1.onCharacteristicChanged():76]: Binder:8095_3[442]onCharacteristicChanged Response Count 96\r\n23:15:04.916 [Binder:8095_3] D/PUMPBTCOMM: [RileyLinkBLE$1.onCharacteristicChanged():80]: Response Count is 96\r\n23:15:04.918 [Binder:8095_3] D/PUMPBTCOMM: [RFSpyReader.newDataIsAvailable():86]: Binder:8095_3[442]waitForRadioData released(count=405) at t=2875054\r\n23:15:04.921 [AsyncTask #1] D/PUMPBTCOMM: [RFSpyReader$1.doInBackground():106]: AsyncTask #1[514]waitForRadioData acquired (count=405) at t=2875057\r\n23:15:05.093 [Binder:8095_3] D/PUMPBTCOMM: [RileyLinkBLE$1.onCharacteristicRead():96]: Binder:8095_3[442]onCharacteristicRead (Data) SUCCESS:AA\r\n23:15:05.198 [Thread-533] D/PUMPBTCOMM: [RFSpyReader.poll():67]: Got data [AA] at t==2875333\r\n23:15:05.200 [Thread-533] E/PUMPBTCOMM: [RFSpy.writeToData():231]: writeToData: RileyLink reports timeout\r\n23:15:05.202 [Thread-533] W/PUMPBTCOMM: [RileyLinkCommunicationManager.sendAndListen():88]: isDeviceReachable. Response is invalid ! [noResponseFromRileyLink=[false, false, true, false, false], interrupted={}, timeout={}, unknownCommand={}, invalidParam={}]\r\n23:15:05.205 [Thread-533] W/PUMPCOMM: [MedtronicCommunicationManager.setBasalProfile():906]: Error getting response from RileyLink (error=[Timeout, 4], retry={})\r\n23:15:05.207 [Thread-533] W/PUMPCOMM: [MedtronicCommunicationManager.setBasalProfile():912]: Set Basal Profile: Null response.\r\n23:15:05.209 [Thread-533] D/PUMP: [MedtronicUITask.postProcess():197]: MedtronicUITask: @@@ In execute. [SetBasalProfileSTD]\r\n23:15:05.211 [Thread-533] I/PUMP: [MedtronicPumpPlugin.setNewBasalProfile():1475]: MedtronicPumpPlugin::Basal Profile was set: false\r\n23:15:05.214 [Thread-533] D/PUMPQUEUE: [CommandSetProfile.execute():33]: Result success: false enacted: false profile: {\"dia\":5,\"carbratio\":[{\"time\":\"00:00\",\"timeAsSeconds\":0,\"value\":7.6},{\"time\":\"09:00\",\"timeAsSeconds\":32400,\"value\":10},{\"time\":\"15:00\",\"timeAsSeconds\":54000,\"value\":11},{\"time\":\"21:00\",\"timeAsSeconds\":75600,\"value\":10}],\"sens\":[{\"time\":\"00:00\",\"timeAsSeconds\":0,\"value\":3.5},{\"time\":\"04:00\",\"timeAsSeconds\":14400,\"value\":3.8},{\"time\":\"22:00\",\"timeAsSeconds\":79200,\"value\":3.5}],\"basBasalal\":[{\"time\":\"00:00\",\"timeAsSeconds\":0,\"value\":0.7},{\"time\":\"02:00\",\"timeAsSeconds\":7200,\"value\":0.65},{\"time\":\"04:00\",\"timeAsSeconds\":14400,\"value\":0.55},{\"time\":\"06:00\",\"timeAsSeconds\":21600,\"value\":0.5},{\"time\":\"07:00\",\"timeAsSeconds\":25200,\"value\":0.45},{\"time\":\"10:00\",\"timeAsSeconds\":36000,\"value\":0.3},{\"time\":\"15:00\",\"timeAsSeconds\":54000,\"value\":0.55},{\"time\":\"19:00\",\"timeAsSeconds\":68400,\"value\":0.65},{\"time\":\"22:00\",\"timeAsSeconds\":79200,\"value\":0.75}],\"target_low\":[{\"time\":\"00:00\",\"timeAsSeconds\":0,\"value\":5.5}],\"target_high\":[{\"time\":\"00:00\",\"timeAsSeconds\":0,\"value\":5.5}],\"units\":\"mmol\",\"timezone\":\"Europe\\/Zagreb\"}\r\n23:15:05.277 [main] D/NSCLIENT: [UploadQueue.add():70]: Adding to queue: \r\nnsClientID:1620422105277\r\naction:dbAdd\r\ncollection:treatments\r\ndata:{\"eventType\":\"Announcement\",\"created_at\":\"2021-05-07T21:15:05Z\",\"enteredBy\":\"AndroidAPS\",\"notes\":\"Basal profile could not be set.\",\"isAnnouncement\":true,\"NSCLIENT_ID\":\"1620422105277\"}\r\n_id:\r\n23:15:05.283 [NSClientServiceHandler] D/NSCLIENT: [NSClientService.lambda$resend$6$NSClientService():799]: Skipping resend by lastResendTime: 9 sec\r\n23:15:05.293 [main] D/CORE: [ErrorDialog.onCreateView():49]: Error dialog displayed\r\n```\r\n",
+ "comments": [
+  {
+   "id": 834885285,
+   "user": "andyrozman",
+   "created_at": "2021-05-08T00:08:40Z",
+   "body": "We support up to 24 basals - one for each hour. I think problem is with your connection... \r\nwriteToData: RileyLink reports timeout\r\n\r\nIt seems there were timeouts... Sending of basals requires long command to be send (command with more than 63 bits), so instead if sending 1 command, we send 3 commands... If your RL-Clone has communication problem and is interrupted during sending of this commands), then this might be the problem. "
+  },
+  {
+   "id": 835082601,
+   "user": "OpossumGit",
+   "created_at": "2021-05-08T04:28:29Z",
+   "body": "I see and still can not understand where the break happens. I do not have other issues with communication, while for this action it was breaking constantly. I was trying to activate the profile 30+ times and it kept failing. It managed to get through once when I sent it from main page (not profile tab) as 120%. I changed both batteries thinking that it affects comms too and that did not help too. "
+  },
+  {
+   "id": 835228171,
+   "user": "Alamo04",
+   "created_at": "2021-05-08T09:04:37Z",
+   "body": "Many problems can be fixed with a phone restart, did you try that ?\r\nI have OrangeLink and Medtronic 754 and no problems."
+  },
+  {
+   "id": 835239131,
+   "user": "OpossumGit",
+   "created_at": "2021-05-08T09:23:11Z",
+   "body": "> Many problems can be fixed with a phone restart, did you try that ?\n>\n\nTrust me, I've tried everything. Changed all the batteries, restarted everything, even reinstalled AAPS. \n\n\n"
+  }
+ ]
+}

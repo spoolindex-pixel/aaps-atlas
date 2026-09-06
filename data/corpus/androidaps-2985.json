@@ -1,0 +1,47 @@
+{
+ "id": 1964036004,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2985,
+ "title": "3.2.0.1 new APK res/q-.apk duplicates many files in res/",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2985",
+ "state": "closed",
+ "labels": [
+  "unknown_reason"
+ ],
+ "created_at": "2023-10-26T17:33:53Z",
+ "closed_at": "2024-01-18T01:06:34Z",
+ "comment_count": 5,
+ "body": "This is a Hedgehog fullRelease build of aeed6e208393a6dd0c43c58c17a2529f6a646de4\r\n\r\nThe new APK seems to be a complete version of the res/ directory with some changes.  It more than doubles the disk size of the res directory itself and results in about 10MByte more in the 3.2.0.1 APK compared with 3.2.0-rc2 and previous releases.  From AndroidStudio analysis/guesstimates:\r\n\r\n3.2.0-rc2: APK size: 55 MB, Download Size: 20.9 MB\r\n3.2.0.1: APK size: 66.2 MB, Download Size: 30.5 MB\r\n\r\nSo it may also increase the download size by 50%, though that's not relevant in practice.",
+ "comments": [
+  {
+   "id": 1782708541,
+   "user": "MilosKozak",
+   "created_at": "2023-10-27T10:53:17Z",
+   "body": "no idea where is this coming from"
+  },
+  {
+   "id": 1783254618,
+   "user": "jbowler",
+   "created_at": "2023-10-27T17:18:03Z",
+   "body": "Here (from the new StudioProjects directory I constructed and used to build 3.2.0 a couple of day ago):\r\n\r\n```\r\njbowler@hippopopus ~/StudioProjects/AndroidAPS-3.2 $ sh -x ../ttt\r\n+ find . -type f -print0\r\n+ xargs -0 md5sum\r\n+ egrep 7ee9d9e80f9d664ca73bfe72f18ce53f\r\n7ee9d9e80f9d664ca73bfe72f18ce53f  ./app/build/intermediates/packaged_res/fullRelease/raw/android_wear_micro_apk.apk\r\n7ee9d9e80f9d664ca73bfe72f18ce53f  ./app/build/generated/res/microapk/full/release/raw/android_wear_micro_apk.apk\r\n```\r\n\r\nIt's not in the git source (I checked in the same way) but somehow the build now puts a, for me, spurious APK into the resources."
+  },
+  {
+   "id": 1783315106,
+   "user": "MilosKozak",
+   "created_at": "2023-10-27T18:10:39Z",
+   "body": "![image](https://github.com/nightscout/AndroidAPS/assets/11146458/994df32c-9248-4a4b-b136-83ba0f483021)\r\nq-.apk  is wear apk but I don't understand why it's included when it's not possible to install it to watch\r\nthese files do the size of final apk"
+  },
+  {
+   "id": 1783340508,
+   "user": "jbowler",
+   "created_at": "2023-10-27T18:30:25Z",
+   "body": "That's it.  SteamPunk.zip also appears to be watch related (\"CustomWatchface.png\" for example).  I don't know how to check the signature on q-.apk but that might give a clue.  Also the build log presumably shows what built it (I don't know enough AndroidStudio to even find the build log.)"
+  },
+  {
+   "id": 1783419194,
+   "user": "MilosKozak",
+   "created_at": "2023-10-27T19:42:18Z",
+   "body": "the change between rc2 and 3.2.0.1 is migration to kts builds. maybe there is something different. but i didn't find a option how to affect it"
+  }
+ ]
+}

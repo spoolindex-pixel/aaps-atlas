@@ -1,0 +1,45 @@
+{
+ "id": 4456425588,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4832,
+ "title": "Cannot change Cloud Directory Google account",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4832",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2026-05-15T19:25:07Z",
+ "closed_at": "2026-06-06T09:45:58Z",
+ "comment_count": 5,
+ "body": "The original Google account I was using for Cloud Directory has expired (end of corporate Google Workspace subscription). I wanted to switch to my personal account.\n\nWhen I open Cloud Directory and click **Clear Settings**, the process appears to complete successfully. However, when I try to set up a new account in Google Drive, AAPS still holds the OAuth token for the original (now invalid) account — resulting in a Google error: *\"This service is not available for your account.\"*\n\nThe new Google account itself is valid — confirmed by successfully pairing it on a clean AAPS installation with no issues.",
+ "comments": [
+  {
+   "id": 4544222178,
+   "user": "Angus-repo",
+   "created_at": "2026-05-26T13:01:32Z",
+   "body": "@luborjurena \nThank you for your report.\n\nAt first glance, it looks like some settings stored in memory were not cleared properly.\n\nFor now, after selecting the account, please restart your phone once. After that, it should be able to load the directory information from the new Google account.\n\nI will investigate this in more detail and fix the issue."
+  },
+  {
+   "id": 4544367885,
+   "user": "MilosKozak",
+   "created_at": "2026-05-26T13:17:49Z",
+   "body": "this has been redesigned in v4.\nDo not change it in v3, otherwise it will conflict ... @Angus-repo "
+  },
+  {
+   "id": 4545126449,
+   "user": "Angus-repo",
+   "created_at": "2026-05-26T14:36:27Z",
+   "body": "@MilosKozak \nI just rebuilt the v4 app and found a few issues:\n\n1. In v4, the “Clear Google Drive account” function seems to be missing. Without this, users are unable to switch Google accounts.\n2. On the Maintenance page, if I first load the cloud directory, then export settings to the cloud, and then load the cloud directory again, it still seems to use the previous cache, so the newly exported settings in the cloud directory are not visible.\n3. If the imported cloud directory contains more than 11 settings files, the app may crash when pressing the Load more button for the second time.\n\nAre these issues already being worked on? Or would you like me to help add/fix them in the v4 version?"
+  },
+  {
+   "id": 4638033953,
+   "user": "MilosKozak",
+   "created_at": "2026-06-06T08:57:08Z",
+   "body": "@Angus-repo \n\n<img width=\"551\" height=\"100\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/9fe55076-68a6-440b-bbce-69e6ac7bee02\" />"
+  },
+  {
+   "id": 4638158937,
+   "user": "MilosKozak",
+   "created_at": "2026-06-06T09:45:58Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/496d3275f41dc5d608c20eb9a9f319611429a526"
+  }
+ ]
+}

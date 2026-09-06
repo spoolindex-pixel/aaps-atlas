@@ -1,0 +1,75 @@
+{
+ "id": 1036206628,
+ "repo": "nightscout/AndroidAPS",
+ "number": 782,
+ "title": "2.8.2.7-dev commit 8efa66f23, Frozen screen and error message when activating a new eros POD",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/782",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-10-26T11:57:59Z",
+ "closed_at": "2021-11-16T10:31:32Z",
+ "comment_count": 10,
+ "body": "referring to problem #775.\r\n\r\n1. After filling the eros POD and confirming it.\r\n2. After creating the eros POD and confirming it.\r\n\r\nScreen is still frozen and after a short time the error message 'Close APP' or 'Wait' appears, both times with Wait confirmation, after which the activation continued.\r\n\r\nOn the positive side, the POD was nevertheless activated cleanly and APPS 2.8.2.7-dev immediately started working.\r\n\r\nDue to this activating behaviour, I still see a certain need for action.\r\n\r\nWith best thanks in advance Thomas\r\n\r\n![Screenshot_20211025-202143_AndroidAPS 1](https://user-images.githubusercontent.com/59526802/138872875-124f38b8-29f4-4b02-b446-d075f412bb13.jpg)\r\n\r\n",
+ "comments": [
+  {
+   "id": 954697094,
+   "user": "Thomas-Wolff",
+   "created_at": "2021-10-29T12:19:04Z",
+   "body": "Now already with the third eros Pod problems with the Pod change to AAPS 2.8.2.7-dev Bulid 04a104a9b.\r\n\r\n1st Pod deactivation started and confirmed accordingly, then screen froze again until the field message 'Close APP' or 'Wait' came up. Confirmed with wait Pod worked audibly and deactivated.\r\nThen the error message 'Data coming from another pump' appeared again in the main tab. Change the pump driver. I simply confirmed this and then proceeded to activate the new eros Pod.\r\n\r\n2. activated the Pod and filled it with insulin and confirmed this, again a frozen screen until the error message came up again as described above and this was confirmed accordingly so that the profile data was audibly transferred to the eros. Pod set and confirmed accordingly, then again the same behaviour as described.\r\n\r\nDespite these problems, Pod was initialised cleanly and so far runs cleanly in AAPS-dev.\r\n\r\n@MilosKozak I still see a considerable need for action to fix these errors.\r\n\r\nMy hardware Samsung Galaxy A40 Android 11.\r\nAttached are a few screenshots and the corresponding log file for documentation.\r\n\r\nMany greetings Thomas\r\n\r\n![Bild1](https://user-images.githubusercontent.com/59526802/139432875-1236402e-5019-4c4d-87ff-246341642827.JPG)\r\n\r\n![Bild2](https://user-images.githubusercontent.com/59526802/139432900-3b56ad53-4d69-4efe-9557-663b5dd1be5f.jpg)\r\n\r\n![Bild3](https://user-images.githubusercontent.com/59526802/139432920-3fc1a7e6-bf40-4968-a318-80fcb0bb05ff.jpg)\r\n\r\n![Bild4](https://user-images.githubusercontent.com/59526802/139432940-03e52d8e-18d4-4e7b-a286-b99bc20b61fc.jpg)\r\n\r\n![Bild5](https://user-images.githubusercontent.com/59526802/139432965-333e01b1-472b-4ccf-b11c-de30bf39ba0e.jpg)\r\n\r\n![Bild6](https://user-images.githubusercontent.com/59526802/139433001-87129d63-eb90-4167-851b-564f168777f7.jpg)\r\n\r\n[AndroidAPS._2021-10-29_01-41-20_.0.zip](https://github.com/nightscout/AndroidAPS/files/7441818/AndroidAPS._2021-10-29_01-41-20_.0.zip)\r\n"
+  },
+  {
+   "id": 954798969,
+   "user": "samspycher",
+   "created_at": "2021-10-29T14:40:08Z",
+   "body": "Hi @Thomas-Wolff \r\n\r\n@MilosKozak is managing the entire development of AAPS, so he may not have much time to give feedback on this issue. I'm happy to do so, since I authored the latest integration.\r\n\r\nThere is a general issue with Eros, where long running interactions (e.g. with the pump) freeze the user interface. I expect this to happen in most places where you are waiting, and do plan to fix this asap. Unfortunately, I do not have many evenings or weekends available to me currently, so fixes for this are slow to happen.\r\n\r\nI am also reaching out to other developers that may assist in the meantime, and hope we can get if fixed soon. In the meantime, thanks for sending these reports, they are helpful!"
+  },
+  {
+   "id": 954809378,
+   "user": "Thomas-Wolff",
+   "created_at": "2021-10-29T14:54:14Z",
+   "body": "@Samspycher thank you for your feedback.\r\n\r\nNo problem, please have a look at this, despite these errors I have always been able to get my eros pods to work.\r\n\r\nHave a nice weekend Greetings Thomas"
+  },
+  {
+   "id": 957591342,
+   "user": "robertrub",
+   "created_at": "2021-11-02T13:37:31Z",
+   "body": "Hi, had the same problem with the freeze and data coming from different pumps message. Latest dev (258224055). Logs attached.\r\n\r\n[AndroidAPS_LOG_1635859291848.log-1.zip](https://github.com/nightscout/AndroidAPS/files/7461057/AndroidAPS_LOG_1635859291848.log-1.zip)\r\n\r\n"
+  },
+  {
+   "id": 962436512,
+   "user": "robertrub",
+   "created_at": "2021-11-06T11:19:25Z",
+   "body": "I'm not sure if it helps but for me, the exact freeze was after the \"stick to your body\" window closed and before the ritating _wait_ blue circle appeared. I never saw the rotating circle."
+  },
+  {
+   "id": 964417045,
+   "user": "zehnBE",
+   "created_at": "2021-11-09T18:24:49Z",
+   "body": "I have the same on dev 95f6cc7a:\r\n\r\n```\r\n2021-11-09 19:13:28.071 993-993/? D/CompositionEngine: writeOutputDependentGeometryStateToHWC layer[info.nightscout.androidaps/info.nightscout.androidaps.plugins.pump.omnipod.eros.ui.wizard.activation.ErosPodActivationWizardActivity#0] set Z 134217728 miFodLayer 134217728\r\n2021-11-09 19:13:28.088 993-993/? D/CompositionEngine: writeOutputDependentGeometryStateToHWC layer[info.nightscout.androidaps/info.nightscout.androidaps.plugins.pump.omnipod.eros.ui.wizard.activation.ErosPodActivationWizardActivity#0] set Z 134217728 miFodLayer 134217728\r\n2021-11-09 19:13:28.103 993-993/? D/CompositionEngine: writeOutputDependentGeometryStateToHWC layer[info.nightscout.androidaps/info.nightscout.androidaps.plugins.pump.omnipod.eros.ui.wizard.activation.ErosPodActivationWizardActivity#0] set Z 134217728 miFodLayer 134217728\r\n2021-11-09 19:13:35.928 1810-2321/? W/InputDispatcher: reportMqsWindowUnResponse  windowName:39e5fc6 info.nightscout.androidaps/info.nightscout.androidaps.plugins.pump.omnipod.eros.ui.wizard.activation.ErosPodActivationWizardActivity (server) \r\n2021-11-09 19:13:35.928 1810-2321/? E/system_server: report event v2: module is BSP-Touch , appId is mqs_bsp_touch_data_4731000 .\r\n      info is {\"fod_single\":0,\"fod_unlock\":0,\"double_wakeup\":0,\"touch_click\":0,\"ghost_touch\":{\"double_down_position\":\"0\",\"double_down_position_charging\":\"0\",\"times_of_same_position\":\"0\",\"times_of_same_position_charging\":\"0\",\"double_down_axis\":\"0\",\"double_down_axis_charging\":\"0\",\"long_press\":\"0\",\"long_press_charging\":\"0\",\"multi_point\":\"0\",\"multi_point_charging\":\"0\",\"lcd_noresponse\":\"39e5fc6 info.nightscout.androidaps/info.nightscout.androidaps.plugins.pump.omnipod.eros.ui.wizard.activation.ErosPodActivationWizardActivity (server):1\"} } .\r\n2021-11-09 19:13:35.929 1810-2321/? I/WindowManager: Input event dispatching timed out sending to info.nightscout.androidaps/info.nightscout.androidaps.plugins.pump.omnipod.eros.ui.wizard.activation.ErosPodActivationW"
+  },
+  {
+   "id": 965632452,
+   "user": "StephenBrown2",
+   "created_at": "2021-11-10T18:41:03Z",
+   "body": "Can confirm the issue persists with 3.0beta5, and only on activating, not deactivating."
+  },
+  {
+   "id": 968253813,
+   "user": "Thomas-Wolff",
+   "created_at": "2021-11-14T09:17:01Z",
+   "body": "Good morning to all.\r\nJust changed my eros pod, everything went through fine, no more frozen screens.\r\nThe only other thing I noticed was the message 'Data coming from another pump ........' but not as a remote message on the AAPS main screen but only on the main screen of my phone as a notification.\r\n\r\n@MilosKozak if you could take another look at this, that would be wonderful.\r\n\r\nAAPS 2.8.2.10-dev Build: 54b8d0613\r\n\r\nHave a nice Sunday Greetings Thomas (Bearbeitet)\r\n![Bild_Error](https://user-images.githubusercontent.com/59526802/141674967-6fb4db00-8939-43dc-a12e-24d9122155ff.jpg)\r\n\r\nEnclosed is the corresponding log file:\r\n\r\n[AndroidAPS._2021-11-14_06-21-51_.7.zip](https://github.com/nightscout/AndroidAPS/files/7533564/AndroidAPS._2021-11-14_06-21-51_.7.zip)\r\n"
+  },
+  {
+   "id": 968334835,
+   "user": "zehnBE",
+   "created_at": "2021-11-14T17:43:11Z",
+   "body": "on my side, the frozen Problem is fixed."
+  },
+  {
+   "id": 969302975,
+   "user": "StephenBrown2",
+   "created_at": "2021-11-15T20:42:21Z",
+   "body": "Will try when the next 3.0beta is branched. Hopefully today or tomorrow since beta5 expires on Wednesday."
+  }
+ ]
+}

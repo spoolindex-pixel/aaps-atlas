@@ -1,0 +1,93 @@
+{
+ "id": 2822348232,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3798,
+ "title": "[Bug] - Bolus Wizard does not correctly display negative units",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3798",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-01-31T03:18:22Z",
+ "closed_at": "2025-02-23T23:58:19Z",
+ "comment_count": 13,
+ "body": "The Bolus Wizard/Calculator now shows a positive number for IOB when you have positive IOB. In release 3.2.0.4, it was a negative number, which was logical because it had to be deducted from the calculated dose.\n\nThis was brought up in Discord by @barisk81 and discussed by myself and @robby\nhttps://discord.com/channels/629952586895851530/1199783453793734677/1334593953734983743\n\nI suggest, to reduce confusion, the actual IOB is shown in the horiz centre of the dialog, above the COB figures, then the inverse/negative number is shown in the right column, similar to v3.2\n\nA second visual bug on this screen is that any negative number in the right column causes the \"U\" after the figure to wrap to the next line.  And in the case of IOB, the bottom of the U is also truncated slightly.\n\nThe attached screenshot pairs are from two different times, one in September to show 3.2 behaviour and one from this morning on 3.3.1.3, with a rough sketch of my suggested resolution\n\n![Image](https://github.com/user-attachments/assets/76bd8b82-d816-4046-8522-25b46960b641)\n\n![Image](https://github.com/user-attachments/assets/44f7e831-6c1c-4a73-a3bb-840854566fed)\n\n![Image](https://github.com/user-attachments/assets/eaa74186-0dfd-4ff6-811d-cb94c866cdf8)\n\n![Image](https://github.com/user-attachments/assets/8a6d7efa-adbb-4acf-b271-903ffed3d458)",
+ "comments": [
+  {
+   "id": 2626239814,
+   "user": "robertrub",
+   "created_at": "2025-01-31T03:50:23Z",
+   "body": "Yes, it would be logical to keep the same math notation for all the numbers. If it is added to the bolus calculation, it should be + (or no sign) but if it will be subtracted, it should have the - sign in front.\n\nWe can have the IOB value in another column  as it is the case with the trends\n "
+  },
+  {
+   "id": 2663428582,
+   "user": "olorinmaia",
+   "created_at": "2025-02-17T15:22:10Z",
+   "body": "Fix https://github.com/nightscout/AndroidAPS/pull/3831\n\nIs merged to dev for those who want to test"
+  },
+  {
+   "id": 2664095959,
+   "user": "pnharris02",
+   "created_at": "2025-02-17T21:22:15Z",
+   "body": "Thanks @olorinmaia. I'll download the latest dev and check it out when I get a chance.\nI'm inferring you didn't like my idea of displaying the actual IOB (the inverse of what is shown in the calculations column) in the middle column of the page?\nBut that's okay if you've changed the sign. Thank you for fixing this."
+  },
+  {
+   "id": 2664157736,
+   "user": "olorinmaia",
+   "created_at": "2025-02-17T22:18:26Z",
+   "body": "@pnharris02 Your welcome :) I focused on getting correct math notation in wizard calc log so when you sum them all up it will be the bolus you will administer in the end. I think it's sufficient to show the IOB amount at the right when you use bolus calculator. It's not a bad idea, but there is always something about adding more text to the screen, it need to be really necessary imo if added.\n\nIf you go to the Treatments tab and open \"Calc\"-log, you can see both bolus IOB and basal IOB also. If you think this fixes the main feel free to close this issue :)"
+  },
+  {
+   "id": 2664161654,
+   "user": "pnharris02",
+   "created_at": "2025-02-17T22:22:28Z",
+   "body": "Thanks @olorinmaia\r\nI'm not home at the moment but will test as soon as I can\r\n\r\nOn Tue, 18 Feb 2025, 9:18 am Alf Einar Johnsen, ***@***.***>\r\nwrote:\r\n\r\n> @pnharris02 <https://github.com/pnharris02> Your welcome :) I focused on\r\n> getting correct math notation in wizard calc log so when you sum them all\r\n> up it will be the bolus you will administer in the end. I think it's\r\n> sufficient to show the IOB amount at the right when you use bolus\r\n> calculator. It's not a bad idea, but there is always something about adding\r\n> more text to the screen, it need to be really necessary imo if added.\r\n>\r\n> If you go to the Treatments tab and open \"Calc\"-log, you can see both\r\n> bolus IOB and basal IOB also. If you think this fixes the main feel free to\r\n> close this issue :)\r\n>\r\n> —\r\n> Reply to this email directly, view it on GitHub\r\n> <https://github.com/nightscout/AndroidAPS/issues/3798#issuecomment-2664157736>,\r\n> or unsubscribe\r\n> <https://github.com/notifications/unsubscribe-auth/BLLCEATNMTKX76RACI2JUQD2QJN4RAVCNFSM6AAAAABWGVPXV2VHI2DSMVQWIX3LMV43OSLTON2WKQ3PNVWWK3TUHMZDMNRUGE2TONZTGY>\r\n> .\r\n> You are receiving this because you were mentioned.Message ID:\r\n> ***@***.***>\r\n> [image: olorinmaia]*olorinmaia* left a comment\r\n> (nightscout/AndroidAPS#3798)\r\n> <https://github.com/nightscout/AndroidAPS/issues/3798#issuecomment-2664157736>\r\n>\r\n> @pnharris02 <https://github.com/pnharris02> Your welcome :) I focused on\r\n> getting correct math notation in wizard calc log so when you sum them all\r\n> up it will be the bolus you will administer in the end. I think it's\r\n> sufficient to show the IOB amount at the right when you use bolus\r\n> calculator. It's not a bad idea, but there is always something about adding\r\n> more text to the screen, it need to be really necessary imo if added.\r\n>\r\n> If you go to the Treatments tab and open \"Calc\"-log, you can see both\r\n> bolus IOB and basal IOB also. If you think this fixes the main feel free to\r\n> close this issue :)\r\n>\r\n> —\r\n> Reply to this "
+  },
+  {
+   "id": 2664590855,
+   "user": "pnharris02",
+   "created_at": "2025-02-18T04:38:09Z",
+   "body": "@olorinmaia  I am not familiar enough with the dev version/process to try this on my live device, but I have reviewed your code changes (with my very limited coding knowledge!) and have run the dev version using an emulator of my device in Android Studio, and agree it has added the negative sign correctly to the bolus wizard calculations.\n\nBut the other part of my bug report was that in the latest AAPS version 3.3, my device is wrapping the \"U\" to the next line.\nI note that this behaviour is not seen on your before or after screenshots in https://github.com/nightscout/AndroidAPS/pull/3831\nI also note that the behaviour is NOT seen in the Android studio emulation of my device, even with the old code.\nSo perhaps this is something specific to my device, which is a Google Pixel 9 Pro running Android 14.\nIt was definitely not there back in September, but at that time I was running a different device.  I changed devices in early December, and then upgraded from AAPS 3.2 to 3.3 in late December.  But I don't have any screenshots from mid December that would allow me to comment on whether or not the problem existed in 3.2 on my new device.\n\nI'm not sure if this is something you can fix if you're not seeing it on your device or in emulations.  Is there any other information I can give you to help to track down the source of the problem?\n"
+  },
+  {
+   "id": 2664711446,
+   "user": "olorinmaia",
+   "created_at": "2025-02-18T06:15:15Z",
+   "body": "I noticed your problem with the U getting wrapped out but not able to reproduce it. I've done some other small modifications to UI checkbox also that possibly could fix it but it's a long shot.\n\nI tried enabling superbous or more or less zoom but it didn't help. Is there perhaps any special setting you got activated on your end? "
+  },
+  {
+   "id": 2664721811,
+   "user": "pnharris02",
+   "created_at": "2025-02-18T06:23:03Z",
+   "body": "No special settings that I can think of that would affect that, but I wouldn't really know what could cause that behaviour. \nIf you have any hints, then I can try different things.  \n\nWhen I have some time, I will try to install 3.3.1.3 on an old Android 9 phone and Android 11 tablet and see if it occurs on either of those.\nI guess I could try to see if I can create another emulation of my phone in Android Studio with Android 14, and see if that replicates the problem, but there is of course no guarantee that an emulator would exactly replicate the problem even after doing this.\n\nI could also try upgrading my phone to Android 15, but I've been wary of that because I'm an Omnipod user.\nAnd the \"U\" wrapping around a line is of course a very small problem to want to take too many risks looking for it!"
+  },
+  {
+   "id": 2667496799,
+   "user": "pnharris02",
+   "created_at": "2025-02-19T04:45:04Z",
+   "body": "I configured an emulator in Android Studio for Google Pixel 9 Pro with Android 14 (14.0 Google APIs) and it does not show the problem that I'm seeing with my real phone.  So no closer to being able to identify/replicate the problem yet.\nIf I compare the emulation with my real phone, everything looks the same, except that:\n- On my real phone, the U wraps to the next line, and the number right aligns to the very edge of the screen. \nThis also causes a change in the vertical alignment of the the values in the middle column\n- On my real phone, the text is relatively slightly larger, such that the \"15min trend\" pushes right up against the trend value beside it\n- I didn't notice until after sharing the screenshots, but on my real phone, the entire Bolus Wizard dialog window takes up more vertical screen space than it does in the emulator.  Perhaps that's also connected to the larger font size?\n\n![Image](https://github.com/user-attachments/assets/225690c8-6716-4b6b-ac7c-dd630bb1e7a9)\n\n![Image](https://github.com/user-attachments/assets/a57722b8-df81-45a7-abab-a264af1512fb)"
+  },
+  {
+   "id": 2673928227,
+   "user": "robertrub",
+   "created_at": "2025-02-21T08:42:43Z",
+   "body": "`On my real phone, the U wraps to the next line, and the number right aligns to the very edge of the screen.`\n\nThe character sizes are different in your 2 screenshots. Try to reduce the character size on your phone.\n\n![Screenshot_20250221_094227_Settings.jpg](https://github.com/user-attachments/assets/ce08a403-833b-4376-ba3f-b8dd064d0902)\n\n"
+  },
+  {
+   "id": 2674326935,
+   "user": "pnharris02",
+   "created_at": "2025-02-21T11:40:20Z",
+   "body": "Yes, I noticed the character size difference too, and commented on it above.\nI don't think I changed the font size when I got the phone only 2 months ago.\nBut yes, if I change it to a smaller font, the U does fit on the same line\nI think I prefer the original font size though :-) "
+  },
+  {
+   "id": 2676889264,
+   "user": "olorinmaia",
+   "created_at": "2025-02-23T14:25:46Z",
+   "body": "@pnharris02 Since the main issue with wrong math notation has been fixed in dev, would you consider closing this issue, and perhaps consider opening another issue for your font size problem and steps on how to reproduce that issue?"
+  },
+  {
+   "id": 2677196734,
+   "user": "pnharris02",
+   "created_at": "2025-02-23T23:58:19Z",
+   "body": "@olorinmaia Sure.  Will do"
+  }
+ ]
+}

@@ -1,0 +1,27 @@
+{
+ "id": 3703415144,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 4272,
+ "title": "Widget with graphic trend arrow",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/4272",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-12-07T12:01:11Z",
+ "closed_at": "2026-03-06T19:38:44Z",
+ "comment_count": 2,
+ "body": "in xDripWidget.java\nline 169:\n try {\n                        float mDesvio = (float) (BestGlucose.getDisplayGlucose().slope * 600000 * 5);\n                        if (mDesvio>90F)mDesvio=90F;\n                        if (mDesvio<-90F)mDesvio=-90F;\n\n                        views.setImageViewBitmap(R.id.trendArrowWG, rotateBitmap(getBitmap(R.drawable.ic_gtk_go_forward_ltr),\n                                mDesvio*-1));\n                    } catch (Exception e) {\n                        Log.e(\"xDripJMM\", \"ERRO Widget Image arrow=\" + e);\n                    }\nline 282 :\t\t\n  private static Bitmap getBitmap(int drawableRes) {\n        Drawable drawable = xdrip.getAppContext().getResources().getDrawable(drawableRes);\n        Canvas canvas = new Canvas();\n        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);\n        canvas.setBitmap(bitmap);\n        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());\n        drawable.draw(canvas);\n        return bitmap;\n    }\n\n    private static Bitmap rotateBitmap(Bitmap source, float angle)\n    {\n        Matrix matrix = new Matrix();\n        matrix.postRotate(angle);\n        //  source.recycle();\n        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);\n    }\t\t\t\n\t\t\t\t\t\n\nin x_drip_widget.xml\n\nline 49 :\n                <LinearLayout\n                    android:layout_width=\"wrap_content\"\n                    android:layout_height=\"wrap_content\"\n                    android:orientation=\"horizontal\"\n                    android:paddingEnd=\"0dp\"\n                    android:paddingStart=\"0dp\">\n\t\t\t\t\t\n                <TextView\n                    android:id=\"@+id/widgetArrow\"\n                    android:layout_width=\"wrap_content\"\n                    android:layout_height=\"wrap_content\"\n                    android:layout_gravity=\"center_horizontal\"\n                    android:layout_marginBottom=\"-5dp\"\n                    android:layout_marginTop=\"-2dp\"\n                    android:paddingBottom=\"-2dp\"\n                    android:text=\"--\"\n                    android:textColor=\"#ffffff\"\n                    android:textSize=\"37sp\" />\n\t\t\t\t\t  \nline81 :\n\n <ImageView\n                        android:id=\"@+id/trendArrowWG\"\n                        android:layout_width=\"60dp\"\n                        android:layout_height=\"60dp\"\n                        android:layout_marginTop=\"10dp\"\n                        android:layout_marginEnd=\"10dp\"\n                        android:layout_weight=\"1\"\n                        android:background=\"@android:color/transparent\"\n                        android:gravity=\"right\"\n                        android:paddingStart=\"0dp\"\n                        android:paddingTop=\"0dp\"\n                        android:paddingEnd=\"0dp\"\n                        android:paddingBottom=\"0dp\"\n                        app:srcCompat=\"@drawable/desert_sync\" />\n\n![Image](https://github.com/user-attachments/assets/7b4c4e81-347b-42fe-8698-ca11ca681904)",
+ "comments": [
+  {
+   "id": 3621956165,
+   "user": "JotaMyke",
+   "created_at": "2025-12-07T12:03:53Z",
+   "body": "line81 :\n\n\t\t\tImageView\n                        android:id=\"@+id/trendArrowWG\"\n                        android:layout_width=\"60dp\"\n                        android:layout_height=\"60dp\"\n                        android:layout_marginTop=\"10dp\"\n                        android:layout_marginEnd=\"10dp\"\n                        android:layout_weight=\"1\"\n                        android:background=\"@android:color/transparent\"\n                        android:gravity=\"right\"\n                        android:paddingStart=\"0dp\"\n                        android:paddingTop=\"0dp\"\n                        android:paddingEnd=\"0dp\"\n                        android:paddingBottom=\"0dp"
+  },
+  {
+   "id": 4013728457,
+   "user": "Navid200",
+   "created_at": "2026-03-06T19:38:15Z",
+   "body": "Please be kind and do not open issues in this repository unless you are asked to.\nWe have discussions open here.  Please use discussions instead.\nI will convert this to a discussion."
+  }
+ ]
+}

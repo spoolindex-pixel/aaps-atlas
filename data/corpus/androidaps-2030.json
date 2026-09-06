@@ -1,0 +1,39 @@
+{
+ "id": 1344403913,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2030,
+ "title": "Using Nsclient results in duplicate profileswitch events in NS and in AAPS",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2030",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-08-19T12:53:56Z",
+ "closed_at": "2022-10-04T09:08:11Z",
+ "comment_count": 4,
+ "body": "Reporting bugs\r\n--------------\r\n- **Note the precise time the problem occurred** and describe the circumstances and steps that caused the problem\r\n\r\n18 aug 2022 23:22\r\n\r\nUpon enabling nsclient the already present profileswitch events become duplicated and are the uploaded to NS.\r\nSometimes numerous copies form and impact functioning of the app.\r\nOnly the profileswitches are affected. They are flooding the NS and AAPS with useless information and making the app less responsive. The times are sometimes also varying so that affects any autotune calculations one might do.\r\n- Note the Build version (found in the About dialog in the app, when pressing the three dots in the\r\n  upper-right corner).\r\n\r\n3.1.0.3\r\n\r\nPump accu Check Insight\r\n\r\n\r\n- Obtain the app's log files, which can be found on the phone in\r\n  _/storage/emulated/0/Android/data/info.nightscout.androidaps/_\r\n  See https://androidaps.readthedocs.io/en/latest/Usage/Accessing-logfiles.html\r\n\r\nlog files are coming asap\r\n\r\n- Open an issue at https://github.com/nightscout/AndroidAPS/issues/new\r\n\r\ndone\r\n\r\n\r\nScreenshots:\r\n\r\n![](https://cdn.discordapp.com/attachments/629952669967974410/1009954497822466138/16E5D9EC-9D2C-404B-97BF-20121F05DD18.jpg)\r\n\r\n\r\n![](https://cdn.discordapp.com/attachments/629952669967974410/1010142059996381184/IMG_8624.jpg)\r\n\r\n\r\n![](https://cdn.discordapp.com/attachments/629952669967974410/1010154801931227197/Screenshot_2022-08-19-13-53-20-751_info.nightscout.androidaps.jpg)\r\n\r\n\r\n![](https://cdn.discordapp.com/attachments/629952669967974410/1010158307807334451/Screenshot_2022-08-19-14-07-11-012_info.nightscout.androidaps.jpg)\r\n\r\n\r\nDiscussion:\r\nhttps://discord.com/channels/629952586895851530/629952669967974410/1009953469127458896\r\n\r\n",
+ "comments": [
+  {
+   "id": 1220671436,
+   "user": "Philoul",
+   "created_at": "2022-08-19T13:19:04Z",
+   "body": "No impact on Autotune calculation done with AAPS plugin: for each BG value, Autotune use the active profile got from database to calculate basal rate (and associated IOB, Activity...)"
+  },
+  {
+   "id": 1220853086,
+   "user": "wootmasterslick",
+   "created_at": "2022-08-19T16:12:50Z",
+   "body": "> No impact on Autotune calculation done with AAPS plugin: for each BG value, Autotune use the active profile got from database to calculate basal rate (and associated IOB, Activity...)\r\n\r\nDo you not agree it is an issue?"
+  },
+  {
+   "id": 1221100742,
+   "user": "Philoul",
+   "created_at": "2022-08-19T21:20:24Z",
+   "body": "I think having 3 or more lines for each profile switch is an issue, we should have only 2 lines (one line for the request, and a second line for the profile switch done into the pump).\r\nBut even if there is a bug, there is no impact on Autotune calculation (cf comment below in Issue's description)\r\n> The times are sometimes also varying so that affects any autotune calculations one might do."
+  },
+  {
+   "id": 1266636818,
+   "user": "MilosKozak",
+   "created_at": "2022-10-04T09:08:11Z",
+   "body": "this should be resolved in AAPS dev and NS 14.2.6"
+  }
+ ]
+}

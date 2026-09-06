@@ -1,0 +1,99 @@
+{
+ "id": 397909669,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 740,
+ "title": "When phone in Airport mode with bluetooth enabled miaomiao connectivity is very unstable",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/740",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2019-01-10T16:25:46Z",
+ "closed_at": "2021-02-26T18:43:46Z",
+ "comment_count": 14,
+ "body": "Hi all,\r\n\r\nI have found that when my phone is in Airport mode - and I have bluetooth enabled, that xDrip+ consistently fails to read the miaomiao? It will if you refresh eventually via bluetooth scan for devices and basically load the app up and leave it in the foreground, but there does seem to be some kind of problem in this configuration. \r\n\r\nAs soon as I disable airport mode - the miao miao connectivity problem disappears.\r\n\r\nHas anybody worked out any solutions to this? It is something I can recreate easily.",
+ "comments": [
+  {
+   "id": 453162823,
+   "user": "gitanO0",
+   "created_at": "2019-01-10T16:36:55Z",
+   "body": "This has been talked about in the past and the answer has been that airplane mode's purpose is to kill bluetooth... therefore xdrip+ won't work in airplane mode.  Now... I'm like you and use airplane mode a lot... not just on planes and such.  So, on my device I did an ADB session and used a couple of commands to make it so airplane mode doesn't affect bluetooth or wifi. This makes it so xdrip+ runs just fine while in airplane mode.  The catch is, you have to be on cell after a reboot, then go into airplane mode after... or xdrip+ will balk at you.  \r\n\r\nThere's a fair amount of discussion and disagreement about whether this practice is a good one, etc... but it is what I do as a practice so it is what it is."
+  },
+  {
+   "id": 453163509,
+   "user": "gitanO0",
+   "created_at": "2019-01-10T16:38:48Z",
+   "body": "Here's the link to that ADB stuff I was talking about.  Give it a go.\r\nhttps://www.xda-developers.com/customize-radios-airplane-mode-android/"
+  },
+  {
+   "id": 453163536,
+   "user": "renegadeandy",
+   "created_at": "2019-01-10T16:38:54Z",
+   "body": "Hi @gitanO0 this is exciting that at least there is discussion in this area.\r\n\r\nOk - so I can try that, I assume its a 1 time change I need to do?"
+  },
+  {
+   "id": 453166509,
+   "user": "gitanO0",
+   "created_at": "2019-01-10T16:46:59Z",
+   "body": "Yes, one time deal.  Works even after security patch updates, etc..."
+  },
+  {
+   "id": 453168320,
+   "user": "renegadeandy",
+   "created_at": "2019-01-10T16:51:37Z",
+   "body": "so If i don't want to risk the security of flights etc, what is the minimum you suggest I alter with these commands?\r\n\r\nIt seems I would want:\r\n\r\n> settings put global airplane_mode_radios cell,wimax\r\n\r\nWhich would leave wifi, bluetooth and NFC on during airplane mode - which is all fine from an airlines perspective?"
+  },
+  {
+   "id": 453173194,
+   "user": "gitanO0",
+   "created_at": "2019-01-10T17:04:04Z",
+   "body": "I just make sure that my cell and wifi is actually off during flights... but I keep bt and airplane mode enabled.   "
+  },
+  {
+   "id": 453173269,
+   "user": "gitanO0",
+   "created_at": "2019-01-10T17:04:18Z",
+   "body": "but yeah, that command looks correct."
+  },
+  {
+   "id": 453174295,
+   "user": "renegadeandy",
+   "created_at": "2019-01-10T17:06:56Z",
+   "body": "Ok - but any reason why this is likely to help (I will try it out) but on the surface this is no different to what I am currently doing, pressing airport, then enabling bluetooth manually?"
+  },
+  {
+   "id": 453184315,
+   "user": "gitanO0",
+   "created_at": "2019-01-10T17:33:38Z",
+   "body": "Well, in my case, I think the main benefit is that I want BT on all the time regardless of whether I enter airplane mode or not.  This simply makes it so if I have bT enabled and I press airplane mode, it doesn't deactivate BT... now with xdrip+, it seems there is some built in logic to check if airplane mode is enabled... I wish it didn't do that but that is what is is... so, I guess the way I bypass that is to make sure I'm not on airplane mode when I do a reboot... if I'm on cell and then enter airplane mode, and my BT is still activated (via that one time adb command) xdrip+ will still operate as needed.  I hope some combo of all this business helps you achieve your goal.  "
+  },
+  {
+   "id": 453522641,
+   "user": "renegadeandy",
+   "created_at": "2019-01-11T13:51:18Z",
+   "body": "Well I tried this on my android 8 device (honor 9) however xdrip behaves similarly to the past, where it will not maintain an active connection to the miaomiao"
+  },
+  {
+   "id": 466187028,
+   "user": "diagnoe4",
+   "created_at": "2019-02-21T22:09:01Z",
+   "body": "hi renegadeandy, I noticed this as well but could solve it by simply doing a bluetooth scan and there selecting the miaomiao that pops up. Shortly after it connects and all is good for the rest of the flight."
+  },
+  {
+   "id": 780057155,
+   "user": "Navid200",
+   "created_at": "2021-02-16T19:12:09Z",
+   "body": "@renegadeandy Would you please close this if you have found a solution?\r\nOtherwise, you can use the support channels to find out what everyone else does.\r\nhttps://www.facebook.com/groups/xDripG5\r\nhttps://gitter.im/jamorham/xDrip-plus\r\nThanks"
+  },
+  {
+   "id": 783753289,
+   "user": "Navid200",
+   "created_at": "2021-02-22T23:30:16Z",
+   "body": "@renegadeandy I use xDrip to control Dexcom.  I have never experienced this.\r\nWhat happens if you, as an experiment, disable data and WiFi without going to airplane more?  Do you still experience this connectivity issue?"
+  },
+  {
+   "id": 786825713,
+   "user": "Navid200",
+   "created_at": "2021-02-26T18:43:46Z",
+   "body": "Closing due to inactivity"
+  }
+ ]
+}

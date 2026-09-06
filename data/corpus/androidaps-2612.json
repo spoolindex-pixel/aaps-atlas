@@ -1,0 +1,111 @@
+{
+ "id": 1788887045,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2612,
+ "title": "AAPS only sporadically receives the BG values from XDrip. DEV-j",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2612",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-07-05T06:47:46Z",
+ "closed_at": "2023-07-30T06:28:45Z",
+ "comment_count": 16,
+ "body": "The BG values arrive very irregularly. Sometimes a 2 hour break. A restart sometimes helps.\r\nAt XDrip, the values from the Juggluco are stable and regular.\r\nThe path directly from Juggluco to AAPS (XDrip Broadcast) also works perfectly.\r\nI only see the problem in the DEV version. With Master there are no problems.\r\n\r\nAlso via a detour - BG values from NS to AAPS, same problem.\r\n\r\nIn addition, I found that the sync between master and follower is very unreliable.\r\nNS BETA 15.0\r\nV3\r\nThe BG values are synchronized irregularly.\r\nIf you use the old method (no V3), everything works very cleanly.",
+ "comments": [
+  {
+   "id": 1634960792,
+   "user": "vanelsberg",
+   "created_at": "2023-07-13T21:45:00Z",
+   "body": "Most likely cause is xDrip+ not properly running in the background. Suggesting to double check you phone's power saving options on xDrip+. \r\n\r\n(Tip: Maybe check out \"DON'T KILL MY APP?\" on the AndroidAPS about popup)"
+  },
+  {
+   "id": 1636852138,
+   "user": "andyrozman",
+   "created_at": "2023-07-15T18:34:49Z",
+   "body": "What kind of phone do you have? For some phones you need to turn on certain\r\noptions in xdrip.\r\n\r\nAndy\r\n\r\nOn Thu 13 Jul 2023, 22:45 Theodoor, ***@***.***> wrote:\r\n\r\n> Most likely cause is xDrip+ not properly running in the background?\r\n> Suggesting to double check you phone's power saving options on xDrip+.\r\n>\r\n> (Tip: Maybe check out \"DON'T KILL MY APP?\" on the AndroidAPS about popup)\r\n>\r\n> —\r\n> Reply to this email directly, view it on GitHub\r\n> <https://github.com/nightscout/AndroidAPS/issues/2612#issuecomment-1634960792>,\r\n> or unsubscribe\r\n> <https://github.com/notifications/unsubscribe-auth/ABJ6ZZN4IVJYS7J5YMWWJZTXQBT6TANCNFSM6AAAAAAZ6PZU3A>\r\n> .\r\n> You are receiving this because you are subscribed to this thread.Message\r\n> ID: ***@***.***>\r\n>\r\n"
+  },
+  {
+   "id": 1636856964,
+   "user": "elgrupo123",
+   "created_at": "2023-07-15T18:56:04Z",
+   "body": "Pixel 5 and Pixel 7.\r\nAs already written, the problem only affects the dev version, not the master version.  The sync with V3/NS 15 is also very unreliable.  With the old sync method everything works fine.\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n> What kind of phone do you have? For some phones you need to turn on certain options in xdrip. Andy\r\n> […](#)\r\n> On Thu 13 Jul 2023, 22:45 Theodoor, ***@***.***> wrote: Most likely cause is xDrip+ not properly running in the background? Suggesting to double check you phone's power saving options on xDrip+. (Tip: Maybe check out \"DON'T KILL MY APP?\" on the AndroidAPS about popup) — Reply to this email directly, view it on GitHub <[#2612 (comment)](https://github.com/nightscout/AndroidAPS/issues/2612#issuecomment-1634960792)>, or unsubscribe <https://github.com/notifications/unsubscribe-auth/ABJ6ZZN4IVJYS7J5YMWWJZTXQBT6TANCNFSM6AAAAAAZ6PZU3A> . You are receiving this because you are subscribed to this thread.Message ID: ***@***.***>\r\n\r\n"
+  },
+  {
+   "id": 1636884427,
+   "user": "andyrozman",
+   "created_at": "2023-07-15T20:51:51Z",
+   "body": "Mhm. AAPS should be receiving broadcasts not using NS for receiving Bg\r\ndata. Can you look at logs and see if reading are read every 5 minutes or\r\nif some get lost (in xdrip) ?\r\nDid this started happening with specific dev version?\r\n\r\nAndy\r\n\r\nOn Sat 15 Jul 2023, 19:56 elgrupo, ***@***.***> wrote:\r\n\r\n> Pixel 5 and Pixel 7. As already written, the problem only affects the dev\r\n> version, not the master version. The sync with V3/NS 15 is also very\r\n> unreliable. With the old sync method everything works fine.\r\n>\r\n> What kind of phone do you have? For some phones you need to turn on\r\n> certain options in xdrip. Andy\r\n> … <#m_8807617390443405976_>\r\n> On Thu 13 Jul 2023, 22:45 Theodoor, *@*.*> wrote: Most likely cause is\r\n> xDrip+ not properly running in the background? Suggesting to double check\r\n> you phone's power saving options on xDrip+. (Tip: Maybe check out \"DON'T\r\n> KILL MY APP?\" on the AndroidAPS about popup) — Reply to this email\r\n> directly, view it on GitHub <#2612 (comment)\r\n> <https://github.com/nightscout/AndroidAPS/issues/2612#issuecomment-1634960792>>,\r\n> or unsubscribe\r\n> https://github.com/notifications/unsubscribe-auth/ABJ6ZZN4IVJYS7J5YMWWJZTXQBT6TANCNFSM6AAAAAAZ6PZU3A\r\n> <https://github.com/notifications/unsubscribe-auth/ABJ6ZZN4IVJYS7J5YMWWJZTXQBT6TANCNFSM6AAAAAAZ6PZU3A>\r\n> . You are receiving this because you are subscribed to this thread.Message\r\n> ID: @.*>\r\n>\r\n> —\r\n> Reply to this email directly, view it on GitHub\r\n> <https://github.com/nightscout/AndroidAPS/issues/2612#issuecomment-1636856964>,\r\n> or unsubscribe\r\n> <https://github.com/notifications/unsubscribe-auth/ABJ6ZZKRDHQGRWWK56VTCKTXQLRU5ANCNFSM6AAAAAAZ6PZU3A>\r\n> .\r\n> You are receiving this because you commented.Message ID:\r\n> ***@***.***>\r\n>\r\n"
+  },
+  {
+   "id": 1637007828,
+   "user": "elgrupo123",
+   "created_at": "2023-07-16T07:41:02Z",
+   "body": "the values all arrive at XDrip without jumps.  Just not with AAPS.  According to my observation it affects the DEV j version.  Unfortunately it is not usable.  That's why we use Juggluco's XDrip Broadcast.  Works flawlessly.\r\n\r\n![Screenshot_20230716-093712](https://github.com/nightscout/AndroidAPS/assets/92778761/a0455cab-eab9-49eb-aa8e-90e041a6e383)\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n> Mhm. AAPS should be receiving broadcasts not using NS for receiving Bg data. Can you look at logs and see if reading are read every 5 minutes or if some get lost (in xdrip) ? Did this started happening with specific dev version? Andy\r\n> […](#)\r\n> On Sat 15 Jul 2023, 19:56 elgrupo, ***@***.***> wrote: Pixel 5 and Pixel 7. As already written, the problem only affects the dev version, not the master version. The sync with V3/NS 15 is also very unreliable. With the old sync method everything works fine. What kind of phone do you have? For some phones you need to turn on certain options in xdrip. Andy … <#m_8807617390443405976_> On Thu 13 Jul 2023, 22:45 Theodoor, *@*.*> wrote: Most likely cause is xDrip+ not properly running in the background? Suggesting to double check you phone's power saving options on xDrip+. (Tip: Maybe check out \"DON'T KILL MY APP?\" on the AndroidAPS about popup) — Reply to this email directly, view it on GitHub <#2612 (comment) <[#2612 (comment)](https://github.com/nightscout/AndroidAPS/issues/2612#issuecomment-1634960792)>>, or unsubscribe https://github.com/notifications/unsubscribe-auth/ABJ6ZZN4IVJYS7J5YMWWJZTXQBT6TANCNFSM6AAAAAAZ6PZU3A <https://github.com/notifications/unsubscribe-auth/ABJ6ZZN4IVJYS7J5YMWWJZTXQBT6TANCNFSM6AAAAAAZ6PZU3A> . You are receiving this because you are subscribed to this thread.Message ID: @.*> — Reply to this email directly, view it on GitHub <[#2612 (comment)](https://github.com/nightscout/AndroidAPS/issues/2612#issuecomment-1636856964)>, or unsubscribe <https://github.com/notifications/unsubscribe-auth/ABJ6ZZKRDHQGRWWK56VTCKTXQLRU5ANCNFSM6AAAAAAZ6PZU3A"
+  },
+  {
+   "id": 1637197439,
+   "user": "vanelsberg",
+   "created_at": "2023-07-16T21:49:19Z",
+   "body": "**Tested on test phone:**\r\n- xDrip+ (build e50dfdf-2023.05.03) reliably receiving BG and treatments from NS/V15\r\n- AAPS 3.2.0-dev-j (lastest dev build e9971b5ec9-2023-07.15) configured BG source = xDrip+ & no syncing with NS\r\n\r\n**Result:**\r\n- xDrip+ receiving new BG values and treatments from Hardware Data Source \"NS\" every 5 mins\r\n- _AAPS: No BG data receiving_, no activity on XDRIP+BG tab.\r\n\r\nChecked several settings on xDrip+ and could not find anything wrong. But no BG in AAPS at all.\r\nLooks like confirmation of this issue?\r\n\r\n@MilosKozak Should this \"test\" setup work or am I missing something?\r\n(When yes, I will get some logging from AAPS and xDrip)\r\n\r\n"
+  },
+  {
+   "id": 1637612141,
+   "user": "andyrozman",
+   "created_at": "2023-07-17T08:39:05Z",
+   "body": "I am using newer xdrip (20230608) with much older AAPS (3.2 dev from few\r\nmonths ago) and broadcasting works, so maybe something changed on new dev\r\nthat is impacting receiving of broadcasts from Xdrip?\r\n\r\nAndy\r\n\r\nOn Sun 16 Jul 2023, 22:49 Theodoor, ***@***.***> wrote:\r\n\r\n> *Tested on test phone:*\r\n>\r\n>    - xDrip+ (build e50dfdf-2023.05.03) reliably receiving BG and\r\n>    treatments from NS/V15\r\n>    - AAPS 3.2.0-dev-j (lastest dev build e9971b5\r\n>    <https://github.com/nightscout/AndroidAPS/commit/e9971b5ec98bd708475c2a0e1d9d301abfdce6bb>-2023-07.15)\r\n>    configured BG source = xDrip+ & no syncing with NS\r\n>\r\n> *Result:*\r\n>\r\n>    - xDrip+ receiving new BG values and treatments from Hardware Data\r\n>    Source \"NS\" every 5 mins\r\n>    - *AAPS: No BG data receiving*, no activity on XDRIP+BG tab.\r\n>\r\n> Checked several settings on xDrip+ and could not find anything wrong.\r\n> But no BG in AAPS at all. Looks like confirmation of the above?\r\n>\r\n> @MilosKozak <https://github.com/MilosKozak> Should this \"test\" setup work\r\n> or am I missing something?\r\n> (When yes, I can will some logging from AAPS and xDrip)\r\n>\r\n> —\r\n> Reply to this email directly, view it on GitHub\r\n> <https://github.com/nightscout/AndroidAPS/issues/2612#issuecomment-1637197439>,\r\n> or unsubscribe\r\n> <https://github.com/notifications/unsubscribe-auth/ABJ6ZZP2YXNHBJ7TRBRH7FTXQROWVANCNFSM6AAAAAAZ6PZU3A>\r\n> .\r\n> You are receiving this because you commented.Message ID:\r\n> ***@***.***>\r\n>\r\n"
+  },
+  {
+   "id": 1637617989,
+   "user": "elgrupo123",
+   "created_at": "2023-07-17T08:43:21Z",
+   "body": "That's my guess too. The master version doesn't have the problem. Unfortunately I can't test an older dev version.\r\n\r\n\r\n\r\n\r\n"
+  },
+  {
+   "id": 1639577190,
+   "user": "vanelsberg",
+   "created_at": "2023-07-18T06:24:52Z",
+   "body": "> I am using newer xdrip (20230608) with much older AAPS (3.2 dev from few months ago) and broadcasting works, so maybe something changed on new dev that is impacting receiving of broadcasts from Xdrip?\r\n\r\nRight. I will see if I can do some testing to see if I can find what build possibly started having problems for me."
+  },
+  {
+   "id": 1641006164,
+   "user": "vanelsberg",
+   "created_at": "2023-07-18T21:19:43Z",
+   "body": "> I am using newer xdrip (20230608) with much older AAPS (3.2 dev from few months ago) and broadcasting works, so maybe something changed on new dev that is impacting receiving of broadcasts from Xdrip?\r\n\r\n@andyrozman @elgrupo123 Ok, **it does works for me, also with latest dev builds.** Needed to set _Settings -> Inter-app settings -> Identify receiver_ to get it working (https://wiki.aaps.app/en/latest/Configuration/xdrip.html#xdrip-identify-receiver)\r\nSo my bad: has been long since I tested xDrip+ for BG source. Never needed to set this so overlooked that option.\r\n\r\nHave been getting reliable BG values for 3 hours. Will run this setup for a few days to see if I can repro the posters problem.\r\n"
+  },
+  {
+   "id": 1643453745,
+   "user": "elgrupo123",
+   "created_at": "2023-07-20T07:56:10Z",
+   "body": "Unfortunately I cannot confirm that. Even reinstalling XDrip does not fix the problem - for me."
+  },
+  {
+   "id": 1644314495,
+   "user": "vanelsberg",
+   "created_at": "2023-07-20T17:28:27Z",
+   "body": "> Will run this setup for a few days to see if I can repro the posters problem.\r\n\r\nAfter 24 hours (phone in idle with lockscreen) not a single BG value missed. So working as expected.\r\nDetails.\r\nTest Phone: Nokia 5.4, Android 12\r\n- DASH Drive but no Pod activated\r\n- Not syncing with NS\r\n- BG source is xDrip+ (version 2023.07.16)\r\n- xDrip+ is getting BG value's from my main NS"
+  },
+  {
+   "id": 1644319401,
+   "user": "vanelsberg",
+   "created_at": "2023-07-20T17:32:13Z",
+   "body": "> Even reinstalling XDrip does not fix the problem - for me\r\n\r\nWhat version of xDrip+ are you running?\r\n@MilosKozak I tested with AAPS. Could this be a problem specific to AAPSClient?"
+  },
+  {
+   "id": 1644325750,
+   "user": "vanelsberg",
+   "created_at": "2023-07-20T17:36:19Z",
+   "body": "> ...does not fix the problem - for me.\r\n\r\nStill suspect this may be a problem with Pixel ad battery management.\r\nDid you try disabling Google Play Protect? (it can close app's that it \"thinks\" are misbehaving)\r\n\r\n\r\n"
+  },
+  {
+   "id": 1644361825,
+   "user": "andyrozman",
+   "created_at": "2023-07-20T18:01:16Z",
+   "body": "You might need post a question in xdrip community...\r\nSo in beginning of year I had similar problem with OnePlus (xdrip was\r\nreceiving every 2nd reading) so OnePlus was put on special list (together\r\nwith Samsung and Redmi) of phones that have \"broken\" power management with\r\nBT devices. Maybe your device needs to be put on that list too?\r\nAndy\r\n\r\nOn Thu 20 Jul 2023, 18:36 Theodoor, ***@***.***> wrote:\r\n\r\n> ...does not fix the problem - for me.\r\n>\r\n> Still suspect this may be a problem with Pixel ad battery management.\r\n> Did you try disabling Google Play Protect? (it can close app's that it\r\n> \"thinks\" are misbehaving)\r\n>\r\n> —\r\n> Reply to this email directly, view it on GitHub\r\n> <https://github.com/nightscout/AndroidAPS/issues/2612#issuecomment-1644325750>,\r\n> or unsubscribe\r\n> <https://github.com/notifications/unsubscribe-auth/ABJ6ZZKHT6DTXL4L2TZOPLDXRFUB5ANCNFSM6AAAAAAZ6PZU3A>\r\n> .\r\n> You are receiving this because you were mentioned.Message ID:\r\n> ***@***.***>\r\n>\r\n"
+  },
+  {
+   "id": 1657056918,
+   "user": "elgrupo123",
+   "created_at": "2023-07-30T06:28:45Z",
+   "body": "Apparently an XDrip problem after all. With this version it runs much better, but also not perfect.\r\nhttps://github.com/blaqone/xDrip"
+  }
+ ]
+}

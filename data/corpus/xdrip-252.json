@@ -1,0 +1,75 @@
+{
+ "id": 285288326,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 252,
+ "title": "G5 Bluetooth Pairing Modal Confirmation on Android 8 (Galaxy S8 Beta)",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/252",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2018-01-01T04:35:19Z",
+ "closed_at": "2021-02-17T13:29:18Z",
+ "comment_count": 10,
+ "body": "Every time I restart my phone (and sometimes more frequently, but haven't found a pattern), I get a pairing confirmation dialog when xDrip first connects to my G5.\r\n\r\nThis started occurring after upgrading my Samsung S8 to the Android 8 beta.  When my phone was using Android 7 (still using the OB1 collector), I never experienced any prompts or dialogs during the pairing process.\r\n\r\nI've attached a screenshot of what the logs look like at the time of the first request where the modal appears.\r\n![screenshot_xdrip _20171231-222554](https://user-images.githubusercontent.com/34994438/34465616-ac1c1548-ee7a-11e7-85bf-bf3fc4cc2ecb.jpg)\r\n",
+ "comments": [
+  {
+   "id": 354679387,
+   "user": "jamorham",
+   "created_at": "2018-01-01T21:44:39Z",
+   "body": "I would only expect this to happen if you have multiple devices talking to the G5 and it is switching between them. On some versions of android we can use a trick to bypass the pairing dialog but Android 8 gets stricter about this. \r\n\r\nDo you think there would be multiple devices talking? Can you disable one of them?"
+  },
+  {
+   "id": 354680171,
+   "user": "oNSXo",
+   "created_at": "2018-01-01T21:58:09Z",
+   "body": "Yeah, I do still have the Dex receiver listening to the transmitter as well.\r\n\r\nI can give disabling that a shot and see if that solves the prompt from appearing."
+  },
+  {
+   "id": 356924066,
+   "user": "oNSXo",
+   "created_at": "2018-01-11T12:46:46Z",
+   "body": "I've been running with only xDrip connected for a few days (the Dex receiver is shut down and I switched the SN# it's looking for).  \r\n\r\nThis morning, I saw the same behavior as I previously did, where I needed to manually confirm the pairing request.\r\n\r\nHere's some updated screencaptures of the event.  The last successful BG reading occurred at 12:37 AM.\r\n\r\n![ascreenshot_20180111-011225_settings](https://user-images.githubusercontent.com/34994438/34826153-20b90bea-f69b-11e7-98d6-7910e9016a4d.jpg)\r\n![ascreenshot_20180111-011312_xdrip](https://user-images.githubusercontent.com/34994438/34826157-23d9580c-f69b-11e7-9470-c02904133b8e.jpg)\r\n![ascreenshot_20180111-011918_xdrip](https://user-images.githubusercontent.com/34994438/34826159-25ed3cbc-f69b-11e7-9c79-5369884eb44d.jpg)\r\n\r\n\r\n"
+  },
+  {
+   "id": 356927251,
+   "user": "AdrianLxM",
+   "created_at": "2018-01-11T13:00:48Z",
+   "body": "On my Nexus I need to accept this only once. It will remember. This is still ok as I only need to do this once for a a new transmitter.\r\n\r\nIt seems that Google wants to prohibit automatic pairing from an app more and more and slowly force device manufacturers to do the pairing via the default Android bluetooth menu (not a bad thing in general).\r\n\r\nhttps://developer.android.com/reference/android/Manifest.permission.html#BLUETOOTH_PRIVILEGED\r\n... is a privilege that 3rd party apps cannot hold :/\r\n\r\nI would suggest complaining to the distributor of the operating system (Samsung)."
+  },
+  {
+   "id": 357406655,
+   "user": "oNSXo",
+   "created_at": "2018-01-13T03:36:02Z",
+   "body": "This happened again this evening and I noticed in both events that the pair dialog always seems to be preceded by the two status events \"Sending keepalive..\" and \"removingBond: {MAC Address}\".\r\n\r\nIs it your understanding that the automatic bond removal shouldn't require user intervention the next time a bond is attempted?  "
+  },
+  {
+   "id": 357410096,
+   "user": "AdrianLxM",
+   "created_at": "2018-01-13T04:55:51Z",
+   "body": "This really might be the crux of the matter. \"Bonding\" is what needs the user interaction. So \"unbonding\" might very well trigger it the next time?"
+  },
+  {
+   "id": 357536083,
+   "user": "oNSXo",
+   "created_at": "2018-01-14T19:39:08Z",
+   "body": "I've had this issue increasingly occur over the last week or so, the last time it happened I ended up canceling the pairing request and flipping back to the G5 collector (instead of the OB1 collector that I had previously been using).\r\n\r\nSurprisingly, it ended up re-pairing without requiring any dialog or user interaction.  After that, I also tried the \"Forget Device\" in the \"System Status\" menu that would've always required me to hit yes on the pairing dialog.  With the G5 collector, there still was no pairing dialog that I needed to interact with, it bonded and paired successfully automatically without user interaction.\r\n\r\nI'm not sure if this information will help troubleshoot the issue here, but I figure it might be useful to know that these two collectors appear to have different behaviors on the hardware that I'm using."
+  },
+  {
+   "id": 359595757,
+   "user": "jamorham",
+   "created_at": "2018-01-22T22:42:04Z",
+   "body": "@oNSXo this is useful information. I will investigate this further. There are a few other issues relating to the automated bonding. Its also very difficult to test because of the different way different phone manufacturers handle this permission."
+  },
+  {
+   "id": 774379770,
+   "user": "Navid200",
+   "created_at": "2021-02-06T02:08:21Z",
+   "body": "@oNSXo If this is not a problem anymore, would you please close the issue?\r\nThanks"
+  },
+  {
+   "id": 780556353,
+   "user": "Navid200",
+   "created_at": "2021-02-17T13:29:18Z",
+   "body": "Closing due to inactivity"
+  }
+ ]
+}

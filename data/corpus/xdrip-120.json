@@ -1,0 +1,195 @@
+{
+ "id": 228570176,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 120,
+ "title": "Adding onetouch verio flex?",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/120",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2017-05-14T21:04:55Z",
+ "closed_at": "2017-08-22T12:52:11Z",
+ "comment_count": 33,
+ "body": "Sorry I'm kinda new (G5 & Xdrip user for only 3months now) Is this where we can ask for support & features?\r\n\r\nMy insurance only covers Verio meters; I try adding the onetouch verio flex; I can get it paired (with the phone & xdrip+). I can have it sync with its own app; but I get timeout errors when trying to sync with xdrip+\r\nTimed out on : get new glucose records\r\n\r\nI'm using latest nightly builds; currently xdrip ver: 381226d-2017-05.12\r\n\r\nI'm using a Motoroloa G5plus phone, running droid 7.0",
+ "comments": [
+  {
+   "id": 306251457,
+   "user": "jamorham",
+   "created_at": "2017-06-05T17:30:08Z",
+   "body": "I hope to get a chance to look at this next week as I've located someone with one of these meters."
+  },
+  {
+   "id": 306614547,
+   "user": "jamorham",
+   "created_at": "2017-06-06T20:56:16Z",
+   "body": "Can you tell me, when you scan for the meter in xDrip what is the full name of the meter it shows? It should begin OneTouch ?"
+  },
+  {
+   "id": 306654688,
+   "user": "bryanw20",
+   "created_at": "2017-06-07T00:51:54Z",
+   "body": "Mine says: OneTouch J7RG\r\n\r\nI can pair it with my phone.\r\n\r\nWhen pairing in Xdrip it says: \r\n{bloop sound] Device from: LifeScan\r\n\r\nTimed out on: Notify new glucose record\r\n\r\n\r\nLet me know what I can do to help; not a programmer; but if you walk me thru something I can do it.\r\nThanks for looking into this; it would be awesome!"
+  },
+  {
+   "id": 306932400,
+   "user": "jamorham",
+   "created_at": "2017-06-07T21:36:12Z",
+   "body": "Okay, thanks, I am working on this now. It appears that the meter doesn't comply with the well established bluetooth standard for glucose meters (that we already support), which means it instead needs special code to handle its *unique* protocol."
+  },
+  {
+   "id": 306966205,
+   "user": "bryanw20",
+   "created_at": "2017-06-08T00:48:19Z",
+   "body": "Of course not, why should anything covered by insurance be easy to work with... =(\r\n\r\nBut at least 2 of us in the Xdrip group would love you forever if you can figure it out!\r\n\r\nI'll send you chocolate! ;) (or a meter if you need it)\r\n\r\n"
+  },
+  {
+   "id": 307073072,
+   "user": "jamorham",
+   "created_at": "2017-06-08T11:11:17Z",
+   "body": "I have added support for the Verio Flex with about 500 lines of code in the June 8th nightly. Testing on Android 6 gave good results but I had less luck on Android 4.4. \r\n\r\nI had to alter some of the logic to accommodate it and so pairing and syncing for other devices will also need retesting.  \r\n\r\nYou need to have at least two blood tests on the meter I think before using the scan option. If it succeeds then you should get a message saying \"enabled auto-start\"\r\n\r\nI found sometimes I had to turn the meter off for a while then turn it back on. Having the meter paired to multiple phones also seemed to cause indigestion.\r\n\r\nPlease test and let me know how it goes!!\r\n\r\nCommit details: https://github.com/NightscoutFoundation/xDrip/commit/49bfb340c5fefa66cfed154a995ab1ec47122923\r\n\r\nRelease apk: https://github.com/NightscoutFoundation/xDrip/releases/download/2017.06.08/xDrip-plus-20170608-49bfb34.apk"
+  },
+  {
+   "id": 307083385,
+   "user": "bryanw20",
+   "created_at": "2017-06-08T12:04:17Z",
+   "body": "AWESOME!  \r\n\r\nYes I updated this morning; and went to my meter, did the sync, and it stalled for a long while; but then connected & sysnced data!   I have a Moto G5 plus, with Android 7.0 (also a consist 95%+ capture rate if you can update that phone list, wherever it is)\r\nI enabled auto calibrate; but of course I was off by 25mml this morning; so xdrip said it will wait 15min to calibrate (steady arrow too)\r\n\r\nI can see having the meter paired with multiple devices would be an issue; it genereates a new pairing code each time it pairs, so I assume when it generates a new code; the old code no longer works?\r\n\r\nI will post to the xdrip group and ask for testing/feedback as well; do you still visit the group?\r\n\r\nI saw I think one of these reqests on git hub, someone changed the treatment to all 4 at once, ie you can enter carbs, insulin, figer stick & time all on one 'page'; is that something that can be intergrated?\r\n[Mine defaults to insulin frequently, and I'm not on insulin so I'd never input it; this would be an awesome addition also!]\r\n"
+  },
+  {
+   "id": 307091886,
+   "user": "jamorham",
+   "created_at": "2017-06-08T12:44:14Z",
+   "body": "Okay so do you have it now working where you can take a blood test and it will automatically connect to the phone (while the phone is screen off) and sync that latest reading?\r\n\r\nAnother caveat is that there are some issues with the time synchronization. It will cause problems if the clock on the meter is changed when data hasn't been synced or on a new pairing to a phone where any of the last 15 readings had a different meter clock at the time of the test. \r\n\r\nIt works by reading the current meter time and then calculating how different that is to the current phone time to calculate when the blood test actually occurred.  So long as you are always synced before changing the meter clock this shouldn't create any issues.  I am assuming the meter doesn't automatically adjust for daylight saving time.\r\n\r\nIf you're talking about the xDrip facebook group, I haven't ever been on there. I rely on other people to communicate there. "
+  },
+  {
+   "id": 307097069,
+   "user": "bryanw20",
+   "created_at": "2017-06-08T13:05:51Z",
+   "body": "I have not tried with the phone screen off yet. I will tonight.\r\n\r\nWhat else can I test for you?"
+  },
+  {
+   "id": 307100234,
+   "user": "jamorham",
+   "created_at": "2017-06-08T13:17:54Z",
+   "body": "You should get to a stage where use of the meter with xDrip is completely seamless. Whenever you do a test you will get it syncing to the phone and with the automatic calibration enabled it will cherry pick the best values to use for calibration. If you are away from the phone then when you next turn on the meter or do a blood test it should sync all the previous readings (up to a maximum of approx 15 readings)\r\n\r\nIt should work when the screen is off and you shouldn't need to open xDrip app for the data to be synced and it should just work in the background forever. Those sorts of things over an extended period is what needs testing. Some of this depends on the quality of the phone bluetooth stack. The sound effects feature helps you know when its doing something even when the screen is off. You can turn this off if it bugs you.\r\n\r\nAlso you can check in the event log as you shouldn't get any entries relating to the glucose meter show up as these would normally indicate an unexpected error."
+  },
+  {
+   "id": 307131129,
+   "user": "TecMunky",
+   "created_at": "2017-06-08T15:02:30Z",
+   "body": "I have been using my Contour Next One meter.  I just updated to this latest version, and that meter is still working.  I also have a Verio Flex meter.  I intend to test that meter as well.  However, What problems can I expect to encounter when switching from the Contour to the Verio?  Earlier you mentioned there were problems relating to the clock on the meter - should I adjust the Verio meter clock before attempting the first sync?\r\n"
+  },
+  {
+   "id": 307146240,
+   "user": "jamorham",
+   "created_at": "2017-06-08T15:53:00Z",
+   "body": "@TecMunky no sync before changing the clock. xDrip will work out the correct time from the offset of the meter clock from its clock but it can't do this if the clock was changed before the sync occurs, so always sync before changing the meter time. xDrip wont try to sync readings it already has so any clock confusion wont matter after a sync has occurred. The meter itself doesn't get confused but I don't really see how this is represented in the data and as the protocol is unique and undocumented I did the best I could as it seemed like a fairly small issue which shouldn't affect people during day to day use."
+  },
+  {
+   "id": 307149016,
+   "user": "TecMunky",
+   "created_at": "2017-06-08T16:02:17Z",
+   "body": "The clock is months off, and I need a new battery, so I will have to\ncorrect those before I can test. So the clock will be changed before I can\nsync. Considering this, what do I need to do? Should I take a couple\nreadings before trying to sync?\n\n\nOn Jun 8, 2017 10:53, \"Jamorham\" <notifications@github.com> wrote:\n\n> @TecMunky <https://github.com/tecmunky> no sync before changing the\n> clock. xDrip will work out the correct time from the offset of the meter\n> clock from its clock but it can't do this if the clock was changed before\n> the sync occurs, so always sync before changing the meter time. xDrip wont\n> try to sync readings it already has so any clock confusion wont matter\n> after a sync has occurred. The meter itself doesn't get confused but I\n> don't really see how this is represented in the data and as the protocol is\n> unique and undocumented I did the best I could as it seemed like a fairly\n> small issue which shouldn't affect people during day to day use.\n>\n> —\n> You are receiving this because you were mentioned.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/120#issuecomment-307146240>,\n> or mute the thread\n> <https://github.com/notifications/unsubscribe-auth/ACLc7YANOBnqzXDL7Cj5wnPnz0Tb0DOSks5sCBjdgaJpZM4NagWs>\n> .\n>\n"
+  },
+  {
+   "id": 307264987,
+   "user": "bryanw20",
+   "created_at": "2017-06-09T00:44:43Z",
+   "body": "So when I got home, I left my phone sitting 10' away, screen off. Used the Verio; and before I knew it it was chirping/singing, whatever sounds it makes. \r\nOpen xdrip and viola, there's a calibration in there! =)\r\n\r\nI'm so happy!\r\n\r\nOnly entry in the log is:\r\nBTGM time\r\nprompting for cal. #mg/dl from: time stamp\r\n\r\n\r\n"
+  },
+  {
+   "id": 307356438,
+   "user": "jamorham",
+   "created_at": "2017-06-09T10:38:48Z",
+   "body": "@TecMunky I think it will ignore readings which appear to come from a time before I implemented glucose meter support so you should be fine. Just change the clock before doing any new readings.\r\n\r\n@bryanw20 nice one!"
+  },
+  {
+   "id": 307372207,
+   "user": "bryanw20",
+   "created_at": "2017-06-09T12:10:31Z",
+   "body": "So I tried twice more using the flex, phone screen off, and this time it didn't auto sync.\r\nBut I think it was the flex not sending out the signal, I didn't see the little O spin on the screen.\r\nIf I went to xdrip, scan meter, it synced up again.\r\n\r\nI think last night I did use the app for the meter to sync; so maybe I need to avoid doing that? I'll test that by not using it before my next calibration this evening.\r\n"
+  },
+  {
+   "id": 307372864,
+   "user": "gwaltneyja",
+   "created_at": "2017-06-09T12:14:11Z",
+   "body": "Try turning the meter off and on again. Mine grabbed the 2 min old reading\nstraight away when it didn't right after it was taken.\n\nOn Jun 9, 2017 08:10, \"Bryan\" <notifications@github.com> wrote:\n\n> So I tried twice more using the flex, phone screen off, and this time it\n> didn't auto sync.\n> But I think it was the flex not sending out the signal, I didn't see the\n> little O spin on the screen.\n> If I went to xdrip, scan meter, it synced up again.\n>\n> I think last night I did use the app for the meter to sync; so maybe I\n> need to avoid doing that? I'll test that by not using it before my next\n> calibration this evening.\n>\n> —\n> You are receiving this because you are subscribed to this thread.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/120#issuecomment-307372207>,\n> or mute the thread\n> <https://github.com/notifications/unsubscribe-auth/AWBXiVcrMR4sz7b08mlkNNge2TLuUpciks5sCTY4gaJpZM4NagWs>\n> .\n>\n"
+  },
+  {
+   "id": 307374603,
+   "user": "bryanw20",
+   "created_at": "2017-06-09T12:24:05Z",
+   "body": "I did cycle the meter, it still wasn't doing the sync emblem. I didn't want to cycle the BT as I think that triggers a new pairing code from the meter.\r\nWill need to do some more tinkering."
+  },
+  {
+   "id": 307523065,
+   "user": "bryanw20",
+   "created_at": "2017-06-09T23:22:51Z",
+   "body": "OK, I think my new flex meter is flaking out. \r\nI tried again with phone off, but near by; no sync. but the meter didn't even try to sync, no O (sync symbol). BT icon is on.\r\nDid a manual scan in xdrip & it sync'd\r\noped the onetouch app and it sync'd\r\n\r\nbut I just re-read the manual, it says it will show the BT icon for 4 hours after a reading; I just did it 15min ago, and my screen is blank.\r\n\r\nSo the awesome thing is it's working in xdrip, but now I think it's my meter not wanting to play nice.\r\n\r\nI could try unpairing the meter, adding a couple samples, and trying pairing it again...?\r\nI don't think I can call Verio, as it will sync with their app, and the manual says app needs to be open first.\r\nMaybe next sample I take I'll ahve xdrip open & see what happens.\r\n\r\nnot a complaint, love the work done; just giving my feedback; don't take it away from me! =)\r\n"
+  },
+  {
+   "id": 307655383,
+   "user": "bryanw20",
+   "created_at": "2017-06-11T20:41:11Z",
+   "body": "OK, I spent the last 2 days trying to get the Flex working with my phone! \r\nUgh; even bought a brand new one (on sale $10 so not bad) But it wouldn't pair with my phone/OT app either.\r\nThen this morning tried again & the original sync'd right up with xdrip again!\r\n\r\nSo hopefully it sticks this time & I can do some more testing!\r\n\r\nSo just being clear, it's my phone (Moto G5) that's having isssues, not xdrip!"
+  },
+  {
+   "id": 307680458,
+   "user": "bryanw20",
+   "created_at": "2017-06-12T03:07:27Z",
+   "body": "Well it's working good for now; even did a double calibration with it automatically."
+  },
+  {
+   "id": 307774737,
+   "user": "jamorham",
+   "created_at": "2017-06-12T12:27:52Z",
+   "body": "The issues you've experienced may be due to android bluetooth flaking out.\r\n\r\nNext time you don't get it syncing, try this, go in to the settings for the bluetooth glucose meter in xdrip and slide the slider at the top for off/on to turn it off and on again. Then see if it syncs after that. If it does then it implies we're losing the bluetooth connection after a while.\r\n\r\nThe meter doesn't push the data to the app, the app detects the bluetooth being enabled and the remote device coming on and then connects to it to ask for the data. The sync icon you see appears on the meter when it detects the app connecting and asking for data.\r\n"
+  },
+  {
+   "id": 307779271,
+   "user": "bryanw20",
+   "created_at": "2017-06-12T12:48:31Z",
+   "body": "Thanks I'll try that.\r\nI didn't think of it this morning when it did not auto sync again; I did a manual scan, it sync'd up. I'll try the slider next time.\r\n\r\nCan/should I even attempt to add 2 Flex's to my phone/xdrip? A home and work meter?\r\n"
+  },
+  {
+   "id": 307876642,
+   "user": "bryanw20",
+   "created_at": "2017-06-12T18:26:18Z",
+   "body": "Ok, just got home, did another meter reading, it did not auto sync; but cycle the on/off in xdrip meter sync did make it sync immediately.\r\n\r\nSo is it my phone that is stopping it?"
+  },
+  {
+   "id": 308290719,
+   "user": "bryanw20",
+   "created_at": "2017-06-14T01:07:47Z",
+   "body": "OK, my last 2 attempts I've needed to switch it off/on; followed by a loss of G5 signal for 15-30min after the sync.\r\nRelated??? I typically get 93-98% capture rate, a 30min drop is rare (unless out of range)\r\n"
+  },
+  {
+   "id": 308313461,
+   "user": "ElyeM",
+   "created_at": "2017-06-14T04:00:58Z",
+   "body": "Hi, I have the verio flex, downloaded above APK, I can't turn on \"Use Bluetooth Meter\" setting,  it's disabled. \r\n\r\nEven if it's disabled, when I scan for meter I can find my meter and pair it. But not getting data. \r\n\r\nI have a OnePlus One phone, I can use one touch app. \r\n"
+  },
+  {
+   "id": 308314580,
+   "user": "ElyeM",
+   "created_at": "2017-06-14T04:11:23Z",
+   "body": "Okay, scanned again, turned meter on and off, now it is working.\r\n\r\nThanks loads!!\r\n"
+  },
+  {
+   "id": 312768423,
+   "user": "bryanw20",
+   "created_at": "2017-07-04T02:54:35Z",
+   "body": "I'm still only getting it to capture at random timing. It's been days of no connect; then suddenly it started working again (A new build perhaps?) but still not everytime. A day or 2 ago just out of nowhere it starting 'singing' its BT songs, I hadn't touched the meter in hours and was in another room when it happened!\r\nI'm not losing G5 connection after a sync when it does decide to work. I have not been going into the settings an cycling it off/on either."
+  },
+  {
+   "id": 314267727,
+   "user": "ElyeM",
+   "created_at": "2017-07-10T22:26:47Z",
+   "body": "I have a weird issue, almost everytime after xdrip will sync with the meter to get the data, xdrip will miss next 2 readings from dexcom. \r\n\r\nI think it's only when I go into settings and scan for meter... \r\nI have to scan a lot of time otherwise it won't get data from meter. "
+  },
+  {
+   "id": 321356336,
+   "user": "jamorham",
+   "created_at": "2017-08-09T19:23:52Z",
+   "body": "As far as I know this meter is now supported correctly. The mentioned issues I think are generic to do with various android bluetooth stacks."
+  }
+ ]
+}

@@ -1,0 +1,255 @@
+{
+ "id": 3068227467,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3984,
+ "title": "AAPS 3.3.3.0_dev_b froze",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3984",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-05-16T07:46:02Z",
+ "closed_at": "2025-11-23T22:33:21Z",
+ "comment_count": 107,
+ "body": "This happened several times. I look at AAPS and find out that is has frozen during the night.\nI thought that it was related to Play Protect but it froze again this morning (a bit before 7 AM) and Play protect is OFF.\n\nAs you can see, there was a \"catch-up\" in BGs when I force closed, cleared cache and restarted AAPS.\n\n![Screenshot_20250516_092543_AAPS.jpg](https://github.com/user-attachments/assets/46e7859c-bc18-4c27-af40-51d162332de5)\n\nThe logs after force close and restart.\n\n![AndroidAPS_LOG_1747379627382.log.zip](https://github.com/user-attachments/files/20240118/AndroidAPS_LOG_1747379627382.log.zip)\n\n",
+ "comments": [
+  {
+   "id": 2886209908,
+   "user": "TheNeskik",
+   "created_at": "2025-05-16T09:41:29Z",
+   "body": "Got an other freeze to this night.\n\nSince last time I enabled everything to log as I don't know what can cause those freeze.\n\n![Screenshot_20250516_063630_AAPS.jpg](https://github.com/user-attachments/assets/1f99de36-7be5-4ba6-a86d-706d699d3dae)\n\n![AndroidAPS_LOG_1747370162514.log.zip](https://github.com/user-attachments/files/20241731/AndroidAPS_LOG_1747370162514.log.zip)\n\nI just updated to latest dev this morning after the freeze, I will see if it happen again\n\nEdit : BG was back after a short time."
+  },
+  {
+   "id": 2888208152,
+   "user": "MilosKozak",
+   "created_at": "2025-05-17T08:00:46Z",
+   "body": "> This happened several times. I look at AAPS and find out that is has frozen during the night. I thought that it was related to Play Protect but it froze again this morning (a bit before 7 AM) and Play protect is OFF.\n\nNo reason is visible in logs\n\n"
+  },
+  {
+   "id": 2888214388,
+   "user": "WesSec",
+   "created_at": "2025-05-17T08:14:23Z",
+   "body": "![Image](https://github.com/user-attachments/assets/f655fe46-e458-405f-a5f6-24aa58053623)\n\nI experienced the same 2 times on (86fb), reboot of phone fixed it. Checked the logs and also no reason visible. It didnt crash, it just hung on the latest sate. (it showed last bg was 3 min ago, so upon checking first i didnt notice it was broken). I pulled latest commits and see if i can get a logcat dump when it happens again:\n\nExtras:\nPhone: Samsung S21FE, OneUI 6.1 (Android 14)"
+  },
+  {
+   "id": 2888218623,
+   "user": "TheNeskik",
+   "created_at": "2025-05-17T08:23:48Z",
+   "body": "It happened on older commit (f737) but nothing in log. Can't replicate issue as it is random.\n\nI'm on Android 15 (galaxy S23)"
+  },
+  {
+   "id": 2888238569,
+   "user": "robertrub",
+   "created_at": "2025-05-17T09:03:35Z",
+   "body": "`It didnt crash, it just hung on the latest state.`\n\nSame here. No crash, just froze.  No reaction to taps etc.\n\n![Screenshot_20250515_124408_AAPS.jpg](https://github.com/user-attachments/assets/111bd63f-4179-4a82-9b18-8a16c6132c8e)\n\n"
+  },
+  {
+   "id": 2888548890,
+   "user": "vanelsberg",
+   "created_at": "2025-05-17T19:26:27Z",
+   "body": "> Same here. No crash, just froze. No reaction to taps etc.\n\nOnly AAPS freezes - other apps and phone are then still responsive?\n"
+  },
+  {
+   "id": 2888584572,
+   "user": "TheNeskik",
+   "created_at": "2025-05-17T21:08:37Z",
+   "body": "Only AAPS,\nI'm using byoda and it still get BG as usually.\nPhone can be use as usual"
+  },
+  {
+   "id": 2893421572,
+   "user": "Rabuffulin",
+   "created_at": "2025-05-20T08:24:32Z",
+   "body": "o meu AAPS 3.3.2.0 também trava. O comportamento dele é parecido com o LOOP Aberto. A quantidade de hidratos informada não diminui e as correções não acontecem. O problema é aleatório. Essa noite ele não fez uma única correção e amanheci com a glicemia alta, com 60g de hidratos que foram do meu jantar de ontem. Estava ativa somente a basal programada. Quando fui na aba SMB e atualizei ele gerou uma correção e aplicou, mas se não tivesse feito isso permaneceria congelado. Agora tomei meu café da manhã e parece que está funcionando o LOOP Fechado, mas se isso ficar acontecendo eu pensei em fazer um downgrade de versão, porque na 3.3.1 isso não acontecia."
+  },
+  {
+   "id": 2898976628,
+   "user": "vanelsberg",
+   "created_at": "2025-05-21T19:17:11Z",
+   "body": "> o meu AAPS 3.3.2.0 também trava.\n\nEnglish please?"
+  },
+  {
+   "id": 2898983285,
+   "user": "Rabuffulin",
+   "created_at": "2025-05-21T19:20:08Z",
+   "body": "My AAPS 3.3.2.0 also freezes. Its behavior is similar to Open Loop. The amount of carbs entered does not decrease, and corrections do not happen. The problem is random. Last night, it didn’t make a single correction, and I woke up with high blood sugar, with 60g of carbs remaining from my dinner yesterday. Only the programmed basal was active. When I went to the SMB tab and refreshed it, it generated a correction and applied it, but if I hadn’t done that, it would have remained frozen. Now I’ve had breakfast, and it looks like Closed Loop is working, but if this keeps happening, I’m considering downgrading the version because this didn’t happen in 3.3.1"
+  },
+  {
+   "id": 2903274142,
+   "user": "WesSec",
+   "created_at": "2025-05-23T05:05:13Z",
+   "body": "Latest dev (86fb) froze again last night, will pull logs and add to this comment in an hour. Weird behaviour is that I force closed AAPS and relaunched, but xdrip values are not being processed by AAPS (xdrip itself works fine, AAPS is functional except receiving BG), that might be a clue in the right direction\n\n<Comment to be updated with logs and additional info>"
+  },
+  {
+   "id": 2903385810,
+   "user": "robertrub",
+   "created_at": "2025-05-23T06:18:01Z",
+   "body": "The same for me, xDrip had gotten all the BGs but they did NOT catch-up when AAPS was \"force restarted\".\n\nOne explanation is : AAPS didn't totally froze as it continued \"listening\" to arriving BGs but never registered or acted on them. When forced restart, it didn't say, last BG was hours ago, I need to catch-up but said, \"ok, last BG was 2 min ago, waiting the next\". \n\nAs it is NOT AAPS **requesting** BGs but xDrip **sending** them, and as xDrip sent normally all the past BGs, it just sends the next one when available.\n\nThe other (and more probable) explanation is : (This needs testing) Does, a forced closed AAPS catch-up BGs (when started 15+ minutes later) or not ? \n\nWill test this today. My guess is that the BGs are missing in AAPS because xDrip had already sent them regularly and \"doesn't care\" if nobody was listening."
+  },
+  {
+   "id": 2903423751,
+   "user": "WesSec",
+   "created_at": "2025-05-23T06:39:55Z",
+   "body": ">  xDrip had gotten all the BGs but they did NOT catch-up when AAPS was \"force restarted\".  \n\nThis happened for me too, i went to the shower and when i got back (phone was in range all the time), AAPS started receiving BG's again. Here's my reconstruction\n\n- Freeze around 4:17\n- Discovered around 6:50 (got pop upAAPS froze, force closed it and restarted AAPS\n<no bg's being received AFTER restart>\n- BG's received since 07:08 (approx 20 min after restart)\n\nLogcat logs mentioning AAPS (unfortunately crash is out of retention period)\n\n[froze_redacted_aaps_log.txt](https://github.com/user-attachments/files/20405282/froze_redacted_aaps_log.txt)\n[logcat_filtered_aaps.txt](https://github.com/user-attachments/files/20405283/logcat_filtered_aaps.txt)\n\n![Image](https://github.com/user-attachments/assets/1fe35f71-fbbd-4664-87bb-dee4feb0fc11)\n"
+  },
+  {
+   "id": 2904203167,
+   "user": "vanelsberg",
+   "created_at": "2025-05-23T12:03:47Z",
+   "body": "_Using BYODA and AAPS latest dev versions.\nNot experiencing \"freezes\" and It seems to me problems reported most are with xDrip+_\n\n**My 2cts:**\n(1) It seems to mee Google has been making Play Protect behaving more and more aggressive.\nSince my phone received an OS update month ago, it started to \"block\" AAPS. I can unblock, but (Samsungs) phones security keeps reminding about it being a \"security risk\"\n\n(2) _What is reported in this issue looks similar to what I experienced with BYODA some weeks ago_ after my Samsung S22 Ultra (running A14) received an OS update where Play Protect suddenly started to behave even much more aggressive. Until then I never had a need to switch it off.\n\nShortly after, on updating AAPS, Play Protect threw a big pop-up. Ignored it and installed AAPS anyway. That night I experienced with AAPS which has a striking resemblance with the \"freezing\" reported here: No problem with BYODA/Dexcom which was receiving BG values as usual, but AAPS just stopped receiving BG values from BYODA and loop stopped. Could not find the problem so got through the night with just profile basals.\n\nNext morning it took me at least an hour to solve the problem:\n- AAPS did not show any problems other than not receiving BG from BYODA.\n- Switching of Play Protect and any power savings still active did not solve.\nStill, my idea was this could have do with permissions, but all permissions seemed OK ?!?\n\nThen I noticed under AAPS permissions, \"additional permissions\" it now showed the \"Access Dexcom app\".\nAllowing/adding this permission solved the problem and AAPS immediately started receiving BG values!\nNoticed that the Dexcom app (BYODA) now also shows itself under \"App Additional permissions\" which I find a bit odd?\n\n@MilosKozak \nI do have xDrip+ on the phone as a companion app, only receiving BG's from AAPS. For AAPS there is no such permission for xDrip+ under \"App Additional permissions\". Could it be AAPS needs to set some additional permissions similar to BYODA?\n\n**"
+  },
+  {
+   "id": 2904244219,
+   "user": "robertrub",
+   "created_at": "2025-05-23T12:20:34Z",
+   "body": "Strange, I had that \"App Additional permissions\" line in AAPS permissions but when I checked right now, I can't see it.\n\nIt was there for some time now and had receive data from xDrip (os sth similar)"
+  },
+  {
+   "id": 3318680605,
+   "user": "andyrozman",
+   "created_at": "2025-09-22T12:23:06Z",
+   "body": "@robertrub Why doesn't Xdrip upload data to NS... In my setup Xdrip fills BG on NS and then sends broadcast to AAPS (AAPS is configured not to upload BG). I mean this won't fix underlaying problem, but at least you would have all data in NS..."
+  },
+  {
+   "id": 3318758274,
+   "user": "robertrub",
+   "created_at": "2025-09-22T12:37:48Z",
+   "body": "We had discussed it on Discord some time ago and decided to have only one uploader. Maybe 2 apps trying to upload at the same time might create a problem... \nCan't recall the 1 uploader discussion."
+  },
+  {
+   "id": 3318973856,
+   "user": "andyrozman",
+   "created_at": "2025-09-22T13:17:18Z",
+   "body": "@robertrub Theoreticaly you can have 2, just they must  not upload the same data, so if you had Xdrip uploading the BG, then you would have to disable BG upload in AAPS. "
+  },
+  {
+   "id": 3335940382,
+   "user": "MilosKozak",
+   "created_at": "2025-09-25T21:04:35Z",
+   "body": "> [@robertrub](https://github.com/robertrub) Theoreticaly you can have 2, just they must not upload the same data, so if you had Xdrip uploading the BG, then you would have to disable BG upload in AAPS.\n\n\"Highly\" recommended setup is to let only AAPS write to NS"
+  },
+  {
+   "id": 3336076003,
+   "user": "robertrub",
+   "created_at": "2025-09-25T22:02:09Z",
+   "body": "\n> \"Highly\" recommended setup is to let only AAPS write to NS\n\nYes, that's what I remember and have done. AAPS uploands all."
+  },
+  {
+   "id": 3348585674,
+   "user": "vanelsberg",
+   "created_at": "2025-09-29T18:46:31Z",
+   "body": "AAPS (Latest dev, DASH/BYODA, S22/A15) froze again on me (in the middle of the night 🤨):\n\nBYODA running, BG values not processing in AAPS, app unresponsive.\nThis time, only uninstall/reinstall solved the problem.\n\nStill no idea on what is causing this. I suspect Google/Android OS?"
+  },
+  {
+   "id": 3350160665,
+   "user": "robertrub",
+   "created_at": "2025-09-30T06:28:48Z",
+   "body": "Mine frozed this morning around 5AM. I woke up just after the beginning and fir ed closed to restart it. See the missing BG in AAPS. There were some automations (profile changes against negative IOB) before the freeze but not just before it\n\n![Screenshot_20250930_050659_AAPS.jpg](https://github.com/user-attachments/assets/c84e4115-417c-4603-a75e-d7d51d6de96d)\n\n![Screenshot_20250928_133045_AAPS.jpg](https://github.com/user-attachments/assets/bd9ab6a5-a496-4492-a16c-1e7161304228)\n\n![Screenshot_20250930_050835_AAPS.jpg](https://github.com/user-attachments/assets/0cbfa383-4f67-44c3-acdb-1a6cc35a3a8f)\n\n![AndroidAPS_LOG_1759201539978.log.zip](https://github.com/user-attachments/files/22612127/AndroidAPS_LOG_1759201539978.log.zip)\n\n"
+  },
+  {
+   "id": 3367552606,
+   "user": "robertrub",
+   "created_at": "2025-10-03T23:37:10Z",
+   "body": "Froze again. No automations,  nothing fancy before the freeze.\nUsing latest dev.\nI wonder why @vanelsberg and I have these freezes but not many other users 🤔\n\n![Screenshot_20251002_185842_AAPS.jpg](https://github.com/user-attachments/assets/78a4b9b4-9c9a-4caa-930b-010bec61c155)\n\n![Screenshot_20251004_013311_AAPS.jpg](https://github.com/user-attachments/assets/e7a5e258-e7c4-4314-9899-40e12e9ab140)\n\n"
+  },
+  {
+   "id": 3367561156,
+   "user": "robertrub",
+   "created_at": "2025-10-03T23:45:47Z",
+   "body": "In fact, AAPS is NOT totally frozen (I suppose) as xDrip goes on sending BGs and (probably) getting the _BG received_  acknowledgement (if there is such a thing...) xDrip considers the BGs as sent (and received ?) and doesn't sent them again when AAPS restarts and becomes reactive."
+  },
+  {
+   "id": 3370293520,
+   "user": "swissalpine",
+   "created_at": "2025-10-06T07:34:34Z",
+   "body": "Today a new freeze: BluetoothAdapter not initialized_ERROR\n\nLog:\n```\n05:00:24.259 [DefaultDispatcher-worker-2] E/PUMPBTCOMM: [BLEComm.connectGatt():171]: connectGatt, mBluetoothGatt is not null\n05:00:39.983 [DefaultDispatcher-worker-6] D/CORE: [LoadDeviceStatusWorker.doWorkAndLog():38]: DEVICESTATUSES: [NSDeviceStatus(app=AAPS, identifier=f973cbd2-6836-5707-b4db-a7c23ed3b072, srvCreated=1758769025050, srvModified=1758769025050, createdAt=2025-09-25T02:57:04.731Z, date=1758769024731, uploaderBattery=100, isCharging=true, device=openaps://motorola motorola razr 50, uploader=Uploader(battery=null), pump=Pump(clock=2025-09-25T02:57:04.732Z, reservoir=95.0, reservoirDisplayOverride=null, battery=Battery(percent=null, voltage=null), status=Status(status=normal, timestamp=2025-09-25T02:52:13.756Z), extended={\"lastBolus\":\"25.09.25 04:52\",\"lastBolusAmount\":0.05,\"TempBasalAbsoluteRate\":0.9500000000000001,\"TempBasalStart\":\"25.09.25 04:52\",\"TempBasalRemaining\":25,\"BaseBasalRate\":0.7000000000000001,\"ActiveProfile\":\"Standard 25-09(110%)\"}), openaps=OpenAps(suggested={\"algorithm\":\"SMB\",\"timestamp\":\"2025-09-25T02:56:59.712Z\",\"bg\":154,\"tick\":\"-2\",\"eventualBG\":96,\"targetBG\":100,\"insulinReq\":0,\"deliverAt\":\"2025-09-25T02:56:56.900Z\",\"sensitivityRatio\":1,\"reason\":\"COB: 0, Dev: 3, BGI: -2, ISF: 54, CR: 12,27, Target: 100, minPredBG 111, minGuardBG 96, IOBpredBG 99, UAMpredBG 96; Eventual BG 96 < 100, setting 0.44U\\/hr. \",\"duration\":30,\"rate\":0.44000000000000006,\"predBGs\":{\"IOB\":[154,152,151,149,147,146,144,142,140,139,137,135,134,132,130,129,127,126,124,123,122,120,119,118,117,115,114,113,112,111,110,109,109,108,107,106,105,105,104,103,103,102,101,101,100,100,99],\"ZT\":[154,152,150,147,145,143,141,140,138,136,135,133,132,131,130,129,128,127,127,126,126,125,125,125,125,126,126,126,127,128,128],\"UAM\":[154,152,150,148,146,144,142,140,138,136,134,133,131,129,128,126,125,123,122,120,119,117,116,115,114,113,112,111,109,109,108,107,106,105,104,103,103,102,101,100,100,99,99,98,97,97,96]},\"COB\":0,"
+  },
+  {
+   "id": 3376778144,
+   "user": "vanelsberg",
+   "created_at": "2025-10-07T12:57:07Z",
+   "body": "> Today a new freeze: BluetoothAdapter not initialized_ERROR\n\nThe \"freezes\" I have been having where not related to Bluetooth: no BT related errors in the log, AAPS simply does not receive BG values and the AAPS process threads seem get locked so Android starts throwing the dreaded Close/Wait pop-ups.\n\nWhen this happend, AAPS is still connected to the pump and Dexcom/BYODA is still processing BG values. To me it looks like a problem with AAPS/BYODA inter-process communications that is somehow blocking.\n\nUnconfirmed:\n- Feels like the problems occurs more frequently when Profile% automations are active?\n- Think this is more an issue with Android OS (Samsung A15/OneUI 7.0)\n- Only few users are seeing the problem (Me and @robertrub  are both running Samsung A15?)\n"
+  },
+  {
+   "id": 3376846447,
+   "user": "robertrub",
+   "created_at": "2025-10-07T13:14:44Z",
+   "body": "The problem is not only with BYODA, I use xDrip.\n\nAgree on \"everything working fine\" elsewhere and on the fact that the CGM app is getting the BGs but not AAPS.\n\nI didn't test _uploads by xDrip_ in order to see if that part of xDrip is working too. Probably yes.\n\nYes, using Android 15, OneUI 7. Last security update sept 2025.\n\n![Screenshot_20251007_151340_Settings.jpg](https://github.com/user-attachments/assets/a7a60bb5-7d8a-48ca-b7b0-ef287ccadfdb)\n\n\n\n\n"
+  },
+  {
+   "id": 3376885773,
+   "user": "swissalpine",
+   "created_at": "2025-10-07T13:24:44Z",
+   "body": "I'm using xDrip too in combination with Medtrum. It happens if I leave the room without my smartphone. "
+  },
+  {
+   "id": 3378674453,
+   "user": "vanelsberg",
+   "created_at": "2025-10-07T20:49:15Z",
+   "body": "> I'm using xDrip too in combination with Medtrum. It happens if I leave the room without my smartphone.\n\nIs this actually a \"freeze\" (where AAPS gets unresponsive, Loop stops but pump is still connected) or are you reporting a lost BT connection to the pump that does not repair itself? If yes, this then is a totally different problem that requires its own Github issue?\n"
+  },
+  {
+   "id": 3379117500,
+   "user": "robertrub",
+   "created_at": "2025-10-08T00:14:44Z",
+   "body": "How can you see (when AAPS isn't responding) if the pump is connected or not ?"
+  },
+  {
+   "id": 3379880451,
+   "user": "swissalpine",
+   "created_at": "2025-10-08T06:29:04Z",
+   "body": "As described above and proven by the cited logs, this is a freeze that can only be resolved by restarting the app. \n\nAm 7. Oktober 2025 22:49:37 MESZ schrieb Theodoor ***@***.***>:\n>vanelsberg left a comment (nightscout/AndroidAPS#3984)\n>\n>> I'm using xDrip too in combination with Medtrum. It happens if I leave the room without my smartphone.\n>\n>Is this actually a \"freeze\" (where AAPS gets unresponsive, Loop stops but pump is still connected) or are you reporting a lost BT connection to the pump that does not repair itself? If yes, this then is a totally different problem that requires its own Github issue?\n>\n>\n"
+  },
+  {
+   "id": 3380540234,
+   "user": "vanelsberg",
+   "created_at": "2025-10-08T09:04:06Z",
+   "body": "> As described above and proven by the cited logs, this is a freeze that can only be resolved by restarting the app.\n\nYes. That's why I think the \"freeze\" you describe is actually a \"BT connect lost\" problem.\nThe freezes I am describing cannot be solved by restarting AAPS or even the phone. And no errors in the logfiles..."
+  },
+  {
+   "id": 3380631680,
+   "user": "vanelsberg",
+   "created_at": "2025-10-08T09:24:20Z",
+   "body": "> How can you see (when AAPS isn't responding) if the pump is connected or not ?\n\nGood question 🤔\nAs i mentioned in an earlier post I think I'm experiencing two different kinds of freezing. Somehow, they \"look&feel\" similar were BT connection is there, BYODA is receiving BG values but AAPS is not processing them. The main differences are:\n\n1. AAPS is just not receiving BG values from BYODA - no BG events means AAPS runs idle.\nThis problem in most cases can be solved by _resetting AAPS permissions_ for BYODA through phones settings.\n\n2. AAPS is just not receiving BG values from BYODA - no BG events means AAPS runs idle. UI starts out somewhat responsive while Android starts throwing close/wait pop-ups. But shortly after this AAPS totally lock up. Forced close and restarting results in a blank screen.\nI can only solve this problem through a _full reinstall of AAPS_.\n\nWild guess (because forced restarting AAPS does not solve):\n(1) is about OS permissions,\n(2) is about database/file access, may also related to access permissions?\n\nReally need to connect the debugger/logcat during these freezes to see what it is doing. But because these freezes always happen at the wrong time (in the middel of the night, or when I'm on a schedule) and my main priority then is to get my BG down and get AAPS working 😒\n"
+  },
+  {
+   "id": 3419349936,
+   "user": "HuismanErik",
+   "created_at": "2025-10-19T08:09:21Z",
+   "body": "Hi, last night I also experienced a hanging AAPS :(\nAfter some digging I found this thread.\nI’m currently using the Dash pump and xDrip as my BG source, and I’m running a dev build from last week. My phone runs on Android 14.\n\n@vanelsberg  AAPS stopped receiving (or process) blood glucose values after I restarted my phone. AAPS started processing them once I switched the BG source to Nightscout and then back to xDrip. I’m wondering if it’s really necessary to reinstall AAPS in this case."
+  },
+  {
+   "id": 3419397931,
+   "user": "robertrub",
+   "created_at": "2025-10-19T08:35:12Z",
+   "body": "@HuismanErik No, no need to reinstall AAPS. I usually kill AAPS, empty cache memory and restart AAPS. Works all the time. Using Nano and xDrip on Android 15 phone."
+  },
+  {
+   "id": 3421057701,
+   "user": "vanelsberg",
+   "created_at": "2025-10-20T08:31:23Z",
+   "body": "Other (different) freeze today: after updating to latest dev and selecting SMB preferences, AAPS locked up. On restarting AAPS I only got a blank/white screen. This time, force-stop + clear cache solved.\n\n(btw: @HuismanErik The general freezes I reported here do not solve by clear cache / restart: in moist cases resetting AAPS/BYODA permissions get BG processing going again. If not, UI eventually starts locking up and only way to solve is un/reinstall.)\n\n"
+  },
+  {
+   "id": 3421192842,
+   "user": "robertrub",
+   "created_at": "2025-10-20T09:20:07Z",
+   "body": "For 100% of my freezes, force close + clear cache solved the freeze. I'm using xDrip (in case it's important)"
+  },
+  {
+   "id": 3423857563,
+   "user": "HuismanErik",
+   "created_at": "2025-10-20T21:49:18Z",
+   "body": "I tested my fix. But it did not work."
+  },
+  {
+   "id": 3538452584,
+   "user": "vanelsberg",
+   "created_at": "2025-11-16T09:23:32Z",
+   "body": "With current dev I have not seen any freezes lately ...."
+  },
+  {
+   "id": 3547015584,
+   "user": "robertrub",
+   "created_at": "2025-11-18T11:12:03Z",
+   "body": "> With current dev I have not seen any freezes lately ....\n\nSame for me. No freeze for several weeks... 🤞🏻"
+  }
+ ]
+}

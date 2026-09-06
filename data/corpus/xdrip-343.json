@@ -1,0 +1,129 @@
+{
+ "id": 304065897,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 343,
+ "title": "New upgrade broke high values",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/343",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2018-03-10T12:09:49Z",
+ "closed_at": "2018-03-16T09:31:34Z",
+ "comment_count": 19,
+ "body": "After updating values above 300 show up as a low 30. 319 on freestyle libre shows as 31 https://imgur.com/a/M65cQ",
+ "comments": [
+  {
+   "id": 372025346,
+   "user": "KevinDenys",
+   "created_at": "2018-03-10T12:14:11Z",
+   "body": "Hmm after looking at the data its everything above 270 that shows up as 27(low)"
+  },
+  {
+   "id": 372026252,
+   "user": "KevinDenys",
+   "created_at": "2018-03-10T12:30:41Z",
+   "body": "https://imgur.com/a/kAmMg"
+  },
+  {
+   "id": 372047952,
+   "user": "keencave",
+   "created_at": "2018-03-10T17:36:48Z",
+   "body": "Can you Post a Screenshot from the BG Data Table in the Menü? To be enable in system - less Common settings.\r\n\r\n"
+  },
+  {
+   "id": 372048673,
+   "user": "KevinDenys",
+   "created_at": "2018-03-10T17:44:26Z",
+   "body": "https://imgur.com/a/gS7io"
+  },
+  {
+   "id": 372130320,
+   "user": "tzachi-dar",
+   "created_at": "2018-03-11T16:55:01Z",
+   "body": "What is the sensor type that you are using?\n\n\nOn Sat, 10 Mar 2018 at 19:44, KevinDenys <notifications@github.com> wrote:\n\n> https://imgur.com/a/gS7io\n>\n> —\n> You are receiving this because you are subscribed to this thread.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/343#issuecomment-372048673>,\n> or mute the thread\n> <https://github.com/notifications/unsubscribe-auth/AHkw5CL4jLiraQs6340YBh2uHVyBtA-Lks5tdBD7gaJpZM4SlQPs>\n> .\n>\n"
+  },
+  {
+   "id": 372135706,
+   "user": "KevinDenys",
+   "created_at": "2018-03-11T18:07:54Z",
+   "body": "I have a freestyle libre sensor and I am using an ambrosiasys blucon sender"
+  },
+  {
+   "id": 372138025,
+   "user": "tzachi-dar",
+   "created_at": "2018-03-11T18:37:51Z",
+   "body": "What was the last version that worked? What are your calibration params?\n\nOn Sun, 11 Mar 2018, 8:07 pm KevinDenys, <notifications@github.com> wrote:\n\n> I have a freestyle libre sensor and I am using an ambrosiasys blucon sender\n>\n> —\n> You are receiving this because you commented.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/343#issuecomment-372135706>,\n> or mute the thread\n> <https://github.com/notifications/unsubscribe-auth/AHkw5Gk5mW29xqUBtU3TTs9OZOYrJS8Vks5tdWf7gaJpZM4SlQPs>\n> .\n>\n"
+  },
+  {
+   "id": 372139805,
+   "user": "KevinDenys",
+   "created_at": "2018-03-11T19:00:54Z",
+   "body": "The version I had before the upgrade screen was: 20a4313-2017.11.13 here everything worked fine. Then I updated to the latest version and the bug started happening."
+  },
+  {
+   "id": 372157514,
+   "user": "tzachi-dar",
+   "created_at": "2018-03-11T22:58:28Z",
+   "body": "Here is what I think that has happened:\r\n\r\nYour data based on the last bg table was 479.647. This is the last value measured before problems has happened (this is the raw value measured).\r\n\r\nSince this value is being multiplied by 117.64705, the value before multiplying was .\r\n(See the function blukon.getGlucose()) to understand the calculation.\r\nSo, the value read from the hw is: 4077 (I assume value was devided in 1000) some where.\r\n\r\n4077 in hex  is: 0xfed which is almost the latest values that can be read using 12 binay bytes.\r\nDue to very bad lack the 13 bit was removed from the calculation therefore the numbers got smaller again.\r\n\r\n@KevinDenys What you can immediately do is 1) return to use the 13'th bit  2) use another algorithm for calculating bg.\r\n\r\nTo return the 13'th bit do: in xDrip settings->less common settings->calibration settings->use 13 bit ads mask.\r\nTo use another algorithm please follow instructions on: https://github.com/tzachi-dar/LibreOOPAlgorithm\r\n\r\nI hope this will solve the problem."
+  },
+  {
+   "id": 372158121,
+   "user": "KevinDenys",
+   "created_at": "2018-03-11T23:07:18Z",
+   "body": "Hi, thanks for explaining. Currently I switched back to the 2017 version where everything worked fine. When I have some free time I'll try out the 13th bit mode. "
+  },
+  {
+   "id": 372161417,
+   "user": "keencave",
+   "created_at": "2018-03-11T23:59:03Z",
+   "body": "You can use the current nightlys. Your BG data table screenshot showed clearly that you had values beyond the 12 bit coding which leads to a simply numerical overflow resulting in a fake low value. Please enable the 13th bit as @tzachi-dar described above and yoou are done. Hope that you dont have this high values in the future. I found this behaviour some weeks ago having also very high values after a party night and @jamorham added this 13th bit mask. "
+  },
+  {
+   "id": 372161927,
+   "user": "KevinDenys",
+   "created_at": "2018-03-12T00:05:43Z",
+   "body": "Okay, I updated the app. But I cant check the 13th bit check box? Do I need to uncheck/check other settings to enable 13th mode?"
+  },
+  {
+   "id": 372162010,
+   "user": "KevinDenys",
+   "created_at": "2018-03-12T00:06:55Z",
+   "body": "https://imgur.com/a/G7sdR"
+  },
+  {
+   "id": 372162736,
+   "user": "keencave",
+   "created_at": "2018-03-12T00:17:15Z",
+   "body": "\r\nHave you enable engineering Mode?\r\n"
+  },
+  {
+   "id": 372162946,
+   "user": "KevinDenys",
+   "created_at": "2018-03-12T00:20:10Z",
+   "body": "I was not, my bad. Okay its enabled now. Hope this solves the problem. Thanks for the help and your patience! "
+  },
+  {
+   "id": 372163124,
+   "user": "keencave",
+   "created_at": "2018-03-12T00:22:30Z",
+   "body": "Press the syringe symbol in Xdrip main window upper right. In the Units Box make a long press on the the microphone Symbol. In the Type Treatment Box Type \"enable engineering mode\". Now you should be able to Change to 13th Bit usage."
+  },
+  {
+   "id": 372163172,
+   "user": "keencave",
+   "created_at": "2018-03-12T00:23:03Z",
+   "body": "You are Welcome!"
+  },
+  {
+   "id": 372484584,
+   "user": "jamorham",
+   "created_at": "2018-03-12T22:31:40Z",
+   "body": "13bit mask mode in enabled by default in the latest nightly.  Instructions for getting nightly version on automatic update is here:\r\n\r\nhttps://github.com/NightscoutFoundation/xDrip/wiki/How-to-get-the-Nightlies-on-Automatic-Update"
+  },
+  {
+   "id": 373654560,
+   "user": "jamorham",
+   "created_at": "2018-03-16T09:31:34Z",
+   "body": "This should be resolved. "
+  }
+ ]
+}

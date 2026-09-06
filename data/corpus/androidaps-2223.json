@@ -1,0 +1,45 @@
+{
+ "id": 1465392292,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2223,
+ "title": "[DEV] Crash loop when xDrip battery status of G6 is available in NS",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2223",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-11-27T10:11:49Z",
+ "closed_at": "2022-11-28T19:14:09Z",
+ "comment_count": 5,
+ "body": "Latest dev 305395758f-2022.11.27 (dev-c-nscv3)\r\n\r\nProblem occurred at: 2022-11-27 09:49:59.450\r\n\r\nProblem description:\r\nAAPS comes in a crash loop, seems to be caused by battery status from xDrip in Nightscout.\r\nSee this line in the stacktrace:\r\n\" java.lang.NumberFormatException: For input string: \"6 days (voltage: 308/289)\" \"\r\n\r\nContext: \r\nSwitched from Tsunami to latest dev, cleaned everything tried to pull data from NS to fill in latest day. after activating the NSClient plugin AAPS came into a crash loop. \r\nAfter a search on discord I came onto this post:\r\nhttps://discord.com/channels/629952586895851530/629954570394533889/1041885298591797308\r\n\r\nAfter lots of searching in MongoDB I got frustrated and just deleted the devicestatus collection. This seems to be a viable workaround for now.\r\n\r\nSee attachment for logs of the accident and a stacktrace.\r\n[logs_and_stacktrace.zip](https://github.com/nightscout/AndroidAPS/files/10097987/logs_and_stacktrace.zip)\r\n",
+ "comments": [
+  {
+   "id": 1328234878,
+   "user": "MilosKozak",
+   "created_at": "2022-11-27T12:19:25Z",
+   "body": "I need the json with data"
+  },
+  {
+   "id": 1328250760,
+   "user": "dv1",
+   "created_at": "2022-11-27T13:47:15Z",
+   "body": "@MilosKozak \r\n\r\nExample:\r\n\r\n```\r\n      {\r\n         \"_id\" : \"63828b92712ff2fa64f1ed6b\",\r\n         \"created_at\" : \"2022-11-26T21:56:34.861Z\",\r\n         \"device\" : \"G6 Transmitter\",\r\n         \"mills\" : 1669499794861,\r\n         \"uploader\" : {\r\n            \"battery\" : \"38 days (voltage: 307/288)\",\r\n            \"days\" : 38,\r\n            \"daysEstimate\" : \"38 / 38.2\",\r\n            \"lastQueried\" : 1669499789395,\r\n            \"resistance\" : 0,\r\n            \"resistance_status\" : \"GOOD\",\r\n            \"status\" : \"OK\",\r\n            \"temperature\" : 27,\r\n            \"type\" : \"DEXCOM_TRANSMITTER\",\r\n            \"voltagea\" : 307,\r\n            \"voltageb\" : 288\r\n         },\r\n         \"utcOffset\" : 60\r\n      },\r\n```\r\n\r\nThe bug is [here in xDrip](https://github.com/NightscoutFoundation/xDrip/blob/master/app/src/main/java/com/eveningoutpost/dexdrip/UtilityModels/NightscoutBatteryDevice.java#L126), caused by [this commit](https://github.com/NightscoutFoundation/xDrip/commit/92956f73f49dc199e2539ba055ec0d647876b91e).\r\n\r\nI added a workaround in my AAPS source tree to ignore devicestatus if it contains invalid data like that. Look [at the commit I made in my tree](https://github.com/dv1/AndroidAPS/commit/226b5ed525a0ea66915c18819bd2d9de332030b4). We may need something like this hack I've made, since there are existing Nightscout DB entries that contain these invalid values."
+  },
+  {
+   "id": 1328252513,
+   "user": "jbr7rr",
+   "created_at": "2022-11-27T13:57:16Z",
+   "body": "Was able te reproduce it. by re-enabling the upload battery and forcing it by a small change in the xDrip code.\r\n\r\nThis data triggers it:\r\n\r\n`{\"_id\":{\"$oid\":\"63836bd8bfb8b72dc9a41dd1\"},\"device\":\"G6 Transmitter\",\"uploader\":{\"days\":{\"$numberInt\":\"7\"},\"daysEstimate\":\"7 / 7.2\",\"status\":\"OK\",\"voltagea\":{\"$numberInt\":\"308\"},\"voltageb\":{\"$numberInt\":\"288\"},\"resistance\":{\"$numberInt\":\"0\"},\"resistance_status\":\"GOOD\",\"temperature\":{\"$numberInt\":\"28\"},\"battery\":\"7 days (voltage: 308/288)\",\"lastQueried\":{\"$numberDouble\":\"1.6695572056900E+12\"},\"type\":\"DEXCOM_TRANSMITTER\"},\"created_at\":\"2022-11-27T13:53:28.906Z\",\"utcOffset\":{\"$numberInt\":\"0\"}}`"
+  },
+  {
+   "id": 1328317172,
+   "user": "dv1",
+   "created_at": "2022-11-27T18:58:33Z",
+   "body": "@MilosKozak See the commit above I just uploaded to my fork. (It replaces my previous hack.) Do you approve, or do you see problems with it? If you are OK with it, I'll turn it into a PR. EDIT: Nevermind, I'll just create the PR, we can discuss things there."
+  },
+  {
+   "id": 1329617438,
+   "user": "jbr7rr",
+   "created_at": "2022-11-28T19:14:09Z",
+   "body": "Thanks @dv1 and @MilosKozak !\r\nCan confirm your fix works like a charm, reproduced it with old build by adding the data to the database. Then flashed new build. no more crashes!"
+  }
+ ]
+}

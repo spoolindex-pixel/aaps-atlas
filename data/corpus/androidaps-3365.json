@@ -1,0 +1,77 @@
+{
+ "id": 2351630859,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3365,
+ "title": "Medtrum: Priming screen returns to Change Patch screen",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3365",
+ "state": "closed",
+ "labels": [
+  "medtrum"
+ ],
+ "created_at": "2024-06-13T16:57:47Z",
+ "closed_at": "2024-11-18T08:29:00Z",
+ "comment_count": 10,
+ "body": "I had a similar problem with several patches. This time (before 16:23 today), when I clicked to start priming, the screen immediately returned to the start screen if nothing had been started, but I could hear clicks. I could see a very short failure message, but it did not appear on the overview screen. When I tried to detect \"activation in progress\", the process of reading the activation status never finished. I found this very annoying. I had to discard the patch. \r\n\r\nThe first time I discarded the patch I could hear clicks, but not like before, there was a pause after every 4, 5 or 6 clicks. It finished priming and I had to activate the patch (apply the needle). I simply removed a sticker where the needle is, but then it happened again in a similar way to the first priming. \r\n\r\nThe second time I discarded the patch I managed to activate it. There was still a problem with the priming. The third priming time I wanted to be sure that the base was well connected, and it was not, as the priming did not work. The needle seems to play an important role here. I pressed the needle to get it out of the patch and a lot of insulin came out, but the priming was successful. I then applied the patch. I follow the strict instructions and wonder why there was a problem with priming the first time. I suspect I let too much air out of the patch and it couldn't start the priming process. The log file is attached.\r\n\r\n[AndroidAPS._2024-06-13_00-00-00_.285.zip](https://github.com/user-attachments/files/15825868/AndroidAPS._2024-06-13_00-00-00_.285.zip)\r\n",
+ "comments": [
+  {
+   "id": 2171266556,
+   "user": "jbr7rr",
+   "created_at": "2024-06-16T08:45:04Z",
+   "body": "Logs are not complete, there are no logs related to any priming or activation, do you still happen to have the complete logs ?"
+  },
+  {
+   "id": 2171767485,
+   "user": "dar-kod",
+   "created_at": "2024-06-16T16:45:45Z",
+   "body": "No. For the next time, is the AndroidARS.log file that contains this information?"
+  },
+  {
+   "id": 2174210430,
+   "user": "jbr7rr",
+   "created_at": "2024-06-17T18:56:35Z",
+   "body": "> No. For the next time, is the AndroidARS.log file that contains this information?\r\n\r\nEverything in the log folder, best to zip the whole folder, or use the export log function in aaps itself and mail it to yourself and share that zip"
+  },
+  {
+   "id": 2186558534,
+   "user": "dar-kod",
+   "created_at": "2024-06-24T13:14:57Z",
+   "body": "It happened again, very similar. What is new, and what I didn't report before but have seen, is that after the priming screen returned to the attached screen (which comes after the first Change Patch screen), the message \"Pump time updated\" came up at the same time. Please see a screenshot of this. I didn't apply the patch immediately, but waited perhaps 3–5 minutes to prepare to apply it. It seems that the driver forgets the patch because of the waiting.\r\n\r\n![1719234780257](https://github.com/nightscout/AndroidAPS/assets/24446806/fa7776fe-d2a6-40ee-bb34-07c628add2bd)\r\n\r\nI still managed to activate the patch after pressing discard and repeating the process.\r\n\r\nThe full zipped log files are attached.\r\n\r\n[files.zip](https://github.com/user-attachments/files/15956221/files.zip)\r\n"
+  },
+  {
+   "id": 2235840387,
+   "user": "dar-kod",
+   "created_at": "2024-07-18T07:42:31Z",
+   "body": "Sorry. My zip file from last time was empty.\r\n\r\nI had a similar problem again. This time I had the patch on the body when the screen that comes after the Priming screen went back to the Change Patch screen. This happened at about 8:05 in the morning. Again, the process of reading the activation status never finished. I tried to see if Exit would help, but it didn't. I tried detach the pump base 2 times. If I remember correctly, the first time the pump state showed PATCH_FAULT2 (8:16) after unsuccessful priming, the priming was not completed after reaching 100% (8:12). I understood that there was some misunderstanding between the driver and the patch, but I didn't want to lose the patch. When I tried to read the activation status, the only option was to deactivate the patch. So I understood that I had to insert the needle to try the last option. I did so and exited AAPS. The patch was ready to be activated again with the previously removed pump base (I don't remember exactly when I did this), but with a needle in the body. I simply added 2 units without bolusing.\r\n\r\n[files.zip](https://github.com/user-attachments/files/16279500/files.zip)\r\n"
+  },
+  {
+   "id": 2295297728,
+   "user": "I1985",
+   "created_at": "2024-08-18T15:18:17Z",
+   "body": "I've had something similar at least twice. But only when I took quite long to apply it. I figured there might be some kind of timeout in the script that caused it to fail. \r\nSince I make sure I have everything ready before I start. Including filling the syringe and wiping the infusion spot. Only then I'll start the process in AAPS and attach the pumpbase to the new patch.\r\n\r\nSince doing it this way I haven't had any issues. So I suspect it might be a timeout in the script?"
+  },
+  {
+   "id": 2478262688,
+   "user": "jbr7rr",
+   "created_at": "2024-11-15T08:53:03Z",
+   "body": "@dar-kod Can you provide which AAPS version you are using?\r\n\r\nWhat I see now from the logs: at 07:46\r\n- The patch primed\r\n- It moved to the next screen\r\n- After a few seconds it did something?? and returned to the first view of the activation process\r\n\r\nIs this corresponding with your experience?"
+  },
+  {
+   "id": 2478803225,
+   "user": "dar-kod",
+   "created_at": "2024-11-15T13:21:22Z",
+   "body": "> Is this corresponding with your experience?\r\n\r\nYes. I usually use the latest dev. I have an old Poco F3 with HyperOS, Android 13. It has an application called \"Security\". If this application is started before the patch change and you run \"Boost speed\", this problem does not occur at all. I will test this fix next time."
+  },
+  {
+   "id": 2480828848,
+   "user": "dar-kod",
+   "created_at": "2024-11-16T22:16:52Z",
+   "body": "@jbr7rr Yesterday evening I updated dev. Today I changed the patch without first running \"Boost Speed\". It was successfully activated and then I waited 9 minutes before applying it. It went without a hitch. Thank you."
+  },
+  {
+   "id": 2481271593,
+   "user": "jbr7rr",
+   "created_at": "2024-11-17T13:42:04Z",
+   "body": "Nice, issue can be closed then :)"
+  }
+ ]
+}

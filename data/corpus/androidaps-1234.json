@@ -1,0 +1,35 @@
+{
+ "id": 1116600749,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1234,
+ "title": "3.0rc3/Combo - Incorrect IOB after Occlusion alarm during prime",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1234",
+ "state": "closed",
+ "labels": [
+  "combo"
+ ],
+ "created_at": "2022-01-27T18:20:44Z",
+ "closed_at": "2022-01-28T05:09:44Z",
+ "comment_count": 3,
+ "body": "Background\r\n--------------\r\n- Had an occlusion at night at around 2:40 and thought it was in the catheter, which I replaced\r\n- When priming, another occlusion alarm was raised as the occlusion seemed to be in the tube.\r\n- The pump and the phone were ringing like crazy, to not wake up my whole family I immediately shut down all alarms without reading any detailed error messages in AAPS\r\n- After exchanging the tube and priming, I was surprised to have IOB above 2 in the middle of the night\r\n- It turned out that AAPS did not mark the interrupted bolus as prime, but as a regular bolus\r\n- When deleting the bolus in the Treatment list, the IOB was reasonable.\r\n- In xDrip, I later saw the error message from AAPS to check Insulin Treatments\r\n\r\nVersion\r\n-----------\r\n- AndroidAPS 3.0rc3\r\n- Phone: Oneplus Nord with LineageOS 17.1 (Android 10)\r\n- Dexcom BYODA 1.7.0.3\r\n- Combo Pump\r\n\r\nSuggestions\r\n------------------\r\n- When Prime is interrupted, record the time and amount the interruption occurred and sync the info with the treatment history the next time the pump history is read\r\nOr\r\n- Use a permanent Error message type (like the one informing about new AAPS versions) to warn the user that the IOB might be incorrect to make sure the message can be read without being stressed by the ringing alarms\r\n\r\nIf you need the log files, I am happy to provide them.",
+ "comments": [
+  {
+   "id": 1023559460,
+   "user": "MilosKozak",
+   "created_at": "2022-01-27T19:18:44Z",
+   "body": "Not every situation can be resolved in AAPS expecially with interrupted comm, failed bolus etc. @jotomo ?\r\nRule No.1 is when anything goes wrong always check pump and AAPS state and do manual correction (exactly what you did)"
+  },
+  {
+   "id": 1023604620,
+   "user": "jotomo",
+   "created_at": "2022-01-27T20:19:04Z",
+   "body": "What @MilosKozak said. GIven the limitations of the Combo comms, there are edge cases the user needs to check and correct if needed like you did. The popup message you saw just stated generically that something went wrong, asking the user to check. Turning that into a persistent notification would be redundant. While a technical solution to marking an interrupted bolus as prime, like proposed, would be possible, this would only cover one of many edge cases involving pump errors and implementing this would likely introduce multiple new bugs as complexity increases considerably.\r\n"
+  },
+  {
+   "id": 1023892308,
+   "user": "T-o-b-i-a-s",
+   "created_at": "2022-01-28T05:09:44Z",
+   "body": "Thanks for the fast and detailed feedback. You are correct that covering this edge case is probably too much effort for the probability it can occur. It was the first time such a situation happens to me during my 4 years if AAPS usage.\r\nI will close the issue, thanks for your great work and engagement!"
+  }
+ ]
+}

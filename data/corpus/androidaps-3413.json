@@ -1,0 +1,69 @@
+{
+ "id": 2484848067,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3413,
+ "title": "Dev-b AutoISF / Can't calculate acceleration ",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3413",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-08-24T20:23:04Z",
+ "closed_at": "2024-12-11T09:12:28Z",
+ "comment_count": 9,
+ "body": "I switched G6 transmitters which resulted in a desynchronisation of the 5 minutes interval which started the recalculated values.\n\n![Screenshot_20240824_212910_AAPS.jpg](https://github.com/user-attachments/assets/2ee95278-b07c-4e0d-8e06-974422b0dace)\n\nI think (just a guess) that AutoISF plugin does not like recalculated values and can't get a \"reliable\" acceleration; all acceleration numbers are at 0. \n\nAs it didn't see the deceleration, it selected an agressive ISF for those 3 last BGs (were over target).\n\n![Screenshot_20240824_221303_AAPS.jpg](https://github.com/user-attachments/assets/cb3577d6-d27a-46ab-91f9-b1f13f28718d)\n\nAs you can see, just before the drop, there was a dark dot.\n\nHere are the logs (around 22h13 and before)\n![AndroidAPS_LOG_1724530521674.log.zip](https://github.com/user-attachments/files/16737927/AndroidAPS_LOG_1724530521674.log.zip)\n\n\n",
+ "comments": [
+  {
+   "id": 2308544010,
+   "user": "ga-zelle",
+   "created_at": "2024-08-24T21:27:28Z",
+   "body": "There are only 4 loop events in a single log file. It would help if under Maintenance you disable WEAR (because it just jams the file and makes reading very hard) but enable GLUCOSE which I think is the important one here."
+  },
+  {
+   "id": 2308669434,
+   "user": "robertrub",
+   "created_at": "2024-08-25T06:05:31Z",
+   "body": "Ok, did the changes to wear and glucose last night. Here are the new logs. There are still dark green dots but I don't know if acceleration was at 0 or not.\n\n![Screenshot_20240825_080246_AAPS.jpg](https://github.com/user-attachments/assets/fa544ae7-f0b3-4a2f-9408-e19820db7721)\n\n![AndroidAPS_LOG_1724565734883.log.zip](https://github.com/user-attachments/files/16739166/AndroidAPS_LOG_1724565734883.log.zip)\n\n"
+  },
+  {
+   "id": 2308674820,
+   "user": "robertrub",
+   "created_at": "2024-08-25T06:26:33Z",
+   "body": "Calculated BGs (transmitter change 24h ago)\n\n![Screenshot_20240825_082453_AAPS.jpg](https://github.com/user-attachments/assets/446a8b94-908b-4658-a56e-fad501f7bc28)\n\nAcceleration at 0\n\n![Screenshot_20240825_082426_AAPS.jpg](https://github.com/user-attachments/assets/d1cd431d-9b84-4f19-b6cf-485499fd4321)\n\n"
+  },
+  {
+   "id": 2308871257,
+   "user": "robertrub",
+   "created_at": "2024-08-25T14:22:33Z",
+   "body": "OK, I found 2 cases in the logs where Parabola settings change to 0 after a BG time recalculation and the BGs go into a \"loop\" with 3 minAGO  coming over and over. In the first ZIP, it is 30, 40 and 45 min ago. Look before 9:16:34:840\r\n[AndroidAPS._2024-08-25_00-00-28_.93[1].zip](https://github.com/user-attachments/files/16740609/AndroidAPS._2024-08-25_00-00-28_.93.1.zip)\r\n"
+  },
+  {
+   "id": 2308986549,
+   "user": "robertrub",
+   "created_at": "2024-08-25T20:40:21Z",
+   "body": "Recalculated data period is over. There are no more dark green dots on the graph and AutoISF is working normally once again.\n\nThere is a problem with the recalculated data and AutoISF."
+  },
+  {
+   "id": 2308997427,
+   "user": "ga-zelle",
+   "created_at": "2024-08-25T21:19:39Z",
+   "body": "The problem is with gaps in data, not recalculated ones. AutoISF deals with them as expected.\r\nWithout G6 I have recalculated all year round and no such problems.."
+  },
+  {
+   "id": 2309296959,
+   "user": "robertrub",
+   "created_at": "2024-08-26T04:35:47Z",
+   "body": "Sorry but I disagree. As soon as the yellow triangle disappeared (and the dark green dots too), the problem of parabola at 0 stopped. Field test says that I'm right ;)\n\nThe recalculated data of Libre and G6 seems to be different. No idea what difference. Maybe the difference is that Libre has just _seconds_ of difference when a transmitter change makes _minutes_ of difference...\n\nAnother possibility : Are you using the AutoISF plugin in _AAPS dev_ or are you using your \"own\" AutoISF build ? "
+  },
+  {
+   "id": 2473519285,
+   "user": "robertrub",
+   "created_at": "2024-11-13T12:45:32Z",
+   "body": "@MilosKozak Same as the _color changing dots_ issue, please reopen this one too. Both are related and both are not solved."
+  },
+  {
+   "id": 2509724157,
+   "user": "vanelsberg",
+   "created_at": "2024-12-01T11:30:58Z",
+   "body": "https://github.com/nightscout/AndroidAPS/issues/3415"
+  }
+ ]
+}

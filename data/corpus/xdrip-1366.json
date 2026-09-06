@@ -1,0 +1,101 @@
+{
+ "id": 638375083,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1366,
+ "title": "Follower receives NS entries download Failed: NumberFormatException - Received Null",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1366",
+ "state": "closed",
+ "labels": [
+  "bug"
+ ],
+ "created_at": "2020-06-14T15:34:31Z",
+ "closed_at": "2020-09-03T07:47:50Z",
+ "comment_count": 14,
+ "body": "Hi,\r\n\r\nI have set up my NightScout account, and xDrip can write to it from the master device, but when setting up a following device, I receive the following -\r\n\r\nNS entries download Failed:\r\ncom.google.gson.JsonSyntaxException:\r\njava.lang.NumberFormatException: For input string: \"Null\"\r\n\r\nThe NightScout account was originally populated with entries by Diabox, but this stopped after a few hours, and I can't find a way of getting the details on a Wear OS watch. Hence why I'm trying xDrip. So there are gaps in the data, but I wouldn't expect that to cause an issue.\r\n\r\nThanks,\r\n\r\nBrian",
+ "comments": [
+  {
+   "id": 674541676,
+   "user": "greghesp",
+   "created_at": "2020-08-16T15:38:46Z",
+   "body": "Same issue here, am also using Diabox to upload data at the moment"
+  },
+  {
+   "id": 674566440,
+   "user": "tolot27",
+   "created_at": "2020-08-16T19:19:45Z",
+   "body": "Which language(s) do you use? Are they identical in Nightscout and xDrip? Do you receive no BG values or no treatment values or neither of them? And last question: please can you enable verbose logging in settings >less common settings > extra tags for logging and then add there: `BgReading:v` and post the result here?\r\n\r\nIt may help to to post the result of https://<your.nightscout.server:port>/api/v1/entries.json?find=[dateString][$gte]=2020-08-16&count=5, for instance. You can adjust the date, of course."
+  },
+  {
+   "id": 674573489,
+   "user": "greghesp",
+   "created_at": "2020-08-16T20:24:49Z",
+   "body": "> Which language(s) do you use? Are they identical in Nightscout and xDrip? Do you receive no BG values or no treatment values or neither of them? And last question: please can you enable verbose logging in settings >less common settings > extra tags for logging and then add there: `BgReading:v` and post the result here?\r\n> \r\n> It may help to to post the result of https://your.nightscout.server:port/api/v1/entries.json?find=[dateString][$gte]=2020-08-16&count=5, for instance. You can adjust the date, of course.\r\n\r\nSame languages for me.  I can see that its retrieving treatments in NS, just not the BG Values.  Added that tag but nothing additional in the logs\r\n\r\nResult of that api call.  Could it be that its expecting `null` for noise, but instead gets it as a string?\r\n\r\n```\r\n[\r\n   {\r\n      \"_id\":\"5f399b2d8287432672f2856f\",\r\n      \"device\":\"bubble\",\r\n      \"date\":1597610794217,\r\n      \"dateString\":\"2020-08-16T20:46:34.217Z\",\r\n      \"sgv\":291,\r\n      \"delta\":900000,\r\n      \"direction\":\"SingleUp\",\r\n      \"type\":\"sgv\",\r\n      \"filtered\":291000,\r\n      \"unfiltered\":291000,\r\n      \"rssi\":100,\r\n      \"noise\":\"null\",\r\n      \"sysTime\":\"2020-08-16T20:46:34.217Z\",\r\n      \"utcOffset\":60\r\n   },\r\n   {\r\n      \"_id\":\"5f399a048287432672f2413f\",\r\n      \"device\":\"bubble\",\r\n      \"date\":1597610494150,\r\n      \"dateString\":\"2020-08-16T20:41:34.150Z\",\r\n      \"sgv\":276,\r\n      \"delta\":180000,\r\n      \"direction\":\"Flat\",\r\n      \"type\":\"sgv\",\r\n      \"filtered\":276000,\r\n      \"unfiltered\":276000,\r\n      \"rssi\":100,\r\n      \"noise\":\"null\",\r\n      \"sysTime\":\"2020-08-16T20:41:34.150Z\",\r\n      \"utcOffset\":60\r\n   },\r\n   {\r\n      \"_id\":\"5f3998d58287432672f1f7c2\",\r\n      \"device\":\"bubble\",\r\n      \"date\":1597610193985,\r\n      \"dateString\":\"2020-08-16T20:36:33.985Z\",\r\n      \"sgv\":273,\r\n      \"delta\":300000,\r\n      \"direction\":\"Flat\",\r\n      \"type\":\"sgv\",\r\n      \"filtered\":273000,\r\n      \"unfiltered\":273000,\r\n      \"rssi\":100,\r\n      \"noise\":\"null\",\r\n      \"sysTime\":\"2020-08-16T20:36:33.985Z\",\r\n      \"ut"
+  },
+  {
+   "id": 674578777,
+   "user": "tolot27",
+   "created_at": "2020-08-16T21:14:01Z",
+   "body": "Please use `NightscoutFollowEP:v` as an extra logging tag."
+  },
+  {
+   "id": 674579097,
+   "user": "greghesp",
+   "created_at": "2020-08-16T21:16:54Z",
+   "body": "> Please use `NightscoutFollowEP:v` as an extra logging tag.\r\n\r\nNo change with that one either I'm afraid\r\n\r\nAre we sure this isn't the `noise` property causing issues. It's erroring because it's trying to convert the string `null` into an integer..."
+  },
+  {
+   "id": 674580104,
+   "user": "tolot27",
+   "created_at": "2020-08-16T21:26:03Z",
+   "body": "What about `NightscoutFollow:v`?"
+  },
+  {
+   "id": 674580538,
+   "user": "greghesp",
+   "created_at": "2020-08-16T21:30:21Z",
+   "body": "Nothing there other than an estimated missed number of readings and the estimated next read date"
+  },
+  {
+   "id": 674581153,
+   "user": "tolot27",
+   "created_at": "2020-08-16T21:37:01Z",
+   "body": "According to the JSON spec, a null value should be written as `null` and not `\"null\"`.\r\n\r\n`A value can be a string in double quotes, or a number, or true or false or null, or an object or an array.`\r\n\r\n That is the cause of the problem. It has to be fixed at least twice: the upload should upload a valid value or `null` for the noise value, Nightscout should store and return it correctly and the Nightscout follower should be tolerant for `\"null\"` values to deal with existing data."
+  },
+  {
+   "id": 674581461,
+   "user": "tolot27",
+   "created_at": "2020-08-16T21:40:24Z",
+   "body": "@greghesp Please can you check how the noise values are stored in your NS database?"
+  },
+  {
+   "id": 674582576,
+   "user": "greghesp",
+   "created_at": "2020-08-16T21:52:57Z",
+   "body": "> > Which language(s) do you use? Are they identical in Nightscout and xDrip? Do you receive no BG values or no treatment values or neither of them? And last question: please can you enable verbose logging in settings >less common settings > extra tags for logging and then add there: `BgReading:v` and post the result here?\r\n> > It may help to to post the result of [https://your.nightscout.server:port/api/v1/entries.json?find=[dateString][$gte]=2020-08-16&count=5](https://your.nightscout.server:port/api/v1/entries.json?find=%5BdateString%5D%5B$gte%5D=2020-08-16&count=5), for instance. You can adjust the date, of course.\r\n> \r\n> Same languages for me. I can see that its retrieving treatments in NS, just not the BG Values. Added that tag but nothing additional in the logs\r\n> \r\n> Result of that api call. Could it be that its expecting `null` for noise, but instead gets it as a string?\r\n> \r\n> ```\r\n> [\r\n>    {\r\n>       \"_id\":\"5f399b2d8287432672f2856f\",\r\n>       \"device\":\"bubble\",\r\n>       \"date\":1597610794217,\r\n>       \"dateString\":\"2020-08-16T20:46:34.217Z\",\r\n>       \"sgv\":291,\r\n>       \"delta\":900000,\r\n>       \"direction\":\"SingleUp\",\r\n>       \"type\":\"sgv\",\r\n>       \"filtered\":291000,\r\n>       \"unfiltered\":291000,\r\n>       \"rssi\":100,\r\n>       \"noise\":\"null\",\r\n>       \"sysTime\":\"2020-08-16T20:46:34.217Z\",\r\n>       \"utcOffset\":60\r\n>    },\r\n>    {\r\n>       \"_id\":\"5f399a048287432672f2413f\",\r\n>       \"device\":\"bubble\",\r\n>       \"date\":1597610494150,\r\n>       \"dateString\":\"2020-08-16T20:41:34.150Z\",\r\n>       \"sgv\":276,\r\n>       \"delta\":180000,\r\n>       \"direction\":\"Flat\",\r\n>       \"type\":\"sgv\",\r\n>       \"filtered\":276000,\r\n>       \"unfiltered\":276000,\r\n>       \"rssi\":100,\r\n>       \"noise\":\"null\",\r\n>       \"sysTime\":\"2020-08-16T20:41:34.150Z\",\r\n>       \"utcOffset\":60\r\n>    },\r\n>    {\r\n>       \"_id\":\"5f3998d58287432672f1f7c2\",\r\n>       \"device\":\"bubble\",\r\n>       \"date\":1597610193985,\r\n>       \"dateString\":\"2020-08-16T20:36:33.985Z\",\r\n>       \"sgv\":273,\r\n>       \"delta\":300000,\r"
+  },
+  {
+   "id": 674588439,
+   "user": "tolot27",
+   "created_at": "2020-08-16T22:56:18Z",
+   "body": "I thought you have posted the response of the Nightscout API call.\r\n\r\nDid you merge some of the bubbledev/diabox PRs yourself, didn't you?\r\n\r\nPlease can you merge PR #1408, too and test it? It would be good to know, if the PR fixes your issue. \r\n\r\n"
+  },
+  {
+   "id": 682199139,
+   "user": "tolot27",
+   "created_at": "2020-08-27T21:25:13Z",
+   "body": "@greghesp Please can you test the PR #1408?"
+  },
+  {
+   "id": 682206517,
+   "user": "greghesp",
+   "created_at": "2020-08-27T21:43:50Z",
+   "body": "@tolot27 Sorry, only just seen this.  \r\n\r\nI also mentioned this as an issue to the Diabox developer, and I can only assume that they deployed a fix as the object schema is now correct so I wont be able to test this:\r\n\r\n```\r\n{\r\n\"_id\": \"5f4827f398dfe821bbd5f0e8\",\r\n\"device\": \"bubble\",\r\n\"date\": 1598564331916,\r\n\"dateString\": \"2020-08-27T21:38:51.916Z\",\r\n\"sgv\": 199,\r\n\"delta\": 75000,\r\n\"direction\": \"Flat\",\r\n\"type\": \"sgv\",\r\n\"filtered\": 199000,\r\n\"unfiltered\": 199000,\r\n\"rssi\": 100,\r\n\"noise\": 1,\r\n\"sysTime\": \"2020-08-27T21:38:51.916Z\",\r\n\"utcOffset\": 60\r\n},\r\n```"
+  },
+  {
+   "id": 682721751,
+   "user": "tolot27",
+   "created_at": "2020-08-28T15:34:27Z",
+   "body": "@briansealey Do you still have the problem? If not, please close this issue."
+  }
+ ]
+}

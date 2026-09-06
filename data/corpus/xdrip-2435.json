@@ -1,0 +1,129 @@
+{
+ "id": 1437683084,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 2435,
+ "title": "A couple of odd issues since the August 3rd Release. The job text is now fixed. Smoothed heart rate line is broken. ",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/2435",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-11-07T02:47:48Z",
+ "closed_at": "2024-08-13T21:40:53Z",
+ "comment_count": 19,
+ "body": "As instructed through the below discussion post:\r\nhttps://github.com/NightscoutFoundation/xDrip/discussions/2403\r\n\r\n**_Discussion 2403 content\r\nSince the August 3rd release of xdrip+ I've been seeing a couple of minor odd issues. I've loaded all the nightlies after August 3rd and these issues are there. If I reload August 3rd, the issues go away.\r\n\r\nThe IoB text at the top of the main screen, just under the xDrip+ title, is very flaky, sometimes it's there but most of the time that text just says insulin xxx or carbs yyy but as of the August 3 release and earlier there should also always be an IoB text... assuming you actually have insulin on board.\r\n\r\nI have the heart and steps functionality enabled through communications with my Fitbit and again, at or before the august 3 release, the heartbeat graph data was a nice smooth contiguous line. In the latest releases, that line is broken up and discontinuous. I've gone back and forth between builds and this seems to be a by-product of the builds, not the input data. Have there been any reports of similar issues? If so, any word on what's going on?\r\nEnd Discussion 2403 content_**\r\n\r\nBoth of the below screenshots were taken within minutes of each release being loaded on my Samsung Galaxy S20 Android 12 Device.  I've not changed any settings between installs.  When I load August 3rd release back on, the issues revert to the proper \"normal\" state.\r\n\r\nI've enabled the steps and heartbeat graph data via the Smartwatch Sensors section in Settings.  I also have the Inter-app settings for \"xdrip web service\" enabled so I can get and push xdrip data to/from my Fitbit Sense.  This functionality has been working just fine for a long time up to the August 3rd release.\r\n\r\n**Screenshot 1:  Nov 5 Nightly release:  No IOB text at top of the screen.  Discontiguous heartbeat graph line.  Slightly smaller (light aqua blue) \"Steps\" graphics.** \r\n![Screenshot_2022_11_05_23_44_34](https://user-images.githubusercontent.com/6887761/200214323-3be282db-59c2-45d9-8ede-36d588c68590.jpg)\r\n\r\n\r\n**Screenshot 2:  August 3 Nightly release:  IOB text is present at the top of the screen.  The heartbeat graph line is contiguous.  Larger (normal) \"steps\" graphics.**\r\n![Screenshot_2022_11_05_23_47_57](https://user-images.githubusercontent.com/6887761/200214327-cabf625b-9113-423c-8aa4-caaed9a44490.jpg)",
+ "comments": [
+  {
+   "id": 1319169690,
+   "user": "emp-00",
+   "created_at": "2022-11-17T20:34:24Z",
+   "body": "> Nov 5 Nightly release: No IOB text at top of the screen.\r\n\r\nConfirmed: Yesterday, I updated from a ~4 months-old nightly (2022-06-20) to the 2022-11-08 revision. Ever since my IoB display is \"broken\".\r\n\r\nSymptom: When opening xDrip+ in the first 1-2 minutes the IoB display is vanished and only appears after this time-span. This is always the case and clearly linked to the update. Obviously a bug from my point-of-view. This is quite annoying, because I need to have a quick look at my IoB and now I need to wait until it's appearing again. See screenshot for what's happening. Thanks for looking into this. I have to revert to my last known good nightly.\r\n\r\n![image](https://user-images.githubusercontent.com/60714349/202553862-36455834-fec9-4a8b-9774-250687603e47.png)\r\n"
+  },
+  {
+   "id": 1328294289,
+   "user": "gitanO0",
+   "created_at": "2022-11-27T16:56:55Z",
+   "body": "It looks like the heart rate graph issue is related to the \"smooth heart rate graph\" option being checked.  Unchecking that option clears the issue up but creates a very jagged heartbeat line."
+  },
+  {
+   "id": 1341519464,
+   "user": "zwidow",
+   "created_at": "2022-12-07T20:01:50Z",
+   "body": "Updating, bug still present in the last beta released.\r\nLast beta version 20221116 was released with the IoB bug not solved and substitute a version (beta 20220803 where IoB working) \r\nSince IoB is really important for ppl without pump like me I've been forced to install the old beta apk."
+  },
+  {
+   "id": 1341524275,
+   "user": "gitanO0",
+   "created_at": "2022-12-07T20:04:30Z",
+   "body": "I can confirm as well that the latest 12/5 nightly retains the above two bugs and for me as well, I can't update past the 08/03 release because of the IoB issue."
+  },
+  {
+   "id": 1341575968,
+   "user": "emp-00",
+   "created_at": "2022-12-07T20:47:22Z",
+   "body": "Confirmed from my side as well - current nightlys are still unusable."
+  },
+  {
+   "id": 1344319391,
+   "user": "jamorham",
+   "created_at": "2022-12-09T13:36:51Z",
+   "body": "Please try the Dec 9th Nightly (available now) and let me know if it resolves the issue? Thanks"
+  },
+  {
+   "id": 1344537167,
+   "user": "zwidow",
+   "created_at": "2022-12-09T16:57:38Z",
+   "body": "Tested the last (Dec 9th Nightly) and seems good @jamorham \r\nThank you"
+  },
+  {
+   "id": 1344648269,
+   "user": "emp-00",
+   "created_at": "2022-12-09T18:47:50Z",
+   "body": "Confirmed as well - problem seems to be fixed @jamorham ! Furthermore, when adding insulin treatments the IoB figure get's updated _instantly_ (before this, it always took a few seconds) --> me = very happy **Thanks**"
+  },
+  {
+   "id": 1344709980,
+   "user": "gitanO0",
+   "created_at": "2022-12-09T19:33:24Z",
+   "body": "@jamorham The IoB text seems to be staying visible correctly but the heart rate graph is still wonky.  See my initial screenshot above.  There are all kinds of gaps in the heartrate line on the graph.  Also, lesser of an issue... the \"steps\" graphics (the aqua blue graphics) in the graph are somewhat smaller than on the 8/3 release making them harder to see when there are just a few steps.  When I'm out running and there are lots of steps, it's not so bad."
+  },
+  {
+   "id": 1344713806,
+   "user": "gitanO0",
+   "created_at": "2022-12-09T19:38:18Z",
+   "body": "@jamorham here's another screenshot.  The heart rate line is wonky and the steps are really small.  See the circled elements.\r\n![Screenshot_20221209-123520](https://user-images.githubusercontent.com/6887761/206783416-ac1cc171-302b-4aa2-9b28-408233374cdb.png)\r\n"
+  },
+  {
+   "id": 1344737059,
+   "user": "zwidow",
+   "created_at": "2022-12-09T20:08:56Z",
+   "body": "mine is ok\r\n![image](https://user-images.githubusercontent.com/80387707/206787944-5f6bbb1d-93d7-4cf0-ac70-18559b337f5c.png)\r\n"
+  },
+  {
+   "id": 1344762569,
+   "user": "jamorham",
+   "created_at": "2022-12-09T20:43:33Z",
+   "body": "@gitanO0 can you describe the source for your heart rate and steps data?"
+  },
+  {
+   "id": 1344827111,
+   "user": "gitanO0",
+   "created_at": "2022-12-09T22:08:57Z",
+   "body": "@zwidow try turning on the \"smooth heart rate graph\" option in the \"smartwatch sensors\" area.  Mine looks good if that option is unchecked but when I check that option, it has the above results.   I like the look of the smoothed line better but will uncheck that option if I have to.\r\n\r\n@jamorham I'm getting the data from my Fitbit via local web service interaction... I believe."
+  },
+  {
+   "id": 1344838059,
+   "user": "zwidow",
+   "created_at": "2022-12-09T22:17:35Z",
+   "body": "can confirm the issue is related to the \"smooth heart rate graph\" ON"
+  },
+  {
+   "id": 1364473695,
+   "user": "machiyag",
+   "created_at": "2022-12-24T06:44:38Z",
+   "body": "I reverted to a previous version when the IoB reading disappeared, and have been getting reminders to update ever since. Is the consensus that it's now safe to do so?"
+  },
+  {
+   "id": 1364530410,
+   "user": "Navid200",
+   "created_at": "2022-12-24T13:28:22Z",
+   "body": "@machiyag If you are on the stable, beta or alpha update channel, updating now will return the problem for you.\r\n\r\nIf you are on the Nightly channel, yes, updating will be OK.  \r\n\r\nAlternatively, you can stay on the channel you have been on before but, manually install the current nightly:  https://github.com/NightscoutFoundation/xDrip/releases/tag/2022.12.09"
+  },
+  {
+   "id": 1364564001,
+   "user": "machiyag",
+   "created_at": "2022-12-24T17:54:46Z",
+   "body": "Thanks, I'm set to get the stable. Looking at the last .apk in my\ndownloads, I think I was running the 11/16 build. I've just replaced it\nwith the 12.09.\n\nAt some point I'll be authorized for the Omnipod 5 looping with the G6, and\nI expect that to introduce a new set of problems. I've always\ndouble-entered insulin and carbs, but obviously won't be able to do that\nwith a constant insulin drip. Hoping the benefit outweighs the grief.\n\nThanks again,\n\nmh\n\nOn Sat, Dec 24, 2022, 5:28 AM Navid ***@***.***> wrote:\n\n> @machiyag <https://github.com/machiyag> If you are on the stable, beta or\n> alpha update channel, updating now will return the problem for you.\n>\n> If you are on the Nightly channel, yes, updating will be OK.\n>\n> Alternatively, you can stay on the channel you have been on before but,\n> manually install the current nightly:\n> https://github.com/NightscoutFoundation/xDrip/releases/tag/2022.12.09\n>\n> —\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/2435#issuecomment-1364530410>,\n> or unsubscribe\n> <https://github.com/notifications/unsubscribe-auth/AKOO6V6HFPHNWD6CSXIO3SLWO33ADANCNFSM6AAAAAARYXU4MI>\n> .\n> You are receiving this because you were mentioned.Message ID:\n> ***@***.***>\n>\nmh\n"
+  },
+  {
+   "id": 1561025192,
+   "user": "Navid200",
+   "created_at": "2023-05-24T12:23:12Z",
+   "body": "@gitanO0 \r\nPlease edit the title to be clear what the issue is.  In this case, hear rate."
+  },
+  {
+   "id": 1561278331,
+   "user": "gitanO0",
+   "created_at": "2023-05-24T14:33:49Z",
+   "body": "Done"
+  }
+ ]
+}

@@ -1,0 +1,90 @@
+{
+ "id": 1146641818,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1359,
+ "title": "Riley Link Orange can't connect with dev branch",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1359",
+ "state": "closed",
+ "labels": [
+  "rileylink",
+  "omnipod eros"
+ ],
+ "created_at": "2022-02-22T09:11:53Z",
+ "closed_at": "2022-04-13T14:13:54Z",
+ "comment_count": 12,
+ "body": "Impossible to connect the RileyLink Orange with dev branch [d39e9e9] . The state of RileyLink is stuck to initialization of RileyLink. Connection is ok with master branch.",
+ "comments": [
+  {
+   "id": 1047730851,
+   "user": "happygirlnyc70",
+   "created_at": "2022-02-22T12:08:07Z",
+   "body": "I can confirm.  The aaps wiki process no longer works with the new dev branch regardless of firmware when using my Pixel 4a 5g.  However when using my Pixel 1 Android 10, orange link firmware 2.5 connects without any issues ( no wiki l process needed).\r\n\r\n\r\n"
+  },
+  {
+   "id": 1048751204,
+   "user": "macarolobe",
+   "created_at": "2022-02-23T12:52:30Z",
+   "body": "It's the RL check for permission before connect code the problem https://github.com/nightscout/AndroidAPS/commit/b1d45833c5570910142e78ba39a8322b4039a9d5\r\n\r\nWith master branch code no problem to connect RL Orange. "
+  },
+  {
+   "id": 1050281044,
+   "user": "MilosKozak",
+   "created_at": "2022-02-24T21:27:06Z",
+   "body": "you should see notification to request permissions\r\nadd logs if you can reproduce"
+  },
+  {
+   "id": 1050642093,
+   "user": "macarolobe",
+   "created_at": "2022-02-25T08:31:28Z",
+   "body": "No notification to request permission. The state of RileyLink is stuck on initialization. RileyLink Orange FW 3.2 / Samsung S10e with android 12\r\n[AndroidAPS_LOG_1645777569074.log.zip](https://github.com/nightscout/AndroidAPS/files/8139619/AndroidAPS_LOG_1645777569074.log.zip)\r\n![Screenshot_20220225-092053_AndroidAPS](https://user-images.githubusercontent.com/58631766/155681844-39a67d42-a82d-43cc-a992-408b5830918b.jpg)\r\n."
+  },
+  {
+   "id": 1051977864,
+   "user": "Alamo04",
+   "created_at": "2022-02-26T10:34:32Z",
+   "body": "@macarolobe \r\nHad the same in the past, befor switch to Combo.\r\n\r\nAfter Update to 3.x and first start AAPS, I see no permission request.\r\nAfter restart Phone, or closing and restart AAPS, the permission request comes up."
+  },
+  {
+   "id": 1052411233,
+   "user": "macarolobe",
+   "created_at": "2022-02-26T18:17:59Z",
+   "body": "It was with android 12 ? I tried to restart aaps and android but nothing change, the RileyLink Orange is stuck to initialization with NO notification to request permissions. I've changed code to connect without request permissions and it's ok."
+  },
+  {
+   "id": 1055780678,
+   "user": "seattlebrighton",
+   "created_at": "2022-03-01T19:25:37Z",
+   "body": "I'm having the same problem with dev branch and Android 12 on pixel 5. Rileylink stuck in initialization with no request popup, even after restarting Bluetooth, phone, Rileylink. Went back to master branch and it connected immediately."
+  },
+  {
+   "id": 1059233821,
+   "user": "jroth-haj",
+   "created_at": "2022-03-04T14:56:31Z",
+   "body": "@MilosKozak \r\nI have the same problem with Pixel5 (Android 12), MDT and EmaLink / RileyLink.\r\nAlso no authorization request after reboot.\r\nAAPS 3.0.0.1 connects in a few seconds."
+  },
+  {
+   "id": 1065841220,
+   "user": "piecycle",
+   "created_at": "2022-03-12T08:31:50Z",
+   "body": "I can confirm this. I was running dev from February 4th without any issues, but when trying to update to the latest dev yesterday, I just couldn't establish a firm connection to my OL. In fact, if I scan for it in the Omnipod Eros settings, it is found immediately and I can also set it as my RileyLink, but the OL doesn't vibrate to indicate a real connection, and indeed the RileyLink Status on the Omnipod Eros screen is stuck at \"RileyLink initialization...\". I have tried reinstalling several times (not deinstalling the app), clearing the AAPS cache, clearing my bluetooth cache. Absolutely nothing worked. When I downgrade my AAPS to the older dev version from February, it will connect immediately. I have also tried connecting without a currently active Pod (i.e. between pod changes). Didn't help. As the OP above also used Pods, and seemingly also Eros pods, I can imagine that it is related to the Omnipod Eros driver, perhaps.\r\n\r\nRunning AAPS on a Pixel 3 XL with Android 12. No authorization request after reboot.\r\n\r\nAttached my logs (set to: CORE, APS, OHUPLOADER, PUMP, PUMPBTCOMM, PUMPCOMM, PUMPQUEUE, PROFILE - hope that's enough?). Within the last hour I have tried getting the connection to work several times.\r\nThe last attempt was at 9:13, here's what I did:\r\n\r\n- 9:13: Install latest dev over my (modified) version from Feb 4th\r\n- Wait a few seconds when AAPS tried to connect, without success\r\n- Went to the Eros preferences. My OL was already selected, but I did a new scan and selected my OL again. It did not vibrate and the driver was stuck at RileyLink initialization.\r\n- Waited for about 2 mins as AAPS was trying to connect\r\n- 9:16: Reinstalled my Feb 4th version. Reconnecting to my OL took about 6-7 seconds.\r\n\r\nThe logs contain traces of the plugins I am developing flagged as 'Tsunami', but the version I installed at 9:13 (and a few times before that) was a clean vanilla dev build without any mods as pulled from the dev branch so my plugins are not connected to "
+  },
+  {
+   "id": 1065867415,
+   "user": "piecycle",
+   "created_at": "2022-03-12T11:37:35Z",
+   "body": "I can also confirm that the code change described by OP works as a workaround. In \"RileyLinkBLE.kt\" inside the function \"connectGattInternal\", changing\r\n\r\n`if (config.PUMPDRIVERS && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && ...`\r\nto\r\n`if (config.PUMPDRIVERS && Build.VERSION.SDK_INT > Build.VERSION_CODES.S && ...`\r\n\r\nallows me to connect to my OL without any issues."
+  },
+  {
+   "id": 1097878452,
+   "user": "happygirlnyc70",
+   "created_at": "2022-04-13T10:24:51Z",
+   "body": " I have been able to connect quickly and reliably to OL using dev-i, build be604bc3b."
+  },
+  {
+   "id": 1098025502,
+   "user": "jroth-haj",
+   "created_at": "2022-04-13T13:04:22Z",
+   "body": "Yes, seams to be solved."
+  }
+ ]
+}

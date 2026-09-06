@@ -1,0 +1,75 @@
+{
+ "id": 975351894,
+ "repo": "nightscout/AndroidAPS",
+ "number": 637,
+ "title": "2.8.2.2 Dev : can't restart loop if stopped",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/637",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-08-20T07:39:19Z",
+ "closed_at": "2021-09-15T22:19:22Z",
+ "comment_count": 12,
+ "body": "In 2.8.2 main, I can stop and restart the loop from the main page. In 2.8.2.2 dev, if I stop the loop, I need to go in the settings to reactivate the loop option.\r\nWhen it is activated, I have a very strange 364days (deactivated ?) under the button.\r\n![IMG-20210820-WA0000](https://user-images.githubusercontent.com/76626474/130197831-d0ff35b4-aee7-4965-a2a8-b83b25ea5e24.jpg)\r\n![IMG-20210820-WA0001](https://user-images.githubusercontent.com/76626474/130197880-e78a73ab-72dc-4cea-93c3-7fd6e5ec7fc3.jpg)\r\n![IMG-20210820-WA0002](https://user-images.githubusercontent.com/76626474/130197924-162f68e2-ee10-4515-a7af-e9667e6a385e.jpg)\r\n![IMG-20210819-WA0002](https://user-images.githubusercontent.com/76626474/130197965-9b0f1d57-55aa-4263-8e8e-5549353c8bd4.jpg)\r\n",
+ "comments": [
+  {
+   "id": 902588170,
+   "user": "robertrub",
+   "created_at": "2021-08-20T10:11:43Z",
+   "body": "Follow-up. It seems that from the user interface, I can only \"downgrade\" loop functions but not \"upgrade\". If I select _open loop_, then I can NOT select _closed loop_ from the main page. I need to go to the settings to activate closed loop. \r\n![image](https://user-images.githubusercontent.com/76626474/130218240-2ace68ec-e424-40ca-a446-d6d4a58547a3.png)\r\n![image](https://user-images.githubusercontent.com/76626474/130218254-44a36cd6-d26b-4e5c-85b4-b5c91cbdf2d2.png)\r\n\r\n"
+  },
+  {
+   "id": 902897740,
+   "user": "MichaelJohnSmith",
+   "created_at": "2021-08-20T19:05:56Z",
+   "body": "You can also select Low Glucose Suspend.  Then click the loop icon again to select Closed Loop.\r\nNot correct, but slightly easier than going to settings!"
+  },
+  {
+   "id": 902911493,
+   "user": "robertrub",
+   "created_at": "2021-08-20T19:32:43Z",
+   "body": "Nice try but no, it doesn't work of you turn off the loop. ;)\n\nI never turn off the loop but I'm in testing stuff mode so I hit all the buttons available  :)\n"
+  },
+  {
+   "id": 902927520,
+   "user": "Philoul",
+   "created_at": "2021-08-20T20:06:00Z",
+   "body": "I made a PR to fix bug of disable loop (#634)... And this issue is partially included in #630.\r\nConcerning the direct switch from open loop to closed loop,  I have to look into constraints (closed loop is currently not aloud from open loop, even if relative objectives are passed...)"
+  },
+  {
+   "id": 902932579,
+   "user": "Philoul",
+   "created_at": "2021-08-20T20:14:23Z",
+   "body": "I also prepared a commit (not currently pushed in the PR) to improve a bit user interface when loop is suspended or pump disconnected:\r\nIt will be possible to resume (respectively reconnect pump), or select a new duration.\r\nMy computer is off for 3 days, I'll update PR when I'll back home, but you can test current proposal and add comment if necessary..."
+  },
+  {
+   "id": 920426205,
+   "user": "MilosKozak",
+   "created_at": "2021-09-15T22:19:22Z",
+   "body": "should be resolved now"
+  },
+  {
+   "id": 920431639,
+   "user": "CaptainBalou",
+   "created_at": "2021-09-15T22:32:21Z",
+   "body": "That works for me. I can disconnect and reconnect my pump. In addition I can see that I'm now able to extend the disconnection time while I'm already disconnected. This is awesome!"
+  },
+  {
+   "id": 920624756,
+   "user": "robertrub",
+   "created_at": "2021-09-16T06:47:49Z",
+   "body": "Hi Milos. It is partially solved. I can select \"open loop\" and come back to \"closed loop\" but I cannot stop the loop and then restart it from the main UI. Once the loop is stopped, I need to go in the config generator in order to reactivate the loop. I don't know if this is a bug or a feature ;)\r\nRobert"
+  },
+  {
+   "id": 921093840,
+   "user": "Philoul",
+   "created_at": "2021-09-16T17:29:39Z",
+   "body": "@robertrub can you share screenshot and explain the exact sequence of actions done from loop enabled to situation with issue ?\r\nIf I can reproduce it I'll be able to solve it...\r\nThanks"
+  },
+  {
+   "id": 921129451,
+   "user": "robertrub",
+   "created_at": "2021-09-16T18:10:15Z",
+   "body": "![282_main](https://user-images.githubusercontent.com/76626474/133662923-6b8f0490-5f87-473c-8e17-10fc1b491a35.gif)\r\nAbove is from 2.8.2 Main. It is working ok.\r\n\r\n\r\nhttps://user-images.githubusercontent.com/76626474/133663018-a7f6b787-076e-4c28-ba11-0dd7bc61031a.mp4\r\n\r\nAbove is from the latest dev. If I stop, it will only restart fron config.\r\n![IMG-20210916-WA0005](https://user-images.githubusercontent.com/76626474/133663148-9eb02f1f-743a-4ee9-b1d2-e3e103063f9e.jpg)\r\n\r\n"
+  }
+ ]
+}

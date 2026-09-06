@@ -1,0 +1,20 @@
+{
+ "issue_id": 2597,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/2597",
+ "title": "Tidepool Authentication API Deprecation",
+ "symptom": "Tidepool has deprecated its legacy authentication API after replacing it with Keycloak, and the old endpoints are being retired. xDrip's current integration uses these deprecated endpoints and starts a new auth session every time a fresh token is needed instead of refreshing the session token directly.",
+ "cause": "Tidepool replaced its legacy authentication system with Keycloak in December 2022, deprecating the old API endpoints. xDrip was using the old flow and creating a new auth session for each token instead of using refresh tokens.",
+ "fix": "xDrip implemented the new OpenID Connect authorization code flow with refresh tokens against Tidepool's Keycloak server. After a Keycloak bug causing 'invalid_grant' logouts was fixed and deployed, the new authentication mechanism was switched on as the default in xDrip and released on September 23.",
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [
+  "tidepool",
+  "keycloak",
+  "openid connect",
+  "appauth-android"
+ ],
+ "confidence": "high",
+ "evidence_quote": "@jamorham go ahead. The system has been stable since I notified you of the fix."
+}

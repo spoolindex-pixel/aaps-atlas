@@ -1,0 +1,30 @@
+{
+ "issue_id": 76,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/76",
+ "title": "Default Minimum Slope needs correcting",
+ "symptom": "The default minimum slope for the calibration algorithm is problematic, causing some sensors to be unable to calibrate properly and potentially being discarded as useless. Users may need to enable engineering mode and use a special DexParametersAdrian class to get their calibration slopes to fit the data.",
+ "cause": "The default slope parameters in the calibration algorithm are too narrow, preventing some sensors from calibrating correctly.",
+ "fix": "The default slope parameters were widened by making the 'Adrian slope parameters' the default, as added in commit be27a9ea07163f2d2718a72ee31da4f501f40fa2. The old parameters remain available through engineering mode.",
+ "settings_changed": [
+  "LOW_SLOPE_1 → 0.75",
+  "LOW_SLOPE_2 → 0.70",
+  "HIGH_SLOPE_1 → 1.5",
+  "HIGH_SLOPE_2 → 1.6",
+  "DEFAULT_LOW_SLOPE_LOW → 0.75",
+  "DEFAULT_LOW_SLOPE_HIGH → 0.70",
+  "DEFAULT_SLOPE → 1",
+  "DEFAULT_HIGH_SLOPE_HIGH → 1.5",
+  "DEFAULT_HIGH_SLOPE_LOW → 1.4"
+ ],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [
+  "calibration",
+  "engineering mode",
+  "DexParametersAdrian",
+  "Datricsae"
+ ],
+ "confidence": "high",
+ "evidence_quote": "Widening of the slope parameters by making the \"Adrian slope parameters\" the default was added in this commit: https://github.com/NightscoutFoundation/xDrip/commit/be27a9ea07163f2d2718a72ee31da4f501f40fa2"
+}

@@ -1,0 +1,23 @@
+{
+ "issue_id": 343,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/343",
+ "title": "New upgrade broke high values",
+ "symptom": "After updating, values above 300 show up as a low 30. For example, 319 on Freestyle Libre shows as 31. Everything above 270 shows up as 27 (low).",
+ "cause": "The issue is caused by a numerical overflow due to values beyond the 12-bit coding. The 13th bit was removed from the calculation, causing high values to wrap around and appear as low values.",
+ "fix": "Enable the 13th bit mask in xDrip settings: Settings -> Less Common Settings -> Calibration Settings -> use 13 bit ads mask. Alternatively, use another algorithm as described in LibreOOPAlgorithm. The 13bit mask mode is enabled by default in the latest nightly.",
+ "settings_changed": [
+  "use 13 bit ads mask → enabled"
+ ],
+ "devices": [
+  "Freestyle Libre",
+  "AmbrosiaSys BluCon"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "13 bit mask",
+  "blucon"
+ ],
+ "confidence": "high",
+ "evidence_quote": "Due to very bad lack the 13 bit was removed from the calculation therefore the numbers got smaller again. @KevinDenys What you can immediately do is 1) return to use the 13'th bit  2) use another algorithm for calculating bg. To return the 13'th bit do: in xDrip settings->less common settings->calibration settings->use 13 bit ads mask."
+}

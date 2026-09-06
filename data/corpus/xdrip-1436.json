@@ -1,0 +1,79 @@
+{
+ "id": 703774509,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1436,
+ "title": "problems writing to influxDB",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1436",
+ "state": "closed",
+ "labels": [
+  "help",
+  "sync",
+  "status-docs_review"
+ ],
+ "created_at": "2020-09-17T17:25:17Z",
+ "closed_at": "2024-08-12T23:19:35Z",
+ "comment_count": 10,
+ "body": "Wonderfull project with great functions, but I have problems writing to influxdb on my rpi4 using authentication.\r\n\r\nError is: Write to InfluxDB failes: java.lang.NullPointerException: attempt to invoke virtual methods \"java.lang.Stink okhttpUrl.host()\" on a null object reference\r\n\r\nI have added the ip adress, port and auth i usually use, but I get this error.\r\nAny ideas?\r\nI would also suggest adding mqtt to the function list of xDrip, because its useful to get the data in nodered and manipulate it, before you write to the actual database.\r\n",
+ "comments": [
+  {
+   "id": 694497397,
+   "user": "tolot27",
+   "created_at": "2020-09-17T21:00:44Z",
+   "body": "Please can you enable verbose logging in settings > less common settings > extra tags for logging and then add there: `InfluxDBUploader:v` and post relevant lines here?\r\n\r\nIt looks like there is a parsing problem with the URL of your RPI4. "
+  },
+  {
+   "id": 694882345,
+   "user": "user-hash",
+   "created_at": "2020-09-18T13:54:33Z",
+   "body": "Besides the same error messege, It only displays the influx url, which it seems correct\r\nhttp://{192.168.1.xxx}:{8086}\r\nIm not using the latest xDrip version thought, because my Bubble wont work with it. Build I use is nightly build from middle of June.\r\nThanks for help!"
+  },
+  {
+   "id": 694937255,
+   "user": "tolot27",
+   "created_at": "2020-09-18T15:33:42Z",
+   "body": "`http://{192.168.1.xxx}:{8086}` is not a valid URL. Please remove the curly brackets (`{`, `}`) and try it again."
+  },
+  {
+   "id": 694944185,
+   "user": "user-hash",
+   "created_at": "2020-09-18T15:47:12Z",
+   "body": "I know how IPs and ports looks like, but instruction clearly says only replace the values in the curly bracket. \r\nThanks for help, its working now and I can get values into Grafana!\r\n"
+  },
+  {
+   "id": 694965285,
+   "user": "tolot27",
+   "created_at": "2020-09-18T16:30:55Z",
+   "body": "> Instruction clearly says only replace the values in the curly bracket.\r\n\r\nI'll tag this issue with `status: needs docs review` as soon as I can create new labels. Please can you link the relevant line in the docs? It is indeed a simple fix.\r\n"
+  },
+  {
+   "id": 694993150,
+   "user": "user-hash",
+   "created_at": "2020-09-18T17:30:34Z",
+   "body": "Thats great solution, I think brackets are really unnecessary.\r\nThe line can be found in: Settings/Cloud Upload/InfluxDB/InfluxDB URI\r\n\"Replace example values in {}'s with your correct values\""
+  },
+  {
+   "id": 695051834,
+   "user": "user-hash",
+   "created_at": "2020-09-18T19:42:25Z",
+   "body": "Many thanks for help!\r\nDo you think its possible to export other values like prediction values set in settings, and real time prediction values?\r\nIf this is possible, you could enter your - insulin, carbs, exercise, for the last xx days in xDrip, and send the values to the Rpi, which could suggest better start values, based on the data in the last xx days.\r\nIt should be possible to calculate more accurate data for results predictions, because carb ratio, insulin sensitivity, carb absorption, would be calculated by rpi depending on the values in last 14 days. It could easily set the ranges in hours too!\r\nIm not a programmer, so its just an idea for some homebrew AI=)\r\n"
+  },
+  {
+   "id": 695111001,
+   "user": "tolot27",
+   "created_at": "2020-09-18T22:19:12Z",
+   "body": "@user-hash Indeed, why not? You can open another issue with your feature request, if you like."
+  },
+  {
+   "id": 1568758493,
+   "user": "Navid200",
+   "created_at": "2023-05-30T16:49:31Z",
+   "body": "@tolot27 What is the objective of this issue?  What needs to happen, in the xDrip code, for it to be closed?"
+  },
+  {
+   "id": 2285059003,
+   "user": "Navid200",
+   "created_at": "2024-08-12T23:19:35Z",
+   "body": "It looks like this has been resolved.  So I close it.  We can reopen if needed."
+  }
+ ]
+}

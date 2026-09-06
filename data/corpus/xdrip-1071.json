@@ -1,0 +1,48 @@
+{
+ "id": 512933751,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1071,
+ "title": "Announce values while connected to Android auto",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1071",
+ "state": "closed",
+ "labels": [
+  "enhancement",
+  "android-auto"
+ ],
+ "created_at": "2019-10-27T07:57:21Z",
+ "closed_at": "2021-03-14T05:26:57Z",
+ "comment_count": 5,
+ "body": "Announcements of values using text synthesis are not played while connected with Android auto. Audio can only be heard when accidently colliding with navigation announcements (these audio duck the fm radio while playing). Could xdrip also audio duck the radio to be able to hear the current value? I think, this feature is referred to as \"audio focus\" in android development.\r\n\r\nThank you for your efforts. ",
+ "comments": [
+  {
+   "id": 552214365,
+   "user": "wkochFPV",
+   "created_at": "2019-11-10T17:16:08Z",
+   "body": "I am new to android studio and java programming, but modified the file speechutil.java to gain the audio focus before speaking. This solves the issue. Text to speech synthesis can now be heared while android auto  is active. This is no clean programming. The audio focus is simply released 3 seconds after starting the TTS. A better way would be to handle the complete event as done in this TTS class example: https://gist.github.com/LukasKnuth/0c0d17b343483d25aca2\r\n\r\nI have no clue how to suggest changes using git, so I am posting my modifications here in case one  of the developers  would like to adapt the changes.\r\n\r\n----\r\npackage com.eveningoutpost.dexdrip.UtilityModels;\r\n\r\nimport android.content.ActivityNotFoundException;\r\nimport android.content.Context;\r\nimport android.content.Intent;\r\nimport android.media.AudioManager;\r\nimport android.os.Build;\r\nimport android.os.PowerManager;\r\nimport android.speech.tts.TextToSpeech;\r\n\r\nimport androidx.annotation.RequiresApi;\r\n\r\nimport com.eveningoutpost.dexdrip.Models.JoH;\r\nimport com.eveningoutpost.dexdrip.Models.UserError;\r\nimport com.eveningoutpost.dexdrip.xdrip;\r\n\r\n\r\nimport java.util.Locale;\r\n\r\n/**\r\n * Created by jamorham on 20/12/2017.\r\n * <p>\r\n * Designed to be an easy use-anywhere speech output system, simply call the static \"say\" method\r\n * <p>\r\n * Can be called from any thread, self initializes and statically retains instance and mitigates the binding delays present with Android TTS\r\n * <p>\r\n * Uses xDrip preferences to define speech parameters, language etc and will baulk during calls and delay for music.\r\n * <p>\r\n * <p>\r\n * TODO: is there a way we can delay till the end of *any* sound playing - eg notification noise? Does Android expose this in the framework?\r\n */\r\n\r\npublic class SpeechUtil {\r\n\r\n    public static final String TAG = \"SpeechUtil\";\r\n    public static final String TWICE_DELIMITER = \" ... ... ... \"; // creates a pause hopefully works on all locales\r\n    private static volatile TextToSpeech tts = null; // m"
+  },
+  {
+   "id": 554381992,
+   "user": "steve8x8",
+   "created_at": "2019-11-15T14:34:30Z",
+   "body": "Are you familiar with `diff`? That would save interested folks from reading your, and the original, source in parallel trying to spot every single change."
+  },
+  {
+   "id": 554729993,
+   "user": "steve8x8",
+   "created_at": "2019-11-17T09:56:30Z",
+   "body": "As a courtesy to the developers, here's the diff:\r\n```\r\n--- a/SpeechUtil.java\t2019-11-03 15:34:46.000000000 +0100\r\n+++ b/SpeechUtil.java\t2019-11-17 10:54:00.000000000 +0100\r\n@@ -90,7 +90,27 @@\r\n \r\n                 int result;\r\n                 try {\r\n+                    // WK start - request audio focus\r\n+                    final AudioManager manager = (AudioManager) xdrip.getAppContext().getSystemService(Context.AUDIO_SERVICE);\r\n+                    final AudioManager.OnAudioFocusChangeListener afl = new AudioManager.OnAudioFocusChangeListener() {\r\n+                        @Override\r\n+                        public void onAudioFocusChange(int focusChange) {\r\n+                            // TODO React to audio-focus changes here!\r\n+                        }\r\n+                    };\r\n+                    int focus_res = manager.requestAudioFocus(\r\n+                            afl, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK\r\n+                    );\r\n+                    // WK end\r\n                     result = tts.speak(final_text_to_speak, TextToSpeech.QUEUE_ADD, null);\r\n+                    // WK start - wait for tts to play\r\n+                    try {\r\n+                        Thread.sleep(3000);\r\n+                    } catch (InterruptedException ee) {\r\n+                        //\r\n+                    }\r\n+                    manager.abandonAudioFocus(afl);\r\n+                    // WK end\r\n                 } catch (NullPointerException e) {\r\n                     result = TextToSpeech.ERROR;\r\n                     UserError.Log.e(TAG, \"Got null pointer trying to speak! concurrency issue\");\r\n```\r\nI hope I caught all the changes, and didn't break any formatting..."
+  },
+  {
+   "id": 758916606,
+   "user": "tolot27",
+   "created_at": "2021-01-12T20:18:48Z",
+   "body": "Can this issue be closed in favor of #1423?"
+  },
+  {
+   "id": 798835957,
+   "user": "Navid200",
+   "created_at": "2021-03-14T05:26:57Z",
+   "body": "Closing due to inactivity"
+  }
+ ]
+}

@@ -1,0 +1,33 @@
+{
+ "id": 877402309,
+ "repo": "nightscout/AndroidAPS",
+ "number": 504,
+ "title": "[2.8.2] Broadcasting Treatments into xDrip+ do not work without AAPS - NS connection.",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/504",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-05-06T11:35:15Z",
+ "closed_at": "2021-10-08T20:06:49Z",
+ "comment_count": 3,
+ "body": "This was tested with AndroidAPS 2.8.2 but probably the same problem is with earlier releases.\r\nThe latest xDrip+ Nightly Builds was used like 2021.05.05\r\n\r\nWhen AAPS/NSClient is enabled, Local Broadcast enabled in AAPS/NSClient settings and xDrip+/Accept Treatments setting = ON, AAPS Treatments can be seen in xDrip+ main display beside CGM graph.\r\n\r\nBut when AAPS/NSClient -> NS connection fails or AAPS/NSClient is disabled then AAPS -> xDrip+ broadcast does not work.\r\n\r\nA weird thing is that the broadcast even work when just NSClient is enabled but NS -> AAPS synching is disabled like it is by deafault in 2.8.2. It looks like AAPS -> xDrip+ broadcast use only data from NS and when it is not available, broadcast does not work.\r\n",
+ "comments": [
+  {
+   "id": 833458781,
+   "user": "RalfCGM",
+   "created_at": "2021-05-06T11:46:09Z",
+   "body": "I think I have similar issues which might have the same cause. With my setup (aaps 2.8.2,xdrip latest nightly), there isn't any information coming from aaps directly to xdrip, no matter what settings I enable or disable in aaps or xdrip. I think this happened since I erased all aaps data trom the phone and reloaded a stored prefs file. Maybe theres a hidden setting stored in the prefs file regarding the connection between aaps and xdrip? The direct  connection from xdrip to aaps works flawlessly. "
+  },
+  {
+   "id": 833805169,
+   "user": "muthijammy",
+   "created_at": "2021-05-06T19:34:57Z",
+   "body": "I had enabled NS upload only with wifi in xdrip+(dont usecmobile data nightscout upload). As a result, when on mobile data, I see similar issue of broadcast not working"
+  },
+  {
+   "id": 939087737,
+   "user": "MilosKozak",
+   "created_at": "2021-10-08T20:06:49Z",
+   "body": "the feature was not broadcasting of AAPS data but broadcasting of data comming from NS to NSClient. With disabled NSClient it does nothing"
+  }
+ ]
+}

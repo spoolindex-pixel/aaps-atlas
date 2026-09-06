@@ -1,0 +1,83 @@
+{
+ "id": 741101136,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1504,
+ "title": "Dexcom G6 Battery Status Packet Error - 8Q Transmitter",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1504",
+ "state": "closed",
+ "labels": [
+  "device-dexcom-transmitter"
+ ],
+ "created_at": "2020-11-11T22:02:46Z",
+ "closed_at": "2021-09-11T22:19:56Z",
+ "comment_count": 11,
+ "body": "I've discovered an issue I'm facing with an 8Q Transmitter and the battery status. The problem I noticed is that the 'Transmitter Days', 'Resistance' and 'Temperature' values are all wrong. \r\n\r\nI've determined the issues to be in the way the battery status packet is handled. The problem lies in the file: com/eveningoutpost/dexdrip/G5Model/BatteryInfoRxMessage.java\r\n\r\nI've modified the code as follows and fixed the issue:\r\n[BatteryInfoRxMessage.txt](https://github.com/NightscoutFoundation/xDrip/files/5526927/BatteryInfoRxMessage.txt)\r\n\r\n\r\nIt looks like there are only 2 types of packet sizes, 10 and 12. Not sure when this was introduced but it must be with the new firefly transmitters since I was not having this problem up until I switched to a 8Q transmitter. \r\n\r\nQuestion that remains is why the resistance value is not being sent anymore. I tried looking for a reason but I can't find anything yet. \r\n\r\nI'm not familiar enough with the xDrip code to feel comfortable making a code pull request. I think it's better for someone who has more experience with the code to take a look and see how best to implement this change. It could be a G6 problem only. \r\n\r\n",
+ "comments": [
+  {
+   "id": 725697333,
+   "user": "tolot27",
+   "created_at": "2020-11-11T22:30:26Z",
+   "body": "Thanks for this investigation. Please can you also report the firmware version of the transmitter?"
+  },
+  {
+   "id": 725707765,
+   "user": "nickb24",
+   "created_at": "2020-11-11T22:57:55Z",
+   "body": "> Thanks for this investigation. Please can you also report the firmware version of the transmitter?\r\n\r\n2.27.2.98"
+  },
+  {
+   "id": 726303181,
+   "user": "emp-00",
+   "created_at": "2020-11-12T19:49:37Z",
+   "body": "Is this a new firmware?! I'm currently on an 8J tx and 2.18.2.98 --- just yesterday I received a new tx => 8M (firmware yet unknown)"
+  },
+  {
+   "id": 726304413,
+   "user": "nickb24",
+   "created_at": "2020-11-12T19:52:07Z",
+   "body": "> Is this a new firmware?! I'm currently on an 8J tx and 2.18.2.98 --- just yesterday I received a new tx => 8M (firmware yet unknown)\r\n\r\nI just received this transmitter last week. Manufacturing date of Sept 2020. Serial number is 8Q. I'm in Canada"
+  },
+  {
+   "id": 726318450,
+   "user": "emp-00",
+   "created_at": "2020-11-12T20:19:29Z",
+   "body": "My brandnew 8M has manufacturing date Oct 2020. \r\n\r\nAFAIK xdrip is for sure reading the firmware version and uses this information somehow in the code (saw this in an older issue discussion). Since your tx is working this means that 2.27.2.98 seems to be either implemented already or it behaves exactly the same as the other \"Firefly\" firmware versions. Good to know - now back to the topic, sorry for the distraction."
+  },
+  {
+   "id": 729014700,
+   "user": "nickb24",
+   "created_at": "2020-11-17T15:43:12Z",
+   "body": "> My brandnew 8M has manufacturing date Oct 2020.\r\n> \r\n> AFAIK xdrip is for sure reading the firmware version and uses this information somehow in the code (saw this in an older issue discussion). Since your tx is working this means that 2.27.2.98 seems to be either implemented already or it behaves exactly the same as the other \"Firefly\" firmware versions. Good to know - now back to the topic, sorry for the distraction.\r\n\r\nI wouldn't consider it 'working' per se. I also have the following issue too #1279 . Started having the problem only after using the new transmitter. "
+  },
+  {
+   "id": 774147113,
+   "user": "Navid200",
+   "created_at": "2021-02-05T16:42:46Z",
+   "body": "I am using an 8Q transmitter now.\r\nI knew that the resistance and temperature were wrong.  But, Voltage A and Voltage B look reasonable to me.  Are they wrong?"
+  },
+  {
+   "id": 774151014,
+   "user": "nickb24",
+   "created_at": "2021-02-05T16:48:45Z",
+   "body": "> Voltage A and Voltage B look reasonable to me. Are they wrong?\r\n\r\nThey should be correct."
+  },
+  {
+   "id": 862348875,
+   "user": "Navid200",
+   "created_at": "2021-06-16T12:45:17Z",
+   "body": "The battery voltages are shown correctly now.  \r\nThe resistance is not being sent anymore by Firefly I believe.\r\nThe temperature is shown correctly too in the logs.  \r\nI have an open PR that will also add the temperature to the system status page:  https://github.com/NightscoutFoundation/xDrip/pull/1722\r\n\r\nI hope you don't mind if I remove the bug label."
+  },
+  {
+   "id": 894666356,
+   "user": "Navid200",
+   "created_at": "2021-08-07T15:07:26Z",
+   "body": "@nickb24 \r\nThe temperature is also shown now (starting with 2021.07.10).\r\nCan we close this issue please?"
+  },
+  {
+   "id": 917493811,
+   "user": "Navid200",
+   "created_at": "2021-09-11T22:19:56Z",
+   "body": "Thanks for reporting the issue and discovering the reason and advising the solution.\r\nSince the problem is resolved now, I am closing this issue.\r\nPlease reopen if you believe it should stay open for some reason."
+  }
+ ]
+}

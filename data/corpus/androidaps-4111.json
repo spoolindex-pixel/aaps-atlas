@@ -1,0 +1,21 @@
+{
+ "id": 3346352914,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4111,
+ "title": "Max IoB getting stuck at 0.0",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4111",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-08-22T18:52:02Z",
+ "closed_at": "2025-08-28T09:26:49Z",
+ "comment_count": 1,
+ "body": "I recently filed the symptom of this issue, but re-importing settings had fixed it at the time.\nhttps://github.com/nightscout/AndroidAPS/issues/4091\n\nThe issue has reoccurred and I tried digging deeper. I am currently on Closed Loop with SMBs off, expecting that temp basal rates will be the control method. This was working for 2 weeks and suddenly the automated basal rates refuse to go above the profile value again. It appears as though the max iob value is getting stuck at 0.0, preventing it from managing high BG.\n\n<img width=\"700\" height=\"745\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/163158fb-e938-4fb0-896f-8c1e96da84b5\" />\n\n<img width=\"700\" height=\"1285\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/a3e4c46f-526e-4a28-915b-3f4340701aaa\" />\n",
+ "comments": [
+  {
+   "id": 3229866322,
+   "user": "olorinmaia",
+   "created_at": "2025-08-27T21:57:31Z",
+   "body": "The reason for maxIOB being set to 0 is this:\n\n<img width=\"938\" height=\"275\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/01f15613-ed3c-4771-b3d3-522c123c984d\" />\n\nYou probably have a red warning sign next to BG in overview. Try to find out why you get duplicate BG readings.\n\nI made a PR to improve the message in constraints: https://github.com/nightscout/AndroidAPS/pull/4118"
+  }
+ ]
+}

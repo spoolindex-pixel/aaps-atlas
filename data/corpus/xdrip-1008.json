@@ -1,0 +1,259 @@
+{
+ "id": 491937683,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1008,
+ "title": "Can't calibrate new g6 + new transmitter: \"invalid impossible slope\"",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1008",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "device-dexcom",
+  "calibration"
+ ],
+ "created_at": "2019-09-10T23:01:34Z",
+ "closed_at": "2021-02-26T23:13:03Z",
+ "comment_count": 46,
+ "body": "On the beta update channel.\r\n\r\nI changed my sensor and transmitter today, stopped & started sensor, changed the transmitter code, paired the bluetooth device, and eventually got readings.  However, calibration won't work.  The error is:\r\n\r\n\"Got invalid impossible slope calibration!\"\r\n\r\nHowever, the calibrations I've tried entering were within 0.1 mmol of the sensor value on the first attempt, and 1 mmol on the second attempt.\r\n\r\nThis is the first time I've changed transmitter with a g6.  Seems that the beta channel also updated, but I find this very hard to know for sure -- does xdrip+ even have a visible version number on updates?\r\n\r\nSeems like the slope calculation is wrong, or the validation of slopes is wrong on new transmitters, or old values are being incorrectly included in stopped / started sensors since the new beta.",
+ "comments": [
+  {
+   "id": 530155118,
+   "user": "lee-b",
+   "created_at": "2019-09-10T23:12:25Z",
+   "body": "Just tried the latest nightly.  Same issue."
+  },
+  {
+   "id": 530285901,
+   "user": "jamorham",
+   "created_at": "2019-09-11T08:49:44Z",
+   "body": "What firmware version does your new G6 transmitter report in System Status?"
+  },
+  {
+   "id": 531016603,
+   "user": "corn49",
+   "created_at": "2019-09-12T21:37:49Z",
+   "body": "Hey jamorham, \n\nHaving same issue. If I am correct that this is the firmware version, it is 14a03a7-2019.05.18. In case it helps, the code is 1905181006 and downgradeable to: 1603091400.\n\nSame issue as OP. For note, I purchased this transmitter at Costco and the body appears a bit different than the others I have gotten in past. Is G6, for clarity. The transmitter SN is 8GDNQB. \n\n"
+  },
+  {
+   "id": 531024821,
+   "user": "jamorham",
+   "created_at": "2019-09-12T22:03:30Z",
+   "body": "Guys: for 8Gxxx transmitters you need to use at least the current Alpha version as the newer firmware is somewhat different. I would say use the Nightly version to be sure you have the most up to date support for it.\r\n\r\nYou also need to use ob1 collector in native mode so there should be no calibration involved."
+  },
+  {
+   "id": 531031052,
+   "user": "corn49",
+   "created_at": "2019-09-12T22:28:27Z",
+   "body": "Hey jamorham,\n\nThanks for the fast response. I would talk endlessly about the difference this app makes it my life, save for fear of it seeming trite in this medium. \n\nI am running nightly build from 9.10.19 and am using OB1 in native mode. As for calibration, I am showing a straight line 98 in the app, but multiple finger pricks are 78, 76 and 81, respectively."
+  },
+  {
+   "id": 531031903,
+   "user": "lee-b",
+   "created_at": "2019-09-12T22:32:26Z",
+   "body": "@jamorham my firmware version is 2.18.2.88.  SN 8GFR1G, Calibration code 5937.\r\n\r\nStill seeing this with 0e3b27181-2019.09.10, 3 which is the lately nightly available on github (from 2 days ago).   Using ob1.  Enabling/disabling the fallback doesn't seem to help."
+  },
+  {
+   "id": 531553738,
+   "user": "lee-b",
+   "created_at": "2019-09-15T10:28:36Z",
+   "body": "A few additional observations:\r\n\r\n* Initial calibration still seems to actually work.  The problem is the result intepretation, and xdrip thinking that it hasn't worked.  So it stays in initial calibration state, and keeps prompting.\r\n\r\n* None of the following work, probably just due to the \"initial calibration required\" state:\r\n\r\n* Entering a normal calibration in xdrip\r\n* Choosing calibrate from a pre-existing BG sample point (point remains a square, rather than becoming a circle)\r\n* Entering a calibration from AAPS."
+  },
+  {
+   "id": 533830882,
+   "user": "HeyImPuni",
+   "created_at": "2019-09-21T21:17:29Z",
+   "body": "Same issue here. Like @lee-b said, seems like that the calibrations are working fine but xDrip thinks that they got deleted - at least that's what the `Events Log` tells me."
+  },
+  {
+   "id": 536189412,
+   "user": "lee-b",
+   "created_at": "2019-09-28T13:17:42Z",
+   "body": "I think xdrip is purposefully deleting them as invalid, because it misinterprets the results from the G6 transmitter, and thinks that the calibration was rejected as invalid by the G6 transmitter.\r\n\r\ni.e., the real problem seems to be that XDrip doesn't yet know how to handle the new G6 transmitter protocol's calibration method, or its calibration response code changes."
+  },
+  {
+   "id": 537372787,
+   "user": "joshhiram",
+   "created_at": "2019-10-02T07:31:29Z",
+   "body": "Just changed my son's transmitter. It is serial number 81A***. Same issue. Tried alpha release and nightly release with no effect. Firmware version 1.6.5.25. Xdrip version 7d97b62-2019.09.30."
+  },
+  {
+   "id": 540506796,
+   "user": "stackenblochen",
+   "created_at": "2019-10-10T10:29:14Z",
+   "body": "I have the same issue with the latest nightly build (2019.10.08) and G6 transmitter (8Gxxxx, firmware: 2.18.2.88). xDrip shows a BG value of 103, but rejects the initial clibration (with values of 71 and 74). Also, adding a single calibration (through the add... dialog) is rejected."
+  },
+  {
+   "id": 540519940,
+   "user": "jamorham",
+   "created_at": "2019-10-10T11:07:41Z",
+   "body": "I believe that if you're seeing a message about impossible slope then this means xDrip is trying to use the xDrip algorithm (not-native). It isn't possible to use the xDrip calibration algorithm on transmitters with 2.18.2.88 firmware as they do not provide the raw sensor data.\r\n\r\nPlease check your settings that you are using the `Native Algorithm`, `OB1 collector` and that you do not have `Fallback to xDrip` enabled."
+  },
+  {
+   "id": 540533900,
+   "user": "joelm335",
+   "created_at": "2019-10-10T11:47:40Z",
+   "body": "Same problem here.  New transmitter 8Gxxxx, firmware 2.18.2.88, Native algorithm OB1 collector.  Attempted initial calibration - calibration rejected impossible slope.  BG running flat - 4.1 two fingersticks at 4.2 and 4.4.  Was using 19 August nightly - now updated to latest 08 October nightly but same problem.  I do not have fallback to xDrip checked. \r\n\r\nAlso, although readings are coming through I am getting  lots of errors noted in the logs with every 5 minute reading (OB1 collector).  See attached screenshots\r\n\r\n\r\n![8G cal rej](https://user-images.githubusercontent.com/32453941/66566119-10a0c100-eb5c-11e9-94a0-99b2da651f82.jpg)\r\n![8G error1](https://user-images.githubusercontent.com/32453941/66566137-1ac2bf80-eb5c-11e9-827d-d9dfd55ea7e0.jpg)\r\n![8G error2](https://user-images.githubusercontent.com/32453941/66566149-21513700-eb5c-11e9-9e09-46d634d43374.jpg)\r\n, "
+  },
+  {
+   "id": 540538140,
+   "user": "stackenblochen",
+   "created_at": "2019-10-10T11:59:38Z",
+   "body": "@jamorham thanks for the quick reply. I actually use the settings as described in your previous post:\r\n\r\n- under settings > G5 debug settings\r\n- Use the OB 1 Collector [checked]\r\n- Native Algorithm [checked]\r\n- Fallback to xDrip [not checked]\r\n\r\nPlease let me know if I can somehow help debugging this issue.\r\n\r\nUpdate: It seems that my calibration was accepted actually. After some readings that were shown pre-calibration, the values switched to the calibrated ones. I will attach a screenshot, hope its helpful.\r\n\r\n![Screenshot_20191010-135830](https://user-images.githubusercontent.com/15332336/66566815-2d41f680-eb66-11e9-97fb-3fe44d9372ef.jpg)\r\n![Screenshot_20191010-135205](https://user-images.githubusercontent.com/15332336/66566816-2d41f680-eb66-11e9-8aa0-f6ceb2bd3069.jpg)\r\n"
+  },
+  {
+   "id": 540547575,
+   "user": "jamorham",
+   "created_at": "2019-10-10T12:24:57Z",
+   "body": "There shouldn't be any initial calibration with G6. I am not sure why that menu option would even be available if native mode is enabled."
+  },
+  {
+   "id": 549123030,
+   "user": "lee-b",
+   "created_at": "2019-11-03T10:27:00Z",
+   "body": "For those in need of a workaround: I've ended up installing the official dexcom app, and configuring xdrip to follow data from it via AAPS."
+  },
+  {
+   "id": 558258809,
+   "user": "oschumac",
+   "created_at": "2019-11-25T17:29:27Z",
+   "body": "Hi looks alike i do have the same prob. Is there some investigation on fixing xdrip ?"
+  },
+  {
+   "id": 558572743,
+   "user": "acron0",
+   "created_at": "2019-11-26T10:46:41Z",
+   "body": "Just raising a hand to say I also have the same behaviour being described here with firmware 2.18.2.88"
+  },
+  {
+   "id": 558590557,
+   "user": "joelm335",
+   "created_at": "2019-11-26T11:38:01Z",
+   "body": "Also just got confused calibration 1 on restart with 8G. Previous restarts have allowed calibration. This on was sensor 20.8 and fingerstick 10.9 so maybe too far off. I don’t have a receiver so just stopped and going through restart warmup again.\n\nGet Outlook for iOS<https://aka.ms/o0ukef>\n________________________________\nFrom: Antony <notifications@github.com>\nSent: Tuesday, November 26, 2019 10:46:42 AM\nTo: NightscoutFoundation/xDrip <xDrip@noreply.github.com>\nCc: joelm335 <joel.milner@live.co.uk>; Comment <comment@noreply.github.com>\nSubject: Re: [NightscoutFoundation/xDrip] Can't calibrate new g6 + new transmitter: \"invalid impossible slope\" (#1008)\n\n\nJust raising a hand to say I also have the same behaviour being described here with firmware 2.18.2.88\n\n—\nYou are receiving this because you commented.\nReply to this email directly, view it on GitHub<https://github.com/NightscoutFoundation/xDrip/issues/1008?email_source=notifications&email_token=AHXTKNOB3CLC4E55DUH6B5DQVT5BFA5CNFSM4IVNNVGKYY3PNVWWK3TUL52HS4DFVREXG43VMVBW63LNMVXHJKTDN5WW2ZLOORPWSZGOEFFSJRY#issuecomment-558572743>, or unsubscribe<https://github.com/notifications/unsubscribe-auth/AHXTKNMYXJCVM4NJFMZAG4DQVT5BFANCNFSM4IVNNVGA>.\n"
+  },
+  {
+   "id": 559838754,
+   "user": "bobsbbq",
+   "created_at": "2019-11-29T16:29:24Z",
+   "body": "Ok I wanted to share my sensor restart experience with my 8H transmitter. I did the pop out transmitter method before sensor expires. Restart ok, but reading off by 90+ points. Naturally I tried to calibrate. And I  guess it can't handle that much change at one time. It crashed my sensor with a Calibration 1 error and stopped working. I was able to stop and restart it again and this time after the 2 hours, I waited 20 minutes,  then did small calibrations of 9 points at a time, once a hour. It took me a while but it is now ok. \r\n\r\nI'm not sure what the limit is as far calibrations go. I tried 10, and 12 points on the last two and they worked ok. I  read somewhere that you could enter a calibration every 15 minutes,  but I  would use caution. \r\n\r\nAlso remember that the 8G and 8H only work in the Native mode. You get a calibration slope error but the transmitter will except it, then xdrip deletes it. But it does work."
+  },
+  {
+   "id": 583537983,
+   "user": "wardc99",
+   "created_at": "2020-02-07T18:18:38Z",
+   "body": "I'm late to this party but just changed our transmitter to an 8H transmitter and having the exact same problems described here. I switched the settings and have the latest nightly build. Yesterday it disconnected for 7 hours, saying missed signal. I realize this conversation is from a while back. Are there any workarounds at this point that might help? Thanks. "
+  },
+  {
+   "id": 583647658,
+   "user": "wardc99",
+   "created_at": "2020-02-07T22:41:59Z",
+   "body": "We're disconnected again. Is it worth trying to make this work? Is there a fix? What other options do we have to upload to a heroku nightscout website? Thanks."
+  },
+  {
+   "id": 583655234,
+   "user": "wardc99",
+   "created_at": "2020-02-07T23:10:45Z",
+   "body": "I'm not trying to restart I'm just trying to stay connected!\r\n"
+  },
+  {
+   "id": 584143617,
+   "user": "roco5",
+   "created_at": "2020-02-10T14:17:56Z",
+   "body": "@jamorham I'm also getting the calibration slope error and it appears that my calibrations are not sticking.  Thoughts on a fix?  Does the calibrating twice method identified by @joelm335 ?"
+  },
+  {
+   "id": 596133956,
+   "user": "dg77777",
+   "created_at": "2020-03-07T20:19:58Z",
+   "body": "Any updates on his?\r\nG6 sensor is inaccurate and seems I cannot influence this through xDrip. Any workarounds?\r\nUsing the latest nightly."
+  },
+  {
+   "id": 625468711,
+   "user": "dar-kod",
+   "created_at": "2020-05-07T20:04:29Z",
+   "body": "> \r\n> \r\n> I believe that if you're seeing a message about impossible slope then this means xDrip is trying to use the xDrip algorithm (not-native). It isn't possible to use the xDrip calibration algorithm on transmitters with 2.18.2.88 firmware as they do not provide the raw sensor data.\r\n> \r\n> Please check your settings that you are using the `Native Algorithm`, `OB1 collector` and that you do not have `Fallback to xDrip` enabled.\r\n\r\n@jamorham is there really no way to use calibration on transmitters with 2.18.2.88 firmware? If I input `Initial Calibration`, it seems to work. And it is with checked `Native Algorithm`, `Use the OB1 Collector` and with unchecked `Fallback to xDrip`."
+  },
+  {
+   "id": 634149621,
+   "user": "gitanO0",
+   "created_at": "2020-05-26T16:57:47Z",
+   "body": "I just moved to an 8G... transmitter from an 81... transmitter and am getting this error.  I haven't been able to calibrate since starting it up a couple days ago.  Do we not calibrate these anymore?  What do we do if the meter says one thing and the G6 says another.  That's the case for me right now.  I've tried to \"initial calibrate\" several times and get the impossible slope error.  I've read the above comments and have my settings set properly but am confused about how this is supposed to work.  "
+  },
+  {
+   "id": 634207508,
+   "user": "nshtg",
+   "created_at": "2020-05-26T18:45:23Z",
+   "body": "You get the impossible slope error but the calibration still goes through to the transmitter. "
+  },
+  {
+   "id": 634210555,
+   "user": "roco5",
+   "created_at": "2020-05-26T18:51:12Z",
+   "body": "Do you have to do two consecutive calibrations to get it to stick?  (How do\nyou know the calibration is being sent to transmitter?)\n\n\n\nOn Tue, May 26, 2020 at 2:45 PM nshtg <notifications@github.com> wrote:\n\n> You get the impossible slope error but the calibration still goes through\n> to the transmitter.\n>\n> —\n> You are receiving this because you commented.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/1008#issuecomment-634207508>,\n> or unsubscribe\n> <https://github.com/notifications/unsubscribe-auth/ABVAA2CPXAQ3CP5LVFWO2EDRTQE5FANCNFSM4IVNNVGA>\n> .\n>\n"
+  },
+  {
+   "id": 634234002,
+   "user": "nshtg",
+   "created_at": "2020-05-26T19:36:42Z",
+   "body": "No you don't. Check Events log it will say \"Calibration accepted by transmitter\"."
+  },
+  {
+   "id": 634262001,
+   "user": "gitanO0",
+   "created_at": "2020-05-26T20:30:01Z",
+   "body": "So just ignore the slope error and ignore that it says \"initial calibration\" in the menu, just calibrate as I would normally?"
+  },
+  {
+   "id": 634427663,
+   "user": "nshtg",
+   "created_at": "2020-05-27T04:54:53Z",
+   "body": "Yes"
+  },
+  {
+   "id": 635195639,
+   "user": "jamorham",
+   "created_at": "2020-05-28T08:24:03Z",
+   "body": "I think this may also be related to an issue that should be corrected in the May 26th nightly. Are people on this thread using that?"
+  },
+  {
+   "id": 635209820,
+   "user": "nshtg",
+   "created_at": "2020-05-28T08:51:16Z",
+   "body": "I do. When I need to calibrate the next time I will give you feedback wheter the bug is fixed or not."
+  },
+  {
+   "id": 635304239,
+   "user": "roco5",
+   "created_at": "2020-05-28T12:19:25Z",
+   "body": "I have not used it yet.  I'll upgrade and give feedback.\n\nBest,\nRob Conley\n\n\nOn Thu, May 28, 2020 at 4:51 AM nshtg <notifications@github.com> wrote:\n\n> I do. When I need to calibrate the next time I will give you feedback\n> wheter the bug is fixed or not.\n>\n> —\n> You are receiving this because you commented.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/1008#issuecomment-635209820>,\n> or unsubscribe\n> <https://github.com/notifications/unsubscribe-auth/ABVAA2BBMCUJRO77ZDOK4XTRTYQZHANCNFSM4IVNNVGA>\n> .\n>\n"
+  },
+  {
+   "id": 635458290,
+   "user": "gitanO0",
+   "created_at": "2020-05-28T16:34:56Z",
+   "body": "I downloaded the 26th nightly yesterday and this morning I did calibrate.  It did seem to immediately move my last few points on the graph to where my calibrated value was but then went right back to the previous trend.  Like this:  I woke up at a steady trend of around 120 mg/dl.  I did a meter test and it showed 168.  I calibrated to that value using the \"initial calibration\" option in the menu.  Two points went right to 168 on the graph then every subsequent value went right back to the 120 area and have been there since.  So, the calibration doesn't seem to be having any effect.  I should be higher than the graph is showing by about 40 mg/dl.  I didn't see if that slope error came up though.  \r\nAlso, when I go to the side menu, I don't see any calibrate option now.  There's a calibration graph and calibration data table options but no \"override calibration\" or any option to actually do a calibration."
+  },
+  {
+   "id": 635466325,
+   "user": "gitanO0",
+   "created_at": "2020-05-28T16:50:49Z",
+   "body": "Wait, I take back the part about it not adjusting to the new calibration.  It did.  Not sure what I was seeing before.  Maybe the transmitter hadn't sync'd up with the calibrated value yet or something."
+  },
+  {
+   "id": 719913568,
+   "user": "old-square-eyes",
+   "created_at": "2020-10-31T10:17:06Z",
+   "body": "How is everyone getting on with this? I'm still in the dark as to whether it's even possible to calibrate. https://github.com/NightscoutFoundation/xDrip/issues/1310 seems to be similar."
+  },
+  {
+   "id": 719914041,
+   "user": "lee-b",
+   "created_at": "2020-10-31T10:21:24Z",
+   "body": "Seems like it's not being investigated, for whatever reason.  I gave up on using xdrip for this, and just use the patched official app now.  That has the added benefit of sending data to Dexcom that they'll use to approve refunds if a sensor fails."
+  },
+  {
+   "id": 786943662,
+   "user": "Navid200",
+   "created_at": "2021-02-26T23:13:03Z",
+   "body": "Ideally, you will give factory calibration a chance after moving from G5 to G6.\r\nI didn't at first.  But, eventually, I did and have never looked back.\r\nI occasionally test my blood glucose to confirm the accuracy of G6.  But, I never find a reason to calibrate (with a new sensor).\r\n\r\nAfter a restart, it's a different story.\r\nI then need to calibrate, and do and have no problem doing that.\r\n\r\nI use \"Initial calibration\" for that.  But, first, I have disabled double calibration, which you can find at the following:\r\nSettings -> Less common settings -> Advanced Calibrations\r\nThat way, initial calibration accepts a single entry.\r\n\r\nAfter calibrating, xDrip shows logs suggesting that the calibration has failed.  But, it also reports that the transmitter has accepted the calibration, which is the only thing that matters.\r\n\r\nIt is important not to enter a calibration that would make a very large correction.  I always limit the calibration to 20% of the reading.  If you enter a larger correction, the transmitter may issue a confused calibration error and stop readings.\r\n\r\nSince I limit the calibration to 20% of the reading, I may need more than one calibration.  After a calibration, I wait about 20 to 25 minutes before entering the following calibration.  After a restart, I usually get accurate results with 2 consecutive calibrations.\r\n\r\nI never calibrate when the trend is not flat or at least very close to flat.\r\n\r\nWhat your CGM shows is expected to be different than what your blood glucose meter shows, at least, when your glucose is changing:\r\nhttps://youtu.be/o6bEJ3wko4g\r\n\r\nIf you have any questions, please ask.  \r\nYou can also post in the Gitter room, or in the facebook group.\r\nhttps://www.facebook.com/groups/xDripG5\r\nhttps://gitter.im/jamorham/xDrip-plus"
+  }
+ ]
+}

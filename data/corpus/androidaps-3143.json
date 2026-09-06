@@ -1,0 +1,147 @@
+{
+ "id": 2057611195,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3143,
+ "title": "Wear : Data layer foreground notification ",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3143",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-12-27T17:20:18Z",
+ "closed_at": "2024-01-24T11:53:04Z",
+ "comment_count": 22,
+ "body": "Latest Dev on phone and wear.\n\n![Screenshot_20231225_183747_AAPS.jpg](https://github.com/nightscout/AndroidAPS/assets/76626474/5e2940eb-4767-41ab-be40-fb431ba9eb30)\n\nI keep getting the Data layer foreground notification over and over.\n![Screenshot_20231227_180411_sysui.png](https://github.com/nightscout/AndroidAPS/assets/76626474/60a8c35e-abd7-46bc-9e99-4efa26ec6621)\n\n Can't erase it.\n\n![Screenshot_20231227_180447_sysui.png](https://github.com/nightscout/AndroidAPS/assets/76626474/0112ff75-3196-4cd0-9f5c-9a340cbd4f51)\n\nThe only option is open the notification settings and stop the notifications but it then asks me if I want to stop all notifications from AAPS... \n\n![Screenshot_20231227_180419_sysui.png](https://github.com/nightscout/AndroidAPS/assets/76626474/978b2615-64d0-40aa-90e1-ee6954fd64e9)\n\nWas working great before. I don't know why this commit was added but it made things worst.\n\nLogs. \n\n![AndroidAPS_LOG_1703697301388.log.zip](https://github.com/nightscout/AndroidAPS/files/13780165/AndroidAPS_LOG_1703697301388.log.zip)\n\n",
+ "comments": [
+  {
+   "id": 1870504728,
+   "user": "robertrub",
+   "created_at": "2023-12-27T17:41:49Z",
+   "body": "Turning OFF the notification turned OFF ALL notifications on watch from AAPS.\n\nhttps://github.com/nightscout/AndroidAPS/commit/d75c4651f6e41b44486c8b13500d6b5972ae406a  Is not working as it should.\n"
+  },
+  {
+   "id": 1870619963,
+   "user": "robertrub",
+   "created_at": "2023-12-27T20:53:03Z",
+   "body": "Updated to the latest Dev on phone and watch tonight and the problem is still there.\n\n![Screenshot_20231227_203227_AAPS.jpg](https://github.com/nightscout/AndroidAPS/assets/76626474/e974912b-0356-47d5-b9fb-4358618dc4e8)\n\n"
+  },
+  {
+   "id": 1872355208,
+   "user": "vanelsberg",
+   "created_at": "2023-12-29T21:53:22Z",
+   "body": "Confirming:\r\nSee also https://github.com/nightscout/AndroidAPS/issues/3137 (AAPS Wear: Ongoing bolus notification that can not be cleared)\r\n\r\nThis commit may be fixing a problem for a minority of users not running a 3th party watch face, but is apparently causing problems for most users running AAPS-wear the way it was designed for?\r\n\r\nProposed solution:\r\nRollback changes and review for better solution, \r\nor alternatively: enable \"Wear: Foreground Service\" only as a user option through watch face settings (default = OFF)"
+  },
+  {
+   "id": 1874584789,
+   "user": "MilosKozak",
+   "created_at": "2024-01-02T21:23:31Z",
+   "body": "on android 10+ ongoing notification must be in place if you want to have service running on background"
+  },
+  {
+   "id": 1874913276,
+   "user": "robertrub",
+   "created_at": "2024-01-03T06:41:35Z",
+   "body": "Till now, the notifications were working great . Now we're stuck with a notification that we can't erase. \n\nThe fix made things worst (at least for some (or many ?) users).\n\nUsed on Android 13 and 14."
+  },
+  {
+   "id": 1875119036,
+   "user": "MilosKozak",
+   "created_at": "2024-01-03T10:07:15Z",
+   "body": "in 3.2.0.3 service was suspended without active watchface (on background) and complications were not working. if you add notification android allows service running on background. the price for it is permanent notification"
+  },
+  {
+   "id": 1875180257,
+   "user": "vanelsberg",
+   "created_at": "2024-01-03T10:55:10Z",
+   "body": "> in 3.2.0.3 service was suspended without active watchface (on background) and complications were not working. if you add notification android allows service running on background. the price for it is permanent notification\r\n\r\n@MilosKozak @robertrub How about making this notification feature optional (read: configurable on/off)?\r\nI could do a PR for this...\r\n"
+  },
+  {
+   "id": 1875307009,
+   "user": "robertrub",
+   "created_at": "2024-01-03T12:36:44Z",
+   "body": "Totally vote for it being an option."
+  },
+  {
+   "id": 1875348694,
+   "user": "MilosKozak",
+   "created_at": "2024-01-03T13:08:03Z",
+   "body": "totally against more options :)"
+  },
+  {
+   "id": 1875504951,
+   "user": "robertrub",
+   "created_at": "2024-01-03T14:57:12Z",
+   "body": "You're the boss and I totally agree on _there are too many options_ syndrome (ie xDrip) ;)\n\nHow many people use the AAPS watchface and how many use others ?\n\nI still believe that more will be bothered with the change than happy to gave it.\n\nOf course, you can ignore the _stuck notification_ on the watch but I'll be the one to tell them to ignore it when they'll complain about it on Discord... :("
+  },
+  {
+   "id": 1877365220,
+   "user": "vanelsberg",
+   "created_at": "2024-01-04T16:12:29Z",
+   "body": "> totally against more options :)\r\n\r\nAgree. 'need optional option to make options optional :-)\r\n"
+  },
+  {
+   "id": 1889994345,
+   "user": "TebbeUbben",
+   "created_at": "2024-01-12T21:50:37Z",
+   "body": "@MilosKozak As far as I know, using an ongoing notification is not required, although the system might enforce that depending on the Android version. It might also be worth an attempt to use PRIORITY_MIN. These notifications did not appear on my watch at all and I got a notification by the system instead that AndroidAPS was running in the background (which can be dismissed).\r\n\r\nAnyways, on my Pixel Watch 2 I'm able to disable the notification channel in the system settings. Perhaps that setting is hidden on watches from other manufacturers. Manually launching the intent might work (see https://stackoverflow.com/questions/32366649/any-way-to-link-to-the-android-notification-settings-for-my-app). There's probably also a way to manage notifications via ADB."
+  },
+  {
+   "id": 1890779648,
+   "user": "vanelsberg",
+   "created_at": "2024-01-13T22:05:39Z",
+   "body": "> ...] Perhaps that setting is hidden on watches from other manufacturers [...\r\n\r\nWith current dev-builds, on the Samsung Galaxy Watch 4, I can hide the ongoing notification through developer menu settings on Watch:\r\n\r\n`App Notifications -> All watch apps -> AAPS -> Data layer Foreground Service Channel: OFF`\r\n"
+  },
+  {
+   "id": 1890878686,
+   "user": "robertrub",
+   "created_at": "2024-01-14T08:07:09Z",
+   "body": "No, I don't have that option. Samsung Android 14. Both phone and watch are set to developer mode.\n\nAm I searching in the wrong place ?\n\n![Screenshot_20240114_090427_Settings.jpg](https://github.com/nightscout/AndroidAPS/assets/76626474/a2b08dfd-3b00-4b2b-9900-bbae46427c68)\n\n"
+  },
+  {
+   "id": 1890918541,
+   "user": "vanelsberg",
+   "created_at": "2024-01-14T11:02:16Z",
+   "body": "> No, I don't have that option...\r\n\r\nWrong place. Check developer options menu _on Watch_:\r\n1. Scroll all to way down to \"App Notifications\"\r\n2. Select: All watch apps -> AAPS -> Data layer Foreground Service Channel\r\n3. Switch it to OFF\r\n\r\n(btw: No need to set the Phone to developer mode)"
+  },
+  {
+   "id": 1890920589,
+   "user": "robertrub",
+   "created_at": "2024-01-14T11:10:56Z",
+   "body": "OK, thanks. Found it and deactivated it with succes. \r\n\r\nNot the best option/solution for an \"average\" user though.\r\n\r\nRobby"
+  },
+  {
+   "id": 1892685102,
+   "user": "olorinmaia",
+   "created_at": "2024-01-15T19:34:51Z",
+   "body": "@MilosKozak Here are my thoughts on the matter. I don't think we want to solve a problem for a few users, and create a new problem that will concern all. As it stands now the data layer foreground notification is an annoyance that most users will have issues with. It vibrates often without any reason, and if you enact anything from the tiles it also comes up first, before what you usually see. This is tested with a Samsung Galaxy Watch 4 with latest dev and updates from google on watch.\r\n\r\nI've been trying to alter the code to make it less annoying, it seems that the following helps, keeping it from blocking wanted notifications when enacting from tiles and vibrating alot less. It still isn't possible to remove tho, and I find that troubling, as it very often adds a dot to the watch screen making it look like you have a missed notification. Which is usually the datalayer foreground notification :/\r\n![image](https://github.com/nightscout/AndroidAPS/assets/114103483/52cf61ad-e72e-421f-a481-947833e54525)\r\n![image](https://github.com/nightscout/AndroidAPS/assets/114103483/0787a4be-db5d-4558-b26d-51dc119ea255)\r\n\r\nI have tested a few days without commit 041d0f0b to pursue @TebbeUbben claim that a notification channel is not necessary, and so far, using stock samsung galaxy watch watchface I'm still able to enact from all commands from every tile. So maybe a persistent channel isn't necessary? Would be nice if more could test this, so we don't add stuff that isn't really necessary and just is in the way of notifications you really want to see.\r\n**Edit: Having issues when using AAPS watchface. So this is probably not a solution to directly revert that commit.**\r\n\r\n\r\n"
+  },
+  {
+   "id": 1892778886,
+   "user": "vanelsberg",
+   "created_at": "2024-01-15T21:23:54Z",
+   "body": "> I have tested a few days without commit https://github.com/nightscout/AndroidAPS/commit/041d0f0b7bd43042dbf201f442c1a48433eb22cd\r\n\r\nOriginally had the idea to disable the changes based on a watch config option setting.\r\n\r\nHowever, when I disable this commit in current dev by commenting out the changes (see code from the first screenshot) somehow this leaves the wear app unstable in that what looks like the watchface restarting about every minute or so?\r\nDid not get to load this into the debugger (need to figure out how to do that ... ) to see what it is doing...\r\n"
+  },
+  {
+   "id": 1892807711,
+   "user": "olorinmaia",
+   "created_at": "2024-01-15T21:59:34Z",
+   "body": "> > I have tested a few days without commit [041d0f0](https://github.com/nightscout/AndroidAPS/commit/041d0f0b7bd43042dbf201f442c1a48433eb22cd)\r\n> \r\n> Originally had the idea disable the change based on a watch config option setting.\r\n> \r\n> However, when I disable this commit in current dev by commenting out the changes (see code from the first screenshot) somehow this leaves the wear app unstable in that what looks like the watchface restarting about every minute or so? Did not get to load this into the debugger (need to figure out how to do that ... ) to see what it is doing...\r\n\r\nEdit: Experiencing same problem as @vanelsberg using AAPS watchface when reverting commit https://github.com/nightscout/AndroidAPS/commit/041d0f0b7bd43042dbf201f442c1a48433eb22cd\r\nI had tested without AAPS watchface, and not enough with AAPS watchface.. :)"
+  },
+  {
+   "id": 1895438561,
+   "user": "MilosKozak",
+   "created_at": "2024-01-17T09:40:26Z",
+   "body": "the reason why I added notification channel is that in logs were a message that communication service was killed because it didn't call startforeground. That disappeared after mentioned change. My thoughts is that complications cannot work properly without this service.\r\nThe change what started this is targeting API 29 on watch in last master version"
+  },
+  {
+   "id": 1896114001,
+   "user": "vanelsberg",
+   "created_at": "2024-01-17T16:01:20Z",
+   "body": "> the reason why I added notification channel ...\r\n\r\nThanks for clarifying, which would explain.\r\nSeems solving this is not as straightforward as I anticipated.\r\n"
+  },
+  {
+   "id": 1904092647,
+   "user": "olorinmaia",
+   "created_at": "2024-01-22T14:15:07Z",
+   "body": "Please test latest dev [8cfa312](https://github.com/nightscout/AndroidAPS/commit/8cfa312c087360334d426b2ee92a2682dcf79ebb) and see if it's better now. At least for me it works great. (Samsung Galaxy watch 4)"
+  }
+ ]
+}

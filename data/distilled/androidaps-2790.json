@@ -1,0 +1,15 @@
+{
+ "issue_id": 2790,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/2790",
+ "title": "Wear tiles, menus and settings aren't translated for Norwegian language",
+ "symptom": "In the wear app for AAPS/AAPSClient, most icons in tiles, menu text, and settings are not translated to Norwegian, even though the main AAPS app is translated. Only 'Cancel' appears as 'Avbryt' in the temp-target tile; other tiles and settings remain in English. Changing AAPS language to English changes 'Avbryt' to 'Cancel', but other tiles stay English regardless of AAPS language.",
+ "cause": "The Norwegian translation is associated with the language code 'no' (Norwegian), but Android's default system language for Norway is Norwegian Bokmål, which uses the code 'nb'. The app's resources are in 'values-no-rNO', but Android expects 'values-nb-rNO' for Norwegian Bokmål, so the translations are not applied.",
+ "fix": "Create a new subfolder 'values-nb-rNO' in wear resources and copy the string file from 'values-no-rNO' into it. This fixed the tiles translation issue locally. Additionally, Norwegian Bokmål was added to Crowdin and the old Norwegian translations were uploaded, and the fix was confirmed in dev build fdc9ac1b.",
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [],
+ "confidence": "high",
+ "evidence_quote": "I asked @olorinmaia to create within wear resources a new subfolder `values-nb-rNO` and copy paste in it the string file included into `values-no-rNO` => It fixed the tiles translation issue for him..."
+}

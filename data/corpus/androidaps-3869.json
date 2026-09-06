@@ -1,0 +1,59 @@
+{
+ "id": 2893975787,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3869,
+ "title": "AAPS 3.3.1.3 on Motorola Edge 50 Neo (Android 14): not able to connect to Omnipod Dash",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3869",
+ "state": "closed",
+ "labels": [
+  "omnipod dash"
+ ],
+ "created_at": "2025-03-04T11:45:07Z",
+ "closed_at": "2025-04-05T16:43:36Z",
+ "comment_count": 7,
+ "body": "I bought a brand new Motorola Edge 50 Neo to run AAPS / Xdrip.\n\nI updated to the new version of AAPS (3.3.1.3) and installed it. I imported the settings of the old version from my old phone and had everything up and running on the Moto without issues. I was able to deliver insulin through AAPS  (with the Omnipod Dash which I activated with my old phone) and the loop was working correctly.\n\nYesterday, I had to change pods for the first time. Deactivating the old pod worked, but I wasn't able to activate the new pod. My phone wasn't able to find it. I tried again with a new pod. And tried turning the phone off and on again, and turning Bluetooth off and on again. It didn't work.\n\nSo for now I switched back to the old phone with the old version of AAPS.\n\nAnd I updated my new phone to Android 15. I hoped that would solve the issue. I'll try again in 2 days when I have to change pods again.\n\nI think these are the logs:\n\n19:48:21.426 [RxCachedThreadScheduler-2138] I/PUMPBTCOMM: [OmnipodDashBleManagerImpl.pairNewPod$lambda$2():227]: Starting new pod activation\n19:48:21.427 [RxCachedThreadScheduler-2138] D/PUMP: [OmnipodDashManagerImpl$PodEventInterceptor.accept():704]: Intercepted PodEvent in OmnipodDashManagerImpl: Scanning\n19:48:21.429 [RxCachedThreadScheduler-2138] D/PUMPBTCOMM: [PodScanner.scanForPod():27]: Scanning with filters: BluetoothLeScanFilter [mDeviceName=null, mDeviceAddress=null, mUuid=00004024-0000-1000-8000-00805f9b34fb, mUuidMask=null, mServiceSolicitationUuid=null, mServiceSolicitationUuidMask=null, mServiceDataUuid=null, mServiceData=null, mServiceDataMask=null, mManufacturerId=-1, mManufacturerData=null, mManufacturerDataMask=null, mAdvertisingDataType=-1, mAdvertisingData=null, mAdvertisingDataMask=null, mTransportBlockFilter=null] settingsandroid.bluetooth.le.ScanSettings@9288f02\n19:48:26.469 [RxCachedThreadScheduler-2138] D/PUMPBTCOMM: [ScanCollector.collect():32]: ScanCollector looking for podID: 4294967294\n19:48:26.471 [RxCachedThreadScheduler-2138] D/PUMPBTCOMM: [Connection.disconnect():129]: Disconnecting closeGatt=false\n19:48:26.472 [RxCachedThreadScheduler-2138] D/PUMPBTCOMM: [BleCommCallbacks.resetConnection():217]: Reset connection\n19:48:26.473 [RxCachedThreadScheduler-2138] D/PUMP: [OmnipodDashManagerImpl$ErrorInterceptor.accept():780]: Intercepted error in OmnipodDashManagerImpl: app.aaps.pump.omnipod.dash.driver.comm.exceptions.ScanException: Not found\n19:48:26.474 [RxCachedThreadScheduler-2138] E/PUMP: [DashInitializePodViewModel.doExecuteAction$lambda$2$lambda$0():66]: Error in Pod activation part 1\napp.aaps.pump.omnipod.dash.driver.comm.exceptions.ScanException: Not found\n\tat app.aaps.pump.omnipod.dash.driver.comm.scan.PodScanner.scanForPod(PodScanner.kt:34)\n\tat app.aaps.pump.omnipod.dash.driver.comm.OmnipodDashBleManagerImpl.pairNewPod$lambda$2(OmnipodDashBleManagerImpl.kt:233)\n\tat app.aaps.pump.omnipod.dash.driver.comm.OmnipodDashBleManagerImpl.$r8$lambda$yYHGgX8ah38ahMPlalxYfA8azDA(Unknown Source:0)\n\tat app.aaps.pump.omnipod.dash.driver.comm.OmnipodDashBleManagerImpl$$ExternalSyntheticLambda0.subscribe(D8$$SyntheticClass:0)\n\tat io.reactivex.rxjava3.internal.operators.observable.ObservableCreate.subscribeActual(ObservableCreate.java:41)\n\tat io.reactivex.rxjava3.core.Observable.subscribe(Observable.java:13262)\n\tat io.reactivex.rxjava3.internal.operators.observable.ObservableDefer.subscribeActual(ObservableDefer.java:40)\n\tat io.reactivex.rxjava3.core.Observable.subscribe(Observable.java:13262)\n\tat io.reactivex.rxjava3.internal.operators.observable.ObservableConcatMap$ConcatMapDelayErrorObserver.drain(ObservableConcatMap.java:469)\n\tat io.reactivex.rxjava3.internal.operators.observable.ObservableConcatMap$ConcatMapDelayErrorObserver.onSubscribe(ObservableConcatMap.java:330)\n\tat io.reactivex.rxjava3.internal.operators.observable.ObservableFromArray.subscribeActual(ObservableFromArray.java:32)\n\tat io.reactivex.rxjava3.core.Observable.subscribe(Observable.java:13262)\n\tat io.reactivex.rxjava3.internal.operators.observable.ObservableConcatMap.subscribeActual(ObservableConcatMap.java:56)\n\tat io.reactivex.rxjava3.core.Observable.subscribe(Observable.java:13262)\n\tat io.reactivex.rxjava3.internal.operators.observable.ObservableDoOnEach.subscribeActual(ObservableDoOnEach.java:42)\n\tat io.reactivex.rxjava3.core.Observable.subscribe(Observable.java:13262)\n\tat io.reactivex.rxjava3.internal.operators.observable.ObservableDoOnEach.subscribeActual(ObservableDoOnEach.java:42)\n\tat io.reactivex.rxjava3.core.Observable.subscribe(Observable.java:13262)\n\tat io.reactivex.rxjava3.internal.operators.observable.ObservableDoOnEach.subscribeActual(ObservableDoOnEach.java:42)\n\tat io.reactivex.rxjava3.core.Observable.subscribe(Observable.java:13262)\n\tat io.reactivex.rxjava3.internal.operators.observable.ObservableSubscribeOn$SubscribeTask.run(ObservableSubscribeOn.java:96)\n\tat io.reactivex.rxjava3.core.Scheduler$DisposeTask.run(Scheduler.java:644)\n\tat io.reactivex.rxjava3.internal.schedulers.ScheduledRunnable.run(ScheduledRunnable.java:65)\n\tat io.reactivex.rxjava3.internal.schedulers.ScheduledRunnable.call(ScheduledRunnable.java:56)\n\tat java.util.concurrent.FutureTask.run(FutureTask.java:264)\n\tat java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:307)\n\tat java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)\n\tat java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)\n\tat java.lang.Thread.run(Thread.java:1012)\n19:48:43.522 [main] D/WIDGET: [Widget.onReceive():97]: onReceive ScheduleEveryMin\n\n\n",
+ "comments": [
+  {
+   "id": 2698906883,
+   "user": "MilosKozak",
+   "created_at": "2025-03-04T21:07:23Z",
+   "body": "This is not AAPS issue. Error means Android didn't find active pod"
+  },
+  {
+   "id": 2700318300,
+   "user": "MaaikeLJ",
+   "created_at": "2025-03-05T09:15:59Z",
+   "body": "Thank you for your answer. \n\nI'm not an IT person, it's nog always easy for me to know where the problem is exactly.\n\nI also posted something in the Facebook Group and other people are having the same issue with this phone. Everything works fine, it's only impossible to activate a new pod. The phone isn't able to find active pods.\n\nI thought this might be related to the issue that some Pixel users are having currently with the connection to Omnipod Dash (on Android 15). But I might be wrong. Again, I'm not an IT person at all.\n\nIs there any chance this might be resolved in a future version of AAPS (which perhaps connects differently to the pods????)? Or maybe in a future version of Android? Or will it never work properly on this phone?\n\nThank you very much for your help!"
+  },
+  {
+   "id": 2709077944,
+   "user": "vanelsberg",
+   "created_at": "2025-03-09T21:33:03Z",
+   "body": "Could you please add your setup experience with this phone to the [AAPS Hardware Setup list](https://docs.google.com/spreadsheets/u/1/d/e/2PACX-1vScCNaIguEZVTVFAgpv1kXHdsHl3fs6xT6RB2Z1CeVJ561AvvqGwxMhlmSHk4J056gMCAQE02sAWJvT/pubhtml?gid=683363241&single=true)? On top of the list you will find a link to the input form.\n\nThanks much! 🙏 "
+  },
+  {
+   "id": 2710374299,
+   "user": "MaaikeLJ",
+   "created_at": "2025-03-10T12:10:24Z",
+   "body": "> Could you please add your setup experience with this phone to the [AAPS Hardware Setup list](https://docs.google.com/spreadsheets/u/1/d/e/2PACX-1vScCNaIguEZVTVFAgpv1kXHdsHl3fs6xT6RB2Z1CeVJ561AvvqGwxMhlmSHk4J056gMCAQE02sAWJvT/pubhtml?gid=683363241&single=true)? On top of the list you will find a link to the input form.\n> \n> Thanks much! 🙏\n\nDone.\n\nIf anyone would have a solution ... Still very much welcome!"
+  },
+  {
+   "id": 2713186205,
+   "user": "cascer1",
+   "created_at": "2025-03-11T08:47:12Z",
+   "body": "I sometimes have issues on my Pixel 9 where it doesn't find new pods (after I fill it with insulin and it beeps). For me a workaround is to make sure the old pod is further away (at least a meter) and then I have to force-close aaps and clear cache ([Tutorial here](https://www.androidpolice.com/clear-app-cache-data-android/)). **Be sure not to clear app storage, only the cache. Otherwise you'll lose all your settings**. Finally, I have to disable and re-enable Bluetooth.\n\nAfter those steps, it works for me."
+  },
+  {
+   "id": 2713874767,
+   "user": "vanelsberg",
+   "created_at": "2025-03-11T11:52:28Z",
+   "body": "> ...] For me a workaround is to make sure the old pod is further away (at least a meter) and then I have to force-close aaps and clear cache [...\n\nOften restarting the phone solves?"
+  },
+  {
+   "id": 2780921039,
+   "user": "MilosKozak",
+   "created_at": "2025-04-05T16:43:36Z",
+   "body": "Closed for inactivity"
+  }
+ ]
+}

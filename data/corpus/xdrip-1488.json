@@ -1,0 +1,62 @@
+{
+ "id": 731201750,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1488,
+ "title": "Xiaomi Android 11 with G6 connection barely working",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1488",
+ "state": "closed",
+ "labels": [
+  "help",
+  "device-dexcom",
+  "bluetooth",
+  "android10+"
+ ],
+ "created_at": "2020-10-28T08:00:12Z",
+ "closed_at": "2020-12-28T16:16:12Z",
+ "comment_count": 7,
+ "body": "Hi, I recently had to switch my old phone (where xdrip was working perfectly) to a xiaomi note 10, which I flashed with the latest EU ROM using Android 11.\r\nInitially, xdrip was working ok for a few hours. Then I started getting error like \"could not register app for bluetooth scanning\" or no error, just shows scanning and nothing happens. \r\nXdrip has full permissions and all battery optimizations are disabled.\r\nThe G6 transmitter is even listed in the bluetooth devices as bonded in Android, in xdrip it says connection status \"Dexcom0L Authed\". Weird...\r\n\r\nWhat I tried so far was of course rebooting and rebonding the device (which sometimes helps for 1-2 readings), and also playing with the extended bluetooth settings. \r\nWhat also seems to help for a while is hitting \"forget device\" and \"restart collector\" just right before the 5min interval happens.\r\nUnfortunately, nothing fixed it permanently so far.\r\nAny hints how to get it running again?",
+ "comments": [
+  {
+   "id": 717928952,
+   "user": "gfornax",
+   "created_at": "2020-10-28T13:22:39Z",
+   "body": "Short update: I managed to keep it running for several hours by syncing the manual action \"forget device\" + \"restart collector\" to right before the G6 interval - it works as long as the connection is not interrupted or they drift \"out of sync\".\r\nSo I guess the issue is that the \"scanning\" state of the collector can't be kept up for more than a few seconds - if there is no response from the G6, it stops working. "
+  },
+  {
+   "id": 718477939,
+   "user": "gfornax",
+   "created_at": "2020-10-29T08:32:59Z",
+   "body": "Another update to probably narrow it down:\r\nWhen the problem occures, the \"Phone Service State\" always cycles through everything normally but then stops at \"Authenticated\". A single loss of reception (even during the sleeping phase) seems to be enough to trigger it.\r\n\r\nIn this case, the event log shows this error every time (with the sensor in range again):\r\n`Error receiving indication: java.util.concurrent.TimeoutException: The source did not signal an event for 6 seconds and has been terminated`.\r\nSometimes the value for seconds changes a little, but this seems to be the characteristic error.\r\nI can reliably bring it back to work for some hours by terminating xdrip and starting it again.\r\n\r\nOther entries like the `Could not read reply to auth challenge` and `Could not read after AuthRequestTX` are always there, also after a successful read.\r\n\r\n"
+  },
+  {
+   "id": 723258625,
+   "user": "tolot27",
+   "created_at": "2020-11-06T19:28:17Z",
+   "body": "Do you have Samsung Workarounds enabled? If yes, please disable it."
+  },
+  {
+   "id": 723981350,
+   "user": "gfornax",
+   "created_at": "2020-11-09T12:24:55Z",
+   "body": "I tried both and could not note any difference.\r\nBut I found another factor: Using the original Dexcom transmitter in parallel usually instantly triggers the issue as long as it is running, probably due to the additional processing time."
+  },
+  {
+   "id": 745618196,
+   "user": "tolot27",
+   "created_at": "2020-12-15T22:54:39Z",
+   "body": "@gfornax If you still have trouble, please ask for support at https://www.facebook.com/groups/xDripG5 or https://gitter.im/jamorham/xDrip-plus.\r\n\r\nIf it is solved, please close this issue."
+  },
+  {
+   "id": 751769703,
+   "user": "gfornax",
+   "created_at": "2020-12-28T16:16:12Z",
+   "body": "Okay, not exactly solved but after some messing with the bluetooth stack it went down from frequently to about weekly.\r\nSo I guess there is still an issue somewhere, but the impact is not that critical anymore."
+  },
+  {
+   "id": 786109811,
+   "user": "JimmyFoks",
+   "created_at": "2021-02-25T18:28:31Z",
+   "body": "I have the same problem, it is repeated once a day. Is there a solution?"
+  }
+ ]
+}

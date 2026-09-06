@@ -1,0 +1,139 @@
+{
+ "id": 812681010,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1653,
+ "title": "Can we rename \"HbA1c est\" to \"GMI\", and update the formula?",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1653",
+ "state": "closed",
+ "labels": [
+  "question",
+  "type-discussion",
+  "status-postponed"
+ ],
+ "created_at": "2021-02-20T18:39:01Z",
+ "closed_at": "2021-08-06T15:03:39Z",
+ "comment_count": 21,
+ "body": "A Hemoglobin A1C blood test result represents the average blood glucose over the past 3 months.\r\nA daily A1C makes no sense.  Your A1C test today represents your average blood glucose over the past 90 days.  Your A1C yesterday represented your average blood glucose over the period starting 91 days ago and ending yesterday.  Your day to day A1C variation is minimal.  \r\n\r\nA paper was published, in 2008, (https://care.diabetesjournals.org/content/diacare/31/8/1473.full.pdf) suggesting a correlation between A1C test results and average blood glucose over the past 90 days.  \r\nThe paper presents the results in the following figure.\r\n![F1 large](https://user-images.githubusercontent.com/51497406/108604420-da906580-737b-11eb-972f-72566a4b0805.jpg)\r\n\r\nThe paper presents a line in that graph representing the correlation.  The line is a linear regression fit.  \r\nIn that graph, the horizontal and vertical axes are A1C test results at the end of month 3 and calculated average blood glucose during the past 3 months respectively. \r\nUsing the formula (linear regression), suggested in this paper, one can use the average blood glucose readings over the past 3 months to estimate what their A1C test results would be today.  You can see in the graph that this is just an estimate and there could be considerable error.\r\n\r\nThe correlation between those two figures is only suggested when the average blood glucose is over the period of the past 3 months.\r\nThere is no suggestion that if you know your daily average blood glucose today, you can use the same formula to estimate what your A1C would be today.  Your A1C today should be calculated using your average blood glucose over the past 90 days.  \r\n\r\nBut xDrip offers a calculation that has no significance and could be quite misleading.\r\nGo to the Statistics page in xDrip from the top left menu.  Swipe right twice.  On that page, you can see a set of parameters including HbA1c est.  At the top of the page, you can see the following options:   TD, YTD, 7D, 30D and 90D, which stand for today, yesterday, last 7 days, last 30 days and last 90 days.\r\nYou can see that all the parameters (including A1C est) are affected as you change the options.  So, you can choose TD (today) and you will still get a value for HbA1c est.\r\nIt doesn't end here.  Go to Settings -> Less common settings -> Extra Status Line.  Enable \"Extra Status Line\".  Enable \"A1c DCCT\".  Now, go back to the main screen.  You will see A1c reported under the current delta.  The value reported is not the estimated A1C based on the average over the past 90 days.  Rather, it is the estimated value, using the formula, based on the daily average. \r\n\r\nThis is an incorrect use of the formula, which could result in misleading information.\r\nI suggest the following 2 changes:\r\n\r\n1- The estimated A1C should be blanked out on the Statistics page unless the 90D option is selected.\r\n2- When the extra status line is enabled and A1C is chosen to be shown, the correct estimated A1C (based on the average blood glucose over the past 90 days) should be shown. \r\n\r\n\r\n\r\nIf you like to offer the option of seeing daily average blood glucose, please do just that; don't use it to calculate A1C; present the daily average as is; don't call it A1C; call it AG.",
+ "comments": [
+  {
+   "id": 782752074,
+   "user": "MasterPlexus",
+   "created_at": "2021-02-20T21:27:12Z",
+   "body": "I understand what you mean, and what your fears here are. I could just say that I never Missunterstand the value. For me it tolds if I select one week, that the hba1c will be this value if I will have the same sugar arrangement in the next 3 month which I had in the last week. So a prospective view. \r\nAs far as I know, other systems donut the same way, also Libre view calculates the hba1c if only values are scanned for some days and not all 90 days. \r\nBut as I said, I understand what you mean, as this could be misunderstood by some users. May some alignment , mark or short explanation will be helpful if the value is not based on the last 90days."
+  },
+  {
+   "id": 783435228,
+   "user": "Navid200",
+   "created_at": "2021-02-22T15:00:42Z",
+   "body": "Thanks for that.  I agree it would be perfect if there could be a note added.\r\n\r\nCan we have a note emphasizing that for HbA1c only, the value shown is what it will be and not what it is?"
+  },
+  {
+   "id": 784047767,
+   "user": "philou78",
+   "created_at": "2021-02-23T09:54:45Z",
+   "body": "The International Diabetes Center names this calculated value as follows:\r\n\"GMI (glucose management indicator): Calculated from average glucose; estimates your future lab A1c\"\r\n(http://www.agpreport.org/agp/agpreports#SMBG_AGP)\r\n\r\nThis is very important to get this value for each selected period. It helps people who need to improve their A1C even though it really estimates A1C only for the 90D period due to the lifespan of hemoglobin."
+  },
+  {
+   "id": 784194109,
+   "user": "Navid200",
+   "created_at": "2021-02-23T13:14:29Z",
+   "body": "@philou78  Thanks for that link.\r\n\r\nThis is a paper that describes GMI:  \r\nhttps://care.diabetesjournals.org/content/diacare/41/11/2275.full.pdf\r\n\r\n\"This Perspective will address why a new name\r\nfor eA1C was needed, why GMI was selected as the new name, how GMI is\r\ncalculated, and how to understand and explain GMI if one chooses to use GMI as a\r\ntool in diabetes education or management\".\r\n\r\n\r\nShould we then change the name on the xDrip statistics page from Hb1c est to GMI, and make the slight modification to the formulae as described in the paper?\r\n"
+  },
+  {
+   "id": 784515493,
+   "user": "MasterPlexus",
+   "created_at": "2021-02-23T21:11:20Z",
+   "body": "@navid200 for me this looks feasible and logical. I will get that, and try to made a pull request. It will need some time of course, but it will bring me back into the code which I missed ;)\r\n\r\nIf an other one will get this point faster just state it here, not to do it double."
+  },
+  {
+   "id": 784519095,
+   "user": "Navid200",
+   "created_at": "2021-02-23T21:17:50Z",
+   "body": "OMG, it was just a suggestion.  Thanks a lot.\r\nPlease let's make sure Adrian (@AdrianLxM) will be OK with this.  Please don't make a change unless he approves."
+  },
+  {
+   "id": 784521103,
+   "user": "AdrianLxM",
+   "created_at": "2021-02-23T21:21:21Z",
+   "body": "I would _not_ like to have a value showing another timeframe than selected."
+  },
+  {
+   "id": 784525038,
+   "user": "Navid200",
+   "created_at": "2021-02-23T21:28:26Z",
+   "body": "@AdrianLxM The only suggestion is to change the name from A1C to GMI.\r\nAnd I haven't read the paper fully yet.  I think they have made a slight modification to the formulae by combining the results of 4 different studies.\r\nThe value will always be based on the selected range as is now."
+  },
+  {
+   "id": 784529508,
+   "user": "MasterPlexus",
+   "created_at": "2021-02-23T21:36:39Z",
+   "body": "May we could change the Titel to gmi, if the time slot is different than 90 days. And let 90days then for 1ac.\r\nAnyway, I'll check then also the formula's , but I feel the established ones as sufficient at the moment. Not sure if a change of 0.1 of the value at the end will bring a big help, knowing the Situation that also the measurements could have some diffs."
+  },
+  {
+   "id": 784708226,
+   "user": "Navid200",
+   "created_at": "2021-02-24T02:45:03Z",
+   "body": "Not what I expected.  The two look quite different.  \r\nWill do more research.\r\nPlease let me know if anyone has any explanation.\r\n\r\n\r\n![Screenshot 2021-02-23 214330](https://user-images.githubusercontent.com/51497406/108939776-3bd86300-7620-11eb-9225-1e2c2dd80e8f.png)\r\n"
+  },
+  {
+   "id": 808527446,
+   "user": "Navid200",
+   "created_at": "2021-03-26T21:47:10Z",
+   "body": "The Dexcom app is also using the updated formula:\r\n\r\n![164204007_10225567122631653_3147251438616353955_n](https://user-images.githubusercontent.com/51497406/112695828-23e04300-8e5b-11eb-8004-fd299250f99d.jpg)\r\n\r\nFor the same average, xDrip would currently have an A1C est of 5.8.\r\n"
+  },
+  {
+   "id": 838823594,
+   "user": "rraider89",
+   "created_at": "2021-05-11T16:54:21Z",
+   "body": "Might I suggest that we consider the usability of the app vs the value of using exact scientific terms? Most users will just be confused by adding yet another unknown acronym and will not benefit from a descriptive change that requires further understanding. If you're the rare person schooled in the GMI/A1C differentiation the reading isn't fooling you anyway.  Dealing with diabetes and installing/using Xdrip is a real feat for even the technically and scientifically oriented among us, and every effort should be made not to hinder the usability."
+  },
+  {
+   "id": 838846837,
+   "user": "Navid200",
+   "created_at": "2021-05-11T17:11:29Z",
+   "body": "I have explained the details here so that it can be seen what the source of the information is.   \r\nSomeone who has only been using xDrip to see their estimated A1C, without paying attention to where the estimated A1C came from, can continue to do so.\r\nWhy would updating xDrip affect its usability in a negative way?\r\n\r\nI have put a hold on this to see if the new (updated) formula is used universally or not.\r\nWe should not update if no one picks it up.\r\n\r\nBut, can you explain how using an outdated calculation, by xDrip, is going to help someone who has difficulty establishing connectivity with their sensor, or anything else you are having difficulty with?"
+  },
+  {
+   "id": 839148432,
+   "user": "tolot27",
+   "created_at": "2021-05-11T20:42:01Z",
+   "body": "We could add GMI below HbA1c. GVI and PGS were also added its meaning is not obvious to most of the users.\r\n\r\nEstimating the HbA1c from just one day is statistical nonsense. I suggest to gray it out for TD and YTD. As far as I know, the Libre App and Dexcom App do not show it on incomplete data (too few days collected BG)."
+  },
+  {
+   "id": 839367599,
+   "user": "rraider89",
+   "created_at": "2021-05-12T01:38:42Z",
+   "body": "> I have explained the details here so that it can be seen what the source of the information is.\r\n> Someone who has only been using xDrip to see their estimated A1C, without paying attention to where the estimated A1C came from, can continue to do so.\r\n> Why would updating xDrip affect its usability in a negative way?\r\n> \r\n> I have put a hold on this to see if the new (updated) formula is used universally or not.\r\n> We should not update if no one picks it up.\r\n> \r\n> But, can you explain how using an outdated calculation, by xDrip, is going to help someone who has difficulty establishing connectivity with their sensor, or anything else you are having difficulty with?\r\n\r\nSure. You wrote \"Can we rename \"HbA1c est\" to \"GMI\", and update the formulae?\". The HbA1c est is helpful, even for one day for understanding how you've done for the day, assuming your performance continued at this pace for 90 days. Even if the more accurate GMI has become the standard on Dexcom and Libre apps, its still highly unlikely that most current users and all new users would understand what GMI is. It will be quite some time if ever that doctors and educators and books start using the term GMI to help patients understand an estimate not used iby doctors or in clinical settings. If the goal is to be more accurate in our language we shouldn't do so at the expense of the term losing its value due to users not knowing what the acronym is or what it means. I think the idea of adding GMI to the existing HbA1c est is a good idea. Perhaps \"HbA1c est / GMI\" or \"GMI (HbA1c est)\"."
+  },
+  {
+   "id": 840121260,
+   "user": "tolot27",
+   "created_at": "2021-05-12T21:55:27Z",
+   "body": "@rraider89 No, the HbA1c is an estimation/measurement of the long-term glucose binding to hemoglobin. Hence, it is not useful to understand the daily performance. Please use TIR instead, which gets increased attention in therapy."
+  },
+  {
+   "id": 840124490,
+   "user": "rraider89",
+   "created_at": "2021-05-12T22:03:10Z",
+   "body": "I think you're being too technical and not practical. A daily estimate of your hba1c tells you what your HbA1c would likely be if your blood sugar performed exactly like it did today for the next 89 days. If you're shooting for a Hba1c below 5 then it's helpful to know that today's hba1c estimate was 4 or 7 or whatever. "
+  },
+  {
+   "id": 840130109,
+   "user": "tolot27",
+   "created_at": "2021-05-12T22:16:20Z",
+   "body": "> I think you're being too technical and not practical.\r\n\r\nNo, it is a medical and biological point of view. You cannot influence the HbA1c just by one good or bad day. Consider the extreme case that you are on every odd day at 200 mg/dl on average and on every even day at 40 mg/dl on average. Your measurable HbA1c would still be near optimal optimal even if your TIR is 0% on every day. Hence, it is absolutely useless to predict it just for one day. Please consider the TIR for daily use.\r\n\r\nAnd it is much more useful/practical to know the time/percentage you were below/in/and above range. Not just a single average value which cannot be used to derive your real BG fluctuations over the day."
+  },
+  {
+   "id": 848749983,
+   "user": "szantos",
+   "created_at": "2021-05-26T13:01:51Z",
+   "body": "A slightly other aspect, but it also addresses the HbA1c estimation:\r\n\r\nPlease consider using a weighted average for HbA1c estimation instead of an arithmetic average to have a better approximation.\r\n\r\n[https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4771657/](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4771657/)"
+  },
+  {
+   "id": 894322723,
+   "user": "Navid200",
+   "created_at": "2021-08-06T15:03:39Z",
+   "body": "We should not make this change until we are certain this new index has gained enough popularity.\r\nThe conversation can continue even with the issue closed.\r\nPlease don't open a new issue if you are interested in the same.  Please post here."
+  }
+ ]
+}

@@ -1,0 +1,75 @@
+{
+ "id": 1182415806,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1506,
+ "title": "DST Dana RS stuck at reading history",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1506",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-03-27T07:39:31Z",
+ "closed_at": "2022-03-27T16:03:16Z",
+ "comment_count": 10,
+ "body": "After DST AAPS is now stuck at reading the pump history. Manually fixing the pump time (which was already updated manually) and resetting the APS databases did nothing. Even though the. Message disappears after some time,  looping, setting temp ratios Etc. does not work.\r\n\r\nAAPS 3.0.0.1",
+ "comments": [
+  {
+   "id": 1079874987,
+   "user": "CaptainBalou",
+   "created_at": "2022-03-27T07:48:42Z",
+   "body": "Same here. Can't bolus anymore. I'm sorry but i can't attach logs Herr because I'm mobile.\n\n3.0.0.1-dev-g from three days ago"
+  },
+  {
+   "id": 1079877624,
+   "user": "CaptainBalou",
+   "created_at": "2022-03-27T08:05:37Z",
+   "body": "After issuing one bolus via the bolus calculator directly in the Pump AndroidAPS seems to work fine again. Bolus history can be read without error now."
+  },
+  {
+   "id": 1079881053,
+   "user": "CaptainBalou",
+   "created_at": "2022-03-27T08:25:46Z",
+   "body": "[AndroidAPS_LOG_1648366340572.log.zip](https://github.com/nightscout/AndroidAPS/files/8357192/AndroidAPS_LOG_1648366340572.log.zip)\r\n\r\nFinally i got the file uploaded. Hope this helps."
+  },
+  {
+   "id": 1079881596,
+   "user": "CaptainBalou",
+   "created_at": "2022-03-27T08:29:33Z",
+   "body": "Also some additional screenshots If needed...\r\n\r\n![Screenshot_2022-03-27-09-23-09-50_3eaa31bb2c2a38a1c605d9dc918cf694](https://user-images.githubusercontent.com/17015872/160273418-b13a0be9-6b1e-42a3-9a22-d286ca98adf7.jpg)\r\n\r\n![Screenshot_2022-03-27-09-31-54-74_3eaa31bb2c2a38a1c605d9dc918cf694](https://user-images.githubusercontent.com/17015872/160273432-13f1fe76-c835-47c0-8c7f-4363c4065bb3.jpg)\r\n\r\n![Screenshot_2022-03-27-09-45-32-68_3eaa31bb2c2a38a1c605d9dc918cf694](https://user-images.githubusercontent.com/17015872/160273438-ee410237-ca97-4e74-9ae5-d98ff6a30475.jpg)\r\n"
+  },
+  {
+   "id": 1079882184,
+   "user": "CaptainBalou",
+   "created_at": "2022-03-27T08:33:57Z",
+   "body": "After the manually issued bolus via the Pump all Looks good which is like this:\r\n\r\n![Screenshot_2022-03-27-10-31-36-00_3eaa31bb2c2a38a1c605d9dc918cf694](https://user-images.githubusercontent.com/17015872/160273529-1270ad70-c761-46a6-956f-7cf9d1940cb6.jpg)\r\n\r\nAs you can see also all data since DST change ist now covered in the chart."
+  },
+  {
+   "id": 1079883046,
+   "user": "mxsrm",
+   "created_at": "2022-03-27T08:38:55Z",
+   "body": "I can confirm manually bolusing on the pump helps. "
+  },
+  {
+   "id": 1079901021,
+   "user": "npsgr",
+   "created_at": "2022-03-27T10:31:38Z",
+   "body": "The solution is “delete history” in DanaRS. The procedure is \r\n1.\tgo to pump\r\n2.\tUnlock\r\n3.\tThen while pressing - at the same time press + sign and arrow\r\n4.\tAppears password  0000\r\n5.\tGo to third 0 and put 4\r\n6.\tGo to fourth 0 put 9\r\n7.\tGo to first 0 put 8\r\n8.\tGo to second 0 put 9\r\n9.\tAll in this order \r\n10.\tMessage then delete history.\r\n"
+  },
+  {
+   "id": 1131351434,
+   "user": "pimeys",
+   "created_at": "2022-05-19T07:42:47Z",
+   "body": "I've had this issue a few times in the past week already. Yes, the last message here fixes it for a few days, but it comes back eventually. It's not very nice when the connection gets stuck at night, and I don't notice any issues and I get low or high and need to wake up. The DanaRS has been working perfectly for three years with AndroidAPS. I had a replacement pump with the new firmware, which also worked over a month perfectly. When I got a new smartwatch, the problems started to appear.\r\n\r\nDoes anybody know what is the root issue here? Is it something to do with the pump clock not being sync with the watch or phone?"
+  },
+  {
+   "id": 1131566983,
+   "user": "MilosKozak",
+   "created_at": "2022-05-19T11:23:35Z",
+   "body": "@pimeys communication can be affected by connected watch if phone BT stack is not good. try not to use watch for some time"
+  },
+  {
+   "id": 1133068174,
+   "user": "pimeys",
+   "created_at": "2022-05-20T15:58:54Z",
+   "body": "It seems to be the cause. I disabled wifi from the watch and it's been much better now with the pump..."
+  }
+ ]
+}

@@ -1,0 +1,39 @@
+{
+ "id": 282840842,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 245,
+ "title": "Filling gaps for the libre sensor",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/245",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2017-12-18T11:04:56Z",
+ "closed_at": "2021-03-13T00:23:50Z",
+ "comment_count": 4,
+ "body": "Abbott build their historic data on 15 minutes intervals that start with sensor start time. xDrip stores his data every 5 minutes (not related to sensor start). blukoon, reads his data every 5 minutes, not related to sensor start, a User might scan whenever he wants, possibly in less than 5 minutes interval.\r\nMy questions are: \r\n1) The user has scanned on 12:00 and a data was showed. Now he scanned again on 12:02, what should I show him? A change that will allow xDrip to have a per point data is complicated and dangerous, and not really on the table. Is there a practical way to show him the data of the last scan.\r\n2) The user has scanned after 7 minutes from the last scan, Is there a good way to avoid the 7 minutes gap from the scan.\r\n3) Blukon was not connected for 60 minutes, and is now connected. The per 15 minute data fail is 2 minutes from our last reading, while the last 15 minutes point is 2 minutes from current reading (So putting the last 15 minutes in will reject the current reading).\r\nThe trivial solution to these problems is calculating the per 5 minutes data and having xDrip reject points that are more than 4 minutes apart. Does anyone has a better solution?\r\n\r\nAll ideas are welcomed.",
+ "comments": [
+  {
+   "id": 352540155,
+   "user": "keencave",
+   "created_at": "2017-12-18T19:55:53Z",
+   "body": "1.) I would recommend to show him the current BG reading of the current timing. This is what all LimiTTer deivces and blucon do.\r\n2.) I dont understand hwat you may mean?\r\n3.) have you had a look on the NFC method @jamorham is using? In the adb log I see some paramters to interpolate BG readings in between the 15 mins avarage values (Akima interpolation?)."
+  },
+  {
+   "id": 352576486,
+   "user": "tzachi-dar",
+   "created_at": "2017-12-18T22:20:34Z",
+   "body": "As for 1, I don't think that this is what other devices do. There is code in xDrip that blocks packets that are less than 4 minutes apart. This has to be somehow out of band. (for example a message box or something alike.)\r\n\r\nAs for 2: assume I have a reading at 16:50, 16:55, 17:00\r\nNow it is 17:07 and the user has scanned, I can enter this data, (probably I would say I should), but then my next reading will be 17:07, and the reading of 17:10 will be rejected (not 5 minutes apart).\r\nI'm not sure there is an easy way around it.\r\n\r\n3) I'll look at that code and see if I can use it."
+  },
+  {
+   "id": 785967683,
+   "user": "Navid200",
+   "created_at": "2021-02-25T15:02:50Z",
+   "body": "@tzachi-dar Would you please explain what the requirement is for closing this issue?"
+  },
+  {
+   "id": 797829248,
+   "user": "Navid200",
+   "created_at": "2021-03-13T00:23:49Z",
+   "body": "Closing due to inactivity"
+  }
+ ]
+}

@@ -1,0 +1,24 @@
+{
+ "issue_id": 3284,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/3284",
+ "title": "MEDTRUM Nano disconnecting",
+ "symptom": "After updating with PR 3270, the pump becomes unreachable after an accidental disconnection (long phone distance) and is no longer available. To reconnect, the user must exit and restart the application.",
+ "cause": "The device needs to scan to properly wake up or reset the Bluetooth when a connection attempt fails, but the new code does not scan on every connection error.",
+ "fix": "A new option in the Medtrum settings (customized connection preset) was added via PR 3381. Enabling this option resolved the issue.",
+ "settings_changed": [
+  "customized connection preset option → enabled"
+ ],
+ "devices": [
+  "MEDTRUM Nano",
+  "KOSPET Optimus2"
+ ],
+ "android_versions": [
+  "Android 10"
+ ],
+ "driver_tags": [
+  "medtrum"
+ ],
+ "confidence": "high",
+ "evidence_quote": "Can you test with: https://github.com/nightscout/AndroidAPS/pull/3381 And enabling the new option that is present in the medtrum settings ?"
+}

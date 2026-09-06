@@ -1,0 +1,167 @@
+{
+ "id": 2765090741,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 3841,
+ "title": "AAPS 3.3.x and Libre 2/3 identifier sent from Xdrip",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/3841",
+ "state": "closed",
+ "labels": [
+  "device-libre"
+ ],
+ "created_at": "2025-01-01T14:06:31Z",
+ "closed_at": "2025-02-02T21:14:34Z",
+ "comment_count": 27,
+ "body": "With the release of AAPS 3.3.x SMB always could be enabled for Libre 2 & 3 (which was earlier discriminated)\r\n\r\nHovewer, it's not working, AAPS reports \"activce BG source doesn't support advanced filtering.'\r\n\r\nAccording to Milos, the cause is the wrong identifier for Libre sensor send by Xdrip \r\nhttps://github.com/nightscout/AndroidAPS/issues/3589\r\n\r\n\r\nIn mentioned issues - LIBRE_1_OTHER, in my case (xdrip+ 2124091707) it's LIBRE_1_LIMMITER, while the physical sensor is Libre 2 EU and hardware data source set to \"Libre Bluetooth\" as per instructions: https://xdrip.readthedocs.io/en/latest/install/libre2/\r\n\r\nSorry, no idea what's the correct and expected value, I am just a user :)\r\n\r\n_Originally posted by @miklosz in https://github.com/NightscoutFoundation/xDrip/discussions/3840_",
+ "comments": [
+  {
+   "id": 2567036603,
+   "user": "InvaderStef",
+   "created_at": "2025-01-01T14:46:52Z",
+   "body": "The same problem exists when data is coming from Juggluco and xdrip+ Hardware Data Source is set to Libre (patched App).\r\nI'm using freestyle 3 with Juggluco"
+  },
+  {
+   "id": 2567146632,
+   "user": "olorinmaia",
+   "created_at": "2025-01-01T21:07:39Z",
+   "body": "I've checked in AAPS sourcecode and double checked with Milos. \n\nAAPS expects `Libre2` or `Libre2 Native` or `Libre3` in `com.eveningoutpost.dexdrip.Extras.SourceInfo` to be able to properly identify Libre 2 or 3 for full SMB support in AAPS 3.3"
+  },
+  {
+   "id": 2567156734,
+   "user": "FbnLny",
+   "created_at": "2025-01-01T21:48:19Z",
+   "body": "When checking my AAPS logs, it appears xDrip+ sends the identfier \"Libre2 Native\", instead of just \"Libre2\" \r\n(I am using Libre 3 with patched Libre broadcast from juggluco)"
+  },
+  {
+   "id": 2568970370,
+   "user": "ga-zelle",
+   "created_at": "2025-01-03T09:59:12Z",
+   "body": "I just sent an email to the author of Juggluco so he can implement that adaptation of the label as well in case readings go directly to AAPS. It may even be required for xDrip to recognize it."
+  },
+  {
+   "id": 2568984638,
+   "user": "miklosz",
+   "created_at": "2025-01-03T10:10:23Z",
+   "body": "> I just sent an email to the author of Juggluco so he can implement that adaptation of the label as well in case readings go directly to AAPS. It may even be required for xDrip to recognize it.\r\n\r\nGreat, thanks for the contribution!"
+  },
+  {
+   "id": 2571389534,
+   "user": "olorinmaia",
+   "created_at": "2025-01-04T19:25:02Z",
+   "body": "FYI; \"Libre2 Native\" also added, for eventually backwards compability as well. This means it will work for those sending that from 3.3.0.1 if you don't cherry pick commit\r\n\r\nhttps://github.com/nightscout/AndroidAPS/pull/3697"
+  },
+  {
+   "id": 2599399933,
+   "user": "mcurly",
+   "created_at": "2025-01-18T00:11:46Z",
+   "body": "Hi, is this going to be implemented from xDrip's side? It is currently working with Juggluco as the source for AAPS (without the intermediation of xDrip). \n\nMy question is, what is the current status of this 'feature'?\n\nWhat are the 'prospects' on this?\n\nThank you."
+  },
+  {
+   "id": 2599421264,
+   "user": "ga-zelle",
+   "created_at": "2025-01-18T00:40:03Z",
+   "body": "Already implemented in both; use latest versions"
+  },
+  {
+   "id": 2600342685,
+   "user": "mcurly",
+   "created_at": "2025-01-19T00:27:20Z",
+   "body": "> Already implemented in both; use latest versions\n\nSorry, I don't quite follow.\n\nYou say both.\n\nI am 'reading' both xDrip and AAPS.\n\nIs this correct?\n\nIf so, why am I 'getting':\n\n![Image](https://github.com/user-attachments/assets/71e71663-43a6-418c-ba8f-c6f85a90cef9)\n\n![Image](https://github.com/user-attachments/assets/18801bef-4b40-40be-8cfc-f205a3b178cb)\n\n![Image](https://github.com/user-attachments/assets/7b05df60-e954-4f5c-a8f9-0a1fac2f5871)\n\nCan provide logs if you wish."
+  },
+  {
+   "id": 2600356667,
+   "user": "olorinmaia",
+   "created_at": "2025-01-19T00:30:07Z",
+   "body": "You need to send directly from Juggluco to AAPS. xDrip isn't updated yet. "
+  },
+  {
+   "id": 2600358529,
+   "user": "mcurly",
+   "created_at": "2025-01-19T00:34:15Z",
+   "body": "@olorinmaia , thank you.\n\nI was indeed using it.\n\nJuggluco is indeed working as expected.\n\nCan anyone explain why @ga-zelle claimed it was implemented? (on 'both'???)\n\nWhat did it mean (implemented??)"
+  },
+  {
+   "id": 2600378877,
+   "user": "ga-zelle",
+   "created_at": "2025-01-19T01:23:54Z",
+   "body": "I am sorry. I had heard from others that it also was implemented in xDrip - or at least the **Libre2 Native** was usable for backward compatibility as mentioned above."
+  },
+  {
+   "id": 2600379836,
+   "user": "mcurly",
+   "created_at": "2025-01-19T01:28:42Z",
+   "body": "Ok. Already returned to juggluco. Currently it's working as expected with\r\njuggluco and AAPS.\r\n\r\nA domingo, 19/01/2025, 01:24, ga-zelle ***@***.***> escreveu:\r\n\r\n> I am sorry. I had heard from others that it also was implemented in xDrip\r\n> - or at least the *Libre2 Native* was usable for backward compatibility\r\n> as mentioned above.\r\n>\r\n> —\r\n> Reply to this email directly, view it on GitHub\r\n> <https://github.com/NightscoutFoundation/xDrip/issues/3841#issuecomment-2600378877>,\r\n> or unsubscribe\r\n> <https://github.com/notifications/unsubscribe-auth/AB6VT3ENTYDTJPYUJRVSDO32LL5EBAVCNFSM6AAAAABUOVNE76VHI2DSMVQWIX3LMV43OSLTON2WKQ3PNVWWK3TUHMZDMMBQGM3TQOBXG4>\r\n> .\r\n> You are receiving this because you commented.Message ID:\r\n> ***@***.***>\r\n>\r\n"
+  },
+  {
+   "id": 2612248746,
+   "user": "jamorham",
+   "created_at": "2025-01-24T11:00:22Z",
+   "body": "Does xDrip need to be updated here? As far as I understand it this issue is due to AAPS not recognizing the source information string which xDrip provides for Libre2 and that this has now been resolved on the AAPS side. Please let me know if my understanding of this is not correct?"
+  },
+  {
+   "id": 2612279697,
+   "user": "ga-zelle",
+   "created_at": "2025-01-24T11:17:51Z",
+   "body": "It is unclear to me what source information xDrip reports for Libre 3."
+  },
+  {
+   "id": 2612289811,
+   "user": "mcurly",
+   "created_at": "2025-01-24T11:23:35Z",
+   "body": "Hello, and thank you for you interest in this issue.\r\n\r\nIf it would be only on AAPS side (which I confirm to work with standalone\r\njuggluco, and not working with xDrip either with OOP OR with juggluco as\r\n\"decrypters\"), my guess would be that it would also be an issue with xDrip\r\nside...\r\n\r\nMight be wrong here.\r\n\r\nDo you need logs? ***@***.***)?\r\n\r\nxDrip's?\r\n\r\nAAPS?\r\n\r\njuggluco 's as well maybe?\r\n\r\n\r\n\r\nThank you\r\n\r\n\r\nA sexta, 24/01/2025, 11:00, JamOrHam ***@***.***> escreveu:\r\n\r\n> Does xDrip need to be updated here? As far as I understand it this issue\r\n> is due to AAPS not recognizing the source information string which xDrip\r\n> provides for Libre2 and that this has now been resolved on the AAPS side.\r\n> Please let me know if my understanding of this is not correct?\r\n>\r\n> —\r\n> Reply to this email directly, view it on GitHub\r\n> <https://github.com/NightscoutFoundation/xDrip/issues/3841#issuecomment-2612248746>,\r\n> or unsubscribe\r\n> <https://github.com/notifications/unsubscribe-auth/AB6VT3FPIGT2DPGGWZ2D3WL2MIMNZAVCNFSM6AAAAABUOVNE76VHI2DSMVQWIX3LMV43OSLTON2WKQ3PNVWWK3TUHMZDMMJSGI2DQNZUGY>\r\n> .\r\n> You are receiving this because you commented.Message ID:\r\n> ***@***.***>\r\n>\r\n"
+  },
+  {
+   "id": 2612322121,
+   "user": "miklosz",
+   "created_at": "2025-01-24T11:40:45Z",
+   "body": "> Does xDrip need to be updated here? As far as I understand it this issue is due to AAPS not recognizing the source information string which xDrip provides for Libre2 and that this has now been resolved on the AAPS side. Please let me know if my understanding of this is not correct?\n\nOh, defnitely there's a change required in xDrip.\nAs described initially - the issue is when using xDrip is collecting data from Libre2 (and 3 I assume) sensors with data source set as \"LimiTTer\" it should identify the source as Libre2 when sending data to AAPS\n\nNow it's sending LIBRE_1_OTHER or LIBRE_1_LIMMITER\n\n> AAPS expects `Libre2` or `Libre3` in `com.eveningoutpost.dexdrip.Extras.SourceInfo` to be able to properly identify Libre 2 or 3 for full SMB support in AAPS 3.3\n\n\n"
+  },
+  {
+   "id": 2612463951,
+   "user": "jamorham",
+   "created_at": "2025-01-24T12:53:22Z",
+   "body": "@miklosz The identifiers `LIBRE_1_OTHER` and `LIBRE_1_LIMMITER` don't exist in xDrip. Can you explain what you're referring to?"
+  },
+  {
+   "id": 2612800907,
+   "user": "miklosz",
+   "created_at": "2025-01-24T15:29:21Z",
+   "body": "@jamorham sorry for the misseunderstading, I got those from AAPS log.\n\nAlso this comment: https://github.com/nightscout/AndroidAPS/issues/3589#issuecomment-2526201582\n\nWhat are the identifiers sent from xDrip when using direct connection to Libre2 sensor (Limitter)?\nHow can I check it my setup?\n\n"
+  },
+  {
+   "id": 2612930061,
+   "user": "mcurly",
+   "created_at": "2025-01-24T16:29:50Z",
+   "body": "> [@miklosz](https://github.com/miklosz) The identifiers `LIBRE_1_OTHER` and `LIBRE_1_LIMMITER` don't exist in xDrip. Can you explain what you're referring to?\n\nHello, \n\nCan you please confirm that xDrip is sending the correct identifiers to AAPS. \n\nOr at least tell me how could I test it on this side without losing the current working (expected) behavior from AAPS? (Which is being able to use libre 2 sensors (and 3 perhaps, since I am only using one sensor type currently) as SMB's source...)\n\nI can install xDrip + OOP + AAPS combo on another phone maybe... \n\nBTW which identifiers should be present (if any) on xDrip's side? \n\nThank you. "
+  },
+  {
+   "id": 2613111337,
+   "user": "olorinmaia",
+   "created_at": "2025-01-24T18:07:38Z",
+   "body": "AAPS 3.3.1.x expects `Libre2` or `Libre2 Native` or `Libre3` in `com.eveningoutpost.dexdrip.Extras.SourceInfo` to be able to properly identify Libre 2 or 3 for full SMB support.\n\nI don't think it's relevant what xDrip is sending now, if Libre 2 or Libre 3 can be recognized by xDrip the content in the inter-app broadcast should be of above.\n\nIf it is relevant what xDrip now is sending in .Sourceinfo in broadcast someone with Libre2 and 3 and sending BG from xDrip (not Juggluco) could provide AAPS logfiles as it is logged there."
+  },
+  {
+   "id": 2613135618,
+   "user": "olorinmaia",
+   "created_at": "2025-01-24T18:22:53Z",
+   "body": "Also see https://github.com/nightscout/AndroidAPS/pull/3697 where `Libre2 Native` was added also for 3.3.1.0. So Libre users should upgrade to latest AAPS 3.3.1.3 to make sure latest identifier is included.\n\nProblem with Libre2/3 is that it seems to be many ways to get the BG to AAPS.. If there are multiple methods to use Libre 2/3 in xDrip+ and to then broadcast to AAPS, all must be updated to match the identifiers configured in AAPS 3.3.1.x"
+  },
+  {
+   "id": 2614089180,
+   "user": "mcurly",
+   "created_at": "2025-01-25T20:26:04Z",
+   "body": "> AAPS 3.3.1.x expects `Libre2` or `Libre2 Native` or `Libre3` in `com.eveningoutpost.dexdrip.Extras.SourceInfo` to be able to properly identify Libre 2 or 3 for full SMB support.\n> \n> I don't think it's relevant what xDrip is sending now, if Libre 2 or Libre 3 can be recognized by xDrip the content in the inter-app broadcast should be of above.\n> \n> If it is relevant what xDrip now is sending in .Sourceinfo in broadcast someone with Libre2 and 3 and sending BG from xDrip (not Juggluco) could provide AAPS logfiles as it is logged there.\n\n\nI think I should be clear of which libre 'version' am I using right now. It is FreeStyle Libre 2 plus (+).\n\nWhat is somehow 'odd', is that when I checked AAPS logs, and at that time I was having glucose data from xDrip, I could not find any such 'ids' which AAPS would be expecting. Now I am using juggluco and since AAPS is working as 'expected' I did not take time to verify which of the IDs were present on AAPS logs.\n\nYet I think I could check that out if needed. (I mean logs from both scenarios). As I said above/before, somehow it would be a setback for me to go and have to replace juggluco with xDrip and check those logs out. But if it would be necessary I would not mind and do it. OK?\n\n\n> Also see [nightscout/AndroidAPS#3697](https://github.com/nightscout/AndroidAPS/pull/3697) where `Libre2 Native` was added also for 3.3.1.0. So Libre users should upgrade to latest AAPS 3.3.1.3 to make sure latest identifier is included.\n> \n> Problem with Libre2/3 is that it seems to be many ways to get the BG to AAPS.. If there are multiple methods to use Libre 2/3 in xDrip+ and to then broadcast to AAPS, all must be updated to match the identifiers configured in AAPS 3.3.1.x\n\nHere I cannot comment. Because I am not that much 'into' xDrip's 'guts'. And by the way, not that much 'into' any source-code at all… I can only agree with you @olorinmaia when you state that any such 'fix' would have to be applied to all the source code instances where t"
+  },
+  {
+   "id": 2629554993,
+   "user": "parapenT1sta",
+   "created_at": "2025-02-02T21:05:38Z",
+   "body": "I think this was solved in the latest nightly version: https://github.com/NightscoutFoundation/xDrip/commit/f6bd8e58c921c585f198e96ce14482fa7019e097"
+  },
+  {
+   "id": 2629557864,
+   "user": "Navid200",
+   "created_at": "2025-02-02T21:14:34Z",
+   "body": "@parapenT1sta  Thanks a lot for that.\nI will close this then.\nWe can always reopen if needed."
+  }
+ ]
+}

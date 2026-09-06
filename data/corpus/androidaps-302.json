@@ -1,0 +1,27 @@
+{
+ "id": 805873501,
+ "repo": "nightscout/AndroidAPS",
+ "number": 302,
+ "title": "NightscoutClient crashes on actual dev",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/302",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-02-10T21:05:36Z",
+ "closed_at": "2021-02-11T22:43:22Z",
+ "comment_count": 2,
+ "body": "AndroidAPS crashes when connecting to heroku\r\n- Upload disabled but NS Profiles active\r\n\r\n```\r\n2021-02-10 21:59:52.899 3759-3759/? E/jamorham nsreceiver: Unknown action! info.nightscout.client.NEW_PROFILE\r\n2021-02-10 21:59:52.901 16773-16773/? E/AndroidRuntime: FATAL EXCEPTION: main\r\n    Process: info.nightscout.androidaps, PID: 16773\r\n    java.lang.IllegalStateException: Data cannot occupy more than 10240 bytes when serialized\r\n        at androidx.work.Data.toByteArrayInternal(Data.java:417)\r\n        at androidx.work.Data$Builder.build(Data.java:846)\r\n        at info.nightscout.androidaps.receivers.DataReceiver.onReceive(DataReceiver.kt:66)\r\n        at androidx.localbroadcastmanager.content.LocalBroadcastManager.executePendingBroadcasts(LocalBroadcastManager.java:313)\r\n        at androidx.localbroadcastmanager.content.LocalBroadcastManager$1.handleMessage(LocalBroadcastManager.java:121)\r\n        at android.os.Handler.dispatchMessage(Handler.java:107)\r\n        at android.os.Looper.loop(Looper.java:214)\r\n        at android.app.ActivityThread.main(ActivityThread.java:7386)\r\n        at java.lang.reflect.Method.invoke(Native Method)\r\n        at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:492)\r\n        at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:980)\r\n```\r\nVersion:\r\n2.8.2.1-dev\r\nc0a90d010-2021.02.09-21.07",
+ "comments": [
+  {
+   "id": 777079911,
+   "user": "AdrianLxM",
+   "created_at": "2021-02-10T22:32:00Z",
+   "body": "@MilosKozak it seems that profiles can be too large to directly send it as Data to a Worker.\r\nShouldn't we just use the `bundleStore` for all Workers started by `DataReceiver`? (I can do that, if you want)"
+  },
+  {
+   "id": 777841642,
+   "user": "MilosKozak",
+   "created_at": "2021-02-11T22:43:09Z",
+   "body": "fixed by https://github.com/nightscout/AndroidAPS/commit/7acaf8a7e67fab5df8139f5be52c55080f3eae49"
+  }
+ ]
+}

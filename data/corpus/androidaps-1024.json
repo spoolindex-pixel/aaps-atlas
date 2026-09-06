@@ -1,0 +1,137 @@
+{
+ "id": 1069719974,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1024,
+ "title": "v2.8.2 - Loop not executing every 5 mins even when a TB needs changing",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1024",
+ "state": "closed",
+ "labels": [
+  "unknown_reason"
+ ],
+ "created_at": "2021-12-02T16:02:14Z",
+ "closed_at": "2021-12-07T11:02:30Z",
+ "comment_count": 21,
+ "body": "Hi,\r\n\r\nLoop is not executing every 5 mins even though a TB needs changing. This is obviously a safety issue if I cannot resolve.\r\n\r\nIf I manually press 'run now' in the loop tab, then loop runs. Or if I set a new action, such as a TT, then loop will run. It is connecting to the pump just fine when it runs. BGs are being pulled from BYOD app fine.\r\n\r\nI've also noticed that Autsens seems to be changing value with each new BG. For example, I saw it change from 120 to 100 to 109 to 115 to 116 consecutively \r\n\r\nActions taken:\r\n\r\n-restared phone multiple times\r\n-cleared AAPS cache\r\n-swapped out battery on pump and changed battery cap\r\n-double checked battery saving is off\r\n\r\nRunning version 2.8.2 of AAPS on Cubot King Kong mini 2 running android 10. Most manual commands are done via Smartwatch (Fossil SE)\r\n\r\nI've attached some log files and a screenshot. Please let me know what other info you need. It has been happening for two days now.\r\n\r\n\r\nThanks,\r\n\r\nSteve\r\n\r\nReporting bugs\r\n--------------\r\n- **Note the precise time the problem occurred** and describe the circumstances and steps that caused\r\n  the problem\r\n- Note the Build version (found in the About dialog in the app, when pressing the three dots in the\r\n  upper-right corner).\r\n- Obtain the app's log files, which can be found on the phone in\r\n  _/storage/emulated/0/Andr\r\n[AndroidAPS._2021-12-02_08-42-56_9.log](https://github.com/nightscout/AndroidAPS/files/7643298/AndroidAPS._2021-12-02_08-42-56_9.log)\r\n[AndroidAPS._2021-12-02_08-42-56_10.log](https://github.com/nightscout/AndroidAPS/files/7643303/AndroidAPS._2021-12-02_08-42-56_10.log)\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/7643304/AndroidAPS.log)\r\noid/data/info.nightscout.androidaps/_\r\n  See https://androidaps.readthedocs.io/en/latest/EN/Usage/Accessing-logfiles.html\r\n- Open an issue at https://github.com/nightscout/AndroidAPS/issues/ne\r\n![IMG_20211202_151304](https://user-images.githubusercontent.com/67839672/144457099-783457ea-75b2-4132-b109-ec1e5e182a5d.jpg)\r\nw\r\n",
+ "comments": [
+  {
+   "id": 984790953,
+   "user": "AureliaJohanna",
+   "created_at": "2021-12-02T16:30:27Z",
+   "body": "Adding more logs\r\n[AndroidAPS._2021-12-02_08-42-56_11.log](https://github.com/nightscout/AndroidAPS/files/7643514/AndroidAPS._2021-12-02_08-42-56_11.log)\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/7643515/AndroidAPS.log)\r\ns "
+  },
+  {
+   "id": 984812804,
+   "user": "AureliaJohanna",
+   "created_at": "2021-12-02T16:55:13Z",
+   "body": "Clearing cache and restarting phone seems to fix temporarily but it then starts missing loop cycles again. Looking at the logs, there seems to be a profile switch event spamming but I could be wrong and have no idea where that's coming from"
+  },
+  {
+   "id": 984962343,
+   "user": "MilosKozak",
+   "created_at": "2021-12-02T20:07:45Z",
+   "body": "same as https://github.com/nightscout/AndroidAPS/issues/1021"
+  },
+  {
+   "id": 984968917,
+   "user": "AureliaJohanna",
+   "created_at": "2021-12-02T20:17:35Z",
+   "body": "> same as #1021\r\n\r\nmy phone storage is not full though (and never has been)? I've only used 40% of its storage capacity"
+  },
+  {
+   "id": 984998378,
+   "user": "AureliaJohanna",
+   "created_at": "2021-12-02T21:02:23Z",
+   "body": "@MilosKozak i spoke to the person that raised the other issue you closed and her phone storage was only 30% full so I’m confused as to how that’s the underlying issue and how I therefore resolve it? "
+  },
+  {
+   "id": 984999518,
+   "user": "MilosKozak",
+   "created_at": "2021-12-02T21:04:08Z",
+   "body": "what time in logs it was not executed?"
+  },
+  {
+   "id": 985007426,
+   "user": "MilosKozak",
+   "created_at": "2021-12-02T21:16:23Z",
+   "body": "sorry, you are right. i didn't realize it's 2.8 version and compared to 3.0\r\nbut the reason is not visible from logs. i see this loop invocation\r\n```\r\n15:23:40.846 [RxCachedThreadScheduler-4] D/APS: [LoopPlugin.invoke():352]: invoke from EventTempTargetChange\r\n15:23:41.268 [RxCachedThreadScheduler-4] D/APS: [LoopPlugin.invoke():583]: invoke end\r\n15:31:48.348 [RxCachedThreadScheduler-4] D/APS: [LoopPlugin.invoke():352]: invoke from EventTempTargetChange\r\n15:31:48.757 [RxCachedThreadScheduler-4] D/APS: [LoopPlugin.invoke():583]: invoke end\r\n15:37:24.490 [RxCachedThreadScheduler-7] D/APS: [LoopPlugin.invoke():352]: invoke from AutosenseCalculation for BgReading{date=1638459425000, date=02/12/2021 15:37, value=126.0, direction=Flat, raw=0.0}\r\n15:37:24.942 [RxCachedThreadScheduler-7] D/APS: [LoopPlugin.invoke():583]: invoke end\r\n15:42:16.799 [RxCachedThreadScheduler-7] D/APS: [LoopPlugin.invoke():352]: invoke from AutosenseCalculation for BgReading{date=1638459725000, date=02/12/2021 15:42, value=123.0, direction=Flat, raw=0.0}\r\n15:42:17.242 [RxCachedThreadScheduler-7] D/APS: [LoopPlugin.invoke():583]: invoke end\r\n15:47:17.938 [RxCachedThreadScheduler-7] D/APS: [LoopPlugin.invoke():352]: invoke from AutosenseCalculation for BgReading{date=1638460025000, date=02/12/2021 15:47, value=119.0, direction=Flat, raw=0.0}\r\n15:47:18.357 [RxCachedThreadScheduler-7] D/APS: [LoopPlugin.invoke():583]: invoke end\r\n15:52:33.456 [RxCachedThreadScheduler-7] D/APS: [LoopPlugin.invoke():352]: invoke from AutosenseCalculation for BgReading{date=1638460325000, date=02/12/2021 15:52, value=115.0, direction=Flat, raw=0.0}\r\n15:52:33.861 [RxCachedThreadScheduler-7] D/APS: [LoopPlugin.invoke():583]: invoke end\r\n15:57:25.012 [RxCachedThreadScheduler-7] D/APS: [LoopPlugin.invoke():352]: invoke from AutosenseCalculation for BgReading{date=1638460625000, date=02/12/2021 15:57, value=114.0, direction=Flat, raw=0.0}\r\n15:57:25.404 [RxCachedThreadScheduler-7] D/APS: [LoopPlugin.invoke():583]: invoke end\r\n"
+  },
+  {
+   "id": 985007556,
+   "user": "AureliaJohanna",
+   "created_at": "2021-12-02T21:16:36Z",
+   "body": "@MilosKozak  I believe it failed run at 20.52 in this log (so I ran a TT to get bit to run) but its been happening for two days for me\r\n\r\n[AndroidAPS._2021-12-02_16-24-17_.log](https://github.com/nightscout/AndroidAPS/files/7645121/AndroidAPS._2021-12-02_16-24-17_.log)\r\n"
+  },
+  {
+   "id": 985008577,
+   "user": "AureliaJohanna",
+   "created_at": "2021-12-02T21:18:14Z",
+   "body": "@MilosKozak I also noticed autosens was behaving in usual way. Changing every new BG but I didn't note the exact time when that happened unfortunately"
+  },
+  {
+   "id": 985012017,
+   "user": "MilosKozak",
+   "created_at": "2021-12-02T21:23:37Z",
+   "body": "no reason visible in new log as well, sorry\r\nyou may try to turn on AUTOSENS logging and provide new logs"
+  },
+  {
+   "id": 985019285,
+   "user": "AureliaJohanna",
+   "created_at": "2021-12-02T21:35:10Z",
+   "body": "@MilosKozak okay I have turned on AUTOSENS logging. Can you confirm that you'd like me to upload another log that includes autosens when I see another missed BG?"
+  },
+  {
+   "id": 985031435,
+   "user": "MilosKozak",
+   "created_at": "2021-12-02T21:54:08Z",
+   "body": "yes"
+  },
+  {
+   "id": 985032456,
+   "user": "MilosKozak",
+   "created_at": "2021-12-02T21:55:33Z",
+   "body": "autosens logging is generating huge amount of data. maybe there will be needed upload more files\r\nturn it off afterwards"
+  },
+  {
+   "id": 985613138,
+   "user": "AureliaJohanna",
+   "created_at": "2021-12-03T15:30:42Z",
+   "body": "@MilosKozak sods law it stopped happening consistently once I turned on autosens log last night!!! However, I think I had two missed loop runs at 11.07 and 11.32 today. Please note that I wasn't with mu daughter at the time so couldn't confirm on Loop Tab of her AAPS phone. I was monitoring via NS Client and NS.\r\n\r\nI've added the logs.\r\n\r\n[AndroidAPS._2021-12-03_00-00-11_68.log](https://github.com/nightscout/AndroidAPS/files/7650576/AndroidAPS._2021-12-03_00-00-11_68.log)\r\n\r\n[AndroidAPS._2021-12-03_00-00-11_64.log](https://github.com/nightscout/AndroidAPS/files/7650574/AndroidAPS._2021-12-03_00-00-11_64.log)\r\n"
+  },
+  {
+   "id": 985613773,
+   "user": "AureliaJohanna",
+   "created_at": "2021-12-03T15:31:31Z",
+   "body": "It may not be related but I also noticed the pump connect time in NS Client said 18m ago at 11.36 and 9m ago at 11.37. I will attach screensho\r\n![Screenshot_20211203-113630](https://user-images.githubusercontent.com/67839672/144628832-a178cb33-8cec-4061-9bbe-aef21471d3d8.jpg)\r\n![Screenshot_20211203-113740](https://user-images.githubusercontent.com/67839672/144628853-73e7ae62-531b-4e95-b466-f32edf1494dd.jpg)\r\nts"
+  },
+  {
+   "id": 985623375,
+   "user": "AureliaJohanna",
+   "created_at": "2021-12-03T15:44:05Z",
+   "body": "Adding additional logs around that time in case you need/want them\r\n[AndroidAPS._2021-12-03_00-00-11_65.log](https://github.com/nightscout/AndroidAPS/files/7650650/AndroidAPS._2021-12-03_00-00-11_65.log)\r\n[AndroidAPS._2021-12-03_00-00-11_66.log](https://github.com/nightscout/AndroidAPS/files/7650652/AndroidAPS._2021-12-03_00-00-11_66.log)\r\n[AndroidAPS._2021-12-03_00-00-11_67.log](https://github.com/nightscout/AndroidAPS/files/7650653/AndroidAPS._2021-12-03_00-00-11_67.log)\r\n[AndroidAPS._2021-12-03_00-00-11_69.log](https://github.com/nightscout/AndroidAPS/files/7650654/AndroidAPS._2021-12-03_00-00-11_69.log)\r\n"
+  },
+  {
+   "id": 985841352,
+   "user": "AureliaJohanna",
+   "created_at": "2021-12-03T21:31:23Z",
+   "body": "Hey\n\nThe phone is used exclusively for AAPS so the only apps I personally\ninitialise are the BYOD app and AndroidAPS.\n\nChrome will sometimes be running in the background.\n\nI once installed an app called OpenSignal to test her schools WiFi but I\ndon’t open that app now.\n\nDid the other user who had similar issue  (#1021) have a similar gap in her\nlogs?\n\nThanks\n\nSteve\n\nOn Fri, 3 Dec 2021 at 20:50, Savek-CC ***@***.***> wrote:\n\n> Looking at the hh:mm entries in the log:\n> 11:07\n> 11:08 +1\n> 11:09 +1\n> 11:10 +1\n> 11:11 +1\n> 11:12 +1\n> 11:13 +1\n> 11:14 +1\n> 11:15 +1\n> 11:16 +1\n> 11:17 +1\n> 11:18 +1\n> 11:19 +1\n> 11:20 +1\n> 11:21 +1\n> 11:22 +1\n> 11:32 +10 !!!\n> 11:33 +1\n> 11:34 +1\n> 11:35 +1\n> 11:36 +1\n> 11:37 +1\n> 11:38 +1\n> 11:39 +1\n> 11:40 +1\n> 11:41 +1\n> 11:42 +1\n> so there is a gap of a full 10 minutes of nothing in those logs where\n> absolutely nothing (not a single log entry) happened - even tough you say\n> battery saving is disabled - there still is a 10 minute gap there; what\n> kind of other apps are running on the device?\n>\n> —\n> You are receiving this because you authored the thread.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/nightscout/AndroidAPS/issues/1024#issuecomment-985819123>,\n> or unsubscribe\n> <https://github.com/notifications/unsubscribe-auth/AQFSNOA3CZG2ALLCPXHE5YLUPEUSTANCNFSM5JHPX6DA>\n> .\n> Triage notifications on the go with GitHub Mobile for iOS\n> <https://apps.apple.com/app/apple-store/id1477376905?ct=notification-email&mt=8&pt=524675>\n> or Android\n> <https://play.google.com/store/apps/details?id=com.github.android&referrer=utm_campaign%3Dnotification-email%26utm_medium%3Demail%26utm_source%3Dgithub>.\n>\n>\n"
+  },
+  {
+   "id": 985854177,
+   "user": "savek-cc",
+   "created_at": "2021-12-03T21:42:05Z",
+   "body": "Just combining all the logs, I don't see a missing loop-plugin invocation at the times mentioned? (combined \"new bg event\" and \"loop invocation\")\r\n\r\n```\r\n11:07:22.001 [IntentService[DataService]] D/DATABASE: [DatabaseHelper.createIfNotExists():396]: BG: New record from: DexcomG6 BgReading{date=1638529627000, date=03/12/2021 11:07, value=151.0, direction=Flat, raw=0.0}\r\n11:07:25.060 [RxCachedThreadScheduler-8] D/APS: [LoopPlugin.invoke():352]: invoke from AutosenseCalculation for BgReading{date=1638529627000, date=03/12/2021 11:07, value=151.0, direction=Flat, raw=0.0}\r\n11:07:31.964 [RxCachedThreadScheduler-8] D/APS: [LoopPlugin.invoke():583]: invoke end\r\n\r\n11:12:23.081 [IntentService[DataService]] D/DATABASE: [DatabaseHelper.createIfNotExists():396]: BG: New record from: DexcomG6 BgReading{date=1638529927000, date=03/12/2021 11:12, value=154.0, direction=FortyFiveUp, raw=0.0}\r\n11:12:25.666 [RxCachedThreadScheduler-8] D/APS: [LoopPlugin.invoke():352]: invoke from AutosenseCalculation for BgReading{date=1638529927000, date=03/12/2021 11:12, value=154.0, direction=FortyFiveUp, raw=0.0}\r\n11:12:26.124 [RxCachedThreadScheduler-8] D/APS: [LoopPlugin.invoke():583]: invoke end\r\n\r\n11:17:19.167 [IntentService[DataService]] D/DATABASE: [DatabaseHelper.createIfNotExists():396]: BG: New record from: DexcomG6 BgReading{date=1638530227000, date=03/12/2021 11:17, value=146.0, direction=Flat, raw=0.0}\r\n11:17:21.772 [RxCachedThreadScheduler-8] D/APS: [LoopPlugin.invoke():352]: invoke from AutosenseCalculation for BgReading{date=1638530227000, date=03/12/2021 11:17, value=146.0, direction=Flat, raw=0.0}\r\n11:17:22.221 [RxCachedThreadScheduler-8] D/APS: [LoopPlugin.invoke():583]: invoke end\r\n\r\n11:22:22.936 [IntentService[DataService]] D/DATABASE: [DatabaseHelper.createIfNotExists():396]: BG: New record from: DexcomG6 BgReading{date=1638530527000, date=03/12/2021 11:22, value=142.0, direction=Flat, raw=0.0}\r\n11:22:25.531 [RxCachedThreadScheduler-8] D/APS: [LoopPlugin.invoke():352]: invoke"
+  },
+  {
+   "id": 985866264,
+   "user": "savek-cc",
+   "created_at": "2021-12-03T21:49:16Z",
+   "body": "@MilosKozak I wonder if it's throwing an exception somewhere (shortly after, as the only thing from the contraints that is checked is the IOB) after https://github.com/nightscout/AndroidAPS/blob/2.8.2/app/src/main/java/info/nightscout/androidaps/plugins/aps/openAPSSMB/OpenAPSSMBPlugin.java#L204\r\nThe complete output in the log there is:\r\n```\r\n11:07:31.962 [RxCachedThreadScheduler-8] D/APS: [Profiler.log():13]: >>> getMealData() <<< executed in 6521 miliseconds\r\n11:07:31.962 [RxCachedThreadScheduler-8] D/CONSTRAINTS: [Constraint.setIfSmaller():60]: Setting because of smaller value 1111111.0 -> 1.7 (Limiting IOB to 1.7 U because of max value in preferences)[Safety]\r\n11:07:31.963 [RxCachedThreadScheduler-8] D/AUTOSENS: [IobCobCalculatorPlugin.getLastAutosensData():714]: AUTOSENSDATA null: data is old (OpenAPSPlugin) size()=390 lastdata=03/12/2021 01:33:00\r\n11:07:31.964 [RxCachedThreadScheduler-8] D/APS: [LoopPlugin.invoke():583]: invoke end\r\n```"
+  },
+  {
+   "id": 987817065,
+   "user": "MilosKozak",
+   "created_at": "2021-12-07T11:02:30Z",
+   "body": "the root cause is too much concurrent changes in DB which is preventing AS calculation to finish.\r\nI'm unable to resolve it in 2.8\r\nIn 3.0 this has been improved a lot and there is more usefull logging in this area. Wait for 3.0 and then create new issue if the problem persists. "
+  }
+ ]
+}

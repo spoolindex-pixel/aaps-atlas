@@ -1,0 +1,87 @@
+{
+ "id": 286218474,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 257,
+ "title": "xDrip did not spoke the trend after activating the setting in last nigthly (05.01)",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/257",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2018-01-05T08:03:39Z",
+ "closed_at": "2018-01-22T22:06:50Z",
+ "comment_count": 12,
+ "body": "The trend will be not used after put the setting on \"bg_to_speech_trend\". Activated the extra Logging for BgToSpeech:v, which shows no more information, and only output for example \"Calculated text: 102\"\r\n\r\nI'm on german language, but seen that the trend at the moment is hardcoded given without translation, so I did not expect that this is the problem.\r\n\r\nStopping at the moment, as this is not my class, but if you want I can investigate further at evening (if no other has time for it wich are more familiar with the class)",
+ "comments": [
+  {
+   "id": 355684115,
+   "user": "jamorham",
+   "created_at": "2018-01-05T22:34:56Z",
+   "body": "Can you describe what you heard and what you expected to hear? If you enable the speech it should then speak an example so testing should be easy."
+  },
+  {
+   "id": 355686875,
+   "user": "MasterPlexus",
+   "created_at": "2018-01-05T22:49:58Z",
+   "body": "I expect to hear the glucose value, and in addition the trend. This is new implemented as far as I see, and I activated it in the speech setting area. The value is spoken, but not the trend arrow..."
+  },
+  {
+   "id": 357625199,
+   "user": "jamorham",
+   "created_at": "2018-01-15T09:21:23Z",
+   "body": "Can you recheck this in the latest nightly? When you switch on the speak readings setting it should speak an example after a few seconds as well."
+  },
+  {
+   "id": 357653343,
+   "user": "MasterPlexus",
+   "created_at": "2018-01-15T11:13:01Z",
+   "body": "I tested it. The result is:\r\n- set \"speak trend arrow name\" to marked: \"einhudertsechzig\"\r\n- set also \"speak glucose value twice\" to marked: \"einhundertsechzig\"\r\n- set \"Speak everything twice\" to marked: \"einhudertsechzig einhundertsechzig\"\r\n- same behavior if a new value was read\r\n\r\nSo for me it looks like the to first two markable settings after the on/off switch are not respected but the \"everything twice\" is respected. So the question is, is that only on my phone, or did other have the same issue? Did you hear the arrow name?\r\n"
+  },
+  {
+   "id": 359469002,
+   "user": "MasterPlexus",
+   "created_at": "2018-01-22T15:58:05Z",
+   "body": "OK, I found the point which is wrong. In bgSpeach the constructtext is not right maintained, because the trend will be added only if not mgdl is used (so only in mol it will be add). I'll change that, and will also try to implement translation, and will made than a Pull request if ok for you."
+  },
+  {
+   "id": 359488602,
+   "user": "jamorham",
+   "created_at": "2018-01-22T16:49:11Z",
+   "body": "Ok this is very useful, can you point me to the line of code concerned? Yes translation would be good too.\r\n\r\nThanks.\r\n\r\n"
+  },
+  {
+   "id": 359526898,
+   "user": "MasterPlexus",
+   "created_at": "2018-01-22T18:55:10Z",
+   "body": "Its set in the elseclause which handles only if mgdl is not true:\r\nhttps://github.com/NightscoutFoundation/xDrip/blob/74b02dedb1b3d3ec7db02f21d8e9d97618c42cb3/app/src/main/java/com/eveningoutpost/dexdrip/utils/BgToSpeech.java#L114\r\n\r\nand also this line for double speak:\r\nhttps://github.com/NightscoutFoundation/xDrip/blob/74b02dedb1b3d3ec7db02f21d8e9d97618c42cb3/app/src/main/java/com/eveningoutpost/dexdrip/utils/BgToSpeech.java#L121\r\n\r\nthis should put to the end.\r\n\r\nUnfortunately I have a small lack in my knowledge about using the getString(R.String.xxx) within a static function. Did you implement a standard way within xDrip+ to make it possible to use the app resource, or did I have to made a special context Class for it? "
+  },
+  {
+   "id": 359559050,
+   "user": "jamorham",
+   "created_at": "2018-01-22T20:46:34Z",
+   "body": "\r\n```\r\n  xdrip.getAppContext().getString(R.string....)\r\n\r\n```"
+  },
+  {
+   "id": 359559345,
+   "user": "jamorham",
+   "created_at": "2018-01-22T20:47:41Z",
+   "body": "^ Nice catch on the if/else I was blind to that when I checked earlier!"
+  },
+  {
+   "id": 359567939,
+   "user": "MasterPlexus",
+   "created_at": "2018-01-22T21:18:12Z",
+   "body": "Somtimes it is in that way... Blind for the mistaces we made. Could not count the time of bugs I created wich are quite simple, but not viewable forme. And if I found them later, I could cry ;)\r\n\r\nAnyhow, startet to implement the translate. Will give tomorrow the pull request after some tests."
+  },
+  {
+   "id": 359575404,
+   "user": "jamorham",
+   "created_at": "2018-01-22T21:43:32Z",
+   "body": "Ok, I want to include the fix in today's nightly so I will commit the fix for trend and repeat twice and I would be very grateful if you can contribute the strings and translation."
+  },
+  {
+   "id": 359584538,
+   "user": "MasterPlexus",
+   "created_at": "2018-01-22T22:06:50Z",
+   "body": "Oh, I was faster then I think ;) May you can use this pull:\r\nhttps://github.com/NightscoutFoundation/xDrip/pull/276\r\n"
+  }
+ ]
+}

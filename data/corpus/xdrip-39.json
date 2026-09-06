@@ -1,0 +1,99 @@
+{
+ "id": 191166317,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 39,
+ "title": "Erratic xDrip battery estimates",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/39",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2016-11-23T01:05:48Z",
+ "closed_at": "2017-01-12T04:47:35Z",
+ "comment_count": 14,
+ "body": "I recently updated my circuit to suit the xBridge2 firmware with battery charge indicator resistors. Initially it appeared to be working fine, but after my first charge/discharge cycle I'm getting weird results.\r\n\r\nOvernight off a low amp (computer) USB port it wouldn't go above around 40% charge. This morning it depleted quickly to 20%. I just now plugged it into a 1A phone charger and it immediately jumped to 79%. It quickly charged to 100% after that, but when I disconnected it dropped almost immediately to 84%.\r\n\r\nWhat troubleshooting steps can I take? Any ideas on what might be wrong?\r\n\r\nI'm using the recommended resistors from the pdf (10k and 27k, 1/2 Watt metal film). But I'm not using the Adafruit charger. I'm using a Chinese alternative, battery in parallel with the Wixel, and a 1A Li-Po if it helps.",
+ "comments": [
+  {
+   "id": 262625532,
+   "user": "jamorham",
+   "created_at": "2016-11-23T20:43:32Z",
+   "body": "Which wixel firmware are you using exactly?"
+  },
+  {
+   "id": 262628520,
+   "user": "square-eyes",
+   "created_at": "2016-11-23T20:59:09Z",
+   "body": "This one https://github.com/jstevensog/wixel-sdk/tree/master/apps/xBridge2\r\n\r\nI'm not sure how to find the exact version though."
+  },
+  {
+   "id": 262630000,
+   "user": "tzachi-dar",
+   "created_at": "2016-11-23T21:06:36Z",
+   "body": "I would start with measuring the voltage that the battery has.\r\nCan you measure the voltage when charging and when you think it is fully charged?\r\n"
+  },
+  {
+   "id": 262630060,
+   "user": "square-eyes",
+   "created_at": "2016-11-23T21:06:57Z",
+   "body": "Sure. Will do. That's just a multimeter across the battery in parrallel while it's charging and connected to the Wixel yeah?\r\n"
+  },
+  {
+   "id": 262632383,
+   "user": "tzachi-dar",
+   "created_at": "2016-11-23T21:19:16Z",
+   "body": "By the way, 2 things:\r\n1) What is the maximum current of the charger?\r\n2) I think that the parallel approach is not correct (I understand that parallel means that if there is no charging the battery will continue to supply power to the wixel until it is completely empty. As far as I know, this is not allowed to do to a lipo battery, although some batteries might be protected against that)."
+  },
+  {
+   "id": 262635273,
+   "user": "square-eyes",
+   "created_at": "2016-11-23T21:33:43Z",
+   "body": "1. Not too sure I got [this one](https://www.aliexpress.com/item/WHOLESALE-1PC-LOT-TP4056-1A-Lipo-Battery-Charging-Board-Charger-Module-lithium-battery-DIY-MICRO-Port/1860201610.html?spm=2114.13010608.0.0.hBnsXf). I'm trying to dig up a little more info but my question on http://electronics.stackexchange.com was removed :( - I'll see what I can find\r\n2. I used the circuit from the PDF. The only difference is the Wixel takes power off the battery. Does the Adafruit have a special switching circuit behind those load terminals? Is that the difference? I got my Li-Po out of a mobile charge bank of a reputable manufacturer so it's probably a pretty decent battery. i.e. it wasn't a no name Ali Express quad copter Li-Po."
+  },
+  {
+   "id": 262640507,
+   "user": "tzachi-dar",
+   "created_at": "2016-11-23T22:00:50Z",
+   "body": "The adafruit has 6 pins: 2 input, 2 battery 2 for the load.\r\nThis one: http://www.hotmcu.com/tp4056-micro-usb-5v-1a-lithium-battery-charger-with-protection-p-176.html also has 6 pins. \r\nIf yours does not have 6 pins than I think it can not be used with all batteries. (I don't know if your battery is short protected.\r\n\r\nAccording to: http://thedronegirl.com/2015/02/07/lipo-battery/\r\n\r\n9. Never discharge a LiPo battery below 3.0v per cell. Ideally you never want to go below 3.2v per cell to maintain a healthy battery. 2.9v per cell and lower is causing permanent damage.\r\n\r\nI would try doing a short circuit on the battery. If it will start burning, my advice is don't use it. if nothing happens, you can see if voltage goes under 3.0 volts.\r\nPlease note a short circuit of a lipo is *very dangerous*. See https://www.youtube.com/watch?v=RVlqaMGDNcI for example."
+  },
+  {
+   "id": 262642259,
+   "user": "square-eyes",
+   "created_at": "2016-11-23T22:10:00Z",
+   "body": "OK I'll look to get a 6 pin one for safety. I'm not planning on shorting my Li-Po any time soon :) Back to the question, could my implementation conceivably be causing the odd readings?\r\n\r\nI see the page you linked also says \"8. Never overcharge a LiPo battery. Typically a full charge is 4.2v per cell. Never “trickle” charge a LiPo battery.\" - I wonder if a low amp USB charger is considered trickle charging."
+  },
+  {
+   "id": 262643303,
+   "user": "tzachi-dar",
+   "created_at": "2016-11-23T22:15:52Z",
+   "body": "I did a short on a few lipos. For most of them nothing happened. One kind started burning immediately, and I simply don't use it. Better to know what you are using than hope there will be no short circuit."
+  },
+  {
+   "id": 271984962,
+   "user": "jamorham",
+   "created_at": "2017-01-11T20:30:00Z",
+   "body": "I am assuming that the issue originally raised here is related to the xBridge hardware and that xDrip+ is displaying the battery level as supplied to it by the xBridge device and so there isn't a bug in the app which would need resolving.\r\n\r\n "
+  },
+  {
+   "id": 272039725,
+   "user": "square-eyes",
+   "created_at": "2017-01-12T00:28:50Z",
+   "body": "Maybe, maybe not. It's possible my battery is flakey. I still see it charge from ~50% up to 100 very quickly .Then when taken off the charger it drops back to 80% within about 30 minutes. I understand though there are limitations with a voltage divided circuit for this purpose. Additionally under about 50% it drops off pretty quickly (timewise)."
+  },
+  {
+   "id": 272047489,
+   "user": "square-eyes",
+   "created_at": "2017-01-12T01:15:26Z",
+   "body": "I have since replaced the charger which more closely resembles the Adafruit. Still based on the same chip, but one which has load terminals so the Wixel isn't in parrallel with the battery any more. I think it's better but the battery still seems to accelerate in either direction both ends of the scale."
+  },
+  {
+   "id": 272058973,
+   "user": "jstevensog",
+   "created_at": "2017-01-12T02:30:40Z",
+   "body": "Please note, the xBridge2 battery indication is NOT a truly accurate\nmeasurement of battery capacity, it is only an indication.based on battery\nvoltage, not a measurement based on current in/out like most mobile\nphones.  Why?  Because we do not have the circuitry available in\noff-the-shelf lipo charger boards, or the code in the wixel to interrogate\nthem.\n\nTherefore, if you have the bridge on charge, it will show 100% well before\nthis capacity level is actually reached.  And as soon as you take it off\ncharge, the battery voltage will drop rapidly (ie in the next packet\ncapture) to a lower stable value.\n\nThe Adafruit charger includes a red/green LED indication to show if the\nbattery is charging/charged.  You should not remove the bridge from\ncharging until the green LED is lit.  The indication will then stay at 100%\nfor a fair period of time.\n\nUnder the current design, using off the shelf components, we cannot do\nbetter than this rough indication.\nCheers\n\nOn Thu, Jan 12, 2017 at 12:15 PM, Mark Francis <notifications@github.com>\nwrote:\n\n> I have since replaced the charger which more closely resembles the\n> Adafruit in which has load terminals so the Wixel isn't in parrallel with\n> the battery any more. I think it's better but the battery still seems to\n> accelerate in either direction both ends of the scale.\n>\n> —\n> You are receiving this because you are subscribed to this thread.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/39#issuecomment-272047489>,\n> or mute the thread\n> <https://github.com/notifications/unsubscribe-auth/AIQs8yO9Rqca6pc_S3-pBnCFt7z-Vk11ks5rRX6vgaJpZM4K6H3d>\n> .\n>\n\n\n\n-- \nJohn Stevens\n\"You are how you live, not what you have.\"\n"
+  },
+  {
+   "id": 272059554,
+   "user": "square-eyes",
+   "created_at": "2017-01-12T02:34:32Z",
+   "body": "Thanks for the explanation!"
+  }
+ ]
+}

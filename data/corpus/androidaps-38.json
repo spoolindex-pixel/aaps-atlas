@@ -1,0 +1,21 @@
+{
+ "id": 723361492,
+ "repo": "nightscout/AndroidAPS",
+ "number": 38,
+ "title": "Properly validate duration and inform user when sending TBR via SMS",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/38",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2020-10-16T16:26:00Z",
+ "closed_at": "2020-10-25T22:12:50Z",
+ "comment_count": 1,
+ "body": "When sending a TBR via SMS, any duration > 0 may be defined from the perspective of the core application.\r\n\r\nHowever, `Pumptype` defines the property `tbrSetting` as a `DoseSetting`, which contains a `durationStep`. This property prescribes increments of duration in which TBRs should be passed. E.g. a `durationStep` of 30 should only allow for sending durations of 30, 60, etc. \r\n\r\nSince the core only responds with \"Wrong format\" when Pumps invalidate an incorrect duration, users will be confused about what exactly they did wrong, e.g. if they send \"BASAL 1 20\".\r\n\r\nSending a PR shortly to submit a fix for this issue.",
+ "comments": [
+  {
+   "id": 714346316,
+   "user": "bartsopers",
+   "created_at": "2020-10-22T09:02:49Z",
+   "body": "@MilosKozak this has been fixed in #39 and can be closed."
+  }
+ ]
+}

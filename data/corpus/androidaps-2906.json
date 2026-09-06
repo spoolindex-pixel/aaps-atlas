@@ -1,0 +1,47 @@
+{
+ "id": 1940485148,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2906,
+ "title": "[DEV] AAPS sync with AAPSClient slow/unreliable while AAPS screen is off when not charging (V3 API + WS)",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2906",
+ "state": "closed",
+ "labels": [
+  "question - more info needed"
+ ],
+ "created_at": "2023-10-12T17:41:36Z",
+ "closed_at": "2023-10-15T18:11:59Z",
+ "comment_count": 5,
+ "body": "AAPS / AAPSClient 3.2.0-dev-m\r\nBuild: 44b8b30637-2023.10.12\r\nNightscout versjon: \r\nBranch: DEV\r\nVersion: 15.0.0\r\nGIT-Commit: b1eb27e88bf01d41c54fe378506dce96876789a9\r\n\r\nStrange case so I provide steps to reproduce. AAPS is usually carried with screen off in patients pocket while parent is doing changes from AAPSClient (Temp targets, profile changes, carbs etc)\r\n\r\nI noticed today with latest dev, that if AAPS phone screen is turned off and not charging, sync isn't working (or possibly VERY slow) when enacting e.g. profile switches from AAPSClient. Same seem to apply for carbs, TT, etc.\r\n\r\n1) turn of screen AAPS phone\r\n2) make sure AAPS don't have charger cable put in (while charging sync is abit faster, but still slower than when screen is on)\r\n3) enact profile switch from AAPSClient\r\n\r\nResult: \r\nAAPS don't receive profile switch from AAPSclient / NS in 7 minutes or so. Profile switch isn't received before I plug in cable for charging or turn on screen.  \r\n\r\nUpdate: A later test I did profile switch got enacted in AAPS after 8 minutes with screen turned off / no charging. Anyway it's way to slow and unreliable :) If screen is turned on it's fast.\r\n\r\nNote: in v1 API it works as expected.\r\n\r\nLogs:\r\nAAPSClient:\r\n[AndroidAPS_LOG_1697132224757.log.zip](https://github.com/nightscout/AndroidAPS/files/12885564/AndroidAPS_LOG_1697132224757.log.zip)\r\n\r\nAAPS:\r\n[AndroidAPS_LOG_1697133118869.log.zip](https://github.com/nightscout/AndroidAPS/files/12885660/AndroidAPS_LOG_1697133118869.log.zip)\r\n\r\nScreenshot:\r\n![image](https://github.com/nightscout/AndroidAPS/assets/114103483/b144fd09-ea79-4806-b49d-038375628e97)\r\n",
+ "comments": [
+  {
+   "id": 1763156007,
+   "user": "MilosKozak",
+   "created_at": "2023-10-14T19:29:18Z",
+   "body": "well I thought WS went to sleep by android and rewrote WS to be run in background service (branch `nscv3service`)\r\nbut\r\nI realized the main issue was that time on AAPSClient device was ahead of AAPS by seconds!!!!! and the event was received by AAPS before it's validity. then update was triggered by another event ususally within some minutes\r\nSo: please synchronize time on both devices and test again (for me it was working with original dev branch). If you see some issues try the same  with `nscv3service` branch to see if there is an improvement"
+  },
+  {
+   "id": 1763160797,
+   "user": "MilosKozak",
+   "created_at": "2023-10-14T19:46:55Z",
+   "body": "it's possible it is working with v1 because it depends on processing on NS side which take some time"
+  },
+  {
+   "id": 1763223794,
+   "user": "olorinmaia",
+   "created_at": "2023-10-15T00:58:48Z",
+   "body": "My testrig phone is without simcard (Only Wi-Fi), time settings is android default = same as aapsclient phone with simcard. I can't see any time difference. Putting aapsclient phone in flight-mode (only Wi-Fi) doesn't change anything.\r\n\r\nIt makes more sense to me that v3api+ws should run in background service while ws = off does not to save battery (?).\r\n\r\n*Edit: I need to test abit more \r\n\r\n"
+  },
+  {
+   "id": 1763408775,
+   "user": "olorinmaia",
+   "created_at": "2023-10-15T14:35:02Z",
+   "body": "First I double checked that time is same on both devices, minute change in same millisecond and same time settings in android. only difference one of the phones got a simcard. I still experience issue in latest dev.\r\n\r\nSeem like nscv3service is an improvement/fix for this issue when AAPS screen is turned off. \r\n\r\n"
+  },
+  {
+   "id": 1763464800,
+   "user": "MilosKozak",
+   "created_at": "2023-10-15T18:11:59Z",
+   "body": "https://github.com/nightscout/AndroidAPS/pull/2925"
+  }
+ ]
+}

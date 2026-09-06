@@ -1,0 +1,39 @@
+{
+ "id": 199216106,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 53,
+ "title": "xDrip+ gets \"zero slope calibration\"  when calibrating through the add treatment dialog",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/53",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2017-01-06T15:14:27Z",
+ "closed_at": "2017-02-05T18:22:13Z",
+ "comment_count": 4,
+ "body": "This starting happening the other day. I am using a Nexus 6P with android 7.1.1. Whenever I add a BG through the add treatment dialog, I get the \"got zero slope calibration\" error. Any ideas what could be causing this,",
+ "comments": [
+  {
+   "id": 270932522,
+   "user": "jamorham",
+   "created_at": "2017-01-06T15:49:31Z",
+   "body": "Next time you get this can you try adding a BG via the `Add Calibration` menu item and let me know if it gives the same error?\r\n\r\nThanks."
+  },
+  {
+   "id": 270949945,
+   "user": "JonathanM32",
+   "created_at": "2017-01-06T17:01:02Z",
+   "body": "I can confirm that it works via that menu\n\nOn Jan 6, 2017 10:49 AM, \"Jamorham\" <notifications@github.com> wrote:\n\n> Next time you get this can you try adding a BG via the Add Calibration\n> menu item and let me know if it gives the same error?\n>\n> Thanks.\n>\n> —\n> You are receiving this because you authored the thread.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/53#issuecomment-270932522>,\n> or mute the thread\n> <https://github.com/notifications/unsubscribe-auth/AE8C3jIhPl30IkG4JUE5m4r1Fae_6uylks5rPmKMgaJpZM4LczH2>\n> .\n>\n"
+  },
+  {
+   "id": 270963412,
+   "user": "JonathanM32",
+   "created_at": "2017-01-06T18:00:07Z",
+   "body": "Interesting. It just worked through the treatment panel. I guess it's\non/off then. :(\n\nOn Fri, Jan 6, 2017 at 12:00 PM, Jonathan Morris <catslover32@gmail.com>\nwrote:\n\n> I can confirm that it works via that menu\n>\n> On Jan 6, 2017 10:49 AM, \"Jamorham\" <notifications@github.com> wrote:\n>\n>> Next time you get this can you try adding a BG via the Add Calibration\n>> menu item and let me know if it gives the same error?\n>>\n>> Thanks.\n>>\n>> —\n>> You are receiving this because you authored the thread.\n>> Reply to this email directly, view it on GitHub\n>> <https://github.com/NightscoutFoundation/xDrip/issues/53#issuecomment-270932522>,\n>> or mute the thread\n>> <https://github.com/notifications/unsubscribe-auth/AE8C3jIhPl30IkG4JUE5m4r1Fae_6uylks5rPmKMgaJpZM4LczH2>\n>> .\n>>\n>\n\n\n-- \n\nThank You,\nJonathan Morris.\n"
+  },
+  {
+   "id": 276491359,
+   "user": "jamorham",
+   "created_at": "2017-01-31T21:03:52Z",
+   "body": "I've managed to reproduce this bug in testing and identified the code which caused it and I think eliminated it now. Its down to a concurrency issue which is why it sometimes happens and mostly doesn't. The fix will be in the next nightly. Please let me know if you ever see it again after that.\r\n\r\nhttps://github.com/NightscoutFoundation/xDrip/commit/c22a104b4a00fb4fe95029a2209374c7bd663ffa\r\n"
+  }
+ ]
+}

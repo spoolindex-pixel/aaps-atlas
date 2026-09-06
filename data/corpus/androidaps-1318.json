@@ -1,0 +1,21 @@
+{
+ "id": 1136110184,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1318,
+ "title": "[AAPS 3.0.0.1] Fix Medtronic Pump temp basal duration",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1318",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-02-13T16:39:16Z",
+ "closed_at": "2022-02-13T19:01:58Z",
+ "comment_count": 1,
+ "body": "Temp basals are set in pump, but they are not shown in graphs at MainFragment. Temp basal text label is not shown. Temp basal symbol indicates no temp basal is active (even horizontal line).\r\nThin \"vertical needles\" can be observed in basal graph at times when temp basal is starting.\r\n\r\nhttps://github.com/nightscout/AndroidAPS/blob/34c4dc2a980fc62e0800ea4e7d5470ccf4c5ff69/medtronic/src/main/java/info/nightscout/androidaps/plugins/pump/medtronic/MedtronicPumpPlugin.kt#L771\r\n\r\nFunction PumpDbEntryTBR takes durationInSeconds, but parameter given is durationInMinutes.\r\nI changed that to multiply durationInMinutes by 60:\r\n\r\nval tempData = PumpDbEntryTBR(absoluteRate, true, durationInMinutes * 60, tbrType)\r\n\r\nAfter this change, everything works like expected: Temp basals are shown in graph again, temp basal text label shows up and symbol reflects that state whenever temp basals are active in pump.",
+ "comments": [
+  {
+   "id": 1038350597,
+   "user": "MilosKozak",
+   "created_at": "2022-02-13T19:01:58Z",
+   "body": "fixed by https://github.com/nightscout/AndroidAPS/commit/8486277622e89e637911ddb8980e6286e16a7b85 \r\nTHX!"
+  }
+ ]
+}

@@ -1,0 +1,63 @@
+{
+ "id": 2000326796,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3070,
+ "title": "Unwanted loop run when switching targets.",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3070",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-11-18T08:48:33Z",
+ "closed_at": "2023-11-21T13:28:30Z",
+ "comment_count": 8,
+ "body": "The temptarget switch does not happen atomicly. There is an additional loop run triggered - between target changes.\r\n\r\nWhy this is a problem?\r\nHere is exact scenario that happened to me:\r\n\r\nI have set up 'disable smb with high temptarget' for my daughter's aaps and we're successfully using it to prevent overreaction on sneaks, when countering hypos. Eat/drink, then set 'hypo' target of 6.5 for 50 minutes and usually that is enough.\r\n\r\nBut this day after 35 minutes I decided to switch target to 6.0, so aaps could set a bit stronger TBS for the last 15 minutes. So without cancelling target I've set up NEW target of 6.0 for 15 minutes.\r\nBut AAPS did it in two steps: cancel TT, start new TT. Both events triggered loop run. So after cancelling TT AAPS placed a bolus for 'fast rise' that I wanted to prevent with high TT.\r\n\r\nLucky for us this time it was relatively small SMB, so we've managed it without a problem. But happens that predictions for the moment of change are highs so the unwanted SMB can be quite huge and lead to rollercoaster effect.\r\n\r\n![Screenshot_20231118_112555_AAPSClient](https://github.com/nightscout/AndroidAPS/assets/4157587/66993bf7-959e-4393-ad00-48dc94132011)\r\n\r\n![Screenshot_20231118_114528_AAPSClient](https://github.com/nightscout/AndroidAPS/assets/4157587/8c033970-24d6-4c7b-afed-47a60f9e9a64)\r\n\r\nTarget switch must be an atomic operation, without intermediate events and loop runs.\r\n",
+ "comments": [
+  {
+   "id": 1817520837,
+   "user": "painbrain81",
+   "created_at": "2023-11-18T14:16:34Z",
+   "body": "It's true. Same for me. Between target switch aps launch for one moment loop and do smb if set. "
+  },
+  {
+   "id": 1817545705,
+   "user": "swissalpine",
+   "created_at": "2023-11-18T16:02:05Z",
+   "body": "I can confirm this problematic behaviour."
+  },
+  {
+   "id": 1817590172,
+   "user": "MilosKozak",
+   "created_at": "2023-11-18T18:26:59Z",
+   "body": "well is not atomic. loop is triggered by database change and there are 2 changes: end current TT and start new TT.\r\nI'll check the code if this can be improved"
+  },
+  {
+   "id": 1820927956,
+   "user": "MilosKozak",
+   "created_at": "2023-11-21T13:28:30Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/2feaa419a715000eff001e5d58ca12e073cca8f1"
+  },
+  {
+   "id": 1820962103,
+   "user": "justmara",
+   "created_at": "2023-11-21T13:49:34Z",
+   "body": "will that mean that loop will suffer 10 seconds delay every time?"
+  },
+  {
+   "id": 1837132729,
+   "user": "justmara",
+   "created_at": "2023-12-02T12:06:32Z",
+   "body": "got similar issue but with loop suspend event:\r\n![Screenshot_20231202_150220_AAPSClient](https://github.com/nightscout/AndroidAPS/assets/4157587/ba6c162b-fe37-4044-9f36-2c766d9fbd4b)\r\n\r\nHigh TT were set, then loop were suspended, and enabled again later. On start in were triggered ignoring TempTarget so it placed SMB."
+  },
+  {
+   "id": 1837139617,
+   "user": "justmara",
+   "created_at": "2023-12-02T12:41:30Z",
+   "body": "In treatments it is show like if TT were cancelled and then set again right when 'resume loop' event triggered.\r\n\r\n![Screenshot_20231202_154018_AAPSClient](https://github.com/nightscout/AndroidAPS/assets/4157587/d48270ed-71d9-40ca-9e84-4c1539dd1cc6)\r\n"
+  },
+  {
+   "id": 1861842341,
+   "user": "olorinmaia",
+   "created_at": "2023-12-18T23:18:07Z",
+   "body": "@MilosKozak ending/cancelling TT does not trigger loop run due to this change, which is a good thing. I noticed that setting a TT does not trigger loop run anymore in 3.2.0.3. Is that intended?\r\n\r\nIMO setting a TT should trigger loop run. Thoughts? "
+  }
+ ]
+}

@@ -1,0 +1,27 @@
+{
+ "id": 1095207721,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1133,
+ "title": "[3.0-beta11] QuickWizard bolus without carbs entry",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1133",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-01-06T11:03:44Z",
+ "closed_at": "2022-01-06T16:34:28Z",
+ "comment_count": 2,
+ "body": "Rarely it happens that after performing bolus (this time using QuickWizard) there is no carb entry created. In this case it was with dana-rs pump.\r\n\r\n```\r\n08:23:21.787 [RxCachedThreadScheduler-92] D/CORE: [UserEntryLogger$log$2.invoke():45]: USER ENTRY: TREATMENT QuickWizard Raňajky [TherapyEventType(value=BOLUS_WIZARD), Insulin(value=3.4), Gram(value=20)]\r\n```\r\n\r\nLogs: [AndroidAPS.log.zip](https://github.com/nightscout/AndroidAPS/files/7821242/AndroidAPS.log.zip)\r\n\r\n![01](https://user-images.githubusercontent.com/24793786/148371855-4cd2b6ea-af5d-49a6-845a-1529423b1013.png)\r\n![02](https://user-images.githubusercontent.com/24793786/148371877-2ed59264-75d4-40c1-8936-2448d374db57.png)\r\n![03](https://user-images.githubusercontent.com/24793786/148371890-02a485ce-0568-429c-aadc-9b8633dc7df9.png)\r\n\r\n\r\n",
+ "comments": [
+  {
+   "id": 1006598288,
+   "user": "filipwoz",
+   "created_at": "2022-01-06T13:37:03Z",
+   "body": "I experienced today and yesterday the same with the Dash pump - actually quite critical, as the carbs are missing then for the next calculations.\r\nIn my case it was after the normal Bolus Calculator and not only the KH but also the Bolus-Calc entry was missing.\r\n"
+  },
+  {
+   "id": 1006730971,
+   "user": "MilosKozak",
+   "created_at": "2022-01-06T16:34:28Z",
+   "body": "It's pump error\r\n`08:23:28.880 [Thread-26053] W/PUMPBTCOMM: [BLEComm.sendMessage():832]: Reply not received APS_SET_EVENT_HISTORY`\r\n\r\nAnyway, I added error dialog when this happen https://github.com/nightscout/AndroidAPS/commit/54257ef6f0aff7e75329d0d25367e19c82301bec"
+  }
+ ]
+}

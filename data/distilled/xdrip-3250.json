@@ -1,0 +1,20 @@
+{
+ "issue_id": 3250,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/3250",
+ "title": "Invalid G7 start time sent to AAPS",
+ "symptom": "The Classic Status Page shows the start date of the previous sensor while the G5/G6/G7 status page and home screen show the correct sensor age; AAPS shows the same (incorrect) age as the Classic Status Page.",
+ "cause": "xDrip maintains its own internal 'Sensor Start' time for the Classic Status Page and for what it sends to AAPS instead of using the G7 transmitter's reported start. If the old sensor session is not stopped in xDrip when switching to a new G7, that internal timer is not reset and an invalid old start time keeps being broadcast.",
+ "fix": "Use Navid200's PR #3263, which makes xDrip stop basing the displayed/broadcast sensor start on the xDrip session start and instead read the G7 transmitter's start time to update the Classic Status Page and AAPS broadcast. Testers confirmed it corrects the Classic Status Page and AAPS sensor-age/treatment output.",
+ "settings_changed": [],
+ "devices": [
+  "G7"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "aaps",
+  "broadcast"
+ ],
+ "confidence": "high",
+ "evidence_quote": "That PR stops caring about when you start the xDrip session. It looks at the transmitter and updates the classic status page and what is sends to AAPS from it."
+}

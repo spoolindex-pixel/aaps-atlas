@@ -1,0 +1,39 @@
+{
+ "id": 411063605,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 782,
+ "title": "Bluetooth Scan Issue when using 2 versions of XDRIP",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/782",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2019-02-16T11:29:14Z",
+ "closed_at": "2021-02-21T01:37:49Z",
+ "comment_count": 4,
+ "body": "Hi there, I have a problem whereby I have 2 diabetics in our house. I am running xdrip on 2 phones.\r\n\r\nWhen I try to scan for the bluetooth device on iether phone, you have to turn off the other phone before the MiaoMiao will display, its like there is a clash where the other version of xdrip blocks the miaomiao from being seen. (I did have 2 versions on 1 phone (1 as a follower, and one as a variant, but also had the similar issue, so tried in on a seperate phone and have the same issue). \r\n\r\nThis causes an issue when we add a smartwatch as a collector, as the xdrip fails to reconnect to the phone when back in range as it cannot see the bluetooth device.\r\n\r\nIs there a way around this ?",
+ "comments": [
+  {
+   "id": 464469613,
+   "user": "tzachi-dar",
+   "created_at": "2019-02-17T15:20:24Z",
+   "body": "Yes, there is a way around this.\r\n\r\nmiaomiao can not connect to two devices, not much that we can do about it.\r\nBut what we can do, is to have one xdrip (or both) also upload the data to a mongo device.\r\nOnce this is done, you can have the main xdrip read the data from BT and the mongo, and as such, it will always be able to have the correct values.\r\n\r\nI'll create instructions on how to do it, hopefully tonight."
+  },
+  {
+   "id": 464617462,
+   "user": "tzachi-dar",
+   "created_at": "2019-02-18T07:31:53Z",
+   "body": "Here is how to connect the two phones (or phone with watch)\r\n1) open an account on mlab.com, and create a free db.\r\n2) on the watch, go to settings->cloud upload->mongo db\r\n   a) enable nightscout.\r\n   b) enter the mongodb uri\r\n   c) enable \"upload libre transmitter data\"\r\nyou can now watch that data received by this watch is uploaded to the mongo db to a collection called libre.\r\n\r\nTo read the data by the main phone do the following (the main phone):\r\n\r\nOn hw data source select ‘libre wifi’ or ‘libre bluetooth + wifi’\r\nOn the list of receivers, enter the list of raspberry pis and / or the mongodb addresses. For example:\r\n192.168.1.2:50005,mongodb://user:pass@ds11551.mlab.com:11551/nightscout3/libre\r\nReplace nightscout3 with your connection.\r\n"
+  },
+  {
+   "id": 776842465,
+   "user": "Navid200",
+   "created_at": "2021-02-10T16:38:05Z",
+   "body": "@Colingroovey Would you please close this issue?\r\nIf the suggested solution doesn't work for you, would you please respond to the suggestion?\r\nThanks"
+  },
+  {
+   "id": 782778318,
+   "user": "Navid200",
+   "created_at": "2021-02-21T01:37:49Z",
+   "body": "Closing due to inactivity"
+  }
+ ]
+}

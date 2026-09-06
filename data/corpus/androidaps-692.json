@@ -1,0 +1,150 @@
+{
+ "id": 1007304744,
+ "repo": "nightscout/AndroidAPS",
+ "number": 692,
+ "title": "Dev pb with Dana smb and tbr",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/692",
+ "state": "closed",
+ "labels": [
+  "question - more info needed",
+  "dana"
+ ],
+ "created_at": "2021-09-26T07:20:39Z",
+ "closed_at": "2021-11-24T20:32:19Z",
+ "comment_count": 22,
+ "body": "in some cases, the message appear in the loop page, error wrong value about the TBR. \r\nI tried to identify why, and the only thing I can observe was the pump run tbr at 0.19 when aaps want to send for the same % 0.17\r\nWhen this appear, if with the TBR I have a SMB, the SMB will not be send to the pump, until the value become correct for the TBR. \r\nThe pb fixe by himself later during the rise, until the glucose value become stable, and the error show up again. \r\nNever have this issue on the master.\r\nI test with Dash too, and I didn't have the pb. \r\n",
+ "comments": [
+  {
+   "id": 927288020,
+   "user": "MTR93600",
+   "created_at": "2021-09-26T11:21:36Z",
+   "body": "to complet my explanation, every morning I disconnect the pump for the shower, and I got the every time the same message of alerte, error TBR. After that I have to force the connection to the pump several time. Sometime I can get the temp basal true in loop and dana page, sometime it's staying in error for wrong value in loop page.\r\n![photo_2021-09-26_13-17-58](https://user-images.githubusercontent.com/44895345/134805549-a4f67e86-3d72-4fe0-bd0d-02270f819ebe.jpg)\r\n"
+  },
+  {
+   "id": 927295712,
+   "user": "Philoul",
+   "created_at": "2021-09-26T12:14:26Z",
+   "body": "I think it's probably an issue in pump driver.\r\nI also disconnect my pump every morning for my shower (for about 15min), I sometimes reconnect it before the 15min, sometimes pump is automatically reconnected after 15min, but I never got this popup with my Insight."
+  },
+  {
+   "id": 927317419,
+   "user": "MichaelJohnSmith",
+   "created_at": "2021-09-26T14:43:54Z",
+   "body": "I am using a Dana-i with the latest dev.  I also disconnect each morning and do not experience this problem."
+  },
+  {
+   "id": 927334026,
+   "user": "MTR93600",
+   "created_at": "2021-09-26T16:37:24Z",
+   "body": "I'm using Dana-RS"
+  },
+  {
+   "id": 927342093,
+   "user": "MilosKozak",
+   "created_at": "2021-09-26T17:34:36Z",
+   "body": "provide logs when this happen again"
+  },
+  {
+   "id": 927342130,
+   "user": "MilosKozak",
+   "created_at": "2021-09-26T17:34:53Z",
+   "body": "be sure you have all PUMP* logging enabled"
+  },
+  {
+   "id": 927741678,
+   "user": "MTR93600",
+   "created_at": "2021-09-27T10:39:53Z",
+   "body": "In the file \r\n[TBR pb.log](https://github.com/nightscout/AndroidAPS/files/7235917/TBR.pb.log)\r\n"
+  },
+  {
+   "id": 927743187,
+   "user": "MTR93600",
+   "created_at": "2021-09-27T10:42:34Z",
+   "body": "if I have to make a focus on the log here you have the part with the settempbasalpercent failed : \r\n\r\n12:21:55.511 [Thread-791] D/PUMPBTCOMM: [BLEComm.connect():95]: Initializing BLEComm.\r\n12:21:55.512 [Thread-791] D/PUMPBTCOMM: [BLEComm.connect():130]: Trying to create a new connection from: Connection needed\r\n12:21:55.521 [Thread-791] D/PUMPBTCOMM: [BLEComm.setCharacteristicNotification():280]: setCharacteristicNotification\r\n12:21:56.031 [main] D/CONSTRAINTS: [StorageConstraintPlugin.isClosedLoopAllowed():40]: Internal storage free (Mb):115880\r\n12:21:56.032 [main] D/CONSTRAINTS: [StorageConstraintPlugin.isClosedLoopAllowed():40]: Internal storage free (Mb):115880\r\n12:21:56.036 [main] D/CORE: [OverviewFragment.updateGUI():718]: Adjusted target. Profile: 90.0 APS: 85.0\r\n12:21:56.521 [Thread-791] D/PUMPQUEUE: [QueueThread.run():95]: connecting 1\r\n12:21:56.671 [Binder:1261_6] D/PUMPBTCOMM: [BLEComm.onConnectionStateChangeSynchronized():358]: onConnectionStateChange\r\n12:21:56.674 [Binder:1261_5] D/PUMPBTCOMM: [BLEComm$mGattCallback$1.onServicesDiscovered():237]: onServicesDiscovered\r\n12:21:56.674 [Binder:1261_5] D/PUMPBTCOMM: [BLEComm.getSupportedGattServices():326]: getSupportedGattServices\r\n12:21:56.675 [Binder:1261_5] D/PUMPBTCOMM: [BLEComm.setCharacteristicNotification():280]: setCharacteristicNotification\r\n12:21:56.931 [Binder:1261_5] D/PUMPBTCOMM: [BLEComm.sendConnect():517]: >>>>> ENCRYPTION__PUMP_CHECK (0x00) A5 A5 0C DF  F2 DC 9B B7  B8 EE C3 B8  EF B4 CA 4A  45 5A 5A \r\n12:21:57.157 [Binder:1261_5] D/PUMPBTCOMM: [BLEComm.processConnectResponse():549]: <<<<< ENCRYPTION__PUMP_CHECK V3 (OK) 02 00 4F 4B  4D 05 50 11  18 \r\n12:21:57.158 [Binder:1261_5] D/PUMPBTCOMM: [BLEComm.sendV3PairingInformation():644]: >>>>> ENCRYPTION__TIME_INFORMATION A5 A5 03 DF  F3 88 DE B3  5A 5A \r\n12:21:57.291 [Binder:1261_5] D/PUMPBTCOMM: [BLEComm.processEncryptionResponse():650]: <<<<< ENCRYPTION__TIME_INFORMATION 02 01 00 \r\n12:21:57.291 [Binder:1261_5] D/PUMPBTCOMM: [BLEComm.processEnc"
+  },
+  {
+   "id": 928007938,
+   "user": "MTR93600",
+   "created_at": "2021-09-27T15:55:48Z",
+   "body": "question : the pb can come from this part of DanaRSPlugin ?\r\nline 420 : \r\ntemporaryBasalStorage.add(PumpSync.PumpState.TemporaryBasal(dateUtil.now(), T.mins(durationInMinutes.toLong()).msecs(), percent.toDouble(), false, tbrType, 0L, 0L))\r\nval connectionOK: Boolean = if (durationInMinutes == 15 || durationInMinutes == 30) {\r\n            danaRSService?.tempBasalShortDuration(percentAfterConstraint, durationInMinutes)\r\n                ?: false\r\n        } else {\r\n            val durationInHours = max(durationInMinutes / 60, 1)\r\n            danaRSService?.tempBasal(percentAfterConstraint, durationInHours) ?: false\r\n        }"
+  },
+  {
+   "id": 929589160,
+   "user": "MilosKozak",
+   "created_at": "2021-09-28T20:12:54Z",
+   "body": "i tested everything again and it works for me.\r\nAnyway I added more logging to this part of code.\r\nPlease try again with most recent dev and provide logs again"
+  },
+  {
+   "id": 957945543,
+   "user": "MTR93600",
+   "created_at": "2021-11-02T16:58:25Z",
+   "body": "Hi,\r\nI'm using the beta 2, and I still have the TBR pb, with most of the time no smb. I'm using Dana RS. I don't have this issue on the master. I know you didn't reproduce the pb, and it's not like I never receive smb, but the false come to often to ovoid hyperglycemia during the post meal time. I look in the code and can not find anything related with this...  \r\n"
+  },
+  {
+   "id": 957945954,
+   "user": "MTR93600",
+   "created_at": "2021-11-02T16:58:57Z",
+   "body": "[log.log](https://github.com/nightscout/AndroidAPS/files/7462643/log.log)\r\n"
+  },
+  {
+   "id": 957946119,
+   "user": "MTR93600",
+   "created_at": "2021-11-02T16:59:10Z",
+   "body": "![photo_2021-11-02_17-55-46](https://user-images.githubusercontent.com/44895345/139911025-2a246d7f-b296-471f-9e3c-886c77cac941.jpg)\r\n"
+  },
+  {
+   "id": 957962138,
+   "user": "MilosKozak",
+   "created_at": "2021-11-02T17:17:59Z",
+   "body": "this time setting of TBR really failed (reported by pump)\r\nas this usually works, i'd try update the firmware in pump"
+  },
+  {
+   "id": 958681906,
+   "user": "MTR93600",
+   "created_at": "2021-11-03T06:22:44Z",
+   "body": "i have the V3, I didn't heard about an update. And more importantly, new firmware will work with aaps ? can you confirm which version you are using please"
+  },
+  {
+   "id": 958730157,
+   "user": "MilosKozak",
+   "created_at": "2021-11-03T08:12:46Z",
+   "body": "you may try this https://play.google.com/store/apps/details?id=com.cozmo.anydana.upgradekit&hl=cs"
+  },
+  {
+   "id": 958769120,
+   "user": "MTR93600",
+   "created_at": "2021-11-03T09:16:25Z",
+   "body": "I did that already to get the v3 when you update the drive in the aaps master 2.8.2"
+  },
+  {
+   "id": 962448190,
+   "user": "CaroGo",
+   "created_at": "2021-11-06T12:59:41Z",
+   "body": "I observed the same issue.... Looks like this... \r\n![Screenshot_20211103-204208_AndroidAPS](https://user-images.githubusercontent.com/22258719/140610449-e1315d34-fd1e-44c7-9270-77856cf5fbdd.jpg)\r\n"
+  },
+  {
+   "id": 965760289,
+   "user": "MilosKozak",
+   "created_at": "2021-11-10T21:29:15Z",
+   "body": "any new logs with issue \r\nbeta5 or newer"
+  },
+  {
+   "id": 967446843,
+   "user": "MTR93600",
+   "created_at": "2021-11-12T20:02:02Z",
+   "body": "here the log, last update\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/7530111/AndroidAPS.log)\r\n "
+  },
+  {
+   "id": 977756797,
+   "user": "MTR93600",
+   "created_at": "2021-11-24T10:48:24Z",
+   "body": "hi Mylos, i have again the tbr/smb pb today\r\nhere the lo\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/7595028/AndroidAPS.log)\r\ng"
+  },
+  {
+   "id": 978200457,
+   "user": "MilosKozak",
+   "created_at": "2021-11-24T20:32:19Z",
+   "body": "hopefully resolved by https://github.com/nightscout/AndroidAPS/commit/0dbfa6182f996674c3ab72aa1fc19684d8cc00ae"
+  }
+ ]
+}

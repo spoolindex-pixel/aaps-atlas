@@ -1,0 +1,27 @@
+{
+ "id": 1046755335,
+ "repo": "nightscout/AndroidAPS",
+ "number": 863,
+ "title": "[3.0-beta4] Problem with COBs when canceling a bolus from the wizard",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/863",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-11-07T14:03:48Z",
+ "closed_at": "2021-11-07T17:16:59Z",
+ "comment_count": 2,
+ "body": "AAPS 3.0-beta4.\r\n\r\nI have used the bowling assistant to put in a bolus of food. After accepting the calculations, before the connection to the pump was established I canceled it. Then I used the wizard again to do the calculation again and I let it bolus.\r\n\r\nThe canceled bolus insulin has not been added, but the carbohydrates that I put in the wizard were added, so they have been counted twice. I have had to cancel the carb entry manually.\r\n\r\nI leave some screenshots where you can see what has happened:\r\n\r\n![image](https://user-images.githubusercontent.com/67511778/140648186-5007f189-8988-4211-8358-7686f77aa9f9.png)\r\n\r\n![image](https://user-images.githubusercontent.com/67511778/140648260-ef505201-6737-41c4-9864-797d1a8d7847.png)\r\n\r\nThe meal had 70g of carbohydrates in total, and 110g have been counted in AAPS\r\n\r\nRegards, Fran.",
+ "comments": [
+  {
+   "id": 962641177,
+   "user": "Philoul",
+   "created_at": "2021-11-07T16:29:34Z",
+   "body": "I don't see anything wrong in your screenshot...\r\nThe validation of calculator \"validate\" Carbs and bolus, then the cancel only cancelled the bolus before injection, You did not cancel carbs.\r\nThe only strange thing is the second time you entered Carbs in bolus calculator, the bolus should have been more important (about 7.3U  for 80g and not 3.6U for 40g), probably because you entered too quickly in Calculator (not enough time to update cob value of 1rst entry to integrate it in calculation...)"
+  },
+  {
+   "id": 962648260,
+   "user": "MilosKozak",
+   "created_at": "2021-11-07T17:16:59Z",
+   "body": "i changed the behavior to store carbs only if bolus was successfull\r\nhttps://github.com/nightscout/AndroidAPS/commit/dcf3c9cc57b0a2b63af9ee418dafee82fefef95b"
+  }
+ ]
+}

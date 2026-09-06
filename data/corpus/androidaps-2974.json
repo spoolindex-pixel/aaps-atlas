@@ -1,0 +1,51 @@
+{
+ "id": 1958168767,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2974,
+ "title": "[Master] Different actions doesn't sync through and receive error sporadic (v3+WS)",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2974",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-10-23T23:01:35Z",
+ "closed_at": "2023-10-24T09:04:54Z",
+ "comment_count": 6,
+ "body": "AAPS / AAPSClient 3.2.0.1\r\nBuild: aeed6e2083-2023.10.24\r\nNightscout version: Master: 15.0.1\r\nGIT-Commit: f46f869c63b3e09f9895c4b99bf596942f5a013c\r\n\r\nBolus from AAPS calc / QW or AAPS wear calc / QW. This instance at 00:47 from wear bolus calc. Sync to NS OK. but not to AAPSClient. Error message in NSCV3-tab I have not seen before. Now time is 01:04 and it still not synced to AAPSClient. Thus wrong carb + IOB in AAPSClient.\r\n\r\nEdit: Seem to be any action. tried to delete treatments in AAPS. Then same error message occurred in AASPClient with no sync of deletion.\r\n\r\nHappend a few times although bit sporadic, attaching logs and screenshots from both AAPS and AAPSClient.\r\n\r\n**Logs:**\r\n**AAPSClient:** \r\n[AndroidAPS_LOG_1698101580952.log.zip](https://github.com/nightscout/AndroidAPS/files/13079793/AndroidAPS_LOG_1698101580952.log.zip)\r\nAAPS: \r\n[AndroidAPS_LOG_1698101501125.log.zip](https://github.com/nightscout/AndroidAPS/files/13079798/AndroidAPS_LOG_1698101501125.log.zip)\r\n\r\n**### Screenshots:**\r\n**AAPS:**\r\n![image](https://github.com/nightscout/AndroidAPS/assets/114103483/33d0dd4a-0eeb-4d6e-addd-a2ab07042763)\r\n![image](https://github.com/nightscout/AndroidAPS/assets/114103483/0038fc9b-f129-4752-a06a-7e46518e71b3)\r\n\r\n**AAPSClient:**\r\n![image](https://github.com/nightscout/AndroidAPS/assets/114103483/be3693ad-3e4e-4ec2-979f-bcfe787bf43f)\r\n![image](https://github.com/nightscout/AndroidAPS/assets/114103483/5ba1adf3-1d25-482f-9db1-460b58dd7337)\r\n\r\n",
+ "comments": [
+  {
+   "id": 1776245959,
+   "user": "olorinmaia",
+   "created_at": "2023-10-24T00:05:12Z",
+   "body": "Tried updating to RC2 or a later dev version I have tested alot with with no errors earlier. And same ERROR (status 400 message parameter limit out of tolerance) is appearing there also now."
+  },
+  {
+   "id": 1776276253,
+   "user": "olorinmaia",
+   "created_at": "2023-10-24T00:42:40Z",
+   "body": "I'm using ns.10be.de, and when selecting NS Dev (15.0.2) im not able to reproduce it. But if I redeploy Master (15.0.1) error reappear pretty fast."
+  },
+  {
+   "id": 1776688553,
+   "user": "MilosKozak",
+   "created_at": "2023-10-24T07:42:58Z",
+   "body": "this was a bug in setting in 10be.de\r\nsome parameter must adjust"
+  },
+  {
+   "id": 1776771263,
+   "user": "zehnBE",
+   "created_at": "2023-10-24T08:39:02Z",
+   "body": "@olorinmaia please try it again with master.\r\nI have patched the lib/api3/generic/collection.js and lib/api3/index.js because it doesnt use the API3_MAX_LIMIT from the my.env on our side (it is in), so i rewrite it to env.API3_MAX_LIMIT.\r\n\r\n"
+  },
+  {
+   "id": 1776812822,
+   "user": "olorinmaia",
+   "created_at": "2023-10-24T09:04:54Z",
+   "body": "@MilosKozak & @zehnBE . Thanks for looking into this. I redeployed NS15-master after fix on 10be.de and no errors in nscv3 log. Closing issue."
+  },
+  {
+   "id": 5303129855,
+   "user": "nl-ruud",
+   "created_at": "2026-08-15T16:22:06Z",
+   "body": "Had a similar issue - in my case it was fixed by the provider by updating to Nightscout >= 15.0.7"
+  }
+ ]
+}

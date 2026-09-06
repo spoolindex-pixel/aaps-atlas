@@ -1,0 +1,21 @@
+{
+ "id": 4989860211,
+ "repo": "nightscout/AndroidAPS",
+ "number": 5020,
+ "title": "DB v33 migration leaves DIA at 0.00 when no legacy LocalProfile DIA preferences exist, blocking the loop",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/5020",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2026-07-27T16:00:26Z",
+ "closed_at": "2026-08-01T11:21:39Z",
+ "comment_count": 1,
+ "body": "**Version:** 4.0.0-dev-b, built from `dev` at `bac03ac6f276221fb2b9841788c42019e2a732c3` (2026-07-26 20:48 +0200)\n\n**When:** 2026-07-27 17:32:50 (+0200) - first start after upgrading from 3.4.0.0-dev, i.e. the start that ran the DB migration to v33.\n\n## Symptom\n\nEvery loop run aborts since the migration:\n\n```\n17:32:50.310 D/CORE: [MainApp.dataMigrations():861]: Migration to DB 33 complete: 9242 records updated\n17:33:37.442 E/CORE: [HardLimitsImpl.verifyHardLimits():74]: »Profil Insulinwirkdauer« ist außerhalb der fest programmierten Grenzen.\n0,00 limitiert auf 5,00\n```\n\n(German locale: \"Profile DIA is out of hard limits, 0.00 limited to 5.00\".) It repeats every cycle - `OpenAPSSMBPlugin.invoke()` returns at the `hardLimits.checkHardLimits(profile.iCfg.dia, …)` guard, so no APS result is produced at all.\n\n## Cause\n\n1. The v33 migration fills the new insulin columns with a sentinel - `DatabaseModule.kt`, identically\n   for `boluses`, `profileSwitches` and `effectiveProfileSwitches`:\n\n   ```sql\n   INSERT INTO new_effectiveProfileSwitches (…, insulinLabel, insulinEndTime, insulinPeakTime, concentration)\n   SELECT …, '', -1, -1, 1.0 FROM effectiveProfileSwitches\n   ```\n\n2. `MainApp.dataMigrations()` is supposed to replace the sentinel, and only touches sentinel rows\n   (`EffectiveProfileSwitchDao.bulkMigrateInsulinConfig`: `WHERE insulinEndTime = -1 AND referenceId IS NULL`).\n\n3. The replacement value comes from `MainApp.kt:828`:\n\n   ```kotlin\n   val runningICfg = if (profileNameToDia.isEmpty())\n       profileFunction.getProfile()?.iCfg ?: localInsulinManager.iCfg\n   else { … }\n   ```\n\n4. `profileNameToDia` is built exclusively from legacy `LocalProfile_*_dia` SharedPreferences keys (`MainApp.kt:652-666`), so it is empty for setups that have no Local Profile DIA preferences.\n\n5. The `if` branch then reads the **running** profile — whose `EffectiveProfileSwitch` was overwritten with the sentinel in step 1 — and writes `-1` straight back into all rows.\n   `ICfg.dia` = `(-1 / 3600.0 / 100.0).roundToInt() / 10.0` = `0.0`.\n\nThat the `if` branch was taken is provable from the value: the `else` branch ends in `(dia ?: hardLimits.maxDia())` and could never yield 0.\n\nIt does not heal itself. The rows keep `insulinEndTime = -1` and the running profile keeps returning the sentinel, so every later start repeats the same no-op repair.\n\n## Impact\n\nAfter the upgrade the loop stops completely for every setup whose DIA does not come from legacy Local Profile preferences. IOB itself stays sane because `ICfg.iobCalcForTreatment()` clamps a degenerate DIA to 5 h, but the hard-limit check is stricter and blocks the loop.\n\nManual recovery: set a valid DIA in the profile and activate a new profile switch. The historical rows are then repaired on the next app start, because the bulk migration runs on every start and still finds the sentinel rows.\n\n## Suggested fix\n\nTreat a sentinel/degenerate iCfg as \"no value\" in the fallback, e.g.\n\n```kotlin\nprofileFunction.getProfile()?.iCfg?.takeIf { it.insulinEndTime > 0 } ?: localInsulinManager.iCfg\n```\n",
+ "comments": [
+  {
+   "id": 5151201037,
+   "user": "MilosKozak",
+   "created_at": "2026-08-01T11:21:39Z",
+   "body": "fixed in dev, issue was caching"
+  }
+ ]
+}

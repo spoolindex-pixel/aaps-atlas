@@ -1,0 +1,27 @@
+{
+ "id": 2526444092,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3434,
+ "title": "BG Source \"xDrip+ BG\": settings in the wrong place / duplicated",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3434",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-09-14T14:13:06Z",
+ "closed_at": "2024-11-13T10:55:15Z",
+ "comment_count": 2,
+ "body": "This is a minor thing I believe:\r\nIn the config builder, section \"BG Source\" **xDrip+ BG** is the plugin that gets BG data from xDrip+. \r\n![Screenshot 2024-09-09 121223](https://github.com/user-attachments/assets/cd616dab-5131-47c4-a934-92bcc0e27081)\r\nThe only preferences this plugin has are:\r\n\"BG upload settings\"\r\n- Upload BG data to NS\r\n- Log sensor change to NS\r\n\r\n\r\nThere is another config builder section \"Synchronization\" **NSClientV3** for data that's being sent from AAPS to NS.\r\n![Screenshot 2024-09-09 121301](https://github.com/user-attachments/assets/2f744228-4198-447b-942c-d2cdfcface66)\r\n- Log sensor change to NS could be moved to the section  .\r\n- Upload BG data to NS can already be found there (toggling it in Synchronization\" also toggles it in \"BG Source\" and vice-versa).\r\n\r\n",
+ "comments": [
+  {
+   "id": 2424868842,
+   "user": "XXilay",
+   "created_at": "2024-10-20T11:40:35Z",
+   "body": "I can confirm right now that this is not **a purely cosmetic issue.** The discussion of what exactly happened can be found on the discord, (https://discord.com/channels/629952586895851530/629954570394533889/1296464093993111602 ) but ill reiterate again here:\r\n\r\nIf you (apparently) use the search function to set these values, it ends up activating the same options twice and is not automatically turned off in 1 of the plugins like it would when edited directly under \"plugin preferences\"\r\n\r\nThis in turn causes aaps to send a sensor change entry and all data with it to nighthawk on every blood glucose update sent by the CGM. (from what i read off the logs, the data sent with that sensor change just has all fields set to null) "
+  },
+  {
+   "id": 2473189310,
+   "user": "MilosKozak",
+   "created_at": "2024-11-13T10:55:15Z",
+   "body": "**Upload BG data to NS:** this is by design (setting is on both places) because it just makes sense. User can search for it on both places\r\n**Log sensor change:** this is about accepting/not accepting this kind data from BG source. Setting in NS client is more general"
+  }
+ ]
+}

@@ -1,0 +1,33 @@
+{
+ "id": 526825602,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1100,
+ "title": "Dexcom G6 and 8Gxxxx transmitter: Sensor error",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1100",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2019-11-21T20:31:39Z",
+ "closed_at": "2019-11-22T10:28:23Z",
+ "comment_count": 3,
+ "body": "Hi there, this is our first attempt with a Dexcom GCM, hoping someone here can point us into the right direction.\r\n\r\nWe're on a Sony Xperia Z5 Compact, with Android version 7.1.1 (although I have tried other phones and Android versions with the same result already). We have the latest xDrip nightly build d7689af-2019.11.02 with a Dexcom G6 and currently ended up with a 8Gxxxx transmitter running firmware 2.18.2.88 🤦‍♀ Configuration wise I think we're pretty solid, \"Use the OB1 Collector\", \"Native Algorithm\", \"G6 support\", \"Allow OB1 unbonding\" as well as \"Allow OB1 initiate bonding\" are enabled (although I have tried a few different variations here already too.\r\n\r\nAt first everything seems ok, the transmitter pairs and the phone service state reports \"got no raw\", we wait a little and start the sensor. The phone service state reports \"got data from G6\" and the sensor status shows the warming up time.\r\n![IMG_6958](https://user-images.githubusercontent.com/7875777/69373464-20a3d880-0ca4-11ea-8b27-16915b32bc6e.jpeg)\r\nUpon the next connection attempt though, I see the phone service hanging in \"Connect request\" for a couple of minutes until it finally reports \"Got no raw\" with the sensor status changed to \"Sensor Errors\".\r\n![IMG_6962](https://user-images.githubusercontent.com/7875777/69373521-44ffb500-0ca4-11ea-9765-83023191f2d6.jpeg)\r\n![IMG_6963](https://user-images.githubusercontent.com/7875777/69373526-46c97880-0ca4-11ea-8094-dd718328aa77.jpeg)\r\nFinally after some time it goes into \"Sensor failed 6\" - which I believe means it has stopped again.\r\n\r\nThe logs report the following at first: \r\n![IMG_6965](https://user-images.githubusercontent.com/7875777/69373708-b5a6d180-0ca4-11ea-86eb-d5c1b3c1dda1.jpeg)\r\nThen this for a long time:\r\n![IMG_6966](https://user-images.githubusercontent.com/7875777/69373734-c6574780-0ca4-11ea-8f2c-c2ef9c1c45f3.jpeg)\r\nUntil finally:\r\n![IMG_6967](https://user-images.githubusercontent.com/7875777/69373775-dec76200-0ca4-11ea-9990-74bc53669c90.jpeg)\r\n\r\nI was looking into the GATT exception for a while there, changing some bluetooth settings around, but nothing helped so far. Also a bluetooth incompatibility would suggest this happening on a particular phone model/version. But I was able to reproduce this issue with the exact same outcome on three different hardware configurations thus far. The transmitter seems to be communicating with the device (at least I get battery readings). So maybe it's the sensor itself? \r\n\r\nAny advice would be much appreciated.\r\n\r\nThanks\r\nElisa",
+ "comments": [
+  {
+   "id": 557287911,
+   "user": "jamorham",
+   "created_at": "2019-11-21T21:49:44Z",
+   "body": "If you're getting the Sensor Errors message then this is coming from the transmitter and your link between xDrip and the transmitter is fine. The message implies that the transmitter isn't happy with the signal coming from the sensor. Often this can settle down and give readings other times it indicates a bad sensor or insertion. "
+  },
+  {
+   "id": 557479031,
+   "user": "fooelisa",
+   "created_at": "2019-11-22T10:28:23Z",
+   "body": "Thanks a lot for confirming this would be sensor related!\r\n\r\nSome similar cases reported it normalized itself after some time, so we tried to wait and give it calibration values for a while, which were rejected with `calibration rejected: sensor stopped`. About two days in we gave up and applied a new sensor - that one started working right after the warmup period.\r\n\r\nNow I am not sure what could have caused the sensor to be bad. Maybe it was our numerous attempts and starting/stopping the sensor to try it out with various phones. Maybe it was the insertion itself, although it is so straight forward, seems pretty hard to mess that up. Maybe it was the location, we did use a different spot the second time around (first one was on the arm, second one around the belly). Or maybe the sensor itself was faulty, I read about a similar issue which coincidentally had the exact same sensor calibration code as the first one we've used. 🤷‍♀ \r\n\r\nNow that was a rough start with the Dexcom - glad we got it working in the end though! Thanks again for the help!"
+  },
+  {
+   "id": 882068268,
+   "user": "Atlas-Night-Out",
+   "created_at": "2021-07-18T14:48:29Z",
+   "body": "I'm getting a Bond Prepare Errors 3 but got 2 sensors on me on different arms and still getting these error and xdrip not working! I have also tried different debug settings still no joy. I then tried 2 different Transmitters and still no signal. I get a few maybe 3 or 4 readings  and then thats it. I then did a fresh copy of xdrip and still the same! Really stuck on why these are not working. Any clues anyone? Now I have it asking for a calibration but still won't go any further! "
+  }
+ ]
+}

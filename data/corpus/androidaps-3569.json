@@ -1,0 +1,63 @@
+{
+ "id": 2709071517,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3569,
+ "title": " [Dev 3.3.0-dev-e] Nightscout synchronization issue missing from prefs",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3569",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-12-01T11:28:07Z",
+ "closed_at": "2024-12-01T12:57:18Z",
+ "comment_count": 8,
+ "body": "Seen Dev 3.3.0-dev-e, also dev c and d (I don't know for prior versions, this is my first time building dev).\r\nThe \"Synchonization\" line in Nightscout prefs is missing, or rather disappears at once when displaying the page. It's the same for NS v1 or v3. Happens in all circumstances, with a fresh AAPS install and no parameters whatsoever, or with imported parameters and NS sync working, both v1 and v3.\r\nTested on 2 different phones, Fairphone 5, Honor, and also Android Emulator right from AS, on 2 different computers...\r\nLong story short : happens everywhere and everytime.\r\n\r\n![Screenshot_20241124-1343592](https://github.com/user-attachments/assets/6f6fcf93-6a1b-44aa-a9a1-1c893ac205ca)\r\n\r\nhttps://github.com/user-attachments/assets/5d5dbace-3c43-411b-a0b0-f10a70b83b30\r\n\r\n[AndroidAPS.log](https://github.com/user-attachments/files/17968732/AndroidAPS.log)",
+ "comments": [
+  {
+   "id": 2509728773,
+   "user": "MilosKozak",
+   "created_at": "2024-12-01T11:44:38Z",
+   "body": "I have it here. Are you sure you are bulding full AAPS and not AAPSClient?"
+  },
+  {
+   "id": 2509729515,
+   "user": "emilisev",
+   "created_at": "2024-12-01T11:46:44Z",
+   "body": "Yes this is the fullRelease. AAPSClient doesn't behave the same, the line is completely absent, not present but then disappears."
+  },
+  {
+   "id": 2509739717,
+   "user": "MilosKozak",
+   "created_at": "2024-12-01T12:13:39Z",
+   "body": "how can you use dev version without engeneering mode?"
+  },
+  {
+   "id": 2509742524,
+   "user": "emilisev",
+   "created_at": "2024-12-01T12:20:53Z",
+   "body": "I didn't know this was mandatory. I'm not using dev version yet - nor planning to, actually I just wanted to test my changes about the documentation URL changes.\r\nI added the file and it solved my issue. \r\n\r\nIt is not clear from the doc that it is mandatory to use engeneering in dev.\r\nhttps://androidaps.readthedocs.io/en/latest/AdvancedOptions/DevBranch.html\r\n\"Therefore many unfinished features are disabled. To enable these features enter Engineering Mode by creating a file named engineering_mode in directory /AAPS/extra . Enabling the engineering mode might break the loop entirely.\"\r\n\r\nShould I update the doc to make it clear that it is mandatory ?"
+  },
+  {
+   "id": 2509746403,
+   "user": "robertrub",
+   "created_at": "2024-12-01T12:30:56Z",
+   "body": "@MilosKozak \n\nLast dev\n\n![Screenshot_20241201_132514_AAPS.jpg](https://github.com/user-attachments/assets/036fbb68-ab58-4b8e-b2dc-598bd95acc61)\n\nConnect to power so that the upload to NS triggers. Data uploaded normally but then stopped with 38 in queue. Phone was still connected to power.\n\n![Screenshot_20241201_132606_AAPS.jpg](https://github.com/user-attachments/assets/08a90b11-7ba5-4bf9-a593-bd35c0431179)\n\nThe logs. Look around 13:25\n\n![AndroidAPS_LOG_1733056070119.log.zip](https://github.com/user-attachments/files/17968903/AndroidAPS_LOG_1733056070119.log.zip)\n\n"
+  },
+  {
+   "id": 2509756466,
+   "user": "MilosKozak",
+   "created_at": "2024-12-01T12:57:18Z",
+   "body": "fixed in dev"
+  },
+  {
+   "id": 2509756665,
+   "user": "MilosKozak",
+   "created_at": "2024-12-01T12:57:42Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/42909b14046985d869616108776dc39a6dc49331\r\nhttps://github.com/nightscout/AndroidAPS/commit/0f89dfd159f235377dfc71b92acdc28fe9e8b3e8\r\n"
+  },
+  {
+   "id": 2510246049,
+   "user": "vanelsberg",
+   "created_at": "2024-12-01T20:50:10Z",
+   "body": ">\"Therefore many unfinished features are disabled. To enable these features enter Engineering Mode by creating a file named >engineering_mode in directory /AAPS/extra . Enabling the engineering mode might break the loop entirely.\"\r\n\r\n> **Should I update the doc to make it clear that it is mandatory ?**\r\n\r\n@emilisev \r\nEven though most dev do understand and AAPS is complaining loudly on not running dev mode I agree this is not clear for non-devs. Text above suggest \"unfinished features\" only but actually many things will not work properly.\r\n\r\nSo yes, I would think doc should be updated: settings Engineering Mode is mandatory for running/using dev builds.\r\n\r\n"
+  }
+ ]
+}

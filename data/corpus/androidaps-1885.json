@@ -1,0 +1,63 @@
+{
+ "id": 1293477360,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1885,
+ "title": "3.0.0.2 dev-n TDD not agree with pump",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1885",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-07-04T18:36:42Z",
+ "closed_at": "2023-08-17T14:59:37Z",
+ "comment_count": 8,
+ "body": "3.0.0.2 dev-n TDD on Action Tab\r\nIn 2 days of the 7 the TDD in AAPS did not agree with the  pump. \r\nOne day had a red line the other day had exactly the same data and both about half that in the pump pump?  Pump on 1st =25.1U & 30th=19.6U. See attached picture.  Insight pump.  Phone updated to Android 12 noon on 2nd. History/reason: Running dISF last night I was constantly  below target and dISF sensitivity 1.22 so AAPS had reduced target, increased basal and ever growing negative IOB.  Looking at the tab I suspect this was due to my slightly higher TDD the day before and a lower weekly TDD due to the wrong entries.  NB  I do seem to get more AAPS restarts with dev-n assuming the pump TDD is read near midnight then doesn't seem to correlate.\r\nSamsung A41, xDrip, Patched LibreLink.\r\n\r\n![Screenshot_20220703-064950_AndroidAPS](https://user-images.githubusercontent.com/43484095/177203113-61d82d82-8768-4205-b868-19536428b5b6.jpg)\r\n\r\n![20220704_192736](https://user-images.githubusercontent.com/43484095/177204127-b02307af-3baf-4cb9-96ca-6b2d45980711.jpg)\r\n![20220704_192748](https://user-images.githubusercontent.com/43484095/177204130-abda3327-13cb-40f9-a16d-14728fd42296.jpg)\r\n![20220704_192759](https://user-images.githubusercontent.com/43484095/177204132-df9dbb2b-2de4-455a-9bbd-0ec0d9a4b910.jpg)\r\n\r\n\r\n[AndroidAPS._2022-06-29_10-01-29_.3.zip](https://github.com/nightscout/AndroidAPS/files/9041490/AndroidAPS._2022-06-29_10-01-29_.3.zip)\r\n[AndroidAPS._2022-06-30_00-49-05_.0.zip](https://github.com/nightscout/AndroidAPS/files/9041491/AndroidAPS._2022-06-30_00-49-05_.0.zip)\r\n[AndroidAPS._2022-06-30_00-49-05_.1.zip](https://github.com/nightscout/AndroidAPS/files/9041492/AndroidAPS._2022-06-30_00-49-05_.1.zip)\r\n[AndroidAPS._2022-06-30_10-02-22_.4.zip](https://github.com/nightscout/AndroidAPS/files/9041493/AndroidAPS._2022-06-30_10-02-22_.4.zip)\r\n[AndroidAPS._2022-07-01_00-00-04_.0.zip](https://github.com/nightscout/AndroidAPS/files/9041494/AndroidAPS._2022-07-01_00-00-04_.0.zip)\r\n[AndroidAPS._2022-07-01_10-02-24_.0.zip](https://github.com/nightscout/AndroidAPS/files/9041495/AndroidAPS._2022-07-01_10-02-24_.0.zip)\r\n\r\n\r\n\r\n\r\nReporting bugs\r\n--------------\r\n- **Note the precise time the problem occurred** and describe the circumstances and steps that caused\r\n  the problem\r\n- Note the Build version (found in the About dialog in the app, when pressing the three dots in the\r\n  upper-right corner).\r\n- Obtain the app's log files, which can be found on the phone in\r\n  _/storage/emulated/0/Android/data/info.nightscout.androidaps/_\r\n  See https://androidaps.readthedocs.io/en/latest/Usage/Accessing-logfiles.html\r\n- Open an issue at https://github.com/nightscout/AndroidAPS/issues/new\r\n",
+ "comments": [
+  {
+   "id": 1185294121,
+   "user": "MilosKozak",
+   "created_at": "2022-07-15T08:12:29Z",
+   "body": "can you verify bolus amounts on treatments tab for these 2 days?"
+  },
+  {
+   "id": 1185388524,
+   "user": "chrisbev",
+   "created_at": "2022-07-15T10:04:08Z",
+   "body": "Quick tot up I make it 30th=10.37U and 1st=15.00U, screenshots and part csv file attached:-\r\n![Screenshot_20220715-103118_AndroidAPS](https://user-images.githubusercontent.com/43484095/179200917-5bdbeeb8-8393-4856-a1ec-dd69a28b9362.jpg)\r\n![Screenshot_20220715-103608_AndroidAPS](https://user-images.githubusercontent.com/43484095/179200920-e8277cee-2828-4c69-8881-8a1c4fd640a9.jpg)\r\n[2022-07-15_094238_UserEntryPart.csv](https://github.com/nightscout/AndroidAPS/files/9119854/2022-07-15_094238_UserEntryPart.csv)\r\n\r\n"
+  },
+  {
+   "id": 1186815004,
+   "user": "Philoul",
+   "created_at": "2022-07-18T06:27:14Z",
+   "body": "Got the same issue \nData is ok for almost all days except:\n- 12/07: half the amount of my pump\n- 11/07: in red same values than 12/07\n- 10/07: day missing in TDD\n![Screenshot_20220718-082105_AndroidAPS.jpg](https://user-images.githubusercontent.com/52934600/179455311-782f3973-31f3-4aac-bf72-81a4fa4410d4.jpg)"
+  },
+  {
+   "id": 1186849199,
+   "user": "Philoul",
+   "created_at": "2022-07-18T07:17:47Z",
+   "body": "I never use this TDD button because results are less accurate than values in stats.\n- Priming done from aaps are included in TDD and bolus in pump (so every 3 days inconsistant values)\n- extended bolus (fake TBR) are in bolus in pump and in basal in stats."
+  },
+  {
+   "id": 1256907050,
+   "user": "chrisbev",
+   "created_at": "2022-09-24T08:21:26Z",
+   "body": "3.1.0.3-dev-a (with dISF_2.0) another occurance. Can't quite see how could affect it as pump data OK but on 22nd failed to upload data to Glooko (as required by hospital) not even after loads of tries (can take several attempts for me) but did succeed after a few tries on 23rd? The handset is connected to pc for upload.  As handset needs bt to pump I do have them both paired in pump and only turn on remote for upload. Handset appears to get data OK presume when AAPS/phone not communicating?\r\n![Screenshot_20220924-062126_AndroidAPS](https://user-images.githubusercontent.com/43484095/192088062-602342ab-fe82-42a0-9b55-50d2930f2288.jpg)\r\n"
+  },
+  {
+   "id": 1265985911,
+   "user": "Philoul",
+   "created_at": "2022-10-03T20:20:01Z",
+   "body": "Unfortunatly I don't know how to fix it...\nI got this issue only once 3 months ago...\n\nI can try a code analysis to understand how TDD button works 🤯...\n\nBut I don't understand what's the added value of this button (compare to Statistic Activity) 🤔"
+  },
+  {
+   "id": 1266651235,
+   "user": "chrisbev",
+   "created_at": "2022-10-04T09:19:52Z",
+   "body": "Hi so is the Actions tab TDD filled by the pump or from AAPS summing insulin delivery?  Perversely I just had my database reset and only lines after the reset are there but I still have the data in my pump or does the pump driver only add new TDDs as well each day/night?  Any thoughts what it means if get a red line?"
+  },
+  {
+   "id": 1682439502,
+   "user": "MilosKozak",
+   "created_at": "2023-08-17T14:59:37Z",
+   "body": "Closed for inactivity. Create new issue is if you still see the problem on latest branch"
+  }
+ ]
+}

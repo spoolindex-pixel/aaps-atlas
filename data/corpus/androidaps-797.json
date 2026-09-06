@@ -1,0 +1,81 @@
+{
+ "id": 1038684261,
+ "repo": "nightscout/AndroidAPS",
+ "number": 797,
+ "title": "Issues when using Nightscout as BG source ",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/797",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-10-28T15:59:31Z",
+ "closed_at": "2021-11-11T11:53:50Z",
+ "comment_count": 11,
+ "body": "I'm trying to test AAPS 3 using AAPS 2 settings (which were configured to use a Local Profile) using Nightscout as the data source, but am unable to activate a profile with this config.\r\n\r\nWith this setup, I'm experiencing various problems/bugs:\r\n1) I initially set up AAPS by installing it, running the Wizard, and importing settings from 2.8.1 (which includes a Nightscout profile). I then set NSClient BG as the data sourec, and disabled all NSClient Sync settings except for 'Receive/Backfill CGM Data', but I guess that some data from Nightscout (e.g. Profile data) had presumably synced as soon as I imported my old settings (though it didn't appear in the UI). This resulted in the following issues:\r\n\r\na) When I attempted to activate the local profile, an error appears \">>Profile low target<< 4.8 is out of hard limits\", despite the fact that the Locale Profile was set to targets of 5/5. I think that what was happening is that the initially synced nightscout profile was somehow overriding the local profile. This was really strange because the nightscout profile didn't display anywhere in the UI--I was trying to enable a Local Profile with valid targets and no other profile was listed!\r\n\r\nb) When I press the '-' to adjust the BG Target values down 6, AAPS changed the value 80. Again, this is presumably because the nightscout profile was somehow incorrectly converted and was using mg/dl settings (note: my AAPS environment _is_ configured to use mmol). Curiously, clicking 'reset' to reset the targets, reset them to 5/5 ?!\r\n\r\n2) There was no obvious fix to the above problems, so I uninstalled AAPS, disabled WiFi so that it wouldn't be able to connect to Nightscout, and then installed it, ran the Wizard, and imported settings from 2.8.1, configured NSClient BG as the data source, disabled all NSClient Sync settings except for 'Receive/Backfill CGM Data', and only then did I re-enable WiFi.\r\n\r\nAfter going through the above steps, there were no longer a '>>Profile low target<<' error, however:\r\na) The 'NSclient BG' tab shows nightscout BG data, but the Overview doesn't (neither at the top of the screen nor the graph)!\r\nb) When I 'Activate Profile' , the 'Profile Switch' confirmation dialog appears and I press 'OK', but upon returning to the Overview tab, it indicates in red 'NO PROFILE SET'!\r\n\r\nDetails\r\n--------------\r\n- Tested 2.8.2.7-dev from sources 2021.10.27 12:59.\r\n- Submitted logs via email\r\n",
+ "comments": [
+  {
+   "id": 954103893,
+   "user": "rustymonkey",
+   "created_at": "2021-10-28T18:40:49Z",
+   "body": "Re. issue 2.a, I switched the BG source to XDRIP+ and the outcome is the same. i.e. the XDRIP+ tab displays BG data, but the Overview screen doesn't. Issue 2.b. remains."
+  },
+  {
+   "id": 954104938,
+   "user": "MilosKozak",
+   "created_at": "2021-10-28T18:42:19Z",
+   "body": "re 2b .... check release notes. Profile switches changed behavior"
+  },
+  {
+   "id": 954152112,
+   "user": "MilosKozak",
+   "created_at": "2021-10-28T19:52:07Z",
+   "body": "there were profile sync issues in beta1. try beta2"
+  },
+  {
+   "id": 954931630,
+   "user": "rustymonkey",
+   "created_at": "2021-10-29T17:46:59Z",
+   "body": "The issues occur identically in Beta 2. I dm'd a video and associated logs over discord."
+  },
+  {
+   "id": 955632771,
+   "user": "rustymonkey",
+   "created_at": "2021-10-31T04:01:44Z",
+   "body": "It turns out that issue 2 is unrelated to nightscout and is related to error-handling of out-of-range profile values. Documented this at https://github.com/nightscout/AndroidAPS/issues/819 "
+  },
+  {
+   "id": 956933422,
+   "user": "StephenBrown2",
+   "created_at": "2021-11-01T23:57:03Z",
+   "body": "> re 2b .... check release notes. Profile switches changed behavior\r\n\r\nWhere are the release notes for beta releases?\r\n\r\nEdit: Hidden in the WIki under \"Installating\": https://androidaps.readthedocs.io/en/latest/Installing-AndroidAPS/Releasenotes.html"
+  },
+  {
+   "id": 961191901,
+   "user": "rustymonkey",
+   "created_at": "2021-11-04T16:09:14Z",
+   "body": "Retested in 3.0 Beta 3, and almost all of the issues are fixed (or covered elsewhere) except for:\r\n2b) When the BG data source is set up, the BG data should appear on the Overview page--even if other aspects of the loop aren't configured. Otherwise, users are given the impression that there's a problem with the configuration/functionality of their BG source.\r\n\r\nI'm going to close this issue since there's a lot of unrelated cruft, and open a new one to track this minor problem."
+  },
+  {
+   "id": 961639298,
+   "user": "rustymonkey",
+   "created_at": "2021-11-05T05:34:25Z",
+   "body": "It turns out that I closed this prematurely. There are no issues when AAPS is prevented from syncing with nightscout, but if, during the initial setup, AAPS is briefly allowed to sync with Nightscout, then AAPS gets into a state in which the imported local profile doesn't activate (even if it's edited) though a newly created profile does. \r\n\r\nTo replicate\r\n1 Clean install of AAPS\r\n2 Import settings from 2.8 (which includes just a single local profile)\r\n3 Change BG source from Dexcom to Nightscout (since it contains live data from another AAPS that's in use)\r\n4 Disable nightscout uploads / profile sync\r\n5 Change at least 1 value for each profile parameter and then 'Save' the profile\r\n6 Activate Profile\r\n7 Trigger 'Refresh' on the Medtronic tab in order to work around issue #843 and trigger pump comms/profile update\r\n--> Profile fails to update (as seen on the Overview screen)\r\n8 Create a new profile, and Save and Activate it\r\n--> Profile updates\r\n\r\nIMPORTANT: if I disable WiFi prior to step 2 in order to prevent all communications with Nightscout and then re-enable Wifi after step 4 (i.e. once NS Client uploads have been disabled), then the bug doesn't occur.\r\n\r\nI guess that what is happening is that prior to step 4, profile data from nightscout  is 'synced' (even though there don't appear to be any changes in the local profile). And then, even after I edit the local profile at step 5, for some reason some data previously synced from nightscout interferes with it. What's confusing is that I'd have expected the more recently edited local profile to take precedence over whatever other data was synced.\r\n\r\nTested with 3.0 Beta 3\r\nLogs provided offline after the steps above were carried out"
+  },
+  {
+   "id": 963557315,
+   "user": "MilosKozak",
+   "created_at": "2021-11-08T20:44:11Z",
+   "body": "try with beta5"
+  },
+  {
+   "id": 965562172,
+   "user": "rustymonkey",
+   "created_at": "2021-11-10T17:17:13Z",
+   "body": "Tested beta 5 and it's mostly working--at step 7, the edited settings in the Local Profile are now activated as would be expected. However, I'm still not sure whether some aspects of the current behavior are functioning as intended. i.e. \r\n\r\nWhen NS Profile connects, the Overview screen displays a red error notification bar at the top indicating:\r\n\"Invalid profile default not accepted from NS [view]\"\r\nClicking [View] -->\r\n\"Dialog showing \"Profile DIA value 7.17 is out of hard limits; Profile low target 4.80 is out of hard limits\"\r\n\r\nOne might say that this is expected, since the imported settings had the NS Client 'Receive profile store' setting enabled until I disabled it. But I think it might be a bug that this option was enabled in the first place! i.e. my imported AAPS 2.8.2 settings were set to use a Local Profile exclusively (\"Upload local profile changes to NS\" was enabled solely for reporting purposes). afaik, I did not have any options enabled to download configurations from NS to AAPS. So why does AAPS 3.0 change this and try to download my profile config from Nightscout (and warn me about out-of-range settings that I'd never configured in the first place)? And had the Profile Config values in NS been valid, would they have overridden the Local Profile values from my imported settings which I'd intended to use?\r\n\r\nSummary: unless I'm misunderstanding things, if a user imports settings configured to use a Local Profile, then AAPS shouldn't automatically enable  'Receive profile store' NSClient setting."
+  },
+  {
+   "id": 966241545,
+   "user": "MilosKozak",
+   "created_at": "2021-11-11T11:53:50Z",
+   "body": "nsclient and profiles are completely new, sync work on different principles and settings are new as well\r\nif you import old settings, only these used in new version are re-used. New ones are defaulted\r\nsuch nuances you describe is impossible to process"
+  }
+ ]
+}

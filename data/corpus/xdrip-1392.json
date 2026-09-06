@@ -1,0 +1,169 @@
+{
+ "id": 666760711,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1392,
+ "title": "[Feature Request] Offset for first 24 hours on restarted G6 sensor",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1392",
+ "state": "closed",
+ "labels": [
+  "device-dexcom",
+  "algorithmics",
+  "type-discussion"
+ ],
+ "created_at": "2020-07-28T04:45:53Z",
+ "closed_at": "2022-09-20T18:37:06Z",
+ "comment_count": 25,
+ "body": "Have observed with G6 that the first 24 hours on a restarted sensor is consistently out by +2mmol.\r\n\r\nWould be great to have an option in the settings for a user to enter their observed offset.\r\n\r\nThen when starting a new sensor a popup asking if the sensor has been restarted & to apply that offset for the first 24 hours to the readings received from G6 Native.",
+ "comments": [
+  {
+   "id": 665233813,
+   "user": "emp-00",
+   "created_at": "2020-07-28T19:31:07Z",
+   "body": "That's a great feature request - it could be only available in \"engineering mode\" to make sure that only experienced users are using this feature. Is there more information on how the offset is developing over 24 or 48+ hours? For sure it's not +2 mmol for the first 24 hours and then it drops down. - it's probably a slow decay (actually as we know it's the trauma compensation required for new sensors but in our case with restarted sensors of course it's not helpful...); I'd be happy to test this as a feature! Generally it would be great if more information is available on the signal decay.\r\n\r\nWhat I and most users currently do => calibration (in small steps) ... This feature would remove the need for doing this."
+  },
+  {
+   "id": 665326563,
+   "user": "theunknown86",
+   "created_at": "2020-07-28T22:28:34Z",
+   "body": "Agreed. It unlikely to be a simple +2mmol for 24 hours. Ideally we get enough of a sample size to estimate the trauma compensation algorithm & then simply have a checkbox to reverse the math to the original bg value.\r\n\r\nUltimately tho, +2mmol for 24 hours may be enough. Worst case the CGM reports a little low for a short period which is better than how it currently reports high & can cause closed loop systems to overdose insulin."
+  },
+  {
+   "id": 774362374,
+   "user": "Navid200",
+   "created_at": "2021-02-06T00:42:03Z",
+   "body": "@joshbohmer  I don't always get the same error after a restart.  I prefer to calibrate after a restart.\r\nI have documented the procedure on facebook.\r\nhttps://www.facebook.com/groups/xDripG5/permalink/4521043737969086\r\n\r\nHave you tried calibrating?"
+  },
+  {
+   "id": 774568966,
+   "user": "tolot27",
+   "created_at": "2021-02-07T00:59:45Z",
+   "body": "I think it is dangerous to add a fixed offset, especially if it is +2 mmol/l. Such a case would be if one has a hypo at 3,6 mmol/l and xDrip reports 5,6 mmol/l. Also, I cannot believe that a restarted transmitter would report values shifted by -2 mmol/l exactly after 24 hours. Rather than I believe it is more like a logarithmic decrease."
+  },
+  {
+   "id": 778899885,
+   "user": "Navid200",
+   "created_at": "2021-02-15T02:29:59Z",
+   "body": "Can we close this issue please?"
+  },
+  {
+   "id": 778950302,
+   "user": "tolot27",
+   "created_at": "2021-02-15T05:26:32Z",
+   "body": "> Can we close this issue please?\n\nNo. There is still some discussion about it and it is a required feature for restarted transmitters."
+  },
+  {
+   "id": 779180951,
+   "user": "Navid200",
+   "created_at": "2021-02-15T12:09:23Z",
+   "body": "> > Can we close this issue please?\r\n> \r\n> No. There is still some discussion about it and it is a required feature for restarted transmitters.\r\n\r\nPlease provide more info about why it is required.\r\nThat's not what I believe in or do or advise.  I can go into more detail if needed to explain why this would be a mistake.  But, I would like to know if I am mistaken so that I can provide a correct directive on facebook.  "
+  },
+  {
+   "id": 779441528,
+   "user": "Navid200",
+   "created_at": "2021-02-15T20:49:29Z",
+   "body": "@joshbohmer May I ask what pump you use?\r\n\r\nA friend of mine uses t:slim X2.  The pump receives readings directly from G6 from its second slot.  If we implement your proposal, he will not benefit because although xDrip will not show incorrectly high readings, the pump will still receive those incorrect readings directly from the transmitter and will inject incorrect insulin.  That's why he disables the pump until he corrects the readings using calibrations.\r\n\r\nI'm just curious what pump you use.  I also would like to clarify that not everyone with a closed loop system will benefit from this."
+  },
+  {
+   "id": 785184575,
+   "user": "Navid200",
+   "created_at": "2021-02-24T16:06:46Z",
+   "body": "@joshbohmer Would you please update?\r\nDo you still feel this is something that the community will benefit from?\r\nWill you please specify what pump you use?"
+  },
+  {
+   "id": 788408902,
+   "user": "Navid200",
+   "created_at": "2021-03-01T23:52:06Z",
+   "body": "@joshbohmer Based on your experience so far, do you feel that the required offset is always the same for you from sensor to sensor?\r\nThat's one of my main worries about this.  If we add this capability, we also have to worry about the possible impact on inexperienced people.  I worry that someone may see the option and just enable it and use the default value or ask on a forum and enter what someone tells them.  An incorrect offset could be dangerous as the user may assume that everything is OK when it is not.\r\n\r\nWould you please let me know what you think?\r\n\r\nAlternatively, I will close this issue if I don't hear from you.\r\n\r\nThanks"
+  },
+  {
+   "id": 1088757394,
+   "user": "dufi2profor",
+   "created_at": "2022-04-05T14:13:20Z",
+   "body": "Hello all,\r\n\r\ni am absolutely pro adding feature to manage offset after restarting sensor on G6. Having it in engineering mode is okay as i understand the risks @Navid200 pointed out.\r\n\r\nAs i am quite new with G6, i have always calibrated in small steps down after reset of already used sensor, but i had the value always higher.\r\nPrior my first restart i did check of my glucometer (accucheck) with standard solution liquids and then i did measurement of my glucose which was 4,7 mmol as i remember. After reinserting the transmitter and starting used sensor with its original code i had 8 mmol.\r\nYesterday i stopped @ 5 mmol and after start i had again 8,1 mmol.\r\nSo i will see next time if the diff will be that same.\r\nI never left restarted sensor \"uncalibrated\" so i am not sure if the value \"settles\" down to somehow normal or close value to fingertip measurement.\r\nEven if it did, it would be then easy to change the offset (let say in my case - 3 mmol) to lower value after successive fingertip measurements.\r\n\r\nThanks\r\nDusan"
+  },
+  {
+   "id": 1088883312,
+   "user": "Navid200",
+   "created_at": "2022-04-05T15:38:04Z",
+   "body": "@dufi2profor After a restart , higher readings are expected: https://navid200.github.io/xDrip/docs/Restart-G6-sensor.html\r\n\r\nIf you are aware of that, please explain how you suggest we add this capability and ensure that no one will accidentally cause a serious issue by using it incorrectly.\r\n\r\nPlease note that we don't encourage restarting a G6 because of what I have explained on that link.\r\nBut, we don't stop you.  We provide all the details so that if you choose to do it, you have all the facts.\r\n\r\nBut, adding the feature  suggested here is very dangerous because someone could enable it without realizing the impact.  And having it in engineering mode will not remedy that concern."
+  },
+  {
+   "id": 1089055795,
+   "user": "trupici",
+   "created_at": "2022-04-05T17:06:37Z",
+   "body": "@Navid200  I would say the conditions can be defined. Entry conditions could be for example max 20hrs after sensor restart and let say 2 calibration/measurements  in 1 hour indicating the values from sensor are too high. Then you can allow to enter offset - soft limit could be the measured difference and there could be also a hard limit. At the end of 24h period, or better an hour before a new calibration can be forced. if values are still off then you can leave the offset for another hour or two. If not, or the difference is significantly lower, then the offset will be discarded.  \r\nI know Dusan and he is pretty exact in these things, he wouldn't vote for this FR if he is not sure it can help. \r\nAlso, I think everyone who tried to restart G6 has encountered this behavior (explain in your link). And it is really dangerous if your sensor indicates higher values if you are looping and you are in lower numbers. In this case the loop is fooled and it can cause more damage then help. \r\nIMO this feature will help much for self-funders and the effect is not so dangerous as to have incorrect high values from the sensor, especially if one is looping..."
+  },
+  {
+   "id": 1089071143,
+   "user": "Navid200",
+   "created_at": "2022-04-05T17:16:25Z",
+   "body": ">IMO this feature will help much for self-funders and the effect is not so dangerous as to have incorrect high values from the sensor, especially if one is looping...\r\n\r\nWhat if the readings happen to be higher than the offset?  Then, the user may think that the offset is correcting the readings when in reality it is not correcting enough.\r\nThis whole idea revolves around the thinking that a user will eventually find out what the right offset is!  But, how do you know that the required offset is always going to be the same for the same person?\r\n\r\nThe safest course of action is not to restart.\r\nIf you choose to restart, the safest course of action is to calibrate."
+  },
+  {
+   "id": 1089411171,
+   "user": "theunknown86",
+   "created_at": "2022-04-05T21:56:19Z",
+   "body": "My knowledge of G6 & it's firmware has increased significantly since this feature request. I can now measure the exact offset used for the trauma compensation against a known BG value. If that's a direction we'd like to go I'm happy to collect the data required to properly 'see through' the reset trauma compensation. \r\n\r\nThis is an example of the first 24 hours measured against a know BG of 5.8\r\n\r\n![Screenshot_20201124-083115_xDrip+ variant4](https://user-images.githubusercontent.com/3621222/161856330-3c0cf345-1c3e-4be0-a7f2-3661a9486fc0.jpg)"
+  },
+  {
+   "id": 1089435648,
+   "user": "Navid200",
+   "created_at": "2022-04-05T22:18:20Z",
+   "body": "That curve is for one particular 4-digit calibration code, right?  \r\nWon't we need a family of curves, one for each 4-digit calibration code?\r\n\r\nAssuming we have all such codes and we decide to take a risk of possible errors in introducing all these curves and associating them with the different codes, what happens if a user enables this and yet decides to perform a calibration?\r\n\r\nAnd all of this to accomplish what?  To avoid performing two calibrations?  That's all I have to do after a restart.  I just perform two calibrations and I get reasonably accurate values after.\r\nWouldn't that be less risky for everyone?"
+  },
+  {
+   "id": 1089448589,
+   "user": "theunknown86",
+   "created_at": "2022-04-05T22:30:13Z",
+   "body": "You are correct, we would need to collect data from all 15 calibration codes at multiple known BG values. But once we have that data we can workout the actual equation used for the trauma compensation.\r\n\r\nI really don't like calibrating G6, it introduces its own potential accuracy problems and it's better avoided if possible. Dexcom originally didn't want the the ability to calibrate G6 but put it back after user feedback.\r\n\r\nAt the end of the day, it doesn't bother me as we now have sensor sessions that basically don't expire. But for those without that option I see why this would be a very welcome addition."
+  },
+  {
+   "id": 1089496176,
+   "user": "Navid200",
+   "created_at": "2022-04-05T23:05:01Z",
+   "body": "I personally could benefit from this as an xDrip user.\r\nHowever, as a person who supports xDrip users, on facebook and here, this will just be a nightmare.\r\n\r\nThose are two very different set of requirements.  We need to prioritize.\r\nRight now, we have many bugs that we need to fix.\r\nWe still have not fixed the database restore issue for Android 11.  Since it was discovered, Android 12 was released and suffers from the same and we still have not solved it.  Soon, Android 13 will be out.\r\nI can give you a list of issues that we need to solve.  \r\nJust look at all the open issues."
+  },
+  {
+   "id": 1089563666,
+   "user": "theunknown86",
+   "created_at": "2022-04-06T00:18:33Z",
+   "body": "I get where you're coming from. Perhaps I collect the data we need and workout the equation they're using... I'm  curious to know regardless. \r\n\r\nUntil then any talk about implementation is pointless anyway as we don't know what it will necessarily look like."
+  },
+  {
+   "id": 1089679320,
+   "user": "Navid200",
+   "created_at": "2022-04-06T02:21:33Z",
+   "body": "The curve you have shown is for 5.8.  What would it be for 6?  What would it be for 6.5?  Or, are you assuming that the offset is the same for all values?\r\nWhy would that be the case?"
+  },
+  {
+   "id": 1089729150,
+   "user": "theunknown86",
+   "created_at": "2022-04-06T03:12:59Z",
+   "body": "We wouldn't make that assumption. I will be logging each sensor code (15 total) at 3 known BG values, ~3mmol, ~10mmol & ~17mmol are where my thinking is at the moment. From that data we should be able to calculate the trauma compensation equation."
+  },
+  {
+   "id": 1090110356,
+   "user": "dufi2profor",
+   "created_at": "2022-04-06T10:29:42Z",
+   "body": "> \r\n> This is an example of the first 24 hours measured against a know BG of 5.8\r\n> \r\n\r\nHow did You manage to get stable BG of 5,8 over that long period?\r\n\r\n> Why would that be the case?\r\n\r\nWhy not? As i understand it, You dont know what exactly goes on in transmitter if You calibrate, seems to be some formula, not an offset i wanted to introduce and as @trupici was asuming as well.\r\n\r\nDoes You not do the same in non native mode? Taking care of formula in xDrip considering raw data? Thats not the same of course...and at the end, we all agreed to EULA, thats to the point of somebody would be misinformed by such offset, which in my opinion would be good to be negative only.\r\n\r\n@trupici agreed with You all, so will I.\r\n\r\n\r\n"
+  },
+  {
+   "id": 1090163707,
+   "user": "theunknown86",
+   "created_at": "2022-04-06T11:33:54Z",
+   "body": "@dufi2profor I'm the developer behind the Anubis firmware. I built a sensor simulator which let's me select BG's with a rotary dial. Since I have access to the decompiled G6 firmware I also have the option to reverse engineer the subroutine responsible, but I think collecting the data as I have described will be significantly less work than that path."
+  },
+  {
+   "id": 1090189941,
+   "user": "Navid200",
+   "created_at": "2022-04-06T12:03:59Z",
+   "body": ">Does You not do the same in non native mode?\r\n\r\n No, there is no factory calibration in non-native mode.  It only relies on twice or once a day calibrations performed by the user."
+  },
+  {
+   "id": 1252761189,
+   "user": "Navid200",
+   "created_at": "2022-09-20T18:37:06Z",
+   "body": "This feature worries me.  I am worried that someone may end up taking insulin when they shouldn't.\r\n\r\nRestarting a G6 sensor is not recommended exactly for that reason.\r\nWe don't put any obstacles in your way for restarting a sensor.   But, we don't simplify it either.  If anyone chooses to restart, they can.  But, we don't recommend it.\r\n\r\nIf I am mistaken in my thinking, this can always be reopened. \r\n"
+  }
+ ]
+}

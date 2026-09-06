@@ -1,0 +1,61 @@
+{
+ "id": 637284848,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1364,
+ "title": "Unable to calibrate (Dexcom G6 1.6.5.25)",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1364",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "device-dexcom",
+  "calibration"
+ ],
+ "created_at": "2020-06-11T19:56:59Z",
+ "closed_at": "2021-03-02T20:05:09Z",
+ "comment_count": 7,
+ "body": "Running xDrip+ **2020.06.11** (same with 2020.03.25; upgrading to latest nightly today did not fix the issue) with **Dexcom G6 with 80 tx Firmware 1.6.5.25** (rebatteried); before with 8G Firefly calibrations still worked! After changing back to the 80 tx I cannot calibrate any more. See screenshots. Calibrations are registered in Event Log but the message \"Calibration Accepted\" **never** shows up! **Somehow xDrip/G6 ignores my calibrations...** :-( Tested with both methods \r\nA) \"Initial\" or \"Add calibration\" menu\r\nB) Syringe icon with Advanced Calibration/Automatic Calibration and Automatic Mode ON \r\n\r\nG6 running with following options: OB1, Native Algo, Restart Sensor, Preemptive Restarts, G6 Support, Allow OB1 unbonding, Allow OB1 initiate bonding ==> **ON** and all other G5/G6 Debug Settings **OFF**. Currently on day 11 of sensor life, preemptive restart on day 9 worked fine but now I need to calibrate +10 mg/dL without success. Tried to calibrate twice yesterday and five times today! Calibrations are showing in \"Calibration Data Table\" as well as in trend but they are not working. Have also tried \"Stop Sensor/Reset Calibrations\" in between, no success. See below. Can anybody help me? THANKS!!\r\n\r\n![image](https://user-images.githubusercontent.com/60714349/84433574-cada5200-ac2e-11ea-80d3-72952853bf7f.png)\r\n\r\n![image](https://user-images.githubusercontent.com/60714349/84433116-193b2100-ac2e-11ea-9dc5-3aab790cf278.png)\r\n\r\n![image](https://user-images.githubusercontent.com/60714349/84433146-235d1f80-ac2e-11ea-9616-58c088a74839.png)\r\n",
+ "comments": [
+  {
+   "id": 643389284,
+   "user": "emp-00",
+   "created_at": "2020-06-12T17:10:45Z",
+   "body": "Made another attempt today, no success. Used the syringe icon to calibrate (see settings above). Result: Calibration registered in queue (see Change Log) but no \"Calibration accepted\" received after next signal reception. Instead I get \"authentification notification throwable (CHECK_AUTH) ... - 2 exceptions occurred\" and \"Error count reached: 2\" followed by signal loss for 2-3 receptions, xDrip automatically initiated agressive collector restart which fixed the reception after 1-2 more readings. Now I get readings again BUT calibration did not go through. Why??\r\n\r\nThis is totally new for me - have been using one Firefly transmitter and now back to 80 tx -- in the past with 80 tx calibration always worked, now I'm stuck! Please help.\r\n\r\n![image](https://user-images.githubusercontent.com/60714349/84528564-392b1d00-ace0-11ea-9deb-be8885dd62b0.png)"
+  },
+  {
+   "id": 643473212,
+   "user": "emp-00",
+   "created_at": "2020-06-12T20:37:05Z",
+   "body": "Update: Have now reverted to the last stable xDrip+ master 2019.10.27 ==> still no change in symptoms ==> calibration (using syringe icon) still ignored! \r\n\r\nThe  CHECK_AUTH error message still appears instead of \"Calibration accepted\" - only a little bit different. No success. Any ideas? @jamorham - Help needed. Thanks!\r\n\r\n![image](https://user-images.githubusercontent.com/60714349/84544072-d6944a00-acfc-11ea-9ac7-bcfa3a1550a3.png)\r\n"
+  },
+  {
+   "id": 643596616,
+   "user": "jamorham",
+   "created_at": "2020-06-13T09:20:14Z",
+   "body": "Try turning off any other devices which may also be connecting to the transmitter and if this is a rebatteried device then try a hard transmitter reset. Use the latest nightly and check that native mode is in use."
+  },
+  {
+   "id": 643615513,
+   "user": "emp-00",
+   "created_at": "2020-06-13T12:16:25Z",
+   "body": "Thanks for the feedback. I have no other devices connected to my transmitter (no watch, no Dexcom receiver, just using xDrip on Samsung A8). When I inserted the rebatteried tx I successfully performed a hard reset, now running since 20 transmitter days (see  also System status page screenshot above). Have changed back to latest nightly. Native mode is and was always ON. Do you think one more hard reset could help? Can you read anything out of the error messages?"
+  },
+  {
+   "id": 716160684,
+   "user": "tolot27",
+   "created_at": "2020-10-25T14:51:57Z",
+   "body": "@emp-00 How does this issue differ from #1310? It looks like a duplicate."
+  },
+  {
+   "id": 788393740,
+   "user": "Navid200",
+   "created_at": "2021-03-01T23:30:10Z",
+   "body": "@emp-00 Can we please close this issue?\r\nThere are some people who are still using 1.6.5.25.  I don't think they are having difficulty calibrating with recent releases of xDrip.  Please let me know if you disagree.\r\nThanks"
+  },
+  {
+   "id": 789178174,
+   "user": "emp-00",
+   "created_at": "2021-03-02T20:05:09Z",
+   "body": "Calibration issue is fixed by changed configuration and/or bugfix in recent nightlies."
+  }
+ ]
+}

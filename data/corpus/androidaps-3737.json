@@ -1,0 +1,71 @@
+{
+ "id": 2783892507,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3737,
+ "title": "[Dana-i] Large bolus causes endless 'Waiting for estimated bolus end' without actually applying bolus",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3737",
+ "state": "closed",
+ "labels": [
+  "dana"
+ ],
+ "created_at": "2025-01-13T12:56:55Z",
+ "closed_at": "2025-01-20T10:40:56Z",
+ "comment_count": 9,
+ "body": "When I do reasonably large boluses (>15 U) AAPS regularly fails to apply the bolus. \r\n\r\nI am now running version 3.3.1 on Google Pixel 8 (Android 15), but it was in earlier versions and older phones as well.\r\n\r\nWhen I try to apply the bolus it directly goes to 'Waiting for estimated bolus end' and will stay there for a long time.\r\nI can also not stop the bolus anymore. Clicking the bolus will make the popup go to 'STOP PRESSED' and from there I cannot do anything anymore. I have to kill the app to continue, manually applying the bolus on my pump.\r\n\r\nSee the video\r\n\r\nhttps://github.com/user-attachments/assets/a64fe82c-722e-4e88-8805-777175dc1fa5\r\n\r\nI am happy to share more info, but not sure what you need",
+ "comments": [
+  {
+   "id": 2587627056,
+   "user": "MilosKozak",
+   "created_at": "2025-01-13T16:41:01Z",
+   "body": "do such bolus and provide logs and time"
+  },
+  {
+   "id": 2599654875,
+   "user": "wouterlemcke",
+   "created_at": "2025-01-18T10:04:20Z",
+   "body": "Where can I find the logs?"
+  },
+  {
+   "id": 2600933509,
+   "user": "MowgliChild",
+   "created_at": "2025-01-19T16:32:32Z",
+   "body": "> Where can I find the logs?\n\nSend log file vvia email when this happens.\nHamburger, maintenance, email log file. Record time and date and add that here so the Devs can find it. "
+  },
+  {
+   "id": 2601927014,
+   "user": "wouterlemcke",
+   "created_at": "2025-01-20T09:51:10Z",
+   "body": "Thanks! I send the logs. \n\n10:08:24 was time when I tried the bolus.\n\nError I see is: `10:08:28.691 [binder:29854_F] E/CORE: [DanaRSPacketBolusSetStepBolusStart.handleMessage():43]: Result Error: 128`"
+  },
+  {
+   "id": 2602029940,
+   "user": "MilosKozak",
+   "created_at": "2025-01-20T10:29:55Z",
+   "body": "```\n10:08:28.223 [DefaultDispatcher-worker-4] D/PUMPQUEUE: [QueueWorker.doWorkAndLog():133]: performing BOLUS 21.80 U\n10:08:28.242 [DefaultDispatcher-worker-4] D/CORE: [DetailedBolusInfoStorageImpl.add():30]: Stored bolus info: {\"bolusCalculatorResult\":{\"basalIOB\":-0.735,\"bolusIOB\":9.244,\"carbs\":150.0,\"carbsInsulin\":15.0,\"cob\":31.483783885686787,\"cobInsulin\":3.1483783885686787,\"dateCreated\":-1,\"glucoseDifference\":8.1,\"glucoseInsulin\":4.177072232294851,\"glucoseTrend\":0.0,\"glucoseValue\":244.79999999999998,\"ic\":10.0,\"id\":0,\"ids\":{},\"isValid\":true,\"isf\":34.90483091787441,\"note\":\"\",\"otherCorrection\":8.0,\"percentageCorrection\":100,\"profileName\":\"autotune 23-12-22 local(90%)\",\"superbolusInsulin\":0.0,\"targetBGHigh\":99.0,\"targetBGLow\":99.0,\"timestamp\":1737364104075,\"totalInsulin\":21.8,\"trendInsulin\":0.0,\"utcOffset\":3600000,\"version\":0,\"wasBasalIOBUsed\":true,\"wasBolusIOBUsed\":true,\"wasCOBUsed\":true,\"wasGlucoseUsed\":true,\"wasSuperbolusUsed\":false,\"wasTempTargetUsed\":false,\"wasTrendUsed\":true,\"wereCarbsUsed\":true},\"bolusType\":\"NORMAL\",\"carbs\":0.0,\"carbsDuration\":0,\"carbsTimestamp\":1737364104074,\"deliverAtTheLatest\":0,\"eventType\":\"BOLUS_WIZARD\",\"glucoseType\":\"MANUAL\",\"id\":1737364104074,\"insulin\":21.8,\"lastKnownBolusTime\":0,\"mgdlGlucose\":244.79999999999998,\"notes\":\"\",\"timestamp\":1737364762237}\n10:08:28.266 [DefaultDispatcher-worker-4] D/PUMPCOMM: [DanaRSPacketBolusSetStepBolusStart.<init>():25]: Bolus start : 21.8 speed: 1\n10:08:28.268 [DefaultDispatcher-worker-4] D/PUMPBTCOMM: [BLEComm.sendMessage():783]: >>>>> BOLUS__SET_STEP_BOLUS_START B2 4A  84 08 01 \n10:08:28.672 [binder:29854_F] D/PUMPBTCOMM: [BLEComm.processMessage():864]: <<<<< BOLUS__SET_STEP_BOLUS_START B2 4A 80 \n10:08:28.691 [binder:29854_F] E/CORE: [DanaRSPacketBolusSetStepBolusStart.handleMessage():43]: Result Error: 128\n```"
+  },
+  {
+   "id": 2602042050,
+   "user": "MilosKozak",
+   "created_at": "2025-01-20T10:34:07Z",
+   "body": "Pump reports safety problem.\nExpecting you are breaking some limit (max bolus, max daily etc....)"
+  },
+  {
+   "id": 2602043492,
+   "user": "wouterlemcke",
+   "created_at": "2025-01-20T10:34:40Z",
+   "body": "Ah, check. I will investigate there. Thanks for the quick reply!"
+  },
+  {
+   "id": 2602059295,
+   "user": "wouterlemcke",
+   "created_at": "2025-01-20T10:40:56Z",
+   "body": "Hmm..\n\nMax bolus is 50, max daily is 130 (right now at 21..).\nI think it's the safety ratio, that's set to 100. I will turn it off.\n\nFor now I think this issue can be closed. I will reopen if this is not the solution 😉\n\nThanks for the help!"
+  },
+  {
+   "id": 2602136628,
+   "user": "MilosKozak",
+   "created_at": "2025-01-20T11:12:44Z",
+   "body": "If this happen again try to issue the same bolus directly on pump"
+  }
+ ]
+}

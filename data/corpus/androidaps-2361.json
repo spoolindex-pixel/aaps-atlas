@@ -1,0 +1,75 @@
+{
+ "id": 1548719081,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2361,
+ "title": "Change from NSv3 to NSv1 : no more connection ",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2361",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-01-19T08:33:10Z",
+ "closed_at": "2023-01-20T08:53:04Z",
+ "comment_count": 10,
+ "body": "Last dev_g. I was on NSv3 for a couple of days. Wanted to get back to NSv1 to stop having holes in NS web.\n\nAs a result, NS in AAPS can't connect to NS web. The web site is functional. I get the \"usual\" error (can't recall exactly, you'll see in the logs). The secret API is filled and correct.\n\nIf I switch back to NSv3, it connects normally.\n\nSee logs around 9:20\n\n![AndroidAPS_LOG_1674116750797.log.zip](https://github.com/nightscout/AndroidAPS/files/10454951/AndroidAPS_LOG_1674116750797.log.zip)\n\n",
+ "comments": [
+  {
+   "id": 1397492208,
+   "user": "Alamo04",
+   "created_at": "2023-01-19T19:25:38Z",
+   "body": "NSC v3 never worked for me,  nothing was syncing with that version.\r\nSo I tested NSC v3 and going back to v1 immediately. \r\n![Screenshot_20230119-201816~2](https://user-images.githubusercontent.com/36486505/213541793-b391b78a-552f-4a78-bd9d-fd9ff4b1a8ce.png)\r\n\r\n\r\nNSC v1 is still working fine."
+  },
+  {
+   "id": 1397575213,
+   "user": "MilosKozak",
+   "created_at": "2023-01-19T20:41:23Z",
+   "body": "`D/NSCLIENT: [NSClientPlugin$onStart$9.accept():127]: ERROR io.socket.engineio.client.EngineIOException: xhr poll error`\r\nmeans connectivity issue"
+  },
+  {
+   "id": 1397611977,
+   "user": "robertrub",
+   "created_at": "2023-01-19T21:07:25Z",
+   "body": "Yes, I know but changing back to NSv3 brings the connectivity back. Changing to v1 and I get the error \n\nIt made me think that as v1 is using the secret API and V3 is using the token, maybe one of them got stuck in a variable and v1 tries to use the token, instead of the secret API (this is a very wild guess though!)"
+  },
+  {
+   "id": 1397613233,
+   "user": "robertrub",
+   "created_at": "2023-01-19T21:08:48Z",
+   "body": "@Alamo04  Wait 5 to 10 minutes and you'll see the uploading."
+  },
+  {
+   "id": 1397638853,
+   "user": "MilosKozak",
+   "created_at": "2023-01-19T21:35:12Z",
+   "body": "btw I tested NS dev and AAPS won't connect too. What's your NS version?"
+  },
+  {
+   "id": 1397642359,
+   "user": "Alamo04",
+   "created_at": "2023-01-19T21:39:05Z",
+   "body": "@robertrub \r\nAt my first try, I saw after 30 minutes that NS didn't get new BG, or any other data.\r\nI entered API key and also create a new Token for AAPS and entered it also, next try and nothing changed.\r\nAlso tryed a restart of phone and AAPS.\r\nV3 isn't working for me.\r\n\r\nNSC v3 also says \"not connected\".\r\n\r\nBut you say I have to wait and so I tested it again. Waiting now 20 minutes, without sync to NS.\r\nAPI key and token are entered and the NS site is working, so the client has to upload the data and bg, but nothing happen.\r\nAll settings are the same as in NSC v1 + Token.\r\n\r\n![Screenshot_20230119-223504](https://user-images.githubusercontent.com/36486505/213568000-c54eadec-04b4-4afc-ac97-aa745be646fb.png)\r\n\r\n\r\nGoing back to v1 and everything works fine again."
+  },
+  {
+   "id": 1397644876,
+   "user": "Alamo04",
+   "created_at": "2023-01-19T21:41:40Z",
+   "body": "> btw I tested NS dev and AAPS won't connect too. What's your NS version?\r\n\r\nNightscout Dev 15.0.0\r\n\r\nNormally I used the Master, but there is a bug in 14.2.6, with that I can't use my NS Monitor."
+  },
+  {
+   "id": 1397876071,
+   "user": "robertrub",
+   "created_at": "2023-01-20T03:15:21Z",
+   "body": "I'm using latest_dev which is v15.0.0.\n\nI have tested again and again with the same result. V3 works. V1 gives the connection error.\n\nI change to V1, force close AAPS, clean cache, restart AAPS. Can't connect.\n\nChange back to V3 and even without restart, the connection is good and data starts flowing.\n\n@MilosKozak  You had asked for my settings but didn't say which one. Aaps or NS settings in AAPS?\n\nAaps is latest fev too.\n\n![Screenshot_20230118_182857_AAPS.jpg](https://user-images.githubusercontent.com/76626474/213610329-f9e1fe33-dedb-4680-a712-18627ae75b56.jpg)"
+  },
+  {
+   "id": 1398083585,
+   "user": "robertrub",
+   "created_at": "2023-01-20T08:52:03Z",
+   "body": "@MilosKozak , as your message on Discord AAPS, it seems normal that v1 doesn't work with NS v15\n\n![Screenshot_20230120_094915_Discord.jpg](https://user-images.githubusercontent.com/76626474/213654493-17f9aca3-596c-41e0-b5c0-f98919b50609.jpg)\n\nClosing this issue."
+  },
+  {
+   "id": 1398926404,
+   "user": "Alamo04",
+   "created_at": "2023-01-20T21:00:04Z",
+   "body": "On my side.\r\n\r\nv1 still works fine with the latest dev.\r\n\r\nv3 didnt work and I give up now. Tryed everything.\r\n\r\nSetup:\r\nPixel 5, Android 13, Boyda with Dexcom G6 - Broadcast to AAPS and XDrip, DanaRS., NS Dev 15.0.0\r\nGoing back to NS Master 14.2.6 didn't change anything.\r\n\r\nAs long as I can use NSC v1 this issue doesn't matter for me.\r\nBut I think there will be others with that problem, if they try to use v3."
+  }
+ ]
+}

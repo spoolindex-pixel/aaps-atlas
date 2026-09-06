@@ -1,0 +1,63 @@
+{
+ "id": 1300450479,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1904,
+ "title": "The complication doesn't open AAPS on Wear OS 3",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1904",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-07-11T09:33:03Z",
+ "closed_at": "2023-08-17T14:57:28Z",
+ "comment_count": 8,
+ "body": "The complication doesn't open AAPS on Galaxy watch 4. It takes a lot of clicks to open.\r\n\r\nReporting bugs\r\n--------------\r\n- **Note the precise time the problem occurred** and describe the circumstances and steps that caused\r\n  the problem\r\n- Note the Build version (found in the About dialog in the app, when pressing the three dots in the\r\n  upper-right corner).\r\n- Obtain the app's log files, which can be found on the phone in\r\n  _/storage/emulated/0/Android/data/info.nightscout.androidaps/_\r\n  See https://androidaps.readthedocs.io/en/latest/Usage/Accessing-logfiles.html\r\n- Open an issue at https://github.com/nightscout/AndroidAPS/issues/new\r\n",
+ "comments": [
+  {
+   "id": 1180427809,
+   "user": "Andries-Smit",
+   "created_at": "2022-07-11T13:43:33Z",
+   "body": "@agmsd can you set change the action to another preference and back?\r\n*AAPS > Settings >Complications Tab Action*. Select **MENU**, and then back to **DEFAULT**\r\nDoes your issue still occur after changing the tab action?\r\n\r\nFor me, it seems the click only works after configuring it. After the complications received an update they seem no longer to respond to the tabs. (Though the UI show a tough rimple effect) \r\n\r\nAnd in the emulator (Wear OS 2 API 28) the issue seems not to occur\r\n\r\nThe console log of the watch 4 gives the error\r\n![image](https://user-images.githubusercontent.com/6724749/178296251-cceecdd8-b95f-4358-aaeb-7d2d73961933.png)\r\n\r\nThe issue is caused by https://developer.android.com/guide/components/activities/background-starts\r\n"
+  },
+  {
+   "id": 1183689101,
+   "user": "MilosKozak",
+   "created_at": "2022-07-13T21:19:44Z",
+   "body": "the principle didn't change. was is working before?"
+  },
+  {
+   "id": 1183691934,
+   "user": "Andries-Smit",
+   "created_at": "2022-07-13T21:23:24Z",
+   "body": "It works Before Android 10 (API level 29) \r\nWith the new restrictions, it does no longer work on newer devices like the watch 4.\r\nThough I did not test with older Aaps versions"
+  },
+  {
+   "id": 1278750963,
+   "user": "mk89pwnz",
+   "created_at": "2022-10-14T09:37:44Z",
+   "body": "I have same problem but its more then that, personally if I use default Samsung watch ace with compilations AAAP just stops working. It shows all information like BG, IOB, COB but when I try to set TT or do a bolus request it's sent but I never get the confirmation. Only way to get it workings is to use default AAPS watchfaces. If i forcestop AAPS from the phone and start it again it will work for few min or hours and then stop again, I beleve this is samsung bug but maybe it could be fixed by AAPS? "
+  },
+  {
+   "id": 1340481537,
+   "user": "agmsd",
+   "created_at": "2022-12-07T06:57:42Z",
+   "body": "> the principle didn't change. was is working before?\r\n\r\nI bought my Galaxy Watch 4 Classic and I started using it with version 3.0, so I'm not sure! bolusing works sometimes disconned and reconnect the Bluetooth for once or never!. The only thing working very well now is the BG readings."
+  },
+  {
+   "id": 1340969114,
+   "user": "agmsd",
+   "created_at": "2022-12-07T13:28:39Z",
+   "body": "I can doing the testing whenever you need me to!"
+  },
+  {
+   "id": 1502949226,
+   "user": "agmsd",
+   "created_at": "2023-04-11T09:02:38Z",
+   "body": "I think the problem is with the Bluetooth on pixel 6 and 7. When I reset the Bluetooth, the watch AAPS runs once or twice then stops running after that."
+  },
+  {
+   "id": 1682436028,
+   "user": "MilosKozak",
+   "created_at": "2023-08-17T14:57:28Z",
+   "body": "Closed for inactivity. Create new issue is if you still see the problem on latest branch"
+  }
+ ]
+}

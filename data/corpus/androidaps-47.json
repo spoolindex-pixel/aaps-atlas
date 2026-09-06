@@ -1,0 +1,33 @@
+{
+ "id": 727431808,
+ "repo": "nightscout/AndroidAPS",
+ "number": 47,
+ "title": "App crashes when importing preferences",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/47",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2020-10-22T14:16:53Z",
+ "closed_at": "2020-10-26T13:35:34Z",
+ "comment_count": 3,
+ "body": "The app crashes when importing preferences. I reverted some recent commits and found that this crash was introduced in commit 955844f3191d6c3aae5a3dcb91b17b929e66f479.\r\n\r\n**Version**\r\n2.7.0-dev (commit 492bb349ddb57d935118c7750674fade594ee347)\r\n\r\n**Reproduction steps**\r\n1. Go to Maintenance\r\n2. Click Import Settings\r\n3. App should now crash\r\n\r\n**Stack trace**\r\n```\r\nE/AndroidRuntime: FATAL EXCEPTION: main\r\n    Process: info.nightscout.androidaps, PID: 9854\r\n    java.lang.IllegalStateException: LifecycleOwner info.nightscout.androidaps.activities.SingleFragmentActivity@dcb16f9 is attempting to register while current state is RESUMED. LifecycleOwners must call register before they are STARTED.\r\n        at androidx.activity.result.ActivityResultRegistry.register(ActivityResultRegistry.java:116)\r\n        at androidx.activity.ComponentActivity.registerForActivityResult(ComponentActivity.java:653)\r\n        at androidx.activity.ComponentActivity.registerForActivityResult(ComponentActivity.java:662)\r\n        at info.nightscout.androidaps.plugins.general.maintenance.ImportExportPrefs.importSharedPreferences(ImportExportPrefs.kt:264)\r\n        at info.nightscout.androidaps.plugins.general.maintenance.ImportExportPrefs.importSharedPreferences(ImportExportPrefs.kt:259)\r\n        at info.nightscout.androidaps.plugins.general.maintenance.MaintenanceFragment$onViewCreated$5.onClick(MaintenanceFragment.kt:55)\r\n        at android.view.View.performClick(View.java:7339)\r\n        at android.widget.TextView.performClick(TextView.java:14275)\r\n        at android.view.View.performClickInternal(View.java:7305)\r\n        at android.view.View.access$3200(View.java:846)\r\n        at android.view.View$PerformClick.run(View.java:27787)\r\n        at android.os.Handler.handleCallback(Handler.java:873)\r\n        at android.os.Handler.dispatchMessage(Handler.java:99)\r\n        at android.os.Looper.loop(Looper.java:214)\r\n        at android.app.ActivityThread.main(ActivityThread.java:7078)\r\n        at java.lang.reflect.Method.invoke(Native Method)\r\n        at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:494)\r\n        at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:964)\r\n```",
+ "comments": [
+  {
+   "id": 715389707,
+   "user": "AdrianLxM",
+   "created_at": "2020-10-23T14:50:09Z",
+   "body": "This actually is a bug that goes quite deep. It derives from an Android Jetpack bug that allowed this situation to happen before - but was fixed in recent versions. (https://issuetracker.google.com/issues/165435866)\r\n\r\nFrom the documentation:\r\nhttps://developer.android.com/training/basics/intents/result#register\r\n> ...the callback must be **unconditionally** registered every time your activity is created, even if the logic of launching the other activity only happens based on user input or other business logic.\r\n\r\nWe don't meet the **unconditionally** criteria. We only register when needed.\r\n\r\nTherefore in `ImportExportPrefs.kt` we would need to split this:\r\n```\r\n    fun importSharedPreferences(activity: FragmentActivity) {\r\n        val callForPrefFile = activity.registerForActivityResult(PrefsFileContract()) {\r\n            it?.let {\r\n                importSharedPreferences(activity, it)\r\n            }\r\n        }\r\n\r\n        try {\r\n            callForPrefFile.launch(null)\r\n        } catch (e: IllegalArgumentException) {\r\n            // this exception happens on some early implementations of ActivityResult contracts\r\n            // when registered and called for the second time\r\n            ToastUtils.errorToast(activity, resourceHelper.gs(R.string.goto_main_try_again))\r\n            log.error(TAG, \"Internal android framework exception\", e)\r\n        }\r\n    }\r\n```\r\n\r\nThe registering part would have to be done in `onCreate()` or better in initialization of the activity.\r\n\r\n@MilosKozak @TebbeUbben: can the maintenance fragment only be in the main-activity? If not, we might have to check if we can register for the fragment and not the activity or we could come into the situation to double-register :/ \r\n"
+  },
+  {
+   "id": 716017647,
+   "user": "MilosKozak",
+   "created_at": "2020-10-24T17:19:59Z",
+   "body": "if this is easiest solution we can force always visible\r\n@AdrianLxM "
+  },
+  {
+   "id": 716549740,
+   "user": "MilosKozak",
+   "created_at": "2020-10-26T13:35:34Z",
+   "body": "fixed by https://github.com/nightscout/AndroidAPS/commit/13a55eeb42a5b8f0914cc21f9292adba8518ef27"
+  }
+ ]
+}

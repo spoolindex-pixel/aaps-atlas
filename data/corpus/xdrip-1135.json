@@ -1,0 +1,121 @@
+{
+ "id": 538525369,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1135,
+ "title": "Webservice sensor age differs from xDrip overview",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1135",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "sync",
+  "device-libre"
+ ],
+ "created_at": "2019-12-16T16:40:57Z",
+ "closed_at": "2024-08-15T19:58:10Z",
+ "comment_count": 17,
+ "body": "xDrip REST Webservice SVG has an option sensor=Y that will include sensor age in the result.\r\n\r\nFor a (Libre 1) sensor inserted about 3 days ago:\r\n- overview shows: 3.1d\r\n- at the same time, webservice shows 1d 0h\r\n\r\nI did some digging and found that the overview gets its info from preference \"nfc_sensor_age\" while the webservice receives its value from Sensor.started_at.\r\n\r\nWhat is the difference between both values, and which one should be used to determine end of sensor lifetime?\r\n",
+ "comments": [
+  {
+   "id": 778483094,
+   "user": "Navid200",
+   "created_at": "2021-02-12T22:12:34Z",
+   "body": "@Paulusma Would you please close this issue if your question has already been answered?\r\nIf not, you may get answers in the xDrip support group on facebook.\r\nhttps://www.facebook.com/groups/xDripG5\r\nThanks"
+  },
+  {
+   "id": 778599899,
+   "user": "Paulusma",
+   "created_at": "2021-02-13T10:59:23Z",
+   "body": "since nobody seems to care"
+  },
+  {
+   "id": 778600703,
+   "user": "ghost",
+   "created_at": "2021-02-13T11:06:01Z",
+   "body": "Da ist sicherlich \"NFC\" da dies vom Sensor kommt, jedoch habe ich festgestellt: wenn es um libre geht kommt sehr träge/selten eine Reaktion."
+  },
+  {
+   "id": 778651389,
+   "user": "Navid200",
+   "created_at": "2021-02-13T17:41:27Z",
+   "body": "There are too many open issues.  It's a demoralizing situation, for a developer, to work in.  It implies that they are doing a sub-optimal job.  The fact is that the developers have done a superb job.\r\n\r\nA user should first consult with other users who may be able to address the concern.\r\nA use, currently, ahs two options for this.  One is facebook:  https://www.facebook.com/groups/xDripG5\r\nThe other is:https://gitter.im/jamorham/xDrip-plus\r\n\r\nIf the user concludes that the other users have a similar experience, then, the user needs to decide:  Can I use xDrip as is and get what I need even if it may not be an elegant solution?  If the answer is yes, the user should not open an issue.\r\nOnly if the answer is \"no, I cannot get what I need from xDrip as is\", should the user open an issue.  "
+  },
+  {
+   "id": 778688736,
+   "user": "tolot27",
+   "created_at": "2021-02-13T22:44:49Z",
+   "body": "@Paulusma Please can you test whether this bug still persist? `Sensors.started_at` should contain the correct value because it is read from the database."
+  },
+  {
+   "id": 844465513,
+   "user": "Navid200",
+   "created_at": "2021-05-19T20:54:50Z",
+   "body": "Closing due to inactivity"
+  },
+  {
+   "id": 844467022,
+   "user": "tolot27",
+   "created_at": "2021-05-19T20:56:55Z",
+   "body": "@jwoglom Did you encounter this problem, too?"
+  },
+  {
+   "id": 844736163,
+   "user": "jwoglom",
+   "created_at": "2021-05-20T06:12:27Z",
+   "body": "I hadn't noticed this specific behavior before, but there is (at least on the G5/G6 side) a distinguishment between known age of the sensor and the internal xDrip db state of the sensor, and if a similar bug existed on the Libre side that would explain this behavior. \r\n\r\nOn further investigation, it appears that the web service is calling [SensorStatus.status()](https://github.com/NightscoutFoundation/xDrip/blob/master/app/src/main/java/com/eveningoutpost/dexdrip/UtilityModels/SensorStatus.java#L16) to get this information which is identical to the \"Sensor Start\" timestamp on the Classic status page. This data is obtained from the latest time you hit \"Start Sensor\" inside xDrip, which stores a treatment in the xDrip db. In my case using a G6 sensor that I initiate from a tandem pump instead of xDrip, this timestamp is super out of date (in the hundreds of days) as a result. (I have a PR that I'll upload soon-ish which causes xDrip to store a sensor start date for G5/G6 sensors whenever it detects a new sensor being initialized from another source, which should fix this specific problem.)\r\n\r\nFor G5/G6 that is separate from the \"Sensor Status\" field on the G5/G6 status page which reads from transmitter data, aka it calculates how many days/hours ago the sensor was started on that transmitter.\r\n\r\nThe nfc_sensor_age pref field only appears to be read for Libre sensors. I'm not familiar with that part of the code but I presume it's a similar distinction, where it's something obtained from the Libre end by communicating with the Libre, rather than checking the last created \"sensor start\" treatment in the xDrip db.\r\n\r\nThat would suggest that the originally reported bug here -- where overview (the specific place unspecified, but let's presume on the Libre status page not the general status page) shows some internal Libre state, while the webservice shows the xDrip database state of the last start it's aware of (which is what you'd also see on the classic status page)."
+  },
+  {
+   "id": 894678180,
+   "user": "Navid200",
+   "created_at": "2021-08-07T16:52:41Z",
+   "body": "I confirm that if I disable collection on my main phone and start collection on a phone with xDrip just installed on, after the connection is established between the transmitter with the existing ongoing session on it and the new phone, there is a difference between the age of the sensor on the two system status pages.\r\nThe one on the G5/G6 status page always comes from the transmitter and is always correct.  The one on the classic status page, in case of the example, shows a few minutes because it goes by what xDrip knows about the sensor not what the transmitter knows.\r\n\r\nWe can change xDrip so that the classic status page would also get its info from the transmitter.  But, I don't think this is such a big deal.\r\nIs it?\r\n\r\nA better solution may be to rename what classic status page shows to \"xDrip Sensor Record\" instead of the current \"Sensor Start\".\r\nCan you think of a better wording?\r\nThen, one of us can open a PR to make that request.\r\nWhat do you think?"
+  },
+  {
+   "id": 925900106,
+   "user": "Navid200",
+   "created_at": "2021-09-23T15:03:48Z",
+   "body": "What is this bug?\r\nHow can it be recreated?  What are the steps?"
+  },
+  {
+   "id": 971746829,
+   "user": "tolot27",
+   "created_at": "2021-11-17T16:29:33Z",
+   "body": "@jwoglom Please can you link the PR, if any?\r\n\r\nI prefer to see the true sensor age at the status page.\r\n\r\n@tzachi-dar Do you have any idea how to fix this issue for Libre sensors?"
+  },
+  {
+   "id": 971765587,
+   "user": "Navid200",
+   "created_at": "2021-11-17T16:50:38Z",
+   "body": "> I prefer to see the true sensor age at the status page.\r\n\r\nYou do see the sensor age on the G5/G6 status page.  For example, 3.9 days.\r\n\r\nWhat you see on the classic status page is when xDrip started the sensor, which is the time and date.\r\n\r\nThe two pages don't show the same thing.  They are not supposed to.  But, if xDrip starts the sensor, the two values correspond to each other although not the same.  One is a length of time while the other is a time and date.\r\n\r\nIf xDrip didn't start the sensor, the G5/G6 status page would show exactly the same thing as before because the source of the information is the transmitter.\r\nBut, in that case, the classic status page would show when xDrip established connectivity to the session in progress.  \r\n\r\nThis is very useful for debugging someone else's system.  By just seeing those two pages, I can find out a lot about what's going on without having to ask 20 different questions from the user."
+  },
+  {
+   "id": 1006841637,
+   "user": "Navid200",
+   "created_at": "2022-01-06T19:03:51Z",
+   "body": "Any objection in converting this to a discussion?\r\n\r\nI just tested and was not able to create a discrepancy between the G5/G6 status page and the classic status page.\r\nI believe one of the recent (12 months) updates may have changed the behavior."
+  },
+  {
+   "id": 1006968251,
+   "user": "tolot27",
+   "created_at": "2022-01-06T22:05:12Z",
+   "body": "A PR should be simple to address the initial problem that the WebService uses the wrong values for Libre and Dexcom sensor age.  @jwoglom Please can you create the [announced](https://github.com/NightscoutFoundation/xDrip/issues/1135#issuecomment-844736163) PR?\r\n\r\n> A better solution may be to rename what classic status page shows to \"xDrip Sensor Record\" instead of the current \"Sensor Start\".\r\n> Can you think of a better wording?\r\n\r\nChanging this is out of the scope of this issue. But we can create a separate PR for clarification. I suggest \"Sensor connected\" or \"Sensor detected\" which means the first time the xDrip instance in use connected to a (running) sensor and my have started it if it was a new sensor. \r\n\r\nIMHO, there is no need to turn it into a discussion because just we developers think about a reasonable solution. Hence, this is the right place to discuss this."
+  },
+  {
+   "id": 1006970525,
+   "user": "Navid200",
+   "created_at": "2022-01-06T22:09:05Z",
+   "body": "Of course, like always, it's a good idea to test with the latest xDrip before doing anything.\r\nI was surprised to find out xDrip behaved very differently than it had before for me.\r\nThe originally reported problem may not exist any longer."
+  },
+  {
+   "id": 1006994524,
+   "user": "tolot27",
+   "created_at": "2022-01-06T22:54:37Z",
+   "body": "> The originally reported problem may not exist any longer.\r\n\r\nIn that case it still exists because nobody touched\r\n\r\nhttps://github.com/NightscoutFoundation/xDrip/blob/master/app/src/main/java/com/eveningoutpost/dexdrip/UtilityModels/SensorStatus.java#L20\r\n"
+  },
+  {
+   "id": 2292096432,
+   "user": "Navid200",
+   "created_at": "2024-08-15T19:58:10Z",
+   "body": "There was a time xDrip acted as a CGM dealing with raw values and performing calibrations.  At that time, the xDrip session had a significance and when it started mattered a lot.\r\n\r\nWith G6, we used native algorithm meaning we allowed the transmitter to do all the  work and xDrip just reported the values reported by the transmitter with no modifications.\r\nWith G7, this trend has continued.  There is absolutely no significance in when an xDrip internal session starts.\r\n\r\nI don't know anything about Libre though.\r\nBut. my understanding is that we do not run Libre 3 locally.\r\n\r\nI am going to close this.  If this conversation needs to continue, it can even if the issue is closed.  And we can reopen if needed.\r\nBut, on the Dexcom side, there is absolutely no reason to worry about the xDrip session start time."
+  }
+ ]
+}

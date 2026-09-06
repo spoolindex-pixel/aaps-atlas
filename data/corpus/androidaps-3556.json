@@ -1,0 +1,57 @@
+{
+ "id": 2693594892,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3556,
+ "title": "Max Usage Limit for Master Password Reset in v3.2.0.4?",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3556",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2024-11-26T07:48:13Z",
+ "closed_at": "2024-11-28T17:39:12Z",
+ "comment_count": 7,
+ "body": "Build version 3.2.0.4,, \r\n\r\nI reset the master password once **without having an active Omnipod Dash**. After reopening AAPS, I received a message indicating success. However, when I tried using this feature again later (with an active Omnipod Dash), there was no success message, and the `PasswordReset` file in the `extra` folder no longer disappears. After deleting the `extra` folder and reopening AAPS, the folder is automatically recreated. \r\n\r\nTherefore, I would like to know if this feature has a minimum time interval for reuse or if it can only be used once. If anyone can help me, I would be very grateful. Thank You！\r\n",
+ "comments": [
+  {
+   "id": 2501673310,
+   "user": "Philoul",
+   "created_at": "2024-11-26T18:39:59Z",
+   "body": "Usage is only once.\nThen a new password should be set using the temporary one."
+  },
+  {
+   "id": 2503360887,
+   "user": "MilosKozak",
+   "created_at": "2024-11-27T09:27:29Z",
+   "body": "and the file is removed on successful reset"
+  },
+  {
+   "id": 2503566320,
+   "user": "Maccha-Azuki",
+   "created_at": "2024-11-27T10:57:16Z",
+   "body": "Thank you for your reply! So is the password for the Omnipod Dash pump still 4241 when it's not active? I tried entering the master password 4241 in the export configuration section, but it still showed a password error. I previously used the Dash, and the one currently active is also the Dash. I also tried using the serial number of a Medtronic pump I used a long time ago (which didn't help either).\r\n\r\n________________________________\r\n发件人: Milos Kozak ***@***.***>\r\n发送时间: 2024年11月27日 9:27\r\n收件人: nightscout/AndroidAPS ***@***.***>\r\n抄送: Maccha-Azuki ***@***.***>; Author ***@***.***>\r\n主题: Re: [nightscout/AndroidAPS] Max Usage Limit for Master Password Reset in v3.2.0.4? (Issue #3556)\r\n\r\n\r\nand the file is removed on successful reset\r\n\r\n―\r\nReply to this email directly, view it on GitHub<https://github.com/nightscout/AndroidAPS/issues/3556#issuecomment-2503360887>, or unsubscribe<https://github.com/notifications/unsubscribe-auth/ANO2YW7MFGTDXGOVPXBVWKT2CWGBPAVCNFSM6AAAAABSPYLJE2VHI2DSMVQWIX3LMV43OSLTON2WKQ3PNVWWK3TUHMZDKMBTGM3DAOBYG4>.\r\nYou are receiving this because you authored the thread.Message ID: ***@***.***>\r\n"
+  },
+  {
+   "id": 2504202280,
+   "user": "MilosKozak",
+   "created_at": "2024-11-27T15:44:27Z",
+   "body": "yes when dash is selected as a pump it's always 4241"
+  },
+  {
+   "id": 2505566557,
+   "user": "Maccha-Azuki",
+   "created_at": "2024-11-28T08:50:09Z",
+   "body": "I find it's \"n/a\" in \\pump\\omnipod-dash\\src\\main\\java\\info\\nightscout\\androidaps\\plugins\\pump\\omnipod\\dash\\OmnipodDashPumpPlugin.kt (1041-1044)\r\n`    override fun serialNumber(): String {\r\n        return podStateManager.uniqueId?.toString()\r\n            ?: \"n/a\" // TODO i18n\r\n    }\r\n`\r\nI tried \"n/a\" and it worked 😄 😄 \r\nIf the result of podStateManager.uniqueId?.toString() is null, it returns the string \"n/a\" as a default value. Can this be added to the documentation? When there is no active pump connection(e.g. after the previous pump has expired but no new pump has been connected yet). the password will be reset to \"n/a\". "
+  },
+  {
+   "id": 2505786647,
+   "user": "MilosKozak",
+   "created_at": "2024-11-28T10:33:38Z",
+   "body": "I'll change the code. Thanks for finding this issue"
+  },
+  {
+   "id": 2506576157,
+   "user": "MilosKozak",
+   "created_at": "2024-11-28T17:39:12Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/c37395ae96d7fe3fd2e959d03262cd9fe0429e55"
+  }
+ ]
+}

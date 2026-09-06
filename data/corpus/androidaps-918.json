@@ -1,0 +1,35 @@
+{
+ "id": 1052671121,
+ "repo": "nightscout/AndroidAPS",
+ "number": 918,
+ "title": "[3.0-beta5] Error while reading history of DanaRS",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/918",
+ "state": "closed",
+ "labels": [
+  "question - more info needed"
+ ],
+ "created_at": "2021-11-13T12:28:26Z",
+ "closed_at": "2021-11-17T18:50:53Z",
+ "comment_count": 3,
+ "body": "Version: AndroidAPS 3.0-beta5\r\nPumpe: DanaRS v3\r\n                Model: 05\r\n                Protokoll: 11\r\n                Code: 11\r\n\r\nI have the issue that often, when a connection to the pump happens, the connection is not ended for nearly a minute.\r\n\r\nIn the logs I saw that when the pump history is requested, after receiving all the history events, there is a Java error shown:\r\n\r\n```\r\n12:55:12.238 [Binder:20818_3] D/PUMPCOMM: [DanaRSPacketAPSHistoryEvents.handleMessage():77]: Last record received\r\n12:55:12.274 [RxCachedThreadScheduler-79] E/DATABASE: [PumpSyncImplementation.syncStopTemporaryBasalWithPumpId$lambda-21():269]: Error while saving TemporaryBasal\r\njava.lang.IllegalArgumentException: Failed requirement.\r\n\tat info.nightscout.androidaps.database.interfaces.DBEntryWithTimeAndDurationKt.setEnd(DBEntryWithTimeAndDuration.kt:11) ~[na:0.0]\r\n\tat info.nightscout.androidaps.database.transactions.SyncPumpCancelTemporaryBasalIfAnyTransaction.run$database_fullRelease(SyncPumpCancelTemporaryBasalIfAnyTransaction.kt:18) ~[na:0.0]\r\n\tat info.nightscout.androidaps.database.transactions.SyncPumpCancelTemporaryBasalIfAnyTransaction.run$database_fullRelease(SyncPumpCancelTemporaryBasalIfAnyTransaction.kt:7) ~[na:0.0]\r\n\tat info.nightscout.androidaps.database.AppRepository.runTransactionForResult$lambda-4$lambda-3(AppRepository.kt:53) ~[na:0.0]\r\n\tat info.nightscout.androidaps.database.AppRepository.$r8$lambda$PutkuiY9RpEna-m2EmcDL4xFiLQ(Unknown Source:0) ~[na:0.0]\r\n\tat info.nightscout.androidaps.database.AppRepository$$ExternalSyntheticLambda71.call(Unknown Source:6) ~[na:0.0]\r\n\tat androidx.room.RoomDatabase.runInTransaction(RoomDatabase.java:577) ~[na:0.0]\r\n\tat info.nightscout.androidaps.database.AppRepository.runTransactionForResult$lambda-4(AppRepository.kt:51) ~[na:0.0]\r\n\tat info.nightscout.androidaps.database.AppRepository.$r8$lambda$S47IsDF-EPWuM90x6Kca_DdYKHM(Unknown Source:0) ~[na:0.0]\r\n\tat info.nightscout.androidaps.database.AppRepository$$ExternalSyntheticLambda69.call(Unknown Source:6) ~[na:0.0]\r\n\tat io.reactivex.internal.operators.single.SingleFromCallable.subscribeActual(SingleFromCallable.java:44) ~[na:0.0]\r\n\tat io.reactivex.Single.subscribe(Single.java:3666) ~[na:0.0]\r\n\tat io.reactivex.internal.operators.single.SingleSubscribeOn$SubscribeOnObserver.run(SingleSubscribeOn.java:89) ~[na:0.0]\r\n\tat io.reactivex.Scheduler$DisposeTask.run(Scheduler.java:608) ~[na:0.0]\r\n\tat io.reactivex.internal.schedulers.ScheduledRunnable.run(ScheduledRunnable.java:66) ~[na:0.0]\r\n\tat io.reactivex.internal.schedulers.ScheduledRunnable.call(ScheduledRunnable.java:57) ~[na:0.0]\r\n\tat java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[na:0.0]\r\n\tat java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:301) ~[na:0.0]\r\n\tat java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167) ~[na:0.0]\r\n\tat java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641) ~[na:0.0]\r\n\tat java.lang.Thread.run(Thread.java:923) ~[na:0.0]\r\n```\r\n\r\nIt looks like AAPS has troubles with some history events.\r\n\r\nMaybe someone can interpret the error message. If additional info is needed I will try to provide it.",
+ "comments": [
+  {
+   "id": 968873596,
+   "user": "MilosKozak",
+   "created_at": "2021-11-15T12:42:49Z",
+   "body": "I need to turn on all PUMP logging and provide full log (starting at least 10 min before) when this happen again"
+  },
+  {
+   "id": 968888775,
+   "user": "Snoopy913",
+   "created_at": "2021-11-15T13:03:00Z",
+   "body": "@MilosKozak \r\nPUMP loggings where on, starting at 01:57 it occured several times.\r\n I hope it helps:\r\n[AndroidAPS._2021-11-13_03-22-53_.txt](https://github.com/nightscout/AndroidAPS/files/7538795/AndroidAPS._2021-11-13_03-22-53_.txt)\r\n\r\nSince about 13:30 on the day of the log file it didn't occure again"
+  },
+  {
+   "id": 971872841,
+   "user": "MilosKozak",
+   "created_at": "2021-11-17T18:50:53Z",
+   "body": "your pump doesn't behave correctly (not all the time).\r\nfor example for sequence STOP TBR , START NEW TBR responds\r\nSTOP FAILED\r\nSTART OK\r\nis TBR running = false\r\n\r\nand in history there are both records (for START & STOP)\r\n\r\ni'd recommend reset pump and/or replace if needed"
+  }
+ ]
+}

@@ -1,0 +1,26 @@
+{
+ "issue_id": 1518,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/1518",
+ "title": "xdrip+ not synchronising all glucose data points from Nightscout when the measurement insert rate is > 1/5 minutes (libre)",
+ "symptom": "When using xDrip+ as a Nightscout follower with a Libre sensor and glimp as uploader, the BG graph has missing data points. The follower does not query enough data from Nightscout, resulting in gaps in the graph, especially when data is inserted more frequently than every 5 minutes.",
+ "cause": "The MissedReadingsEstimator assumes one reading every five minutes (DEXCOM_PERIOD), so the follower requests too few entries when the uploader inserts data more frequently (e.g., every minute).",
+ "fix": "The issue was addressed by changing the NUM_VALUES constant in BgGraphBuilder.java to not divide by 5 (i.e., (60) * 24 instead of (60/5)*24) and by adding de-duplication to the expected 5-minute window when the brief_mode parameter is set. The fix was included in the 2022.07.21 release and the Aug 1st nightly.",
+ "settings_changed": [
+  "NUM_VALUES → (60) * 24"
+ ],
+ "devices": [
+  "Libre 1",
+  "Libre 3",
+  "Libre 2"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "nightscout follower",
+  "glimp",
+  "Miao Miao",
+  "web service"
+ ],
+ "confidence": "high",
+ "evidence_quote": "The issue is mostly because of the bug in the nightscout follower code which allows records to be stored at a higher frequency than the collector would typically allow. I think the best way to address this is a de-duplicator in BgReading which I will work on."
+}

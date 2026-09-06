@@ -1,0 +1,187 @@
+{
+ "id": 392630373,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 718,
+ "title": "Suggestions: Insulin Treatment Protocols + Reminders",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/718",
+ "state": "closed",
+ "labels": [
+  "duplicate",
+  "enhancement",
+  "algorithmics"
+ ],
+ "created_at": "2018-12-19T14:38:32Z",
+ "closed_at": "2021-03-13T22:05:38Z",
+ "comment_count": 28,
+ "body": "Hi,\r\n\r\nCurrently, there's only an option for putting one type of insulin, but if we allow for more, we can make xdrip predict blood sugars better. For example, there's a difference between Actrapid which is a regular and Humalog/Novorapid, which is a fast acting insulin.\r\n\r\nAlso, I always seem to get stuck without any sensors (libre system), due to the fact it doesn't give out any reminders / warning on the last day, for example.\r\n\r\nOn the reader itself, on the last day, it reminds you with every check (if I remember correctly, it's been awhile) on the last day. Maybe we can copy that feature in as well.\r\n\r\nJust a thought,\r\n\r\nthanks :) ",
+ "comments": [
+  {
+   "id": 448654402,
+   "user": "ANDREAPIPPI",
+   "created_at": "2018-12-19T16:19:51Z",
+   "body": "Hi. \r\nTimes ago I asked for the reminds of the Libre life (and the Bluereader life too, BTW) last two (one?) days, but without results, so I agree with Seithx's new request.\r\nEven more I agree on the different Insulin types input. \r\nActually. I'm using FIASP Ultrarapid insulin instead of former Novorapid, and Fiasp starts working faster than Novorapid, giving incorrect results in blood sugar forecasts, so I think it could be very useful to add in xDrip+ the curves of the 5 (?) different types of available insulin, e.g. ultraslow (Tresiba?) , slow (Lantus?), normal (Lyspro?), rapid (Novorapid?), ultrarapid (Fiasp?).\r\nSomething like this...\r\n![image](https://user-images.githubusercontent.com/32884006/50232848-5d8b8f00-03b2-11e9-8d12-8f7b2d7ff31c.png)\r\nJust a thought.\r\nPippo      :-)"
+  },
+  {
+   "id": 448669027,
+   "user": "Seithx",
+   "created_at": "2018-12-19T17:00:43Z",
+   "body": "Glad to see other people think the same.\r\n\r\nEventually, we want to be able to rely / improve upon and create a better prediction mechanism so we can utilize the sensors to their best of their ability.\r\n\r\nI'm not sure how the prediction mechanism works, but maybe the system can create averages and correlate them with the information put in, for example, Trebisa 11 units, then it creates an average of blood sugar levels, added physical activities to create a very accurate prediction model based on blood sugar levels in the following month.\r\n\r\nSo, yes, putting the different insulin types is a step towards a very accurate prediction, heck, if we could use Machine Learning (going far perhaps) and get like a big pool of users uploading their data with their full protocols (insulins used, sport activity done, food eaten) we could create something very amazing."
+  },
+  {
+   "id": 448763643,
+   "user": "stefanchavdarov",
+   "created_at": "2018-12-19T22:17:02Z",
+   "body": "+1 vote for the insulin types diff\r\n+1 vote for the sport activity, start time + duration in add, new tab\r\n+1 vote for diff food types - rapid (sugar), normal, slow (pizza)\r\nand a better clock at 'when' tab"
+  },
+  {
+   "id": 449086956,
+   "user": "Seithx",
+   "created_at": "2018-12-20T18:09:31Z",
+   "body": "So, when is this going to be worked?"
+  },
+  {
+   "id": 450505698,
+   "user": "doc77",
+   "created_at": "2018-12-29T16:54:53Z",
+   "body": "#706 also requests this enhancement."
+  },
+  {
+   "id": 457589172,
+   "user": "ANDREAPIPPI",
+   "created_at": "2019-01-25T14:27:39Z",
+   "body": " Reading the Novo page regarding the soon available NovoPen Echo Plus, given here\r\nhttps://diatribe.org/novopen-6-and-novopen-echo-plus-connected-insulin-pens-launch-early-2019\r\nif I understand correctly this pen will inform the related APP of the quantity AND the type of insulin just injected, as they say \"will be compatible with both long-acting basal insulin (Levemir, Tresiba) and short-acting mealtime insulin (NovoLog, Fiasp). And supposing that as already done for PendiQ pen, NovoPen Echo Plus will be able to connect with xDrip+, it looks even more important the possibility to evaluate the predicted effect on the basis of the injected insulin type.\r\nThis IMO could give a very important addition to the glicemic prediction and treatment.\r\nOpinions?    :-)\r\n"
+  },
+  {
+   "id": 522306208,
+   "user": "gruoner",
+   "created_at": "2019-08-18T09:33:31Z",
+   "body": "Hi\r\ni started working on this issue and changed the GUI and treatment classes to feed xdrip and nightscout with more than one single type of insulin. Currently lots of insulin profiles can be defined but just max. 3 can be used at the same time - one has to choose at least one up to tree profiles.\r\n[https://github.com/NightscoutFoundation/xDrip/pull/973](https://github.com/NightscoutFoundation/xDrip/pull/973)\r\nBUT currently my change is just the foundation - because i don't know how the different insulin profiles will behave in combination (pippo provided a small picture describing the differences in basis), i just added an abstract compute function to each insulin profile class and someone has to aggregate the multiple injections to a single insulin level and attach the individual absorption rate.\r\n\r\nTo someone in this forum who is familiar in calculating the curve of different insulin profiles and aggregating different profiles:\r\n- can you provide a formula to calculate the glucose infusion for the most used insulin profiles (ATC codes \r\n   - A10AC01 (long lasting insulines like insulatard)\r\n   - A10AB01 (short lasting insulines like actrapid but much longer than novorapid)\r\n   - A10AB05 (really short lasting insulines like novorapid but not FIASP)\r\n- how can we calculate the aggregation of more injections?\r\n    - is it just an addition of the glucose infusions? or\r\n    - do we have to put a (maybe negative) bias on the addition?\r\n- how do we have to handle the individual absorption rate? Is it quite the same for all profiles or do we have to define a rate for each profile?"
+  },
+  {
+   "id": 522308225,
+   "user": "Seithx",
+   "created_at": "2019-08-18T10:06:45Z",
+   "body": "Just to get a clearer picture, is Xdrip going to estimate lows / highs using this supposed formula? Why not just let users input whichever insulin they wish and let them handle all the rest?"
+  },
+  {
+   "id": 522310463,
+   "user": "gruoner",
+   "created_at": "2019-08-18T10:43:25Z",
+   "body": "oh yes - the user inputs the type of insulin he has injected and in which dose (done via Home screen and PhoneKeypadInputActivity).\r\nThe calculation problem belongs to the prediction logic / algorithm. For now the prediction considers just one type of insulin and i want to change this to x. But the calculation algorithm implemented by @jamorham is really complex and i don't fully understand it nor i can imagine whether we can generalize it to x types of insulin or we have to implement a complete new one."
+  },
+  {
+   "id": 522311140,
+   "user": "Seithx",
+   "created_at": "2019-08-18T10:53:40Z",
+   "body": "Can you share @Jamorham's calculation scheme here? \r\n\r\nhopefully he can elaborate ... \r\n\r\n"
+  },
+  {
+   "id": 523109128,
+   "user": "gruoner",
+   "created_at": "2019-08-20T17:12:12Z",
+   "body": "OK; now it's getting mathematically....\r\n@jamorham uses a very complicated algorithm (i don't know why but i'm sure he has his needs for that) to calculate an IOB and the currently active insulin dose for 5min wide timeslices.\r\nThe result is shows here - i wrote a short excel to calculate the diagram:\r\n![diagram](https://user-images.githubusercontent.com/51212163/63366703-9b461a80-c37a-11e9-976c-d007d591ed7e.jpg)\r\nIt is a combination of two linear curve\r\n- starting 10 minutes after injection \r\n- with a (positive) gain of 0.001852 (don't know how he has choosen this value)\r\n- reaching its maximum 75 minutes after injection\r\n- lowing with a negative gain of 0.001323 (also don't know how he has choosen this value)\r\n- reaching zero 180 minutes (3 hours) after injection\r\nWhen i compare this curve with the picture provided by @ANDREAPIPPI it seems to approximate a lispo aspart profile....\r\n\r\nBUT this doesn't tell me anything who to handle other insulin profiles and how to combine simultaneous injections of diverged insulin types.\r\nAfter reading the \"timeslicewriter\" i can imagine to simply add the active insulin dose (jActivity) of all (active or contributing) insulin injections (of diverged insulin types) at a dedicated timeslice (because jActivity is the first derivation of IOB and the first derivation of a sum if equal to the sum of the first derivations of the summands). BUT this approach should be verified by @jamorham....."
+  },
+  {
+   "id": 524426940,
+   "user": "gruoner",
+   "created_at": "2019-08-23T19:00:31Z",
+   "body": "OK; as no one replies to my thoughts i will start implementing curves like those in the picture provided by @ANDREAPIPPI and simply add the IOB and activity for a given time slice.\r\n@jamorham or any other contributor in this forum: correct me or intercept me when i bark up the wrong tree!"
+  },
+  {
+   "id": 524642993,
+   "user": "gruoner",
+   "created_at": "2019-08-25T16:20:27Z",
+   "body": "after some google'ing around i found out that all insulin profiles (except the composition insulin types) can be approximated to just one kind of curve:\r\n- after a dedicated amount of time it starts its activity (lets call this period \"onset\") and this period is just a timeshift so that our calculation can start at timestamp 0\r\n- then a linear ramp up starts until the insulin reaches its max activity (lets call this timestamp \"t1\")\r\n- the max activity will be hold for a dedicated period of time (lets call this timestamp \"t2\")\r\n- after leaving the max activity level a linear ramp down occurs until the insulin activity reaches its end (lets call this timestamp \"t3\")\r\n\r\nNow its just mathematics (i wrote a short maxima script to calculate a dedictated insulin profile)\r\nt1:75;\r\nt2:75;\r\nt3:180;\r\nmax:2/(t2-t1+t3);\r\nIOB1(x):=1-max/(2*t1)*x*x;\r\nIOB2(x):=1+max*t1/2-max*x;\r\nIOB3(x):=max/(2*(t3-t2))*(x-t3)^2;\r\nIOB(x):=if (0<=x and x<t1) then IOB1(x) else if (t1<=x and x<t2) then IOB2(x) else if (t2<=x and x<t3) then IOB3(x) else 0;\r\ndIOB1(x):=''(diff(IOB1(x), x, 1));\r\ndIOB2(x):=''(diff(IOB2(x), x, 1));\r\ndIOB3(x):=''(diff(IOB3(x), x, 1));\r\ndIOB(x):=abs(if (0<=x and x<t1) then dIOB1(x) else if (t1<=x and x<t2) then dIOB2(x) else if (t2<=x and x<t3) then dIOB3(x) else 0);\r\nwxplot2d([IOB(x)], [x,-50,230]);\r\nwxplot2d([dIOB(x)], [x,-50,230]);\r\nsum(dIOB(x), x, 0, t3);\r\nThat's the insulin profile implemented by @jamorham and it results in the following curves:\r\nIOB:\r\n![IOB](https://user-images.githubusercontent.com/51212163/63652574-46cbe200-c762-11e9-8919-83ca56cd4eb8.png)\r\nActivity:\r\n![activity](https://user-images.githubusercontent.com/51212163/63652584-58ad8500-c762-11e9-97c4-eb7a46dff49f.png)\r\nThe last line in the maxima script proves, that the area under the activity is exactly 1.\r\n\r\nNOW we can define \"onset\", \"t1\", \"t2\" and \"t3\" for all required insulin profiles and we will have a calculation schema for xdrip+\r\nI've done this for NPH insulatard:\r\n![IOB NPH](https://user-images.g"
+  },
+  {
+   "id": 527221429,
+   "user": "gruoner",
+   "created_at": "2019-09-02T18:39:41Z",
+   "body": "after implementing the new prediction algorithm in xdrip+ i found a serious issue: the predictions weren't correct. Insulin activity seems always to low.\r\nSo i reviewed my calculations and found the mistake - my curves are 5 times lower as the original implemented by @jamorham; originally timeslices are 5 minutes wide and mine one minute....\r\nI changed the calculation and now BG predictions seems much more better. "
+  },
+  {
+   "id": 527231272,
+   "user": "ANDREAPIPPI",
+   "created_at": "2019-09-02T19:38:42Z",
+   "body": "Hi gruoner. \r\nAs you know I'm very interested to your results, and would like to have more details of the up-to-date situation.\r\nI mean, are you full satisfied of the results?\r\nIf yes, as I think, can we test it on our systems, so check its behaviour under many different environments?\r\nYour work is very appreciated, go on this way, please.\r\nPippo   :-)"
+  },
+  {
+   "id": 527332991,
+   "user": "Seithx",
+   "created_at": "2019-09-03T07:05:27Z",
+   "body": "Sounds very promising, keep up the good work. "
+  },
+  {
+   "id": 527590501,
+   "user": "gruoner",
+   "created_at": "2019-09-03T18:52:36Z",
+   "body": "Hi Pippo,\r\n\r\nwe use a G6 and had some tests last few days. Now i'm pretty satisfied of the results.\r\nOne question is still open:\r\n\r\n- how do we have to handle the individual absorption rates? Can we use the original Sensitivity calculation or do we have to implement dedicated for each insulin profile?\r\n\r\nI've checked in the code to my already opened pull request #973 but Travis is failing because of a failed :app:connectedAndroidTest. Maybe someone can help...."
+  },
+  {
+   "id": 527603155,
+   "user": "ANDREAPIPPI",
+   "created_at": "2019-09-03T19:25:18Z",
+   "body": "Hi gruoner. \r\nFWIW, due to the important improvement given by the insulin types differentiation and the use of their own curves, I think that now you should choose the original Sensitivity calculation. \r\nLater on, if any need or problem due to this will should arise, then that will be the time to try a dedicated Sensitivity calculation. My opinion, obviously. Pippo "
+  },
+  {
+   "id": 527608404,
+   "user": "gruoner",
+   "created_at": "2019-09-03T19:40:36Z",
+   "body": "OK; so until someone requests a dedicated sensitivity calculation we will start the tests with the original one.\r\nHow can i \"repair\" the failing Travis CI checks? I haven't changed anything belonging to the test case classes....."
+  },
+  {
+   "id": 529102013,
+   "user": "ANDREAPIPPI",
+   "created_at": "2019-09-07T12:01:26Z",
+   "body": "Hi gruoner.\r\nCould you please tell me if your improvement #718 has been issued in tonight's 20190907-66c8a5a.apk?\r\nThank you very much.\r\nPippo   :-)"
+  },
+  {
+   "id": 529105827,
+   "user": "gruoner",
+   "created_at": "2019-09-07T12:55:26Z",
+   "body": "Hi pippo\n\nNo, the pull request is still pending ..... but you can merge the more-insulin branch to your own repo or directly check out the branch and compile it yourself....\nAs i‘m ooO i can send you an actual unsigned auf apk by the end of tomorrow. Just let me know.....\n\nCheers\n\n\nAm 07.09.19 um 14:01 schrieb ANDREAPIPPI\n\n> Hi gruoner.\n> Could you please tell me if your improvement #718 has been issued in tonight's 20190907-66c8a5a.apk?\n> Thank you very much.\n> Pippo   :-)\n> \n> -- \n> You are receiving this because you commented.\n> Reply to this email directly or view it on GitHub:\n> https://github.com/NightscoutFoundation/xDrip/issues/718#issuecomment-529102013\n\n"
+  },
+  {
+   "id": 529109963,
+   "user": "ANDREAPIPPI",
+   "created_at": "2019-09-07T13:49:24Z",
+   "body": "Hi gruoner, thank you for the quick reply and the offer, but I'm absolutely out with this job, I'm unable to do anything you suggest, so I'm obliged to wait for a \"ready to install\" apk release.\r\nCannot wait for that, and given it is not yet issued, can I ask your opinion on another improvement to the actual Version?\r\nThis one:as other people, I suppose, I make two blood tests each day, one in the morning before breakfast, say 8:00 AM, and another before going to sleep, about 1:00 A,M.\r\nThe problem is that many many times at those moments the glicemic line is NOT flat, but rising or descending.\r\nMy question: could be of interest for other people to have the possibility to set another alarm (too many?) that advises when the glicemic value is flat from ..... say e.g. .20 minutes, so that at that point it's worth making a blood check?\r\nYour opinion, please, thank you very much.\r\nBye soon.\r\nPippo    :-)\r\n"
+  },
+  {
+   "id": 529238196,
+   "user": "gruoner",
+   "created_at": "2019-09-08T20:22:27Z",
+   "body": "Hi Pippo\r\n\r\nthat's a really good point - as we are using a G6 we don't even really need such calibration points but when we want to calibrate (for whatever reason) we have to find a time period where BG line is mostly flat. So people who rely on such calibrations to get a valuable CGM whey would find such an alarm type very helpful. Is there still an issue open for such requirements / wishes?\r\nBut currently i'm not familiar with the BG prediction logic; i have to get a deep dive in the prediction code and the \"more-insulin\" patch must be completed first to get it in the master branch (there are two issues left - handle pendiq and pen and handle the communication to wearable and watches - and someone must help me to pass Travis CI because the test classes are failing without traceable reasons)\r\n\r\nbye\r\nGruoner"
+  },
+  {
+   "id": 529240015,
+   "user": "ANDREAPIPPI",
+   "created_at": "2019-09-08T20:44:51Z",
+   "body": " Hi gruoner. \r\nI'm happy you too think that this could be an interesting issue, so I'll open it, and let's see what happens and if someone will take care of it.\r\nBye and thank you once again.\r\nPippo    :-)"
+  },
+  {
+   "id": 529243637,
+   "user": "ANDREAPIPPI",
+   "created_at": "2019-09-08T21:31:48Z",
+   "body": "Hi gruoner.\r\nJust done, it's issue #1006\r\nBye\r\n\r\nPippo     :-)"
+  },
+  {
+   "id": 529243952,
+   "user": "ANDREAPIPPI",
+   "created_at": "2019-09-08T21:36:34Z",
+   "body": "Hi.\r\nJust my opinion, but I think that #302 shoud be merged with this one.\r\nCorrect?\r\nBye\r\n\r\nPippo    :-)"
+  },
+  {
+   "id": 784569616,
+   "user": "Navid200",
+   "created_at": "2021-02-23T22:50:29Z",
+   "body": "Duplicate: https://github.com/NightscoutFoundation/xDrip/issues/531"
+  },
+  {
+   "id": 798792846,
+   "user": "Navid200",
+   "created_at": "2021-03-13T22:05:38Z",
+   "body": "I think the capability to add multiple insulin types already has been added to xDrip.\r\nI am hence closing this issue.  Please let me know if you think I have overlooked anything."
+  }
+ ]
+}

@@ -1,0 +1,258 @@
+{
+ "id": 453036038,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 904,
+ "title": "Tandem t:Slim X2 integration?",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/904",
+ "state": "closed",
+ "labels": [
+  "enhancement",
+  "device-pump"
+ ],
+ "created_at": "2019-06-06T13:38:15Z",
+ "closed_at": "2023-08-14T21:34:18Z",
+ "comment_count": 42,
+ "body": "Prompted by https://github.com/StephenBlackWasAlreadyTaken/xDrip/issues/260 \r\n\r\nI realize that this is probably not something that xDrip itself would implement, but figured it would be worth starting the discussion here.  Feel free to redirect this if there's a better venue.\r\n\r\nLike the reporter in the issue above, I too have a son on an X2, and have been leveraging xDrip (and Nighscout) for remote monitoring since his diagnosis.  It would be fantastic to be able to connect to his pump and pull bolus/basal/Basal-IQ/Control-IQ information and sync to both xDrip followers and Nightscout/Tidepool.\r\n\r\nI would assume that Tandem would need to provide access to the pump's API, OR develop their own Android app that would allow xDrip or NSClient to connect and retrieve data.  Since neither of these things have happened yet (to my knowledge) I am assuming any progress would be hacking into the bluetooth interface.\r\n\r\nAgain, I know this is probably not the right place to discuss but this community is pretty active (and talented) so I wanted to get the discussion going.",
+ "comments": [
+  {
+   "id": 540175957,
+   "user": "SindreSB",
+   "created_at": "2019-10-09T20:22:35Z",
+   "body": "Currently, I am unable to find anyone working on this. The androidaps site states they have talked to a tandem exec that said there were no plans of opening up the pump to DIY community. Also, the mobile app is yet to be released. This means we can't even analyze traffic between the pump and the app. T\r\nhe best option for now would be to try to get hold of a copy of the pumps firmware and try to reverse engineer the bluetooth interface from that. Neither of these are simple options, but I think reverse engineering the firmware is the only option now. Option two is to wait for the app to be released and try to the reverse engineer the protocol from that. "
+  },
+  {
+   "id": 691215450,
+   "user": "senortighto",
+   "created_at": "2020-09-11T17:15:51Z",
+   "body": "since the mobile app is out now, any way we can piggy back reading data from the upload, MITM to read the data being uploaded to phone with xdrip and the t:connect app, or at least pull data from the tandem t:connect site?"
+  },
+  {
+   "id": 696877940,
+   "user": "smilodonis",
+   "created_at": "2020-09-22T17:48:32Z",
+   "body": "This interests me aswell. Tidepool and diasend have an uploader app (for PC and mac) that can get the data from x2 and upload it to their web, so I belive it is possible to do at least a Android apploader similar to 600 uploader for Medtronic pumps. Also I belive the tidepool uploader is open source."
+  },
+  {
+   "id": 719150491,
+   "user": "dan5912",
+   "created_at": "2020-10-30T03:32:19Z",
+   "body": "I just got done doing a bluetooth capture of the pump -> app comms using a high end BLE sniffer and... wow this app dumps a lot of data. The app has spent 5 minutes (so far) dumping 87 byte packets every 30ms. My guess is that it is grabbing all of the stored pump data from forever and trying to upload to tslim servers. Just doing a simple refresh of the main screen transfers ~50 packets of data and, despite the data on screen being the same, the packets were not the same. Payload sizes were identical, but data was not even close beyond the first 6 bytes of a header. I'm just guessing, but they may have app layer encryption on top of the BLE encryption. Let me know if someone wants some log captures. I just don't have the bandwidth at the moment to do this sort of analysis. (edit: The data payloads I'm referring to changing are after the sniffer has done the BLE decryption to get the actual ATT notifications / Write Commands. There seems to be another layer of encryption / obfuscation on top of the normal BLE protocol layer)"
+  },
+  {
+   "id": 721033735,
+   "user": "palaslet",
+   "created_at": "2020-11-03T10:33:10Z",
+   "body": "@dan5912 , Can you attach the logfiles here, so it's accessible to anyone who want to look into it? I might be interested to at least have a look. Pretty sure I won't be able to make any sense of it, but still...\r\nWe have to start somewhere, and even if we only can get some kind of handshaking going, that would be huge!"
+  },
+  {
+   "id": 727710698,
+   "user": "dan5912",
+   "created_at": "2020-11-16T03:18:17Z",
+   "body": "@palaslet I'm still working to get logs to you guys. Tandem app decided to break needing a reinstall, which requires BLE pairing again, which requires me to extract the LTK via BT error dumps to decrypt the logs... Hopefully I'll have the time to sort through this soon. "
+  },
+  {
+   "id": 741478019,
+   "user": "MachFour",
+   "created_at": "2020-12-09T02:25:52Z",
+   "body": "Is there some private chat area where we can talk about this? I've been spending quite a bit of time recently looking both the firmware and the app, and I might have some useful info. Or even email...."
+  },
+  {
+   "id": 741486897,
+   "user": "dan5912",
+   "created_at": "2020-12-09T02:34:38Z",
+   "body": "Does discord work? Seems to be the current popular means (outside slack or something).\r\nhttps://discord.gg/JuRWpgDYW9"
+  },
+  {
+   "id": 741577109,
+   "user": "tolot27",
+   "created_at": "2020-12-09T07:00:42Z",
+   "body": "@MachFour and @dan5912 Please create a private room at gitter and add me."
+  },
+  {
+   "id": 741596076,
+   "user": "MachFour",
+   "created_at": "2020-12-09T07:44:06Z",
+   "body": "@tolot27 I've created room and added both of you. @dan5912 you should have received an invitation to join Gitter"
+  },
+  {
+   "id": 741901349,
+   "user": "smilodonis",
+   "created_at": "2020-12-09T16:51:42Z",
+   "body": "Please add me as well. Thank you"
+  },
+  {
+   "id": 741902678,
+   "user": "whoiswes",
+   "created_at": "2020-12-09T16:53:49Z",
+   "body": "Feel free to add me as well.  Not an app developer, but I've got several years of backend development experience (primarily Python) and also have a spare pump that's not being actively used."
+  },
+  {
+   "id": 742541203,
+   "user": "MachFour",
+   "created_at": "2020-12-10T14:05:10Z",
+   "body": "I might just keep the chat for people who are actively investigating this (and it's easier to coordinate with fewer people). We can update you here with progress."
+  },
+  {
+   "id": 761181276,
+   "user": "bwrampton",
+   "created_at": "2021-01-15T20:29:15Z",
+   "body": "Just wanted to check in on this and see if any progress had been made. I am definitely interested in this initiative (as a consumer, not a developer). Thanks!"
+  },
+  {
+   "id": 761588098,
+   "user": "tolot27",
+   "created_at": "2021-01-16T16:05:54Z",
+   "body": "@bwrampton There is ongoing work but not any stable code, yet. As soon as something is available for testing, it will be reported. Until then you have to be patient."
+  },
+  {
+   "id": 776045375,
+   "user": "bewest",
+   "created_at": "2021-02-09T15:56:49Z",
+   "body": "How is this going? I've been auditing similar cloud-native Nightscout plugins (Dexcom Share, Minimed Connect) and would like to add this to the suite."
+  },
+  {
+   "id": 777334995,
+   "user": "MachFour",
+   "created_at": "2021-02-11T10:11:40Z",
+   "body": "@bewest see comments above, there is nothing ready to even test out yet"
+  },
+  {
+   "id": 778642179,
+   "user": "sneps85",
+   "created_at": "2021-02-13T16:34:32Z",
+   "body": "@MachFour As my son has diabetes and is using a Tandem X2 with G6 and I am an iOS/Android developer, I would like to ask if I may help you somehow?"
+  },
+  {
+   "id": 780832059,
+   "user": "AuroraThiel",
+   "created_at": "2021-02-17T20:27:22Z",
+   "body": "I don't know a thing about developing apps, but as a consumer, I really want to thank the Devs that are working on this!  I found this from a Google search, wondering if there was an integration option."
+  },
+  {
+   "id": 781189448,
+   "user": "palaslet",
+   "created_at": "2021-02-18T08:56:57Z",
+   "body": "@AuroraThiel and @sneps85, I'm taking the chance answering on behalf of @MachFour.\r\nAs stated above they're currently working on it. From what I can understand this task is not a simple one. Medical companies need to adhere to strict regulations regarding operational security for their devices, so there's going to be at least one (probably several) layers of encryption on that bluetooth connection. This is usually the most difficult beast to tame.\r\nWe just have to wait and see what they're able to achieve. I'm quite sure they'll post an update here when there's anything exciting to report."
+  },
+  {
+   "id": 781211688,
+   "user": "sneps85",
+   "created_at": "2021-02-18T09:33:11Z",
+   "body": "@palaslet Thanks for the update, but maybe you misunderstood my comment. I asked if I could help to decrypt the security layers, as I am a iOS/Android developer and do have experience with reading bluetooth devices (for example for snow producers)."
+  },
+  {
+   "id": 781275403,
+   "user": "MachFour",
+   "created_at": "2021-02-18T11:23:22Z",
+   "body": "@sneps85 I sent you a message on Gitter to hopefully clear things up. "
+  },
+  {
+   "id": 792546831,
+   "user": "jwoglom",
+   "created_at": "2021-03-08T07:45:21Z",
+   "body": "Apologies for responding to an old thread, but I wanted to share more widely a [project I created](https://github.com/jwoglom/tconnectsync) which serves as a synchronization tool between the t:connect Android app and Nightscout.\r\n\r\nIt's not especially well-documented (yet), but for setup you just need to enter your tconnect credentials, pump serial number, and Nightscout details into a file named secret.py. You can then run main.py with either a start and end date, or the --auto-update flag to have it automatically upload tconnect data in to Nightscout.\r\n\r\nIf there is any interest I can write up some formal documentation. I've been using this on my own for several months now and it works great -- though if you wanted the data to appear in xDrip you need to configure it to backfill data from Nightscout, I believe."
+  },
+  {
+   "id": 799808391,
+   "user": "ChaseCarHG",
+   "created_at": "2021-03-15T22:54:49Z",
+   "body": "> I wanted to share more widely a [project I created](https://github.com/jwoglom/tconnectsync) which serves as a synchronization tool between the t:connect Android app and Nightscout.\r\n\r\nWow! This rocks! \r\nIt made me curious if any of NightScout's CGM-Remote-Monitor was already in Python, but it seems not per here: \r\nhttps://github.com/nightscout/cgm-remote-monitor\r\n\r\nQ1: With that, what are the chances of having this ported into NightScout?\r\n\r\nI got my NightScout instance running from Docker on my Synology only a few days ago, and meanwhile, would love to have this as its own container, or fold it into my existing docker-compose.yml stack (run through Portainer). Then I noticed you are years ahead of me, into Kubernetes.\r\n\r\nQ2: Do you already have this project containerized, or do you plan to containerize it soon?\r\n\r\nQ3: If not, would you be willing to mentor me through containerizing it when I run into a roadblock?\r\n(I am not a software engineer, but rather a nuclear engineer with a ton of programming experience.)\r\nEdit: Good starting point? https://github.com/autoferrit/docker-supervisor/tree/master/python/3.5"
+  },
+  {
+   "id": 799857904,
+   "user": "jwoglom",
+   "created_at": "2021-03-16T00:43:30Z",
+   "body": "Hi @ChaseCarHG --\r\n\r\n1. Personally, I think that the tconnect synchronization feature is best served as a separate tool that works together with Nightscout, rather than integrating it into the existing Nightscout source code. It doesn't depend on any of Nightscout's internals and just utilizes the public API. Also, like you mentioned, Nightscout is written in Javascript while the tconnectsync project is in Python and it doesn't seem like a good use of anyone's time to rewrite either of them in a different language.\r\n\r\n2. When you posted this question, I hadn't containerized it, but it's a pretty simple Python application and containerizing it is easy. I've since added a Dockerfile and instructions in the README to my repo.\r\n"
+  },
+  {
+   "id": 800685157,
+   "user": "ChaseCarHG",
+   "created_at": "2021-03-16T23:42:32Z",
+   "body": "> 2. When you posted this question, I hadn't containerized it, but it's a pretty simple Python application and containerizing it is easy. I've since added a Dockerfile and instructions in the README to my repo.\r\n\r\nFirst off, you rock!\r\n\r\nFirst build took overnight on a Synology, but it persevered. \r\nMy .env file is set up adjacent to the dockerfile in /volume1/docker/tconnectsync/\r\nI am Eastern Daylight Time too. \r\n\r\nNow, I'm so close yet so far... \r\n\r\n```\r\nMyUserName@SERVERNAME:/volume1/docker/tconnectsync$ docker run tconnectsync --auto-update\r\nTraceback (most recent call last):\r\n  File \"/home/appuser/main.py\", line 355, in <module>\r\n    main()\r\n  File \"/home/appuser/main.py\", line 314, in main\r\n    last_event = tconnect.android.last_event_uploaded(PUMP_SERIAL_NUMBER)\r\n  File \"/home/appuser/api/__init__.py\", line 40, in android\r\n    self._android = AndroidApi(self.email, self.password)\r\n  File \"/home/appuser/api/android.py\", line 31, in __init__\r\n    self.login(email, password)\r\n  File \"/home/appuser/api/android.py\", line 56, in login\r\n    self.patientObjectId = j[\"user\"][\"patientObjectId\"]\r\nKeyError: 'patientObjectId'\r\n```"
+  },
+  {
+   "id": 800687819,
+   "user": "jwoglom",
+   "created_at": "2021-03-16T23:49:55Z",
+   "body": "@ChaseCarHG let's move this to a github issue thread on the tconnectsync repo to not clog up the thread. Can you re-post this at https://github.com/jwoglom/tconnectsync/issues/new?"
+  },
+  {
+   "id": 809669543,
+   "user": "davidrint",
+   "created_at": "2021-03-29T19:56:20Z",
+   "body": "We connected my daughter up to t slim today. Interested in all options.  Posting here to be kept up to date when you guys are ready. Exciting stuff.  "
+  },
+  {
+   "id": 840417360,
+   "user": "nickrout",
+   "created_at": "2021-05-13T08:48:46Z",
+   "body": "Thank you all for your efforts."
+  },
+  {
+   "id": 907037861,
+   "user": "fatbob313",
+   "created_at": "2021-08-27T08:47:53Z",
+   "body": "Really interested in this as well. Our 8 year old had a Medtronic 670g before where the uploader could send all treatment details to Nightscout in real-time and I really miss that, although I think the T-slim is better in almost all other aspects."
+  },
+  {
+   "id": 917406119,
+   "user": "annbob",
+   "created_at": "2021-09-11T13:16:25Z",
+   "body": "As discussed above,  @jwoglom has done a brilliant job of creating a synchronizer between the tconnect mobile app and nightscout. Found here... \r\nhttps://github.com/jwoglom/tconnectsync\r\nThe instructions are pretty simple to follow, especially if you've already set up nightscout using instructions for setting up heroku. \r\nThe only downside is that you have to host the tconnectsync project on an always on computer somewhere.\r\nI've been using the docker containerized version with \"auto-update\" feature turned on. \r\nNOTE: at least in my case you have to be logged into the tconnect app in order for the app to upload data to the cloud,  which is where tconnectsync receives its data from. When you are not logged in to the tconnect app data is not updated to nightscout until you are logged in to tconnect app again. Then any past data is uploaded to the cloud where tconnectsync then recognizes the new info and transfers to nightscout. "
+  },
+  {
+   "id": 939942185,
+   "user": "fatbob313",
+   "created_at": "2021-10-11T11:28:46Z",
+   "body": "Unfortunately the T:connect app is only available in the US (as far as I know...), or is there a way around that restriction?"
+  },
+  {
+   "id": 939959328,
+   "user": "davidrint",
+   "created_at": "2021-10-11T11:53:50Z",
+   "body": "> Unfortunately the T:connect app is only available in the US (as far as I know...), or is there a way around that restriction?\r\n\r\nI would love to know that too. I found an apk download but would rather avoid setting up in that way and i do not know if the software would check when running anyway.?"
+  },
+  {
+   "id": 939961844,
+   "user": "fsvaren",
+   "created_at": "2021-10-11T11:57:37Z",
+   "body": "The APK doesn't help, it is geofenced. I think it is on its way here though, but I wouldn't be surprised if they restrict use to a small subset of phones, just like the Dexcom G6 App."
+  },
+  {
+   "id": 954856443,
+   "user": "Navid200",
+   "created_at": "2021-10-29T15:55:16Z",
+   "body": "Sounds like a great idea.  It will be great if it becomes possible.\r\nI don't think we can make a change to xDrip, at least now, to enable this.  So, I close this issue.\r\n\r\nYou can continue any conversations about this or any other xDrip-related ideas and concerns in the discussions:\r\nhttps://github.com/Navid200/xDrip/discussions\r\n\r\nI hope you help me reduce the number of open issues.  There are xDrip bugs that don't get enough attention because there are so many open issues and feature requests.\r\n\r\nPlease don't open an issue here, on  this platform, in order to get a conversation going.\r\nIf you like, you can continue to post in this thread even though it is closed.  But, please don't reopen it.\r\nThanks for your help. "
+  },
+  {
+   "id": 954860219,
+   "user": "fsvaren",
+   "created_at": "2021-10-29T16:00:33Z",
+   "body": "Another way to handle \"lots of open issues\" is to use the project view and only move bugs and other issues that need attention to the project and set a status where the show up on the board. Just a suggestion."
+  },
+  {
+   "id": 954920101,
+   "user": "Navid200",
+   "created_at": "2021-10-29T17:32:44Z",
+   "body": "Thanks for that.  I had never paid attention to projects.  Unless I have misunderstood what it is, it lets us create a list of selected issues (and PRs) and organize and label them.\r\n\r\nThe underlying problem is that when a user has a problem and comes to the issues platform, the more open issues there are, the less likely it is they will see an existing issue related to their problem.  Having a reasonable (small) number of open issues helps users as well as me who has been trying to coordinate the issues.  Someone has to keep going through the open issues and add them to the project.  So, at the end, we need to have a reasonable number of open issues.\r\n\r\nI think the user community needs an alternative, to the issues platform, for asking questions, making suggestions, and ranting.\r\nI am hoping that they will use my discussions platform for that.  I also have been engaging users on facebook and let them rant there.\r\n\r\nThanks for the suggestion."
+  },
+  {
+   "id": 1213343321,
+   "user": "tolot27",
+   "created_at": "2022-08-12T17:19:47Z",
+   "body": "Work is in progress but don't ask when it will be ready!"
+  },
+  {
+   "id": 1213392081,
+   "user": "Miquest",
+   "created_at": "2022-08-12T18:24:37Z",
+   "body": "I am very excited about the result!  I am so thankful that you are putting so much effort into implementing a new feature for the community/xDrip users.  I am looking forward to!"
+  },
+  {
+   "id": 1678102566,
+   "user": "Navid200",
+   "created_at": "2023-08-14T21:33:58Z",
+   "body": "I'm converting this to a discussion."
+  }
+ ]
+}

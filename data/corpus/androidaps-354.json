@@ -1,0 +1,51 @@
+{
+ "id": 812618424,
+ "repo": "nightscout/AndroidAPS",
+ "number": 354,
+ "title": "NSClient 2.8.2 crashes during start",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/354",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-02-20T13:48:13Z",
+ "closed_at": "2021-10-01T22:26:53Z",
+ "comment_count": 6,
+ "body": "Hello,\r\n\r\nI have installed NSClient 2.8.2, configured it to connect to my NS (which worked all). But a few seconds after the first values from NS come in, the App disappeared. New starts only showed the Android APS logo and the the app disappeared again. I had the notification of NSClient in the notification area, but it showed only something like \"Getting values from Nightscout\".\r\nThe data in Nightscout is my uploaded CGM data from XDrip (not from AAPS) as I do not have a pump, and I want to use NSClient to have the values on my smartwatch, which is much more convenient than with XDrip\r\nI was able to debug NSClient and also run it in an virtual Android device with the same result (crashing). I traced the error in the app: the crash was caused by a Null pointer exception in \r\nsrc\\main\\java\\info\\nightscout\\androidaps\\interfaces\\PumpDescription.java SetPumpDescription Line 108\r\nthe value of `pumpCapability` was null\r\nI tried to find out where it should came from and found out that\r\nsrc\\main\\java\\info\\nightscout\\androidaps\\plugins\\pump\\common\\defs\\PumpType.java\r\nwas always instantiated as \r\n`MDI(\"MDI\", ManufacturerType.AndroidAPS, \"MDI\");` for which `pumpCapability` is null. (I guess instead of GenericAAPS as I do not have a pump at all)\r\n\r\nI managed to replace the code for calling MDI with the code from GenericAAPS which works now for me, but I think this is only a quick and dirty hack which may work for me but is not a real solution.\r\n\r\nRegards,\r\nBernhard",
+ "comments": [
+  {
+   "id": 782731633,
+   "user": "MilosKozak",
+   "created_at": "2021-02-20T18:48:44Z",
+   "body": "I don't undestand. NSClient is not using MDI but only VirtualPump and it's not possible to change it"
+  },
+  {
+   "id": 782744924,
+   "user": "BernhardRo",
+   "created_at": "2021-02-20T20:29:46Z",
+   "body": "Well I am not really in the details of the code and its dependencies. But for me the line\r\n`src\\main\\java\\info\\nightscout\\androidaps\\plugins\\pump\\virtual\\VirtualPumpPlugin.kt`\r\n\r\n```\r\nfun refreshConfiguration() {\r\n        val pumptype = sp.getString(R.string.key_virtualpump_type, PumpType.GenericAAPS.description)\r\n```\r\n\r\nreturned a pumptype of MDI type."
+  },
+  {
+   "id": 782758020,
+   "user": "MilosKozak",
+   "created_at": "2021-02-20T22:19:02Z",
+   "body": "I'm unable replicate this issue. You can pm me your settings and master password privately"
+  },
+  {
+   "id": 783175748,
+   "user": "BernhardRo",
+   "created_at": "2021-02-22T08:04:21Z",
+   "body": "@MilosKozak: Were you able to reproduce it? I have send you my config per Email."
+  },
+  {
+   "id": 792357395,
+   "user": "andyrozman",
+   "created_at": "2021-03-07T21:34:53Z",
+   "body": "MDI can never be selected, because its not a Pump. How were you able to select it? "
+  },
+  {
+   "id": 797083293,
+   "user": "BernhardRo",
+   "created_at": "2021-03-11T22:09:55Z",
+   "body": "Actually my problem was that nothing else was selected - I had to modify MDI to make it work. But I do not know why MDI was selected. Milos has my configuration. He should be able to reproduce it!"
+  }
+ ]
+}

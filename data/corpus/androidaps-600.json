@@ -1,0 +1,117 @@
+{
+ "id": 937299955,
+ "repo": "nightscout/AndroidAPS",
+ "number": 600,
+ "title": "2.8.2 master / Arrow direction bug",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/600",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-07-05T18:36:49Z",
+ "closed_at": "2021-09-21T14:46:56Z",
+ "comment_count": 17,
+ "body": "I've remarked this problem often. All the numbers are going up but the arrow _in the app_ is horizontal. What is new is that the arrow in the AAPS **watchface** is correct and going up...\r\n![Screenshot_20210705-202111_xDrip+](https://user-images.githubusercontent.com/76626474/124508529-71603a80-ddd0-11eb-956a-df6eaebd820d.jpg)\r\n![Screenshot_20210705-202135_AndroidAPS](https://user-images.githubusercontent.com/76626474/124508556-7d4bfc80-ddd0-11eb-9520-a65225c799fc.jpg)\r\n![screen](https://user-images.githubusercontent.com/76626474/124508627-9eace880-ddd0-11eb-9775-969357f91d0f.png)\r\n",
+ "comments": [
+  {
+   "id": 874312321,
+   "user": "MilosKozak",
+   "created_at": "2021-07-05T20:17:13Z",
+   "body": "on main screen AAPS uses direction provided by BG source. On watch may be calculated"
+  },
+  {
+   "id": 874347767,
+   "user": "andyrozman",
+   "created_at": "2021-07-05T22:07:58Z",
+   "body": "Arrow is correct on Xdrip and wrong in AAPS. "
+  },
+  {
+   "id": 874962761,
+   "user": "MilosKozak",
+   "created_at": "2021-07-06T17:51:08Z",
+   "body": "what source?"
+  },
+  {
+   "id": 875021456,
+   "user": "andyrozman",
+   "created_at": "2021-07-06T19:22:30Z",
+   "body": "XDrip+. It seems that for small changes arrow is always pointing from left to right ->, in Xdrip there is arrow that is just little slanted, I think in AAPS that one doesn't exists... "
+  },
+  {
+   "id": 875030718,
+   "user": "robertrub",
+   "created_at": "2021-07-06T19:38:44Z",
+   "body": "Look at my screen captures (all done during the same minute). G6, xDrip+ and AAPS 2.8.2. xDrip and AAPS _watchface_ show a 45° arrow (with delta of +7) but AAPS phone shows an horizontal one."
+  },
+  {
+   "id": 875096002,
+   "user": "woernsn",
+   "created_at": "2021-07-06T21:31:27Z",
+   "body": "> \r\n> \r\n> XDrip+. It seems that for small changes arrow is always pointing from left to right ->, in Xdrip there is arrow that is just little slanted, I think in AAPS that one doesn't exists...\r\n\r\nWhat I see in the code, the `FortyFiveUp` arrow should be shown with delta +7 in 5 minutes.\r\nIn that case, the `slope_by_minute` should result in 1.4.\r\n```\r\nif (slope_by_minute <= (-3.5)) {\r\n    arrow = \"DoubleDown\";\r\n} else if (slope_by_minute <= (-2)) {\r\n    arrow = \"SingleDown\";\r\n} else if (slope_by_minute <= (-1)) {\r\n    arrow = \"FortyFiveDown\";\r\n} else if (slope_by_minute <= (1)) {\r\n    arrow = \"Flat\";\r\n} else if (slope_by_minute <= (2)) {\r\n    arrow = \"FortyFiveUp\";\r\n} else if (slope_by_minute <= (3.5)) {\r\n    arrow = \"SingleUp\";\r\n} else if (slope_by_minute <= (40)) {\r\n    arrow = \"DoubleUp\";\r\n}\r\n```"
+  },
+  {
+   "id": 875925685,
+   "user": "MilosKozak",
+   "created_at": "2021-07-07T20:54:13Z",
+   "body": "this calculation is used only if arrow is not provided by bgsource"
+  },
+  {
+   "id": 876101551,
+   "user": "StephenBrown2",
+   "created_at": "2021-07-08T03:49:45Z",
+   "body": "Check that backfill from Nightscout is turned off. If it's on, AAPS gets a duplicate number and thus the delta for the arrow is zero."
+  },
+  {
+   "id": 876196710,
+   "user": "robertrub",
+   "created_at": "2021-07-08T07:20:28Z",
+   "body": "Hi Stephen. Yes D/L from NS is ON in **xDRIP**. But if this was the problem, I'd always get a \"double the normal slope\" arrow (delta +7 AND delta +7) And, the watchface of AAPS is showing the correct arrow direction. It seems (but haven't been able to test it seriously), it is as if AAPS arrow on phone is (very) delayed compared to the actual status. \r\nIl my memory is correct, I had seen this when I was using the patched Dexcom app too. "
+  },
+  {
+   "id": 876279175,
+   "user": "MilosKozak",
+   "created_at": "2021-07-08T09:20:16Z",
+   "body": "Dexcom arrow shows longer change, not only difference between last 2 BGs"
+  },
+  {
+   "id": 877589046,
+   "user": "robertrub",
+   "created_at": "2021-07-10T07:42:39Z",
+   "body": "Another impressive screen captures. \r\n![Screenshot_20210710-093800_AndroidAPS](https://user-images.githubusercontent.com/76626474/125155876-c8fcfe00-e162-11eb-934e-109170e0f8b8.jpg)\r\nI have a quick look at AAPS (phone) and I say, \"things are OK\" by looking at the arrow.\r\n![Screenshot_20210710-093826_xDrip+](https://user-images.githubusercontent.com/76626474/125155892-e336dc00-e162-11eb-99ba-a689ceacf0f7.jpg)\r\nIf I look at xDrip and AAPS watchface, they both show a dangerous down arrow...\r\n"
+  },
+  {
+   "id": 877593400,
+   "user": "Philoul",
+   "created_at": "2021-07-10T08:10:09Z",
+   "body": "I noticed that sometime G6 updates previous version of its history bg values\r\nfor ex G6 can send at 8:00 a current bg value of 130\r\nand 5 min later new value for 8:00 of 135 and for 8:05  a current value of 138\r\nG6 arrow is then flat: 135 -> 138 < 5 mg/dl\r\nIn all app you get an up arrow: 130 -> 138 > 5 mg/dl"
+  },
+  {
+   "id": 877595990,
+   "user": "robertrub",
+   "created_at": "2021-07-10T08:27:46Z",
+   "body": "Hi ;)\r\nWhat I can't understand is why AAPS **watchface** and xDrip show _one and same_ type of slope and AAPS **phone** shows another...."
+  },
+  {
+   "id": 877598601,
+   "user": "Philoul",
+   "created_at": "2021-07-10T08:44:30Z",
+   "body": "AAPS shows arrow sent by source (calculated with G6 method), watchfaxe and other apps show calculated arrows (calculated with 5min Delta)\r\n=> With my example AAPS will show the flat arrow sent by G6 APP (even if calculated short delta is +8 mg/dl) while all other app will calculate a 45° up arrow"
+  },
+  {
+   "id": 877612909,
+   "user": "robertrub",
+   "created_at": "2021-07-10T10:19:50Z",
+   "body": "Well, info on AAPS vs other sources not being the same is confusing. AAPS phone vs AAPS watchface not being the same is VERY confusing (for me, definitely a bug).\r\nIn my last capture (BG rising, peaking and going down) I definitely prefer a down arrow at the beginning of the drop than in 10+ (?) minutes when the BG \"average\" will start to go down in AAPS.\r\nDelta 15min is -1, last 5min is -11... A really don't think that G6 sent an up arrow but I don't have that information of course. \r\n.../...\r\nWhen I look at xDrip, there was a rise after the drop. Your logic seems to fit what happened. But, still, different arrows in the same app is disturbing.\r\n\r\n"
+  },
+  {
+   "id": 877614004,
+   "user": "robertrub",
+   "created_at": "2021-07-10T10:27:31Z",
+   "body": "![Screenshot_20210710-122627_xDrip+](https://user-images.githubusercontent.com/76626474/125159828-30727800-e17a-11eb-8f00-81e87e310642.jpg)\r\n"
+  },
+  {
+   "id": 924061436,
+   "user": "MilosKozak",
+   "created_at": "2021-09-21T14:46:56Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/d43393e2af7f6133b267e04967e8fc2b70149d16"
+  }
+ ]
+}

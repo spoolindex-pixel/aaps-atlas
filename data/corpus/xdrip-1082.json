@@ -1,0 +1,35 @@
+{
+ "id": 517502956,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1082,
+ "title": "Broadcast to xDrip (step2)",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1082",
+ "state": "closed",
+ "labels": [
+  "duplicate"
+ ],
+ "created_at": "2019-11-05T01:51:12Z",
+ "closed_at": "2021-03-01T01:06:06Z",
+ "comment_count": 3,
+ "body": "thank you @tzachi-dar and @MasterPlexus \r\nI tried your suggestion , and XDrip can show the glucose values success,\r\n![Screenshot_20191105-094043_xDrip+](https://user-images.githubusercontent.com/12733707/68171962-cbcc4680-ffb0-11e9-8409-d1918fa826ce.jpg)\r\nBut I have some other questions that I hope you can help me：\r\n1.Every 3 minutes i will send one glucose value to XDrip, can XDrip show every glucose values?\r\n2. i don't quite konw  the meaning of each parameter , can you explain them for me ?https://github.com/NightscoutFoundation/xDrip/blob/606e53c0f6a601627e78588441aa77660aa22f25/app/src/main/java/com/eveningoutpost/dexdrip/Models/OOPResultsContainer.java\r\n3.Do you have any better suggestions for me or closer cooperation?\r\n4.Need to send unit to you(mmol/L or mg/dL)\r\nThank you for your help anyway.\r\n\r\n\r\n",
+ "comments": [
+  {
+   "id": 550440794,
+   "user": "tzachi-dar",
+   "created_at": "2019-11-06T18:29:45Z",
+   "body": "1) xDrip can only show a new message every 5 minutes (or more). The reason is that there are many places in the code (for example, raise, or drop alerts) that will need to be changed.\r\n\r\n    double currentBg; - current BG value\r\n    int currentTime; - number of minutes from sensor start.\r\n    int currentTrend; - a number saying the direction of the bg (not really used)\r\n    HistoricBg [] historicBg; -> a vector of historical data (if you can create it)\r\n    long timestamp; - epoch in ms \r\n    String serialNumber; - an identifier of the sensor.\r\n3) I think that if you can have in xDrip your type of the sensor, this could make installation for users much better.\r\n\r\n4) Thanks. Here we use mg/dl\r\n\r\n\r\n"
+  },
+  {
+   "id": 778422382,
+   "user": "Navid200",
+   "created_at": "2021-02-12T20:01:31Z",
+   "body": "@WalkingMyRoad Would you please close this issue if your questions have been answered?\r\nIf not, you can use the xDrip support group on facebook.\r\nhttps://www.facebook.com/groups/xDripG5\r\nOr the Gitter room.  https://gitter.im/jamorham/xDrip-plus\r\nThanks"
+  },
+  {
+   "id": 781639874,
+   "user": "Navid200",
+   "created_at": "2021-02-18T21:16:21Z",
+   "body": "Duplicate: https://github.com/NightscoutFoundation/xDrip/issues/1058"
+  }
+ ]
+}

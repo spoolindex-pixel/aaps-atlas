@@ -1,0 +1,97 @@
+{
+ "id": 630748544,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1360,
+ "title": "xDrip notification cascading",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1360",
+ "state": "closed",
+ "labels": [
+  "bug",
+  "ux-notification",
+  "status-postponed"
+ ],
+ "created_at": "2020-06-04T11:40:57Z",
+ "closed_at": "2021-10-27T13:42:51Z",
+ "comment_count": 13,
+ "body": "\r\n![Issue_xDrip_notification](https://user-images.githubusercontent.com/16593716/83752311-a13a8d00-a668-11ea-839a-02007a430475.png)\r\nI am observing an unexpected behaviour with the xDrip notifications.\r\nI mean the message, that is displayed, when I swipe form the very top of my display downwards.\r\nUntil 14th of February all was fine. (screenshot, left side)\r\nWith all later releases I am having the problem: The notifications are cascading. (screenshot, right side)\r\n\r\nIt is reproducible – if I install any version newerthan 14th of February 2020 the problem appears.\r\nIf I install any earlier version, everything is fine.\r\n\r\nI observed it with following environment:\r\n  * HTC U11\r\n  * Android 9\r\n\r\nIs this behaviour known? And – could it be changed?\r\n",
+ "comments": [
+  {
+   "id": 782930744,
+   "user": "Navid200",
+   "created_at": "2021-02-21T21:34:30Z",
+   "body": "@fezulin Would you please close this issue if it has been resolved?\r\nIf not, would you please show the behavior with the latest nightly release 2021.02.17?\r\nThanks"
+  },
+  {
+   "id": 782933100,
+   "user": "fezulin",
+   "created_at": "2021-02-21T21:49:45Z",
+   "body": "<img src=\"https://user-images.githubusercontent.com/16593716/108639938-6519b780-7497-11eb-8bd4-58676972c09f.png\" width=\"300\" /><img src=\"https://user-images.githubusercontent.com/16593716/108639818-c8efb080-7496-11eb-9f97-62bf252cffb7.png\" width=\"300\" />\r\n\r\nI downloaded and installed the current nightly (20210217). The problem still exists. \r\nRest of the setup has not been changed."
+  },
+  {
+   "id": 782936261,
+   "user": "Navid200",
+   "created_at": "2021-02-21T22:09:31Z",
+   "body": "Would you please tell me what's wrong with it?\r\nI'm not being sarcastic.  I am not sure what is wrong there.  I would like to understand the problem.  Please help me.  Thanks"
+  },
+  {
+   "id": 787140001,
+   "user": "Navid200",
+   "created_at": "2021-02-27T21:15:50Z",
+   "body": "Would you please write down what you mean by the behavior you are questioning?\r\nAnd also please explain the behavior you expect."
+  },
+  {
+   "id": 787199269,
+   "user": "fezulin",
+   "created_at": "2021-02-27T22:45:13Z",
+   "body": "![xDrip](https://user-images.githubusercontent.com/16593716/109402315-34cd8f80-7955-11eb-8867-1bc6a5db19d9.png)\r\nHere two screenshots to explain the behaviour. The left screenshot was taken from xDrip version before 02/2020. Right screenshot was taken from current nightly (20210217).\r\nFor each screenshot I did the same: Comming from mainscreen of my mobile, I swipe down once from the very top of the display.\r\nI agree, it is no dreadful behaviour. ;o) Anyway: If it could be changed, I would be glad. "
+  },
+  {
+   "id": 787200359,
+   "user": "tolot27",
+   "created_at": "2021-02-27T22:56:24Z",
+   "body": "Thanks for the detailed description. That helps alot. Please also add information about screen size."
+  },
+  {
+   "id": 787200429,
+   "user": "Navid200",
+   "created_at": "2021-02-27T22:57:06Z",
+   "body": "This is mine, which is February 17, 2021.\r\n![Screenshot_20210227-174859](https://user-images.githubusercontent.com/51497406/109402611-29fb0680-7925-11eb-83d0-f292c00f606f.png)\r\n\r\n\r\nDoes it have the problem?"
+  },
+  {
+   "id": 787202478,
+   "user": "fezulin",
+   "created_at": "2021-02-27T23:16:41Z",
+   "body": "@Navid200 : No, your screen looks the way I would like mine to look. :o)\r\n@tolot27 : HTC U11, Android 9, QHD with 1.440 x 2.560 Pixel."
+  },
+  {
+   "id": 876101650,
+   "user": "Navid200",
+   "created_at": "2021-07-08T03:50:03Z",
+   "body": "@fezulin Can you identify the last xDrip version that works as you like?  Then, we can see what changed after that release and it should be easy to identify the cause."
+  },
+  {
+   "id": 876146681,
+   "user": "fezulin",
+   "created_at": "2021-07-08T05:46:45Z",
+   "body": "@Navid200 : Last version, that works fine is:\r\n2020.02.14 (xDrip-plus-20200214-edc269e.apk)\r\n\r\nFirst faulty version was released on 19th of February 2020. There were two builds: [2020.02.19](https://github.com/NightscoutFoundation/xDrip/releases/tag/2020.02.19) (xDrip-plus-20200219-1082c3c.apk) and 2020.02.19b  (xDrip-plus-20200219-62bbfb2.apk). Both show the behavior as described. (As well as any version I ever tested after [14th of February 2020](https://github.com/NightscoutFoundation/xDrip/releases/tag/2020.02.14).)\r\nI just checked it with 2021.07.02 (xDrip-plus-20210702-c4d6843.apk), it still shows the faulty behavior.\r\nWould be great, if you could fix it..."
+  },
+  {
+   "id": 876235370,
+   "user": "tolot27",
+   "created_at": "2021-07-08T08:19:03Z",
+   "body": "It looks like it is caused by the commit 28d7b85 from PR #1101.\r\n@karelinoleg Please can you have a look?"
+  },
+  {
+   "id": 890557997,
+   "user": "fezulin",
+   "created_at": "2021-08-01T17:23:56Z",
+   "body": "Just to let you know: It seems to me, as if I am the only person, who is affected by this behavior. At least I never met anyone else, who had this problem. \r\nI just changed to another mobile, which does not show the descripted behavior.\r\nSo I am not sure, if it is necessary, to fix this bug at all. \r\nTo avoid unnecessary work, it might help to find out, if anybody else is having the problem. "
+  },
+  {
+   "id": 952944115,
+   "user": "Navid200",
+   "created_at": "2021-10-27T13:42:51Z",
+   "body": "@fezulin Thanks for the suggestion.\r\nI have labeled this as postponed, which lets us know the issues hasn't been closed, but, we are postponing it.\r\nIf more people bring this up, we can revisit."
+  }
+ ]
+}

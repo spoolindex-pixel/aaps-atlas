@@ -1,0 +1,27 @@
+{
+ "id": 4414802250,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4808,
+ "title": "AAPS 4.dev (7cb4) Combo Res and Bat change not working",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4808",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2026-05-10T05:54:35Z",
+ "closed_at": "2026-05-10T09:59:10Z",
+ "comment_count": 2,
+ "body": "Reporting bugs\n--------------\n- Accu-Check Combo v2\nAutodetect insulin reservoir change AND battery change in Options active, but after change, there ist not Set\n(In Combu UI the Battery change from Low to Full, also Reservoir from 0 to 290)\n\nSet Manually at 7:11 \n\nBuild: 7cb409f-2026.05.06\n\n[AndroidAPS_LOG_1778391342047.log.zip](https://github.com/user-attachments/files/27563250/AndroidAPS_LOG_1778391342047.log.zip)",
+ "comments": [
+  {
+   "id": 4415004389,
+   "user": "MilosKozak",
+   "created_at": "2026-05-10T09:58:34Z",
+   "body": "Looked at the log. The auto-insert didn't fire because of the cartridge/battery change spanning an AAPS process restart, not because of broken detection on the pump status itself.\n\nTimeline from the older log:\n- 05:57–06:09: reservoir=0, battery=LOW(25), reading repeatedly.\n- 06:10:02: E1 / \"Insufficient insulin in reservoir\" → driver Error.\n- 06:11:43 and again 06:29:43: `MainApp.onCreate` — AAPS process restarted twice (Android killed it during the swap).\n- 06:40:40: first reading after restart already shows 292U / FULL. Log says `Current/new reservoir levels: 292.0 / 292` and `100 / 100` — current and new are equal, so the `newLevel > currentLevel` check is false.\n\n`ComboV2Plugin.updateLevels()` keeps `_reservoirLevel` / `_batteryLevel` in memory only. After the restart they're null, the comparison block is skipped on the first read, the values silently get set to the post-change ones, and afterwards they only ever go down (insulin used). So auto-detect never triggers for this swap.\n\nWill leave the auto-detect logic as is — to hit this you need AAPS to be killed between the low reading and the reconnect after the swap, which is rare. Workaround when it happens: enter the events manually like you did at 7:11. If this recurs, fix is just persisting the two cached levels across restarts."
+  },
+  {
+   "id": 4428376030,
+   "user": "chrisgruebl",
+   "created_at": "2026-05-12T07:44:28Z",
+   "body": "Version 4ab0, Bat change yesterday works fine"
+  }
+ ]
+}

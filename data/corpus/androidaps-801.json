@@ -1,0 +1,27 @@
+{
+ "id": 1039236315,
+ "repo": "nightscout/AndroidAPS",
+ "number": 801,
+ "title": "[last dev] AAPS temporary frozen after a time rescale of graph",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/801",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-10-29T07:05:07Z",
+ "closed_at": "2022-05-23T12:56:26Z",
+ "comment_count": 2,
+ "body": "No crash, but just annoying, very often, when I change time range of the graph I get a popup AndroidAPS is not responding (always press Wait button and it's Ok).\r\nI also get some temporary artefact in the graph during the following 5 min (vertical bar in the left, wrong scale for TBR...)\r\n![Screenshot_20211025-080253_AndroidAPS](https://user-images.githubusercontent.com/52934600/139390550-f0eccdd6-c1ef-4365-8c19-3a62d2193628.jpg)\r\n\r\n![Screenshot_20211025-080315_AndroidAPS](https://user-images.githubusercontent.com/52934600/139390660-a9ef1420-d532-42c4-9edf-2cdcfdbc8651.jpg)\r\n\r\n",
+ "comments": [
+  {
+   "id": 958969742,
+   "user": "Philoul",
+   "created_at": "2021-11-03T12:09:06Z",
+   "body": "Copy paste my comment from #822 to #801 (most of it is linked to this issue).\r\n\r\n> I tried to fix it a few months ago with always preparing data for max range of data for all curves (24h + prediction) and return selected range.\r\n> I made a PR (not merged) that fixed the temporary vertical bar on the left and displayed immediatly all curves on rescale, but I closed it because it was not compatible with History Browser 😞...\r\n> My other idea was to only calculate required data on new entry or each 5 min (most of time 99% of graph values are already calculated, and it's only when we enter insulin or carbs in the past that we have to calculate again a subset of values), keep in memory 24 or 48h of graph values and save older one in database to be able to show immediatly all curves in historybrowser (without calculation) and in overview..."
+  },
+  {
+   "id": 961750630,
+   "user": "MilosKozak",
+   "created_at": "2021-11-05T09:37:31Z",
+   "body": "caching simliar to what you describe is in place"
+  }
+ ]
+}

@@ -1,0 +1,87 @@
+{
+ "id": 415138687,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 808,
+ "title": "Nightscout follower - 5 min. delay",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/808",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2019-02-27T13:59:49Z",
+ "closed_at": "2021-02-17T16:08:26Z",
+ "comment_count": 16,
+ "body": "Hi,\r\nnot urgent but annoying issue - while following Nightscout page you get the data between 5 and 10 minutes old. Users already found a workaround for that - set manual time on your phone 1 minute back and you get BG values 0-5 minutes old. This 1 missing record is important especially for children when the BG changes quick.\r\n\r\nThere has to be an option to fix that in xDrip+ ;)\r\n\r\nCheers,\r\nIrek",
+ "comments": [
+  {
+   "id": 486519365,
+   "user": "jmacikanycz",
+   "created_at": "2019-04-25T04:55:32Z",
+   "body": "Funny, the two year old nightwatch app does not have this issue."
+  },
+  {
+   "id": 495816267,
+   "user": "ArkonPhoenix",
+   "created_at": "2019-05-24T23:57:03Z",
+   "body": "I was going to submit this issue now that I am using Loop, and want faster updates. Yeah, its about 5-10 delay. Then when it does get caught up, its never caught up to now, it's always 5 minutes behind. And yes, I have a kid too, so having current numbers would be nice."
+  },
+  {
+   "id": 502401317,
+   "user": "glebivanov",
+   "created_at": "2019-06-15T21:38:55Z",
+   "body": "I'm experiencing the same issue. I did all sorts of experiments today thinking the problem is on the Nightscout side. But it looks like xDrip+ is pulling data with a delay, or not frequently enough.\r\n\r\nI'm preparing to start using Loop for my kid so the lag is an issue for me."
+  },
+  {
+   "id": 504131943,
+   "user": "ltatnall",
+   "created_at": "2019-06-20T18:24:23Z",
+   "body": "I have the same problem so have gone back to using nightwatch instead (I use it with a 3 yr old so current data is important.) Any idea why? Is it the same for all NIGHTSCOUT followers"
+  },
+  {
+   "id": 504174221,
+   "user": "glebivanov",
+   "created_at": "2019-06-20T20:38:43Z",
+   "body": "In the Nightwatch settings I've decreased the Dexcom Share polling interval to 15 seconds:\r\n`BRIDGE_INTERVAL = 15000` \r\n\r\nThis almost completely eliminated the lag. \r\n\r\nAlternatively, we could investigate the Nightscout Follow logic. I believe it's in [NightscoutFollow.java](https://github.com/NightscoutFoundation/xDrip/blob/master/app/src/main/java/com/eveningoutpost/dexdrip/cgm/nsfollow/NightscoutFollow.java)"
+  },
+  {
+   "id": 573660234,
+   "user": "Paragulis",
+   "created_at": "2020-01-13T13:21:37Z",
+   "body": "I have the same problem, is there any solution for it?\r\nthanks"
+  },
+  {
+   "id": 574372869,
+   "user": "glebivanov",
+   "created_at": "2020-01-14T21:03:32Z",
+   "body": "Still no solution, other than decreasing`BRIDGE_INTERVAL`\r\n\r\nIt doesn't fix the problem completely though."
+  },
+  {
+   "id": 574377551,
+   "user": "ArkonPhoenix",
+   "created_at": "2020-01-14T21:15:56Z",
+   "body": "So we use Loop and in the latest Master Branch they came up with a\nworkaround/option that can send the CGM data from the Dexcom/Loop phone\ndirectly to NS. Its been working great for us. We currently let both ways\nsend in data and it appears to not duplicate the data. Plus you can also\nsee the delay on one of the pills hover over text.\n\n[image: image.png]\n\nThe issue/delay is with the Dexcom servers.\n\nOn Tue, Jan 14, 2020 at 2:03 PM glebivanov <notifications@github.com> wrote:\n\n> Still no solution, other than decreasingBRIDGE_INTERVAL\n>\n> It doesn't fix the problem completely though.\n>\n> —\n> You are receiving this because you commented.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/808?email_source=notifications&email_token=AJ2RAU2FKLVTINC6C7BUD4DQ5YSCLA5CNFSM4G2SL7Y2YY3PNVWWK3TUL52HS4DFVREXG43VMVBW63LNMVXHJKTDN5WW2ZLOORPWSZGOEI6DYBI#issuecomment-574372869>,\n> or unsubscribe\n> <https://github.com/notifications/unsubscribe-auth/AJ2RAU5WWLWJJB7A3UQTIE3Q5YSCLANCNFSM4G2SL7YQ>\n> .\n>\n"
+  },
+  {
+   "id": 574381554,
+   "user": "ireneusz-ptak",
+   "created_at": "2020-01-14T21:26:23Z",
+   "body": "@glebivanov My guess is that changing grace value in https://github.com/NightscoutFoundation/xDrip/blob/992a5414adae337579d667718ca411f9fd6a6af1/app/src/main/java/com/eveningoutpost/dexdrip/cgm/nsfollow/NightscoutFollowService.java to something bigger than 10 seconds (like: Constants.SECOND_IN_MS * 30) should fix the problem.\r\n\r\nWe changed our rig to Dexcom so I'm not so motivated to test it anymore, but maybe someone else would like to volunteer?"
+  },
+  {
+   "id": 620314151,
+   "user": "Lucy-Goosey42",
+   "created_at": "2020-04-28T00:59:03Z",
+   "body": "Can anyone help me by explaining how to change the bridge interal?"
+  },
+  {
+   "id": 780092391,
+   "user": "Navid200",
+   "created_at": "2021-02-16T20:18:09Z",
+   "body": "@ireneusz-ptak Was this ever resolved?\r\nDid you ever confirm that the, through Android settings, clocks of the master and the follower are automatically adjusted using an online time base?"
+  },
+  {
+   "id": 780662837,
+   "user": "ireneusz-ptak",
+   "created_at": "2021-02-17T16:05:28Z",
+   "body": "@Navid200 No idea, I'm not using NS follow option anymore."
+  }
+ ]
+}

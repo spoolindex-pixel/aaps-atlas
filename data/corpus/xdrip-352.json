@@ -1,0 +1,47 @@
+{
+ "id": 306157361,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 352,
+ "title": "Display \"over the top\" High values",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/352",
+ "state": "closed",
+ "labels": [
+  "enhancement"
+ ],
+ "created_at": "2018-03-17T13:40:54Z",
+ "closed_at": "2021-02-25T16:55:53Z",
+ "comment_count": 5,
+ "body": "I got recently High BG episode. This due to lack of rapid insulin treatment at that time.\r\n\r\nSince I have enabled their display, I could see that RAW values would be available and possibly valid to evaluate where the trend go.\r\n\r\n![screenshot_20180316-231145](https://user-images.githubusercontent.com/24457611/37556122-a169e884-29f1-11e8-85b9-cc165efc4197.jpg)\r\n![screenshot_20180316-231236](https://user-images.githubusercontent.com/24457611/37556128-aa5acf8a-29f1-11e8-883f-5973a025f2dd.jpg)\r\n\r\nIs it expected not to display plots values over 400mg/ml ? Considering that this should not happen, and would request high level of attention ?\r\nIs it perhaps that values reaching this limit are not reliable ?\r\n\r\nI think that even then, we should display plots above 400mg/dl to have visibility of the trend, and take actions. Raw values seem to be usable at that level, and would give a visibility that a Libre reader would not deliver.\r\n",
+ "comments": [
+  {
+   "id": 373921654,
+   "user": "cybernissart",
+   "created_at": "2018-03-17T13:51:24Z",
+   "body": "Seems conditioned here in code.\r\n\r\nhttps://github.com/NightscoutFoundation/xDrip/blob/bf3cc002a6611c865d160310e7fdf29453906922/wear/src/main/java/com/eveningoutpost/dexdrip/BgGraphBuilder.java#L310"
+  },
+  {
+   "id": 375021353,
+   "user": "jwoglom",
+   "created_at": "2018-03-21T17:09:13Z",
+   "body": "It's probably hardcoded there because dexcom devices will above 400 switch to displaying \"HIGH\" and don't display a higher glucose value. Looks like you're using a Libre, not a G4/G5, and I'm not sure what their hardcoded max value is. Maybe this hardcoded 400 value should be changed to a hw datasource-dependent constant."
+  },
+  {
+   "id": 779412642,
+   "user": "Navid200",
+   "created_at": "2021-02-15T19:30:38Z",
+   "body": "@cybernissart Would you please close this issue if you are satisfied or if you don't need it any longer?\r\nIf you still feel this is useful, would you please explain what you would do differently if you know that your glucose is at 400 versus at 500?\r\nThanks"
+  },
+  {
+   "id": 785423755,
+   "user": "Navid200",
+   "created_at": "2021-02-24T22:22:06Z",
+   "body": "@cybernissart You are saying that you have enabled it to show and your images show the trend above 400.\r\nSo, you can already see the values.  What is missing then?"
+  },
+  {
+   "id": 786049125,
+   "user": "Navid200",
+   "created_at": "2021-02-25T16:55:53Z",
+   "body": "Closing due to inactivity\r\nIf you like to re-open, please explain exactly what is missing first.   Your snapshots show the raw readings already."
+  }
+ ]
+}

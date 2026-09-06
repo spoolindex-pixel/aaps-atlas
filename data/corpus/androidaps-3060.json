@@ -1,0 +1,21 @@
+{
+ "id": 1992344374,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3060,
+ "title": "[MDT] Profile wont apply if basal unchanged",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3060",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-11-14T09:27:39Z",
+ "closed_at": "2023-11-21T13:18:41Z",
+ "comment_count": 1,
+ "body": "Behaviour:\r\n\r\nUser edits profile, saves and applies it. Profile is saved to NS, but not applied.\r\n\r\nHow to reproduce:\r\n\r\n1. Using Medtronic pump (only its owners report this)\r\n2. Edit IC/ISF/Name in profile, leaving basals untouched\r\n3. Save, apply.\r\n\r\nSee logs\r\n\r\n```\r\nD/PUMPQUEUE: [CommandQueueImplementation.isThisProfileSet():659]: Current profile: EPS(...)\r\nI/PUMP: [MedtronicPumpPlugin.setNewBasalProfile():1103]: MedtronicPumpPlugin::setNewBasalProfile\r\nD/PUMP: [MedtronicPumpPlugin.isProfileSame():495]: Current Basals (h):   0,350 0,350 0,300 0,350 0,350 0,650 0,650 0,700 0,850 0,850 0,600 0,500 0,500 0,400 0,400 0,350 0,350 0,350 0,350 0,350 0,400 0,400 0,400 0,350 \r\nD/PUMP: [MedtronicPumpPlugin.isProfileSame():513]: Requested Basals (h): 0.350 0.350 0.300 0.350 0.350 0.650 0.650 0.700 0.850 0.850 0.600 0.500 0.500 0.400 0.400 0.350 0.350 0.350 0.350 0.350 0.400 0.400 0.400 0.350\r\nD/PUMP: [MedtronicPumpPlugin.isProfileSame():515]: Basal profile is same as AAPS one.\r\n```\r\nAfter this profile apply is cancelled and old profile remains active despite having changes in IC/ISF/Naming.\r\n\r\nThis is how it looks like in treatments: profile changes having only `PS` tag, but no `PH` were not applied at all.\r\n<img width=\"427\" alt=\"image\" src=\"https://github.com/nightscout/AndroidAPS/assets/4157587/f7d022ef-6f8a-4914-bb4a-d49713ef7700\">\r\n\r\nAs you can see - there were no profile switches until 14:11 that day, despite being saved and applied and shown in treatments.\r\n\r\n<img width=\"415\" alt=\"image\" src=\"https://github.com/nightscout/AndroidAPS/assets/4157587/157efa39-0d49-4fc6-a1d2-ac16ec3d9baf\">\r\n\r\n",
+ "comments": [
+  {
+   "id": 1820911714,
+   "user": "MilosKozak",
+   "created_at": "2023-11-21T13:18:42Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/428d6c4feee05641132f3e55fa410fa9c79d7948"
+  }
+ ]
+}

@@ -1,0 +1,27 @@
+{
+ "id": 1041002019,
+ "repo": "nightscout/AndroidAPS",
+ "number": 829,
+ "title": "[3.0-dev] missed BG reading alert on every app startup",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/829",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-11-01T10:10:37Z",
+ "closed_at": "2021-11-01T17:43:39Z",
+ "comment_count": 2,
+ "body": "On each and every App startup, I get a local alert because of \"Missed BG readings\" (see screenshot).\r\nApparently the alert is created before the last BG value is even read from the DB?\r\nCan be re-created by just stopping aaps and starting it again.\r\n\r\nOn my daugther's phone, this causes an audible alert if e.g. we restart the phone in the night due to Dexcom or Pump BT issues, thus more often than not waking her up.\r\n\r\nSolution(?): AAPS should not be sending alerts on app startup before initializing the different subsystems - even if this alert is dismissed a couple seconds later, the alarm sound has already been played.\r\n![image](https://user-images.githubusercontent.com/13501427/139655894-28e15117-a0c1-499a-9168-00b03a07c3c7.png)\r\n",
+ "comments": [
+  {
+   "id": 956270573,
+   "user": "robertrub",
+   "created_at": "2021-11-01T14:14:21Z",
+   "body": "I get the same alert when I start AAPS too. It is not useful as it gives an inexact information to user (theoretically _exact_ as AAPS didn't get BGs for some time but it will get them as soon as it finishes starting ;)  ) . "
+  },
+  {
+   "id": 956443639,
+   "user": "MilosKozak",
+   "created_at": "2021-11-01T17:43:39Z",
+   "body": "improved by https://github.com/nightscout/AndroidAPS/commit/f700c22966c6edbdee5a60caeb123290ad6dbba6"
+  }
+ ]
+}

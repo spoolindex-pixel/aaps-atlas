@@ -1,0 +1,45 @@
+{
+ "id": 1040331316,
+ "repo": "nightscout/AndroidAPS",
+ "number": 818,
+ "title": "When on DASH history view, AAPS crash/restart when rotating the phone",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/818",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-10-30T23:23:10Z",
+ "closed_at": "2021-11-01T21:10:13Z",
+ "comment_count": 5,
+ "body": "**AndroidAPS 2.8.2.8-dev**\r\nBuild: 8fe7e7ce2\r\nFlavor: fulldebug\r\n\r\n**Problem description:**\r\nWhen on DASH history view,\r\nAAPS crash/restarts when rotating between portrait<->landscape mode (rotating the phone)\r\n",
+ "comments": [
+  {
+   "id": 955699374,
+   "user": "kristinsmotz",
+   "created_at": "2021-10-31T13:18:24Z",
+   "body": "Can confirm this happens for us too\r\n-----------------------------------------------------\r\nAndroidAPS 3.0-beta2\r\nBuild: f49c93f22-2021.10.30-15:01\r\nRemote: https://github.com/nightscout/AndroidAPS\r\nFlavor: fullrelease\r\nNightscout version: 14.2.2\r\nEngineering mode enabled"
+  },
+  {
+   "id": 955764967,
+   "user": "Philoul",
+   "created_at": "2021-10-31T17:55:02Z",
+   "body": "@avereha I confirm crash with kotlin version\r\nI tried with first java version and it works, but I couldn't find in kotlin what's wrong...\r\n=> That's what I have in logcat\r\n`2021-10-31 17:42:29.748 5559-5559/info.nightscout.androidaps E/AndroidRuntime: FATAL EXCEPTION: main\r\n    Process: info.nightscout.androidaps, PID: 5559\r\n    java.lang.NullPointerException: Parameter specified as non-null is null: method kotlin.jvm.internal.Intrinsics.checkNotNullParameter, parameter view\r\n        at info.nightscout.androidaps.plugins.pump.omnipod.dash.ui.DashPodHistoryActivity$onCreate$3$1.onItemSelected(Unknown Source:2)\r\n        at android.widget.AdapterView.fireOnSelected(AdapterView.java:957)\r\n        at android.widget.AdapterView.dispatchOnItemSelected(AdapterView.java:946)\r\n        at android.widget.AdapterView.selectionChanged(AdapterView.java:935)\r\n        at android.widget.AdapterView.checkSelectionChanged(AdapterView.java:1118)\r\n        at android.widget.AdapterView.handleDataChanged(AdapterView.java:1094)\r\n        at android.widget.AbsSpinner.onMeasure(AbsSpinner.java:193)\r\n        at android.widget.Spinner.onMeasure(Spinner.java:614)`"
+  },
+  {
+   "id": 955784748,
+   "user": "vanelsberg",
+   "created_at": "2021-10-31T20:15:41Z",
+   "body": "@Philoul @avereha This AAPS had this problem (early 2.8.1?) on the main overview. Took some time to fix that.\r\nNot sure how and by whom it was solved. Maybe @MilosKozak knows?"
+  },
+  {
+   "id": 955798428,
+   "user": "MilosKozak",
+   "created_at": "2021-10-31T21:57:05Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/a7ce4c0150627dbe85604a401067966d789ca028"
+  },
+  {
+   "id": 956304650,
+   "user": "vanelsberg",
+   "created_at": "2021-11-01T14:57:24Z",
+   "body": "> [a7ce4c0](https://github.com/nightscout/AndroidAPS/commit/a7ce4c0150627dbe85604a401067966d789ca028)\r\n\r\n@MilosKozak \r\nConfirming: problem solved. Tnx!\r\n"
+  }
+ ]
+}

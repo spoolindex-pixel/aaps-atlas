@@ -1,0 +1,27 @@
+{
+ "issue_id": 3143,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/3143",
+ "title": "Wear : Data layer foreground notification",
+ "symptom": "On the latest dev build, a persistent 'Data layer foreground notification' appears on the watch and cannot be dismissed. Turning off the notification disables all AAPS notifications on the watch.",
+ "cause": "The notification was added to keep the background service running on Android 10+ so that complications work, but it results in a permanent notification that cannot be removed.",
+ "fix": "As a workaround, users can disable the notification channel via the watch's developer options: App Notifications -> All watch apps -> AAPS -> Data layer Foreground Service Channel: OFF. Later dev builds may have improved the behavior.",
+ "settings_changed": [
+  "Data layer Foreground Service Channel → OFF"
+ ],
+ "devices": [
+  "Samsung Galaxy Watch 4",
+  "Pixel Watch 2"
+ ],
+ "android_versions": [
+  "Android 13",
+  "Android 14"
+ ],
+ "driver_tags": [
+  "wear",
+  "foreground service",
+  "notification channel"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "With current dev-builds, on the Samsung Galaxy Watch 4, I can hide the ongoing notification through developer menu settings on Watch: `App Notifications -> All watch apps -> AAPS -> Data layer Foreground Service Channel: OFF`"
+}

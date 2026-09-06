@@ -1,0 +1,57 @@
+{
+ "id": 4654970638,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4898,
+ "title": "Browser build: pr-ci.yml does not build from latest dev commits.",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4898",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2026-06-13T08:53:10Z",
+ "closed_at": "2026-06-17T15:56:44Z",
+ "comment_count": 7,
+ "body": "**Input:**\n- see screenprint\n\n*Output:*\n- 3.4.2.3-dev/aaps-3.4.2.3-dev-pul-4896-merge.apk\n\n*Expected output:*\n- 4.0.0-dev-a/aaps-4.0.0-dev-pul-4896-merge.apk\n\n**Additional info:**\n\nVersion validation falls back to latest release version when BRANCH_NAME is not numeric version?\n\n      - name: Extract VERSION\n        run: |\n          BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)\n          if echo \"$BRANCH_NAME\" | grep -qE '^[0-9]+\\.[0-9]+\\.[0-9]+(\\.[0-9]+)?$'; then\n            VERSION=\"$BRANCH_NAME\"\n          else\n            VERSION=$(grep 'val appVersion' buildSrc/src/main/kotlin/Versions.kt | awk -F '\"' '{print $2}')\n          fi\n          echo \"VERSION=$VERSION\" >> $GITHUB_ENV\n\n**Screen print:**\n\n<img width=\"332\" height=\"481\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/7623821f-44d7-4509-8249-d0f9b2b0c5f2\" />",
+ "comments": [
+  {
+   "id": 4719830772,
+   "user": "MilosKozak",
+   "created_at": "2026-06-16T14:26:13Z",
+   "body": "@Angus-repo "
+  },
+  {
+   "id": 4725918378,
+   "user": "Angus-repo",
+   "created_at": "2026-06-17T04:21:07Z",
+   "body": "@vanelsberg \n\nBecause PR #4896 will be merged into the dev3 branch, after the merge it will use the Versions.kt from dev3, so the output being version v3 is correct.![Screenshot_20260617_121624~2.jpg](https://github.com/user-attachments/assets/3a07d596-3b77-44fc-8804-be4a253bcf6b)\n\n"
+  },
+  {
+   "id": 4726758837,
+   "user": "vanelsberg",
+   "created_at": "2026-06-17T06:35:22Z",
+   "body": "@Angus-repo \n> Because PR https://github.com/nightscout/AndroidAPS/pull/4896 will be merged into the dev3 branch...\n\nIntended target of the PR is not relevant?\n\nI explicitly set to merge the PR per with the *dev* branch. So it merges (at least it should) with latest dev-bits, not a version tag. And current version of latest dev bit is 4.0.0dev-a. *Not 3.4.2.3-dev* ?\n\nI think behavior of pr-ci should be analog to \"Branch CI\": I should be able to merge a PR with any branch (even when it could fail to merge)\n"
+  },
+  {
+   "id": 4727439510,
+   "user": "Angus-repo",
+   "created_at": "2026-06-17T07:55:12Z",
+   "body": "@vanelsberg \nThere may be a slight misunderstanding here. In this case, you cannot change the target branch used for the merge. Switching to a different branch could also cause a large number of conflicts.\n\nThe generated build will only remain based on the branch specified by that PR."
+  },
+  {
+   "id": 4728770876,
+   "user": "vanelsberg",
+   "created_at": "2026-06-17T10:23:03Z",
+   "body": "> slight misunderstanding...\n\nAh, true. After further inspection of the .yml I see how it is working. It merges the PR with the target branch.\nThat is ok. Prevents problems as you mentioned.\n\nBut then my next question: \nWhy present the user to select any branch name for the PR. This confused me, thinking I could merge on any branch (which is theoretically possible but unwanted in most cases).\n\nMaybe it should error and alert the user: \"This PR can not be merged with the branch selected...\"?\n\n"
+  },
+  {
+   "id": 4729122186,
+   "user": "Angus-repo",
+   "created_at": "2026-06-17T10:51:53Z",
+   "body": "This option is a menu that is always present in the GitHub Actions interface. I had looked for a way to hide it before, but it does not seem possible."
+  },
+  {
+   "id": 4732535468,
+   "user": "vanelsberg",
+   "created_at": "2026-06-17T15:56:39Z",
+   "body": "Ok, no real issue then.\nThanks for the info. Will close this issue 👍\n"
+  }
+ ]
+}

@@ -1,0 +1,21 @@
+{
+ "id": 4866226471,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4970,
+ "title": "Gradle build fails with OutOfMemoryError on systems with ~16 GB RAM or less (default jvmargs too aggressive)",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4970",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2026-07-12T09:33:55Z",
+ "closed_at": "2026-07-12T12:11:34Z",
+ "comment_count": 1,
+ "body": "###  problem\n \nBuilding the project locally (e.g. `./gradlew :app:assembleFullRelease`) reliably fails or becomes very unstable on my machine with around 16 GB of RAM or less. Depending on the stage, this shows up in different ways:\n \n- The Gradle daemon (and sometimes Android Studio itself) consumes 100% of available RAM and eventually crashes before the build finishes.\n- Later in the build, `:app:mergeDexFullRelease` fails with:\n```\n  java.lang.OutOfMemoryError: Java heap space\n```\n  with the D8 dexer running out of heap while merging dex archives.\n \n### Likely cause\n \nThe project-level `gradle.properties` currently sets:\n \n```\norg.gradle.parallel=true\norg.gradle.warning.mode=all\norg.gradle.jvmargs=-Xmx8g -XX:+UseParallelGC -Xss1024m\norg.gradle.workers.max=12\nkotlin.daemon.jvm.options=-Xmx2g\n```\n \nWith `workers.max=12` and `parallel=true`, Gradle can spin up multiple parallel workers, each potentially needing its own heap allocation, on top of the 8 GB Gradle daemon heap and 2 GB Kotlin daemon heap. On a 16 GB (or smaller) machine, this leaves too little headroom for the OS, Android Studio itself, and the final dex-merging step, which needs a large contiguous heap.\n \n### Steps to reproduce\n \n1. Clone the repo on a machine with 16 GB RAM (Linux Mint tested).\n2. Run `./gradlew :app:assembleFullRelease` (or trigger a build from Android Studio) without any custom `~/.gradle/gradle.properties` overrides.\n3. Observe RAM usage climbing to 100% and either a crash of the daemon/IDE, or a late-stage `OutOfMemoryError` during `mergeDexFullRelease`.\n\n### Workaround\n \nOverriding the following local in  `gradle.properties` resolves the issue:\n \n```\norg.gradle.parallel=false\norg.gradle.jvmargs=-Xmx3584m -XX:+UseParallelGC -Xss1024m\norg.gradle.workers.max=2\nkotlin.daemon.jvm.options=-Xmx1g\n```\n \n### Suggested fix\n \nConsider lowering the project-wide defaults in `gradle.properties` (e.g. `workers.max` to something more conservative like 4, and/or documenting in the README/CONTRIBUTING that systems with less than ~24-32 GB RAM should override these values locally). This would make first-time contributor onboarding smoother, since the current defaults appear tuned for high-memory build machines.\n \n### Environment\n \n- OS: Linux Mint\n- RAM: 15 GB total, 2 GB swap (default)\n- JDK: OpenJDK 21.0.11\n- Build invoked both via Android Studio and via `./gradlew` in a standalone terminal\n\n",
+ "comments": [
+  {
+   "id": 4951126391,
+   "user": "MilosKozak",
+   "created_at": "2026-07-12T12:11:34Z",
+   "body": "you ratio cpu cores vs RAM is unballanced.\nI don't think we should slow down builds for everyone.\nRecommended way for non devs is browser build anyway"
+  }
+ ]
+}

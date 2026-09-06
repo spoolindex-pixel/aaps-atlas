@@ -1,0 +1,77 @@
+{
+ "id": 1005171983,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1831,
+ "title": "Android 10 NightScoutFollowService exception",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1831",
+ "state": "closed",
+ "labels": [
+  "android10+"
+ ],
+ "created_at": "2021-09-23T08:51:12Z",
+ "closed_at": "2021-11-17T15:42:15Z",
+ "comment_count": 11,
+ "body": "Hi,\r\n\r\nI am running xDrip+ (stable version) and Android APS on Jelly 2 with Android 10.\r\n\r\nMy set up if following.\r\n\r\nI have NightScout receiving BG from Medtronic 640 uploader.\r\n\r\nxDrip reads BG from NightScout and should send it locally to Android APS where xDrip is set as BG source.\r\n\r\nProblem is that sending BG from xDrip to APS is not working or works once and then not.\r\n\r\nIn xDrip event logs I see following exception\r\n\r\n\"Got exception trying to use Android 10+ service starting for NightscoutFollowService java.lang.IllegalArgumentException: foregroundServiceType 0x0000....08 is not subset of foregroundServiceType attribute 0x00000000 in service element of manifest file\"\r\n\r\nPlease help :)\r\n\r\n",
+ "comments": [
+  {
+   "id": 925628892,
+   "user": "tolot27",
+   "created_at": "2021-09-23T09:03:54Z",
+   "body": "I've discovered this exception a while, too. But it had no effect on functionality, at least for me. I already dig into it a bit. The reason for the exception is that the data sync services of xDrip do not have the right foregroundServiceType. I can provide a fix, soon."
+  },
+  {
+   "id": 925630846,
+   "user": "jrsokolow",
+   "created_at": "2021-09-23T09:06:50Z",
+   "body": "Hi @tolot27, thanks a lot. Fix will be available in nightly build? Could you let me know here when it is there ?"
+  },
+  {
+   "id": 925680848,
+   "user": "tolot27",
+   "created_at": "2021-09-23T10:16:54Z",
+   "body": "> Hi @tolot27, thanks a lot. Fix will be available in nightly build? Could you let me know here when it is there ?\r\n\r\nPlease look at the corresponding PR and try the linked apk. Report back, if your problem is solved."
+  },
+  {
+   "id": 925726101,
+   "user": "tolot27",
+   "created_at": "2021-09-23T11:29:10Z",
+   "body": "> @tolot27 I have tested and bug is still there\r\n\r\nDid you mean your problem with not sending BG from xDrip to APS? Is the exception gone?"
+  },
+  {
+   "id": 925739114,
+   "user": "jrsokolow",
+   "created_at": "2021-09-23T11:51:32Z",
+   "body": "> > @tolot27 I have tested and bug is still there\r\n> \r\n> Did you mean your problem with not sending BG from xDrip to APS? Is the exception gone?\r\n\r\nProblem with sending BG from xdrip to aps is still there and bug in event logs is also there. So nothing has changed. I have checked in system status that I have installed version provided by you."
+  },
+  {
+   "id": 925823325,
+   "user": "jrsokolow",
+   "created_at": "2021-09-23T13:36:16Z",
+   "body": "@tolot27 I am wondering, maybe I should build xDrip for android 10 specifically? Currently I was using latest stable version downloaded from xdrip github page."
+  },
+  {
+   "id": 926153841,
+   "user": "tolot27",
+   "created_at": "2021-09-23T20:59:19Z",
+   "body": "@jrsokolow Please try the new apk available at https://www.dropbox.com/s/gsmxydjq8jqoocm/xDrip_20210923_7282febf4_DataForegroundServiceTypes_debug.apk?dl=0.\r\n\r\nThe exception should be gone but I'm sure, the root cause of your problem is different because regardless of the exception, NightscoutFollowService is started, anyway.\r\n\r\n> Problem is that sending BG from xDrip to APS is not working or works once and then not.\r\n\r\nWhat is correct: it is not working or it works just once after starting xDrip? In my opinion, your setup does not make much sense to me. Sending data from one xDrip (likely another phone) to Nightscout and using an xDrip instance with NightscoutFollowService as bridge/broadcaster to AAPS it not recommend. Why don't you use one xDrip instance as primary BG collector and broadcaster to AAPS?"
+  },
+  {
+   "id": 926156421,
+   "user": "tolot27",
+   "created_at": "2021-09-23T21:01:33Z",
+   "body": "> > Problem is that sending BG from xDrip to APS is not working or works once and then not.\r\n> \r\n> What is correct: it is not working or it works just once after starting xDrip? In my opinion, your setup does not make much sense to me. Sending data from one xDrip (likely another phone) to Nightscout and using an xDrip instance with NightscoutFollowService as bridge/broadcaster to AAPS it not recommend. Why don't you use one xDrip instance as primary BG collector and broadcaster to AAPS?\r\n\r\nAh, got it. Because you need NightScout to receive the BGs from Medtronic 640 uploader. Would #1649 an option for you?"
+  },
+  {
+   "id": 926204134,
+   "user": "jrsokolow",
+   "created_at": "2021-09-23T22:16:31Z",
+   "body": "> @jrsokolow Please try the new apk available at https://www.dropbox.com/s/gsmxydjq8jqoocm/xDrip_20210923_7282febf4_DataForegroundServiceTypes_debug.apk?dl=0.\r\n> \r\n> The exception should be gone but I'm sure, the root cause of your problem is different because regardless of the exception, NightscoutFollowService is started, anyway.\r\n> \r\n> > Problem is that sending BG from xDrip to APS is not working or works once and then not.\r\n> \r\n> What is correct: it is not working or it works just once after starting xDrip? In my opinion, your setup does not make much sense to me. Sending data from one xDrip (likely another phone) to Nightscout and using an xDrip instance with NightscoutFollowService as bridge/broadcaster to AAPS it not recommend. Why don't you use one xDrip instance as primary BG collector and broadcaster to AAPS?\r\n\r\nHi @tolot27, I have tested and exception is not there any more. Thanks a lot. Problem with sending BG from xdrip to aaps is still there. I don't understand why. I have enabled local broadcasting, used correct identifier and nothing. No BG is sent to AAPS where I have set xdrip as bg source. I have noticed also that it takes long for xdrip to get new BG from NS. It is sth around 10 minutes. In real life I will use dexcom g6 so I am wondering if I am going to have similar issues with xdrip as dexcom bg receiver. Probably yes as BG from dexcom will have to be broadcasted to aaps. So then I have to use patched dexcom app and uninstall xdrip."
+  },
+  {
+   "id": 926208033,
+   "user": "jrsokolow",
+   "created_at": "2021-09-23T22:24:54Z",
+   "body": "> > > Problem is that sending BG from xDrip to APS is not working or works once and then not.\r\n> > \r\n> > \r\n> > What is correct: it is not working or it works just once after starting xDrip? In my opinion, your setup does not make much sense to me. Sending data from one xDrip (likely another phone) to Nightscout and using an xDrip instance with NightscoutFollowService as bridge/broadcaster to AAPS it not recommend. Why don't you use one xDrip instance as primary BG collector and broadcaster to AAPS?\r\n> \r\n> Ah, got it. Because you need NightScout to receive the BGs from Medtronic 640 uploader. Would #1649 an option for you?\r\n\r\nI will check that, thanks"
+  }
+ ]
+}

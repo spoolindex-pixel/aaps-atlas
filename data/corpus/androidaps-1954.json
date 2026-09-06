@@ -1,0 +1,51 @@
+{
+ "id": 1315654425,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1954,
+ "title": "Sometimes AAPS loose synchronisation with BYODA and  remains 20/30min late",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1954",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2022-07-23T13:04:17Z",
+ "closed_at": "2023-08-17T15:00:31Z",
+ "comment_count": 6,
+ "body": "I started to have this issue with room update (but I don't know how to track or catch information to fix it...\r\n=> BYODA always shows latest BG reading received less than 5min ago\r\n\r\nSometimes (not always), when I use my phone (web browser, phone call...) I can loose the synchro, and aaps is 10min, 15min, but it can sometimes be 50min or more late on BG value shown in overview, and it can be worse for latest loop run.\r\nWhen I'm in this situation, I need to close all apps, leave AAPS in foreground and wait (after a while could be 15min, 30min, sometimes more), it resynchronize step by step (15min late, then 10 min late, then 5 min late, and Ok).\r\n=> I never got this issue on v2.8.2 and ealier versions, it started with room update (when I worked on dev, then 3.0 and now 3.1) I still have the same BYODA version not updated recently (so nothing changed on BYODA side)\r\n\r\nIn screenshot below (web navigation and a phone call. I'm 20min late)\r\n![image](https://user-images.githubusercontent.com/52934600/180605471-6d35b1c3-7c19-43df-bc78-b350966af130.png)\r\n\r\nLog files (I don't know if it could help and what to select in maintenance to have correct information to track this)\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/9173770/AndroidAPS.log)\r\n[AndroidAPS._2022-07-23_00-00-05_.40.zip](https://github.com/nightscout/AndroidAPS/files/9173769/AndroidAPS._2022-07-23_00-00-05_.40.zip)\r\n\r\n",
+ "comments": [
+  {
+   "id": 1193123302,
+   "user": "Philoul",
+   "created_at": "2022-07-23T13:09:43Z",
+   "body": "Same screenshot 35min later\r\n![image](https://user-images.githubusercontent.com/52934600/180606356-303739a0-d60e-4864-9793-90f65c228472.png)\r\n\r\n[AndroidAPS._2022-07-23_00-00-05_.41.zip](https://github.com/nightscout/AndroidAPS/files/9173822/AndroidAPS._2022-07-23_00-00-05_.41.zip)\r\n\r\n"
+  },
+  {
+   "id": 1266757718,
+   "user": "MilosKozak",
+   "created_at": "2022-10-04T10:46:19Z",
+   "body": "still valid with latest dev?"
+  },
+  {
+   "id": 1268271298,
+   "user": "Philoul",
+   "created_at": "2022-10-05T10:52:58Z",
+   "body": "I updated recently my loop phone with latest dev.\nI'll check again, when I loose byoda sync, how long it takes to synchronize again."
+  },
+  {
+   "id": 1270690155,
+   "user": "Philoul",
+   "created_at": "2022-10-06T20:57:49Z",
+   "body": "Unfortunatly yes...\r\n\r\nToday my Phone was out during about 5h30 (battery empty).\r\n\r\nPhone, AAPS and BYODA restarted at 21h10.\r\nLess than 10 min after, I received in BYODA the history of missing data up to latest BG value (then a new value each 5 min in BYODA, OK)\r\nAAPS received only  at 21h32 the history of data (with BG values up to \"16 min ago\") so 16 min late compared to BYODA latest received value.\r\nIt's only at 21h58 that I got the first run of the loop (so 48 min after the restart of AAPS and about 40 min after the resynchronization of BYODA with G6 sensor)...\r\n\r\n![image](https://user-images.githubusercontent.com/52934600/194415589-ae2341e4-b5da-48ac-bea7-b386b8ce4eca.png)\r\n"
+  },
+  {
+   "id": 1454829418,
+   "user": "gitthiy",
+   "created_at": "2023-03-04T18:17:38Z",
+   "body": "I can confirm this behavior ![Screenshot_2023-03-04-19-10-28-921_info.nightscout.androidaps-edit.jpg](https://user-images.githubusercontent.com/46824497/222922027-c4fee1a0-e1d8-4b68-9e11-a350024c8a37.jpg)\r\n\r\nIn my case aaps is mostly 5 to 10 behind of actual bg measurement. \r\n\r\nI tried several things like\r\n- reboot phone \r\n- stopping xdrip \r\n- stopping aaps\r\n\r\nResult is:\r\nSometimes aaps and xdrip are in sync, but after some time aaps is behind again. \n\r\n![Screenshot_2023-03-05-08-01-45-236_info.nightscout.androidaps-edit.jpg](https://user-images.githubusercontent.com/46824497/222946608-c39ad638-3881-4efa-b92a-4da124e6d757.jpg)\n\n\r\n\r\nHaving issues that smb's are not really matching actual bg situation \r\n\r\n[AndroidAPS_LOG_1677953969945.log.zip](https://github.com/nightscout/AndroidAPS/files/10889381/AndroidAPS_LOG_1677953969945.log.zip)\r\n"
+  },
+  {
+   "id": 1682440924,
+   "user": "MilosKozak",
+   "created_at": "2023-08-17T15:00:31Z",
+   "body": "Closed for inactivity. Create new issue is if you still see the problem on latest branch"
+  }
+ ]
+}

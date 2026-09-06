@@ -1,0 +1,47 @@
+{
+ "id": 1046523936,
+ "repo": "nightscout/AndroidAPS",
+ "number": 858,
+ "title": "Dev DASH/ Pod inactivated by itself",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/858",
+ "state": "closed",
+ "labels": [
+  "omnipod dash"
+ ],
+ "created_at": "2021-11-06T14:42:31Z",
+ "closed_at": "2022-03-07T19:10:54Z",
+ "comment_count": 5,
+ "body": "[AndroidAPS_LOG_1636205584466.log.zip](https://github.com/nightscout/AndroidAPS/files/7490643/AndroidAPS_LOG_1636205584466.log.zip)\r\nLast dev version, using DASH pod\r\n\r\n![Screenshot_20211106-122233_AndroidAPS](https://user-images.githubusercontent.com/76626474/140613469-1652533e-0cce-4adb-80cf-70e0c1ada21c.jpg)\r\n\r\nI get a sound alert from AAPS, _pod is unreachable_ (phone was charging at 5m from DASH) at around 14:31. I mute the alert and wait for the pod to connect but nothing happens. I check and DASH has been suspended all by itself...\r\n\r\n![Screenshot_20211106-143206_AndroidAPS](https://user-images.githubusercontent.com/76626474/140613558-c69b59de-c1b8-4b0d-ac6e-ae08b6b853fb.jpg)\r\n\r\nHere is the copy of the alert\r\n\r\n![Screenshot_20211106-153451_xDrip+](https://user-images.githubusercontent.com/76626474/140613587-ac38cd24-3053-45b4-b940-df50b492b22c.jpg)\r\n\r\nThe logs are above.\r\n\r\n",
+ "comments": [
+  {
+   "id": 962679553,
+   "user": "avereha",
+   "created_at": "2021-11-07T20:58:09Z",
+   "body": "Do you have automation that updated the basal rates?\r\n\r\nUpdating the basal rates for Dash involves: suspend delivery, set a new basal rate.\r\nIn this case, the communication failed after the first step.\r\n"
+  },
+  {
+   "id": 962680925,
+   "user": "robertrub",
+   "created_at": "2021-11-07T21:08:19Z",
+   "body": "Hi Andrei \r\n\r\nYes, I have automation that change profile % if high delta or high bg.\r\n\r\nThe strange part is that, when phone and pod were near again, the connection didn't kick in and refreshing pod status did nothing either (if my memory is good...)\r\n\r\nI had to \"unsuspend\" pod in order to be able to refresh."
+  },
+  {
+   "id": 963369605,
+   "user": "avereha",
+   "created_at": "2021-11-08T17:03:59Z",
+   "body": "I read the logs and it looks that the connection was lost when setting the new basal. \r\nThat's why the pod ended up in a suspended state. The suspend worked, setting the new basal did not work.\r\n\r\nHow long did you wait after receiving this error? \r\nDid you try to set a new profile by hand?\r\nIn theory, it should try to set again the new profile after ~15min IIRC."
+  },
+  {
+   "id": 964397847,
+   "user": "robertrub",
+   "created_at": "2021-11-09T18:00:21Z",
+   "body": "Sorry for the delay. I'm very late on everything at the moment...\r\n\r\nI got the alert ringing on AAPS (Mute, wait 5 min etc). I muted it and tried to actualize the pump directly after that. \r\n\r\nThe 15 minutes wait is not logical as the alarm that \"pulls\" the user to AAPS and s/he needs to silence it. I don't know why it didn't actualize. Is actualizing not possible if the pump is suspended ?   "
+  },
+  {
+   "id": 979431341,
+   "user": "avereha",
+   "created_at": "2021-11-25T19:14:07Z",
+   "body": "I think this can be closed after https://github.com/nightscout/AndroidAPS/pull/984"
+  }
+ ]
+}

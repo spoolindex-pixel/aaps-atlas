@@ -1,0 +1,57 @@
+{
+ "id": 1996558749,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3065,
+ "title": "[DEV] AAPSclient misses downloads",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3065",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-11-16T10:36:44Z",
+ "closed_at": "2023-11-22T15:32:01Z",
+ "comment_count": 7,
+ "body": "AAPS 3.2.0.2-dev 2023.11.13 NSClientV3 + websockets\r\nNS dev v15.0.3 5b440b7\r\n\r\nIssue similar to #2748 #2932 #3006\r\nData is in NS, but won't download. Missing data won't backfill, even if I force close AAPSclient, delete cache and restart NSClient. Full sync would surely solve the problem.\r\n\r\n----\r\n\r\nMeal Bolus and Carbs missing\r\nTime 2023-11-15 06:34\r\n[Log Export 2023-11-15.txt](https://github.com/nightscout/AndroidAPS/files/13376447/Log.Export.2023-11-15.txt)\r\n\r\n![Screenshot_20231115-085232_Chrome](https://github.com/nightscout/AndroidAPS/assets/64865503/f35d1723-e822-4df0-be87-08c112efb8bd)\r\n\r\n![Screenshot_20231115-085151_AAPSClient](https://github.com/nightscout/AndroidAPS/assets/64865503/816c9baa-f475-4b8b-9b1a-b28016054b3d)\r\n\r\n----\r\n\r\nTBR missing\r\nTime 2023-11-16 around 3-6h\r\n[Log Export 2023-11-16.txt](https://github.com/nightscout/AndroidAPS/files/13376450/Log.Export.2023-11-16.txt)\r\n\r\n![Screenshot_20231116-062022_AAPSClient](https://github.com/nightscout/AndroidAPS/assets/64865503/57346c56-5037-41fd-a291-364b9025247c)\r\n\r\n----\r\n\r\nInsulin Change also not synced.",
+ "comments": [
+  {
+   "id": 1821078399,
+   "user": "szantos",
+   "created_at": "2023-11-21T14:53:23Z",
+   "body": "There is only 1 day out of 7, when no sync issues happen:\r\n\r\n![Screenshot_20231121-062943_AAPSClient](https://github.com/nightscout/AndroidAPS/assets/64865503/7ee9b93e-fd74-49ba-b4c9-0c36088b4a92)"
+  },
+  {
+   "id": 1821187829,
+   "user": "MilosKozak",
+   "created_at": "2023-11-21T15:50:42Z",
+   "body": "to be able address this issue I need short period of time when TBR was not synced (with logs from both sides)"
+  },
+  {
+   "id": 1821193476,
+   "user": "szantos",
+   "created_at": "2023-11-21T15:53:54Z",
+   "body": "Thanks! If I can catch that, I'll upload the logs"
+  },
+  {
+   "id": 1822459810,
+   "user": "szantos",
+   "created_at": "2023-11-22T10:04:16Z",
+   "body": "@MilosKozak \r\nHere you are - is that, what you've meant?\r\n\r\nMissing in Client:\r\n\r\n![Screenshot_20231122-034647_AAPSClient](https://github.com/nightscout/AndroidAPS/assets/64865503/75277304-e5d6-4f97-9f0d-cd5604eccff2)\r\n\r\nData is there in NS:\r\n\r\n![Screenshot_20231122-034606_Chrome](https://github.com/nightscout/AndroidAPS/assets/64865503/e311e45a-598a-49e7-a487-7b7e6e553baa)\r\n\r\nLast and first synced SGVs (2023-11-21 20:21:13 & 2023-11-21 23:11:13) and TBRs in Client:\r\n\r\n![Screenshot_20231122-063500_Evolution X Launcher](https://github.com/nightscout/AndroidAPS/assets/64865503/56b466b6-ea22-4ea4-a397-5420e52c6137)\r\n\r\nLogs:\r\n\r\n[Log Export_Client.txt](https://github.com/nightscout/AndroidAPS/files/13437728/Log.Export_Client.txt)\r\n[AndroidAPS_LOG_1700630344046.log.zip](https://github.com/nightscout/AndroidAPS/files/13437730/AndroidAPS_LOG_1700630344046.log.zip)\r\n"
+  },
+  {
+   "id": 1822959348,
+   "user": "MilosKozak",
+   "created_at": "2023-11-22T15:12:21Z",
+   "body": "what is your NS connectivity settings?"
+  },
+  {
+   "id": 1822985310,
+   "user": "szantos",
+   "created_at": "2023-11-22T15:26:57Z",
+   "body": "Both master and client every option on (no ssid restriction)"
+  },
+  {
+   "id": 1822994111,
+   "user": "MilosKozak",
+   "created_at": "2023-11-22T15:32:01Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/6de44f967548843c61490d7c2c811c321e2ff3ec"
+  }
+ ]
+}

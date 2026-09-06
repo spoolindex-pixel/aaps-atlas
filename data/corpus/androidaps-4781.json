@@ -1,0 +1,69 @@
+{
+ "id": 4351090675,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4781,
+ "title": "3.4.2.2 Issue with starting a fresh Dash pod after the previous one failed",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4781",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2026-04-29T13:54:18Z",
+ "closed_at": "2026-06-25T11:04:04Z",
+ "comment_count": 9,
+ "body": "S25 Ultra One UI Version 8.0 / Android 16\n\nI recently had an issue where I started a pod and it failed. The pod had trouble inserting, caused bleeding and then sounded the permanent alarm tone. AAPS showed a java error. I wish I had taken a screenshot but it was a stacktrace to one of the java libraries. At this point, I broke the circuit and stopped the alarm.\n\nThis is when the real problems start. I discarded the problem pod through the UI. I then proceeded to prime and insert a new pod, and everything appeared to work properly. However when I go back to the pump status page it shows no pod connected. When I look in the history, there's no record of this pod at all even though I just activated and primed it!\n\nFor the third pod, I ended up discarding again and restarting my phone. At that point everything went smoothly. I think there is a problem with the state management for discarding after a failed pod.\n\nOne other thing that I feel like is important to mention is that during the priming and activation of the second pod, i got a notification saying \"no pod active\". I at first thought nothing of it since the pod had not yet been fully activated. But in hindsight, I think it was an indicator that the state changed and the new pod's configuration/initialization/logging had been lost.\n\nOne last thing. This bug actually happened to me before, when i first updated to 3.4.2.2. One significant difference was that in that scenario it happened after the update and wasn't the result of a failed pod. At the time I believed the problem was that I deleted and recreated my aaps directory. After that one incident, I hadn't had any problems for the past several weeks up until now. The reason I mention this is that I get the sense that the java error handling is not the problem here, and that it's a more simple state management/reset issue.",
+ "comments": [
+  {
+   "id": 4357879610,
+   "user": "FranzMo",
+   "created_at": "2026-05-01T04:52:14Z",
+   "body": "I can confirm the issue. Also with version 3.4.2.1."
+  },
+  {
+   "id": 4394962821,
+   "user": "skyeshadow94",
+   "created_at": "2026-05-07T07:14:27Z",
+   "body": "Also had a issue with simular symptoms but I put it down to user error on my side so did not document "
+  },
+  {
+   "id": 4409106397,
+   "user": "crimsonkage",
+   "created_at": "2026-05-08T19:03:46Z",
+   "body": "[AndroidAPS._2026-05-08_13.log](https://github.com/user-attachments/files/27535537/AndroidAPS._2026-05-08_13.log)\n[AndroidAPS.log](https://github.com/user-attachments/files/27535536/AndroidAPS.log)\n\nHad an issue that sounds similar, pulled logs. \n\nI was activating a pod, UI said it primed successfully. \nbut it immediately started screaming. \n\nTried to deactivate, stalled.\nTried again, stalled again.  \nBacked out and it gave me the option to discard. \n\nStarted a new pod. Everything went fine.\nDidn't notice anything weird, till I looked 10 minutes later and noticed it was \"discarded\"\n\nI did not press discard with this pod. Thinking back though I remember hearing a couple beeps right after it finished activation. \nDidn't seem weird to me because I used to do beep tests right after activation. Definitely was the deactivating confirmation though.\n\nLooking at the logs it looks like the action to discard the partially primed pod was queued because it wasn't able to be sent. \nThen the second the new pod was activated the queued command  was pushed in and deactivated it. \n\nThe time between the activation and programming being finalized and the deactivation being sent was so short I don't even remember a gap. \n\n(These are the times shown on the pod history, so log might have slightly different times) \n(Also going to attach a screen shot.) \n\nHealthy pod at end of life: \n         Deactivated at 13:58:53\n\nNew defective pod: \n         Attempted to initialize at 14:10:24 (no pod history entries for this pod after this)\n\nNew pod that was fine that got immediately deactivated:\n        Insert Cannula was at 14:20:46\n        Deactivate pod was sent at 14:20:58\n\nVersion info:\nAuto ISF branch\n3.4.0.0+aisf3.2.0 (0553)\nI also have the final version of the Dash basal compensation fixes cherry picked into this. \n\nFiles attached. \nAndroid APS.log (Log file from 14:00  till when I took out the log for documentation.)\nAndroidAPS._2026-05-08_13.log (log slice from 13:00 to 14:00, first pod was "
+  },
+  {
+   "id": 4454919689,
+   "user": "i3iorn",
+   "created_at": "2026-05-14T21:34:26Z",
+   "body": "I have the same issue on a Pixel 7. The course of events was just about identical to what @crimsonkage describes.\n\nAAPS 3.4.2.2\nBuild: 02052250ac-2026.04.26\n\n[AndroidAPS._2026-05-14_21-25-25_.7.txt](https://github.com/user-attachments/files/27779053/AndroidAPS._2026-05-14_21-25-25_.7.txt)"
+  },
+  {
+   "id": 4684280653,
+   "user": "nl-ruud",
+   "created_at": "2026-06-11T19:39:09Z",
+   "body": "This issue is fixed in 3.4.2.3 (activation bug) - please report back if you still perceive this issue on that version."
+  },
+  {
+   "id": 4755376055,
+   "user": "Ludovik95",
+   "created_at": "2026-06-19T23:09:20Z",
+   "body": "I think the bug, or part of it, is still there in 3.4.2.3. I use the Omnipod Eros, but I had the same problem that occurred with the Omnipod Dash. In my experience since the problem started, it seems to happen more frequently when the pod goes into error, either because the 80-hour limit or due to malfunctions. In that case, if I try to deactivate the pod, the process fails, and I’m always forced to use “Discard.”\n\nI think this is because AAPS tries to send other commands to the pod before the deactivation command, but since the pod is no longer responding, all the commands remain in the queue. \n\n<img width=\"921\" height=\"2048\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/7682ed57-abe6-485a-b1c2-876dfafd8e64\" />\n<img width=\"921\" height=\"2048\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/7bcae5e7-54d7-4881-887b-76fc89fa9d7c\" />\n\nThis also happens when I press the “Discard” button: the Omnipod tab shows that there is no active pod, but the “Deactivate pod” command remains in the queue. \n\n<img width=\"921\" height=\"2048\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/01f132c1-165a-40d2-97c2-ad6452ae3a45\" />\n\nTo work around any issues, I close AAPS and clear the cache so that the command queue is cleared, but this shouldn’t be the app’s normal behavior."
+  },
+  {
+   "id": 4761032520,
+   "user": "nl-ruud",
+   "created_at": "2026-06-21T05:37:11Z",
+   "body": "@Ludovik95 no changes were made to the Eros driver. If the Eros has a similar issue, I would recommend creating a new issue for that.\n\nIn that new issue, you could refer to the commits 9d3bdce and 79e6f69; it’s likely that these are the changes that should be applied to the Eros driver as well in one way or another."
+  },
+  {
+   "id": 4809768146,
+   "user": "nlof",
+   "created_at": "2026-06-26T12:54:19Z",
+   "body": "Too bad this was closed..... It just happened to me as well last night with 3.4.2.3 on Eros. Should I open a new report? I just uploaded logs and additional screenshots here for now...\nI struggled throughout the night till 8AM, eventually uninstalled and went back to 3.3.1.3 which hasn't had issues. \n\nI've been running 3.4.2.3 (latest stable) for about 10 days on Samsung A52 5G (Android 12),\n1) There was a problem with activating a pod (Emalink started flashing red in the middle of activation so I rebooted the link although right after that the pod started clicking and activating). We lost communications so I eventually had to press \"discard\". \n\n2) There was no active pod in the pod tab so I activated a new one (although Emalink started alternating red and green flashes as well during activation) but within 10 seconds of activation the pod was disabled by AAPS without asking me and I only heard  a faint beep after which it just showed \"no active pod\".\nIt seems that the deactivation for the prior pod was left in queue and it went through after the new one was activated?\n\n3) Problem that I seemed to have overlooked the first time and I only saw now is that although there were no active pod in the pod tab, whenever I turned AAPS on it would show \"trying to connect\" in red at the bottom of the dashboard forever even though I never tried to activate a new one yet. In my opinion it seems that some queue is still holding onto some previous pod.\n\n4) I tried every suggestion I could find to get rid of that connecting  message starting from every bluetooth suggestion I could find, I restarted the app and Emalink multiple times, I put the old pods away in the microwave, I cleared app cache, nothing worked.\n\n5) I even cleared app data and restarted the app configuration from scratch but when reloading the saved settings obviously the presumed old pod was saved in those settings and it again started trying to connect \n\n6) Eventually I uninstalled and went back to the old trusty "
+  },
+  {
+   "id": 4810558082,
+   "user": "nl-ruud",
+   "created_at": "2026-06-26T14:35:58Z",
+   "body": "@nlof the issue is closed as this is a *Dash* issue that has been fixed in 3.4.2.3. As I said before, if the Eros also has a problem please create a separate issue for that."
+  }
+ ]
+}

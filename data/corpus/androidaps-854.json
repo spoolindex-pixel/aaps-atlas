@@ -1,0 +1,81 @@
+{
+ "id": 1046460037,
+ "repo": "nightscout/AndroidAPS",
+ "number": 854,
+ "title": "DASH : Not urgent / Text correction while injection",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/854",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-11-06T08:22:59Z",
+ "closed_at": "2021-11-14T17:27:21Z",
+ "comment_count": 11,
+ "body": "When Omnipod (EROS and DASH) is injecting, we don't know the amount or percentage of the dose already injected. We just have the progress bar.\r\n\r\nThe injection window shown has 2 lines of text and the 2nd one is not correct. It **said** (EROS) (Milos changed it) and **says** (DASH) (needs to be changed) the _total_ amount has been injected. Information is not exact.\r\n\r\nIt would be great if, on EROS and DASH, we could have the real amount already injected (but that info seems difficult to have). The least would be to change the text in DASH and put the same one as EROS. It won't be informative but at least, it wont be false.\r\n\r\n![Screenshot_20211104-073308_AndroidAPS_resize_39](https://user-images.githubusercontent.com/76626474/140603085-35b52b9d-994b-4553-9190-adf2f08d5471.jpg)\r\n\r\nx U will be injected\r\n\r\n![20211106_084033_resize_15](https://user-images.githubusercontent.com/76626474/140603102-de7c83d7-b5d2-4211-9804-db312a3a1581.jpg)\r\n\r\nx U has been injected.",
+ "comments": [
+  {
+   "id": 963543342,
+   "user": "avereha",
+   "created_at": "2021-11-08T20:24:50Z",
+   "body": "Do you still see this issue for Dash?\r\nWhat version?\r\nDo you see the same issue also for English?"
+  },
+  {
+   "id": 964400931,
+   "user": "robertrub",
+   "created_at": "2021-11-09T18:04:10Z",
+   "body": "I can only see in French and it still says The units have been injected (while the injection is still going on). \r\n\r\n![Screenshot_20211109-175014_AndroidAPS](https://user-images.githubusercontent.com/76626474/140979442-3d3a9611-503d-408a-8f52-8e8c01328984.jpg)\r\n\r\n![Screenshot_20211109-190122_AndroidAPS](https://user-images.githubusercontent.com/76626474/140979475-be926ba8-5f49-4ff6-8bbe-89d8c7d4a603.jpg)\r\n\r\n "
+  },
+  {
+   "id": 964505100,
+   "user": "avereha",
+   "created_at": "2021-11-09T20:20:18Z",
+   "body": "Yes, the text in English is correct, the translation in French is not. \r\nI think the fix should be implemented in Crowdin."
+  },
+  {
+   "id": 964592940,
+   "user": "robertrub",
+   "created_at": "2021-11-09T22:12:02Z",
+   "body": "Ok, will go and correct it in Crowdin. Pity thst we can't have the real amount injected... ;)\r\nClosing this issue."
+  },
+  {
+   "id": 965636896,
+   "user": "StephenBrown2",
+   "created_at": "2021-11-10T18:46:46Z",
+   "body": "I sympathize with you, I would like the secondary text to update with the current dose progress as well."
+  },
+  {
+   "id": 966453860,
+   "user": "robertrub",
+   "created_at": "2021-11-11T16:44:43Z",
+   "body": "Hi @avereha\r\n\r\nI'm reopening this issue as the text is NOT in Crowdin. It must be in rhe code directly (just a supposition). Czn you vetify please ?\r\n\r\nRequest bis : As the number of tics/sec (and 0.05U/tic) is constant for DASH and EROS , why can't we have the real value injected thete (like the other pumps ?)"
+  },
+  {
+   "id": 967063943,
+   "user": "avereha",
+   "created_at": "2021-11-12T12:10:52Z",
+   "body": "It's here: https://crowdin.com/translate/androidaps/1072/en-fr#49728\r\n\r\nThe reason Dash does not check delivery status while in progress is to preserve battery life on the pod.\r\nThe delivery time also depends on the basal rate at the time(if the basal rate is higher, delivery time will be longer)."
+  },
+  {
+   "id": 967105318,
+   "user": "robertrub",
+   "created_at": "2021-11-12T13:06:45Z",
+   "body": "@avereha Tnx for the link. I don't know how I missed it. The text is corrected, waiting the validation of @Philoul \r\nThe shown \"injected units\" doesn't have to be that precise. A simple x U = y seconds. Showing a % or U just by calculation (without any pod participation) will be better than a fix number and very unprecise progression barre. \r\nIf showing the delivered amount is not possible, you can close this issue."
+  },
+  {
+   "id": 967113884,
+   "user": "robertrub",
+   "created_at": "2021-11-12T13:21:04Z",
+   "body": "Coming back to the subject. The link that you showed is in Omnipod commun. I'm almost sure that it points to the **title of the window** and NOT to the text inside the window.  In commun, EROS and DASH should show the same text but they do not. It is either in the code or not translatable (not visible in Crowdin)"
+  },
+  {
+   "id": 967277715,
+   "user": "Philoul",
+   "created_at": "2021-11-12T17:11:24Z",
+   "body": "> @avereha Tnx for the link. I don't know how I missed it. The text is corrected, waiting the validation of @Philoul\r\n\r\nThis string (bolusdelivering) is used by other pumps (for ex Dana, combo...) to show the updated amount of insulin during injection.\r\nI think we cannot update this string to use it in another context (global amount during the whole injection)..."
+  },
+  {
+   "id": 967278494,
+   "user": "avereha",
+   "created_at": "2021-11-12T17:12:31Z",
+   "body": "Got it, will create a new string."
+  }
+ ]
+}

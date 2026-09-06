@@ -1,0 +1,257 @@
+{
+ "id": 376780407,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 663,
+ "title": "Samsung October patch causing signal loss issues",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/663",
+ "state": "closed",
+ "labels": [
+  "bluetooth"
+ ],
+ "created_at": "2018-11-02T11:54:43Z",
+ "closed_at": "2021-03-20T17:49:51Z",
+ "comment_count": 136,
+ "body": "Samsung released the October update/security patch recently which was installed on my S9+ on 31st October (I assume that the S9, Note 9 and potentially other 2018 Samsung phones got the update on or around the same time).\r\n\r\nSince then I am having frequent \"signal not received\" issues with the MiaoMiao, however Bluetooth **_is_** connected according to the system status screen. No other items or settings on my phone or in xDrip have changed other than this update.\r\n\r\n- Bluetooth is on\r\n- Trust auto connect is turned off\r\n- Bluetooth watchdog is on\r\n- All other settings under Bluetooth menu are off",
+ "comments": [
+  {
+   "id": 435455084,
+   "user": "gregorybel",
+   "created_at": "2018-11-02T17:37:40Z",
+   "body": "- set Trust Auto Connect to on\r\n- reboot phone\r\n- reset MM\r\n\r\nid still issue, please provide logs or at least some screenshots from logs, I am digging into that part od Code"
+  },
+  {
+   "id": 435455614,
+   "user": "gregorybel",
+   "created_at": "2018-11-02T17:39:41Z",
+   "body": "other try:\r\n- Trust Auto Connect to off\r\n- close GATT on disconnect to on\r\n- reset MM\r\n- reboot phone"
+  },
+  {
+   "id": 435514829,
+   "user": "mistermintsgh",
+   "created_at": "2018-11-02T21:29:21Z",
+   "body": "I had to turn trust auto connect off originally as it was causing disconnect. Have turned back on but no change in result.\r\n\r\nPhone and MM have both been restarted/reset numerous times over last 24 hours including after changing settings.\r\n\r\nLogs have just been uploaded from within xDrip\r\n\r\nI can't seem to copy the log text so hopefully this will work to embed a picture.\r\n\r\n<a href=\"http://www.imagebam.com/image/c935491018264624\" target=\"_blank\"><img src=\"http://thumbs2.imagebam.com/95/f9/f1/c935491018264624.jpg\" alt=\"imagebam.com\"></a> "
+  },
+  {
+   "id": 435583173,
+   "user": "jamorham",
+   "created_at": "2018-11-03T12:13:13Z",
+   "body": "Last time this happened we had to wait for Samsung's next update which came shortly afterwards and fixed the bluetooth functions they had broken."
+  },
+  {
+   "id": 435607524,
+   "user": "mistermintsgh",
+   "created_at": "2018-11-03T17:50:38Z",
+   "body": "I hope not jamorham! The updates come fairly frequently, but would still be looking towards the end of November before the next one, and hoping Samsung manage to update what they've broken in that.\r\n\r\nI'll keep tinkering, and if it means having to do a software reset or firmware downgrade then that's what I'll have to do."
+  },
+  {
+   "id": 435697788,
+   "user": "mistermintsgh",
+   "created_at": "2018-11-04T19:23:50Z",
+   "body": "It seems that as long as you never lock your phone or close the app it maintains connection, but obviously this isn't realistic to do.\r\n\r\nPossible that there's been some kind of change to Bluetooth sleep/shutdown settings because of the Samsung update, and could this be worked around with an xDrip update?"
+  },
+  {
+   "id": 435876497,
+   "user": "gregorybel",
+   "created_at": "2018-11-05T13:39:32Z",
+   "body": "are you sure Xdrip is not being killed by Android? "
+  },
+  {
+   "id": 435877401,
+   "user": "mistermintsgh",
+   "created_at": "2018-11-05T13:42:26Z",
+   "body": "Absolutely certain. I've made sure it isn't, and never has been, on any list of apps to close for battery optimisation, freeing up RAM or whatever else. "
+  },
+  {
+   "id": 435947546,
+   "user": "bordeb",
+   "created_at": "2018-11-05T16:49:58Z",
+   "body": "For Libre + miaomiao I am using now galaxy A8 (2018) android 8.0.0and xDrip+ variant build and for miaomiao to be consistently connected I needed to manually put the xdrip app under \"unmonitored apps\" within battery settings of the phone.\r\n\r\nI don't know what has been changed in latest samsung software update, but it is not the same for all phones. For instance,  S9 release notes doesn't mention Bluetooth changes, while A8 (2018) does. So I am reluctant for now to apply latest updates because it works great with previous version."
+  },
+  {
+   "id": 436005656,
+   "user": "yarmatr",
+   "created_at": "2018-11-05T19:33:08Z",
+   "body": "I'm seeing exactly the same thing reported by @mistermintsgh.  I'm using Xdrip on a Note 9 and it was working perfectly until immediately following the latest phone update.  Xdrip will connect and read sugars properly so long as the phone is in active use, but as soon as it is locked, I get no more measurements.  I've tried tweaking all the settings described above and nothing has helped.  I switched back to the Dexcom app to confirm the transmitter and sensor are working properly and it is working without any issues, so something else is going on specific to Xdrip.  I'm happy providing logs or anything else that may aid in debugging further, just let me know which settings you'd like me to apply before gathering the logs.  "
+  },
+  {
+   "id": 436034088,
+   "user": "jamorham",
+   "created_at": "2018-11-05T21:04:13Z",
+   "body": "Please contact Samsung to tell them that they have broken bluetooth with their update again."
+  },
+  {
+   "id": 436040932,
+   "user": "dougstanton",
+   "created_at": "2018-11-05T21:26:08Z",
+   "body": "I have the same problem with my note 9 and if I load the dexcom app, it never misses a beat so I'm not sure it is a Bluetooth issue."
+  },
+  {
+   "id": 436043641,
+   "user": "mistermintsgh",
+   "created_at": "2018-11-05T21:34:31Z",
+   "body": "I'm not sure what else it could be though @dougstanton ? Perhaps the MM handshakes slightly differently than other Bluetooth devices and that's what's causing the disconnect?\r\n\r\nI've spoken to Samsung already @jamorham and all they were interested in was doing factory resets and all the usual \"have you tried turning it off and on again?\" troubleshooting. They weren't interested in logging an issue about the problem. I will try again however, and if others on here could do the same at least it wouldn't be an isolated incident from me"
+  },
+  {
+   "id": 436332308,
+   "user": "gregorybel",
+   "created_at": "2018-11-06T17:12:03Z",
+   "body": "from what I read, I am not sure too it is a Bluetooth issue, I wonder if maybe xdrip get killed?\r\nI think logs are interesting.\r\nI started this page:\r\n\r\nhttps://github.com/gregorybel/xDrip/blob/gregorybel-update-docu/Documentation/libre-fix-bt-connection-issues.md\r\n\r\ncould be great to enable more logs before sending logs."
+  },
+  {
+   "id": 436654408,
+   "user": "yarmatr",
+   "created_at": "2018-11-07T15:07:23Z",
+   "body": "@gregorybel I followed the instructions from your link above and enabled remote logging -- I assume that is all that is required for you to see my logs?  Please let me know if there is anything I need to do on my side.  Thanks. "
+  },
+  {
+   "id": 463574349,
+   "user": "chip83",
+   "created_at": "2019-02-14T10:23:39Z",
+   "body": "I have installed the lasted nightly but I see \"no sensord found\" every time :|\r\nAnyone can help me?\r\nI have a samsung s7 edge with the last security patch.\r\nWhere i find minimize scanning?"
+  },
+  {
+   "id": 464086568,
+   "user": "jncchds",
+   "created_at": "2019-02-15T15:17:51Z",
+   "body": "1. Disabled the \"Minimize scanning\"\r\n2. Updated to the latest nightly version\r\n3. Disabled Adaptive battery\r\n\r\nxdrip gets the data no problem\r\n\r\nBut Adaptive battery is a nice feature to have so\r\n\r\n4. Enabled back Adaptive battery\r\n5. Entered Android Developer options\r\n6. Scrolled to the \"Background check\" and ticked the Xdrip there\r\n\r\nSeems to be working for now"
+  },
+  {
+   "id": 464310920,
+   "user": "MasterPlexus",
+   "created_at": "2019-02-16T08:08:25Z",
+   "body": "I've just tried the Background check, and see that it influence the intended internal data transfer between apps (Aaps to xDrip on my OnePlus 5). So I would suggested to don't touch that area and leave the adaptive battery off .... Battery optimization for xdrip and aaps users is not a good idea, as it is more and more blackboxed stuff."
+  },
+  {
+   "id": 465198264,
+   "user": "BanHop",
+   "created_at": "2019-02-19T16:13:33Z",
+   "body": "Finally solution for Android 9? Version xDrip? Options on and options off"
+  },
+  {
+   "id": 465249486,
+   "user": "Feromrk",
+   "created_at": "2019-02-19T18:19:54Z",
+   "body": "It would be nice to have a list with working Android Versions together with the settings and App Versions. Is it possible to integrate something like that to github?\r\n\r\nOtherwise we could share a Google tables link... I'm sure I'm not the first person thinking about that, is it even allowed? "
+  },
+  {
+   "id": 465947856,
+   "user": "miiihi",
+   "created_at": "2019-02-21T10:31:55Z",
+   "body": "Lots of good info here https://dontkillmyapp.com/\r\n"
+  },
+  {
+   "id": 469350736,
+   "user": "frankaxela",
+   "created_at": "2019-03-04T17:55:28Z",
+   "body": "hi, don't know if it's relevant anymore or if you found a solution but I had the same issue and after disabling the option 'Put unused apps to sleep' in the phone settings, looks like the connection isn't lost.\r\nhope this helps\r\n\r\nbtw, S9+ last version, xDrip+ most recent stable. disabled 'trust auto connect'"
+  },
+  {
+   "id": 470950577,
+   "user": "detellis",
+   "created_at": "2019-03-08T14:40:10Z",
+   "body": "Hi, \r\n\r\nFor those that have this working, please can you advise if you get readings every 5 minutes with screen off? \r\n\r\nMine appears to backfill every other data point. You can enable the visibility of this by adjusting the settings:\r\n\r\nSettings > xDrip+ Display Settings > Graph Settings > Show backfilled data\r\n\r\nA data point can have a corona indicating it was backfilled.\r\n\r\nNote 9 - SM-960F - N960FXXS2CSB3 (1st Feb security patch)\r\nDexcom G6"
+  },
+  {
+   "id": 471165941,
+   "user": "HenBrenn",
+   "created_at": "2019-03-09T10:40:35Z",
+   "body": "I've just upgraded to the S10 and also getting this same problem."
+  },
+  {
+   "id": 471166535,
+   "user": "mistermintsgh",
+   "created_at": "2019-03-09T10:49:32Z",
+   "body": "@detellis No backfilling on either my S9+ or my new S10+\r\n\r\nSince Android 9 beta came out I've had no problems with any of this at all. I do get occasional signal loss and xDrip can't see the BT signal of the MM, but nothing a pin in the reset hole won't fix and it only appears every now and then."
+  },
+  {
+   "id": 471357149,
+   "user": "dave1812",
+   "created_at": "2019-03-10T21:46:15Z",
+   "body": "You want people to leave \"adaptive battery OFF\"??   That is a new feature to improve battery life on Samsung's new phones.  xDrip is requiring the user to turn that, OFF, rendering battery life inferior to what it can be?   that's gonna be the last straw for me, if that's the case--if I have to upgrade my phone (it's 3+ years old and battery life is dismal) to a new Samsung 10 or 10+, I'll lose out on the MAIN reason I want a new phone for, which is to drastically improve battery life.     SAY IT ISN'T SO!!"
+  },
+  {
+   "id": 471357504,
+   "user": "m1st0",
+   "created_at": "2019-03-10T21:49:52Z",
+   "body": "I don't find it an issue to turn off adaptive battery for just the app. I\ndon't turn it off generally, just not let it kill XDrip+.\n\nOn Sun, Mar 10, 2019, 2:46 PM Dave A <notifications@github.com> wrote:\n\n> You want people to leave \"adaptive battery OFF\"?? That is a new feature to\n> improve battery life on Samsung's new phones. xDrip is requiring the user\n> to turn that, OFF, rendering battery life inferior to what it can be?\n> that's gonna be the last straw for me, if that's the case--if I have to\n> upgrade my phone (it's 3+ years old and battery life is dismal) to a new\n> Samsung 10 or 10+, I'll lose out on the MAIN reason I want a new phone for,\n> which is to drastically improve battery life. SAY IT ISN'T SO!!\n>\n> —\n> You are receiving this because you commented.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/663#issuecomment-471357149>,\n> or mute the thread\n> <https://github.com/notifications/unsubscribe-auth/AGFAeFgoiXYSK5gnuu5ethrhgUOMb7LPks5vVX0pgaJpZM4YLhaU>\n> .\n>\n"
+  },
+  {
+   "id": 471358793,
+   "user": "dave1812",
+   "created_at": "2019-03-10T22:06:19Z",
+   "body": "I thought Adaptive Battery was a phone-wide setting.   No?  On my S7, I have xdrip not be managed by Battery Optimization, so that xDrip runs properly.  I haven't yet seen the settings on the S10."
+  },
+  {
+   "id": 471360677,
+   "user": "m1st0",
+   "created_at": "2019-03-10T22:30:12Z",
+   "body": "Maybe we are talking about different things. Do you mean Settings > Device\nCare > Battery icon > per app settings to allow/disallow putting the app to\nsleep?\n\nOn Sun, Mar 10, 2019, 3:06 PM Dave A <notifications@github.com> wrote:\n\n> I thought Adaptive Battery was a phone-wide setting. No?\n>\n> —\n> You are receiving this because you commented.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/663#issuecomment-471358793>,\n> or mute the thread\n> <https://github.com/notifications/unsubscribe-auth/AGFAeEmqlYT-MKzCfviH0uE1zdGUNPKUks5vVYHdgaJpZM4YLhaU>\n> .\n>\n"
+  },
+  {
+   "id": 471360972,
+   "user": "dave1812",
+   "created_at": "2019-03-10T22:33:46Z",
+   "body": "Nope not that one.   Isn't there an Adaptive Battery option that comes with Android Pie that uses AI to place apps into 5 categories?  that's the feature that MasterPlexus said to disable.  If so, I'm very concerned that would impact battery life.   (I'm still using an s7 but may get the S10 soon)"
+  },
+  {
+   "id": 471373152,
+   "user": "m1st0",
+   "created_at": "2019-03-11T01:02:57Z",
+   "body": "Ah, I see what you mean. I found that setting and have it on. It says, \"Limit\nbattery usage for apps I don't use very often,\" but I use xDrip+\nextensively so I haven't had any issues with the setting. I also have\nxDrip+ set to never be able to be put to sleep. MasterPlexus may have had\nmore info on issues or versions this affects, but I've been safe with it on\nan S9+ with Android Pie One UI.\n\nOn Sun, Mar 10, 2019, 3:33 PM Dave A <notifications@github.com> wrote:\n\n> Nope not that one. Isn't there an Adaptive Battery option that comes with\n> Android Pie that uses AI to place apps into 5 categories? that's the\n> feature that MasterPlexus said to disable. If so, I'm very concerned that\n> would impact battery life. (I'm still using an s7 but may get the S10 soon)\n>\n> —\n> You are receiving this because you commented.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/663#issuecomment-471360972>,\n> or mute the thread\n> <https://github.com/notifications/unsubscribe-auth/AGFAeOhXsZclOMIoXTyikwYJ5DwY5Hu8ks5vVYhMgaJpZM4YLhaU>\n> .\n>\n"
+  },
+  {
+   "id": 474368230,
+   "user": "aeliaran",
+   "created_at": "2019-03-19T13:27:53Z",
+   "body": "Sorry for the long away, life happens.  We're still encountering the same\nissue, but we've had a hardware change - we're now using the Dexcom G6\ntransmitter.  As a result, we haven't been able to disable the OB1\ncollector - G6 appears to require it.  And with it on, we continue to have\nthe behaviour where signal is only received when the app is active and the\ndevice is not sleeping.  Minimize scanning has been disabled with no\neffect. Device is a Samsung SM-N960U on Android 8.1.0, xDrip version\n14feb8-2019.01.10.\n\nTrying now with Samsung workarounds disabled, will report back.\n\nOn Sun, Mar 10, 2019, 20:03 Maulik Mistry <notifications@github.com> wrote:\n\n> Ah, I see what you mean. I found that setting and have it on. It says,\n> \"Limit\n> battery usage for apps I don't use very often,\" but I use xDrip+\n> extensively so I haven't had any issues with the setting. I also have\n> xDrip+ set to never be able to be put to sleep. MasterPlexus may have had\n> more info on issues or versions this affects, but I've been safe with it on\n> an S9+ with Android Pie One UI.\n>\n> On Sun, Mar 10, 2019, 3:33 PM Dave A <notifications@github.com> wrote:\n>\n> > Nope not that one. Isn't there an Adaptive Battery option that comes with\n> > Android Pie that uses AI to place apps into 5 categories? that's the\n> > feature that MasterPlexus said to disable. If so, I'm very concerned that\n> > would impact battery life. (I'm still using an s7 but may get the S10\n> soon)\n> >\n> > —\n> > You are receiving this because you commented.\n> > Reply to this email directly, view it on GitHub\n> > <\n> https://github.com/NightscoutFoundation/xDrip/issues/663#issuecomment-471360972\n> >,\n> > or mute the thread\n> > <\n> https://github.com/notifications/unsubscribe-auth/AGFAeOhXsZclOMIoXTyikwYJ5DwY5Hu8ks5vVYhMgaJpZM4YLhaU\n> >\n> > .\n> >\n>\n> —\n> You are receiving this because you were mentioned.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/663#issuecomment-471373"
+  },
+  {
+   "id": 480514874,
+   "user": "THSA00458",
+   "created_at": "2019-04-06T15:53:43Z",
+   "body": "I've been having this issue since I changed from the patched g5 app to xdrip. My readings were dropping off when screen locked. Originally I was trying the following:\nG5 new firmware\nNote 9, most recent security update.\nOB1 collector, xdrip+ beta (most recent).\nI have a ticwatch E, but I was not using it. \nMessed around with several settings combinations suggested in this thread with no success. \n\nDecided today to try two things:\nConnected Wear to xdrip as a follower. In theory, this would ask xdrip for updates constantly. (If it works the other way around the concept is still the same)\n\nUpdate to the latest nightly (today is April 6, so whichever is latest). \n\nSo far, this has been working for 4 hours without lost readings. With the phone locked and wear's always on turned off, I'm still getting OB1 readings every 5 minutes.   "
+  },
+  {
+   "id": 480525607,
+   "user": "aeliaran",
+   "created_at": "2019-04-06T18:13:07Z",
+   "body": "Interesting idea. We're using a Pebble, but I think theoretically we should\nbe able to set up Android Wear anyway, especially if you're not\nactually using it.  I'll play around and report back. Thanks!\n\nOn Sat, Apr 6, 2019, 10:53 THSA00458 <notifications@github.com> wrote:\n\n> I've been having this issue since I changed from the patched g5 app to\n> xdrip. My readings were dropping off when screen locked. Originally I was\n> trying the following:\n> G5 new firmware\n> Note 9, most recent security update.\n> OB1 collector, xdrip+ beta (most recent).\n> I have a ticwatch E, but I was not using it.\n> Messed around with several settings combinations suggested in this thread\n> with no success.\n>\n> Decided today to try three things:\n> Connected Wear to xdrip as a follower. I theory, this would ask xdrip for\n> updates constantly. (If it works the other way around the concept is still\n> the same)\n>\n> Update to the latest nightly (today is April 6, so whichever is latest).\n>\n> So far, this has been working for 4 hours without lost readings. With the\n> phone locked and wear's always on turned off, I'm still getting OB1\n> readings every 5 minutes.\n>\n> —\n> You are receiving this because you were mentioned.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/663#issuecomment-480514874>,\n> or mute the thread\n> <https://github.com/notifications/unsubscribe-auth/AcXgYZhnjNJ4X3bGl0SuiOTBUyCxwZb3ks5veMMKgaJpZM4YLhaU>\n> .\n>\n"
+  },
+  {
+   "id": 480538811,
+   "user": "THSA00458",
+   "created_at": "2019-04-06T21:23:29Z",
+   "body": "Still working!"
+  },
+  {
+   "id": 480554267,
+   "user": "aeliaran",
+   "created_at": "2019-04-07T02:50:46Z",
+   "body": "Well, I enabled the Android Wear settings in xdrip. I can't set up Wear OS\nas a follower since I can't get into the program without a Wear capable\ndevice connected, so we'll see if it works the other way around.  If not,\nit may be worth picking up a cheap Wear capsule watch just to have a backup\nanyway...\n\nOn Sat, Apr 6, 2019, 16:23 THSA00458 <notifications@github.com> wrote:\n\n> Still working!\n>\n> —\n> You are receiving this because you were mentioned.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/NightscoutFoundation/xDrip/issues/663#issuecomment-480538811>,\n> or mute the thread\n> <https://github.com/notifications/unsubscribe-auth/AcXgYa8vv1t4j_MZoLLVkMdpF43lN_PEks5veRBUgaJpZM4YLhaU>\n> .\n>\n"
+  },
+  {
+   "id": 489118111,
+   "user": "Robkeano",
+   "created_at": "2019-05-03T14:38:16Z",
+   "body": "@jamorham. Great info above. \r\n\r\nIm a new S9, Maiomaio, Xdrip+ user this week. And have set up my Galaxy Watch. Working wonderfully for the first 3 days. But now disconnecting when screen off. \r\n\r\nIve followed all the threads intently but cant seam to get into G5 bug settings and disable minimize scanning. Can the steps be listed just for that. I looked on u tube for advice but the G5 bug options setting is not obvious. Rob"
+  },
+  {
+   "id": 489319015,
+   "user": "Robkeano",
+   "created_at": "2019-05-04T11:34:25Z",
+   "body": "Update. \r\n\r\nI made sure I had Jan XDrip latest version (which already had) and downloaded latest security Samsung patch 1st May then went with the advise to go into Android settings -> Device care -> Battery -> Settings (three dot menu), and disabled the ADAPTIVE BATTERY AI, which was suspected as having something to do with the issue. \r\n\r\nI attempted using voice command in XDrip to enable minimize scanning. So may have done it. But I think the key is the switching off of the ADAPTIVE BATTERY. \r\n\r\nI have now also set battery life to high performance, which does drain battery. I may test if go back to optimised level, but as running fully again leaving for moment. Did buy a 3 day charging memory power bank, as back up. \r\n\r\nSo now running all night and all day yesterday. So working great again. Thankyou for the advise https://github.com/jamorham and https://github.com/detellis\r\n\r\n"
+  },
+  {
+   "id": 709249096,
+   "user": "chickcrypto",
+   "created_at": "2020-10-15T12:04:54Z",
+   "body": "> Samsung released the October update/security patch recently which was installed on my S9+ on 31st October (I assume that the S9, Note 9 and potentially other 2018 Samsung phones got the update on or around the same time).\n> \n> Since then I am having frequent \"signal not received\" issues with the MiaoMiao, however Bluetooth **_is_** connected according to the system status screen. No other items or settings on my phone or in xDrip have changed other than this update.\n> \n> - Bluetooth is on\n> - Trust auto connect is turned off\n> - Bluetooth watchdog is on\n> - All other settings under Bluetooth menu are off\n\nAnyone else lose battery function on S8+ after October security patch? Or is this a migration issue Sprint >T-Mobile? Coincidentally my military bank was hacked too. Ideas?\n"
+  },
+  {
+   "id": 803433838,
+   "user": "Navid200",
+   "created_at": "2021-03-20T17:49:51Z",
+   "body": "This issue was opened in 2018 about problems experienced after a patch was installed then.\r\nA lot has changed since then.  Many use Samsung and xDrip today.\r\nAnd every now and then, there is another problem with Samsung, and it has always been resolved.\r\n\r\nIf you have a problem today, please first post on facebook or in the Gitter room to see what others say.\r\nIf you find out that others are experiencing the same problem, please open an issue and follow the instructions."
+  }
+ ]
+}

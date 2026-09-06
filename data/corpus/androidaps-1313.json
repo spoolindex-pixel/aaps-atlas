@@ -1,0 +1,47 @@
+{
+ "id": 1134095128,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1313,
+ "title": "Error when updating the basal profile",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1313",
+ "state": "closed",
+ "labels": [
+  "question - more info needed"
+ ],
+ "created_at": "2022-02-12T13:56:50Z",
+ "closed_at": "2022-02-14T20:02:30Z",
+ "comment_count": 5,
+ "body": "\r\n[AndroidAPS._2022-02-12_00-00-00_.4.zip](https://github.com/nightscout/AndroidAPS/files/8053611/AndroidAPS._2022-02-12_00-00-00_.4.zip)\r\nHi,\r\nsince update to AAPS 3.0.0.0 and 3.0.0.1 I have again and again \"Error when updating the basal profile\" but only with the Automatisirung and that not every time. \r\n![grafik](https://user-images.githubusercontent.com/13303328/153714244-bbd2ba9b-98c6-4bdd-ae6d-1d1bd5980609.png)\r\n\r\n\r\nWhen I manually change profile this does not happen. I use Android 12 smartphone and Dana RS FW 3.\r\nDoes anyone else have problems like this? Any idea what I can do about it? Except turning off automatism.\r\n\r\nGreetings Dragan",
+ "comments": [
+  {
+   "id": 1038401599,
+   "user": "MilosKozak",
+   "created_at": "2022-02-13T20:18:42Z",
+   "body": "did you verify max basal in pump acording your profile switch % ?"
+  },
+  {
+   "id": 1038424480,
+   "user": "Dragancokan",
+   "created_at": "2022-02-13T20:58:10Z",
+   "body": "The problem doesn't always occur. If I confirm with OK then everything is ok the next time I change.\r\nI have a Dana RS. I had max basal U/H set to 10 and now set it to 16. That's max.\r\nSince I have U200 insulin, I think that 10, ie 20IE, was enough. Will test it now with new setting max basal U/H 16\r\n"
+  },
+  {
+   "id": 1039112839,
+   "user": "Dragancokan",
+   "created_at": "2022-02-14T13:53:05Z",
+   "body": "It's not because of that. Just happened again. Here is the current log\r\n[AndroidAPS.log](https://github.com/nightscout/AndroidAPS/files/8061238/AndroidAPS.log)\r\n."
+  },
+  {
+   "id": 1039499181,
+   "user": "MilosKozak",
+   "created_at": "2022-02-14T20:02:30Z",
+   "body": "```\r\n14:38:22.374 [Thread-34411] D/PUMPBTCOMM: [BLEComm.sendMessage():772]: >>>>> BASAL__SET_PROFILE_BASAL_RATE B2 66  00 4B 00 4F  00 5A 00 67  00 79 00 8C  00 8F 00 78  00 63 00 53  00 4E 00 4D  00 4D 00 4D  00 4F 00 58  00 64 00 6C  00 67 00 5E  00 56 00 51  00 4F 00 4D  00 \r\n14:38:27.427 [Thread-34411] W/PUMPBTCOMM: [BLEComm.sendMessage():832]: Reply not received BASAL__SET_PROFILE_BASAL_RATE\r\n14:38:27.428 [Thread-34411] D/PUMPCOMM: [DanaRSPacketBasalSetProfileNumber.<init>():14]: Setting profile number 0\r\n14:38:27.429 [Thread-34411] D/PUMPBTCOMM: [BLEComm.sendMessage():772]: >>>>> BASAL__SET_PROFILE_NUMBER B2 64  00 \r\n14:38:32.480 [Thread-34411] W/PUMPBTCOMM: [BLEComm.sendMessage():832]: Reply not received BASAL__SET_PROFILE_NUMBER\r\n```\r\nIt's some kind of pump issue. Pump did't respond to the command but 30 sec later the same command was succesfull. AAPS responded correctly: reported failed command.\r\n\r\nSorry there is nothing I can do"
+  },
+  {
+   "id": 1039523187,
+   "user": "Dragancokan",
+   "created_at": "2022-02-14T20:27:00Z",
+   "body": "Should I contact Pump Support? Have the pump replaced?"
+  }
+ ]
+}

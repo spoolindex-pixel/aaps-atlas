@@ -1,0 +1,21 @@
+{
+ "id": 1870973710,
+ "repo": "nightscout/AndroidAPS",
+ "number": 2716,
+ "title": "[DEV] No SGV upload to NS (when source is xDrip)",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/2716",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2023-08-29T06:25:52Z",
+ "closed_at": "2023-08-30T16:38:55Z",
+ "comment_count": 1,
+ "body": "AAPS 3.2.0-dev-l b9975d4105-2023.08.28\r\nNS dev v15: [d602de1](https://github.com/nightscout/cgm-remote-monitor/commit/d602de1c474c212ab8f27d17d18ce12d5679c990)\r\nxDrip-variant2: [406a925](https://github.com/NightscoutFoundation/xDrip/commit/406a925cb492d9f8e26ce474dfcd190d207dbdb7) 2023-08-19\r\nLog: [AndroidAPS_LOG_1693279037625.log.zip](https://github.com/nightscout/AndroidAPS/files/12460975/AndroidAPS_LOG_1693279037625.log.zip)\r\n\r\n----\r\nAfter switching SGV source from BYODA to xDrip, AAPS won't upload SGV to NS, but it does upload anything else.\r\n(similar to #2602)\r\n\r\n----\r\nThe long story:\r\nI've used Dexcom G6 with BYODA for more than 1,5 years. AAPS did all uploading, since 2023-04-01 with the v3 API. During the last weeks BYODA started to lose BT connection - don't know why. The phone is a Huawei P30 Pro, last update is from December 2022, no updates to BYODA lately. I have tried an older BYODA version and another transmitter, too - similar problems after some days. Therefore I've switched to xDrip (variant2) to handle the CGM. Reason for variant2 is, that I've already had an xDrip instance for alerts and widget as an AAPS-follower, which I did not wanted to reconfigure. CGM is now in xDrip-variant2 (instead of BYODA), and AAPS stopped uploading SGV, but it does upload treatments and devicestatus, etc. Same with/without websockets.\r\n\r\n----\r\nWorkaround:\r\nI've reconfigured AAPS to upload anything but SGV, and let xDrip-variant2 do the uploading of SGV (with v1 API). Now SGV upload is by far not instant, it is sometimes 5-30 minutes late (this is an xDrip/NS issue).",
+ "comments": [
+  {
+   "id": 1699510599,
+   "user": "MilosKozak",
+   "created_at": "2023-08-30T16:38:55Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/946ea0bf335a33c07d51977b480d77479a0a424d"
+  }
+ ]
+}

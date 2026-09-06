@@ -1,0 +1,105 @@
+{
+ "id": 1077913240,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1067,
+ "title": "zero value for SMB recorded. ",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1067",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2021-12-12T21:29:42Z",
+ "closed_at": "2021-12-14T19:37:47Z",
+ "comment_count": 15,
+ "body": "Dana I\r\nBeta 3 ver 9\r\nI have noticed that on the home screen it shows the triangle for SMB being delivered.\r\nWhen checking in treatments they are zero.  This is confirmed on the pump checking the history.\r\n\r\nPlease see screenshot\r\n![Screenshot_20211213-082202_AndroidAPS](https://user-images.githubusercontent.com/37948551/145730238-aba2e222-5cf3-47df-81f3-4c33a6d319a1.jpg)\r\n![Screenshot_20211213-082209_AndroidAPS](https://user-images.githubusercontent.com/37948551/145730242-24671996-ce76-42b5-84b0-fbbad29c27a8.jpg)\r\ns",
+ "comments": [
+  {
+   "id": 991974585,
+   "user": "MilosKozak",
+   "created_at": "2021-12-12T21:34:10Z",
+   "body": "logs?"
+  },
+  {
+   "id": 993075346,
+   "user": "pbloom209",
+   "created_at": "2021-12-14T01:40:25Z",
+   "body": "Logs as requested\r\n\r\n\r\n[AndroidAPS._2021-12-13_02-39-49_.2.zip](https://github.com/nightscout/AndroidAPS/files/7708010/AndroidAPS._2021-12-13_02-39-49_.2.zip)\r\n"
+  },
+  {
+   "id": 993236421,
+   "user": "pbloom209",
+   "created_at": "2021-12-14T07:29:26Z",
+   "body": "this issue is continuing to occur.  I cannot see any pattern of events that is triggering this.\r\n"
+  },
+  {
+   "id": 993377016,
+   "user": "MilosKozak",
+   "created_at": "2021-12-14T10:08:15Z",
+   "body": "log is 10:27 - 15:24\r\ni need a time to search for"
+  },
+  {
+   "id": 993465118,
+   "user": "pbloom209",
+   "created_at": "2021-12-14T11:53:47Z",
+   "body": "![Screenshot_20211214-224831_AndroidAPS.jpg](https://user-images.githubusercontent.com/37948551/145993250-e2ea1615-f13f-49ef-8356-b633d4a12f17.jpg)\n\n\nNew screenshot.\n\nWith new log.\n\n"
+  },
+  {
+   "id": 993466501,
+   "user": "pbloom209",
+   "created_at": "2021-12-14T11:55:48Z",
+   "body": "[AndroidAPS (1).log](https://github.com/nightscout/AndroidAPS/files/7711387/AndroidAPS.1.log)\r\n"
+  },
+  {
+   "id": 993467920,
+   "user": "pbloom209",
+   "created_at": "2021-12-14T11:57:46Z",
+   "body": "search for 22:24 and 22:29"
+  },
+  {
+   "id": 993479611,
+   "user": "pbloom209",
+   "created_at": "2021-12-14T12:12:40Z",
+   "body": "i have just noticed the pattern when AAPS changes the Temp basal rate it also posts in the treatments the 0 SMB and adds the triangle to the home screen\r\n"
+  },
+  {
+   "id": 993482117,
+   "user": "pbloom209",
+   "created_at": "2021-12-14T12:15:58Z",
+   "body": "it just did this pattern again.  So the changing of the Basal creates a zero \r\nsmb "
+  },
+  {
+   "id": 993489576,
+   "user": "MilosKozak",
+   "created_at": "2021-12-14T12:25:10Z",
+   "body": "what is your bolus step in doctor's menu?\r\nnevermind I found: 0.1\r\nAAPS requested SMB 0.05 and pump responded 0.0 delivered\r\n```\r\n22:24:52.631 [Thread-6422] D/PUMPQUEUE: [QueueThread.run():116]: performing SMB BOLUS 0.05 U\r\n22:24:52.638 [Thread-6422] D/PUMPQUEUE: [CommandSMBBolus.execute():26]: Last bolus: 1639480497000 12/14/21 22:14:57\r\n22:24:52.653 [Thread-6422] D/CORE: [DetailedBolusInfoStorage.add():23]: Stored bolus info: {\"bolusType\":\"SMB\",\"carbs\":0.0,\"carbsDuration\":0,\"deliverAtTheLatest\":1639481079679,\"eventType\":\"CORRECTION_BOLUS\",\"insulin\":0.05,\"lastKnownBolusTime\":1639480497000,\"timestamp\":1639481094141}\r\n22:24:52.661 [Thread-6422] D/PUMPCOMM: [DanaRSPacketBolusSetStepBolusStart.<init>():25]: Bolus start : 0.05 speed: 1\r\n22:24:52.662 [Thread-6422] D/PUMPBTCOMM: [BLEComm.sendMessage():779]: >>>>> BOLUS__SET_STEP_BOLUS_START B2 4A  05 00 01 \r\n22:24:53.165 [Binder:29203_A] D/PUMPBTCOMM: [BLEComm.processMessage():859]: <<<<< BOLUS__SET_STEP_BOLUS_START B2 4A 00 \r\n22:24:53.168 [Binder:29203_A] D/PUMPCOMM: [DanaRSPacketBolusSetStepBolusStart.handleMessage():41]: Result OK\r\n22:24:54.354 [Binder:29203_A] D/PUMPBTCOMM: [BLEComm.processMessage():859]: <<<<< NOTIFY__DELIVERY_COMPLETE C3 01 00 00  \r\n22:24:54.359 [Binder:29203_A] D/PUMPCOMM: [DanaRSPacketNotifyDeliveryComplete.handleMessage():37]: Delivered insulin: 0.0\r\n```\r\n```\r\n22:24:58.243 [Binder:29203_2] D/DATABASE: [PumpSyncImplementation.syncBolusWithPumpId():190]: Inserted Bolus Bolus(id=66, version=0, dateCreated=1639481098220, isValid=true, referenceId=null, interfaceIDs_backing=InterfaceIDs(nightscoutSystemId=null, nightscoutId=null, pumpType=DANA_I, pumpSerial=VKH00031FI, temporaryId=null, pumpId=3278962184152, startId=null, endId=null), timestamp=1639481092000, utcOffset=39600000, amount=0.0, type=SMB, isBasalInsulin=false, insulinConfiguration=null)\r\n22:24:58.251 [Binder:29203_2] D/PUMPCOMM: [DanaRSPacketAPSHistoryEvents.processMessage():210]: [3278962184152] **NEW** EVENT BOLUS (5) 12/14/21 22:24 (163"
+  },
+  {
+   "id": 993499262,
+   "user": "MilosKozak",
+   "created_at": "2021-12-14T12:38:54Z",
+   "body": "could you try it manually on your pump?\r\nstart bolus of 0.05 without TBR and with 40% TRB running\r\n"
+  },
+  {
+   "id": 993898432,
+   "user": "pbloom209",
+   "created_at": "2021-12-14T19:16:32Z",
+   "body": "I will change the mininum in the doctors menu to 0.05\r\n\r\n"
+  },
+  {
+   "id": 993902523,
+   "user": "pbloom209",
+   "created_at": "2021-12-14T19:21:42Z",
+   "body": "tried 0.05 with both basal on the pump no problem\r\n"
+  },
+  {
+   "id": 993903380,
+   "user": "pbloom209",
+   "created_at": "2021-12-14T19:22:42Z",
+   "body": "They are now showing 0.05 in pump history when I look at it in AAPS\r\n"
+  },
+  {
+   "id": 993916742,
+   "user": "pbloom209",
+   "created_at": "2021-12-14T19:37:47Z",
+   "body": "I think it is fixed.  now i have changed to 0.05 in Doctors menu.\r\nTx"
+  }
+ ]
+}

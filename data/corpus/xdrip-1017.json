@@ -1,0 +1,75 @@
+{
+ "id": 495509786,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1017,
+ "title": "Web Service returning max of 1000 entries",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1017",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2019-09-19T00:08:59Z",
+ "closed_at": "2021-03-01T00:30:31Z",
+ "comment_count": 10,
+ "body": "I thought of writing a reporting module and PDF generation for xDrip glucose data (know you can do it via Nightscout but this would be for those not using any cloud service). Tried the API to the local web service and it will only return a max of 1000 readings (less than 4 days worth) using the 'count' option. I have also set 'all_data=Y'. The xDrip database contains many thousands of bg readings.\r\nIs this just an efficiency limitation? Any way around this?",
+ "comments": [
+  {
+   "id": 536015138,
+   "user": "jsPl",
+   "created_at": "2019-09-27T16:46:25Z",
+   "body": "A 1000 is a pretty big record count for a response from a web service. I guess its intention is not to serve data for reporting. That said, you could modify `app/src/main/java/com/eveningoutpost/dexdrip/webservices/WebServiceSgv.java`, increase the limit and/or implement pagination and possibly other filtering.\r\n"
+  },
+  {
+   "id": 536139074,
+   "user": "dkmsoft",
+   "created_at": "2019-09-28T01:19:30Z",
+   "body": "Thanks for response. Yes, clearly web server not meant for reporting as 1000 records gives less than 4 days so not nearly enough for reporting. There is no point in me modifying the source to create a special version -  the reporting is not for me. It's only of use if every user out there has this in their version so has to be part of standard release. I now have a prototype working using the CSV export option but it's clunky as user has to execute a couple of manual steps. Still deciding whether to release."
+  },
+  {
+   "id": 536207010,
+   "user": "k2s",
+   "created_at": "2019-09-28T16:59:41Z",
+   "body": "@dkmsoft will you share your report generator ?\r\n\r\nI think it should not be complicated to add export CSV to the webservice API and do pull request. After some time it would be merged into master and released in alpha versions."
+  },
+  {
+   "id": 536376271,
+   "user": "dkmsoft",
+   "created_at": "2019-09-30T02:33:33Z",
+   "body": "Yes, extending the web service API to export multiple days data in CSV or JSON format would be best way to go.\r\nMy intention is to share report generator - just not sure how much demand there is for it and whether worth the effort. If you have a nightscout server and xDrip sending data to it (or to Dexcom server), then already have reporting facilites. This would be for other users (eg Libre/MM). The reports would be available to view on any device and also generate PDFs if so required. I may post something on xDrip facebook group to gauge interest."
+  },
+  {
+   "id": 536422120,
+   "user": "k2s",
+   "created_at": "2019-09-30T06:33:22Z",
+   "body": "I wonder why there should not be huge demand on it. Libre/MM are also able to use NighScout, but have to install and manage it.\r\n\r\n* I would not need to install and manage NightScout - xDrip follower and report generator would do what I need\r\n* I would like to evaluate 3-7 last days to compare what is going on and if there is change needed\r\n* I would like to print/email logbook when visiting the doctor\r\n* anything more analytical would be welcome\r\n\r\nlet me know if you would be insterrested in any help from me"
+  },
+  {
+   "id": 536426186,
+   "user": "MasterPlexus",
+   "created_at": "2019-09-30T06:48:38Z",
+   "body": "Please think also on some additional topics on that:\r\n\r\n- generally, increasement of such exporting of data, wich could started by uncoordinated Web-requests, could effect the stability of xDrip itself. xDrip must be ensured first to collect the CGM-Data. If a process within xDrip will increase the work whithin xDrip, this could be harmed.\r\n- today we are happy, to have an easy way of implementing Nightscout-instances (see ns.1be.de), and Nightscout is commonly known as a Data-container, and reporting solution. Also like other Reporting-tools you could try to get the Data directly from there in simple GET-Requests.\r\n\r\nMy points does not mean that I don't find your idea bad, and it could be a solution for those which don't want to establish a NS-Instance, or want to have a better control over the data.  But at the end, it must be well tested, also on older phones, that those dataexports which will be run then in the background does not effect the xDrip-Stability."
+  },
+  {
+   "id": 536450871,
+   "user": "k2s",
+   "created_at": "2019-09-30T08:05:07Z",
+   "body": "@MasterPlexus ns.1be.de is not working.\r\n\r\nI [started to play with NS](https://github.com/nightscout/cgm-remote-monitor/compare/master...k2s:learning) months ago and quickly added some information to reports that i was missing. \r\n\r\nI paused my work on it because the missing BASAL information in NS and xDrip seams to me to be a huge show stopper and also my current knowledge about T1 is very limitted. This seams to be soon solved in xDrip soon by #973.\r\n\r\nIn compare to Medtronic, LibreView and also Tidepool portal I am missing in NightScout a one-click-report-everything function, maybe with some advices how to use it for newly diagnosed people.\r\n\r\nAnd yes, I agree that downloading CSV data should be done sparingly, by users request and protected from unwanted requests.\r\n\r\nOne is for sure: it is amazing what the community is able to build and share with others."
+  },
+  {
+   "id": 536462161,
+   "user": "MasterPlexus",
+   "created_at": "2019-09-30T08:37:52Z",
+   "body": "@k2s: did you know this tool: https://nightscout-reporter.zreptil.de/beta/ This is just a \"one-click\" solution for nice reports, based on the data wich are stored in Nightscout.\r\n"
+  },
+  {
+   "id": 781557484,
+   "user": "Navid200",
+   "created_at": "2021-02-18T18:45:08Z",
+   "body": "A benefit of Nightscout, other than reporting, is to have a repository of blood glucose readings.  Whether it is Nightscout or any other form of repository, having one is a very good idea.\r\n\r\nIf you just want to create a report, you can easily generate images from the xDrip statistical pages and import them into your favorite word processor to create a report."
+  },
+  {
+   "id": 787558732,
+   "user": "Navid200",
+   "created_at": "2021-03-01T00:30:31Z",
+   "body": "\r\nClosing due to inactivity"
+  }
+ ]
+}

@@ -1,0 +1,15 @@
+{
+ "issue_id": 1200,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/1200",
+ "title": "Problems with LinearTrapezoidInsulin.java [Incorrect Boundary Conditions]",
+ "symptom": "The LinearTrapezoidInsulin.java equations have incorrect boundary conditions because the value of 'onset' is not properly accounted for when applying boundary conditions during integration. This causes IOB values at transition points to not match, resulting in a kink in the IOB curve, and IOB does not become zero at the end of the insulin duration. The impact is more pronounced for insulins with larger onset and shorter life, such as Toujeo.",
+ "cause": "The root cause is that the algorithm calculating IOB and iActivity was completely changed. The old algorithm needed a stepwise schema to calculate iActivity, while the new one uses a formula. The old algorithm has a one-step decay (5 minutes) before 'time', causing a timeshift. As a result, treatments.ioBForGraph_new starts exactly one timeslice before 'time' of the old one, and the new algorithm has to compensate. This timeshift leads to the observed issues, including IOB not being zero at the end.",
+ "fix": "The thread does not state a definitive fix that was implemented. The user peeyes-dev provided updated equations and code, and stephencmorton confirmed they look correct, but there is no statement that they were merged or that a specific fix was applied. The issue was closed due to inactivity.",
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [],
+ "confidence": "low",
+ "evidence_quote": "major root cause of our identified issues one to three is that the algorithm calculating IOB and iactivity has been completely changed. the \"old\" algorithm needed a really stepwise schema to calculate iActivity - the new one has a formula to calculate it and thus doesn't need it. So the \"old\" one has a one step decay (5 minutes) before \"time\" and that's a (lets say) timeshift."
+}

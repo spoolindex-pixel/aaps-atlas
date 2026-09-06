@@ -1,0 +1,65 @@
+{
+ "id": 1213711052,
+ "repo": "nightscout/AndroidAPS",
+ "number": 1672,
+ "title": "[Wear] [GW4] [3.0.0] Bolus progress sound and/or vibration cannot be silenced",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/1672",
+ "state": "closed",
+ "labels": [
+  "enhancement"
+ ],
+ "created_at": "2022-04-24T17:10:33Z",
+ "closed_at": "2022-06-02T11:08:45Z",
+ "comment_count": 8,
+ "body": "I have in Galaxy Watch 4 watch (GW4) notifications on and notification cause both sound and vibrate. However, I do not want these for AAPS bolus progress events (both sound and vibrate off for bolus progress).\r\n\r\nThere is AAPS setting in the watch \"Vibrate on bolus\" and I have turned it OFF but still it vibrates for bolus.\r\n\r\nIt would be also a nice feature to have a possibility to do the same for sound. \r\n",
+ "comments": [
+  {
+   "id": 1107883390,
+   "user": "DM-LTR",
+   "created_at": "2022-04-24T17:25:29Z",
+   "body": "I am experiencing the very same behavior (Galaxy Watch 4, WearOS 3, AAPS master 3.0.0.1, app/wear apk fullrelease). Vibrate on bolus OFF, but every bolus step administered from smartphone is followed by vibration on watch (despite the watchface settings or watch sound/vibrate mode). This does not apply for individual SMBs. Turning \"use system notifications\" in AAPS settings does not make any change. "
+  },
+  {
+   "id": 1107898361,
+   "user": "Andries-Smit",
+   "created_at": "2022-04-24T19:01:12Z",
+   "body": "This issue ia caused by the changed API for notification. Before wear last OS update is buzzed only twize. Before wear os verion x, the the notification could be changed. Fixing this issue removes the progress to the background. i dont want to do that, because the cancel button is not available. The work around is to build some thing custom. "
+  },
+  {
+   "id": 1126999161,
+   "user": "vanelsberg",
+   "created_at": "2022-05-15T19:12:41Z",
+   "body": "@Andries-Smit How about (if feasible) a temporary work around by doing update notifications less often (e.g. in progress steps of 25%)? This way one would only get 5 or 6 beeps, Cancel would still be possible."
+  },
+  {
+   "id": 1144592276,
+   "user": "Andries-Smit",
+   "created_at": "2022-06-02T08:27:22Z",
+   "body": "There is a workaround, for now, disabling the notification completely:\r\n- Enable **Developer Settings** if you haven't already.\r\n- About > Software > and keep tapping on **Software Version** until a toast appears.\r\n- Back into Settings menu, **Developer options**\r\n - Scroll to bottom > App notifications > **Show all**\r\n - Select **AAPS**\r\n - Switch off the channel **AAPS Bolus Progress Silent**\r\n\r\n If you only switch off the single channel, the AAPS wear settings become effective.\r\n\r\nIn the Sttings of Watch AAPS\r\n- Open **Menu**\r\n- Select **Settings**\r\n- Switch off **Vibrate on Bolus**\r\n\r\n\r\n\r\n\r\n\r\nChoose AutoWear (and any other apps), select channels and voilà."
+  },
+  {
+   "id": 1145844214,
+   "user": "DM-LTR",
+   "created_at": "2022-06-03T10:55:43Z",
+   "body": "> * Scroll to bottom > App notifications > **Show all**\r\n\r\nTried... but this menu item is missing in my case (Android 12, Samsung One UI 4.1)\r\n(https://www.xda-developers.com/android-developer-options/)"
+  },
+  {
+   "id": 1146912792,
+   "user": "vanelsberg",
+   "created_at": "2022-06-06T00:08:26Z",
+   "body": "> ...this menu item is missing in my case (Android 12, Samsung One UI 4.1)\r\n\r\nNote: this is about Android Wear OS (developer) settings - so on the watch, not the phone.\r\n"
+  },
+  {
+   "id": 1147076466,
+   "user": "DM-LTR",
+   "created_at": "2022-06-06T05:59:01Z",
+   "body": "Ahh, sorry, but this was not clear at all. Watch settings is mentioned just after the 1st paragraph."
+  },
+  {
+   "id": 1166606978,
+   "user": "DM-LTR",
+   "created_at": "2022-06-26T18:16:49Z",
+   "body": "Solved in 3.1 beta 1...bolus delivery progress is announced via separate notification tile, not as ongoing/repeated one-time notification. Thx"
+  }
+ ]
+}

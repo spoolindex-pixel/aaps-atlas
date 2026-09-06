@@ -1,0 +1,132 @@
+{
+ "id": 544890134,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1153,
+ "title": "Improvement: define Tresiba in Insulin Profiles",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1153",
+ "state": "closed",
+ "labels": [
+  "enhancement",
+  "insulin-basal"
+ ],
+ "created_at": "2020-01-03T07:58:13Z",
+ "closed_at": "2021-12-24T18:47:35Z",
+ "comment_count": 21,
+ "body": "@ANDREAPIPPI rised an improvement request in #1080 to define Tresiba in insulin profiles\r\ncan someone provide an activity curve for tresiba? maybe we need to implement a new curve in InsulinManager",
+ "comments": [
+  {
+   "id": 570511326,
+   "user": "k2s",
+   "created_at": "2020-01-03T09:11:31Z",
+   "body": "this could help https://www.tresibapro.com/considering-tresiba/product-profile.html"
+  },
+  {
+   "id": 570530743,
+   "user": "gruoner",
+   "created_at": "2020-01-03T10:22:23Z",
+   "body": "sounds a really interesting insulin..... its curve doesn't really match a linear trapezoid; it seems like a flat one with zero onset-time, peak at the beginning and 42h duration BUT with some kind of efficiency-accumulation after 3 days of (continuous daily) usage....\r\nSuch concepts like \"efficiency-accumulation\" are new to xdrip's prediction logic. Does anyone knows more about this effect (esp. for tresiba but also for other long-term or mid-term profiles)?"
+  },
+  {
+   "id": 570624531,
+   "user": "ANDREAPIPPI",
+   "created_at": "2020-01-03T16:33:41Z",
+   "body": "Hi gruoner.\r\nHere something confirming the very long lasting of Tresiba:\r\nhttps://www.ema.europa.eu/en/documents/product-information/tresiba-epar-product-information_it.pdf       ---- look at page 9 curve\r\nThis one\r\nhttps://www.ncbi.nlm.nih.gov/pmc/articles/PMC4156782/figure/Fig3/?report=objectonly\r\ncomes from here\r\nhttps://www.ncbi.nlm.nih.gov/pmc/articles/PMC4156782/\r\nand gives very interesting information, I think.\r\nLast but not least, this is the official Novo-Nordisk document about Tresica,  the curve is at page 5:\r\nhttps://www.novo-pi.com/tresiba.pdf\r\nBye.\r\nPippo    :-)"
+  },
+  {
+   "id": 571256141,
+   "user": "steve8x8",
+   "created_at": "2020-01-06T18:35:26Z",
+   "body": "I'm unhappy with that curve that shows insulin activity right at time zero, and is labelled as \"steady state\", thus not reflecting the effect of a one-time injection."
+  },
+  {
+   "id": 571274030,
+   "user": "gruoner",
+   "created_at": "2020-01-06T19:19:41Z",
+   "body": "@steve8x8 that's one of the main effects when taking about \"efficiency accumulation\" - you would not get a real onset time because when sated with basal insulin any new injection is just for \"refreshment\".\r\nI'm afraid when we really want predict activity of basal insulin types we have to find a model for that \"behaviour\"......"
+  },
+  {
+   "id": 571528838,
+   "user": "steve8x8",
+   "created_at": "2020-01-07T10:28:21Z",
+   "body": "Still we are supposed to handle individual entries and keep them separate. Whether this is a valid approach at all has to be discussed somewhere else (as stacking follows its own rules).\nSo in the end we need something that reflects a single injection, not a steady state.\nTresiba ist said to take 1-3 days to level and even longer to be removed. So the 1-shot curve should sum up to sth resembling the steady-state one if properly stacked. I guess this would require a total time span of at least two days. Looks like a challenge as xDrip hasn't been created with such long times in mind."
+  },
+  {
+   "id": 579792868,
+   "user": "br8kpoint",
+   "created_at": "2020-01-29T14:56:05Z",
+   "body": "+1 I was just put on Tresiba from Lantus and would love to keep tracking this if we can figure this out"
+  },
+  {
+   "id": 770181329,
+   "user": "ulisse31",
+   "created_at": "2021-01-30T09:06:47Z",
+   "body": "Hello!\r\nI'm in need to add Tresiba as well. Looks like this is blocked/referenced by #1117 and #1200 \r\nI really we can add some traction to this feature.\r\nMy personal experience with this insulin is an effective life of ~40h (injected with pen).\r\nI can also confirm the stackable effect, even though I have only subjective experience and no real data on that.\r\nthanks!"
+  },
+  {
+   "id": 779707139,
+   "user": "ghost",
+   "created_at": "2021-02-16T09:33:07Z",
+   "body": "Hi all. \r\nDid we ever get a work around to add Tresiba to the list. I have been using this for over a year now and I have tried substitution of another Basal (lantus) but it just not right. "
+  },
+  {
+   "id": 779713251,
+   "user": "tolot27",
+   "created_at": "2021-02-16T09:42:51Z",
+   "body": "You have to wait until #1388 gets merged."
+  },
+  {
+   "id": 779718659,
+   "user": "ulisse31",
+   "created_at": "2021-02-16T09:51:21Z",
+   "body": "@tolot27 PR #1388 seems stuck for multiple months so while I understand the technical constrain, I have the feeling that the development of this feature is somehow halted.\r\nI'm not familiar with this developing community and the release cycle of this project: in your opinion, what would be the best way to understand the status of this issue/PR, its traction, and how to gather additional feedback on it?\r\nthank you in advance\r\n"
+  },
+  {
+   "id": 779727362,
+   "user": "ghost",
+   "created_at": "2021-02-16T10:05:17Z",
+   "body": "Many users now use Tresiba and have found it very successful. As a dedicated user of xdrip+ i would like to understand if there is anything I could do to help with the development/feedback to help with its release. I feel that many many users would benefit from the update. On 16 Feb 2021 09:51, ulisse31 <notifications@github.com> wrote:\n@tolot27 PR #1388 seems stuck for multiple months so while I understand the technical constrain, I have the feeling that the development of this feature is somehow halted.\nI'm not familiar with this developing community and the release cycle of this project: in your opinion, what would be the best way to understand the status of this issue/PR, its traction, and how to gather additional feedback on it?\nthank you in advance\n\n—You are receiving this because you commented.Reply to this email directly, view it on GitHub, or unsubscribe."
+  },
+  {
+   "id": 779784349,
+   "user": "ANDREAPIPPI",
+   "created_at": "2021-02-16T11:45:24Z",
+   "body": "Hi\r\nJust to understand:\r\nWhat are the reasons why Tresiba basal nsulin and other types of insulin additions are currently blocked?\r\nNo time for developers?\r\nInsecurity about the usefulness of this option?\r\nSomething else?\r\nIt's been over a year since these discussions started and I think it's time to wrap them up somehow.\r\nMy opinion, of course.\r\nAndrea"
+  },
+  {
+   "id": 779923543,
+   "user": "ulisse31",
+   "created_at": "2021-02-16T15:46:23Z",
+   "body": "If I understand correctly the chain of PRs and issues, xDrip math logic doesn't properly account the event when insulin effects stack on top of each others, adding their cumulative effect to the \"basal on board\" (which is strange to me, as this is done with no issue with other insulins like humalog...?).\r\nI guess the technical blocker is PR #1200 (potentially PR #1117 as well) but ultimately the main issue here is that the development discussion is (probably) ongoing somewhere else (or not at all)...?\r\nI wish I could help in any way."
+  },
+  {
+   "id": 798808541,
+   "user": "Navid200",
+   "created_at": "2021-03-14T00:38:14Z",
+   "body": "@gruoner It seems k2s addressed your request.\r\n\r\nWe are closing the issues that have been addressed so that we end up with only open issues that are identifying bugs or feature requests that have no work-arounds.\r\nThe main objective is to reduce the number of open issues so that you guys (the developers) can look at the open issues, without having to comb through hundreds of questions, and find out reasonably fast what issue needs your attention.\r\nI hope you agree with that move.\r\n\r\nCan we close this issue please?\r\n\r\nThanks"
+  },
+  {
+   "id": 798892288,
+   "user": "gruoner",
+   "created_at": "2021-03-14T11:39:58Z",
+   "body": "@Navid200 no you can't - its not implemented the way we disussed (i can't find any PR rised by @k2s solving this improvement request).... i'm not sure if we will implement it in future.\r\nu can close it for cleanup reasons but then u will loose all the information tied with that and u will loose the \"feature request point\" for such a new kind of profile"
+  },
+  {
+   "id": 798901509,
+   "user": "ghost",
+   "created_at": "2021-03-14T12:50:57Z",
+   "body": "I would like to think that someone could resolve the issue before closing. It has been requested a number of times, without anything moving forward. With Tresiba now becoming very popular with us Diabetics, surely someone can resolve this. On 14 Mar 2021 11:40, gruoner ***@***.***> wrote:\r\n@Navid200 no you can't - its not implemented the way we disussed (i can't find any PR rised by @k2s solving this improvement request).... i'm not sure if we will implement it in future.\r\nu can close it for cleanup reasons but then u will loose all the information tied with that and u will loose the \"feature request point\" for such a new kind of profile\r\n\r\n—You are receiving this because you commented.Reply to this email directly, view it on GitHub, or unsubscribe."
+  },
+  {
+   "id": 798919986,
+   "user": "Navid200",
+   "created_at": "2021-03-14T14:46:07Z",
+   "body": "No, I must have misunderstood. \r\nI read the first post (I always do) and the only request in it sounded to me for a request for someone to provide an activity curve for tresiba, which the second post did already.\r\n\r\nIf a developer creates a pull request for a feature that has no open issues, do you think that the pull request cannot be found by someone searching, and we need to open an issue and keep it open until the pull request is merged?\r\n\r\nDo you think that every time a new insulin, or a new concentration of an existing insulin or a combination of two existing ones, comes to market, we will need to open an issue so that the new insulin is added?\r\n\r\nWe should be able to create a simple chart showing all the available insulins in the market versus the ones currently supported by xDrip, no?  \r\n\r\nI have never suggested that xDrip was perfect.  The only thing I have said is the following.\r\n\r\nxDrip is free and offers so much that many people keep using it.\r\nPlease let's help the developers by not opening issues one after another.  Please help me organize the open issues so that they make sense.  Please help me close the duplicate issues.  If there is already an open issue and you just want something else added to it, please add a post to the existing issue.  Please don't open a new one.\r\nWith hundreds of open issues, the really critical ones don't get the attention they deserve because they get buried.\r\n\r\nI will not close this issue as you have requested.  When I close an issue, I always communicate with the individual that they  can reopen it, which is a fact.\r\n\r\nThanks for your understanding and support."
+  },
+  {
+   "id": 1000915497,
+   "user": "Navid200",
+   "created_at": "2021-12-24T18:47:35Z",
+   "body": "I am closing this issue because we have consolidated all insulin requests: #1898\r\nYou can continue the conversation here in this issue about this particular request.\r\n\r\nPlease don't post in the consolidated table issue. Please either use this issue or [Discussions](https://github.com/Navid200/xDrip/discussions) for any conversations.  "
+  }
+ ]
+}

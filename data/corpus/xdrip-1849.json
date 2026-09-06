@@ -1,0 +1,210 @@
+{
+ "id": 1024506059,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 1849,
+ "title": "Dexcom Share: Ability to Specify Seconds Until Polling Retry or Allow Double Poll Retry",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/1849",
+ "state": "closed",
+ "labels": [
+  "enhancement",
+  "sync"
+ ],
+ "created_at": "2021-10-12T22:20:43Z",
+ "closed_at": "2025-09-05T19:03:55Z",
+ "comment_count": 32,
+ "body": "### Is your feature request related to a problem? Please describe.\r\nThis feature request is a result of my experience monitoring my T1D son.  He has a Google Pixel 3a as the collector device with him at all times and wears a Dexcom G6.  His endocrinologist wants data shared via Dexcom Clarity, so his Dexcom app receives the readings from the sensor and then his, mine and my wife's phones receive those readings from Dexcom Share as followers.  When he is in low cellular signal areas such as school there is a delay in his phone uploading the readings to the Dex Share servers.  That, in turn, causes our xdrip apps to unsuccessfully poll for the BG reading after the 5 minute interval (since it's not on the Dex Share server yet), then it waits a hard-coded 20 seconds before retrying to poll for for the BG reading again.  30-40% of the time the reading is still not there on the Dex Share server yet.  At that point the app gives up and sets the next polling interval back to 5 minutes.  For 30-40% of the time, my xdrip is 5-10 minutes behind.  I realize that I can go to the Classic Status Page and press the \"Restart Collector\" button to force a re-poll.  I also work at his school which does not have a nurse, so I am his.  It would be quite helpful to have the readings I'm looking at be timely without needed extra interaction to make it so.\r\n\r\n### Describe the solution you'd like\r\nI would like a new option in the menu to either 1) allow me to specify the number of seconds to wait for a Dex Share polling retry or 2) allow me to have a double retry for Dex Share with the first occurring after 20 seconds and if that is unsuccessful then another after 40 seconds.\r\n\r\n### Describe alternatives you've considered\r\nThe alternative is to manually force it to poll after the polling retry fails by going to the Classic Status Page and pressing the \"Restart Collector\" button.\r\n\r\n### Additional context\r\n",
+ "comments": [
+  {
+   "id": 941937678,
+   "user": "tolot27",
+   "created_at": "2021-10-13T05:34:14Z",
+   "body": "Dexcom Share Follow is using the same anticipation algorithm Nightscout Follow uses. PR #1307 implements an additional setting for an adjustable grace interval but only for Nightscout Follow. As commented in https://github.com/NightscoutFoundation/xDrip/pull/1307#issuecomment-696408857 I assume a bug in `Anticipate.java`.\r\n\r\n@utechnet Is the system time of master and follower identical?"
+  },
+  {
+   "id": 942427934,
+   "user": "utechnet",
+   "created_at": "2021-10-13T15:36:21Z",
+   "body": "@tolot27 Yes, both the master and the follower are connected to the same cellular carrier and have their time sourced from the carrier."
+  },
+  {
+   "id": 943852474,
+   "user": "Bwangster12",
+   "created_at": "2021-10-15T00:04:40Z",
+   "body": "So I think I'm experiencing the same issue... however I'm noticing it while we are all connected to my home wifi with a strong signal.  Today is my first day using xDrip to follow my daughter's Dexcom G6 app and noticing this frequent 5-10+ minute delay... Even when the Dexcom Follow app is updated."
+  },
+  {
+   "id": 990403021,
+   "user": "psit",
+   "created_at": "2021-12-09T23:37:04Z",
+   "body": "@tolot27: I would love to help with this if you need a tester for a nightscout follower or any logs or other information. I have xDrip on my phone just to follow nightscout (which receives data from medtronic uploader, which puts the original measurements timestamp on the data, which is the reason why the data is not there 20 seconds after the readings timestamp) and I'm suffering from the same issue (as discussed in #1307)\r\nI'm also a professional Java (but not Android) developer myself, so maybe we could also discuss some ideas if you want."
+  },
+  {
+   "id": 1007987267,
+   "user": "michaeld427",
+   "created_at": "2022-01-08T13:12:38Z",
+   "body": "I don't think this has anything to do with your network connection.  The xdrip app is just polling too soon and it doesn't grab the new data.  I have this constantly.  I can open the Follow app to get the right value.\r\n\r\nBG receive delay generally says 5 minutes.  If it misses a reading, it needs to check again in 20 seconds or some configurable value."
+  },
+  {
+   "id": 1254060087,
+   "user": "olorinmaia",
+   "created_at": "2022-09-21T18:12:43Z",
+   "body": "Experiencing same issues follower using xDrip+ on follower phones in same network as master device using Dexcom G6 to upload BS-data to Dexcom share. Is there an option or solution to make sure the readings come in every 5 minute more often than not?\r\n\r\nI'm also using a smart watch to view BS-data but there is no option there to restart collector, would be nice if the icon to restart collector could be added when xdrip on master phone for smart watch is using collector dexcom share. Now I need to open phone and restart collector or check dexcom's follow app to view BS-data when xDrip+ doesnt fetch the update from Dexcom share servers."
+  },
+  {
+   "id": 1302807227,
+   "user": "olorinmaia",
+   "created_at": "2022-11-04T00:03:16Z",
+   "body": "@jamorham 😊 Any update on this issue? We need to set manual time on parent follower phone 10-15 seconds back in time in order to get consistant readings every 5 min.\r\n\r\nWould love to have the abiltiy to set delay timer my self. "
+  },
+  {
+   "id": 1375029449,
+   "user": "Navid200",
+   "created_at": "2023-01-09T02:18:37Z",
+   "body": "Is it possible to use either xDrip sync or Nightscout instead of Dex share?"
+  },
+  {
+   "id": 1375640143,
+   "user": "olorinmaia",
+   "created_at": "2023-01-09T13:39:03Z",
+   "body": "> Is it possible to use either xDrip sync or Nightscout instead of Dex share?\r\n\r\nHi Navid200 :) The best workaround to this for me was to install xdrip on the phone recieving BG from Dexcom G6 via BYODA and setup xDrip Sync. That way we also can snooze eachothers alarms (genious feature :)) \r\n\r\nSetting up Nightscout follower doesn't help, as the same problem occur with no BG-data being recieved when polled occasionally and we have to wait another 5 min or restart collector to recieve updated BG. "
+  },
+  {
+   "id": 1376182667,
+   "user": "utechnet",
+   "created_at": "2023-01-09T19:39:47Z",
+   "body": "Hi @Navid200 - The code for polling from Dex share and from Nightscout seems to share identical timing.  What has alleviated having to manually restart the collector 50+ times each day was to use @olorinmaia suggestion to set the parent follower phone's system time 10-15 seconds behind real time."
+  },
+  {
+   "id": 1376185804,
+   "user": "Navid200",
+   "created_at": "2023-01-09T19:43:09Z",
+   "body": "Understood.  \r\n\r\nIs there a reason xDrip sync cannot be used instead of Dex share?"
+  },
+  {
+   "id": 1376194614,
+   "user": "michaeld427",
+   "created_at": "2023-01-09T19:51:07Z",
+   "body": "Simple quick solution I think would be to have it check an extra two times if necessary.\r\n\r\nIf a previous comment is correct, it checks once and then 20 seconds later it checks 1 extra time.  Then it waits the regular 5 minutes.\r\n\r\nHave it check once check at least one more time (40 seconds after initial) and the maybe one more time (at 60 seconds later).\r\n\r\n"
+  },
+  {
+   "id": 1376220446,
+   "user": "utechnet",
+   "created_at": "2023-01-09T20:01:13Z",
+   "body": "In my case, my child's phone is his Dexcom receiver and his Endocrinologist insists that she has access to Dexcom share data with Clarity.  So, my child's phone has the Dexcom app perform the polling of the transmitter and then the readings get shared to Dexcom share's servers.  That solves the Endo requirement.  My child's phone also has xDrip but it is subject to the same problem of often not being up to date with the latest reading.  My child greatly prefers the data from xDrip but often needs to restart the collector to get it up to date when needing to make low BG correction decisions.  Wouldn't xDrip sync also suffer from the same delays that we are currently stuck with?  My wife and myself use xDrip primarily to follow our child through Dex Share follow as the data source and we both have the system time adjusted 10-15 seconds behind real time.  I'm afraid of adjusting my child's phone's system time in case that could screw up the Dexcom app's sharing as well.\r\n\r\nPlease correct me if I'm wrong, but hasn't a fix been waiting to be merged for a few years now here: https://github.com/NightscoutFoundation/xDrip/pull/1307\r\n\r\nI think that fix is only for Nightscout, but Dex Share seems to share the same timing code so it could apply to both.  I've been also trying for years to get the free time available to learn enough to be able to build the app from source myself, then integrate that fix and see if it is the solution we've been waiting for.  I do work with computers and all kinds of technology, but I'm not a programmer and last formally worked with code in some college C/C++ classes decades ago - so I have much to learn.\r\n\r\n@michaeld427 That's exactly what I advocated for if not an adjustable grace interval here: https://github.com/Navid200/xDrip/discussions/75 and https://github.com/NightscoutFoundation/xDrip/issues/1849"
+  },
+  {
+   "id": 1376261099,
+   "user": "Navid200",
+   "created_at": "2023-01-09T20:16:41Z",
+   "body": "There are many people who use Nightscout.  We don't hear this problem reported by all.  \r\nYes, there is an open PR.  But, merging a PR brings with it lots of consequences.  If we have a clear problem, we have to solve it.  But, we don't.  Many are using Nightscout to follow their children with no issues.\r\n\r\nYou can install BYODA on your child's phone as a collector.  Then, it will be able to upload to Clarity.  It will also be able to transfer readings to xDrip on the same phone (your child's) to xDrip with no need to internet for that.\r\nThen, xDrip can upload to either Nightscout or xDrip sync.\r\n\r\nI cannot promise anything here.  But, again, there are many who use xDrip sync with no problem.  You can give it a try and if it doesn't work, go back to what you are doing now.\r\n\r\nThis provides the steps required to set up BYODA:\r\nhttps://navid200.github.io/xDrip/docs/DexcomAppxDrip.html\r\n\r\nI cannot answer why a PR is not merged.  The following is my personal opinion.\r\nWe currently provide 3 options for following someone over the internet.  One of them is xDrip sync.  That is very simple.  \r\nNightscout is free, open source and popular.  \r\nDex share has changed recently and we have had to invest resources to resolve issues.  New problems are coming up.  I (personally) don't believe we should invest any more time in supporting it.  \r\nConsidering we have 2 alternatives to it, I see no reason why we should keep supporting it. \r\nI cannot emphasize enough that is only my personal opinion."
+  },
+  {
+   "id": 1376271261,
+   "user": "michaeld427",
+   "created_at": "2023-01-09T20:23:59Z",
+   "body": "Is there a solution for those who have iOS as their main phone?\r\n\r\nI'm up for an alternative solution, but in my opinion Dexcom Share is Dexcom's official API.  It is a direct solution.  Having to use other apps or set up a Nightscout site just makes it more convoluted.\r\n\r\n"
+  },
+  {
+   "id": 1376289592,
+   "user": "Navid200",
+   "created_at": "2023-01-09T20:42:37Z",
+   "body": "For those who are limited to iOS, there is an app called xDrip4iOS.   I could be wrong; but, a search shows that it can upload to Nightscout.\r\nIt is not an app that we have created or support."
+  },
+  {
+   "id": 1376333945,
+   "user": "olorinmaia",
+   "created_at": "2023-01-09T21:21:04Z",
+   "body": "I will share what I believe is the best way to recieve BG data in xDrip+ if u want to use the Dexcom app and then share with followers using xDrip+. This is the \"xDrip Sync Follower\" setup. You can also use a function called \"Remote snooze\" that snoozes handsets within the same Sync group with a push of a button.\r\n\r\n1) On phone recieving BG: Install BYODA and enable local broadcast to xDrip+\r\n2) On Phone recieving BG: To recieve BG from BYODA in xDrip+ set \"640G / Eversense\" as collector.\r\n3) On Phone recieving BG: Configure as \"Master\" in xDrip+ Sync settings\r\n4) Copy Synchronization key and share with followers,\r\n5) Followers setup \"xDrip sync follower\" as collector and paste in the synchronization key from master device in sync settings.\r\n\r\n For iPhone turning back time 10-15 seconds on follower xdrip+ phone is the workaround if \"Dexcom follower\" or \"Nightscout follower\" are to be used until this issue gets fixed. For me it seems like a simple fix (do another poll if first and second fails?) but things could be more complex than I understand :)"
+  },
+  {
+   "id": 1936861916,
+   "user": "Navid200",
+   "created_at": "2024-02-10T04:43:47Z",
+   "body": "xDrip now has a Nightscout follow delay setting as explained here: https://navid200.github.io/xDrip/docs/Follow/FollowNightscout.html\r\n\r\nConsidering that, can Nightscout be used instead of Dex share to address this issue?"
+  },
+  {
+   "id": 1946377532,
+   "user": "utechnet",
+   "created_at": "2024-02-15T15:49:07Z",
+   "body": "Terrific job with the feature addition and the write-up!  My use of xDrip has been improved in January 2023 when I followed @olorinmaia 's [directions to setup xDrip sync](https://github.com/NightscoutFoundation/xDrip/issues/1849#issuecomment-1376333945).  I never experience this delayed reading issue anymore after beginning to use xDrip sync.  The only issue is needing to use the BYOD Dexcom app in order to get the local broadcast of the readings into the xDrip master.  That breaks automatic Play Store updates to the app, but that is quite minor.  However, for some users Nightscout is not a project they are able to technologically accomplish.  Since the identical code is in use for the timing of polling from a Dexcom share source as a Nightscout source, it would make most sense to me to duplicate this feature in the code for the Dexcom share source in addition to Nightscout."
+  },
+  {
+   "id": 1946801393,
+   "user": "michaeld427",
+   "created_at": "2024-02-15T18:04:20Z",
+   "body": "I personally think that since Dexcom Share/Follow is the official way that Dexcom supports data sharing and is by far the easiest to setup, it should be supported properly.\r\n\r\nSetting up Nightscout isn't so straight forward and using this method is basically making you have to sync from something else that is syncing."
+  },
+  {
+   "id": 1946812944,
+   "user": "Navid200",
+   "created_at": "2024-02-15T18:07:51Z",
+   "body": "It is very easy to set up Nightscout:  https://navid200.github.io/xDrip/docs/Nightscout/GoogleCloud.html\r\nThere are even video clips included in the guide. "
+  },
+  {
+   "id": 1947006698,
+   "user": "michaeld427",
+   "created_at": "2024-02-15T19:08:53Z",
+   "body": "I'm a developer and techy person, and I already have Nightscout setup.  I didn't encounter any difficulties doing it.  But I think saying it is very easy to setup is disingenuous to non-tech people.  The guide is has 6 different installation sections.  With a dozen How to sections, a dozen FAQs, a dozen Troubleshooting tips and more.\r\n\r\nWe can agree to disagree on that.\r\n\r\nI will just say again that Dexcom Share is the official Dexcom data sharing mechanism.  I think it should work directly and you shouldn't need an unnecessary thing in the middle."
+  },
+  {
+   "id": 1947066528,
+   "user": "Navid200",
+   "created_at": "2024-02-15T19:26:08Z",
+   "body": "Without someone who can add and test it, it is not going to happen.  I am not not adding a single line to xDrip if I cannot test it myself.\r\nOne can open a PR to submit their proposal.\r\nOr, they can use the existing options, which I have presented.  I am sorry if it is difficult.  Not much more I can do about it other than providing a guide and supporting those who run into difficulty."
+  },
+  {
+   "id": 1947152994,
+   "user": "olorinmaia",
+   "created_at": "2024-02-15T19:49:39Z",
+   "body": "@Navid200 is it possible to re-use the fix you did for Nightscout follower for Dexcom Share? If you can point me in the right direction, or maybe make a new branch on your repo with this possible fix for Dexcom Share, me and probably many more here can assist you with verifying it works! :)\r\n\r\nI'm using AAPS now and still using xDrip+ sync follower to get BG, only difference I broadcast from AAPS/AAPSClient to xDrip+, it work flawlessly. I can however understand the need for people without Nightscout / AAPS to use Dexcom Share to get BG into xDrip+ since this is without a doubt the best app for alerting and much more."
+  },
+  {
+   "id": 2349622844,
+   "user": "Navid200",
+   "created_at": "2024-09-13T17:41:14Z",
+   "body": "I will be opening a PR to add the ability to add an optional delay to Dex share follower.  "
+  },
+  {
+   "id": 2727442546,
+   "user": "Navid200",
+   "created_at": "2025-03-16T13:33:57Z",
+   "body": "A delay option has been added and will be available to everyone if this PR is merged: https://github.com/NightscoutFoundation/xDrip/pull/3663 "
+  },
+  {
+   "id": 2832475356,
+   "user": "kbsimple",
+   "created_at": "2025-04-26T17:46:03Z",
+   "body": "Hello - I am curious if you all took another perspective and considered dynamic retries on the polling.\n\nThe logic would be:\n  1. If current poll returned new information, continue regularly\n  2. If current poll did not return new information, then sleep for 20s\n  3. Repeat step 2, but sleep for 40s, ... 80s - with a cap on 3 retries or 5min\n\nThis moves the complexity of the lag from a user preference into the app, and optimizes slightly for lower latency updates when there is skew on the follow side.\n\nCurious of thoughts."
+  },
+  {
+   "id": 2832488365,
+   "user": "Navid200",
+   "created_at": "2025-04-26T18:01:02Z",
+   "body": "@kbsimple xDrip attempts twice every 5 minutes.  If neither returns a value, it waits for the next read cycle.  This, attempting only twice, is to minimize battery consumption and mobile data usage.  \nI did not want to change that.\n\nI did consider using a dynamic setup.  The development seemed more complicated than allowing a constant delay to be added.\n\nPlease note that when you enter a delay, xDrip wakes up in 5 minutes plus the entered delay.  Then, it wakes up one more time 20 seconds after that.  If you consider all the possibilities and the 20-second increment, you will see that xDrip covers a wide range of delay values.\n\nThe only shortcoming is that the delay is not being constantly adjusted.\nI didn't think there was a realistic environment causing a wide variation in the delay on a regular basis.\nOf course you can travel and end up with a delay completely different.  But, it is very simple to find the optimal delay then.\nI didn't think under normal circumstances, anyone would face a delay that would go up and down continuously.\n\nWe already did this for Nightscout.  It makes no sense to do something else for Dex share.  Of course, if there is a better solution, we can use it for both.  All I am saying is that we are not starting from scratch.  We have a mechanism for Nightscout that has been used now for 1.5 years.  I have not heard any complaints.  My submission offers the exact same for Dex share."
+  },
+  {
+   "id": 2833551441,
+   "user": "kbsimple",
+   "created_at": "2025-04-27T17:06:57Z",
+   "body": "Thank you, the explanation makes sense, notably:\n\n1. Starting with the simplest possible solution\n2. Basing the above on a clear assumption that skew is not overly dynamic\n\nAs a user of the app, I am sensitive to adding another option because there are many already, and they can be hard to entirely understand. But on balance your path seems like a good step to handle the issue, thank you.\n"
+  },
+  {
+   "id": 2960641399,
+   "user": "Navid200",
+   "created_at": "2025-06-10T21:36:49Z",
+   "body": "I have a submission that adds an option to add a small delay to the Dex share follower: https://github.com/NightscoutFoundation/xDrip/pull/3663 \n\nDoes anyone here still use xDrip as a Dex share follower and is willing to test it?"
+  },
+  {
+   "id": 2966627309,
+   "user": "Navid200",
+   "created_at": "2025-06-12T13:02:16Z",
+   "body": "If no one needs this feature any longer, we can close this issue as well as the PR."
+  },
+  {
+   "id": 3259444417,
+   "user": "Navid200",
+   "created_at": "2025-09-05T19:03:55Z",
+   "body": "OK,\n\nI take it there is no need for this any longer.\nSo, I close this issue as well as the PR."
+  }
+ ]
+}

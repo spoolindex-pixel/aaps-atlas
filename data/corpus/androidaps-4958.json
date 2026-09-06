@@ -1,0 +1,21 @@
+{
+ "id": 4840002300,
+ "repo": "nightscout/AndroidAPS",
+ "number": 4958,
+ "title": "BT disconnect with medtrum, unable to reconnect",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/4958",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2026-07-08T18:08:47Z",
+ "closed_at": "2026-07-08T20:13:53Z",
+ "comment_count": 1,
+ "body": "I noticed on ~16:10 that my medtrum nano 300 was not reachable for 78 min. \nSo reducing back: It should have started arround 14:50\nIt stayed in the \"connecting\" phase, aka the spinning BT icon on the BLE Status label..\n\nI'm not sure what went wrong, but it tends to happen when i had a connection for a certain period of time to an audio device (Android Auto, sometimes my BT headphones). \nThats the only somewhat consistent thing i seem to find: when one of the 2 devices disconnects, after some time the connection to the pump stops. Not sure if the connection to the CGM stops as well. I think it also stops, will have to keep track next time.\nThis sometimes happens, its not reproducable in any consistent way.\n\nAfter I reboot my phone this issue goes away.\n\nI did an export after the reboot, so i'll try to attach the logs (one that came from the the maintance page, the other from the preffered path).\n\n**Phone info**\n- OnePlus 12R \nVersion CPH2609_16.0.5.702 (EX01)\nAndroid 16\n- Bootloader unlocked + rooted.\n- Disabled Play Store protection\n- AAPS & BYODA are locked (OnePlus thing i believe)\n- AAPS & BYODA have \"allow background usage\", disabled \"Manage app if unused\" and all permissions they asked for.\n- BT has no battery limitations i could find.\n\n**AAPS version**\n3.4.2.3 (05a3)\n\n**Pump info**:\nMedtrum nano 300\nFW: 1.81.78\nActive for ~2.5 days.\n\n**Other**\n- Nightscout enabled\n- BYODA - G7 sensor - active for ~3 days - Just moved over from xdrip+\n- No other car apps that require BT\n\nIt also happened when I was using xdrip+ sometimes\n\nIn case any other info is needed, let me know.\nIf I have a repeat i'll add it here.\n\n[AndroidAPS_LOG_1783519409330.log.zip](https://github.com/user-attachments/files/29812499/AndroidAPS_LOG_1783519409330.log.zip)\n[AndroidAPS.log](https://github.com/user-attachments/files/29812500/AndroidAPS.log)",
+ "comments": [
+  {
+   "id": 4918817095,
+   "user": "MilosKozak",
+   "created_at": "2026-07-08T20:13:53Z",
+   "body": "This is Android BLE implementation stack issue. Change phone or don't use other BLE devices (which could help a bit)"
+  }
+ ]
+}

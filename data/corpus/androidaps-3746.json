@@ -1,0 +1,57 @@
+{
+ "id": 2790455176,
+ "repo": "nightscout/AndroidAPS",
+ "number": 3746,
+ "title": "[3.3.1.2] Issue with Bluetooth Devices List  \"TWI Board\"",
+ "html_url": "https://github.com/nightscout/AndroidAPS/issues/3746",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2025-01-15T17:39:24Z",
+ "closed_at": "2025-01-19T21:11:47Z",
+ "comment_count": 7,
+ "body": "after Updating i did a pod change. now there are 2 \"TWI Board\" in my Bluetooth device list. \r\nLooks like the Old Pod and The New Pod are listed but Name is identically.\r\n\r\nHow is the right workflow on a podchange? \r\n- deactivate pod\r\n- delete TWI Board from Bluetooth Devices\r\n- start new pod?\r\n\r\notherwise i have a lot of twi Board devices in my list. \r\nMaybe tgqt causew Problems like when having a lot of Dexcom Devices in the List?\r\n\r\nThanks for your Support",
+ "comments": [
+  {
+   "id": 2594006161,
+   "user": "vanelsberg",
+   "created_at": "2025-01-15T21:47:11Z",
+   "body": "AAPS will unbind the pod on de-activation.\r\nI suspect the old \"TWI Board\" is a manually bounded Pod from before upgrading AAPS?\r\nYou should be able to remove using unpair/forget device."
+  },
+  {
+   "id": 2594698098,
+   "user": "m4nnihuber",
+   "created_at": "2025-01-16T07:16:46Z",
+   "body": "I never got a promt for connection with \"TWI Board\" before Update to 3.3.1.2 \r\nafter update the promt came up and i connected.\r\nSame happened after changing pod.\r\n\r\nSince the second pod i also have 2 identically bluetooth devices in the list.\r\nbuth both have different bluetooth adresses\r\n\r\n\r\n"
+  },
+  {
+   "id": 2595005153,
+   "user": "vanelsberg",
+   "created_at": "2025-01-16T09:31:12Z",
+   "body": "> Since the second pod i also have 2 identically bluetooth devices in the list. buth both have different bluetooth adresses\r\n\r\nI think that is because DASH does not present a unique name for the device. That was not needed as it was not designed to be visible in the list of BT devices.\r\n\r\nWhen bonding your phone \"remembers\" the specific DASH device dat was connected. Similar to the Dexcom transmitters after change. Phone will probably cleanup after some time. I'd say you can safely ignore.\r\n"
+  },
+  {
+   "id": 2597136091,
+   "user": "olorinmaia",
+   "created_at": "2025-01-16T23:46:47Z",
+   "body": "Did you have connection issues with Dash on android 15 before upgrading to 3.3.1.2? "
+  },
+  {
+   "id": 2597449983,
+   "user": "m4nnihuber",
+   "created_at": "2025-01-17T05:13:16Z",
+   "body": "Not before aupdate. But now there are serveral Issues \nMostly Notification TBR could not be set or unknown Error 01"
+  },
+  {
+   "id": 2599865222,
+   "user": "vanelsberg",
+   "created_at": "2025-01-18T20:23:48Z",
+   "body": "See also [Can't connect to Omnipod DASH pods after Android 15 upgrade](https://github.com/nightscout/AndroidAPS/issues/3471#issuecomment-2599803223)"
+  },
+  {
+   "id": 2601023387,
+   "user": "MilosKozak",
+   "created_at": "2025-01-19T21:11:47Z",
+   "body": "https://github.com/nightscout/AndroidAPS/commit/8abfbd51842f6f9344f5764bd93f5a78113753a0"
+  }
+ ]
+}

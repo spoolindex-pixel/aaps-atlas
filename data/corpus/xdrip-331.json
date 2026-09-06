@@ -1,0 +1,51 @@
+{
+ "id": 301995497,
+ "repo": "NightscoutFoundation/xDrip",
+ "number": 331,
+ "title": "Extend date string parsing to handle \"2018-03-03T11:22:48+01:00\"",
+ "html_url": "https://github.com/NightscoutFoundation/xDrip/issues/331",
+ "state": "closed",
+ "labels": [],
+ "created_at": "2018-03-03T12:44:22Z",
+ "closed_at": "2021-02-17T06:19:18Z",
+ "comment_count": 6,
+ "body": "While investigating #316 I noticed that the AndroidAPS.log had many entries of the form\r\n\r\n```11:25:50.585 [IntentService[DataService]] ERROR [NSDeviceStatus.java:243]: Unhandled exception\r\njava.text.ParseException: Unparseable date: \"2018-03-03T11:22:48+01:00\" (at offset 19)\r\n        at java.text.DateFormat.parse(DateFormat.java:571) ~[na:0.0]\r\n        at info.nightscout.utils.DateUtil.fromISODateString(DateUtil.java:51) ~[na:0.0]\r\n        at info.nightscout.androidaps.plugins.NSClientInternal.data.NSDeviceStatus.updatePumpData(NSDeviceStatus.java:213) ~[na:0.0]\r\n```\r\n\r\nWhile I am (strangely, but I am not an Andriod developer) not able to find a ``NSDeviceStatus.java`` file in https://github.com/NightscoutFoundation/xDrip I see two ``DateUtil.java``, one in ``:app`` and the other in ``:wear``. If I was to create a Pull Request for thie, would those be the two files to change?",
+ "comments": [
+  {
+   "id": 370269909,
+   "user": "tzachi-dar",
+   "created_at": "2018-03-04T22:23:16Z",
+   "body": "This is very likely an issue on android aps and not in xDrip.\r\n\r\nTry:\r\nhttps://github.com/MilosKozak/AndroidAPS/blob/b9b99917d9284dd46aebb0d5b82f64d544bb62d0/app/src/main/java/info/nightscout/androidaps/plugins/NSClientInternal/data/NSDeviceStatus.java#L207"
+  },
+  {
+   "id": 370374012,
+   "user": "endafarrell",
+   "created_at": "2018-03-05T10:21:23Z",
+   "body": "@tzachi-dar Let me know if a PR on extending xDrip's DateUtils to cover that would be of any benefit. I don't know if xDrip is ever presented to these kinds of date strings."
+  },
+  {
+   "id": 371089650,
+   "user": "endafarrell",
+   "created_at": "2018-03-07T10:10:56Z",
+   "body": "@tzachi-dar - is #309 related to this - or is #309 an exception from within the AndroidAPS code that is bubbling-up to xDrip?"
+  },
+  {
+   "id": 514355594,
+   "user": "BigWebstas",
+   "created_at": "2019-07-23T19:43:47Z",
+   "body": "any update on the resolution? im having trouble getting stuff from Diabetes:m >> Nightscout >> Xdrip+\r\n\r\n![image](https://user-images.githubusercontent.com/2896329/61742194-ccb5d100-ad4f-11e9-9629-64e94e6793d2.png)\r\n"
+  },
+  {
+   "id": 779819170,
+   "user": "Navid200",
+   "created_at": "2021-02-16T12:56:24Z",
+   "body": "@endafarrell Would you please close this if it is resolved?\r\nI see the second post stating that this is very likely not due to xDrip.\r\nYou never responded to that comment.\r\nDo you disagree?\r\nIf not, let's close the issue please.\r\nThanks"
+  },
+  {
+   "id": 780331295,
+   "user": "endafarrell",
+   "created_at": "2021-02-17T06:19:18Z",
+   "body": "Hi Navid200\r\n\r\nI cannot be sure where the problem was or what changed for the problem to have been resolved, but this isn't a problem any more. "
+  }
+ ]
+}
