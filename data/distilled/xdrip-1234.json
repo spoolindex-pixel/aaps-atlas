@@ -1,0 +1,21 @@
+{
+ "issue_id": 1234,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/1234",
+ "title": "No intial calibration with 0000",
+ "symptom": "When starting a G6 sensor with code 0000 using a firmware that does not output raw data, after two hours the screen displays 'Needs Initial Calibration' but the 'Initial Calibration' option in the menu does not appear, preventing calibration. With other codes, the menu appears after 2-3 glucose values.",
+ "cause": "The sensor is waiting for a calibration before giving a glucose value, and xDrip is waiting for a glucose value before allowing calibration, creating a deadlock. The menu item for initial calibration never appears with a 0000 start.",
+ "fix": "A fix was provided in a test version: https://github.com/NightscoutFoundation/xDrip/releases/download/2020.02.20b/xDrip-plus-20200220-33e5f35.apk. Additionally, a user reported successfully using 0000 code after a restart without error, but prefers using the 4-digit code and performing two calibrations.",
+ "settings_changed": [],
+ "devices": [
+  "G6"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "G6",
+  "0000",
+  "initial calibration"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "Because the G6 no longer gives raw data, if you start it with 0000 you are stuck because the sensor is waiting for a calibration before it gives a glucose value and xdrip is waiting for a glucose value before it allows calibration..."
+}

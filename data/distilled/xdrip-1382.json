@@ -1,0 +1,15 @@
+{
+ "issue_id": 1382,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/1382",
+ "title": "Timestamp wrong order for syringe value",
+ "symptom": "The red dot (syringe value) appears before the first calibrated CGM value on the graph, despite its timestamp being later, causing a wrong order.",
+ "cause": "The FUZZER shifts all readings forward in time by 2.5 minutes for plotting, but calibrations may not go through the FUZZER, causing the visual misordering.",
+ "fix": "The issue was explained as intentional: the blood test point is shifted on the graph to a later time for visual effects to account for the delay between blood glucose and interstitial fluid glucose. The calibration value is sent to the transmitter right away with the correct time.",
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [],
+ "confidence": "medium",
+ "evidence_quote": "There is a FUZZER figure (2.5 minutes) that is how much all readings are moved forward in time only for plotting on the graph intentionally. It is possible that calibrations are not going through the FUZZER. This could be a bug."
+}

@@ -1,0 +1,19 @@
+{
+ "issue_id": 191,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/191",
+ "title": "Feature request: G5 - Report high-noise readings as raw instead of SGV",
+ "symptom": "Entries uploaded to Nightscout do not take noise levels into account when using the Dexcom G5. The noise level is available locally, but the MongoDB entries all contain \"noise\": 1 and report BG values as SGV. This makes it impossible for loop systems to recognize unreliable BG data, potentially leading to critical incidents.",
+ "cause": "The xDrip Nightscout uploader does not translate the calculated noise values to the Nightscout noise scale, so all entries are reported with noise level 1 (clean) regardless of actual noise.",
+ "fix": "jamorham implemented a commit to translate the calculated noise values within xDrip to match the Nightscout noise scale, mapping xDrip's NOISE_TRIGGER threshold to \"2\", NOISE_TOO_HIGH_FOR_PREDICT to \"3\", and NOISE_HIGH to \"4\", with \"0\" meaning unknown noise. This change was available in the Oct 4th xDrip Nightly.",
+ "settings_changed": [],
+ "devices": [
+  "Dexcom G5"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "Nightscout uploader"
+ ],
+ "confidence": "high",
+ "evidence_quote": "I plan to add support to translate the calculated noise values within xDrip to ones to match the Nightscout noise scale."
+}

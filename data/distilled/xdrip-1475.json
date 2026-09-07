@@ -1,0 +1,15 @@
+{
+ "issue_id": 1475,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/1475",
+ "title": "Database import does not complete successfully due to incorrect SQLite database corruption error",
+ "symptom": "When re-installing the xDrip app and loading a previous database backup, the import does not complete successfully. The database file doesn't get fully copied, and after reloading the app, logcat shows SQLite corruption errors like 'database disk image is malformed' and 'file unlinked while open'.",
+ "cause": "The database is closed after renaming the imported backup to the sqlite database file, causing a race condition that appears more frequently with larger databases.",
+ "fix": "A PR was opened to resolve the issue by ensuring the database is closed before renaming the imported backup file.",
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [],
+ "confidence": "medium",
+ "evidence_quote": "which appears because the database is closed _after_ renaming the imported backup to the sqlite database file, causing a race condition which seems to appear more frequently the larger the size of your database. I am opening a PR to resolve this issue."
+}

@@ -1,0 +1,20 @@
+{
+ "issue_id": 591,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/591",
+ "title": "JSON exception when receving historical values from 600SeriesAndroidUploder",
+ "symptom": "When the Medtronic 640G pump is back in range, historical values are not appearing in xDrip; only the current value appears. The log shows 'Got JSON exception org.json.JSONException: No value for direction'. This started after upgrading xDrip on the collecting device.",
+ "cause": "Changes made on 4/7 in NSEmulatorReceiver.java added a slope parameter read from the direction parameter in JSON, which does not comply with 600SeriesAndroidUploader.",
+ "fix": "The Sept 29th nightly resolves the problem; after installing the latest version, no exception occurs and history is uploaded.",
+ "settings_changed": [],
+ "devices": [
+  "Medtronic 640G",
+  "600SeriesAndroidUploder"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "600SeriesAndroidUploder"
+ ],
+ "confidence": "high",
+ "evidence_quote": "Further code review show - changes were done on 4/7 at file at file: app/src/main/java/com/eveningoutpost/dexdrip/NSEmulatorReceiver.java in function: bgReadingInsertFromData slope parameter was added, reading it from direction parameter in JSON I believe this addition does not comply with 600SeriesAndroidUploader"
+}
