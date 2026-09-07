@@ -1,35 +1,38 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>xDrip+ settings · AAPS Atlas</title>
-<link rel="stylesheet" href="../style.css">
-</head>
-<body class="docpage">
-<main>
-  <p class="crumb"><a href="../index.html">← AAPS Atlas search</a></p>
-  <article class="mirror">
-    <h1>xDrip+ settings</h1>
-    <p class="source">Mirrored from <a href="https://wiki.aaps.app/en/latest/CompatibleCgms/xDrip.html">https://wiki.aaps.app/en/latest/CompatibleCgms/xDrip.html</a> — community documentation, not medical advice.</p>
-    <hr>
-<h2>Source: &lt;https://wiki.aaps.app/en/latest/CompatibleCgms/xDrip.html&gt;</h2>
-<h2>xDrip+ settings</h2>
-<p>If not already set up, then download  xDrip+ .</p>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>xDrip+ settings · AAPS Atlas</title>
+    <meta name="description" content="Client-side search over AAPS / xDrip docs, solved GitHub issue threads, and distilled symptom-cause-fix records. Community knowledge, not medical advice.">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23070b0d'/%3E%3Ctext x='16' y='22' font-family='ui-monospace,Menlo,monospace' font-size='16' fill='%234fd1c5' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
+    <link rel="stylesheet" href="/style.css">
+  </head>
+  <body class="docpage">
+    
+  <main>
+    <p class="crumb"><a href="/">← AAPS Atlas search</a></p>
+    <article class="mirror">
+      <h1>xDrip+ settings</h1>
+      <p class="source">
+        Mirrored from <a href="https://wiki.aaps.app/en/latest/CompatibleCgms/xDrip.html">https://wiki.aaps.app/en/latest/CompatibleCgms/xDrip.html</a> — community documentation, not medical advice.
+      </p>
+      <hr>
+      <p>If not already set up, then download  xDrip+ .</p>
 <p>Disable battery optimization and allow background activity for the xDrip+ app.</p>
 <p>You can safely download the  latest APK (stable) unless you need recent features or are using sensors that are being actively integrated (like G7), in which case you should use the latest  Nightly Snapshot .</p>
-<h3>Basic settings for all CGM &amp; FGM systems</h3>
-<h4>Disable Nightscout upload</h4>
+<h2>Basic settings for all CGM &amp; FGM systems</h2>
+<h3>Disable Nightscout upload</h3>
 <p>Starting with AAPS 3.2, you shouldn’t let any other app upload data (blood glucose and treatments) to Nightscout.</p>
 <p>→ Hamburger Menu (1) → Settings (2) → Cloud Upload (3) -&gt; Nightscout Sync (REST-API)(4) → Switch  OFF Enabled (5)</p>
-<h5>Disable automatic calibration and treatments</h5>
+<h4>Disable automatic calibration and treatments</h4>
 <p>If you use an older version of AAPS (before 3.2), make sure to deactivate  Automatic Calibration (7) If the checkbox for  Automatic Calibration is checked, activate  Download treatments (6) once, then remove the checkbox for  Automatic Calibration and deactivate  Download treatments again.</p>
 <p>Tap  Extra Options (8)</p>
 <p>Safety warning</p>
 <p>You must deactivate “Upload treatments” from xDrip+, otherwise treatments can be doubled in AAPS leading to false COB and IOB.</p>
 <p>Deactivate  Upload treatments (9) and make sure you will  NOT use  Back-fill data (11).</p>
 <p>Option  Alert on failures should also be deactivated (10). Otherwise you will get an alarm every 5 minutes in case Wi-Fi/mobile network issues or if the server is not available.</p>
-<h4>Inter-app Settings (Broadcast)</h4>
+<h3>Inter-app Settings (Broadcast)</h3>
 <p>If you are going to use AAPS and the data should be forwarded to i.e. AAPS you have to activate broadcasting in xDrip+ in Inter-App settings.</p>
 <p>→ Hamburger Menu (1) → Settings (2) → Inter-app settings (3) → Broadcast locally  ON (4)</p>
 <p>In order for the values to be identical in AAPS with respect to xDrip+, you should activate  Send the displayed glucose value (5).</p>
@@ -37,51 +40,51 @@
 <p>If you have also activated  Accept treatments in xDrip+ and  Enable broadcasts to xDrip+ in AAPS xDrip+ plugin, then xDrip+ will receive insulin, carbs and basal rate information from AAPS.</p>
 <p>If you enable  Accept Calibrations , xDrip+ will use the calibrations from AAPS. Be careful when you use this feature with Dexcom sensors: read  this first.</p>
 <p>Remember to disable Import Sounds to avoid xDrip+ making a ringtone every time AAPS sends a basal/profile change.</p>
-<h5>Identify receiver</h5>
+<h4>Identify receiver</h4>
 <ul><li>If you discover problems with local broadcast (AAPS not receiving BG values from xDrip+) go to → Hamburger Menu (1) Settings (2) → Inter-app settings (3) → Identify receiver (7) and enter  info.nightscout.androidaps for AAPS build (if you are using PumpControl build, please enter  info.nightscout.aapspumpcontrol instead!!).</li><li>Pay attention: Auto-correction sometimes tend to change i to capital letter. You  must use only lowercase letters when typing  info.nightscout.androidaps (or  info.nightscout.aapspumpcontrol for PumpControl). Capital I would prevent the App from receiving BG values from xDrip+.</li></ul>
-<h3>Use AAPS to calibrate in xDrip+</h3>
+<h2>Use AAPS to calibrate in xDrip+</h2>
 <ul><li>If you want to be able to use AAPS to calibrate then in xDrip+ go to Settings → Interapp Compatibility → Accept Calibrations and select ON.</li><li>You may also want to review the options in Settings → Less Common Settings → Advanced Calibration Settings.</li></ul>
-<h3>Dexcom G6</h3>
+<h2>Dexcom G6</h2>
 <ul><li>The Dexcom G6 transmitter can simultaneously be connected to the Dexcom receiver (or alternatively the t:slim pump) and one app on your phone.</li><li>When using xDrip+ as receiver uninstall Dexcom app first.  You cannot connect xDrip+ and Dexcom app with the transmitter at the same time!</li><li>If you need Clarity and want to profit from xDrip+ features, use the  Build Your Own Dexcom App with local broadcast to xDrip+, or use xDrip+ as a Companion app receiving notifications from the official Dexcom app.</li></ul>
-<h4>xDrip+ version depending on G6 transmitter serial no</h4>
+<h3>xDrip+ version depending on G6 transmitter serial no</h3>
 <ul><li>All G6 transmitters manufactured after fall/end 2018 are called “Firefly”. They do not allow sensor restart without  removing the transmitter , they do not send raw data. It is recommended to use the latest  Nightly Snapshot .</li><li>Old rebatteried transmitters and modified transmitters allow sensor life extension and restarts, they also send raw data. You can use the  latest APK (stable) .</li></ul>
-<h4>Dexcom specific settings</h4>
+<h3>Dexcom specific settings</h3>
 <ul><li>Follow  these instructions to setup xDrip+.</li></ul>
-<h4>Preemptive restarts not recommended</h4>
+<h3>Preemptive restarts not recommended</h3>
 <p>Only rebatteried or modified Dexcom transmitters.  Preemptive restarts do not work with standard transmitters and will stop the sensor completely: you need to  remove the transmitter to restart the sensor.</p>
 <p>The automatic extension of Dexcom sensors ( preemptive restarts ) is not recommended as this might lead to “jumps” in BG values on day 9 after restart.</p>
 <p>To use it safely, there are a few points to be aware of:</p>
 <ul><li>If you are using the native data with the calibration code in xDrip+ or Spike, the safest thing to do is not allow preemptive restarts of the sensor.</li><li>If you must use preemptive restarts, then make sure you insert at a time of day where you can observe the change and calibrate if necessary.</li><li>If you are restarting sensors, either do it without the factory calibration for safest results on days 11 and 12, or ensure you are ready to calibrate and keep an eye on variation.</li><li>Pre-soaking of the G6 with factory calibration is likely to give variation in results. If you do pre-soak, then to get best results, you will probably need to calibrate the sensor.</li><li>If you aren’t being observant about the changes that may be taking place, it may be better to revert to non-factory-calibrated mode and use the system like a G5.</li></ul>
 <p>To learn more about the details and reasons for these recommendations read the  complete article published by Tim Street at  &lt;www.diabettech.com&gt; .</p>
-<h4>Connect G6 transmitter for the first time</h4>
+<h3>Connect G6 transmitter for the first time</h3>
 <p>For second and following transmitters see  Extend transmitter life below.</p>
 <p>Follow  these instructions .</p>
-<h4>Transmitter battery status</h4>
+<h3>Transmitter battery status</h3>
 <ul><li>Battery status can be controlled in system status</li></ul>
 <p> → Hamburger Menu (1) → System Status (2) → If you are on the Classic Status Page (3) swipe the screen (4) to reach → G5/G6/G7 Status screen.</p>
 <ul><li>See  here for more information.</li></ul>
-<h4>Extend transmitter life</h4>
+<h3>Extend transmitter life</h3>
 <ul><li>Lifetime cannot be extended for Firefly transmitters: only rebatteried or modified transmitters.</li><li>Follow  these instructions for non-Firefly transmitters.</li></ul>
-<h4>Replace transmitter</h4>
+<h3>Replace transmitter</h3>
 <ul><li>Turn original Dexcom receiver off (if used).</li><li>Stop sensor (only if replacing sensor).</li><li>Forget device in xDrip+ system status AND in smartphone’s BT settings (Will be shown as Dexcom?? whereas ?? are the last two digits of the transmitter serial no.)</li></ul>
 <p> → Hamburger Menu (1) → System Status (2) → If you are not on the Classic Status Page (3) swipe the screen (4) to reach it → then tap Forget Device (5).</p>
 <ul><li>Remove transmitter (and sensor if replacing sensor). To remove transmitter without removing sensor see  this , or this video  &lt;https://youtu.be/AAhBVsc6NZo&gt; .</li><li>Put the old transmitter far away to prevent reconnection. A microwave is a perfect Faraday shield for this - but unplug power cord to be 100% sure no one is turning the microwave on.</li><li>Follow  these instructions .</li><li>Do not turn original Dexcom receiver (if used) back on before xDrip+ shows first readings.</li></ul>
-<h4>New Sensor</h4>
+<h3>New Sensor</h3>
 <ul><li>Turn original Dexcom receiver off (if used).</li><li>Stop sensor following  these instructions .</li><li>Insert and then start a new sensor following  these instructions .</li></ul>
-<h4>Retrieve sensor code</h4>
+<h3>Retrieve sensor code</h3>
 <p>→ Hamburger Menu (1) → System Status (2) → If you are on the Classic Status Page (3) swipe the screen (4) to reach → G5/G6/G7 Status screen → Calibration Code.</p>
-<h4>Troubleshooting Dexcom G5/G6 and xDrip+</h4>
-<h5>Problem connecting transmitter</h5>
+<h3>Troubleshooting Dexcom G5/G6 and xDrip+</h3>
+<h4>Problem connecting transmitter</h4>
 <p>Follow  these instructions .</p>
-<h5>Problem when starting new sensor</h5>
+<h4>Problem when starting new sensor</h4>
 <p>Follow  these instructions .</p>
-<h3>Libre 1</h3>
+<h2>Libre 1</h2>
 <ul><li>Setup your NFC to Bluetooth bridge in xDrip+</li></ul>
 <p>→ Hamburger Menu (1) → Settings (2) → Less common settings (3) → Bluetooth Settings (4)</p>
 <ul><li>In Bluetooth Settings set the checkboxes exactly as in the screenshots below (5)</li><li>Disable watchdogs as they will reset the phone Bluetooth and interrupt your pump connection.</li><li>You can try to enable the following settings (7)</li><li>Use scanning</li><li>Trust Auto-Connect</li><li>Use Background Scans</li><li>If you easily lose connection to the bridge or have difficulties recovering connection,  DISABLE THEM (8).</li><li>Leave all other options disabled unless you know why you want to enable them.</li></ul>
-<h4>Libre smart reader battery level</h4>
+<h3>Libre smart reader battery level</h3>
 <ul><li>Battery level of bridges such as MiaoMiao and Bubble can be displayed in AAPS (not Blucon).</li><li>Details can be found on  screenshots page .</li></ul>
-<h4>Connect Libre Transmitter &amp; start sensor</h4>
+<h3>Connect Libre Transmitter &amp; start sensor</h3>
 <ul><li>If your sensor requires it (Libre 2 EU and Libre 1 US) install the latest out of process algorithm.</li><li>Your sensor must be already started using the vendor app or the reader (xDrip+ cannot start or stop Libre sensors).</li><li>Set the data source to Libre Bluetooth.</li></ul>
 <p>→ Hamburger Menu (1) → Settings (2) → Select Libre Bluetooth in Hardware Data source (3)</p>
 <ul><li>Scan Bluetooth and connect the bridge.</li></ul>
@@ -90,11 +93,12 @@
 <p>Safety warning</p>
 <p>Do not use sensor data before the one hour warm-up is over: the values can be extremely high and cause wrong decisions in AAPS.</p>
 <p>→ Hamburger Menu (1) → Start sensor (2) → Start sensor (3) → Set the exact time you started it with the reader or the vendor app. If you didn’t start it today, answer “Not Today” (4).</p>
-<h3>Libre 2 patched app</h3>
+<h2>Libre 2 patched app</h2>
 <ul><li>Set the data source to Libre patched app.</li></ul>
 <p>→ Hamburger Menu (1) → Settings (2) → Select Libre (patched App) in Hardware Data source (3)</p>
 <ul><li>You can add  BgReading:d,xdrip libre_receiver:v under Less Common Settings-&gt;Extra Logging Settings-&gt;Extra tags for logging. This will log additional error messages for trouble shooting.</li></ul>
-  </article>
-</main>
-</body>
+    </article>
+  </main>
+
+  </body>
 </html>

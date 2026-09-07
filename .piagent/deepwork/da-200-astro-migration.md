@@ -116,6 +116,25 @@ file:// + "repo is the static site" semantics are unchanged).
 
 ## Phase log
 
+### GATE 1 outcome — READY for P2 (oracle review of a1ae9cc)
+Preconditions recorded by reviewer:
+1. Restore dirty site/ tree in shared worktree before P2 commit/rebase (state from P1
+   builds). RESOLVED: `git restore site/` at P2 start; site/ output regenerated + committed
+   together with each phase's source commit so the repo stays coherent.
+2. P2 first commit must retool build_index.py → public/ so `npm run build` + search_check
+   + artifact asserts pass end-to-end (P1's npm run build was ordering-broken: old
+   build_index wrote site/ JSON, astro emptied outDir).
+Product decision (recorded): **file:// self-browsing is DROPPED — http(s) parity is the
+contract.** Astro emits root-absolute URLs (/style.css, /search.js, /) with no relative-base
+option; local preview stays `python3 -m http.server 8000 -d site`. search-data.js + the
+unchanged search.js file:// branch remain generated/present (CI asserts site/search-data.js;
+search.js byte-identical), documented as vestigial-for-file:// but kept for the http data-load
+contract. Re-document in README/AGENTS-REFERENCE at P3 (old "open site/index.html from disk"
+option A becomes `npm run build` + http.server).
+Also flagged LOW (deliberate, documented): doc heading levels now map naturally (## → h2 etc.)
+vs the old accidental +1 shift, restyling .mirror h2/h3 slightly; footer "Rebuild: npm run
+build" command was premature until P2 retool.
+
 ### P0 baseline (done)
 Origin/main (05ac845) scratch worktree .tmp/v-main: build_index OK (docs=6 threads=53
 distilled=1025 index=2546KiB), validate `0 failed`, search_check ALL CHECKS PASSED.
