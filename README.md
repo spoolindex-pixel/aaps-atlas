@@ -28,29 +28,36 @@ Two corpora, one prebuilt client-side index:
 | **Threads** (`data/threads/`) | 53 closed GitHub issue discussions (demo slice) | [nightscout/AndroidAPS](https://github.com/nightscout/AndroidAPS) + [NightscoutFoundation/xDrip](https://github.com/NightscoutFoundation/xDrip) | every card links back to the original GitHub issue |
 | **Distilled** (`data/distilled/`) | AI-extracted symptom → cause → fix records (batched LLM runs over the full corpus) | same threads, distilled by script | every record: issue number + `url` + verbatim evidence quote + confidence |
 
-The site (`site/`) is hand-written `index.html` + vanilla JS — no
-framework, **no CDN/network at runtime**. The index is prebuilt by a script
-into `site/search-index.json` (and `site/search-data.js` so opening
-`index.html` straight from disk with `file://` works). Filter chips narrow
-results by type (docs / raw thread / distilled) and by device (G7, DASH,
-Omnipod 5, …) or Android version.
+The site (`site/`) is an **Astro static build** (no framework JS, **no CDN/network at
+runtime**): a search home page plus the six docs mirrors rendered as real pages, with the
+corpus payload prebuilt at build time into `site/search-index.json`. Filter chips narrow
+results by type (docs / raw thread / distilled) and by device (G7, DASH, Omnipod 5, …) or
+Android version.
 
 ## Try it locally
 
 ```bash
-# option A — open the built site from disk (file:// works)
-open site/index.html
-
-# option B — tiny static server
+# serve the committed built site (rebuilt on every main push)
 python3 -m http.server 8000 -d site
 # -> http://localhost:8000
+
+# …or rebuild it locally first (npm ci only the first time / after a dependency change)
+npm ci && npm run build
+python3 -m http.server 8000 -d site
 ```
 
 Type `pod activation` — you should get the Omnipod DASH docs page plus the
 solved threads about pod activation problems, each labeled `docs` or
 `thread`.
 
+> The Astro output uses root-absolute asset paths (`/style.css`), so it must be
+> served over http — opening `site/index.html` straight from disk with
+> `file://` is not supported (use the http.server command above).
+
 ## Rebuild everything (data → index → site)
+
+Data steps (docs/threads/corpus/distilled) are stdlib Python; the final site build is Astro
+(needs Node ≥ 22.12 — `npm ci` once, pinned in package-lock.json):
 
 ```bash
 python3 scripts/fetch_docs.py     # re-mirror docs pages into data/docs/   (network)
@@ -58,13 +65,19 @@ python3 scripts/fetch_threads.py  # re-pull demo threads into data/threads/ (nee
 GITHUB_TOKEN=… python3 scripts/fetch_corpus.py   # full closed-issue corpus -> data/corpus/ (network)
 python3 scripts/distill.py        # next ~200 undistilled threads -> data/distilled/ (LLM batch)
 python3 scripts/validate_distilled.py  # schema + url + quote-containment gate
-python3 scripts/build_index.py    # docs + threads + distilled -> site/search-index.json (+ search-data.js, site/docs/*.html)
+npm ci                            # install pinned site build deps (first time / after dependency change)
+python3 scripts/build_index.py    # data -> public/search-index.json + public/search-data.js
+npm run astro                     # public/ + src/ (data/docs/*.md) -> site/ static output
 node    scripts/search_check.mjs  # acceptance harness: corpus sizes, attribution, demo queries
 ```
 
+(`npm run build` = `build_index.py` + `astro build` — the exact sequence the nightly
+rollup chain uses, documented in AGENTS-REFERENCE §site-build.)
+
 - `build_index.py` prints corpus stats
   (`docs=N threads=M distilled=K index=…KiB`) and exits non-zero if the
-  corpus is under target or a record lacks its source URL / `html_url`.
+  corpus is under target or a record lacks its source URL / `html_url`; it
+  writes the gitignored `public/` intermediates that Astro copies into `site/`.
 - `search_check.mjs` runs the **same** `site/search.js` algorithm used by the
   page against the built index and requires hits across docs, threads and
   distilled records for the demo queries.
@@ -86,10 +99,14 @@ scripts/fetch_threads.py  demo-slice threads via GitHub REST (gh api)
 scripts/fetch_corpus.py   full corpus fetch, resumable (GITHUB_TOKEN env)
 scripts/distill.py      LLM batch distiller (corpus -> distilled; ~200/run)
 scripts/validate_distilled.py  schema/url/quote gate over data/distilled/
-scripts/build_index.py  corpus -> client index + local doc pages
+scripts/build_index.py  data -> public/search-index.json + search-data.js
 scripts/search_check.mjs  acceptance checks (node)
-site/                   static site: index.html, style.css, search.js,
-                        search-index.json (+ search-data.js), docs/*.html
+package.json / package-lock.json  pinned Astro build deps (Node >= 22.12)
+astro.config.mjs        Astro config: outDir site/, docs emitted as *.html
+src/                    Astro sources: index.astro, docs/[slug].astro, layouts, lib
+public/                 static assets (style.css, search.js) + generated search index
+site/                   Astro static output: index.html, docs/*.html, style.css,
+                        search.js, search-index.json (+ search-data.js)
 .github/workflows/ci.yml  build+checks, then token-gated CF Pages deploy
 ```
 
@@ -139,9 +156,9 @@ counted open issues too — 3387 *is* the complete closed set.
   `data/corpus/raw/` (gitignored, re-fetchable).
 - **Distilled** (phase 2): LLM-extracted S-C-F records, one per corpus
   thread, distilled in ~200-thread batches.
-- Current index: **6 docs, 53 raw threads, 832 distilled records** (four
-  ~200-thread batches: phase-2 first batch + three batch runs; grows with
-  each later batch task), index ≈ 2.2 MiB raw (~410 KiB gzipped).
+- Current index: **6 docs, 53 raw threads, 1025 distilled records** (five
+  ~200-thread batches so far; grows with each later batch task), index ≈
+  2.5 MiB raw (~410 KiB gzipped).
 
 ## Hosting options (all free tier)
 

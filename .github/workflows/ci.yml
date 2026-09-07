@@ -9,6 +9,10 @@ on:
 permissions:
   contents: read
 
+env:
+  # Astro only needs the data -> index -> static-site build here; never prompt.
+  ASTRO_TELEMETRY_DISABLED: "1"
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -19,8 +23,19 @@ jobs:
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: "3.12"
-      - name: Build search index (data/ -> site/)
+      # actions/setup-node v4.4.0 — Astro 7 requires node >= 22.12
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install site build deps (Astro)
+        run: npm ci
+      - name: Build search index (data/ -> public/)
         run: python3 scripts/build_index.py
+      # Order matters: build_index writes public/*, then astro build clears
+      # outDir (site/) and copies public/* + renders src/ into it.
+      - name: Build static site (Astro -> site/)
+        run: npm run astro
       - name: Validate distilled schema (url required on every record)
         run: python3 scripts/validate_distilled.py
       - name: Search acceptance (docs + threads + distilled)

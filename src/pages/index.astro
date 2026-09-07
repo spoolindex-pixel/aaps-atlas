@@ -1,15 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AAPS Atlas — searchable AAPS / xDrip knowledge base</title>
-    <meta name="description" content="Client-side search over AAPS / xDrip docs, solved GitHub issue threads, and distilled symptom-cause-fix records. Community knowledge, not medical advice.">
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23070b0d'/%3E%3Ctext x='16' y='22' font-family='ui-monospace,Menlo,monospace' font-size='16' fill='%234fd1c5' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
-    <link rel="stylesheet" href="/style.css">
-  </head>
-  <body>
-    
+---
+// AAPS Atlas search home — static shell rendered by Astro. All interactivity
+// (index load, search, type/device/Android filters, cards) is the unchanged
+// vanilla JS in public/search.js, which expects exactly the element ids and
+// chip/data-attribute structure below. The prebuilt index
+// (public/search-index.json, produced by scripts/build_index.py before the
+// build) is fetched at runtime; file:// opens inject public/search-data.js.
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="AAPS Atlas — searchable AAPS / xDrip knowledge base">
   <div class="glow"></div>
 
   <header class="top">
@@ -36,7 +35,14 @@
   <main class="wrap">
     <section class="searchbox">
       <label class="visually-hidden" for="q">Search AAPS Atlas</label>
-      <input id="q" type="search" autocomplete="off" spellcheck="false" placeholder="e.g. G7 broadcast · pod activation · Android 16 bluetooth" aria-label="Search the knowledge base">
+      <input
+        id="q"
+        type="search"
+        autocomplete="off"
+        spellcheck="false"
+        placeholder="e.g. G7 broadcast · pod activation · Android 16 bluetooth"
+        aria-label="Search the knowledge base"
+      />
       <div class="meta" id="meta"></div>
     </section>
 
@@ -71,6 +77,5 @@
     </div>
   </footer>
 
-  <script src="/search.js" defer></script>
-  </body>
-</html>
+  <script is:inline src="/search.js" defer></script>
+</Base>

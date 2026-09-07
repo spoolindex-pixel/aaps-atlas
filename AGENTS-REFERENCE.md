@@ -12,11 +12,15 @@ env vars and CI/deploy notes.
 | `GITHUB_TOKEN=… python3 scripts/fetch_corpus.py` | Full closed-issue corpus + comments → `data/corpus/*.json` + `data/corpus/raw/*.jsonl`; resumable + `--incremental` (network; token env only) |
 | `python3 scripts/distill.py` | LLM batch distiller: corpus → `data/distilled/*.json` records (symptom/cause/fix); **~200/run cap** (`--limit`), state-skipping, rejects parked under `data/distilled/rejects/` |
 | `python3 scripts/validate_distilled.py` | CI gate: re-validates every distilled record (schema + url + verbatim-quote/devices containment vs corpus) |
-| `python3 scripts/build_index.py` | `data/*` → `site/search-index.json` + `site/search-data.js` + `site/docs/*.html`; prints `docs=N threads=M distilled=K index=…KiB`; exits 1 under target |
+| `python3 scripts/build_index.py` | `data/*` → `public/search-index.json` + `public/search-data.js` (build-time search payload); prints `docs=N threads=M distilled=K index=…KiB`; exits 1 under target |
+| `npm run astro` (aka `astro build`) | Astro static build: copies `public/*` + renders `src/` (docs pages from `data/docs/*.md`) → `site/`; **run `scripts/build_index.py` first** (Astro clears `site/` then copies `public/*`) |
+| `npm run build` | The one-shot site build: `build_index.py` then `astro build` (exact sequence the nightly chain uses) |
+| `npm ci` | Install pinned site build deps (Astro) — first time / after a dependency change; needs Node ≥ 22.12 |
+| `npx astro check` | Type-checks the Astro pages/components (0 errors expected) |
 | `node scripts/search_check.mjs` | Acceptance harness — corpus sizes, attribution, demo queries across docs+threads+distilled |
-| `python3 -m http.server 8000 -d site` | Local preview (also works via `file://` on `index.html`) |
+| `python3 -m http.server 8000 -d site` | Local preview of the built site (http only — Astro output uses root-absolute paths, `file://` double-click no longer works) |
 
-All build/check steps are stdlib Python 3.10+ or Node ≥ 18 — no `npm install`, no runtime CDN.
+All data-pipeline steps are stdlib Python 3.10+. The **site build now needs Node ≥ 22.12 and `npm ci`** (Astro 7, pinned in package-lock.json) — this changed post-DA-200; previously the site was buildable with stdlib python alone. No runtime CDN either way.
 
 ## Data pipeline
 
@@ -26,7 +30,8 @@ nightscout/AndroidAPS + NightscoutFoundation/xDrip
                                           -> scripts/fetch_threads.py  -> data/threads/*.json   (demo slice)
                                           -> scripts/fetch_corpus.py   -> data/corpus/*.json     (full archive)
 data/corpus/*.json (priority: comment count desc) -> scripts/distill.py -> data/distilled/*.json
-data/docs + data/threads + data/distilled -> scripts/build_index.py   -> site/
+data/docs + data/threads + data/distilled -> scripts/build_index.py   -> public/search-index.json + public/search-data.js
+public/* + src/ (data/docs/*.md rendered by Astro)   -> npm run build (astro)  -> site/   (Cloudflare Pages deploy input)
 ```
 
 ### Doc mirror format
@@ -169,9 +174,38 @@ recover 9/17 first-pass rejects after the prompt/norm_quote hardening.
 - Same file is `require()`d by `scripts/search_check.mjs` — the harness tests
   the exact page algorithm. Data loading: over `http(s)` fetch
   `search-index.json`; over `file://` inject `search-data.js`
-  (`window.__AAPS_INDEX__`).
-- `site/search-index.json`, `search-data.js`, `site/docs/*.html` are
-  generated — edit `scripts/build_index.py`, not the outputs.
+  (`window.__AAPS_INDEX__`) — the latter path is vestigial post-Astro (the
+  built site is http-served only) but is kept because search.js must stay
+  byte-identical for the harness.
+- Generated at build time: `public/search-index.json` + `public/search-data.js`
+  (by `scripts/build_index.py`) are copied by Astro into `site/` next to
+  `site/search.js` (source: `public/search.js`, byte-identical, never edited).
+  Docs pages are Astro pages (`src/pages/docs/[slug].astro` rendering
+  `data/docs/*.md` via `src/lib/md.ts`). Edit `scripts/build_index.py` or
+  `src/`, never the generated files.
+
+## Site build (the nightly rollup chain reads this §site-build)
+
+**Post-DA-200 this is the ONLY build path** (the old python docs-HTML emitter was removed).
+Exact commands for the nightly rollup chain and any rebuild — run them inside the usual
+lock (`exec 9>/tmp/aaps-atlas-distill.lock; flock -w 5400 9 || true`) before touching
+`data/`/`site/`:
+
+```bash
+npm ci                                        # only first time / after a dependency change (Node >= 22.12)
+python3 scripts/build_index.py                # data/ -> public/search-index.json + public/search-data.js
+npm run astro                                 # public/ + src/ -> site/  (astro build)
+# ...the two above are exactly `npm run build`
+python3 scripts/validate_distilled.py         # must print `0 failed`
+node scripts/search_check.mjs                 # must print ALL CHECKS PASSED
+```
+
+Then commit **only `data/` + `site/`** (generated outputs incl. `site/search-index.json`,
+`site/search-data.js`, `site/docs/*.html`, `site/index.html`) — rejects/state/manifest churn
+included. `public/search-index.json` + `public/search-data.js` are gitignored intermediates
+(regenerated every build; the committed copy lives in `site/`). A batch that runs only
+`build_index.py` and skips `npm run astro` leaves the committed `site/` **stale** — always
+run the full sequence so committed `site/` stays in sync with `data/`.
 
 ## Env vars / secrets
 
@@ -190,12 +224,15 @@ notice prints the one manual setup step. No `.env` required locally.
 
 `.github/workflows/ci.yml`:
 
-1. `build` — build_index.py, **validate_distilled.py** (schema + url + quote
-   containment gate), search_check.mjs, static-artifact assertions, upload
-   `site/` artifact. Runs on every PR + push to main.
+1. `build` — pinned setup-python 3.12 + **pinned setup-node 22** (Astro 7 needs ≥ 22.12),
+   `npm ci`, `python3 scripts/build_index.py` (→ `public/`), `npm run astro`
+   (**after** build_index — Astro clears `site/` then copies `public/*`),
+   **validate_distilled.py** (schema + url + quote containment gate),
+   search_check.mjs, static-artifact assertions, upload `site/` artifact.
+   Runs on every PR + push to main.
 2. `deploy` — needs build, main-only, gated on `secrets.CLOUDFLARE_API_TOKEN`.
-   Creates the Pages project (continue-on-error), then
-   `wrangler pages deploy site --project-name aaps-atlas`.
+   Downloads the `site/` artifact, then
+   `wrangler@4.129.0 pages deploy site --project-name aaps-atlas` (pin unchanged).
 
 ## Gotchas
 
@@ -210,8 +247,12 @@ notice prints the one manual setup step. No `.env` required locally.
    expected and safe to ignore — the build/CI checks are the gate. Never
    edit a distilled record to dodge an advisory (breaks the verbatim
    contract).
-4. Generated outputs live in `site/` — edit `scripts/build_index.py`, never
-   the generated files.
+4. Generated outputs live in `site/` (search-index.json, search-data.js,
+   docs/*.html, index.html) — produced by `scripts/build_index.py`
+   (→ gitignored `public/` intermediates) + the Astro build (`src/`).
+   Edit `scripts/build_index.py` or `src/`, never the generated files.
+   Astro renders the docs pages from `data/docs/*.md` (`src/lib/docs.ts` +
+   `src/lib/md.ts` are the faithful port of the old python renderer).
 5. Ruff S310 (urlopen) is suppressed per-line with `# noqa: S310` after the
    scheme allowlist; do not remove the guard. Apply the same pattern to new
    fetchers.
@@ -261,6 +302,25 @@ notice prints the one manual setup step. No `.env` required locally.
     thread must exist exactly once in the merged history). The final push is
     then `git push --force-with-lease` — content-preserving supersession of
     the stale branch; nothing is lost.
+16. **Site build needs Node ≥ 22.12 + `npm ci` (Astro 7).** The data-pipeline
+    scripts stay stdlib python, but a machine rebuilding `site/` must have
+    node ≥ 22.12 and run `npm ci` once (package-lock.json is committed). CI
+    pins setup-node 22; do not bump Astro without re-running the whole
+    §site-build pipeline.
+17. **Astro output is http-only.** It uses root-absolute `/style.css` etc., so
+    `file://` double-click on `site/index.html` no longer works — use
+    `python3 -m http.server 8000 -d site`. `search-data.js` + search.js's
+    file:// branch are kept only because search.js must stay byte-identical
+    for `search_check.mjs`.
+18. **Interrupted `astro build` can leave `site/.prerender/` junk** in the
+    output dir — never commit it (successful builds clean it up). `.astro/`
+    at the repo root and `public/search-index.json`/`search-data.js` are
+    gitignored build intermediates.
+19. **Rollup coherence:** since DA-200 the nightly batch MUST run the full
+    §site-build sequence (`build_index.py` → `npm run astro`). Running only
+    `build_index.py` commits `data/` with a stale committed `site/`
+    (CI-on-push would still deploy correctly, but the committed tree would
+    disagree with `data/`).
 
 ## Nightly batch runs (post-phase-2)
 
@@ -278,9 +338,12 @@ Task-scoped `~200/batch` distill runs (back-to-back queue, no successors):
    (`batch done … | distilled total=N parked=M`, `REMAINING undistilled`).
    Observed: ~200 threads ≈ 2 min at default 4 workers,
    prompt+completion tokens ≈ 425k, est. cost ≈ $0.07 (deepseek-chat).
-4. `python3 scripts/validate_distilled.py` (CI gate — must print
-   `0 failed`), `python3 scripts/build_index.py`, then commit ONLY
-   `data/` + `site/` (rejects, state.json, manifest churn included).
+4. Run the §site-build sequence — `python3 scripts/build_index.py` &&
+   `npm run astro` (or `npm run build`) — then
+   `python3 scripts/validate_distilled.py` (must print `0 failed`) and
+   `node scripts/search_check.mjs` (must print ALL CHECKS PASSED); then
+   commit ONLY `data/` + `site/` (rejects, state.json, manifest churn,
+   regenerated site outputs included).
 5. `git pull --rebase origin main && git push` (retry ≤3 on reject) — a
    branch push is enough; the queue harness opens/merges the PR, CI build
    runs on it, deploy fires on main. If the remote shared branch has
