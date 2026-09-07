@@ -1,0 +1,81 @@
+---
+// AAPS Atlas search home — static shell rendered by Astro. All interactivity
+// (index load, search, type/device/Android filters, cards) is the unchanged
+// vanilla JS in public/search.js, which expects exactly the element ids and
+// chip/data-attribute structure below. The prebuilt index
+// (public/search-index.json, produced by scripts/build_index.py before the
+// build) is fetched at runtime; file:// opens inject public/search-data.js.
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="AAPS Atlas — searchable AAPS / xDrip knowledge base">
+  <div class="glow"></div>
+
+  <header class="top">
+    <div class="wrap">
+      <div class="brand">
+        <div class="logo">A</div>
+        <div>
+          <h1>AAPS&nbsp;Atlas</h1>
+          <p class="tag">searchable AAPS / xDrip knowledge — official docs mirror + solved GitHub threads</p>
+        </div>
+      </div>
+      <div class="statline" id="statline">loading corpus…</div>
+    </div>
+  </header>
+
+  <div class="banner" role="note">
+    <strong>Not medical advice.</strong> Content mirrors community documentation and resolved GitHub issue
+    discussions (AAPS &amp; xDrip), plus <strong>AI-extracted</strong> symptom → cause → fix records distilled from
+    those threads — every distilled record is labelled, carries a verbatim evidence quote, and links back to its
+    source issue. Always confirm any change with the official docs, your clinician and your regional regulations
+    before acting on it.
+  </div>
+
+  <main class="wrap">
+    <section class="searchbox">
+      <label class="visually-hidden" for="q">Search AAPS Atlas</label>
+      <input
+        id="q"
+        type="search"
+        autocomplete="off"
+        spellcheck="false"
+        placeholder="e.g. G7 broadcast · pod activation · Android 16 bluetooth"
+        aria-label="Search the knowledge base"
+      />
+      <div class="meta" id="meta"></div>
+    </section>
+
+    <nav class="filters" id="filters" aria-label="Result type filter">
+      <button class="chip on" data-type="all">All</button>
+      <button class="chip" data-type="docs">Docs</button>
+      <button class="chip" data-type="thread">Threads</button>
+      <button class="chip" data-type="distilled">Distilled</button>
+      <span class="examples">Try: <a href="#q" data-example="G7 broadcast">G7 broadcast</a> ·
+        <a href="#q" data-example="pod activation">pod activation</a> ·
+        <a href="#q" data-example="Android 16 bluetooth">Android 16 bluetooth</a> ·
+        <a href="#q" data-example="sensor restart">sensor restart</a></span>
+    </nav>
+
+    <div class="filters" id="devfilters" style="display:none" aria-label="Device filter"></div>
+    <div class="filters" id="andfilters" style="display:none" aria-label="Android version filter"></div>
+
+    <ol id="results" class="results"></ol>
+    <div id="status" class="status" role="status"></div>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap">
+      <p>AAPS Atlas — AAPS / xDrip knowledge base. Mirrors: <a href="https://wiki.aaps.app">AndroidAPS wiki</a> ·
+        <a href="https://navid200.github.io/xDrip/">xDrip docs</a>. Threads: closed discussions from
+        <a href="https://github.com/nightscout/AndroidAPS">nightscout/AndroidAPS</a> and
+        <a href="https://github.com/NightscoutFoundation/xDrip">NightscoutFoundation/xDrip</a>,
+        each linked back to its original issue. Distilled records are AI-extracted from those threads
+        (symptom → cause → fix) and are labelled as such.
+        Sources are <em>not</em> medical advice; see banner. Rebuild: <code>npm run build</code>.
+      </p>
+    </div>
+  </footer>
+
+  <script is:inline src="/search.js" defer></script>
+</Base>

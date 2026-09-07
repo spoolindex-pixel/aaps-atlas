@@ -1,0 +1,35 @@
+---
+// One local mirror page per data/docs/<slug>.md. Emitted as docs/<slug>.html
+// (astro.config build.format: 'file') so existing /docs/<slug>.html URLs on
+// the Cloudflare Pages site keep working after the migration.
+import Base from '../../layouts/Base.astro';
+import { mdToHtml } from '../../lib/md';
+import { listDocSlugs, parseDoc } from '../../lib/docs';
+
+export function getStaticPaths() {
+  return listDocSlugs().map((slug) => {
+    const doc = parseDoc(slug);
+    return { params: { slug }, props: { doc } };
+  });
+}
+
+interface Props {
+  doc: Awaited<ReturnType<typeof parseDoc>>;
+}
+const { doc } = Astro.props;
+const bodyHtml = mdToHtml(doc.bodyMd);
+---
+
+<Base title={`${doc.title} · AAPS Atlas`} bodyClass="docpage">
+  <main>
+    <p class="crumb"><a href="/">← AAPS Atlas search</a></p>
+    <article class="mirror">
+      <h1>{doc.title}</h1>
+      <p class="source">
+        Mirrored from <a href={doc.sourceUrl}>{doc.sourceUrl}</a> — community documentation, not medical advice.
+      </p>
+      <hr />
+      <Fragment set:html={bodyHtml} />
+    </article>
+  </main>
+</Base>
