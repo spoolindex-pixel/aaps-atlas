@@ -30,6 +30,28 @@ jobs:
           cache: npm
       - name: Install site build deps (Astro)
         run: npm ci
+      # FB-corpus privacy + pipeline tests (fixture-based, no network). The
+      # anonymizer must produce zero-leak records from the fixture and the
+      # privacy gate must be green on them — and the same gate FAILS on the
+      # poisoned fixtures (asserted inside the unittest suite).
+      - name: FB privacy gates + pipeline tests (fixtures)
+        env:
+          FB_PSEUDONYM_SALT: ci-fixture-pseudonym-salt
+        run: |
+          python3 -m unittest discover -s tests -v
+          node tests/test_fb_search.mjs
+      # Hard name-leak gate wired into CI: re-checks committed FB/distilled
+      # records against the fixture's raw author roster (green when clean;
+      # a real scrape run re-runs this with ITS raw Apify authors list).
+      - name: Privacy name-leak gate over committed data (fixture roster)
+        env:
+          FB_PSEUDONYM_SALT: ci-fixture-pseudonym-salt
+        run: |
+          rm -rf /tmp/fb-check && python3 scripts/fb_anonymize.py \
+            --input tests/fixtures/apify_sample.json --outdir /tmp/fb-check
+          python3 scripts/validate_privacy.py \
+            --raw tests/fixtures/apify_sample.json \
+            /tmp/fb-check data/fb_threads data/distilled
       - name: Build search index (data/ -> public/)
         run: python3 scripts/build_index.py
       # Order matters: build_index writes public/*, then astro build clears
