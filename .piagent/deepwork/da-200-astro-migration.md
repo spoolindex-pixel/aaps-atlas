@@ -139,7 +139,7 @@ Also flagged LOW (deliberate, documented): doc heading levels now map naturally 
 vs the old accidental +1 shift, restyling .mirror h2/h3 slightly; footer "Rebuild: npm run
 build" command was premature until P2 retool.
 
-### P3 cutover (in progress — CI + docs updated, awaiting GATE 3)
+### P3 cutover (done — awaiting GATE 3)
 Uncommitted: .github/workflows/ci.yml (setup-node 22 pinned 49933ea5 = v4.4.0 → npm ci →
 build_index → `npm run astro` AFTER build_index → validate → search_check → artifact asserts;
 deploy job + wrangler@4.129.0 pin untouched; ASTRO_TELEMETRY_DISABLED), AGENTS-REFERENCE.md
