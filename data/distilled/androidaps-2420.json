@@ -1,0 +1,21 @@
+{
+ "issue_id": 2420,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/2420",
+ "title": "\"Pump busy\" until AAPS restart",
+ "symptom": "Loop reverted to default basal for hours until noticed due to UAM and high BG. A restart of AAPS immediately fixed the issue. Log indicates 'Pump is busy', as if the last command is hanging and canceled on AAPS restart. This happens frequently (2x this week).",
+ "cause": "Pump stops responding. From logs, connection of Versa 2 is the reason.",
+ "fix": "Add code `danaRSPlugin.disconnect(\"Reply not received\")` at BLEComm:841 as a workaround to help AAPS recover from this situation.",
+ "settings_changed": [],
+ "devices": [
+  "DanaRS v3",
+  "Versa 2"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "DanaRS",
+  "BLEComm"
+ ],
+ "confidence": "high",
+ "evidence_quote": "Pump stops responding. From logs I'd say connection of Versa 2 is the reason Best would be resolve it on Android side but as a workaround which could help AAPS recover from this situation you may try add following code: BLEComm:841 `danaRSPlugin.disconnect(\"Reply not received\")`"
+}

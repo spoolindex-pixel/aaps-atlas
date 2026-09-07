@@ -1,0 +1,18 @@
+{
+ "issue_id": 2304,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/2304",
+ "title": "TempTarget-triggered loop run does not see TT itself",
+ "symptom": "When a new temp target is set via Nightscout, the loop run triggered by the event does not see the temp target as set (temptargetSet false), even though the old TT was not canceled and only a new one started. This could disable safety features like 'allow SMB on high TT'.",
+ "cause": "The problem is that the loop was triggered by the first change before the second was applied, due to sequential processing of records from Nightscout. This caused the loop run to not see the temp target.",
+ "fix": "The issue was addressed in the current development version by processing records from NS in batch, which avoids the race condition. The user was advised to wait for the next release.",
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [
+  "nsclient",
+  "Nightscout"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "Here is this problem that loop was triggered by 1st change before second was applied"
+}
