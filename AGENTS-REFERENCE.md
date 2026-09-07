@@ -17,7 +17,6 @@ env vars and CI/deploy notes.
 | `npm run build` | The one-shot site build: `build_index.py` then `astro build` (exact sequence the nightly chain uses) |
 | `npm ci` | Install pinned site build deps (Astro) — first time / after a dependency change; needs Node ≥ 22.12 |
 | `npx astro check` | Type-checks the Astro pages/components (0 errors expected) |
-| `python3 scripts/validate_distilled.py` | CI gate: re-validates every distilled record (schema + url + verbatim-quote/devices containment vs corpus) |
 | `node scripts/search_check.mjs` | Acceptance harness — corpus sizes, attribution, demo queries across docs+threads+distilled |
 | `python3 -m http.server 8000 -d site` | Local preview of the built site (http only — Astro output uses root-absolute paths, `file://` double-click no longer works) |
 
@@ -232,7 +231,7 @@ notice prints the one manual setup step. No `.env` required locally.
    search_check.mjs, static-artifact assertions, upload `site/` artifact.
    Runs on every PR + push to main.
 2. `deploy` — needs build, main-only, gated on `secrets.CLOUDFLARE_API_TOKEN`.
-   Creates the Pages project (continue-on-error), then
+   Downloads the `site/` artifact, then
    `wrangler@4.129.0 pages deploy site --project-name aaps-atlas` (pin unchanged).
 
 ## Gotchas
