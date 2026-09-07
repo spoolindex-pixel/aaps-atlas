@@ -147,8 +147,10 @@ work — list endpoint only). Handles pagination, watches
   batch 2 (task 157) **446** / 57;
   batch 3 (task 155 refire) **641** / 62;
   batch 4 (task 155 refire) **832** records / 71 parked;
-  batch 5 (task 158, this run) **1025** records / 78 parked —
-  **2284 undistilled** of 3387. Every batch reconciles exactly:
+  batch 5 (task 158) **1025** records / 78 parked;
+  batch 6 (task 194 rollup) **1222** records / 81 parked;
+  batch 7 (task 194 rollup, this run) **1412** records / 91 parked —
+  **1884 undistilled** of 3387. Every batch reconciles exactly:
   new-distilled + new-parked = attempts, and
   `3387 − distilled − parked = REMAINING`.
 
@@ -444,7 +446,10 @@ notice prints the one manual setup step. No `.env` required locally.
 
 ## Nightly batch runs (post-phase-2)
 
-Task-scoped `~200/batch` distill runs (back-to-back queue, no successors):
+Task-scoped `~200/batch` distill runs (from task 194 a self-recreating
+rollup — one next-200 batch per dispatch, then a same-title successor
+task is created while `REMAINING > 0`; dupe-guarded so at most one open
+successor):
 
 1. Hold the flock (`/tmp/aaps-atlas-distill.lock`); confirm `distill.py` +
    `fetch_corpus.py` are on `origin/main`; sync the worktree to

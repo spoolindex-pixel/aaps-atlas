@@ -1,0 +1,20 @@
+{
+ "issue_id": 1963,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/1963",
+ "title": "Omnipod Eros / Profile Set catch 22",
+ "symptom": "After upgrading to AndroidAPS 3.1.0 during an Omnipod Eros pump switch, activating the profile stored in preferences failed with 'Failed to update basal profile: the Pod is in a wrong state'. During pod activation at the cannula stage, the UI would not continue because basal rates were unset, creating a catch-22 between profile set and pod activation.",
+ "cause": "The problem may be the result of a fix in PR #1896 on handling Pod state in earlier AAPS 3.0 dev versions, and should not be a problem for current release.",
+ "fix": "Workaround: Set the pump driver to virtual pump to allow the profile switch to activate, then switch pump driver back to Omnipod Eros. Validation steps: Deactivate EROS pump, upgrade to AAPS 3.01 or higher; you should not get the error and pod activation should be successful.",
+ "settings_changed": [],
+ "devices": [
+  "Omnipod Eros"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "virtual pump",
+  "Omnipod Eros"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "Problem may be the result of fix https://github.com/nightscout/AndroidAPS/pull/1896 on handling Pod state in earlier AAPS 3.0 dev versions and should not be a problem for current release."
+}

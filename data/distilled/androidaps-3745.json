@@ -1,0 +1,21 @@
+{
+ "issue_id": 3745,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/3745",
+ "title": "GarmingPlugin local server at /sgv.json endpoint returns constant tbr:0",
+ "symptom": "The /sgv.json endpoint of the Garmin plugin always returns tbr:0 regardless of the actual temp basal rate. For example, with a basal rate of 90, the endpoint returns tbr:0 instead of tbr:90.",
+ "cause": "The temporaryBasal property in LoopHubImpl.kt uses the result of the algorithm (loop.lastRun?.constraintsProcessed) rather than the actual temp basal that is delivered to the pump, which can be zero or deviate from real values.",
+ "fix": "Change the temporaryBasal property to use processedTbrEbData.getTempBasalIncludingConvertedExtended(System.currentTimeMillis())?.rate instead of loop.lastRun?.constraintsProcessed.percent / 100.0.",
+ "settings_changed": [],
+ "devices": [
+  "Spirit Combo"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "garmin",
+  "sgv.json",
+  "XDrip plugin"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "The reason was not that the function did not work, but rather the occasional deviation from the real values. Because here @buessow used the result of the algorithm, not what actually arrives at the pump."
+}
