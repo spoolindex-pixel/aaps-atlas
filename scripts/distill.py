@@ -64,6 +64,7 @@ CORPUS = ROOT / "data" / "corpus"
 DISTILLED = ROOT / "data" / "distilled"
 REJECTS = DISTILLED / "rejects"
 STATE_FILE = DISTILLED / "state.json"
+STATE_FILE_FB = DISTILLED / "state.facebook.json"
 DEFAULT_LIMIT = 200
 PROMPT_TEXT_BUDGET = 14000   # chars of thread text sent per prompt
 BODY_HEAD = 6000             # chars of the issue body always kept
@@ -109,7 +110,8 @@ Field-writing rules:
 - devices must list ONLY the device(s) the issue is about — do NOT add devices that merely appear in a comparison or in passing (e.g. a Libre 2 thread that briefly mentions Dexcom G7 should list Libre 2, not Dexcom G7).
 - If the thread is a support question with an authoritative maintainer answer, prefer that answer for cause/fix over user speculation.
 - If there is no resolution anywhere in the thread, fix = null, cause = null (or only what is established), confidence = "low".
-- A thread that never mentions any device still gets [] arrays — do NOT add "AAPS" or "xDrip" merely because the repo is AAPS/xDrip."""
+- A thread that never mentions any device still gets [] arrays — do NOT add "AAPS" or "xDrip" merely because the repo is AAPS/xDrip.
+- NEVER copy any participant's real name, username or @handle into title, symptom, cause, fix, settings_changed, devices, android_versions or driver_tags. For evidence_quote, keep the quote verbatim but prefer a contiguous span that does not name a person."""
 
 USER_TEMPLATE = """Issue number: {number}
 Repo: {repo}
@@ -121,6 +123,102 @@ Title: {title}
 ======= END THREAD TEXT =======
 
 Now return the strict JSON record for this thread (schema above)."""
+
+# ----------------------------------------------------------------- facebook
+# The same S->C->F distiller runs over anonymized Facebook group threads
+# (data/fb_threads/*.json, produced by scripts/fb_anonymize.py). The
+# extraction contract is identical (anti-hallucination containment vs the
+# post text) but: posts have no title (the model synthesises a short one),
+# authors are already pseudonymised member-<8hex> handles, and the privacy
+# rule is absolute — real person names/handles must never reach an output
+# field, INCLUDING evidence quotes.
+
+SYSTEM_PROMPT_FB = """You extract troubleshooting knowledge records from ONE Facebook group post + its comments. The post is from a closed diabetes-technology support group (xDrip / AndroidAPS users) and has been anonymized: every participant is only a pseudonym like "member-a1b2c3d4". Extract ONLY from the provided text. Never use outside knowledge, never guess, never invent versions, device names, settings or fixes. When the post does not state something, that field must be null (for strings) or an empty array [].
+
+HARD PRIVACY RULE: never copy any real person's name, username, handle or nickname into ANY output field — not into title, symptom, cause, fix, settings_changed, devices, android_versions, driver_tags and NOT even into evidence_quote. Never reproduce "member-..." pseudonyms either. Refer to people only generically ("the poster", "a commenter", "someone"). If the only quotable span contains a name or pseudonym, choose a shorter contiguous span around the technical claim that omits it, or paraphrase in the field and leave the quote to the closest clean span.
+
+Return STRICT JSON only (no markdown fences, no prose) matching exactly this schema:
+{
+  "title": <string — synthesize a SHORT searchable topic title for the post (<= 90 chars, e.g. "G6 keeps asking for calibration"), from the technical content only, no names>,
+  "symptom": <string or null — 1-3 sentence statement of the reported problem as the post describes it; null only if no text and no comments>,
+  "cause": <string or null — the root cause the POST identifies; null when the post never establishes one>,
+  "fix": <string or null — the resolution/workaround the POST states (action + exact config/setting/value if given); null when the post states no resolution>,
+  "settings_changed": [<string> — entries like "Setting name → new value" ONLY when a participant states a specific setting they changed and to what; empty [] otherwise>],
+  "devices": [<string> — the CGM/sensor/pump/phone device(s) the issue is ABOUT, exactly as the post names them (e.g. "Dexcom G6", "Omnipod DASH", "xDrip+"); empty [] when none>],
+  "android_versions": [<string> — Android OS versions participants state they run, e.g. "Android 16", "Android 14"; empty [] when none; never infer from wording>],
+  "driver_tags": [<string> — delivery-path / integration terms the post literally discusses, e.g. "companion app", "broadcast", "native G6", "patched collector"; lowercase; empty [] when none>],
+  "confidence": <"high" | "medium" | "low" — high: the post clearly states cause AND fix and the quote below backs them; medium: cause or fix is stated but partial/secondhand; low: the post does not resolve>,
+  "evidence_quote": <string — a SHORT (<=400 chars) VERBATIM quote from the post text that backs the most important extracted claim (the fix if present, else the cause). Copy exactly: same words, same order, ONE CONTIGUOUS span, and NO person names or member-... pseudonyms inside. Never use "..." or "…" and never skip/compress words inside the quote — choose the shortest contiguous clean span that still contains the claim.>
+}
+
+Field-writing rules:
+- symptom/cause/fix must be plain summaries of what the post says — never paraphrase into claims the post does not make.
+- settings_changed entries: name exactly the setting as the post does, with the value the post states ("ON" / "off" / version / value). If a value is not given, put the setting alone.
+- devices and android_versions entries must be strings that literally appear in the post text (use the post's own casing/spacing).
+- devices must list ONLY the device(s) the issue is about — not devices that merely appear in passing.
+- If there is no resolution anywhere in the post, fix = null, cause = null (or only what is established), confidence = "low"."""
+
+USER_TEMPLATE_FB = """Facebook group post
+Group: {group}
+Group URL: {group_url}
+Post URL: {url}
+Posted at: {posted_at}
+
+======= POST TEXT =======
+{thread_text}
+======= END POST TEXT =======
+
+Now return the strict JSON record for this post (schema above)."""
+
+FB_LLM_KEYS = ("title", "symptom", "cause", "fix", "settings_changed",
+               "devices", "android_versions", "driver_tags", "confidence",
+               "evidence_quote")
+
+
+def validate_record_fb(rec: Any, post_text: str) -> list[str]:
+    """Structural + anti-hallucination checks for a distilled FB record.
+    Same containment core as validate_record; url/group metadata is attached
+    programmatically (never model-written), so it is not part of the schema
+    the model must satisfy."""
+    errs: list[str] = []
+    if not isinstance(rec, dict):
+        return ["record is not a JSON object"]
+    for key in FB_LLM_KEYS:
+        if key not in rec:
+            errs.append(f"missing required field {key!r}")
+    if errs:
+        return errs
+    if not (isinstance(rec["title"], str) and 1 <= len(rec["title"].strip()) <= 300):
+        errs.append("title must be a non-empty string (<=300 chars)")
+    for field in ("symptom", "cause", "fix"):
+        v = rec[field]
+        if not (v is None or (isinstance(v, str) and len(v.strip()) >= 3)):
+            errs.append(f"{field} must be null or a non-trivial string")
+    for field in ("settings_changed", "devices", "android_versions", "driver_tags"):
+        v = rec[field]
+        if not isinstance(v, list) or any(not isinstance(x, str) for x in v):
+            errs.append(f"{field} must be an array of strings")
+    if rec["confidence"] not in ("high", "medium", "low"):
+        errs.append("confidence must be high|medium|low")
+    if not (isinstance(rec["evidence_quote"], str) and len(rec["evidence_quote"].strip()) >= 5):
+        errs.append("evidence_quote must be a non-empty string")
+    if errs:
+        return errs
+    hay = norm(post_text)
+    hay_compact = re.sub(r"\s+", "", hay)
+    quote = norm(rec["evidence_quote"])
+    if not quote or (quote not in hay and norm_quote(rec["evidence_quote"]) not in norm_quote(post_text)):
+        errs.append("evidence_quote is not a verbatim substring of the post text")
+    for field, entries in (("devices", rec["devices"]),
+                           ("android_versions", rec["android_versions"])):
+        for entry in entries:
+            if entry and not in_thread(entry, hay, hay_compact):
+                errs.append(f"{field} entry {entry!r} does not literally occur in the post text")
+    for entry in rec["settings_changed"]:
+        name = entry.split("→", 1)[0].split("->", 1)[0].strip()
+        if name and not in_thread(name, hay, hay_compact):
+            errs.append(f"settings_changed entry {entry!r}: setting name not in post text")
+    return errs
 
 
 def iso_now() -> str:
@@ -369,22 +467,22 @@ def parse_json_object(content: str) -> Any:
 
 # ---------------------------------------------------------------- distiller
 
-def distill_one(cfg: dict, thread: dict, thread_txt: str, full_txt: str,
-                retry_feedback: str = "") -> tuple[dict | None, str | None, dict]:
-    """Returns (record, error, usage). record None + error str on failure."""
+def distill_one(cfg: dict, system_prompt: str, base_user: str,
+                validator, retry_feedback: str = "") \
+        -> tuple[dict | None, str | None, dict]:
+    """One completion loop. `validator(rec)` returns a list of errors ([] = ok).
+    Returns (record, error, usage). record None + error str on failure."""
     last_error = ""
     attempts = 0
     while attempts < 2:
         attempts += 1
         try:
-            user = USER_TEMPLATE.format(number=thread["number"], repo=thread["repo"],
-                                        url=thread["html_url"], title=thread["title"],
-                                        thread_text=thread_txt)
+            user = base_user
             if retry_feedback:
-                user += f"\n\nYour previous answer failed validation:\n{retry_feedback}"
-            content, usage = llm_chat(cfg, SYSTEM_PROMPT, user)
+                user = base_user + f"\n\nYour previous answer failed validation:\n{retry_feedback}"
+            content, usage = llm_chat(cfg, system_prompt, user)
             rec = parse_json_object(content)
-            errs = validate_record(rec, full_txt)
+            errs = validator(rec)
             if not errs:
                 return rec, None, usage
             last_error = "validation: " + "; ".join(errs)
@@ -422,15 +520,20 @@ def t_stem(thread: dict) -> str:
     return f"{thread['repo'].split('/')[1].lower()}-{thread['number']}"
 
 
-def main() -> int:
-    ap = argparse.ArgumentParser(description="Distill corpus threads into symptom->cause->fix records.")
-    ap.add_argument("--limit", type=int, default=DEFAULT_LIMIT,
-                    help=f"max threads per run (default {DEFAULT_LIMIT})")
-    ap.add_argument("--dry-run", action="store_true",
-                    help="print the next batch without calling the LLM")
-    ap.add_argument("--workers", type=int, default=4, help="parallel LLM workers")
-    args = ap.parse_args()
+def _run_pool(work, batch: list[dict], workers: int, token_counts: dict) -> None:
+    with cf.ThreadPoolExecutor(max_workers=workers) as ex:
+        futures = []
+        for item in batch:
+            futures.append(ex.submit(work, item))
+        for fut in cf.as_completed(futures):
+            try:
+                fut.result()
+            except Exception as exc:  # noqa: BLE001 — worker should not die silently
+                print(f"WORKER ERROR: {exc}", file=sys.stderr)
 
+
+def main_github(args) -> int:
+    """Original GitHub-corpus distillation (data/corpus -> data/distilled)."""
     threads = load_corpus_threads()
     state = load_state()
     batch = pick_batch(threads, state, args.limit)
@@ -459,7 +562,14 @@ def main() -> int:
     def work(thread: dict):
         thread_txt = thread_text(thread)
         full_txt = searchable_text(thread)
-        rec, err, usage = distill_one(cfg, thread, thread_txt, full_txt)
+        user = USER_TEMPLATE.format(number=thread["number"], repo=thread["repo"],
+                                    url=thread["html_url"], title=thread["title"],
+                                    thread_text=thread_txt)
+
+        def validator(rec):
+            return validate_record(rec, full_txt)
+
+        rec, err, usage = distill_one(cfg, SYSTEM_PROMPT, user, validator)
         stem = t_stem(thread)
         with lock:
             token_counts["prompt"] += to_int(usage.get("prompt_tokens"))
@@ -482,15 +592,7 @@ def main() -> int:
                 save_state(state)
                 print(f"REJECT {stem} #{thread['number']} — {err}", flush=True)
 
-    with cf.ThreadPoolExecutor(max_workers=args.workers) as ex:
-        futures = []
-        for thread in batch:
-            futures.append(ex.submit(work, thread))
-        for fut in cf.as_completed(futures):
-            try:
-                fut.result()
-            except Exception as exc:  # noqa: BLE001 — worker should not die silently
-                print(f"WORKER ERROR: {exc}", file=sys.stderr)
+    _run_pool(work, batch, args.workers, token_counts)
 
     in_toks = token_counts["prompt"]
     out_toks = token_counts["completion"]
@@ -503,6 +605,162 @@ def main() -> int:
     remaining = len(threads) - len(state["distilled"]) - len(state["parked"])
     print(f"REMAINING undistilled threads: {remaining} (of {len(threads)})")
     return 0
+
+
+# ------------------------------------------------------- facebook source
+
+def load_fb_posts(source_dir: Path) -> list[dict]:
+    """Read anonymized fb_threads records -> prompt-shaped pseudo threads.
+
+    Comment authors are already pseudonyms (member-<8hex>); nothing here
+    sees a real name. Each pseudo thread keeps the keys thread_text() and
+    searchable_text() expect, plus facebook metadata for the prompt/record.
+    """
+    posts: list[dict] = []
+    for path in sorted(source_dir.glob("*.json")):
+        try:
+            rec = json.loads(path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError as exc:
+            print(f"WARN corrupt fb record {path.name}: {exc}", file=sys.stderr)
+            continue
+        if not isinstance(rec, dict) or rec.get("source") != "facebook":
+            continue
+        comments = rec.get("comments") or []
+        posts.append({
+            "stem": path.stem,
+            "post_id": rec.get("id"),
+            "url": rec.get("url", ""),
+            "group": rec.get("group", ""),
+            "group_url": rec.get("group_url", ""),
+            "posted_at": rec.get("posted_at", ""),
+            "title": rec.get("title", "") or "",
+            "body": rec.get("text", ""),
+            "comments": [{"user": c.get("pseudonym", ""), "body": c.get("text", ""),
+                           "created_at": c.get("posted_at", "")}
+                          for c in comments if isinstance(c, dict)],
+            "comment_count": len(comments),
+        })
+    return posts
+
+
+def load_fb_state() -> dict:
+    if STATE_FILE_FB.exists():
+        try:
+            return json.loads(STATE_FILE_FB.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            pass
+    return {"distilled": [], "parked": [], "runs": 0}
+
+
+def save_fb_state(state: dict) -> None:
+    STATE_FILE_FB.write_text(json.dumps(state, indent=1), encoding="utf-8")
+
+
+def pick_fb_batch(posts: list[dict], state: dict, limit: int) -> list[dict]:
+    done = set(state["distilled"]) | set(state["parked"])
+    rest = [p for p in posts if p["stem"] not in done]
+    rest.sort(key=lambda p: (p["comment_count"], p["stem"]), reverse=True)
+    return rest[:limit]
+
+
+def main_facebook(args) -> int:
+    """Distill anonymized FB group posts (--source-dir data/fb_threads).
+
+    Same S->C->F contract as the GitHub corpus, with the FB record schema
+    (validate_record_fb), the FB no-names system prompt and a separate state
+    file (data/distilled/state.facebook.json) so FB stems never pollute the
+    GitHub batch bookkeeping. Metadata (source/group/group_url/url) is
+    attached programmatically after the model passes validation — never
+    model-written."""
+    posts = load_fb_posts(args.source_dir)
+    state = load_fb_state()
+    batch = pick_fb_batch(posts, state, args.limit)
+    print(f"fb posts: {len(posts)} | already distilled: {len(state['distilled'])} "
+          f"| parked: {len(state['parked'])} | this batch: {len(batch)}")
+    if args.dry_run or not batch:
+        for p in batch[:10]:
+            print(f"  would distill {p['stem']} cc={p['comment_count']} {p['url']}")
+        if batch:
+            print(f"  ... ({len(batch)} total; remaining undistilled: "
+                  f"{len(posts) - len(state['distilled']) - len(state['parked'])} before this batch)")
+        return 0
+    if len(batch) > args.limit:
+        print(f"note: batch capped at {args.limit}")
+
+    cfg = llm_config()
+    print(f"llm: {cfg['model']} @ {cfg['base']} | workers={args.workers} | source_type=facebook")
+    DISTILLED.mkdir(parents=True, exist_ok=True)
+    REJECTS.mkdir(parents=True, exist_ok=True)
+    state["runs"] = to_int(state.get("runs")) + 1
+    lock = threading.Lock()
+    token_counts = {"prompt": 0, "completion": 0}
+    started = time.time()
+
+    def work(post: dict):
+        thread_txt = thread_text(post)
+        full_txt = searchable_text(post)
+        user = USER_TEMPLATE_FB.format(group=post["group"], group_url=post["group_url"],
+                                       url=post["url"], posted_at=post["posted_at"],
+                                       thread_text=thread_txt)
+
+        def validator(rec):
+            return validate_record_fb(rec, full_txt)
+
+        rec, err, usage = distill_one(cfg, SYSTEM_PROMPT_FB, user, validator)
+        stem = post["stem"]
+        with lock:
+            token_counts["prompt"] += to_int(usage.get("prompt_tokens"))
+            token_counts["completion"] += to_int(usage.get("completion_tokens"))
+            if rec is not None:
+                # metadata is attached here (trusted), never by the model
+                rec.update({"source": "facebook", "group": post["group"],
+                            "group_url": post["group_url"], "url": post["url"]})
+                (DISTILLED / f"{stem}.json").write_text(
+                    json.dumps(rec, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+                state["distilled"].append(stem)
+                save_fb_state(state)
+                print(f"ok   {stem} cc={post['comment_count']:<4d} {rec['title'][:60]}", flush=True)
+            else:
+                parked = {"thread": stem, "group": post["group"], "url": post["url"],
+                          "error": err, "parked_at": iso_now()}
+                (REJECTS / f"{stem}.json").write_text(
+                    json.dumps(parked, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+                state["parked"].append(stem)
+                save_fb_state(state)
+                print(f"REJECT {stem} — {err}", flush=True)
+
+    _run_pool(work, batch, args.workers, token_counts)
+
+    in_toks = token_counts["prompt"]
+    out_toks = token_counts["completion"]
+    cost = (in_toks / 1e6 * MODEL_PRICES["input"]) + (out_toks / 1e6 * MODEL_PRICES["output"])
+    save_fb_state(state)
+    mins = (time.time() - started) / 60
+    print(f"\nbatch done in {mins:.1f} min | prompt_tokens={in_toks} completion_tokens={out_toks} "
+          f"| est cost ${cost:.3f} | fb distilled total={len(state['distilled'])} "
+          f"parked={len(state['parked'])}")
+    remaining = len(posts) - len(state["distilled"]) - len(state["parked"])
+    print(f"REMAINING undistilled fb posts: {remaining} (of {len(posts)})")
+    return 0
+
+
+def main() -> int:
+    ap = argparse.ArgumentParser(description="Distill threads into symptom->cause->fix records "
+                                             "(github corpus or facebook group posts).")
+    ap.add_argument("--limit", type=int, default=DEFAULT_LIMIT,
+                    help=f"max threads per run (default {DEFAULT_LIMIT})")
+    ap.add_argument("--dry-run", action="store_true",
+                    help="print the next batch without calling the LLM")
+    ap.add_argument("--workers", type=int, default=4, help="parallel LLM workers")
+    ap.add_argument("--source-dir", type=Path, default=CORPUS,
+                    help="thread source dir (default: data/corpus; facebook: data/fb_threads)")
+    ap.add_argument("--source-type", choices=("github", "facebook"), default="github",
+                    help="record/schema flavor of the source dir")
+    args = ap.parse_args()
+
+    if args.source_type == "facebook":
+        return main_facebook(args)
+    return main_github(args)
 
 
 if __name__ == "__main__":

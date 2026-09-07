@@ -6,12 +6,15 @@
  *   site/search-index.json (served over http) or
  *   site/search-data.js     (window.__AAPS_INDEX__, needed for file://).
  *
- * Three record kinds: docs (mirror pages), thread (raw GitHub issue) and
- * distilled (LLM symptom->cause->fix extraction of a thread, always linked
- * back to its source issue). Filters: result type + device tags + Android
- * versions. Device tags are canonicalised (G7 / G6 / DASH / Omnipod 5 /
- * Libre / Medtrum / Dexcom / Eversense); threads/docs match via their text,
- * distilled records via their validated structured arrays.
+ * Three record kinds: docs (mirror pages), thread (raw GitHub issue, or an
+ * anonymized Facebook group post when the record's `source` is "facebook")
+ * and distilled (LLM symptom->cause->fix extraction of a thread, always
+ * linked back to its source issue / post). Filters: result type + device
+ * tags + Android versions. Device tags are canonicalised (G7 / G6 / DASH /
+ * Omnipod 5 / Libre / Medtrum / Dexcom / Eversense); threads/docs match via
+ * their text, distilled records via their validated structured arrays.
+ * Facebook cards carry a "FB community" source badge and link back to the
+ * original post permalink (kept for verification); authors are pseudonyms.
  *
  * Scoring (unchanged MiniSearch core): per-record term frequency weighted by
  * field (title 5x, labels 3x, body 1x) x corpus idf; full-query-overlap
@@ -321,6 +324,7 @@
     function cardHit(h) {
       var li = el("li", "card");
       var h2 = el("h2");
+      var isFb = (h.rec || {}).source === "facebook";
       var badge = el("span", "badge " + h.kind);
       badge.textContent = h.kind;
       var link = document.createElement("a");
@@ -328,6 +332,7 @@
       link.textContent = h.title;
       if (h.kind !== "docs") { link.target = "_blank"; link.rel = "noopener"; }
       h2.appendChild(badge);
+      if (isFb) { h2.appendChild(el("span", "badge fbsrc", "FB community")); }
       h2.appendChild(link);
       li.appendChild(h2);
 
@@ -350,17 +355,31 @@
         srcA.textContent = "source: " + h.rec.source_url;
         foot.appendChild(srcA);
       } else if (h.kind === "thread") {
-        foot.appendChild(el("b", null, h.rec.repo + "#" + h.rec.number));
-        var closed = (h.rec.closed_at || "").slice(0, 10);
-        if (closed) foot.appendChild(document.createTextNode(" · closed " + closed));
-        foot.appendChild(document.createTextNode(" · " + (h.rec.comment_count || 0) + " comments"));
-        var gh = document.createElement("a");
-        gh.className = "goto";
-        gh.href = h.rec.html_url;
-        gh.target = "_blank";
-        gh.rel = "noopener";
-        gh.textContent = "open original issue ↗";
-        foot.appendChild(gh);
+        if (isFb) {
+          foot.appendChild(el("b", null, h.rec.group || "Facebook community"));
+          var posted = (h.rec.posted_at || "").slice(0, 10);
+          if (posted) foot.appendChild(document.createTextNode(" · posted " + posted));
+          foot.appendChild(document.createTextNode(" · " + (h.rec.comment_count || 0) + " comments"));
+          var fbLink = document.createElement("a");
+          fbLink.className = "goto";
+          fbLink.href = h.rec.html_url || h.rec.url;
+          fbLink.target = "_blank";
+          fbLink.rel = "noopener";
+          fbLink.textContent = "open original post ↗";
+          foot.appendChild(fbLink);
+        } else {
+          foot.appendChild(el("b", null, h.rec.repo + "#" + h.rec.number));
+          var closed = (h.rec.closed_at || "").slice(0, 10);
+          if (closed) foot.appendChild(document.createTextNode(" · closed " + closed));
+          foot.appendChild(document.createTextNode(" · " + (h.rec.comment_count || 0) + " comments"));
+          var gh = document.createElement("a");
+          gh.className = "goto";
+          gh.href = h.rec.html_url;
+          gh.target = "_blank";
+          gh.rel = "noopener";
+          gh.textContent = "open original issue ↗";
+          foot.appendChild(gh);
+        }
       } else { // distilled
         foot.appendChild(el("span", "conf conf-" + (h.rec.confidence || "low"),
           "confidence: " + (h.rec.confidence || "low")));
@@ -370,7 +389,7 @@
         gh2.href = h.rec.url || h.rec.html_url;
         gh2.target = "_blank";
         gh2.rel = "noopener";
-        gh2.textContent = "view source thread ↗";
+        gh2.textContent = isFb ? "view source post ↗" : "view source thread ↗";
         foot.appendChild(gh2);
       }
       li.appendChild(foot);
@@ -398,7 +417,12 @@
         box.appendChild(q);
       }
       var note = el("p", "kicker");
-      note.textContent = "AI-extracted from GitHub issue #" + r.issue_id + " — not medical advice; verify against the source thread.";
+      if (r.source === "facebook") {
+        note.textContent = "AI-extracted from a Facebook community post"
+          + (r.group ? " (" + r.group + ")" : "") + " — not medical advice; verify against the original post.";
+      } else {
+        note.textContent = "AI-extracted from GitHub issue #" + r.issue_id + " — not medical advice; verify against the source thread.";
+      }
       box.appendChild(note);
       return box;
     }

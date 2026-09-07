@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Build the AAPS Atlas client search index payload (pure stdlib, re-runnable).
 
-data/docs/*.md + data/threads/*.json + data/distilled/*.json
+data/docs/*.md + data/threads/*.json + data/fb_threads/*.json (anonymized
+Facebook group posts) + data/distilled/*.json
   ->  public/search-index.json  (served over http, copied into site/ by Astro)
   +   public/search-data.js     (window.__AAPS_INDEX__ blob; kept for the
                                  unchanged site/search.js file:// data-load path)
@@ -11,6 +12,12 @@ site/search-data.js land next to site/index.html and the unchanged acceptance
 harness (scripts/search_check.mjs -> require(site/search.js) +
 site/search-index.json) keeps working. The docs pages are rendered by Astro
 (src/pages/docs/[slug].astro) — this script no longer emits HTML.
+
+Facebook records are indexed as regular `thread` entries carrying
+`source: "facebook"` (+ group/group_url/url/posted_at) so the existing
+kind/device/Android filters cover them unchanged; distilled FB records are
+indexed as `distilled` entries with `source: "facebook"`. Raw FB posts have
+no title — a short one is derived from the post text for the card link.
 
 Prints corpus stats (N docs, N threads, index size). Exits non-zero when a
 record is missing its mandatory attribution URL or corpus is below minimums.
@@ -25,6 +32,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 DOCS = ROOT / "data" / "docs"
 THREADS = ROOT / "data" / "threads"
+FB_THREADS = ROOT / "data" / "fb_threads"
 DISTILLED = ROOT / "data" / "distilled"
 PUBLIC = ROOT / "public"
 MIN_DOCS = 6
@@ -73,21 +81,57 @@ def parse_thread(path: Path) -> dict:
             "text": text}
 
 
+def _headline(text: str, limit: int = 90) -> str:
+    """Short single-line title derived from a post that has no real title."""
+    flat = re.sub(r"\s+", " ", (text or "")).strip()
+    if len(flat) <= limit:
+        return flat
+    cut = flat.rfind(" ", 0, limit)
+    return (flat[:cut] if cut > 30 else flat[:limit]).rstrip(" ,;:.") + "…"
+
+
+def parse_fb_thread(path: Path) -> dict:
+    """Anonymized Facebook group post -> index `thread` entry (source facebook)."""
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        raise ValueError(f"corrupt fb thread json {path.name}: {exc}") from exc
+    comments = data.get("comments") or []
+    body = data.get("text", "")
+    text = " ".join([body] + [c.get("text", "") for c in comments])
+    return {"id": f"thread:{path.stem}", "type": "thread",
+            "source": "facebook",
+            "title": data.get("title") or _headline(body) or f"{data.get('group', '')} post",
+            "url": data.get("url", ""), "html_url": data.get("url", ""),
+            "group": data.get("group", ""), "group_url": data.get("group_url", ""),
+            "posted_at": data.get("posted_at", ""),
+            "comment_count": data.get("comment_count", len(comments)),
+            "comments": [{"pseudonym": c.get("pseudonym", ""), "text": c.get("text", ""),
+                          "posted_at": c.get("posted_at", "")} for c in comments],
+            "text": text}
+
+
 def parse_distilled(path: Path) -> dict:
     try:
         data = json.loads(path.read_text(encoding="utf-8"))
     except json.JSONDecodeError as exc:
         raise ValueError(f"corrupt distilled json {path.name}: {exc}") from exc
+    if data.get("source") == "facebook":
+        assert data.get("url"), f"distilled {path.name} missing url"
+        return {"id": f"distilled:{path.stem}", "type": "distilled",
+                "source": "facebook", "group": data.get("group", ""),
+                "group_url": data.get("group_url", ""),
+                "title": data.get("title", ""), "url": data.get("url", ""),
+                "html_url": data.get("url", ""), "confidence": data.get("confidence", ""),
+                "symptom": data.get("symptom"), "cause": data.get("cause"),
+                "fix": data.get("fix"), "settings_changed": data.get("settings_changed") or [],
+                "devices": data.get("devices") or [],
+                "android_versions": data.get("android_versions") or [],
+                "driver_tags": data.get("driver_tags") or [],
+                "evidence_quote": data.get("evidence_quote", ""),
+                "text": distilled_search_text(data)}
     assert data.get("url"), f"distilled {path.name} missing url"
     assert data.get("issue_id"), f"distilled {path.name} missing issue_id"
-    tags = list(data.get("devices") or []) + list(data.get("android_versions") or [])
-    text = " ".join([str(data.get("title", "")),
-                     str(data.get("symptom", "") or ""),
-                     str(data.get("cause", "") or ""),
-                     str(data.get("fix", "") or ""),
-                     " ".join(tags),
-                     " ".join(data.get("driver_tags") or []),
-                     str(data.get("evidence_quote", "") or "")])
     return {"id": f"distilled:{path.stem}", "type": "distilled",
             "issue_id": data.get("issue_id"),
             "repo": data.get("repo", ""), "number": data.get("issue_id"),
@@ -98,7 +142,18 @@ def parse_distilled(path: Path) -> dict:
             "devices": data.get("devices") or [], "android_versions": data.get("android_versions") or [],
             "driver_tags": data.get("driver_tags") or [],
             "evidence_quote": data.get("evidence_quote", ""),
-            "text": text}
+            "text": distilled_search_text(data)}
+
+
+def distilled_search_text(data: dict) -> str:
+    tags = list(data.get("devices") or []) + list(data.get("android_versions") or [])
+    return " ".join([str(data.get("title", "")),
+                     str(data.get("symptom", "") or ""),
+                     str(data.get("cause", "") or ""),
+                     str(data.get("fix", "") or ""),
+                     " ".join(tags),
+                     " ".join(data.get("driver_tags") or []),
+                     str(data.get("evidence_quote", "") or "")])
 
 
 def main() -> int:
@@ -106,6 +161,10 @@ def main() -> int:
     thread_recs = sorted(
         (parse_thread(p) for p in THREADS.glob("*.json") if p.name != "manifest.json"),
         key=lambda t: t["id"])
+    if FB_THREADS.exists():
+        thread_recs += sorted(
+            (parse_fb_thread(p) for p in FB_THREADS.glob("*.json") if p.name != "README.md"),
+            key=lambda t: t["id"])
     distilled_recs = sorted(
         (parse_distilled(p) for p in DISTILLED.glob("*.json") if p.name != "state.json"),
         key=lambda d: d["id"])

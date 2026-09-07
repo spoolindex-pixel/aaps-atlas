@@ -11,7 +11,11 @@ env vars and CI/deploy notes.
 | `python3 scripts/fetch_threads.py` | Pull demo closed threads → `data/threads/*.json` (network; `gh` auth) |
 | `GITHUB_TOKEN=… python3 scripts/fetch_corpus.py` | Full closed-issue corpus + comments → `data/corpus/*.json` + `data/corpus/raw/*.jsonl`; resumable + `--incremental` (network; token env only) |
 | `python3 scripts/distill.py` | LLM batch distiller: corpus → `data/distilled/*.json` records (symptom/cause/fix); **~200/run cap** (`--limit`), state-skipping, rejects parked under `data/distilled/rejects/` |
-| `python3 scripts/validate_distilled.py` | CI gate: re-validates every distilled record (schema + url + verbatim-quote/devices containment vs corpus) |
+| `python3 scripts/validate_distilled.py` | CI gate: re-validates every distilled record (schema + url + verbatim-quote/devices containment vs corpus) — GitHub records against `data/corpus/`, FB records against `data/fb_threads/` |
+| `FB_PSEUDONYM_SALT=… python3 scripts/fb_anonymize.py --input <apify.json> --outdir data/fb_threads [--group-slug … --group-name … --group-url …]` | Anonymize a raw Apify FB scrape → `data/fb_threads/<group>-<postid>.json` (authors → `member-<8hex>`, profile fields dropped, fails closed on any author-name leak) |
+| `python3 scripts/validate_privacy.py --raw <apify.json> [paths…]` (or `--authors <names.json>`) | Hard name-leak + FB-record hygiene gate: fails if any scanned record text contains an exact author name; run with the raw roster against stored/distilled data |
+| `python3 scripts/distill.py --source-dir data/fb_threads --source-type facebook [--limit …]` | Distill FB records through the same S→C→F distiller (FB no-names prompt, `state.facebook.json`, records land in `data/distilled/`) |
+| `npm test` | Fixture privacy suite: `validate_privacy.py` + `unittest discover -s tests` + `tests/test_fb_search.mjs` (no network) |
 | `python3 scripts/build_index.py` | `data/*` → `public/search-index.json` + `public/search-data.js` (build-time search payload); prints `docs=N threads=M distilled=K index=…KiB`; exits 1 under target |
 | `npm run astro` (aka `astro build`) | Astro static build: copies `public/*` + renders `src/` (docs pages from `data/docs/*.md`) → `site/`; **run `scripts/build_index.py` first** (Astro clears `site/` then copies `public/*`) |
 | `npm run build` | The one-shot site build: `build_index.py` then `astro build` (exact sequence the nightly chain uses) |
@@ -29,8 +33,11 @@ wiki.aaps.app / navid200.github.io/xDrip   -> scripts/fetch_docs.py    -> data/d
 nightscout/AndroidAPS + NightscoutFoundation/xDrip
                                           -> scripts/fetch_threads.py  -> data/threads/*.json   (demo slice)
                                           -> scripts/fetch_corpus.py   -> data/corpus/*.json     (full archive)
+Apify facebook-posts-scraper (raw, gated) -> scripts/fb_anonymize.py  -> data/fb_threads/*.json  (anonymized)
 data/corpus/*.json (priority: comment count desc) -> scripts/distill.py -> data/distilled/*.json
-data/docs + data/threads + data/distilled -> scripts/build_index.py   -> public/search-index.json + public/search-data.js
+data/fb_threads/*.json (priority: comment count desc)
+                                          -> scripts/distill.py --source-type facebook -> data/distilled/*.json
+data/docs + data/threads + data/fb_threads + data/distilled -> scripts/build_index.py   -> public/search-index.json + public/search-data.js
 public/* + src/ (data/docs/*.md rendered by Astro)   -> npm run build (astro)  -> site/   (Cloudflare Pages deploy input)
 ```
 
@@ -153,6 +160,89 @@ re-running them through `distill.distill_one` (retry-once contract still
 applies; successes land as records, failures re-park). Task 155 used this to
 recover 9/17 first-pass rejects after the prompt/norm_quote hardening.
 
+## FB corpus ingest + privacy (task-196)
+
+The two closed Facebook groups (xDrip+ users, AndroidAPS Users) get the same
+S→C→F treatment as GitHub, through a deliberately *separate*, privacy-first
+pipeline. **HARD PRIVACY RULE (user requirement): NO person names anywhere in
+stored or derived data.** The pilot scrape task (blocked on ☀️ manual group
+setup) consumes everything below; this repo builds and tests it with the
+synthetic fixture `tests/fixtures/apify_sample.json` (no network).
+
+### Anonymization (scripts/fb_anonymize.py)
+
+Takes raw Apify `facebook-posts-scraper` output (field mapping tolerates the
+documented aliases — see `tests/fixtures/README.md`) and writes one record
+per post to `data/fb_threads/<group>-<postid>.json`:
+`{id, source: "facebook", group, group_url, url (post permalink — kept for
+linkback), posted_at, text, comments: [{pseudonym, text, posted_at}],
+reactions_count?}`.
+
+- Author → stable pseudonym `member-<8hex>`: HMAC-SHA256 of the author's
+  **stable id**, keyed by a **per-install salt** — `FB_PSEUDONYM_SALT` env
+  wins, otherwise a one-time salt is generated and persisted at
+  `~/.config/aaps-atlas/fb-pseudonym-salt` (0600, never committed). Same
+  author id ⇒ same pseudonym across posts/runs; rotating the salt remaps
+  everything.
+- **All profile fields are dropped at map time** (names, profile-pic URL,
+  user URL, per-user `reactions` lists); outputs are built fresh from a
+  whitelist (`scripts/privacy_common.py` `FB_THREAD_KEYS`), so a profile
+  field cannot survive by accident. Only aggregates survive (comment count
+  implied by the array, optional `reactions_count` int).
+- Fails **closed** (exit 1, nothing written) if any output text field
+  contains a raw author name — the first gate. Real runs should pass
+  `--group-slug/--group-name/--group-url` (per-group scrape) for clean
+  filenames; raw Apify archives + author rosters go under
+  `data/fb_threads/raw/` (gitignored) and are **never committed**.
+
+### Name-leak gates (validate_privacy.py + CI)
+
+- `scripts/validate_privacy.py` — given the raw authors list
+  (`--raw <apify.json>` auto-harvests names/handles; `--authors <list.json>`
+  for an explicit roster) it **fails if any scanned record's text fields
+  contain an exact author name** (whole-name, whitespace-collapsed,
+  case-insensitive, word-bounded — `privacy_common.name_leak_matches`).
+  Scans any JSON paths; defaults to `data/fb_threads` + `data/distilled`.
+  Also enforces FB-record hygiene even without an author list: whitelisted
+  keys only, `member-<8hex>` comment pseudonyms, https facebook permalink.
+- Wired into CI (build job, before the site build) as two steps: the
+  fixture suite (`unittest discover -s tests` + `tests/test_fb_search.mjs`)
+  and a live anonymize→gate run (`fb_anonymize.py` on the fixture, then
+  `validate_privacy.py --raw … data/fb_threads data/distilled`). The
+  unittest suite also proves the gate FAILS on the poisoned fixtures
+  (`tests/fixtures/poisoned_fb_thread.json`, `poisoned_distilled.json`).
+- A real scrape re-runs the gate with ITS raw roster (kept out-of-repo) at
+  ingest time — the raw authors are never persisted, so the committed data
+  + CI stay clean while the pilot still gets a hard check.
+
+### Distillation (same distiller, FB flavor)
+
+`python3 scripts/distill.py --source-dir data/fb_threads --source-type
+facebook` runs the same extract-only S→C→F engine on FB records:
+- FB system prompt (never reached by GH runs) hard-bans copying any real
+  name/handle/**pseudonym** into any output field incl. evidence quotes;
+  the shared GH prompt also gained a no-names rule. Metadata (`source`,
+  `group`, `group_url`, `url`) is attached **programmatically** after the
+  model passes `validate_record_fb` — never model-written. Posts have no
+  title: the model synthesises a short one.
+- Bookkeeping is isolated: FB stems + rejects live in
+  `data/distilled/state.facebook.json` (never in the GitHub `state.json`),
+  so batch math for the 3387-thread GitHub corpus stays exact.
+- `validate_distilled.py` routes records by content: `source: "facebook"`
+  records are checked against `data/fb_threads/` with the FB schema;
+  everything else against `data/corpus/` as before.
+
+### Site
+
+Facebook records are indexed as ordinary `thread` entries carrying
+`source: "facebook"` (+ group/group_url/url/posted_at, auto-title from the
+post text) and FB distilled records as `distilled` entries with
+`source: "facebook"`. `search.js` cards show an **FB community** badge and
+link back to the **original post permalink** ("open original post ↗"/
+"view source post ↗", `badge.fbsrc` style); the type/device/Android
+filters treat FB records exactly like GitHub ones. `site/` regenerated with
+the usual §site-build sequence.
+
 ## Search engine (site/search.js)
 
 - Prebuilt, normalised records + client-side scoring; **no runtime network**.
@@ -214,6 +304,7 @@ run the full sequence so committed `site/` stays in sync with `data/`.
 | — | `gh` CLI config | `fetch_threads.py` (never a token in env/scripts) |
 | `GITHUB_TOKEN` | env only (never committed) | `fetch_corpus.py` full-corpus fetch |
 | `AAPS_LLM_API_KEY` / `AAPS_LLM_KEY_FILE` / `AAPS_LLM_BASE_URL` / `AAPS_LLM_MODEL` | env (optional; default = deepseek key in `~/.config/aaps-atlas/llm-key.json`) | `distill.py` |
+| `FB_PSEUDONYM_SALT` | env (optional; else auto-generated per-install salt at `~/.config/aaps-atlas/fb-pseudonym-salt`) | `fb_anonymize.py` (pseudonym HMAC key — rotate to remap authors) |
 | `CLOUDFLARE_API_TOKEN` | GitHub repo secret (mirror of vault item `aaps-atlas-cf-token`) | CF Pages deploy job |
 | `CLOUDFLARE_ACCOUNT_ID` | GitHub repo secret (optional) | CF Pages deploy job |
 
@@ -225,11 +316,17 @@ notice prints the one manual setup step. No `.env` required locally.
 `.github/workflows/ci.yml`:
 
 1. `build` — pinned setup-python 3.12 + **pinned setup-node 22** (Astro 7 needs ≥ 22.12),
-   `npm ci`, `python3 scripts/build_index.py` (→ `public/`), `npm run astro`
+   `npm ci`, then the **FB privacy steps** (fixture-based, no network:
+   `unittest discover -s tests` + `tests/test_fb_search.mjs`, plus an
+   anonymize→`validate_privacy.py --raw … data/fb_threads data/distilled`
+   gate over committed data with the fixture roster), then
+   `python3 scripts/build_index.py` (→ `public/`), `npm run astro`
    (**after** build_index — Astro clears `site/` then copies `public/*`),
-   **validate_distilled.py** (schema + url + quote containment gate),
-   search_check.mjs, static-artifact assertions, upload `site/` artifact.
+   **validate_distilled.py** (schema + url + quote containment gate; routes
+   FB records to their fb_threads source), search_check.mjs, static-artifact
+   assertions, upload `site/` artifact.
    Runs on every PR + push to main.
+   `FB_PSEUDONYM_SALT` is set to a CI-only fixture salt in those steps.
 2. `deploy` — needs build, main-only, gated on `secrets.CLOUDFLARE_API_TOKEN`.
    Downloads the `site/` artifact, then
    `wrangler@4.129.0 pages deploy site --project-name aaps-atlas` (pin unchanged).
@@ -321,6 +418,29 @@ notice prints the one manual setup step. No `.env` required locally.
     `build_index.py` commits `data/` with a stale committed `site/`
     (CI-on-push would still deploy correctly, but the committed tree would
     disagree with `data/`).
+20. **FB data never contains real names.** `fb_anonymize.py` fails closed on
+    author-name leaks and `validate_privacy.py` is the CI gate; raw Apify
+    archives + author rosters go under `data/fb_threads/raw/` (gitignored)
+    and must never be committed. `data/fb_threads/` is committed with only
+    anonymized `<group>-<postid>.json` records (+ README.md — build_index
+    skips it). Profile fields are dropped by whitelist at map time — never
+    hand-edit a record to add `name`/`user` keys (hygiene gate fails).
+21. **FB distilled metadata is programmatic, not model-written.**
+    `distill.py --source-type facebook` attaches `source`/`group`/
+    `group_url`/`url` after validation; FB stems use
+    `data/distilled/state.facebook.json` so they never disturb the GitHub
+    corpus batch math (`state.json`). A `.json` file in `data/distilled/`
+    whose record has `"source": "facebook"` is validated by
+    `validate_distilled.py` against `data/fb_threads/<stem>.json`.
+22. **Privacy tests need the salt env:** fixture tests set
+    `FB_PSEUDONYM_SALT` themselves (CI uses a fixture-only value). The
+    per-install salt file is under `~/.config/`, never in the repo.
+23. **Name matching is exact-name:** `privacy_common.name_leak_matches`
+    matches whole names/handles only (word-bounded, collapsed), so a roster
+    entry like "Sam Okafor" never trips on the word "sample". Short/single-
+    token names and handles are matched with boundaries; don't add
+    first-name-only fragments to a roster expecting them to catch full
+    names.
 
 ## Nightly batch runs (post-phase-2)
 
