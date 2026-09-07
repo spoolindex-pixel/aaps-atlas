@@ -1,0 +1,20 @@
+{
+ "issue_id": 138,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/138",
+ "title": "Medtronic driver does not always retrieve the correct TBR",
+ "symptom": "When AAPS sets a temp basal to a higher rate (e.g., 10 u/hr), the Medtronic tab and main screen show a lower rate (e.g., 3.60 u/hr) after the next poll, while the pump display still shows the correct rate. The problem is reproducible with any higher TBR.",
+ "cause": "The thread identifies a problem in the code: if the amount of basal is too high, the value is not displayed correctly. It appears that only 4 bits of data are read, causing the value to wrap around at 64.",
+ "fix": "A pull request (PR #400) was created to fix this problem.",
+ "settings_changed": [],
+ "devices": [
+  "Medtronic",
+  "RileyLink"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "medtronic"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "While you are the only person reporting this problem, we do have problem in code... If amount of basal is too high, then value is not displayed correctly. So it needs to be fixed."
+}
