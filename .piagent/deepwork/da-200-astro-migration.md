@@ -120,6 +120,20 @@ file:// + "repo is the static site" semantics are unchanged).
 Origin/main (05ac845) scratch worktree .tmp/v-main: build_index OK (docs=6 threads=53
 distilled=1025 index=2546KiB), validate `0 failed`, search_check ALL CHECKS PASSED.
 
+### GATE 3 outcome — READY to push (oracle review of 4137acc..6325704)
+All checks pass; old-path dry-run (05ac845 scratch) + fresh-clone repro + scope/evidence
+clean. LOW fixes applied in c55575e: dropped phantom "Creates the Pages project" deploy
+phrase (removed pre-DA-200 on main) + deduped validate_distilled.py commands row.
+Remaining risks recorded: CF deploy verifiable only post-merge on main (deploy job byte-
+identical to main; PR CI exercises the build job); origin/main may move while PR open →
+rebase + §site-build regen; nightly rollup host now needs Node ≥ 22.12 + npm ci (gotcha 16).
+
+### P4 final (in progress)
+Final verify at tip c55575e: npm run build OK, validate 0 failed, search_check ALL CHECKS
+PASSED, astro check 0 warnings. Scratch worktrees (.tmp/v-main, .tmp/g3-sim) removed;
+site/ restored byte-clean vs HEAD. origin/main unchanged (05ac845, ancestor). Next: push
+branch, open PR per write-pr (Refs DA-200), PR CI is the pre-merge gate.
+
 ### GATE 1 outcome — READY for P2 (oracle review of a1ae9cc)
 Preconditions recorded by reviewer:
 1. Restore dirty site/ tree in shared worktree before P2 commit/rebase (state from P1
