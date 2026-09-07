@@ -21,7 +21,7 @@ env vars and CI/deploy notes.
 | `npm run build` | The one-shot site build: `build_index.py` then `astro build` (exact sequence the nightly chain uses) |
 | `npm ci` | Install pinned site build deps (Astro) — first time / after a dependency change; needs Node ≥ 22.12 |
 | `npx astro check` | Type-checks the Astro pages/components (0 errors expected) |
-| `node scripts/search_check.mjs` | Acceptance harness — corpus sizes, attribution, demo queries across docs+threads+distilled |
+| `node scripts/search_check.mjs` | Acceptance harness — corpus sizes, attribution, demo queries across docs+threads+distilled, the conclusions-only completeness unit check, built-page landing assertions (examples + guides + top records + browse-all/toggle controls), and a DOM smoke of the real search.js wiring via `tests/test_search_dom.mjs` |
 | `python3 -m http.server 8000 -d site` | Local preview of the built site (http only — Astro output uses root-absolute paths, `file://` double-click no longer works) |
 
 All data-pipeline steps are stdlib Python 3.10+. The **site build now needs Node ≥ 22.12 and `npm ci`** (Astro 7, pinned in package-lock.json) — this changed post-DA-200; previously the site was buildable with stdlib python alone. No runtime CDN either way.
@@ -276,6 +276,50 @@ the usual §site-build sequence.
   `data/docs/*.md` via `src/lib/md.ts`). Edit `scripts/build_index.py` or
   `src/`, never the generated files.
 
+### Populated landing + conclusions-only display (DA-201 UX pass)
+
+- **Populated landing**: with no query the home page is not a blank shell.
+  `src/pages/index.astro` statically renders (at Astro build time) clickable
+  example queries (each verified by search_check to return docs+threads hits
+  before it may be listed), links to the six doc guides
+  (docs/dexcom-g7, omnipod-dash, xdrip-app [xDrip settings], building-aaps,
+  browser-build, xdrip-g7), a small "Top distilled records" list, and a
+  browse-all button. Top records are computed in `src/lib/top.ts` from
+  `data/distilled` joined to `data/corpus` comment counts — **complete
+  records only** (symptom AND cause AND fix), ranked by confidence then
+  comments. `search.js` only toggles that section's visibility and runs the
+  views.
+- **Conclusions-only search results**: distilled cards show records with all
+  three parts populated. Records missing symptom, cause or fix (today ~567
+  of 1412) are hidden by default and surfaced only by the client-side
+  "include incomplete (N)" toggle. `isDistilledComplete` / `conclusionsOnly` /
+  `countIncompleteDistilled` are exported from `public/search.js` for the
+  search_check unit check. Raw docs/thread records are never affected. Every
+  distilled card renders S → C → F as three distinct `.kv` rows
+  (Symptom/Cause/Fix) — never a bare title.
+- **Browse-all**: the landing button opens a paged view (40/page, "load
+  more") over the whole index ordered docs → distilled → threads, honouring
+  the type/device/Android chips and the incomplete toggle. The same view
+  opens when a chip is pressed with an empty query (chip = filtered browse).
+- **Source badges**: every card now carries a consistent origin badge after
+  the kind badge — docs: `docs`; GitHub threads + distilled: `GitHub`;
+  Facebook records: `FB community`. Docs cards' footrow shows a short
+  `<host> ↗` link instead of the full source URL.
+- `scripts/build_index.py` annotates each distilled index entry with
+  `comment_count` (source-thread comments, read from `data/corpus` or
+  `data/fb_threads`) so browse/top ordering is by most-discussed.
+- Verification: `node scripts/search_check.mjs` additionally asserts the
+  built `site/index.html` contains the landing (all example queries, the six
+  guide hrefs, ≥ 1 top record card with all three S/C/F rows, browse-all +
+  toggle controls), runs the completeness unit check (missing-fix/missing-
+  cause distilled excluded by default, included with the toggle), and spawns
+  `tests/test_search_dom.mjs` — a DOM-shim smoke of the real `search.js`
+  init() wiring (landing ↔ search ↔ browse modes, toggle behaviour,
+  load-more). `npx astro check` must stay 0 errors — note node API reads
+  (`readFileSync`/`process.cwd()`) type-check clean in `src/lib/*.ts` but
+  NOT inside `.astro` frontmatter; keep file I/O in lib modules like
+  `src/lib/top.ts` / `docs.ts`.
+
 ## Site build (the nightly rollup chain reads this §site-build)
 
 **Post-DA-200 this is the ONLY build path** (the old python docs-HTML emitter was removed).
@@ -443,6 +487,13 @@ notice prints the one manual setup step. No `.env` required locally.
     token names and handles are matched with boundaries; don't add
     first-name-only fragments to a roster expecting them to catch full
     names.
+24. **Distilled search results are conclusions-only (DA-201).** Any distilled
+    record missing symptom/cause/fix is hidden by default behind the
+    "include incomplete (N)" toggle — a *display* rule in `public/search.js`
+    (the scoring `run()` is unchanged) that search_check unit-checks. Do not
+    hand-edit a record to "complete" it (breaks the verbatim contract). The
+    landing page's top-distilled list and the default browse view show only
+    complete records by construction.
 
 ## Nightly batch runs (post-phase-2)
 
