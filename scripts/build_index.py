@@ -33,6 +33,7 @@ ROOT = Path(__file__).resolve().parent.parent
 DOCS = ROOT / "data" / "docs"
 THREADS = ROOT / "data" / "threads"
 FB_THREADS = ROOT / "data" / "fb_threads"
+CORPUS = ROOT / "data" / "corpus"
 DISTILLED = ROOT / "data" / "distilled"
 PUBLIC = ROOT / "public"
 MIN_DOCS = 6
@@ -156,6 +157,37 @@ def distilled_search_text(data: dict) -> str:
                      str(data.get("evidence_quote", "") or "")])
 
 
+def _comment_counts() -> dict:
+    """stem -> comment_count for every distilled-able source thread.
+
+    GitHub distilled records are annotated with their source thread's
+    comment count (from data/corpus) so the client can order browse/all and
+    "most discussed" lists; FB distilled records get their post's comment
+    count from data/fb_threads. Cheap: corpus files parse in ~0.1s.
+    """
+    counts: dict = {}
+    if CORPUS.exists():
+        for p in CORPUS.glob("*.json"):
+            if p.name == "manifest.json" or p.name == "state.json":
+                continue
+            try:
+                data = json.loads(p.read_text(encoding="utf-8"))
+                counts[p.stem] = int(data.get("comment_count") or 0)
+            except (json.JSONDecodeError, TypeError, ValueError):
+                continue
+    if FB_THREADS.exists():
+        for p in FB_THREADS.glob("*.json"):
+            if p.name == "README.md":
+                continue
+            try:
+                data = json.loads(p.read_text(encoding="utf-8"))
+                comments = data.get("comments") or []
+                counts[p.stem] = int(data.get("comment_count") or len(comments))
+            except (json.JSONDecodeError, TypeError, ValueError):
+                continue
+    return counts
+
+
 def main() -> int:
     doc_recs = sorted((parse_doc(p) for p in DOCS.glob("*.md")), key=lambda d: d["slug"])
     thread_recs = sorted(
@@ -168,6 +200,10 @@ def main() -> int:
     distilled_recs = sorted(
         (parse_distilled(p) for p in DISTILLED.glob("*.json") if p.name != "state.json"),
         key=lambda d: d["id"])
+    comment_counts = _comment_counts()
+    for rec in distilled_recs:
+        stem = rec["id"].split(":", 1)[1]
+        rec["comment_count"] = comment_counts.get(stem, 0)
     for rec in doc_recs:
         assert rec["source_url"], f"doc {rec['id']} missing source URL (first line)"
     for rec in thread_recs:

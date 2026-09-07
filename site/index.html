@@ -45,17 +45,147 @@
       <button class="chip" data-type="docs">Docs</button>
       <button class="chip" data-type="thread">Threads</button>
       <button class="chip" data-type="distilled">Distilled</button>
-      <span class="examples">Try: <a href="#q" data-example="G7 broadcast">G7 broadcast</a> ·
-        <a href="#q" data-example="pod activation">pod activation</a> ·
-        <a href="#q" data-example="Android 16 bluetooth">Android 16 bluetooth</a> ·
-        <a href="#q" data-example="sensor restart">sensor restart</a></span>
     </nav>
 
     <div class="filters" id="devfilters" style="display:none" aria-label="Device filter"></div>
     <div class="filters" id="andfilters" style="display:none" aria-label="Android version filter"></div>
 
+    <!-- conclusions-only toggle: surfaced by search.js only when the current
+         view hides incomplete distilled records (see public/search.js). -->
+    <div id="incwrap" class="incwrap" hidden>
+      <button id="incbtn" type="button" class="chip" aria-pressed="false">
+        include incomplete (<span id="incn">0</span>)
+      </button>
+    </div>
+
+    <!-- Populated landing state (no query): static, rendered by Astro. -->
+    <section id="landing" class="landing" aria-label="Explore AAPS Atlas">
+      <section class="land-block land-explore">
+        <h2 class="landh">Explore</h2>
+        <p class="land-sub">Example searches that return results — click one to run it.</p>
+        <div class="exgrid">
+          <a class="chip ex" href="#q" data-example="G7 broadcast">G7 broadcast</a><a class="chip ex" href="#q" data-example="pod activation">pod activation</a><a class="chip ex" href="#q" data-example="Android 16 bluetooth">Android 16 bluetooth</a><a class="chip ex" href="#q" data-example="sensor restart">sensor restart</a>
+        </div>
+        <p class="land-sub land-sub-gap">Local mirrors of the official setup guides:</p>
+        <ul class="guides">
+          <li>
+              <a class="guide" href="/docs/dexcom-g7.html">
+                <span class="guide-title">Dexcom G7</span>
+                <span class="guide-src">AAPS wiki</span>
+              </a>
+            </li><li>
+              <a class="guide" href="/docs/omnipod-dash.html">
+                <span class="guide-title">Omnipod DASH</span>
+                <span class="guide-src">AAPS wiki</span>
+              </a>
+            </li><li>
+              <a class="guide" href="/docs/xdrip-app.html">
+                <span class="guide-title">xDrip settings</span>
+                <span class="guide-src">AAPS wiki</span>
+              </a>
+            </li><li>
+              <a class="guide" href="/docs/building-aaps.html">
+                <span class="guide-title">Building AAPS</span>
+                <span class="guide-src">AAPS wiki</span>
+              </a>
+            </li><li>
+              <a class="guide" href="/docs/browser-build.html">
+                <span class="guide-title">Browser build</span>
+                <span class="guide-src">AAPS wiki</span>
+              </a>
+            </li><li>
+              <a class="guide" href="/docs/xdrip-g7.html">
+                <span class="guide-title">xDrip + G7 / Stelo</span>
+                <span class="guide-src">xDrip docs</span>
+              </a>
+            </li>
+        </ul>
+      </section>
+
+      <section class="land-block">
+        <h2 class="landh">Top distilled records</h2>
+        <p class="land-sub">
+          Complete symptom → cause → fix extracts (all three parts) from the most-discussed, highest-confidence
+          solved threads.
+        </p>
+        <ol class="results">
+          <li class="card toprec">
+              <h2>
+                <span class="badge distilled">distilled</span>
+                <span class="badge gh">GitHub</span>
+                <a href="https://github.com/NightscoutFoundation/xDrip/issues/980" target="_blank" rel="noopener">Restart sensor and preemptive restarts option no longer works with new transmitter SN 81xxxx</a>
+              </h2>
+              <div class="dbody">
+                <p class="kv"><span class="k">Symptom</span>With a new transmitter whose serial number starts with 81xxxx, preemptive sensor restart stops working; xDrip reports errors like &#39;Sensor Failed Start&#39;, &#39;Sensor marked FAILED&#39;, and &#39;Session Start Failed: Invalid&#39;. The only workaround is to start the sensor using the Dexcom receiver and wait through the full two-hour warm-up. Other users with 81xxxx transmitters report that preemptive restart says &#39;not capable&#39; or fails.</p>
+                <p class="kv"><span class="k">Cause</span>Dexcom has restricted restart functionality in newer G6 transmitters. According to the maintainer, xDrip can currently only hard reset and perform preemptive restarts on G6 transmitters with firmware version 1.6.5.25, which includes all 80XXXX and some 81XXXX transmitters; transmitters with newer firmware (e.g., 1.6.5.27) cannot be restarted this way.</p>
+                <p class="kv"><span class="k">Fix</span>No xDrip-side fix. The maintainer states that only G6 transmitters with firmware 1.6.5.25 (all 80XXXX and some 81XXXX) support hard reset/preemptive restart, and restarting other G6 transmitters requires temporarily removing the transmitter. A reported workaround is to start the sensor through the Dexcom receiver and wait through the warm-up period.</p>
+              </div>
+              <div class="footrow">
+                <span class="conf conf-high">confidence: high</span>
+                <span class="tagchip">xDrip#980</span>
+                <a class="goto" href="https://github.com/NightscoutFoundation/xDrip/issues/980" target="_blank" rel="noopener">view source thread ↗</a>
+              </div>
+            </li><li class="card toprec">
+              <h2>
+                <span class="badge distilled">distilled</span>
+                <span class="badge gh">GitHub</span>
+                <a href="https://github.com/NightscoutFoundation/xDrip/issues/1891" target="_blank" rel="noopener">Number wall on lock screen causing other apps to restart</a>
+              </h2>
+              <div class="dbody">
+                <p class="kv"><span class="k">Symptom</span>External Android apps appear to restart at the precise Xdrip+ polling interval: Chrome web content refreshes and clears unsubmitted input fields, social media feeds refresh to the top of the scroll, and YouTube videos stop and reset to the beginning. The reported symptom was later narrowed to the xDrip+ lock screen number wall refreshing every 5 minutes.</p>
+                <p class="kv"><span class="k">Cause</span>The xDrip+ lock screen number wall refresh on Android 12 interrupts other apps, causing them to restart. Disabling the lock screen number display resolves it.</p>
+                <p class="kv"><span class="k">Fix</span>Disable the xDrip+ lock screen number display / Number Wall feature. Removing the value from the lock screen was reported to 100% fix the issue.</p>
+              </div>
+              <div class="footrow">
+                <span class="conf conf-high">confidence: high</span>
+                <span class="tagchip">xDrip#1891</span>
+                <a class="goto" href="https://github.com/NightscoutFoundation/xDrip/issues/1891" target="_blank" rel="noopener">view source thread ↗</a>
+              </div>
+            </li><li class="card toprec">
+              <h2>
+                <span class="badge distilled">distilled</span>
+                <span class="badge gh">GitHub</span>
+                <a href="https://github.com/NightscoutFoundation/xDrip/issues/157" target="_blank" rel="noopener">Enable 640G as full data source via 640G Uploader application to allow Sync following to work correctly</a>
+              </h2>
+              <div class="dbody">
+                <p class="kv"><span class="k">Symptom</span>Users with a Medtronic 640G/Enlite want xDrip to include the Nightscout Medtronic/600SeriesAndroidUploader as a data source in master mode, so readings can be sent directly to xDrip followers and smartwatches with audible alarms. The Medtronic 640G&#39;s own alarms are quiet or not perceived, making xDrip&#39;s loud alarms desirable.</p>
+                <p class="kv"><span class="k">Cause</span>xDrip did not have the Medtronic 600SeriesAndroidUploader/uploader integrated as a source, so it could receive data only in follower mode, not master mode, preventing direct forwarding to followers.</p>
+                <p class="kv"><span class="k">Fix</span>Developer jamorham implemented the 640G uploader as a source in xDrip and released it in the 21 Aug version; the issue was then closed.</p>
+              </div>
+              <div class="footrow">
+                <span class="conf conf-high">confidence: high</span>
+                <span class="tagchip">xDrip#157</span>
+                <a class="goto" href="https://github.com/NightscoutFoundation/xDrip/issues/157" target="_blank" rel="noopener">view source thread ↗</a>
+              </div>
+            </li><li class="card toprec">
+              <h2>
+                <span class="badge distilled">distilled</span>
+                <span class="badge gh">GitHub</span>
+                <a href="https://github.com/nightscout/AndroidAPS/issues/4027" target="_blank" rel="noopener">No Pod activation possible since Android 16 Update</a>
+              </h2>
+              <div class="dbody">
+                <p class="kv"><span class="k">Symptom</span>After updating a Pixel phone to Android 16, deactivating an old Omnipod DASH pod works, but activating a new pod fails with &#39;Failed to connect to pod&#39;. Manual bonding mode also does not work, while an already-active pod continues to work.</p>
+                <p class="kv"><span class="k">Cause</span>The Android 16 update exposes a compatibility bug in AAPS&#39;s DASH connection code that prevents activation of new pods, requiring a code hotfix.</p>
+                <p class="kv"><span class="k">Fix</span>Update to AAPS 3.3.2.1 (which contains the fix), or build the dev332 branch; alternatively apply the hotfix-a16-dash commits 6153bc4 and 39dd2e6 to master. A temporary workaround is to activate the pod on a backup phone and import the settings export into the main phone.</p>
+              </div>
+              <div class="footrow">
+                <span class="conf conf-high">confidence: high</span>
+                <span class="tagchip">AndroidAPS#4027</span>
+                <a class="goto" href="https://github.com/nightscout/AndroidAPS/issues/4027" target="_blank" rel="noopener">view source thread ↗</a>
+              </div>
+            </li>
+        </ol>
+      </section>
+
+      <div class="browse-row">
+        <p class="land-sub">Or browse the whole index at once — distilled first, then threads and docs.</p>
+        <button id="browseall" type="button" class="chip browseall">Browse all records ↓</button>
+      </div>
+    </section>
+
     <ol id="results" class="results"></ol>
     <div id="status" class="status" role="status"></div>
+    <div id="morewrap" class="morewrap" hidden></div>
   </main>
 
   <footer class="foot">

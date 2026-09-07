@@ -13,8 +13,20 @@
  * tags + Android versions. Device tags are canonicalised (G7 / G6 / DASH /
  * Omnipod 5 / Libre / Medtrum / Dexcom / Eversense); threads/docs match via
  * their text, distilled records via their validated structured arrays.
- * Facebook cards carry a "FB community" source badge and link back to the
+ * Facebook cards carry an "FB community" origin badge and link back to the
  * original post permalink (kept for verification); authors are pseudonyms.
+ *
+ * Display contract (UX pass DA-201):
+ *  - Conclusions-only: distilled cards only ever show complete S->C->F
+ *    records by default. A distilled record missing symptom, cause or fix
+ *    is hidden unless the "include incomplete (N)" toggle is on. Raw
+ *    thread/docs records are unaffected. isDistilledComplete /
+ *    conclusionsOnly / countIncompleteDistilled implement this and are
+ *    exported so the acceptance harness can unit-check it.
+ *  - Populated landing: with no query the page shows clickable example
+ *    queries + doc-guide links + a small set of top distilled records +
+ *    a browse-all entry (see index.astro). search.js only toggles the
+ *    landing element and runs browse mode here.
  *
  * Scoring (unchanged MiniSearch core): per-record term frequency weighted by
  * field (title 5x, labels 3x, body 1x) x corpus idf; full-query-overlap
@@ -71,6 +83,11 @@
     if (s.indexOf("dexcom") !== -1) return "Dexcom";
     if (s.indexOf("eversense") !== -1) return "Eversense";
     return null; // phones / pumps outside the chip vocabulary
+  }
+
+  function hostOf(url) {
+    var m = /^https?:\/\/([^/:?#]+)/.exec(String(url || ""));
+    return m ? m[1].replace(/^www\./, "") : "";
   }
 
   function scanTags(text) {
@@ -200,6 +217,27 @@
     return scored.slice(0, limit);
   }
 
+  /* --- conclusions-only display contract (DA-201) ------------------------ */
+  // A distilled record is "complete" only when all three parts (symptom AND
+  // cause AND fix) are present. Incomplete distilled records are hidden by
+  // default and surfaced via the "include incomplete (N)" toggle; raw
+  // thread/docs records are never affected.
+  function isDistilledComplete(rec) {
+    return !!(rec && String(rec.symptom || "").trim() &&
+      String(rec.cause || "").trim() && String(rec.fix || "").trim());
+  }
+
+  function countIncompleteDistilled(hits) {
+    return hits.filter((h) => h.kind === "distilled" && !isDistilledComplete(h.rec)).length;
+  }
+
+  // Exported so the acceptance harness can unit-check the default-exclude /
+  // toggle-include behaviour on a distilled record that is missing one part.
+  function conclusionsOnly(hits, includeIncomplete) {
+    if (includeIncomplete) return hits;
+    return hits.filter((h) => h.kind !== "distilled" || isDistilledComplete(h.rec));
+  }
+
   /* --- browser wiring ----------------------------------------------------- */
   function loadData() {
     if (typeof window === "undefined") return Promise.resolve(null);
@@ -258,9 +296,29 @@
     var statlineEl = document.getElementById("statline");
     var devRowEl = document.getElementById("devfilters");
     var andRowEl = document.getElementById("andfilters");
+    var landingEl = document.getElementById("landing");
+    var incWrapEl = document.getElementById("incwrap");
+    var incBtnEl = document.getElementById("incbtn");
+    var incCountEl = document.getElementById("incn");
+    var moreWrapEl = document.getElementById("morewrap");
+    var browseBtnEl = document.getElementById("browseall");
     var activeType = "all";
     var activeDev = null;
     var activeAndroid = null;
+    // View state: "home" (landing, no query) | "search" | "browse" (all).
+    var mode = "home";
+    var includeIncomplete = false;
+    var browseCap = 40;
+    var PAGE = 40;
+
+    function enterBrowse() {
+      mode = "browse";
+      browseCap = PAGE;
+    }
+    // Any chip pressed on the empty landing becomes a filtered browse.
+    function chipPressed() {
+      if (!input.value.trim() && mode === "home") enterBrowse();
+    }
 
     loadData().then((data) => {
       window.__AAPS_DATA__ = data;
@@ -275,6 +333,7 @@
         metaEl.textContent = "Rate-limited pull: corpus is under the 45-thread target (see README).";
       }
       if (counts.distilled) buildDeviceFilters(data);
+      render();
     }).catch((err) => {
       statusEl.textContent = "Could not load search index: " + err.message;
     });
@@ -290,13 +349,13 @@
       var devOpts = DEVICE_ORDER.filter((d) => devCounts[d])
         .map((d) => ({ value: "dev:" + d, label: d, count: devCounts[d] }));
       if (devOpts.length) {
-        addChipRow(devRowEl, "Devices", devOpts, (v) => { activeDev = v; render(); });
+        addChipRow(devRowEl, "Devices", devOpts, (v) => { chipPressed(); activeDev = v; render(); });
         devRowEl.style.display = "flex";
       }
       var andOpts = Object.keys(andCounts).sort((a, b) => +b.split(" ")[1] - +a.split(" ")[1])
         .slice(0, 8).map((a) => ({ value: "and:" + a, label: a, count: andCounts[a] }));
       if (andOpts.length) {
-        addChipRow(andRowEl, "Android", andOpts, (v) => { activeAndroid = v; render(); });
+        addChipRow(andRowEl, "Android", andOpts, (v) => { chipPressed(); activeAndroid = v; render(); });
         andRowEl.style.display = "flex";
       }
     }
@@ -311,14 +370,58 @@
     }
 
     function show(msg) { statusEl.textContent = msg || ""; }
+    function showLanding() {
+      resultsEl.replaceChildren();
+      hideEl(incWrapEl, true);
+      hideEl(moreWrapEl, true);
+      show("");
+      metaEl.textContent = "";
+      landingEl.hidden = false;
+    }
+    function hideEl(node, on) { if (node) node.hidden = on; }
+    function activeFilterText() {
+      var txt = [];
+      if (activeType !== "all") txt.push(activeType);
+      if (activeDev) txt.push(activeDev.slice(4));
+      if (activeAndroid) txt.push(activeAndroid.slice(4));
+      return txt;
+    }
+    function kindDevFilter(h) {
+      if (activeType !== "all" && h.kind !== activeType) return false;
+      if (activeDev && (h.tags || []).indexOf(activeDev.slice(4)) === -1) return false;
+      if (activeAndroid && (h.android || []).indexOf(activeAndroid.slice(4)) === -1) return false;
+      return true;
+    }
 
+    /* --- include-incomplete toggle -------------------------------------- */
+    function renderIncToggle(hiddenN) {
+      if (!incWrapEl) return;
+      incWrapEl.hidden = !(hiddenN > 0 || includeIncomplete);
+      if (incCountEl) incCountEl.textContent = "" + hiddenN;
+      incBtnEl.classList.toggle("on", includeIncomplete);
+      incBtnEl.setAttribute("aria-pressed", includeIncomplete ? "true" : "false");
+      incBtnEl.title = includeIncomplete
+        ? "Showing distilled records that miss a part; click to hide them."
+        : "Also show distilled records missing symptom, cause or fix.";
+    }
+
+    /* --- card rendering ---------------------------------------------------- */
     function tagChips(h, cls) {
-      var box = el("span", "tags");
+      var box = el("span", "tags" + (cls ? " " + cls : ""));
       (h.tags || []).forEach((t) => {
         var c = el("span", "tagchip", t);
         box.appendChild(c);
       });
       return box;
+    }
+
+    // Consistent source badge (DA-201): every card shows where its content
+    // comes from — "docs" (official mirror), "github" (issue thread or its
+    // distilled extract), or "FB community".
+    function originBadge(h, isFb) {
+      if (h.kind === "docs") return null;
+      if (isFb) return el("span", "badge fb", "FB community");
+      return el("span", "badge gh", "GitHub");
     }
 
     function cardHit(h) {
@@ -332,7 +435,8 @@
       link.textContent = h.title;
       if (h.kind !== "docs") { link.target = "_blank"; link.rel = "noopener"; }
       h2.appendChild(badge);
-      if (isFb) { h2.appendChild(el("span", "badge fbsrc", "FB community")); }
+      var origin = originBadge(h, isFb);
+      if (origin) h2.appendChild(origin);
       h2.appendChild(link);
       li.appendChild(h2);
 
@@ -348,11 +452,11 @@
       labels.slice(0, 4).forEach((l) => foot.appendChild(el("span", "tagchip", l)));
       if (h.kind === "docs") {
         var srcA = document.createElement("a");
-        srcA.className = "src";
+        srcA.className = "goto";
         srcA.href = h.rec.source_url;
         srcA.target = "_blank";
         srcA.rel = "noopener";
-        srcA.textContent = "source: " + h.rec.source_url;
+        srcA.textContent = (hostOf(h.rec.source_url) || "source") + " ↗";
         foot.appendChild(srcA);
       } else if (h.kind === "thread") {
         if (isFb) {
@@ -406,6 +510,7 @@
     function distilledBody(h) {
       var r = h.rec;
       var box = el("div", "dbody");
+      // Never a bare title: the three sections render distinctly (S -> C -> F).
       if (r.symptom) box.appendChild(kv("Symptom", r.symptom));
       if (r.cause) box.appendChild(kv("Cause", r.cause));
       if (r.fix) box.appendChild(kv("Fix", r.fix));
@@ -427,45 +532,139 @@
       return box;
     }
 
-    function render() {
-      var q = input.value.trim();
+    function metaCounts(shown) {
+      var docsN = shown.filter((h) => h.kind === "docs").length;
+      var distilledN = shown.filter((h) => h.kind === "distilled").length;
+      return { docsN: docsN, distilledN: distilledN, thrN: shown.length - docsN - distilledN };
+    }
+
+    /* --- browse-all (landing entry / filtered by chips) ------------------- */
+    function browseCandidates() {
       var data = window.__AAPS_DATA__;
-      resultsEl.replaceChildren();
-      if (!data) return;
-      if (!q) { show("Type a symptom, device, or error — e.g. G7 broadcast."); return; }
-      var qterms = terms(q);
-      if (!qterms.length) { show("Search terms too generic — add a word like G7 or pod."); return; }
-      var hits = run(data, q, { limit: 60 }).filter((h) => {
-        if (activeType !== "all" && h.kind !== activeType) return false;
-        if (activeDev && (h.tags || []).indexOf(activeDev.slice(4)) === -1) return false;
-        if (activeAndroid && (h.android || []).indexOf(activeAndroid.slice(4)) === -1) return false;
-        return true;
+      var idx = build(data);
+      var confW = { high: 3, medium: 2, low: 1 };
+      var kindOrder = { docs: 0, distilled: 1, thread: 2 };
+      var hits = idx.recs.map((r) => ({
+        kind: r.kind, rec: r.rec, title: r.title, url: r.url, source: r.source,
+        score: 0, matched: 0, snippet: snippet(r, []), tags: r.tags, android: r.android
+      }));
+      hits.sort((a, b) => {
+        if (kindOrder[a.kind] !== kindOrder[b.kind]) return kindOrder[a.kind] - kindOrder[b.kind];
+        if (a.kind === "distilled") {
+          var d = (confW[b.rec.confidence] || 0) - (confW[a.rec.confidence] || 0);
+          if (d) return d;
+        }
+        var cc = (b.rec.comment_count || 0) - (a.rec.comment_count || 0);
+        if (cc) return cc;
+        return a.title < b.title ? -1 : a.title > b.title ? 1 : 0;
       });
+      return hits;
+    }
+
+    function renderBrowse() {
+      landingEl.hidden = true;
+      var all = conclusionsOnly(browseCandidates().filter(kindDevFilter), includeIncomplete);
+      var total = all.length;
+      var shown = all.slice(0, browseCap);
+      resultsEl.replaceChildren();
+      shown.forEach(cardHit);
+      var hiddenN = countIncompleteDistilled(all);
+      renderIncToggle(hiddenN);
       show("");
+      var f = activeFilterText();
+      metaEl.textContent = "browsing all " + total + " records" + (f.length ? " (filter: " + f.join(" + ") + ")" : "")
+        + " — showing " + shown.length
+        + (includeIncomplete ? " (incl. incomplete distilled)" : "")
+        + " — type above to search";
+      if (!shown.length) {
+        show("Nothing to browse with the current filters — clear a chip or search above.");
+      }
+      if (!moreWrapEl) return;
+      var remaining = total - shown.length;
+      moreWrapEl.replaceChildren();
+      if (remaining > 0) {
+        var b = el("button", "chip more", "load more (" + remaining + " more)");
+        b.addEventListener("click", () => { browseCap += PAGE; render(); });
+        moreWrapEl.appendChild(b);
+      } else if (total > PAGE) {
+        moreWrapEl.appendChild(el("span", "endnote", "end of the index — refine with a search or a chip above"));
+      }
+      moreWrapEl.hidden = remaining <= 0;
+    }
+
+    /* --- query render ------------------------------------------------------ */
+    function renderSearch(data, q) {
+      var qterms = terms(q);
+      if (!qterms.length) {
+        hideEl(incWrapEl, true);
+        metaEl.textContent = "";
+        show("Search terms too generic — add a word like G7 or pod.");
+        return;
+      }
+      var hits = run(data, q, { limit: 60 }).filter(kindDevFilter);
+      var hiddenN = countIncompleteDistilled(hits);
+      renderIncToggle(hiddenN);
+      var shown = conclusionsOnly(hits, includeIncomplete);
       if (!hits.length) {
         show("No hits for “" + q + "” with the current filters. Try a shorter symptom phrase, a device name, or clear a chip.");
         return;
       }
-      var docsN = hits.filter((h) => h.kind === "docs").length;
-      var distilledN = hits.filter((h) => h.kind === "distilled").length;
-      var thrN = hits.length - docsN - distilledN;
-      var filterTxt = [];
-      if (activeType !== "all") filterTxt.push(activeType);
-      if (activeDev) filterTxt.push(activeDev.slice(4));
-      if (activeAndroid) filterTxt.push(activeAndroid.slice(4));
-      metaEl.textContent = hits.length + " results for “" + q + "”"
-        + (filterTxt.length ? " (filter: " + filterTxt.join(" + ") + ")" : "") +
-        " — " + distilledN + " distilled, " + thrN + " threads, " + docsN + " docs";
-      hits.forEach(cardHit);
+      if (!shown.length) {
+        show("Every distilled match for “" + q + "” is incomplete — enable “include incomplete (" + hiddenN + ")” above to surface it, or clear a filter.");
+        return;
+      }
+      var counts = metaCounts(shown);
+      var f = activeFilterText();
+      var extra = "";
+      if (hiddenN && !includeIncomplete) extra = " (+" + hiddenN + " incomplete distilled hidden)";
+      metaEl.textContent = shown.length + " results for “" + q + "”"
+        + (f.length ? " (filter: " + f.join(" + ") + ")" : "") +
+        " — " + counts.distilledN + " distilled, " + counts.thrN + " threads, " + counts.docsN + " docs" + extra;
+      show("");
+      shown.forEach(cardHit);
     }
 
+    function render() {
+      resultsEl.replaceChildren();
+      if (!window.__AAPS_DATA__) return;
+      landingEl.hidden = mode === "home" ? false : true;
+      var q = input.value.trim();
+      if (mode === "browse") { renderBrowse(); return; }
+      if (!q) { mode = "home"; showLanding(); return; }
+      renderSearch(window.__AAPS_DATA__, q);
+    }
+
+    /* --- events ------------------------------------------------------------ */
     var t;
     input.addEventListener("input", () => {
       clearTimeout(t);
-      t = setTimeout(render, 120);
+      t = setTimeout(() => {
+        if (input.value.trim()) mode = "search";
+        else if (mode === "search") mode = "home";
+        render();
+      }, 120);
     });
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") { mode = "search"; render(); }
+    });
+    if (incBtnEl) {
+      incBtnEl.addEventListener("click", () => {
+        includeIncomplete = !includeIncomplete;
+        if (mode === "home") mode = "browse";
+        render();
+      });
+    }
+    if (browseBtnEl) {
+      browseBtnEl.addEventListener("click", (ev) => {
+        ev.preventDefault();
+        if (input.value.trim()) input.value = "";
+        enterBrowse();
+        render();
+      });
+    }
     document.querySelectorAll(".chip[data-type]").forEach((b) => {
       b.addEventListener("click", () => {
+        chipPressed();
         document.querySelectorAll(".chip[data-type]").forEach((x) => { x.classList.remove("on"); });
         b.classList.add("on");
         activeType = b.dataset.type;
@@ -476,11 +675,9 @@
       a.addEventListener("click", (ev) => {
         ev.preventDefault();
         input.value = a.dataset.example;
+        mode = "search";
         render();
       });
-    });
-    input.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") render();
     });
   }
 
@@ -489,5 +686,6 @@
   }
 
   return { run: run, terms: terms, build: build, STOP: STOP, EXPAND: EXPAND,
-    canonDevice: canonDevice };
+    canonDevice: canonDevice, isDistilledComplete: isDistilledComplete,
+    countIncompleteDistilled: countIncompleteDistilled, conclusionsOnly: conclusionsOnly };
 });

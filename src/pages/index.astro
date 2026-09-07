@@ -5,7 +5,30 @@
 // chip/data-attribute structure below. The prebuilt index
 // (public/search-index.json, produced by scripts/build_index.py before the
 // build) is fetched at runtime; file:// opens inject public/search-data.js.
+//
+// Populated landing (DA-201): with no query the page is NOT a blank shell —
+// Astro statically renders example queries, doc-guide links and a small set
+// of top distilled records (complete S->C->F only, computed at build time
+// from data/distilled joined to data/corpus comment counts), plus a
+// browse-all entry. search.js only toggles this section's visibility and
+// implements browse mode + the "include incomplete" toggle.
 import Base from '../layouts/Base.astro';
+import { loadTopDistilled } from '../lib/top';
+
+// Every example is verified to return hits by scripts/search_check.mjs
+// (docs + threads, distilled included) before it may be listed here.
+const EXAMPLES = ['G7 broadcast', 'pod activation', 'Android 16 bluetooth', 'sensor restart'];
+
+const GUIDES = [
+  { href: '/docs/dexcom-g7.html', title: 'Dexcom G7', src: 'AAPS wiki' },
+  { href: '/docs/omnipod-dash.html', title: 'Omnipod DASH', src: 'AAPS wiki' },
+  { href: '/docs/xdrip-app.html', title: 'xDrip settings', src: 'AAPS wiki' },
+  { href: '/docs/building-aaps.html', title: 'Building AAPS', src: 'AAPS wiki' },
+  { href: '/docs/browser-build.html', title: 'Browser build', src: 'AAPS wiki' },
+  { href: '/docs/xdrip-g7.html', title: 'xDrip + G7 / Stelo', src: 'xDrip docs' },
+];
+
+const topDistilled = loadTopDistilled();
 ---
 
 <Base title="AAPS Atlas — searchable AAPS / xDrip knowledge base">
@@ -51,17 +74,80 @@ import Base from '../layouts/Base.astro';
       <button class="chip" data-type="docs">Docs</button>
       <button class="chip" data-type="thread">Threads</button>
       <button class="chip" data-type="distilled">Distilled</button>
-      <span class="examples">Try: <a href="#q" data-example="G7 broadcast">G7 broadcast</a> ·
-        <a href="#q" data-example="pod activation">pod activation</a> ·
-        <a href="#q" data-example="Android 16 bluetooth">Android 16 bluetooth</a> ·
-        <a href="#q" data-example="sensor restart">sensor restart</a></span>
     </nav>
 
     <div class="filters" id="devfilters" style="display:none" aria-label="Device filter"></div>
     <div class="filters" id="andfilters" style="display:none" aria-label="Android version filter"></div>
 
+    <!-- conclusions-only toggle: surfaced by search.js only when the current
+         view hides incomplete distilled records (see public/search.js). -->
+    <div id="incwrap" class="incwrap" hidden>
+      <button id="incbtn" type="button" class="chip" aria-pressed="false">
+        include incomplete (<span id="incn">0</span>)
+      </button>
+    </div>
+
+    <!-- Populated landing state (no query): static, rendered by Astro. -->
+    <section id="landing" class="landing" aria-label="Explore AAPS Atlas">
+      <section class="land-block land-explore">
+        <h2 class="landh">Explore</h2>
+        <p class="land-sub">Example searches that return results — click one to run it.</p>
+        <div class="exgrid">
+          {EXAMPLES.map((ex) => (
+            <a class="chip ex" href="#q" data-example={ex}>{ex}</a>
+          ))}
+        </div>
+        <p class="land-sub land-sub-gap">Local mirrors of the official setup guides:</p>
+        <ul class="guides">
+          {GUIDES.map((g) => (
+            <li>
+              <a class="guide" href={g.href}>
+                <span class="guide-title">{g.title}</span>
+                <span class="guide-src">{g.src}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section class="land-block">
+        <h2 class="landh">Top distilled records</h2>
+        <p class="land-sub">
+          Complete symptom → cause → fix extracts (all three parts) from the most-discussed, highest-confidence
+          solved threads.
+        </p>
+        <ol class="results">
+          {topDistilled.map((r) => (
+            <li class="card toprec">
+              <h2>
+                <span class="badge distilled">distilled</span>
+                <span class="badge gh">GitHub</span>
+                <a href={r.url} target="_blank" rel="noopener">{r.title}</a>
+              </h2>
+              <div class="dbody">
+                <p class="kv"><span class="k">Symptom</span>{r.symptom}</p>
+                <p class="kv"><span class="k">Cause</span>{r.cause}</p>
+                <p class="kv"><span class="k">Fix</span>{r.fix}</p>
+              </div>
+              <div class="footrow">
+                <span class:list={['conf', `conf-${r.confidence}`]}>confidence: {r.confidence}</span>
+                <span class="tagchip">{r.issueRef}</span>
+                <a class="goto" href={r.url} target="_blank" rel="noopener">view source thread ↗</a>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <div class="browse-row">
+        <p class="land-sub">Or browse the whole index at once — distilled first, then threads and docs.</p>
+        <button id="browseall" type="button" class="chip browseall">Browse all records ↓</button>
+      </div>
+    </section>
+
     <ol id="results" class="results"></ol>
     <div id="status" class="status" role="status"></div>
+    <div id="morewrap" class="morewrap" hidden></div>
   </main>
 
   <footer class="foot">
