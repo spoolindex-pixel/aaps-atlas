@@ -116,6 +116,10 @@ file:// + "repo is the static site" semantics are unchanged).
 
 ## Phase log
 
+### P0 baseline (done)
+Origin/main (05ac845) scratch worktree .tmp/v-main: build_index OK (docs=6 threads=53
+distilled=1025 index=2546KiB), validate `0 failed`, search_check ALL CHECKS PASSED.
+
 ### GATE 1 outcome — READY for P2 (oracle review of a1ae9cc)
 Preconditions recorded by reviewer:
 1. Restore dirty site/ tree in shared worktree before P2 commit/rebase (state from P1
@@ -135,9 +139,42 @@ Also flagged LOW (deliberate, documented): doc heading levels now map naturally 
 vs the old accidental +1 shift, restyling .mirror h2/h3 slightly; footer "Rebuild: npm run
 build" command was premature until P2 retool.
 
-### P0 baseline (done)
-Origin/main (05ac845) scratch worktree .tmp/v-main: build_index OK (docs=6 threads=53
-distilled=1025 index=2546KiB), validate `0 failed`, search_check ALL CHECKS PASSED.
+### P3 cutover (in progress — CI + docs updated, awaiting GATE 3)
+Uncommitted: .github/workflows/ci.yml (setup-node 22 pinned 49933ea5 = v4.4.0 → npm ci →
+build_index → `npm run astro` AFTER build_index → validate → search_check → artifact asserts;
+deploy job + wrangler@4.129.0 pin untouched; ASTRO_TELEMETRY_DISABLED), AGENTS-REFERENCE.md
+(new Commands rows, pipeline ascii, search-engine + generated-file sections, NEW §site-build
+section = the rollup-chain cutover deliverable, CI/deploy text, gotchas 4 rewritten + 16-19
+added, batch step 4 → §site-build), README.md (Astro description, http-only preview,
+rebuild commands, layout, 1025-record count).
+Verification: stale-ref sweep clean (remaining file:// text = intentional http-only docs);
+origin/main still 05ac845 (no rebase pressure). Fresh-clone simulation in .tmp/sim at
+81e9c48: npm ci (276 pkgs) + npm run build + validate `0 failed` + search_check ALL PASSED
++ artifact asserts OK; fresh build output byte-identical to committed site/ for all 9 static
+files, search-index.json/search-data.js equal except meta.generated → build is reproducible.
+
+### GATE 2 outcome — READY for P3 (oracle review of 81e9c48)
+All five gate checks pass; no blockers. HIGH items for P3 (done above): ci.yml cutover;
+AGENTS-REFERENCE nightly-chain switch to full pipeline (§site-build). MEDIUM: rebase strategy
+(no pressure yet; deterministic regen), old-path sweep (done), fresh-clone sim (done). LOW:
+keep exact pins; astro check optional in CI (not added — build is the gate); deploy job
+untouched; commit the P2 progress entry in P3 (doing now). Filter-parity gap stays documented
+(no chromium on host).
+
+### P2 search integration (done — verified, awaiting GATE 2)
+Commit 81e9c48. scripts/build_index.py retooled → emits ONLY public/search-index.json +
+public/search-data.js (docs HTML emission removed — Astro renders those); parse funcs +
+payload shape + attribution asserts + min-threshold exit unchanged. .gitignore adds
+public/search-index.json + public/search-data.js (generated intermediates; single committed
+copy stays in site/ output). package.json: astro:check script + devDeps @astrojs/check@0.9.10,
+typescript@6.0.2 (7.x rejected by @astrojs/check peer range ^5||^6).
+Evidence: payload parity vs committed old index == identical except meta.generated;
+`npm run build` single-command passes end-to-end (docs=6 threads=53 distilled=1025 index=
+2546KiB; 7 pages; artifact asserts incl 6 doc pages; validate 0 failed; search_check ALL
+CHECKS PASSED). astro check 0 errors. http.server smoke: all 7 pages + style/search/index
+assets return 200. No Chrome binary available → browser-level filter demo not run; filter
+proof = unchanged site/search.js + byte-identical payload + all DOM hooks verified present.
+
 
 ### P1 scaffold (done — build verified, awaiting GATE 1)
 - package.json (astro 7.3.1 devDep, engines node>=22.12), package-lock.json.
