@@ -1,0 +1,24 @@
+{
+ "issue_id": 4990,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/4990",
+ "title": "CareLevo pairing/connection fails on Android OS 13",
+ "symptom": "Pairing/connection with the CareLevo patch does not complete properly on Android OS 13, while the same flow works on Android 14 and above. The log shows a GattDiscoveryException: disconnected during pairing.",
+ "cause": "The issue is specific to Android OS 13 and was not fully resolved by the initial isBonded change; additional changes were needed for Android OS 13 handling and scan selection.",
+ "fix": "The fix involved a commit that changed isBonded handling, but that was insufficient. A subsequent PR added additional changes including Android OS 13 handling and scan selection updates, which was merged.",
+ "settings_changed": [],
+ "devices": [
+  "CareLevo"
+ ],
+ "android_versions": [
+  "Android OS 13",
+  "Android 14"
+ ],
+ "driver_tags": [
+  "carelevo",
+  "pairing",
+  "connection"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "I tested it, but in our environment the isBonded change alone was not enough. I opened a PR with additional changes, including Android OS 13 handling and scan selection updates"
+}

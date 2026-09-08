@@ -1,0 +1,26 @@
+{
+ "issue_id": 782,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/782",
+ "title": "Bluetooth Scan Issue when using 2 versions of XDRIP",
+ "symptom": "When trying to scan for the bluetooth device on either phone, you have to turn off the other phone before the MiaoMiao will display, indicating a clash where one version of xDrip blocks the MiaoMiao from being seen. This causes issues when adding a smartwatch as a collector, as xDrip fails to reconnect to the phone when back in range because it cannot see the bluetooth device.",
+ "cause": "MiaoMiao cannot connect to two devices at the same time.",
+ "fix": "Use one xDrip (or both) to upload data to a MongoDB instance, and have the main xDrip read data from both Bluetooth and MongoDB. Instructions: create a free MongoDB on mlab.com, on the watch enable cloud upload to MongoDB with the URI and 'upload libre transmitter data', then on the main phone select 'libre wifi' or 'libre bluetooth + wifi' as data source and enter the MongoDB address in the list of receivers.",
+ "settings_changed": [
+  "cloud upload → mongo db",
+  "nightscout → enable",
+  "upload libre transmitter data → enable",
+  "hw data source → 'libre wifi' or 'libre bluetooth + wifi'"
+ ],
+ "devices": [
+  "MiaoMiao"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "bluetooth",
+  "mongo",
+  "libre"
+ ],
+ "confidence": "high",
+ "evidence_quote": "miaomiao can not connect to two devices, not much that we can do about it. But what we can do, is to have one xdrip (or both) also upload the data to a mongo device."
+}

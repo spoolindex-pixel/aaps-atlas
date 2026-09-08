@@ -1,0 +1,21 @@
+{
+ "issue_id": 4794,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/4794",
+ "title": "Changing the pump resets superbolus",
+ "symptom": "When superbolus is active and the pump is changed, AAPS sets default basal rate/speed and deactivates superbolus mode, despite superbolus being active and basal rate should be zero for next 2 hours.",
+ "cause": "Changing the pump resets running TBR, which is pump specific and not handled by AAPS. The issue is that superbolus is tied to the pump's TBR, and when the pump is changed, the TBR is reset.",
+ "fix": "No fix implemented; maintainer states it will not be handled by AAPS. User suggests storing superbolus flag and start time, and restoring zero TBR after pump change if superbolus was active and time not completed.",
+ "settings_changed": [],
+ "devices": [
+  "Omnipod Dash"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "pump",
+  "TBR",
+  "superbolus"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "yes, changing pump resets running TBR. That's pump specific and will not be handled by AAPS"
+}
