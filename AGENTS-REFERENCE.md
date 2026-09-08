@@ -215,12 +215,13 @@ reactions_count?}`.
   (`tests/fixtures/poisoned_fb_thread.json`, `poisoned_distilled.json`).
 - A real scrape re-runs the gate with ITS raw roster (kept out-of-repo) at
   ingest time — the raw authors are never persisted, so the committed data
-  + CI stay clean while the pilot still gets a hard check.
+  - CI stay clean while the pilot still gets a hard check.
 
 ### Distillation (same distiller, FB flavor)
 
 `python3 scripts/distill.py --source-dir data/fb_threads --source-type
 facebook` runs the same extract-only S→C→F engine on FB records:
+
 - FB system prompt (never reached by GH runs) hard-bans copying any real
   name/handle/**pseudonym** into any output field incl. evidence quotes;
   the shared GH prompt also gained a no-names rule. Metadata (`source`,
@@ -530,3 +531,10 @@ successor):
 
 The phase-2 acceptance batch (task 155) uses the same distiller without the
 flock — it is the reason a batch's 90-min lock wait exists.
+
+### Task 208 rollup observation
+
+A completed nightly batch may produce fewer than 200 records when strict
+schema/quote validation parks rejects; use the distiller's final
+`REMAINING undistilled threads` line for successor decisions. The 2026-09-07
+batch produced 194 records and 6 parked rejects, leaving 1684 undistilled.
