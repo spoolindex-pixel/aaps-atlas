@@ -1,0 +1,21 @@
+{
+ "issue_id": 730,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/730",
+ "title": "android calling xdrip with miaomiao packets after very long time.",
+ "symptom": "After a long period without readings, xDrip receives Miaomiao packets that appear to be from the sensor's past, causing incorrect glucose readings and gaps in data.",
+ "cause": "The thread identifies that packets can have timestamps from an earlier sensor time (internal counter mismatch) due to the sensor's internal counter not matching the actual time, leading the code to think a packet is recent when it is not.",
+ "fix": null,
+ "settings_changed": [],
+ "devices": [
+  "Miaomiao",
+  "Libre"
+ ],
+ "android_versions": [],
+ "driver_tags": [
+  "miaomiao",
+  "libre"
+ ],
+ "confidence": "low",
+ "evidence_quote": "As we can see on the last reading time is like the later reading but counter is from 7 hours ago. This causes our code to think that this is a recent packet."
+}

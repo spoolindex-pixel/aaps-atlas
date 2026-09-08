@@ -1,0 +1,23 @@
+{
+ "issue_id": 3977,
+ "repo": "nightscout/AndroidAPS",
+ "url": "https://github.com/nightscout/AndroidAPS/issues/3977",
+ "title": "Issue with BG Trend Arrow When Using Exponential Smoothing and boradcast data to GlugoDataHandler",
+ "symptom": "When the main smoothing method in AAPS is set to Exponential, GlucoDataHandler consistently shows a question mark instead of the BG trend arrow.",
+ "cause": "The issue is likely due to GDH not receiving trend info when exponential smoothing is used, but GDH v2.0 automatically turns on internal trend calculation if the received data does not contain trend info.",
+ "fix": "Update to GDH v2.0 Beta, which automatically turns on internal trend calculation when trend info is missing, or manually enable the 'Trend calculation' setting in GDH.",
+ "settings_changed": [
+  "Trend calculation → off (for testing)",
+  "Internal Trend Calculation → on (automatic in v2.0)"
+ ],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [
+  "GlucoDataHandler",
+  "AAPSClient",
+  "Samsung Tizen",
+  "Juggluco"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "GDH developer explained why GDH v. 2.0 looks like \"fixing\" the problem. GDH automatically turns on \"Internal Trend calculation\" if the received data does not contain trend info."
+}

@@ -495,6 +495,8 @@ notice prints the one manual setup step. No `.env` required locally.
     landing page's top-distilled list and the default browse view show only
     complete records by construction.
 
+25. **Rollup task successors require an exact-title open-task dupe check first.** Use the Vikunja API with the vault-sourced token, count only `done = false` tasks in this project, and create at most one same-title successor after a successful batch with remaining work.
+
 ## Nightly batch runs (post-phase-2)
 
 Task-scoped `~200/batch` distill runs (from task 194 a self-recreating
