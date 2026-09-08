@@ -1,0 +1,18 @@
+{
+ "issue_id": 643,
+ "repo": "NightscoutFoundation/xDrip",
+ "url": "https://github.com/NightscoutFoundation/xDrip/issues/643",
+ "title": "Future BG reading is continously broadcast if option 'send display glucose' is enabled",
+ "symptom": "After changing the clock forward and back, xDrip continuously broadcasted a future BG reading of 119mg/dl. This only happens if Inter-app communication->Send display glucose is enabled. The UI also displayed that future reading continuously.",
+ "cause": "When processing a new BgReading with the 'Send display glucose' option enabled, the value of the youngest BgReading record is retrieved from the DB and sent instead, which can be a future record.",
+ "fix": "The fix was to delete future records via System status.",
+ "settings_changed": [],
+ "devices": [],
+ "android_versions": [],
+ "driver_tags": [
+  "send display glucose",
+  "inter-app communication"
+ ],
+ "confidence": "medium",
+ "evidence_quote": "The fix was to delete future records via _System status_."
+}
